@@ -73,6 +73,12 @@ return [
 
 // tickets/____
   'index-my-tickets'                 => 'Els meus Tiquets',
+  'index-all-tickets'                => 'Tots els Tiquets',
+  'index-other-agent-tickets'        => 'Tiquets per a :agent',
+  'index-current-agent-tickets'      => 'Tiquets per mi',
+  'index-agent-my-tickets'           => 'Tiquets meus per a :agent',
+  'index-current-agent-my-tickets'   => 'Tiquets meus assignats',      //revisar
+  
   'btn-create-new-ticket'            => 'Crear nou tiquet',
   'index-complete-none'              => 'No hi han tiquets tancats',
   'index-active-check'               => 'Assegureu-vos de revisar els tiquets oberts si no pot trobar el seu tiquet.',
