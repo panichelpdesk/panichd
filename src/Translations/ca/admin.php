@@ -12,7 +12,7 @@ return [
   'nav-priorities'                => 'Prioritats',
   'nav-statuses'                  => 'Estats',
   'nav-configuration'             => 'Configuració',
-  'nav-administrator'             => 'Administrador', 
+  'nav-administrator'             => 'Administrador',
 
   'table-hash'                    => '#',
   'table-id'                      => 'Id',
@@ -61,8 +61,8 @@ return [
   'index-category'                      => 'Categoria',
   'index-agents'                        => 'Agents',
   'index-agent'                         => 'Agent',
-  'index-administrators'                => 'Administradors',  
-  'index-administrator'                 => 'Administrador', 
+  'index-administrators'                => 'Administradors',
+  'index-administrator'                 => 'Administrador',
   'index-users'                         => 'Usuaris',
   'index-user'                          => 'Usuari',
   'index-tickets'                       => 'Tiquets',
@@ -85,14 +85,14 @@ return [
   'agent-create-select-user'      => 'Tria comptes d\'usuari per a utilitzar-se com agents',
 
 // tickets-admin/administrators/____
-  'administrator-index-title'                   => 'Gestió d\'Administradors',  
-  'btn-create-new-administrator'                => 'Crear nou administrador',  
-  'administrator-index-no-administrators'       => 'No hi ha administradors, ', 
-  'administrator-index-create-new'              => 'Afegir administradors',  
-  'administrator-create-title'                  => 'Afegir Administrador', 
-  'administrator-create-add-administrators'     => 'Afegir Administradors',  
-  'administrator-create-no-users'               => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.', 
-  'administrator-create-select-user'            => 'Tria comptes d\'usuari per a utilitzar-se com administradors', 
+  'administrator-index-title'                   => 'Gestió d\'Administradors',
+  'btn-create-new-administrator'                => 'Crear nou administrador',
+  'administrator-index-no-administrators'       => 'No hi ha administradors, ',
+  'administrator-index-create-new'              => 'Afegir administradors',
+  'administrator-create-title'                  => 'Afegir Administrador',
+  'administrator-create-add-administrators'     => 'Afegir Administradors',
+  'administrator-create-no-users'               => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
+  'administrator-create-select-user'            => 'Tria comptes d\'usuari per a utilitzar-se com administradors',
 
 // tickets-admin/category/____
   'category-index-title'          => 'Gestió de Categories',
@@ -103,7 +103,7 @@ return [
   'category-create-title'         => 'Crear Nova Categoria',
   'category-create-name'          => 'Nom',
   'category-create-color'         => 'Color',
-  'category-edit-title'           => 'Editar Categoria: :name', 
+  'category-edit-title'           => 'Editar Categoria: :name',
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
@@ -136,7 +136,7 @@ return [
   'config-index-tickets'          => 'Tiquets',
   'config-index-notifications'    => 'Notificacions',
   'config-index-permissions'      => 'Permisos',
-  'config-index-editor'           => 'Editor', 
+  'config-index-editor'           => 'Editor',
   'config-index-other'            => 'Altres',
   'config-create-title'           => 'Crear: Nou Configuració Global',
   'config-create-subtitle'        => 'Crear Configuració',
@@ -155,7 +155,7 @@ return [
   									  Exact code executed:', //Revisar
   'config-edit-reenter-password'  => 'Torneu a introduir la contrasenya',
   'config-edit-auth-failed'       => 'La contrasenya no coincideix',
-  'config-edit-eval-error'        => 'Valor no vàlid', 
+  'config-edit-eval-error'        => 'Valor no vàlid',
   'config-edit-tools'             => 'Eines:',
 
 ];
