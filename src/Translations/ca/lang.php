@@ -72,12 +72,18 @@ return [
   'index-title'                      => 'Pàgina principal de Helpdesk',
 
 // tickets/____
-  'index-my-tickets'                 => 'Els meus Tiquets',
-  'index-all-tickets'                => 'Tots els Tiquets',
+  'index-my-tickets'                 => 'Tiquets meus',
+  'index-my-tickets-in'              => 'Tiquets meus a :category',
+  'index-tickets'                    => 'Tots els Tiquets',
+  'index-tickets-in'                 => 'Tiquets a :category',
   'index-other-agent-tickets'        => 'Tiquets per a :agent',
-  'index-current-agent-tickets'      => 'Tiquets per mi',
-  'index-agent-my-tickets'           => 'Tiquets meus per a :agent',
-  'index-current-agent-my-tickets'   => 'Tiquets meus assignats',      //revisar
+  'index-other-agent-tickets-in'     => 'Tiquets per a :agent a :category',
+  'index-current-agent-tickets'      => 'Tiquets assignats',
+  'index-current-agent-tickets-in'   => 'Tiquets assignats a :category',
+  'index-other-agent-my-tickets'     => 'Tiquets meus per a :agent',
+  'index-other-agent-my-tickets-in'  => 'Tiquets meus per a :agent a :category',
+  'index-current-agent-my-tickets'   => 'Tiquets meus assignats',
+  'index-current-agent-my-tickets-in'=> 'Tiquets meus assignats a :category',
   
   'btn-create-new-ticket'            => 'Crear nou tiquet',
   'index-complete-none'              => 'No hi han tiquets tancats',
