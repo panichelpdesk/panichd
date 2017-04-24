@@ -44,7 +44,7 @@
                         <td>
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
-								<button type="button" class="btn btn-default btn-xs">{{$tag->name}}</button>
+								<button class="btn btn-default btn-xs" style="pointer-events: none">{{$tag->name}}</button>
 							@endforeach
 						@endif
 						</td>

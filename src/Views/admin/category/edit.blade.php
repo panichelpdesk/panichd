@@ -35,7 +35,7 @@
 			var i=$(this).prop('id').replace('tag_keep_','');
 			$(this).hide();
 			$('#tag_text_'+i).css('text-decoration','').css('background-color','');
-			$('#jquery_disable_tag_'+i).prop('disabled',true);
+			$('#jquery_delete_tag_'+i).prop('disabled',true);
 			
 			$('#tag_delete_'+i).show();
 			

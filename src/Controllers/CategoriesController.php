@@ -133,6 +133,8 @@ class CategoriesController extends Controller
 	/**
      * Syncs tags for category instance
      *
+	 * @param $request
+	 * @param $new_tags Array
      * @param $category instance of Kordy\Ticketit\Models\Category
 	 *
 	*/
