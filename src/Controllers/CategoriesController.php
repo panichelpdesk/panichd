@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Kordy\Ticketit\Models\Category;
+use Kordy\Ticketit\Models\Tag;
 
 class CategoriesController extends Controller
 {
@@ -16,7 +17,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('tags')->get();
 
         return view('ticketit::admin.category.index', compact('categories'));
     }
@@ -40,10 +41,7 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
-        ]);
+        $new_tags=$this->validation_and_new_tags($request);
 
         $category = new Category();
         $category->create(['name' => $request->name, 'color' => $request->color]);
@@ -74,7 +72,9 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::with(['tags'=>function($q){
+			$q->withCount('tickets');
+		}])->findOrFail($id);
 
         return view('ticketit::admin.category.edit', compact('category'));
     }
@@ -89,18 +89,71 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name'      => 'required',
-            'color'     => 'required',
-        ]);
-
+		$new_tags=$this->validation_and_new_tags($request);
+		
         $category = Category::findOrFail($id);
         $category->update(['name' => $request->name, 'color' => $request->color]);
-
+		
+		$this->sync_category_tags($request, $new_tags, $category);
+	
         Session::flash('status', trans('ticketit::lang.category-name-has-been-modified', ['name' => $request->name]));
-
+			
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
     }
+	
+	/**
+     * Does the request validation
+     *
+     * @param Request $request
+	 *
+	 * Return Array
+	*/
+	protected function validation_and_new_tags($request){
+		$rules=[
+            'name'      => 'required',
+            'color'     => 'required',
+        ];
+		
+		// Add validation for new tags like it were fields
+		$new_tags=array();
+		if ($request->input('new_tags')){
+			$i=0;
+			foreach ($request->input('new_tags') as $tag){
+				$new_tags[]=$tag;
+				$request['tag'.++$i]=$tag;
+				$rules['tag'.$i]="regex:/^[\pL\s]+$/u";
+			}			
+		}
+		
+        $this->validate($request, $rules);
+		
+		return $new_tags;
+	}
+	
+	/**
+     * Syncs tags for category instance
+     *
+     * @param $category instance of Kordy\Ticketit\Models\Category
+	 *
+	*/
+	protected function sync_category_tags($request,$new_tags, $category){
+		// Get category tags
+		$tags=$category->tags()->pluck('id')->toArray();
+		
+		// Detach marked current tags
+		for ($i=0;$i<$request->input('tags_count');$i++){			
+			if ($request->has('jquery_delete_tag_'.$i)) $tags=array_diff($tags,[$request->input('jquery_delete_tag_'.$i)]);
+		}
+		
+		// Add new tags
+		foreach ($new_tags as $tag){
+			$new=Tag::firstOrCreate(['name'=>$tag]);
+			$tags[]=$new->id;
+		}		
+		
+		// Sync all category tags
+		$category->tags()->sync($tags);
+	}
 
     /**
      * Remove the specified resource from storage.

@@ -28,7 +28,8 @@
                     <tr>
                         <td>{{ trans('ticketit::admin.table-id') }}</td>
                         <td>{{ trans('ticketit::admin.table-name') }}</td>
-                        <td>{{ trans('ticketit::admin.table-action') }}</td>
+                        <td>Tags</td>
+						<td>{{ trans('ticketit::admin.table-action') }}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +42,13 @@
                             {{ $category->name }}
                         </td>
                         <td>
+						@if ($category->has('tags'))
+							@foreach ($category->tags as $tag)
+								<button type="button" class="btn btn-default btn-xs">{{$tag->name}}</button>
+							@endforeach
+						@endif
+						</td>
+						<td>
                             {!! link_to_route(
                                                     $setting->grab('admin_route').'.category.edit', trans('ticketit::admin.btn-edit'), $category->id,
                                                     ['class' => 'btn btn-info'] )
