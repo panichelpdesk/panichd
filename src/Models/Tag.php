@@ -17,7 +17,7 @@ class Tag extends Model
      */
     public function categories()
     {
-        return $this->morphedByMany('Kordy\Ticketit\Models\Category', 'taggable','ticketit_taggables');
+        return $this->morphedByMany('Kordy\Ticketit\Models\Category', 'taggable','ticketit_taggables')->orderBy('name');
     }
 	
 	/**
