@@ -36,4 +36,14 @@ class Category extends Model
     {
         return $this->belongsToMany('\Kordy\Ticketit\Models\Agent', 'ticketit_categories_users', 'category_id', 'user_id');
     }
+	
+	/**
+     * Get related tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function tags()
+    {
+        return $this->morphToMany('Kordy\Ticketit\Models\Tag', 'taggable','ticketit_taggables');
+    }
 }

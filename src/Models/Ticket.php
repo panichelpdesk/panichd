@@ -120,6 +120,16 @@ class Ticket extends Model
     //        return $this->hasMany('Kordy\Ticketit\Models\Audit', 'ticket_id');
     //    }
     //
+	
+	/**
+     * Get related tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function tags()
+    {
+        return $this->morphToMany('Kordy\Ticketit\Models\Tag', 'taggable','ticketit_taggables');
+    }
 
     /**
      * @see Illuminate/Database/Eloquent/Model::asDateTime
