@@ -13,4 +13,12 @@
         @include('ticketit::admin.category.form', ['update', true])
         {!! CollectiveForm::close() !!}
     </div>
+	<script type="text/javascript">
+	$(function(){
+		$('#admin-select2-tags').select2({
+		  tags: true,
+		  tokenSeparators: [',']
+		});
+	});
+	</script>
 @stop

@@ -1,14 +1,29 @@
-<div class="form-group">
-    {!! CollectiveForm::label('name', trans('ticketit::admin.category-create-name') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
-    <div class="col-lg-10">
-        {!! CollectiveForm::text('name', isset($category->name) ? $category->name : null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-<div class="form-group">
-    {!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
-    <div class="col-lg-10">
-        {!! CollectiveForm::custom('color', 'color', isset($category->color) ? $category->color : "#000000", ['class' => 'form-control']) !!}
-    </div>
+<div class="row">
+	<div class="col-sm-5">
+	<div class="form-group">
+		{!! CollectiveForm::label('name', trans('ticketit::admin.category-create-name') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
+		<div class="col-lg-10">
+			{!! CollectiveForm::text('name', isset($category->name) ? $category->name : null, ['class' => 'form-control']) !!}
+		</div>
+	</div>
+	<div class="form-group">
+		{!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
+		<div class="col-lg-10">
+			{!! CollectiveForm::custom('color', 'color', isset($category->color) ? $category->color : "#000000", ['class' => 'form-control']) !!}
+		</div>
+	</div>
+	</div>
+	<div class="col-sm-offset-1 col-sm-6">	
+	<div class="form-group">
+		<label class="control-label col-sm-2" for="admin-select2-tags">New tags</label>
+		<div class="col-sm-9">
+		<select id="admin-select2-tags" class="select2-multiple" multiple="multiple">
+		<option value="">-llista-</option>
+		</select></div>
+		
+	</div>
+	<h4>Tag list</h4>	
+	</div>
 </div>
 <div class="form-group">
     <div class="col-lg-10 col-lg-offset-2">
