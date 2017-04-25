@@ -17,7 +17,11 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('tags')->get();
+        $categories = Category::with(array(
+			'tags'=>function($q){
+				$q->withCount('categories');
+			}
+		))->get();
 
         return view('ticketit::admin.category.index', compact('categories'));
     }
