@@ -229,13 +229,11 @@ class TicketsController extends Controller
         }
 		
 		// Mix category tags and current ticket tags
-		$tag_lists=Tag::whereHas('categories',function($q1)use($ticket){
-			$q1->where('id',$ticket->category_id);
-		})->orWhereHas('tickets',function($q2)use($id){
+		$tag_lists=Tag::whereHas('categories')->orWhereHas('tickets',function($q2)use($id){
 			$q2->where('id',$id);
 		})->select('id','name')->with(array(
 			'categories'=>function($q3)use($ticket){
-				$q3->where('id',$ticket->category_id)->select('id');
+				$q3->select('id');
 			},
 			'tickets'=>function($q4)use($id){
 				$q4->where('id',$id)->select('id');
@@ -313,15 +311,25 @@ class TicketsController extends Controller
 	protected function sync_ticket_tags($request, $ticket){
 		
 		// Get marked current tags
-		$tags = [];
+		$input_tags = [];
 		for ($i=0;$i<$request->input('tags_count');$i++){			
 			if ($request->has('jquery_tag_input_'.$i)){
-				// Exclude for sync
-				$tags[] = $request->input('jquery_tag_input_'.$i);			
+				$input_tags[] = $request->input('jquery_tag_input_'.$i);			
 			} 
 		}
 		
-		// Sync all ticket tags
+		// Valid tags has all category tags
+		$category_tags=$ticket->category->tags()->get();		
+		$category_tags=(version_compare(app()->version(), '5.3.0', '>='))? $category_tags->pluck('id')->toArray() : $category_tags->lists('id')->toArray();				
+		// Valid tags has ticket tags that doesn't have category
+		$ticket_only_tags=Tag::doesntHave('categories')->whereHas('tickets',function($q2)use($ticket){
+			$q2->where('id',$ticket->id);
+		})->get();
+		$ticket_only_tags=(version_compare(app()->version(), '5.3.0', '>='))? $ticket_only_tags->pluck('id')->toArray() : $ticket_only_tags->lists('id')->toArray();
+		
+		$tags=array_intersect($input_tags,array_merge($category_tags,$ticket_only_tags));
+		
+		// Sync all ticket tags		
 		$ticket->tags()->sync($tags);
 		
 		// Delete orphan tags (Without any related categories or tickets)
