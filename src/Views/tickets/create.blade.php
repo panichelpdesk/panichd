@@ -39,7 +39,16 @@
                 </div>
                 {!! CollectiveForm::hidden('agent_id', 'auto') !!}
             </div>
-            <br>
+            
+			<H4>Tags</h4>
+					
+			<div class="btn-group-panel">
+				@foreach ($tag_lists as $i=>$tag)
+					<?php $tag->tickets_count=0; ?>
+					@include('ticketit::tickets.partials.tag_btn')
+				@endforeach
+			</div>
+			<br>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     {!! link_to_route($setting->grab('main_route').'.index', trans('ticketit::lang.btn-back'), null, ['class' => 'btn btn-default']) !!}

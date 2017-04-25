@@ -9,6 +9,7 @@ use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Category;
 use Kordy\Ticketit\Models\Setting;
+use Kordy\Ticketit\Models\Tag;
 use Kordy\Ticketit\Models\Ticket;
 use Yajra\Datatables\Datatables;
 use Yajra\Datatables\Engines\EloquentEngine;
@@ -159,8 +160,13 @@ class TicketsController extends Controller
             $priorities = Models\Priority::lists('name', 'id');
             $categories = Models\Category::lists('name', 'id');
         }
+		
+		$tag_lists=Tag::whereHas('categories',function($q1)use($ticket){
+			$q1->where('id',$ticket->category_id);
+		})->select('id','name')->get();
+		
 
-        return view('ticketit::tickets.create', compact('priorities', 'categories'));
+        return view('ticketit::tickets.create', compact('priorities', 'categories', 'tag_lists'));
     }
 
     /**
@@ -193,6 +199,8 @@ class TicketsController extends Controller
         $ticket->autoSelectAgent();
 
         $ticket->save();
+		
+		$this->sync_ticket_tags($request, $ticket);
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created'));
 
@@ -208,18 +216,33 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets->find($id);
+        $ticket = $this->tickets->with('tags')->find($id);
 
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $status_lists = Models\Status::pluck('name', 'id');
             $priority_lists = Models\Priority::pluck('name', 'id');
-            $category_lists = Models\Category::pluck('name', 'id');
+            $category_lists = Models\Category::pluck('name', 'id');			
         } else { // if Laravel 5.1
             $status_lists = Models\Status::lists('name', 'id');
             $priority_lists = Models\Priority::lists('name', 'id');
             $category_lists = Models\Category::lists('name', 'id');
         }
-
+		
+		// Mix category tags and current ticket tags
+		$tag_lists=Tag::whereHas('categories',function($q1)use($ticket){
+			$q1->where('id',$ticket->category_id);
+		})->orWhereHas('tickets',function($q2)use($id){
+			$q2->where('id',$id);
+		})->select('id','name')->with(array(
+			'categories'=>function($q3)use($ticket){
+				$q3->where('id',$ticket->category_id)->select('id');
+			},
+			'tickets'=>function($q4)use($id){
+				$q4->where('id',$id)->select('id');
+			}
+		))->select('id','name')->get();
+		
+		
         $close_perm = $this->permToClose($id);
         $reopen_perm = $this->permToReopen($id);
 
@@ -233,8 +256,8 @@ class TicketsController extends Controller
         $comments = $ticket->comments()->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
-            compact('ticket', 'status_lists', 'priority_lists', 'category_lists', 'agent_lists', 'comments',
-                'close_perm', 'reopen_perm'));
+            compact('ticket', 'status_lists', 'priority_lists', 'category_lists', 'agent_lists', 'tag_lists',
+				'comments', 'close_perm', 'reopen_perm'));
     }
 
     /**
@@ -273,11 +296,37 @@ class TicketsController extends Controller
         }
 
         $ticket->save();
+		
+		$this->sync_ticket_tags($request, $ticket);
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified'));
 
         return redirect()->route(Setting::grab('main_route').'.show', $id);
     }
+	
+	/**
+     * Syncs tags for ticket instance
+     *
+     * @param $ticket instance of Kordy\Ticketit\Models\Ticket
+	 *
+	*/
+	protected function sync_ticket_tags($request, $ticket){
+		
+		// Get marked current tags
+		$tags = [];
+		for ($i=0;$i<$request->input('tags_count');$i++){			
+			if ($request->has('jquery_tag_input_'.$i)){
+				// Exclude for sync
+				$tags[] = $request->input('jquery_tag_input_'.$i);			
+			} 
+		}
+		
+		// Sync all ticket tags
+		$ticket->tags()->sync($tags);
+		
+		// Delete orphan tags (Without any related categories or tickets)
+		Tag::doesntHave('categories')->doesntHave('tickets')->delete();		
+	}
 
     /**
      * Remove the specified resource from storage.
@@ -293,6 +342,9 @@ class TicketsController extends Controller
         $ticket->delete();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));
+		
+		// Delete orphan tags (Without any related categories or tickets)
+		Tag::doesntHave('categories')->doesntHave('tickets')->delete();	
 
         return redirect()->route(Setting::grab('main_route').'.index');
     }

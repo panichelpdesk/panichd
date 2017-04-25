@@ -44,4 +44,5 @@
         });
     </script>
     @include('ticketit::tickets.partials.summernote')
+	@include('ticketit::tickets.partials.tags_footer_script')
 @append

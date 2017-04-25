@@ -39,11 +39,11 @@
                                 $agent_lists,
                                 $ticket->agent_id,
                                 ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
-                    </div>
+						</div>
+					</div>
+				</div>
 
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
                     <div class="form-group col-lg-12">
                         {!! CollectiveForm::label('category_id',  trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
@@ -64,12 +64,23 @@
                     </div>
 
                     <div class="clearfix"></div>
+					
+					<H4>Tags</h4>
+					
+					<div class="btn-group-panel">
+						@foreach ($tag_lists as $i=>$tag)
+							@include('ticketit::tickets.partials.tag_btn')
+						@endforeach
+					</div>
+					<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>}}">										
+					
+					<div class="clearfix"></div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('ticketit::lang.btn-close') }}</button>
                         {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
                     </div>
                     {!! CollectiveForm::close() !!}
-                </div>
-            </div>
         </div>
+    </div>
+</div>

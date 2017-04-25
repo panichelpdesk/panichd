@@ -69,6 +69,14 @@
                                     {{ $ticket->priority->name }}
                                 </span>
                             </p>
+							@if ($ticket->has('tags'))
+								<p>
+								<strong>Tags</strong>{{ trans('ticketit::lang.colon') }}
+								@foreach ($ticket->tags as $i=>$tag)
+									<button class="btn btn-default btn-sm" style="pointer-events: none">{{$tag->name}}</button>
+								@endforeach
+								</p>
+							@endif
                         </div>
                         <div class="col-md-6">
                             <p> <strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}</p>
