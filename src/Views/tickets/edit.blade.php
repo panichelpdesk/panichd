@@ -68,6 +68,7 @@
 					<H4>Tags</h4>
 					
 					<div class="btn-group-panel">
+						<?php $category_id=$ticket->category_id;?>
 						@foreach ($tag_lists as $i=>$tag)
 							@include('ticketit::tickets.partials.tag_btn')
 						@endforeach

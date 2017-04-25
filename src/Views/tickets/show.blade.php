@@ -22,9 +22,14 @@
                 }
 
             });
-            $('#category_id').change(function(){
-                var loadpage = "{!! route($setting->grab('main_route').'agentselectlist') !!}/" + $(this).val() + "/{{ $ticket->id }}";
+            $('#category_id').change(function(){				
+				// Update agent list
+				var loadpage = "{!! route($setting->grab('main_route').'agentselectlist') !!}/" + $(this).val() + "/{{ $ticket->id }}";
                 $('#agent_id').load(loadpage);
+				
+				// Update tag list				
+				$('.jquery_tag_category').hide();
+				$('.jquery_tag_category_'+$(this).val()).show();
             });
             $('#confirmDelete').on('show.bs.modal', function (e) {
                 $message = $(e.relatedTarget).attr('data-message');
