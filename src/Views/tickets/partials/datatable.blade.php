@@ -10,6 +10,7 @@
             <td>{{ trans('ticketit::lang.table-priority') }}</td>
             <td>{{ trans('ticketit::lang.table-owner') }}</td>
             <td>{{ trans('ticketit::lang.table-category') }}</td>
+			<td>Tags</td>
           @endif
         </tr>
     </thead>

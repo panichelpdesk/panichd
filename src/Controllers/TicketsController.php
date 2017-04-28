@@ -52,13 +52,19 @@ class TicketsController extends Controller
                 $collection = Ticket::userTickets($user->id)->active();
             }
         }
-
+		
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')
             ->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
             ->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
             ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')
-            ->select([
+			->leftJoin('ticketit_taggables',function($join){
+				$join->on('ticketit.id','=','ticketit_taggables.taggable_id')
+					->where('ticketit_taggables.taggable_type','=','Kordy\\Ticketit\\Models\\Ticket');
+			})
+			->leftJoin('ticketit_tags','ticketit_taggables.tag_id','=','ticketit_tags.id')			
+			->groupBy('ticketit.id')
+			->select([
                 'ticketit.id',
                 'ticketit.subject AS subject',
                 'ticketit_statuses.name AS status',
@@ -71,7 +77,9 @@ class TicketsController extends Controller
                 'users.name AS owner',
                 'ticketit.agent_id',
                 'ticketit_categories.name AS category',
-            ]);
+				\DB::raw("group_concat(ticketit_tags.name) AS tags"),
+				\DB::raw("group_concat(ticketit_tags.id) AS tags_id")
+            ]);		
 
         $collection = $datatables->of($collection);
 
@@ -117,6 +125,18 @@ class TicketsController extends Controller
             $ticket = $this->tickets->find($ticket->id);
 
             return $ticket->agent->name;
+        });
+		
+		$collection->editColumn('tags', function ($ticket) {
+            $text = "";
+			if ($ticket->tags!=""){
+				$a_tags=array_combine(explode(",",$ticket->tags_id),explode(",",$ticket->tags));
+				foreach ($a_tags as $id=>$tag){
+					$text.='<button class="btn btn-default btn-xs" style="pointer-events: none">'.$tag.'</button> ';
+				}				
+			}		
+
+            return $text;
         });
 
         return $collection;
@@ -326,9 +346,9 @@ class TicketsController extends Controller
 			$q2->where('id',$ticket->id);
 		})->get();
 		$ticket_only_tags=(version_compare(app()->version(), '5.3.0', '>='))? $ticket_only_tags->pluck('id')->toArray() : $ticket_only_tags->lists('id')->toArray();
-		
+				
 		$tags=array_intersect($input_tags,array_merge($category_tags,$ticket_only_tags));
-		
+				
 		// Sync all ticket tags		
 		$ticket->tags()->sync($tags);
 		

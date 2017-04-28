@@ -54,8 +54,9 @@
 	            @if( $u->isAgent() || $u->isAdmin() )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	{ data: 'owner', name: 'users.name' },
-		            { data: 'category', name: 'ticketit_categories.name' }
+		            { data: 'category', name: 'ticketit_categories.name' },
 	            @endif
+				{ data: 'tags', name: 'ticketit_tags.name' }
 	        ]
 	    });
 	</script>
