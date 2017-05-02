@@ -66,14 +66,9 @@
                     <div class="clearfix"></div>
 					
 					<H4>Tags</h4>
-					
-					<div class="btn-group-panel">
-						<?php $category_id=$ticket->category_id;?>
-						@foreach ($tag_lists as $i=>$tag)
-							@include('ticketit::tickets.partials.tag_btn')
-						@endforeach
-					</div>
-					<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>}}">										
+										
+					<?php $category_id=$ticket->category_id;?>
+					@include('ticketit::tickets.partials.tag_buttons')															
 					
 					<div class="clearfix"></div>
 
