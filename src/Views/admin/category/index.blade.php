@@ -44,7 +44,7 @@
                         <td>
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
-								<button class="btn {!! $tag->categories_count>1?($tag->categories_count>2?'btn-warning':'btn-info'):'btn-default'!!} btn-xs" style="pointer-events: none">{{$tag->name}}</button>
+								<button class="btn btn-default btn-xs" style="pointer-events: none">{{$tag->name}}</button>
 							@endforeach
 						@endif
 						</td>
