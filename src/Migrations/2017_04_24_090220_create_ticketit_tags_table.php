@@ -15,7 +15,7 @@ class CreateTicketitTagsTable extends Migration
     {
         Schema::create('ticketit_tags', function (Blueprint $table) {
             $table->increments('id');
-			$table->string('name')->unique();
+			$table->string('name');
             $table->timestamps();
         });
     }

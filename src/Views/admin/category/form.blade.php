@@ -21,7 +21,7 @@
 		
 	</div>
 	<h4>Tag list</h4>
-	@if ($category->has('tags'))		
+	@if (isset($category) and $category->has('tags'))		
 		<div class="btn-group-panel">
 			@foreach ($category->tags as $i=>$tag)		
 				<div class="btn-group">

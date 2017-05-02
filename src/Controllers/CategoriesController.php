@@ -17,11 +17,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::with(array(
-			'tags'=>function($q){
-				$q->withCount('categories');
-			}
-		))->get();
+        $categories = Category::with('tags')->get();		
 
         return view('ticketit::admin.category.index', compact('categories'));
     }
@@ -48,8 +44,10 @@ class CategoriesController extends Controller
         $new_tags=$this->validation_and_new_tags($request);
 
         $category = new Category();
-        $category->create(['name' => $request->name, 'color' => $request->color]);
+        $category=$category->create(['name' => $request->name, 'color' => $request->color]);
 
+		$this->sync_category_tags($request, $new_tags, $category);
+		
         Session::flash('status', trans('ticketit::lang.category-name-has-been-created', ['name' => $request->name]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
@@ -156,7 +154,10 @@ class CategoriesController extends Controller
 		
 		// Add new tags
 		foreach ($new_tags as $tag){
-			$new=Tag::firstOrCreate(['name'=>$tag]);
+			$new=Tag::whereHas('categories',function($q)use($category){
+				$q->where('id',$category->id);
+			})->where('name',$tag)->firstOrCreate(['name'=>$tag]);
+			
 			$tags[]=$new->id;
 		}		
 		
@@ -180,6 +181,9 @@ class CategoriesController extends Controller
         $name = $category->name;
         $category->delete();
 
+		// Delete orphan tags (Without any related categories or tickets)
+		Tag::doesntHave('categories')->doesntHave('tickets')->delete();
+		
         Session::flash('status', trans('ticketit::lang.category-name-has-been-deleted', ['name' => $name]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
