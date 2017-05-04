@@ -1,30 +1,28 @@
 <script type="text/javascript">
-	$(function(){
+	$(function()
+	{
 		$('#admin-select2-tags').select2({
 		  tags: true,
 		  tokenSeparators: [',']
 		});
 		
-		$('.jquery_button_delete_tag').click(function(e){
-			var i=$(this).prop('id').replace('tag_delete_','');
-			$(this).hide();
-			$('#tag_text_'+i).css('text-decoration','line-through').css('background-color','#ff9999');
-			$('#jquery_delete_tag_'+i).prop('disabled',false);
+		$('.jquery_tag_check').click(function(e)
+		{
+			var i=$(this).prop('id').replace('jquery_tag_check_','');
 			
-			$('#tag_keep_'+i).show();
+			if ($(this).parent('.btn-group').hasClass('jquery_tag_group_unchecked')){
+				// Check tag to delete it
+				$(this).parent('.btn-group').removeClass('jquery_tag_group_unchecked').addClass('jquery_tag_group_checked');
+				
+				$('#jquery_delete_tag_'+i).prop('disabled',false);
+			}else{
+				// Uncheck tag to keep it
+				$(this).parent('.btn-group').removeClass('jquery_tag_group_checked').addClass('jquery_tag_group_unchecked');
+				
+				$('#jquery_delete_tag_'+i).prop('disabled',true);
+			}
 			
-			e.preventDefault();
-		});
-		
-		$('.jquery_button_keep_tag').click(function(e){
-			var i=$(this).prop('id').replace('tag_keep_','');
-			$(this).hide();
-			$('#tag_text_'+i).css('text-decoration','').css('background-color','');
-			$('#jquery_delete_tag_'+i).prop('disabled',true);
-			
-			$('#tag_delete_'+i).show();
-			
-			e.preventDefault();
-		});
+			e.preventDefault();			
+		});		
 	});
 </script>
