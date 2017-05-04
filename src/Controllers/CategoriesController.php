@@ -145,11 +145,16 @@ class CategoriesController extends Controller
 		$tags=$category->tags()->pluck('id')->toArray();
 		
 		// Detach marked current tags
+		$a_detach = [];
 		for ($i=0;$i<$request->input('tags_count');$i++){			
 			if ($request->has('jquery_delete_tag_'.$i)){
 				// Exclude for sync
-				$tags=array_diff($tags,[$request->input('jquery_delete_tag_'.$i)]);			
+				$a_detach[]=$request->input('jquery_delete_tag_'.$i);							
 			} 
+		}
+		if ($a_detach){
+			// Detach on categories
+			$tags=array_diff($tags,$a_detach);
 		}
 		
 		// Add new tags
@@ -163,6 +168,11 @@ class CategoriesController extends Controller
 		
 		// Sync all category tags
 		$category->tags()->sync($tags);
+		
+		// Detach deleted tags that have Tickets
+		Tag::whereIn('id',$a_detach)->each(function($tag){
+			$tag->tickets()->detach();
+		});
 		
 		// Delete orphan tags (Without any related categories or tickets)
 		Tag::doesntHave('categories')->doesntHave('tickets')->delete();		
