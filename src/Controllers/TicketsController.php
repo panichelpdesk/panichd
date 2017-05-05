@@ -181,11 +181,14 @@ class TicketsController extends Controller
             $categories = Models\Category::lists('name', 'id');
         }
 		
-		$tag_lists=Tag::whereHas('categories',function($q1)use($ticket){
-			$q1->where('id',$ticket->category_id);
-		})->select('id','name')->get();
+		$tag_lists=Tag::whereHas('categories')->with('categories')
+		->with(array(
+			'tickets'=>function($q4){
+				$q4->where('id','0')->select('id');
+			}
+		))
+		->select('id','name')->get();
 		
-
         return view('ticketit::tickets.create', compact('priorities', 'categories', 'tag_lists'));
     }
 
@@ -251,7 +254,7 @@ class TicketsController extends Controller
 		// Mix category tags and current ticket tags
 		$tag_lists=Tag::whereHas('categories')->orWhereHas('tickets',function($q2)use($id){
 			$q2->where('id',$id);
-		})->select('id','name')->with(array(
+		})->with(array(
 			'categories'=>function($q3)use($ticket){
 				$q3->select('id');
 			},

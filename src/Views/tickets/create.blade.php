@@ -34,20 +34,16 @@
                 <div class="form-group col-lg-4">
                     {!! CollectiveForm::label('category', trans('ticketit::lang.category') . trans('ticketit::lang.colon'), ['class' => 'col-lg-6 control-label']) !!}
                     <div class="col-lg-6">
-                        {!! CollectiveForm::select('category_id', $categories, null, ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! CollectiveForm::select('category_id', $categories, null, ['id'=>'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                 </div>
                 {!! CollectiveForm::hidden('agent_id', 'auto') !!}
             </div>
             
 			<H4>Tags</h4>
-					
-			<div class="btn-group-panel">
-				@foreach ($tag_lists as $i=>$tag)
-					<?php $tag->tickets_count=0; ?>
-					@include('ticketit::tickets.partials.tag_btn')
-				@endforeach
-			</div>
+			<?php $category_id=$categories->keys()->first();?>
+			@include('ticketit::tickets.partials.tag_buttons')
+
 			<br>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
@@ -60,5 +56,14 @@
 @endsection
 
 @section('footer')
-    @include('ticketit::tickets.partials.summernote')
+    <script type="text/javascript">
+	$('#category_id').change(function(){				
+		// Update tag list				
+		$('.jquery_tag_category').hide();
+		$('.jquery_tag_category_'+$(this).val()).show();
+	});
+	</script>
+	
+	@include('ticketit::tickets.partials.summernote')
+	@include('ticketit::tickets.partials.tags_footer_script')
 @append
