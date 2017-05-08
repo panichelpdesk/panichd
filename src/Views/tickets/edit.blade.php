@@ -63,12 +63,18 @@
                         </div>
                     </div>
 
-                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>		
+
 					
-					<H4>Tags</h4>
-										
-					<?php $category_id=$ticket->category_id;?>
-					@include('ticketit::tickets.partials.tag_buttons')															
+					<div class="form-group col-lg-12">						
+						<label class="control-label col-lg-2">Tags</label>
+						<div id="jquery_select2_container" class="col-lg-10">
+						
+						<?php $categories = $category_lists; ?>
+						@include('ticketit::tickets.partials.tags_menu')
+						
+						</div>
+					</div>				
 					
 					<div class="clearfix"></div>
 

@@ -12,6 +12,7 @@
 
 @section('footer')
     <script>
+		var category_id=<?=$ticket->category_id;?>;
         $(document).ready(function() {
             $( ".deleteit" ).click(function( event ) {
                 event.preventDefault();
@@ -28,8 +29,8 @@
                 $('#agent_id').load(loadpage);
 				
 				// Update tag list				
-				$('.jquery_tag_category').hide();
-				$('.jquery_tag_category_'+$(this).val()).show();
+				$('#jquery_select2_container .select2-container').hide();
+				$('#jquery_tag_category_'+$(this).val()).next().show();
             });
             $('#confirmDelete').on('show.bs.modal', function (e) {
                 $message = $(e.relatedTarget).attr('data-message');

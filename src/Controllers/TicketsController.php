@@ -181,14 +181,17 @@ class TicketsController extends Controller
             $categories = Models\Category::lists('name', 'id');
         }
 		
-		$tag_lists=Tag::whereHas('categories')->with('categories')
+		$tag_lists=Category::whereHas('tags')
 		->with(array(
-			'tickets'=>function($q4){
-				$q4->where('id','0')->select('id');
+			'tags'=>function($q1){
+				$q1->select('id','name');
+			},
+			'tags.tickets'=>function($q2){
+				$q2->where('id','0')->select('id');
 			}
 		))
 		->select('id','name')->get();
-		
+			
         return view('ticketit::tickets.create', compact('priorities', 'categories', 'tag_lists'));
     }
 
@@ -244,25 +247,23 @@ class TicketsController extends Controller
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $status_lists = Models\Status::pluck('name', 'id');
             $priority_lists = Models\Priority::pluck('name', 'id');
-            $category_lists = Models\Category::pluck('name', 'id');			
+            $category_lists = $a_categories = Models\Category::pluck('name', 'id');	
+			$ticket_tags=$ticket->tags()->pluck('name', 'id')->toArray();
         } else { // if Laravel 5.1
             $status_lists = Models\Status::lists('name', 'id');
             $priority_lists = Models\Priority::lists('name', 'id');
-            $category_lists = Models\Category::lists('name', 'id');
-        }
+            $category_lists = $a_categories = Models\Category::lists('name', 'id');
+			$ticket_tags=$ticket->tags()->lists('name', 'id')->toArray();
+        }		
 		
-		// Mix category tags and current ticket tags
-		$tag_lists=Tag::whereHas('categories')->orWhereHas('tickets',function($q2)use($id){
-			$q2->where('id',$id);
-		})->with(array(
-			'categories'=>function($q3)use($ticket){
-				$q3->select('id');
-			},
-			'tickets'=>function($q4)use($id){
-				$q4->where('id',$id)->select('id');
-			}
-		))->select('id','name')->get();
-		
+		// Category tags
+		$tag_lists=Category::whereHas('tags')
+		->with(array(
+			'tags'=>function($q1)use($id){
+				$q1->select('id','name');
+			}			
+		))		
+		->select('id','name')->get();
 		
         $close_perm = $this->permToClose($id);
         $reopen_perm = $this->permToReopen($id);
@@ -277,7 +278,7 @@ class TicketsController extends Controller
         $comments = $ticket->comments()->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
-            compact('ticket', 'status_lists', 'priority_lists', 'category_lists', 'agent_lists', 'tag_lists',
+            compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
 				'comments', 'close_perm', 'reopen_perm'));
     }
 
@@ -333,13 +334,9 @@ class TicketsController extends Controller
 	*/
 	protected function sync_ticket_tags($request, $ticket){
 		
-		// Get marked current tags
-		$input_tags = [];
-		for ($i=0;$i<$request->input('tags_count');$i++){			
-			if ($request->has('jquery_tag_input_'.$i)){
-				$input_tags[] = $request->input('jquery_tag_input_'.$i);			
-			} 
-		}
+		// Get marked current tags		
+		$input_tags = $request->input('category_'.$request->input('category_id').'_tags');
+		if (!$input_tags) $input_tags = [];
 		
 		// Valid tags has all category tags
 		$category_tags=$ticket->category->tags()->get();		
