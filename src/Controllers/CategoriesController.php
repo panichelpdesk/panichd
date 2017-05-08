@@ -166,7 +166,8 @@ class CategoriesController extends Controller
 		}		
 		
 		// Get category tags
-		$tags=$category->tags()->pluck('id')->toArray();
+		$tags=$category->tags();
+		$tags=version_compare(app()->version(), '5.3.0', '>=') ? $tags->pluck('id')->toArray() : $tags->lists('id')->toArray();
 		
 		// Detach checked tags to delete
 		$a_detach = $a_rename = [];
