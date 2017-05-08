@@ -17,7 +17,7 @@
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="admin-select2-tags">New tags</label>
 		<div class="col-sm-9">
-		<select id="admin-select2-tags" class="select2-multiple" name="new_tags[]" multiple="multiple" style="width: 100%"></select></div>
+		<select id="admin-select2-tags" class="select2-multiple" name="new_tags[]" multiple="multiple" style="display: none; width: 100%"></select></div>
 		
 	</div>
 	<h4>Tag list</h4>
