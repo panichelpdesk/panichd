@@ -22,11 +22,11 @@
 	</div>
 	<h4>Tag list</h4>
 	@if (isset($category) and $category->has('tags'))		
-		<div class="btn-group-panel">
+		<div id="tag-panel" class="btn-group-panel">
 			@foreach ($category->tags as $i=>$tag)		
 				<div class="btn-group jquery_tag_group_unchecked">				
 				<a href="#" role="button" id="jquery_tag_check_{{$i}}" class="btn btn-default jquery_tag_check" title="Eliminar etiqueta {{$tag->name}}" aria-label="Eliminar etiqueta {{$tag->name}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>								
-				<a href="#" role="button" id="tag_text_{{$i}}" class="btn btn-default jquery_tag_text" aria-label="Etiqueta {{$tag->name}}" title="Etiqueta '{{$tag->name}}' conté {{$tag->tickets_count}} tiquets relacionats" data-toggle="modal" data-target="#tag-edit-modal" data-tag_name="{{$tag->name}}" data-tag_i="{{$i}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
+				<a href="#" role="button" id="tag_text_{{$i}}" class="btn btn-default jquery_tag_text" aria-label="Etiqueta {{$tag->name}}" title="Etiqueta '{{$tag->name}}' conté {{$tag->tickets_count}} tiquets relacionats" data-toggle="modal" data-target="#tag-edit-modal" data-tag_name="{{$tag->name}}" data-tag_i="{{$i}}" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
 				
 				</div>
 				<input type="hidden" id="jquery_delete_tag_{{$i}}" name="jquery_delete_tag_{{$i}}" value="{{$tag->id}}" disabled="disabled">
