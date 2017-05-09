@@ -15,6 +15,11 @@
 <script type="text/javascript" src="{{asset('vendor/ticketit/js/i18n/'.App::getLocale().'.js')}}"></script>
 <link rel="StyleSheet" href="{{asset('vendor/ticketit/css/bootstrap-colorpicker.min.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/ticketit/css/bootstrap-colorpicker-plus.css')}}">
+<style type="text/css">
+.btn.btn-tag {
+	border: transparent;
+}
+</style>
 <script type="text/javascript" src="{{asset('vendor/ticketit/js/bootstrap-colorpicker.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/ticketit/js/bootstrap-colorpicker-plus.js')}}"></script>
 <script type="text/javascript">

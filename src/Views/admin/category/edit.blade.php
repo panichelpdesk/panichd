@@ -4,13 +4,9 @@
 @section('content')
     @include('ticketit::shared.header')
     <style type="text/css">
-	#tag-panel .btn {
-		border: transparent;
-	}
 	#tag-panel .glyphicon {
 		color: #777;
-	}
-	
+	}	
 	
 	.jquery_tag_group_unchecked .glyphicon-ok, .jquery_tag_group_checked .glyphicon-remove {
 		display: none;
@@ -27,6 +23,7 @@
 	
 	#jquery_popup_tag_input {
 		border: transparent;
+		box-shadow: none;
 	}
 	</style>
 	<div class="well bs-component">
