@@ -73,7 +73,7 @@
 								<p>
 								<strong>Tags</strong>{{ trans('ticketit::lang.colon') }}
 								@foreach ($ticket->tags as $i=>$tag)
-									<button class="btn btn-default btn-sm" style="pointer-events: none">{{$tag->name}}</button>
+									<button class="btn btn-default btn-tag btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
 								@endforeach
 								</p>
 							@endif

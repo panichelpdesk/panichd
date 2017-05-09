@@ -77,8 +77,10 @@ class TicketsController extends Controller
                 'users.name AS owner',
                 'ticketit.agent_id',
                 'ticketit_categories.name AS category',
+				\DB::raw("group_concat(ticketit_tags.id) AS tags_id"),
 				\DB::raw("group_concat(ticketit_tags.name) AS tags"),
-				\DB::raw("group_concat(ticketit_tags.id) AS tags_id")
+				\DB::raw("group_concat(ticketit_tags.bg_color) AS tags_bg_color"),
+				\DB::raw("group_concat(ticketit_tags.text_color) AS tags_text_color")
             ]);		
 
         $collection = $datatables->of($collection);
@@ -130,9 +132,12 @@ class TicketsController extends Controller
 		$collection->editColumn('tags', function ($ticket) {
             $text = "";
 			if ($ticket->tags!=""){
-				$a_tags=array_combine(explode(",",$ticket->tags_id),explode(",",$ticket->tags));
+				$a_ids=explode(",",$ticket->tags_id);
+				$a_tags=array_combine($a_ids,explode(",",$ticket->tags));
+				$a_bg_color=array_combine($a_ids,explode(",",$ticket->tags_bg_color));
+				$a_text_color=array_combine($a_ids,explode(",",$ticket->tags_text_color));
 				foreach ($a_tags as $id=>$tag){
-					$text.='<button class="btn btn-default btn-xs" style="pointer-events: none">'.$tag.'</button> ';
+					$text.='<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; background-color: '.$a_bg_color[$id].'; color: '.$a_text_color[$id].'">'.$tag.'</button> ';
 				}				
 			}		
 
