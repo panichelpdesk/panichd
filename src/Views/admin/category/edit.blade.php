@@ -42,7 +42,7 @@
                         {!! CollectiveForm::text('name', 'Tag name', ['id'=>'jquery_popup_tag_input', 'class' => 'form-control', 'required']) !!}
                     </div> 
 				</div>
-
+				
                 <div class="clearfix"></div>                    
 
 				<div class="modal-footer">					
@@ -55,25 +55,27 @@
 	@include('ticketit::admin.category.tags_script')
 	<script type="text/javascript">
 	var elem_i="";
-	$('#tag-edit-modal').on('show.bs.modal', function (e) {
-		var button=$(e.relatedTarget);
-		$(this).find('#jquery_popup_tag_title').text(button.data('tag_name'));
-		$(this).find('#jquery_popup_tag_input').val(button.data('tag_name'));
-		elem_i=button.data('tag_i');
-	});
-	$('#jquery_popup_tag_submit').click(function(e)
-	{
-		//alert($('#tag-edit-modal #jquery_popup_tag_input').val());
-		var disable=true;
-		var modaltext=$('#tag-edit-modal #jquery_popup_tag_input').val();
-		if ($('#tag_text_'+elem_i).data('tag_name') != modaltext){
-			disable=false;
-			$('#jquery_tag_name_'+elem_i).val(modaltext);
-			$('#tag_text_'+elem_i).find('.name').text(modaltext);
-		} 	
-		$('#jquery_tag_name_'+elem_i).prop('disabled', disable);
-		
-		$('#tag-edit-modal').modal('hide');
-	});
+	$(function(){
+		$('#tag-edit-modal').on('show.bs.modal', function (e) {
+			var button=$(e.relatedTarget);
+			$(this).find('#jquery_popup_tag_title').text(button.data('tag_name'));
+			$(this).find('#jquery_popup_tag_input').val(button.data('tag_name'));
+			elem_i=button.data('tag_i');
+		});
+		$('#jquery_popup_tag_submit').click(function(e)
+		{
+			//alert($('#tag-edit-modal #jquery_popup_tag_input').val());
+			var disable=true;
+			var modaltext=$('#tag-edit-modal #jquery_popup_tag_input').val();
+			if ($('#tag_text_'+elem_i).data('tag_name') != modaltext){
+				disable=false;
+				$('#jquery_tag_name_'+elem_i).val(modaltext);
+				$('#tag_text_'+elem_i).find('.name').text(modaltext);
+			} 	
+			$('#jquery_tag_name_'+elem_i).prop('disabled', disable);
+			
+			$('#tag-edit-modal').modal('hide');
+		});		
+	});	
 	</script>
 @stop

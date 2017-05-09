@@ -38,6 +38,27 @@
 	@endif
 	</div>
 </div>
+
+
+
+<div class="pull-center">
+	<button class="btn btn-default" value="#fff" id="demo3" style="border: transparent;">Demo</button>
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		<h4>Background</h4>
+		<div id="pick_bg" class="colorpickerplus-embed">
+		  <div class="colorpickerplus-container"> </div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<h4>Text</h4>
+		<div id="pick_text" class="colorpickerplus-embed">
+		  <div class="colorpickerplus-container"> </div>
+		</div>
+	</div>
+</div>
+
 <div class="row">	
 	<div class="col-lg-10 col-lg-offset-2">
 		{!! link_to_route($setting->grab('admin_route').'.category.index', trans('ticketit::admin.btn-back'), null, ['class' => 'btn btn-default']) !!}
@@ -48,3 +69,24 @@
 		@endif
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(function(){
+		var demo3 = $('.colorpickerplus-embed .colorpickerplus-container');
+		  demo3.colorpickerembed();
+		  demo3.on('changeColor', function(e, color){
+			var paintTarget = $(e.target).parent().prop('id') == "pick_bg" ? 'background-color' : 'color';
+			if(color==null)
+			  $('#demo3').css(paintTarget, '#fff');//tranparent
+			else
+			  $('#demo3').css(paintTarget, color);
+		  });
+		  
+		  $('#demo3').click(function(e){
+			 alert('background: '+$('#pick_bg .colorpicker-element').val()+' color: '+$('#pick_text .colorpicker-element').val());
+			 
+			 e.preventDefault(); 
+		  });
+		
+	});
+</script>
