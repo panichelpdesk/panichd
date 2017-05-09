@@ -9,7 +9,10 @@
 	<div class="form-group">
 		{!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
 		<div class="col-lg-10">
-			{!! CollectiveForm::custom('color', 'color', isset($category->color) ? $category->color : "#000000", ['class' => 'form-control']) !!}
+			<!---->
+			<button class="btn btn-default" id="category_color_picker" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: {{isset($category->color) ? $category->color : "#000000"}};"></span>&nbsp;<b class="caret"></b></button>
+			<input type="hidden" id="category_color" name="color" value="{{isset($category->color) ? $category->color : "#000000"}}">
+
 		</div>
 	</div>
 	</div>

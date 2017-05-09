@@ -4,6 +4,10 @@
 @section('content')
     @include('ticketit::shared.header')
     <style type="text/css">
+	#tag-panel .btn {
+		border: transparent;
+	}
+	
 	#tag-panel .glyphicon {
 		color: #777;
 	}	
@@ -78,6 +82,20 @@
 	<script type="text/javascript">
 	var elem_i="";
 	$(function(){
+		var catColorPicker = $('#category_color_picker');
+		catColorPicker.colorpickerplus();
+		catColorPicker.on('changeColor', function(e, color){
+			if(color==null) {
+				//when select transparent color
+				$('.color-fill-icon', $(this)).addClass('colorpicker-color');
+				$('#category_color').val('#000000');
+			} else {
+				$('.color-fill-icon', $(this)).removeClass('colorpicker-color');
+				$('.color-fill-icon', $(this)).css('background-color', color);
+				$('#category_color').val(color);
+			}
+		});		
+		
 		$('#tag-edit-modal').on('show.bs.modal', function (e)
 		{
 			var button=$(e.relatedTarget);
@@ -123,27 +141,15 @@
 			$('#tag-edit-modal').modal('hide');
 		});
 
-		var colorPicker = $('.colorpickerplus-embed .colorpickerplus-container');
-		  colorPicker.colorpickerembed();
-		  colorPicker.on('changeColor', function(e, color){
+		var tagColorPicker = $('#tag-edit-modal .colorpickerplus-embed .colorpickerplus-container');
+		  tagColorPicker.colorpickerembed();
+		  tagColorPicker.on('changeColor', function(e, color){
 			var paintTarget = $(e.target).parent().prop('id') == "pick_bg" ? 'background-color' : 'color';
 			if(color==null)
 			  $('#tag-edit-modal #jquery_popup_tag_input').css(paintTarget, '#fff');//tranparent
 			else
 			  $('#tag-edit-modal #jquery_popup_tag_input').css(paintTarget, color);
 		  });
-		  
-		  
-		  
-		  // ELIMINAR
-		  $('#tag-edit-modal #jquery_popup_tag_input').click(function(e){
-			 alert('background: '+$('#tag-edit-modal #pick_bg .colorpicker-element').val()+' color: '+$('#tag-edit-modal #pick_text .colorpicker-element').val());
-			 
-			 e.preventDefault(); 
-		  });
-		  
-		  
-		  
 	});	
 	</script>
 @stop
