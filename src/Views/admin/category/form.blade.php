@@ -32,30 +32,11 @@
 				<input type="hidden" id="jquery_delete_tag_{{$i}}" name="jquery_delete_tag_{{$i}}" value="{{$tag->id}}" disabled="disabled">
 				<input type="hidden" id="jquery_tag_id_{{$i}}" name="jquery_tag_id_{{$i}}" value="{{$tag->id}}">
 				<input type="hidden" id="jquery_tag_name_{{$i}}" name="jquery_tag_name_{{$i}}" value="{{$tag->name}}" disabled="disabled">
+				<input type="hidden" id="jquery_tag_color_{{$i}}" name="jquery_tag_color_{{$i}}" value="{{$tag->bg_color.'_'.$tag->text_color}}" disabled="disabled">
 			@endforeach
 		</div>
 		<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>}}">
 	@endif
-	</div>
-</div>
-
-
-
-<div class="pull-center">
-	<button class="btn btn-default" value="#fff" id="demo3" style="border: transparent;">Demo</button>
-</div>
-<div class="row">
-	<div class="col-sm-6">
-		<h4>Background</h4>
-		<div id="pick_bg" class="colorpickerplus-embed">
-		  <div class="colorpickerplus-container"> </div>
-		</div>
-	</div>
-	<div class="col-sm-6">
-		<h4>Text</h4>
-		<div id="pick_text" class="colorpickerplus-embed">
-		  <div class="colorpickerplus-container"> </div>
-		</div>
 	</div>
 </div>
 
@@ -69,24 +50,3 @@
 		@endif
 	</div>
 </div>
-
-<script type="text/javascript">
-	$(function(){
-		var demo3 = $('.colorpickerplus-embed .colorpickerplus-container');
-		  demo3.colorpickerembed();
-		  demo3.on('changeColor', function(e, color){
-			var paintTarget = $(e.target).parent().prop('id') == "pick_bg" ? 'background-color' : 'color';
-			if(color==null)
-			  $('#demo3').css(paintTarget, '#fff');//tranparent
-			else
-			  $('#demo3').css(paintTarget, color);
-		  });
-		  
-		  $('#demo3').click(function(e){
-			 alert('background: '+$('#pick_bg .colorpicker-element').val()+' color: '+$('#pick_text .colorpicker-element').val());
-			 
-			 e.preventDefault(); 
-		  });
-		
-	});
-</script>

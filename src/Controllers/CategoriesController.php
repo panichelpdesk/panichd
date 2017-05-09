@@ -41,12 +41,12 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        list($a_tags_new, $a_tags_renamed)=$this->validation_with_tags($request);
+        list($a_tags_new, $a_tags_update)=$this->validation_with_tags($request);
 
         $category = new Category();
         $category=$category->create(['name' => $request->name, 'color' => $request->color]);
 
-		$this->sync_category_tags($request, $a_tags_new, $a_tags_renamed, $category);
+		$this->sync_category_tags($request, $a_tags_new, $a_tags_update, $category);
 		
         Session::flash('status', trans('ticketit::lang.category-name-has-been-created', ['name' => $request->name]));
 
@@ -91,12 +91,12 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-		list($a_tags_new, $a_tags_renamed)=$this->validation_with_tags($request);
+		list($a_tags_new, $a_tags_update)=$this->validation_with_tags($request);
 		
         $category = Category::findOrFail($id);
         $category->update(['name' => $request->name, 'color' => $request->color]);
 		
-		$this->sync_category_tags($request, $a_tags_new, $a_tags_renamed, $category);
+		$this->sync_category_tags($request, $a_tags_new, $a_tags_update, $category);
 	
         Session::flash('status', trans('ticketit::lang.category-name-has-been-modified', ['name' => $request->name]));
 			
@@ -130,22 +130,29 @@ class CategoriesController extends Controller
 			}			
 		}
 		
-		// Add validation for renamed tags
-		$a_tags_renamed = [];
+		
+		$a_tags_update = [];
 		for ($i=0;$i<$request->input('tags_count');$i++){			
-			if ($request->exists('jquery_tag_name_'.$i) and $request->has('jquery_tag_id_'.$i) and !$request->has('jquery_delete_tag_'.$i)){
-				\Debugbar::info('tag '.$i.' name "'.$request->input('jquery_tag_name_'.$i).'" length: '.strlen($request->input('jquery_tag_name_'.$i)));
-				$tag = $request->input('jquery_tag_name_'.$i);
-				$request->merge(['jquery_tag_name_'.$i=>$tag]);
-				$a_tags_renamed[$request->input('jquery_tag_id_'.$i)]=$tag;
-				$request['tag_name_'.$i]=$tag;
-				$rules['jquery_tag_name_'.$i]=$tag_rule;			
-			} 
+			if (!$request->has('jquery_delete_tag_'.$i)){
+				// Add validation for renamed tags
+				if ($request->exists('jquery_tag_name_'.$i) and $request->has('jquery_tag_id_'.$i)){
+					$tag = $request->input('jquery_tag_name_'.$i);
+					$request->merge(['jquery_tag_name_'.$i=>$tag]);
+					$a_tags_update[$request->input('jquery_tag_id_'.$i)]['name']=$tag;
+					$request['tag_name_'.$i]=$tag;
+					$rules['jquery_tag_name_'.$i]=$tag_rule;			
+				}
+				
+				// Add colors for tag update
+				if ($request->has('jquery_tag_color_'.$i)){
+					$a_tags_update[$request->input('jquery_tag_id_'.$i)]['color']=$request->input('jquery_tag_color_'.$i);
+				}
+			}
 		}		
 		
         $this->validate($request, $rules);
 		
-		return [$a_tags_new, $a_tags_renamed];
+		return [$a_tags_new, $a_tags_update];
 	}
 	
 	/**
@@ -156,12 +163,17 @@ class CategoriesController extends Controller
      * @param $category instance of Kordy\Ticketit\Models\Category
 	 *
 	*/
-	protected function sync_category_tags($request,$a_tags_new, $a_tags_renamed, $category)
+	protected function sync_category_tags($request,$a_tags_new, $a_tags_update, $category)
 	{
 		// Update renamed tags
-		foreach ($a_tags_renamed as $id=>$name){
+		foreach ($a_tags_update as $id=>$fields){
 			$tag=Tag::where('id',$id)->first();
-			$tag->name=$name;
+			if (isset($fields['name'])) $tag->name=$name;			
+			if (isset($fields['color'])){
+				$a_colors=explode("_",$fields['color']);
+				$tag->bg_color=$a_colors[0];
+				$tag->text_color=$a_colors[1];
+			}
 			$tag->save();
 		}		
 		
