@@ -65,7 +65,7 @@
 						{ data: 'owner', name: 'users.name' },
 		            @endif
 					@if (session('ticketit_filter_category')=="")
-						{ data: 'category', name: 'ticketit_categories.name' }
+						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
 	            @endif
 				{ data: 'tags', name: 'ticketit_tags.name' }
