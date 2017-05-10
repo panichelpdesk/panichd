@@ -52,19 +52,19 @@ class TicketsController extends Controller
                 $collection = Ticket::userTickets($user->id)->active();
             }
         }
-		
+
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')
             ->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
             ->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
             ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')
-			->leftJoin('ticketit_taggables',function($join){
-				$join->on('ticketit.id','=','ticketit_taggables.taggable_id')
-					->where('ticketit_taggables.taggable_type','=','Kordy\\Ticketit\\Models\\Ticket');
-			})
-			->leftJoin('ticketit_tags','ticketit_taggables.tag_id','=','ticketit_tags.id')			
-			->groupBy('ticketit.id')
-			->select([
+            ->leftJoin('ticketit_taggables', function ($join) {
+                $join->on('ticketit.id', '=', 'ticketit_taggables.taggable_id')
+                    ->where('ticketit_taggables.taggable_type', '=', 'Kordy\\Ticketit\\Models\\Ticket');
+            })
+            ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id')
+            ->groupBy('ticketit.id')
+            ->select([
                 'ticketit.id',
                 'ticketit.subject AS subject',
                 'ticketit_statuses.name AS status',
@@ -77,11 +77,11 @@ class TicketsController extends Controller
                 'users.name AS owner',
                 'ticketit.agent_id',
                 'ticketit_categories.name AS category',
-				\DB::raw("group_concat(ticketit_tags.id) AS tags_id"),
-				\DB::raw("group_concat(ticketit_tags.name) AS tags"),
-				\DB::raw("group_concat(ticketit_tags.bg_color) AS tags_bg_color"),
-				\DB::raw("group_concat(ticketit_tags.text_color) AS tags_text_color")
-            ]);		
+                \DB::raw('group_concat(ticketit_tags.id) AS tags_id'),
+                \DB::raw('group_concat(ticketit_tags.name) AS tags'),
+                \DB::raw('group_concat(ticketit_tags.bg_color) AS tags_bg_color'),
+                \DB::raw('group_concat(ticketit_tags.text_color) AS tags_text_color'),
+            ]);
 
         $collection = $datatables->of($collection);
 
@@ -128,18 +128,18 @@ class TicketsController extends Controller
 
             return $ticket->agent->name;
         });
-		
-		$collection->editColumn('tags', function ($ticket) {
-            $text = "";
-			if ($ticket->tags!=""){
-				$a_ids=explode(",",$ticket->tags_id);
-				$a_tags=array_combine($a_ids,explode(",",$ticket->tags));
-				$a_bg_color=array_combine($a_ids,explode(",",$ticket->tags_bg_color));
-				$a_text_color=array_combine($a_ids,explode(",",$ticket->tags_text_color));
-				foreach ($a_tags as $id=>$tag){
-					$text.='<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; background-color: '.$a_bg_color[$id].'; color: '.$a_text_color[$id].'">'.$tag.'</button> ';
-				}				
-			}		
+
+        $collection->editColumn('tags', function ($ticket) {
+            $text = '';
+            if ($ticket->tags != '') {
+                $a_ids = explode(',', $ticket->tags_id);
+                $a_tags = array_combine($a_ids, explode(',', $ticket->tags));
+                $a_bg_color = array_combine($a_ids, explode(',', $ticket->tags_bg_color));
+                $a_text_color = array_combine($a_ids, explode(',', $ticket->tags_text_color));
+                foreach ($a_tags as $id=> $tag) {
+                    $text .= '<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; background-color: '.$a_bg_color[$id].'; color: '.$a_text_color[$id].'">'.$tag.'</button> ';
+                }
+            }
 
             return $text;
         });
@@ -185,18 +185,18 @@ class TicketsController extends Controller
             $priorities = Models\Priority::lists('name', 'id');
             $categories = Models\Category::lists('name', 'id');
         }
-		
-		$tag_lists=Category::whereHas('tags')
-		->with(array(
-			'tags'=>function($q1){
-				$q1->select('id','name');
-			},
-			'tags.tickets'=>function($q2){
-				$q2->where('id','0')->select('id');
-			}
-		))
-		->select('id','name')->get();
-			
+
+        $tag_lists = Category::whereHas('tags')
+        ->with([
+            'tags'=> function ($q1) {
+                $q1->select('id', 'name');
+            },
+            'tags.tickets'=> function ($q2) {
+                $q2->where('id', '0')->select('id');
+            },
+        ])
+        ->select('id', 'name')->get();
+
         return view('ticketit::tickets.create', compact('priorities', 'categories', 'tag_lists'));
     }
 
@@ -230,8 +230,8 @@ class TicketsController extends Controller
         $ticket->autoSelectAgent();
 
         $ticket->save();
-		
-		$this->sync_ticket_tags($request, $ticket);
+
+        $this->sync_ticket_tags($request, $ticket);
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created'));
 
@@ -252,24 +252,24 @@ class TicketsController extends Controller
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $status_lists = Models\Status::pluck('name', 'id');
             $priority_lists = Models\Priority::pluck('name', 'id');
-            $category_lists = $a_categories = Models\Category::pluck('name', 'id');	
-			$ticket_tags=$ticket->tags()->pluck('name', 'id')->toArray();
+            $category_lists = $a_categories = Models\Category::pluck('name', 'id');
+            $ticket_tags = $ticket->tags()->pluck('name', 'id')->toArray();
         } else { // if Laravel 5.1
             $status_lists = Models\Status::lists('name', 'id');
             $priority_lists = Models\Priority::lists('name', 'id');
             $category_lists = $a_categories = Models\Category::lists('name', 'id');
-			$ticket_tags=$ticket->tags()->lists('name', 'id')->toArray();
-        }		
-		
-		// Category tags
-		$tag_lists=Category::whereHas('tags')
-		->with(array(
-			'tags'=>function($q1)use($id){
-				$q1->select('id','name');
-			}			
-		))		
-		->select('id','name')->get();
-		
+            $ticket_tags = $ticket->tags()->lists('name', 'id')->toArray();
+        }
+
+        // Category tags
+        $tag_lists = Category::whereHas('tags')
+        ->with([
+            'tags'=> function ($q1) use ($id) {
+                $q1->select('id', 'name');
+            },
+        ])
+        ->select('id', 'name')->get();
+
         $close_perm = $this->permToClose($id);
         $reopen_perm = $this->permToReopen($id);
 
@@ -284,7 +284,7 @@ class TicketsController extends Controller
 
         return view('ticketit::tickets.show',
             compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
-				'comments', 'close_perm', 'reopen_perm'));
+                'comments', 'close_perm', 'reopen_perm'));
     }
 
     /**
@@ -323,43 +323,45 @@ class TicketsController extends Controller
         }
 
         $ticket->save();
-		
-		$this->sync_ticket_tags($request, $ticket);
+
+        $this->sync_ticket_tags($request, $ticket);
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified'));
 
         return redirect()->route(Setting::grab('main_route').'.show', $id);
     }
-	
-	/**
-     * Syncs tags for ticket instance
+
+    /**
+     * Syncs tags for ticket instance.
      *
      * @param $ticket instance of Kordy\Ticketit\Models\Ticket
-	 *
-	*/
-	protected function sync_ticket_tags($request, $ticket){
-		
-		// Get marked current tags		
-		$input_tags = $request->input('category_'.$request->input('category_id').'_tags');
-		if (!$input_tags) $input_tags = [];
-		
-		// Valid tags has all category tags
-		$category_tags=$ticket->category->tags()->get();		
-		$category_tags=(version_compare(app()->version(), '5.3.0', '>='))? $category_tags->pluck('id')->toArray() : $category_tags->lists('id')->toArray();				
-		// Valid tags has ticket tags that doesn't have category
-		$ticket_only_tags=Tag::doesntHave('categories')->whereHas('tickets',function($q2)use($ticket){
-			$q2->where('id',$ticket->id);
-		})->get();
-		$ticket_only_tags=(version_compare(app()->version(), '5.3.0', '>='))? $ticket_only_tags->pluck('id')->toArray() : $ticket_only_tags->lists('id')->toArray();
-				
-		$tags=array_intersect($input_tags,array_merge($category_tags,$ticket_only_tags));
-				
-		// Sync all ticket tags		
-		$ticket->tags()->sync($tags);
-		
-		// Delete orphan tags (Without any related categories or tickets)
-		Tag::doesntHave('categories')->doesntHave('tickets')->delete();		
-	}
+     */
+    protected function sync_ticket_tags($request, $ticket)
+    {
+
+        // Get marked current tags
+        $input_tags = $request->input('category_'.$request->input('category_id').'_tags');
+        if (!$input_tags) {
+            $input_tags = [];
+        }
+
+        // Valid tags has all category tags
+        $category_tags = $ticket->category->tags()->get();
+        $category_tags = (version_compare(app()->version(), '5.3.0', '>=')) ? $category_tags->pluck('id')->toArray() : $category_tags->lists('id')->toArray();
+        // Valid tags has ticket tags that doesn't have category
+        $ticket_only_tags = Tag::doesntHave('categories')->whereHas('tickets', function ($q2) use ($ticket) {
+            $q2->where('id', $ticket->id);
+        })->get();
+        $ticket_only_tags = (version_compare(app()->version(), '5.3.0', '>=')) ? $ticket_only_tags->pluck('id')->toArray() : $ticket_only_tags->lists('id')->toArray();
+
+        $tags = array_intersect($input_tags, array_merge($category_tags, $ticket_only_tags));
+
+        // Sync all ticket tags
+        $ticket->tags()->sync($tags);
+
+        // Delete orphan tags (Without any related categories or tickets)
+        Tag::doesntHave('categories')->doesntHave('tickets')->delete();
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -375,9 +377,9 @@ class TicketsController extends Controller
         $ticket->delete();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));
-		
-		// Delete orphan tags (Without any related categories or tickets)
-		Tag::doesntHave('categories')->doesntHave('tickets')->delete();	
+
+        // Delete orphan tags (Without any related categories or tickets)
+        Tag::doesntHave('categories')->doesntHave('tickets')->delete();
 
         return redirect()->route(Setting::grab('main_route').'.index');
     }
