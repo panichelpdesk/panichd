@@ -9,5 +9,6 @@
             @include('ticketit::admin.category.form')
         {!! CollectiveForm::close() !!}
     </div>
+	@include('ticketit::admin.category.color_script')
 	@include('ticketit::admin.category.tags_script')
 @stop
