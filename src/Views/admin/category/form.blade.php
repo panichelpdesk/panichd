@@ -18,14 +18,14 @@
 	</div>
 	<div class="col-sm-9">	
 	<div class="form-group">
-		<label class="control-label col-sm-2" for="admin-select2-tags">New tags:</label>
+		<label class="control-label col-sm-2" for="admin-select2-tags">Etiq. noves:</label>
 		<div class="col-sm-10">
 		<select id="admin-select2-tags" class="select2-multiple" name="new_tags[]" multiple="multiple" style="display: none; width: 100%"></select></div>
 		
 	</div>
 	@if (isset($category) and $category->has('tags'))
 	<div class="form-group">
-		<label class="control-label col-sm-2">Current tags:</label>
+		<label class="control-label col-sm-2">Etiq. actuals:</label>
 		<div class="col-sm-10">					
 			<div id="tag-panel" class="btn-group-panel pull-left">
 				@foreach ($category->tags as $i=>$tag)		
@@ -41,6 +41,7 @@
 				@endforeach
 			</div>
 			<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>}}">			
+
 		</div>
 	</div>
 	@endif

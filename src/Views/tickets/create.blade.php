@@ -40,7 +40,7 @@
                 {!! CollectiveForm::hidden('agent_id', 'auto') !!}
             </div>
 			<div class="form-group">
-				<label class="control-label col-lg-2">Category tags</label>
+				<label class="control-label col-lg-2">Etiquetes:</label>
 				<div id="jquery_select2_container" class="col-lg-10">
 				
 				<?php $ticket_tags = [];?>

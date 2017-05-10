@@ -67,7 +67,7 @@
 
 					
 					<div class="form-group col-lg-12">						
-						<label class="control-label col-lg-2">Tags</label>
+						<label class="control-label col-lg-2">Etiquetes</label>
 						<div id="jquery_select2_container" class="col-lg-10">
 						
 						<?php $categories = $category_lists; ?>

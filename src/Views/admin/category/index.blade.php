@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ trans('ticketit::admin.table-id') }}</td>
                         <td>{{ trans('ticketit::admin.table-name') }}</td>
-                        <td>Tags</td>
+                        <td>Etiquetes</td>
 						<td>{{ trans('ticketit::admin.table-action') }}</td>
                     </tr>
                 </thead>

@@ -17,7 +17,7 @@
 			@if (session('ticketit_filter_category')=="")
 				<td>{{ trans('ticketit::lang.table-category') }}</td>
 			@endif
-			<td>Tags</td>
+			<td>Etiquetes</td>
           @endif
         </tr>
     </thead>
