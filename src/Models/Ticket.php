@@ -134,6 +134,16 @@ class Ticket extends Model
     //
 
     /**
+     * Get related tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function tags()
+    {
+        return $this->morphToMany('Kordy\Ticketit\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
+    }
+
+    /**
      * @see Illuminate/Database/Eloquent/Model::asDateTime
      */
     public function freshTimestamp()

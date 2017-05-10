@@ -24,7 +24,7 @@
                     <span class="help-block">{!! trans('ticketit::lang.create-ticket-describe-issue') !!}</span>
                 </div>
             </div>
-            <div class="form-inline row">
+            <div class="form-group form-inline row">
                 <div class="form-group col-lg-4">
                     {!! CollectiveForm::label('priority', trans('ticketit::lang.priority') . trans('ticketit::lang.colon'), ['class' => 'col-lg-6 control-label']) !!}
                     <div class="col-lg-6">
@@ -34,12 +34,22 @@
                 <div class="form-group col-lg-4">
                     {!! CollectiveForm::label('category', trans('ticketit::lang.category') . trans('ticketit::lang.colon'), ['class' => 'col-lg-6 control-label']) !!}
                     <div class="col-lg-6">
-                        {!! CollectiveForm::select('category_id', $categories, null, ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! CollectiveForm::select('category_id', $categories, null, ['id'=>'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
                     </div>
                 </div>
                 {!! CollectiveForm::hidden('agent_id', 'auto') !!}
             </div>
-            <br>
+			<div class="form-group">
+				<label class="control-label col-lg-2">Category tags</label>
+				<div id="jquery_select2_container" class="col-lg-10">
+				
+				<?php $ticket_tags = [];?>
+				@include('ticketit::tickets.partials.tags_menu')
+				
+				</div>
+			</div>
+
+			<br>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     {!! link_to_route($setting->grab('main_route').'.index', trans('ticketit::lang.btn-back'), null, ['class' => 'btn btn-default']) !!}
@@ -51,5 +61,16 @@
 @endsection
 
 @section('footer')
-    @include('ticketit::tickets.partials.summernote')
+    <script type="text/javascript">
+	var category_id=<?=$categories->keys()->first();?>;
+	$(function(){
+		$('#category_id').change(function(){				
+			// Update tag list				
+			$('#jquery_select2_container .select2-container').hide();
+			$('#jquery_tag_category_'+$(this).val()).next().show();
+		});
+	});	
+	</script>	
+	@include('ticketit::tickets.partials.summernote')
+	@include('ticketit::tickets.partials.tags_footer_script')
 @append

@@ -1,7 +1,35 @@
 {{-- Load the css file to the header --}}
 <link rel="StyleSheet" href="{{asset('vendor/ticketit/css/select2.min.css')}}">
+
+<style type="text/css">
+.select2-selection__choice {
+	background-color: #cfe2f3 !important;
+	border-color: #6fa8dc !important;
+}
+
+.select2-selection__choice, .select2-selection__choice__remove {
+	color: #0b5394 !important;
+}
+
+</style>
 <script type="text/javascript" src="{{asset('vendor/ticketit/js/select2.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/ticketit/js/i18n/'.App::getLocale().'.js')}}"></script>
+<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/bootstrap-colorpicker.min.css')}}">
+<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/bootstrap-colorpicker-plus.css')}}">
+<style type="text/css">
+.btn.btn-tag {
+	border: transparent;
+}
+
+.color-fill-icon{
+	display:inline-block;width:16px;height:16px;border:1px solid #000;background-color:#fff;margin: 2px;
+}
+.dropdown-color-fill-icon{
+	position:relative;float:left;margin-left:0;margin-right: 0
+}
+</style>
+<script type="text/javascript" src="{{asset('vendor/ticketit/js/bootstrap-colorpicker.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/ticketit/js/bootstrap-colorpicker-plus.js')}}"></script>
 <script type="text/javascript">
     function loadCSS(filename) {
         var file = document.createElement("link");

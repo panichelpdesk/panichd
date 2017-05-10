@@ -68,6 +68,7 @@
 						{ data: 'category', name: 'ticketit_categories.name' }
 					@endif
 	            @endif
+				{ data: 'tags', name: 'ticketit_tags.name' }
 	        ]
 	    });
 	</script>

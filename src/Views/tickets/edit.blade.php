@@ -39,11 +39,11 @@
                                 $agent_lists,
                                 $ticket->agent_id,
                                 ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
-                    </div>
+						</div>
+					</div>
+				</div>
 
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
                     <div class="form-group col-lg-12">
                         {!! CollectiveForm::label('category_id',  trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
@@ -63,13 +63,26 @@
                         </div>
                     </div>
 
-                    <div class="clearfix"></div>
+                    <div class="clearfix"></div>		
+
+					
+					<div class="form-group col-lg-12">						
+						<label class="control-label col-lg-2">Tags</label>
+						<div id="jquery_select2_container" class="col-lg-10">
+						
+						<?php $categories = $category_lists; ?>
+						@include('ticketit::tickets.partials.tags_menu')
+						
+						</div>
+					</div>				
+					
+					<div class="clearfix"></div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('ticketit::lang.btn-close') }}</button>
                         {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
                     </div>
                     {!! CollectiveForm::close() !!}
-                </div>
-            </div>
         </div>
+    </div>
+</div>
