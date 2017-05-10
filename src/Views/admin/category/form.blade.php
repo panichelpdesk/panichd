@@ -44,15 +44,11 @@
 		</div>
 	</div>
 	@endif
-</div>
-
-<div class="row">	
-	<div class="col-lg-10 col-lg-offset-2">
-		{!! link_to_route($setting->grab('admin_route').'.category.index', trans('ticketit::admin.btn-back'), null, ['class' => 'btn btn-default']) !!}
-		@if(isset($category))
-			{!! CollectiveForm::submit(trans('ticketit::admin.btn-update'), ['class' => 'btn btn-primary']) !!}
-		@else
-			{!! CollectiveForm::submit(trans('ticketit::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
-		@endif
 	</div>
 </div>
+{!! link_to_route($setting->grab('admin_route').'.category.index', trans('ticketit::admin.btn-back'), null, ['class' => 'btn btn-default']) !!}
+@if(isset($category))
+	{!! CollectiveForm::submit(trans('ticketit::admin.btn-update'), ['class' => 'btn btn-primary']) !!}
+@else
+	{!! CollectiveForm::submit(trans('ticketit::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
+@endif
