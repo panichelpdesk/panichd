@@ -1,6 +1,5 @@
 {{-- Load the css file to the header --}}
 <link rel="StyleSheet" href="{{asset('vendor/ticketit/css/select2.min.css')}}">
-
 <style type="text/css">
 .select2-selection__choice {
 	background-color: #cfe2f3 !important;

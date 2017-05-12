@@ -10,7 +10,6 @@
 		  @endif			
           @if( $u->isAgent() || $u->isAdmin() )			
             <td>{{ trans('ticketit::lang.table-priority') }}</td>
-
             @if (session('ticketit_filter_owner')=="")
 				<td>{{ trans('ticketit::lang.table-owner') }}</td>
 			@endif
