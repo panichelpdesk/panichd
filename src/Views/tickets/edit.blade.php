@@ -17,10 +17,19 @@
                         {!! CollectiveForm::text('subject', $ticket->subject, ['class' => 'form-control', 'required']) !!}
                     </div>
                     <div class="form-group">
-                        {!! CollectiveForm::textarea('content', $ticket->html, [
-                            'class' => 'form-control summernote-editor', 'rows' => '5', 'required'
-                        ]) !!}
+                        {!! CollectiveForm::label('content', 'Content' . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+						<div class="col-lg-12">{!! CollectiveForm::textarea('content', $ticket->html, [
+                        	    'class' => 'form-control summernote-editor', 'rows' => '5', 'required'
+                        	]) !!}</div>
                     </div>
+					@if ($u->isAgent() or $u->isAdmin())
+						<div class="form-group">
+							{!! CollectiveForm::label('intervention', 'Intervention' . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+							<div class="col-lg-12">{!! CollectiveForm::textarea('intervention', $ticket->intervention_html, [
+									'class' => 'form-control summernote-editor', 'rows' => '5', 'required'
+								]) !!}</div>
+						</div>
+					@endif
                     {{--@endif--}}
 
                     <div class="form-group col-lg-6">

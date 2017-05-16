@@ -152,7 +152,9 @@ class TicketsController extends Controller
      */
     public function create()
     {
-        if (version_compare(app()->version(), '5.2.0', '>=')) {
+        $user = $this->agent->find(auth()->user()->id);
+		
+		if (version_compare(app()->version(), '5.2.0', '>=')) {
             $priorities = Models\Priority::pluck('name', 'id');
             $categories = Models\Category::pluck('name', 'id');
         } else { // if Laravel 5.1
@@ -160,7 +162,7 @@ class TicketsController extends Controller
             $categories = Models\Category::lists('name', 'id');
         }
 
-        return view('ticketit::tickets.create', compact('priorities', 'categories'));
+        return view('ticketit::tickets.create', compact('priorities', 'categories','user'));
     }
 
     /**
@@ -175,6 +177,7 @@ class TicketsController extends Controller
         $this->validate($request, [
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
+			'intervention'=> 'required|min:6',
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|exists:ticketit_categories,id',
         ]);
@@ -184,6 +187,8 @@ class TicketsController extends Controller
         $ticket->subject = $request->subject;
 
         $ticket->setPurifiedContent($request->get('content'));
+		
+		$ticket->setPurifiedIntervention($request->get('intervention'));
 
         $ticket->priority_id = $request->priority_id;
         $ticket->category_id = $request->category_id;
@@ -250,6 +255,7 @@ class TicketsController extends Controller
         $this->validate($request, [
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
+			'intervention'=> 'required|min:6',
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|exists:ticketit_categories,id',
             'status_id'   => 'required|exists:ticketit_statuses,id',
@@ -261,6 +267,8 @@ class TicketsController extends Controller
         $ticket->subject = $request->subject;
 
         $ticket->setPurifiedContent($request->get('content'));
+		
+		$ticket->setPurifiedIntervention($request->get('intervention'));
 
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;
