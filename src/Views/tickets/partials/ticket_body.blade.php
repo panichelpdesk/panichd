@@ -87,11 +87,15 @@
 
             <div class="row">
             	<div class="col-md-6">
-            		<h4>Description</h4>
+            		<div>
+            			<b>Description</b>
+            		</div>
             	    <p> {!! $ticket->html !!} </p>
             	</div>
             		<div class="col-md-6">
-            		<h4>Intervention</h4>
+            		<div>
+            			<b>Intervention</b>
+            		</div>
             	    <p> {!! $ticket->intervention_html !!} </p>
             	</div>
             </div>
