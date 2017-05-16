@@ -309,12 +309,10 @@ class TicketsController extends Controller
         ];
 		
 		$user = $this->agent->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
-            $fields['intervention'] = 'required|min:6';
-			
+        if ($user->isAgent() or $user->isAdmin()) {			
 			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
-				'intervention'=> $a_content['intervention']
+				'intervention'=> $a_intervention['intervention']
 			]);
         }
 
@@ -327,10 +325,11 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-        if (isset($fields['intervention'])) {
-            $ticket->intervention = $a_content['intervention'];
-			$ticket->intervention_html = $a_content['intervention_html'];
-        }
+		$user = $this->agent->find(auth()->user()->id);
+        if ($user->isAgent() or $user->isAdmin()) {
+            $ticket->intervention = $a_intervention['intervention'];
+			$ticket->intervention_html = $a_intervention['intervention_html'];
+		}
 
         $ticket->priority_id = $request->priority_id;
         $ticket->category_id = $request->category_id;
@@ -424,12 +423,10 @@ class TicketsController extends Controller
         ];
 
         $user = $this->agent->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
-            $fields['intervention'] = 'required|min:6';
-			
+        if ($user->isAgent() or $user->isAdmin()) {			
 			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
-				'intervention'=> $a_content['intervention']
+				'intervention'=> $a_intervention['intervention']
 			]);
         }
 
@@ -442,10 +439,11 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-        if (isset($fields['intervention'])) {
-            $ticket->intervention = $a_content['intervention'];
-			$ticket->intervention_html = $a_content['intervention_html'];
-        }
+		$user = $this->agent->find(auth()->user()->id);
+        if ($user->isAgent() or $user->isAdmin()) {
+            $ticket->intervention = $a_intervention['intervention'];
+			$ticket->intervention_html = $a_intervention['intervention_html'];
+		}
 
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;
