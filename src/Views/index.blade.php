@@ -54,6 +54,10 @@
 	        columns: [
 	            { data: 'id', name: 'ticketit.id' },
 	            { data: 'subject', name: 'subject' },
+				{ data: 'content', name: 'content' },
+				@if( $u->isAgent() || $u->isAdmin() )
+					{ data: 'intervention', name: 'intervention' },
+				@endif
 	            { data: 'status', name: 'ticketit_statuses.name' },
 	            { data: 'updated_at', name: 'ticketit.updated_at' },
             	@if (session('ticketit_filter_agent')=="" || (!$u->isAgent() && !$u->isAdmin()))

@@ -69,6 +69,8 @@ class TicketsController extends Controller
             ->select([
                 'ticketit.id',
                 'ticketit.subject AS subject',
+                'ticketit.content AS content',
+                'ticketit.intervention AS intervention',
                 'ticketit_statuses.name AS status',
                 'ticketit_statuses.color AS color_status',
                 'ticketit_priorities.color AS color_priority',
@@ -260,6 +262,8 @@ class TicketsController extends Controller
      */
     public function create()
     {
+        $user = $this->agent->find(auth()->user()->id);
+
         if (version_compare(app()->version(), '5.2.0', '>=')) {
             $priorities = Models\Priority::pluck('name', 'id');
             $categories = Models\Category::pluck('name', 'id');
@@ -290,19 +294,31 @@ class TicketsController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
-    {
-        $a_content = $this->purifyHtml($request->get('content'));
+    {	
+	    $a_content = $this->purifyHtml($request->get('content'));
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
         ]);
-
-        $this->validate($request, [
+		
+		$fields = [
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|exists:ticketit_categories,id',
-        ]);
+        ];
+		
+		$user = $this->agent->find(auth()->user()->id);
+        if ($user->isAgent() or $user->isAdmin()) {
+            $fields['intervention'] = 'required|min:6';
+			
+			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
+			$request->merge([
+				'intervention'=> $a_content['intervention']
+			]);
+        }
+
+        $this->validate($request, $fields);
 
         $ticket = new Ticket();
 
@@ -310,6 +326,11 @@ class TicketsController extends Controller
 
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
+
+        if (isset($fields['intervention'])) {
+            $ticket->intervention = $a_content['intervention'];
+			$ticket->intervention_html = $a_content['intervention_html'];
+        }
 
         $ticket->priority_id = $request->priority_id;
         $ticket->category_id = $request->category_id;
@@ -386,20 +407,33 @@ class TicketsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $a_content = $this->purifyHtml($request->get('content'));
+		$a_content = $this->purifyHtml($request->get('content'));
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
         ]);
-
-        $this->validate($request, [
+		
+		
+		$fields = [
             'subject'     => 'required|min:3',
             'content'     => 'required|min:6',
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|exists:ticketit_categories,id',
             'status_id'   => 'required|exists:ticketit_statuses,id',
             'agent_id'    => 'required',
-        ]);
+        ];
+
+        $user = $this->agent->find(auth()->user()->id);
+        if ($user->isAgent() or $user->isAdmin()) {
+            $fields['intervention'] = 'required|min:6';
+			
+			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
+			$request->merge([
+				'intervention'=> $a_content['intervention']
+			]);
+        }
+
+        $this->validate($request, $fields);
 
         $ticket = $this->tickets->findOrFail($id);
 
@@ -407,6 +441,11 @@ class TicketsController extends Controller
 
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
+
+        if (isset($fields['intervention'])) {
+            $ticket->intervention = $a_content['intervention'];
+			$ticket->intervention_html = $a_content['intervention_html'];
+        }
 
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;

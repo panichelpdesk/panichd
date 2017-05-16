@@ -93,8 +93,19 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <p> {!! $ticket->html !!} </p>
+            <div class="row">
+            	<div class="col-md-6">
+            		<div>
+            			<b>Description</b>
+            		</div>
+            	    <p> {!! $ticket->html !!} </p>
+            	</div>
+            		<div class="col-md-6">
+            		<div>
+            			<b>Intervention</b>
+            		</div>
+            	    <p> {!! $ticket->intervention_html !!} </p>
+            	</div>
             </div>
         </div>
         {!! CollectiveForm::open([

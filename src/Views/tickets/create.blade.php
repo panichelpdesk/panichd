@@ -24,7 +24,16 @@
                     <span class="help-block">{!! trans('ticketit::lang.create-ticket-describe-issue') !!}</span>
                 </div>
             </div>
-            <div class="form-group form-inline row">
+			@if ($u->isAgent() or $u->isAdmin())
+				<div class="form-group">
+					{!! CollectiveForm::label('intervention', 'Intervention' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+					<div class="col-lg-10">
+						{!! CollectiveForm::textarea('intervention', null, ['class' => 'form-control summernote-editor', 'rows' => '5', 'required' => 'required']) !!}
+						<span class="help-block">Taken actions in this ticket.</span>
+					</div>
+				</div>
+			@endif
+            <div class="form-inline row">
                 <div class="form-group col-lg-4">
                     {!! CollectiveForm::label('priority', trans('ticketit::lang.priority') . trans('ticketit::lang.colon'), ['class' => 'col-lg-6 control-label']) !!}
                     <div class="col-lg-6">

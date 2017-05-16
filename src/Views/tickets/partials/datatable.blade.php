@@ -1,9 +1,13 @@
-<table class="table table-condensed table-stripe ddt-responsive" class="ticketit-table">
+<table class="table table-condensed table-stripe ddt-responsive" class="ticketit-table" style="width: 100%">
     <thead>
         <tr>
             <td>{{ trans('ticketit::lang.table-id') }}</td>
             <td>{{ trans('ticketit::lang.table-subject') }}</td>
-            <td>{{ trans('ticketit::lang.table-status') }}</td>
+            <td>Description</td>
+			@if( $u->isAgent() || $u->isAdmin() )
+			<td>Intervention</td>
+			@endif
+			<td>{{ trans('ticketit::lang.table-status') }}</td>
             <td>{{ trans('ticketit::lang.table-last-updated') }}</td>
           @if (session('ticketit_filter_agent')=="" || (!$u->isAgent() && !$u->isAdmin()))
 			<td>{{ trans('ticketit::lang.table-agent') }}</td>	

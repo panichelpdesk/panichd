@@ -21,4 +21,19 @@ trait Purifiable
 
         return $a_html;
     }
+
+    /**
+     * Returns an array with both filtered and excluded html.
+     *
+     * @param string $rawHtml
+     *
+     * @return array
+     */
+    public function purifyInterventionHtml($rawHtml)
+    {
+        $a_html['intervention'] = trim(Purifier::clean($rawHtml, ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
+        $a_html['intervention_html'] = trim(Purifier::clean($rawHtml, Setting::grab('purifier_config')), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
+
+        return $a_html;
+    }
 }
