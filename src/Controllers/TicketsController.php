@@ -183,11 +183,6 @@ class TicketsController extends Controller
             'category_id' => 'required|exists:ticketit_categories,id',
         ];
 
-        $user = $this->agent->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
-            $fields['intervention'] = 'required|min:6';
-        }
-
         $this->validate($request, $fields);
 
         $ticket = new Ticket();
@@ -196,7 +191,8 @@ class TicketsController extends Controller
 
         $ticket->setPurifiedContent($request->get('content'));
 
-        if (isset($fields['intervention'])) {
+        $user = $this->agent->find(auth()->user()->id);
+        if ($user->isAgent() or $user->isAdmin()) {
             $ticket->setPurifiedIntervention($request->get('intervention'));
         }
 
@@ -271,11 +267,6 @@ class TicketsController extends Controller
             'agent_id'    => 'required',
         ];
 
-        $user = $this->agent->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
-            $fields['intervention'] = 'required|min:6';
-        }
-
         $this->validate($request, $fields);
 
         $ticket = $this->tickets->findOrFail($id);
@@ -284,7 +275,8 @@ class TicketsController extends Controller
 
         $ticket->setPurifiedContent($request->get('content'));
 
-        if (isset($fields['intervention'])) {
+        $user = $this->agent->find(auth()->user()->id);
+        if ($user->isAgent() or $user->isAdmin()) {
             $ticket->setPurifiedIntervention($request->get('intervention'));
         }
 
