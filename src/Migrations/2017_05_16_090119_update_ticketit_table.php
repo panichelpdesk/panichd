@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateTicketitTable extends Migration
 {
@@ -15,7 +15,7 @@ class UpdateTicketitTable extends Migration
     {
         Schema::table('ticketit', function (Blueprint $table) {
             $table->longText('intervention')->nullable()->after('html');
-			$table->longText('intervention_html')->nullable()->after('intervention');
+            $table->longText('intervention_html')->nullable()->after('intervention');
         });
     }
 
@@ -28,7 +28,7 @@ class UpdateTicketitTable extends Migration
     {
         Schema::table('ticketit', function (Blueprint $table) {
             $table->dropColumn('intervention');
-			$table->dropColumn('intervention_html');
+            $table->dropColumn('intervention_html');
         });
     }
 }
