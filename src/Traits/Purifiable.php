@@ -21,15 +21,15 @@ trait Purifiable
 
         return $this;
     }
-	
-	/**
+
+    /**
      * Updates the intervention and intervention_html attribute of the given model.
      *
      * @param string $rawHtml
      *
      * @return \Illuminate\Database\Eloquent\Model $this
      */
-	public function setPurifiedIntervention($rawHtml)
+    public function setPurifiedIntervention($rawHtml)
     {
         $this->intervention = Purifier::clean($rawHtml, ['HTML.Allowed' => '']);
         $this->intervention_html = Purifier::clean($rawHtml, Setting::grab('purifier_config'));
