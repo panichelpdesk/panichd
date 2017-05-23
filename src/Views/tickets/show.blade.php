@@ -3,8 +3,15 @@
 @section('content')
         @include('ticketit::shared.header')
         @include('ticketit::tickets.partials.ticket_body')
-        <br>
-        <h2>{{ trans('ticketit::lang.comments') }}</h2>
+		
+        <div class="row" style="margin-top: 2em;">
+        	<div class="col-xs-6">
+				<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}</h2>
+			</div>
+        	<div class="col-xs-6 text-right">
+        		<button type="button" class="btn btn-info">Afegir comentari</button>
+        	</div>
+        </div>
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
         @include('ticketit::tickets.partials.comment_form')

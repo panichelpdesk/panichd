@@ -389,7 +389,7 @@ class TicketsController extends Controller
             $agent_lists = ['auto' => 'Auto Select'];
         }
 
-        $comments = $ticket->comments()->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->orderBy('updated_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
             compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
