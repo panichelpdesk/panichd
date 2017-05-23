@@ -9,7 +9,7 @@
 				<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}</h2>
 			</div>
         	<div class="col-xs-6 text-right">
-        		<button type="button" class="btn btn-info">Afegir comentari</button>
+        		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ticket-comment-modal">Afegir comentari</button>
         	</div>
         </div>
         @include('ticketit::tickets.partials.comments')
