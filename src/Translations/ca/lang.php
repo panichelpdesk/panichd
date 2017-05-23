@@ -69,7 +69,7 @@ return [
   */
 
 // ____
-  'index-title'                      => 'Pàgina principal de Helpdesk',
+  'index-title'                      => 'Tiquets',
 
 // tickets/____
   'index-my-tickets'                 => 'Tiquets meus',
