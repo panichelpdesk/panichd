@@ -54,6 +54,16 @@
             $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
                 $(this).data('form').submit();
             });
+			
+			$('.response_type').click(function(){
+				var type = $(this).attr('data-type');				
+				$('#ticket-comment-modal #response_type').val(type);
+				$(this).addClass($(this).attr('data-active-class'));
+				
+				var alt = type == 'note' ? 'reply' : 'note';
+				$('#popup_comment_btn_'+alt).removeClass($('#popup_comment_btn_'+alt).attr('data-active-class'));
+				
+			});			
         });
     </script>
     @include('ticketit::tickets.partials.summernote')

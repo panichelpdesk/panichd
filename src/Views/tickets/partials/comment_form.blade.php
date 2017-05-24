@@ -5,10 +5,19 @@
 			{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
-                <h4 class="modal-title" id="ticket-comment-modal-Label">Nou comentari</h4>
+                <h4 class="modal-title" id="ticket-comment-modal-Label">Afegir comentari</h4>
             </div>
             <div class="modal-body">
+
 				<fieldset>
+					<div class="form-group">
+						{!! CollectiveForm::label('type', 'Tipus' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+						<div class="col-lg-10">
+							<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info">Nota interna</button>&nbsp;
+							<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning">Resposta a usuari</button>
+							{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
+						</div>
+					</div>
 					<div class="form-group">
 						<div class="col-lg-12">
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
