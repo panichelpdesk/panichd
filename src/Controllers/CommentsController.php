@@ -53,9 +53,12 @@ class CommentsController extends Controller
             'ticket_id'   => 'required|exists:ticketit,id',
             'content'     => 'required|min:6',
         ]);
-
+		
+		// Create comment
         $comment = new Models\Comment();
 
+		$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+		
         $comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 
@@ -63,9 +66,16 @@ class CommentsController extends Controller
         $comment->user_id = \Auth::user()->id;
         $comment->save();
 
+		// Update parent ticket
         $ticket = Models\Ticket::find($comment->ticket_id);
         $ticket->updated_at = $comment->created_at;
-        $ticket->save();
+        
+		if ($request->has('add_to_intervention')){
+			$ticket->intervention = $ticket->intervention.$a_content['content'];
+			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
+		}
+		
+		$ticket->save();
 
         return back()->with('status', trans('ticketit::lang.comment-has-been-added-ok'));
     }
