@@ -59,7 +59,7 @@ class CommentsController extends Controller
         $comment = new Models\Comment();
 		
 		$agent = Agent::find(\Auth::user()->id);
-		if ($agent and ($agent->isTicketManager($request->get('ticket_id')))){
+		if ($agent and ($agent->canManageTicket($request->get('ticket_id')))){
 			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 		}else{
 			$comment->type = 'reply';

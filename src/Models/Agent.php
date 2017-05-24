@@ -161,7 +161,7 @@ class Agent extends User
      *
      * @return bool
      */
-	public static function isTicketManager($id)
+	public static function canManageTicket($id)
 	{
 		if (!auth()->check()) return false;
 		$agent = Agent::find(auth()->user()->id);

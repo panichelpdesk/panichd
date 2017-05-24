@@ -10,7 +10,7 @@
             <div class="modal-body">
 
 				<fieldset>
-					@if ($u->isTicketManager($ticket->id))
+					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
 							{!! CollectiveForm::label('type', 'Tipus' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 							<div class="col-lg-10">
@@ -25,7 +25,7 @@
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>
-					@if ($u->isTicketManager($ticket->id))
+					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
 							<div class="col-lg-12">
 							<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> Afegir aquesta resposta al camp actuació</label>
