@@ -23,6 +23,15 @@
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>
+					<div class="form-group">
+						<div class="col-lg-12">
+						<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> Afegir aquesta resposta al camp actuació</label>
+						</div>
+						<div class="col-lg-12">
+						<label><input type="checkbox" name="complete_ticket" value="yes" checked="checked"> Resoldre el tiquet amb estat</label>
+						&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
+						</div>
+					</div>
 
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
