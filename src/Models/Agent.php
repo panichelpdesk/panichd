@@ -153,6 +153,31 @@ class Agent extends User
             }
         }
     }
+	
+	/**
+     * Check if user has manage permissions on a ticket.
+     *
+     * @param int $id ticket id
+     *
+     * @return bool
+     */
+	public static function isTicketManager($id)
+	{
+		if (!auth()->check()) return false;
+		$agent = Agent::find(auth()->user()->id);
+		
+		if ($agent->isAdmin()){
+			return true;
+		}elseif ($ticket = Ticket::find($id) ){
+			if (Setting::grab('agent_restrict') == 0) {
+				if ($agent->categories()->where('id',$ticket->category_id)->count() == 1) return true;
+			} else {
+				if ($agent->id == $ticket->agent_id) return true;
+			}
+		}
+		
+		return false;
+	}
 
     /**
      * Get related categories.
