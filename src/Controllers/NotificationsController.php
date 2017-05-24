@@ -19,7 +19,7 @@ class NotificationsController extends Controller
         $data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
 
         $this->sendNotification($template, $data, $ticket, $notification_owner,
-            trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment');
+            trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment_'.$comment->type);
     }
 
     public function ticketStatusUpdated(Ticket $ticket, Ticket $original_ticket)
@@ -82,17 +82,15 @@ class NotificationsController extends Controller
          * @var User
          */
         $a_to=[];
-
-		if ($type != 'agent') {
-            $a_to[] = $ticket->user;
-
-            if ($ticket->agent->email != $notification_owner->email) {
-                $a_to[] = $ticket->agent;
-            }
-        } else {
-            $a_to[] = $ticket->agent;
-        }
-
+		
+		if ($ticket->agent->email != $notification_owner->email){
+			$a_to[] = $ticket->agent;
+		}
+		
+		if (in_array($type,['comment_reply','status']) and $ticket->user->email != $notification_owner->email and $ticket->agent->email != $ticket->user->email){
+			$a_to[] = $ticket->user;
+		}
+		
         if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
 				$mail_callback = function ($m) use ($to, $notification_owner, $subject) {
