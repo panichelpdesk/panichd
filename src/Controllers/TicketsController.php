@@ -602,19 +602,9 @@ class TicketsController extends Controller
      */
     public function permToClose($id)
     {
-        $close_ticket_perm = Setting::grab('close_ticket_perm');
-
-        if ($this->agent->isAdmin() && $close_ticket_perm['admin'] == 'yes') {
-            return 'yes';
-        }
-        if ($this->agent->isAgent() && $close_ticket_perm['agent'] == 'yes') {
-            return 'yes';
-        }
-        if ($this->agent->isTicketOwner($id) && $close_ticket_perm['owner'] == 'yes') {
-            return 'yes';
-        }
-
-        return 'no';
+        $user = $this->agent->find(auth()->user()->id);
+		
+		return $user->canCloseTicket($id) ? "yes" : "no";
     }
 
     /**

@@ -169,12 +169,40 @@ class Agent extends User
 		if ($agent->isAdmin()){
 			return true;
 		}elseif ($ticket = Ticket::find($id) ){
-			if (Setting::grab('agent_restrict') == 0) {
-				if ($agent->categories()->where('id',$ticket->category_id)->count() == 1) return true;
-			} else {
-				if ($agent->id == $ticket->agent_id) return true;
+			if ($agent->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $agent->categories()->where('id',$ticket->category_id)->count() == 1)) {
+				return true;
 			}
 		}
+		
+		return false;
+	}
+	
+	/**
+     * Check if user has close permissions on a ticket.
+     *
+     * @param int $id ticket id
+     *
+     * @return bool
+     */
+	public static function canCloseTicket($id)
+	{
+		if (!auth()->check()) return false;
+		$agent = Agent::find(auth()->user()->id);
+		
+		$a_perm = Setting::grab('close_ticket_perm');
+
+        if ($agent->isAdmin() && $a_perm['admin'] == 'yes') {
+            return true;
+        }
+        if ($ticket = Ticket::find($id)){
+			if ($agent->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $agent->categories()->where('id',$ticket->category_id)->count() == 1)) {
+				return true;
+			}
+		}
+		
+        if ($agent->isTicketOwner($id) && $a_perm['owner'] == 'yes') {
+            return true;
+        }
 		
 		return false;
 	}
