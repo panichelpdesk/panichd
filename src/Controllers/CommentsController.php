@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Models;
+use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Traits\Purifiable;
 
 class CommentsController extends Controller
@@ -56,8 +57,13 @@ class CommentsController extends Controller
 		
 		// Create comment
         $comment = new Models\Comment();
-
-		$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+		
+		$agent = Agent::find(\Auth::user()->id);
+		if ($agent and ($agent->isTicketManager($request->get('ticket_id')))){
+			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+		}else{
+			$comment->type = 'reply';
+		}		
 		
         $comment->content = $a_content['content'];
         $comment->html = $a_content['html'];

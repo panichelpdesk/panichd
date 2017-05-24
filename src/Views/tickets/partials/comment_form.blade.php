@@ -10,28 +10,32 @@
             <div class="modal-body">
 
 				<fieldset>
-					<div class="form-group">
-						{!! CollectiveForm::label('type', 'Tipus' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
-						<div class="col-lg-10">
-							<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info">Nota interna</button>&nbsp;
-							<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning">Resposta a usuari</button>
-							{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
+					@if ($u->isTicketManager($ticket->id))
+						<div class="form-group">
+							{!! CollectiveForm::label('type', 'Tipus' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+							<div class="col-lg-10">
+								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info">Nota interna</button>&nbsp;
+								<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning">Resposta a usuari</button>
+								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
+							</div>
 						</div>
-					</div>
+					@endif					
 					<div class="form-group">
 						<div class="col-lg-12">
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-lg-12">
-						<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> Afegir aquesta resposta al camp actuació</label>
+					@if ($u->isTicketManager($ticket->id))
+						<div class="form-group">
+							<div class="col-lg-12">
+							<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> Afegir aquesta resposta al camp actuació</label>
+							</div>
+							<div class="col-lg-12">
+							<label><input type="checkbox" name="complete_ticket" value="yes" checked="checked"> Resoldre el tiquet amb estat</label>
+							&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
+							</div>
 						</div>
-						<div class="col-lg-12">
-						<label><input type="checkbox" name="complete_ticket" value="yes" checked="checked"> Resoldre el tiquet amb estat</label>
-						&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
-						</div>
-					</div>
+					@endif
 
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
