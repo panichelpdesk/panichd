@@ -132,7 +132,28 @@ class CommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $a_content = $this->purifyHtml($request->get('content'));
+        $request->merge(['content'=>$a_content['content']]);
+
+        $this->validate($request, [
+            'content'     => 'required|min:6',
+        ]);
+		
+		// Update comment
+		$comment=Models\Comment::findOrFail($id);
+		$comment->content = $a_content['content'];
+        $comment->html = $a_content['html'];
+		
+		$comment->save();
+						
+		if ($request->has('add_to_intervention')){
+			$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+			$ticket->intervention = $ticket->intervention.$a_content['content'];
+			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
+			$ticket->save();			
+		}		
+		
+		return back()->with('status', 'El comentari s\'ha actualitzat correctament');
     }
 
     /**

@@ -14,7 +14,7 @@
         </div>
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
-        @include('ticketit::tickets.partials.comment_form')
+        @include('ticketit::tickets.partials.comment_form')		
 @endsection
 
 @section('footer')
@@ -63,7 +63,13 @@
 				var alt = type == 'note' ? 'reply' : 'note';
 				$('#popup_comment_btn_'+alt).removeClass($('#popup_comment_btn_'+alt).attr('data-active-class'));
 				
-			});			
+			});
+
+			$('#ticket-edit-comment-modal').on('show.bs.modal', function (e) {
+				/*var elem = $(e.relatedTarget);
+				var htmlcode = $('#jquery_comment_edit_'+$(elem).attr('data-id')).clone();
+				alert($(elem.currentTarget).find('.note-editable :first').toString()) //.append(htmlcode);*/
+			});
         });
     </script>
     @include('ticketit::tickets.partials.summernote')
