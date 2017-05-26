@@ -14,8 +14,8 @@
 						<div class="form-group">
 							{!! CollectiveForm::label('type', 'Tipus' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 							<div class="col-lg-10">
-								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info">Nota interna</button>&nbsp;
-								<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning">Resposta a usuari</button>
+								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="glyphicons glyphicon glyphicon-pencil"></span> Nota interna</button>&nbsp;
+								<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="glyphicons glyphicon glyphicon-envelope"></span> Resposta a usuari</button>
 								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
 							</div>
 						</div>
