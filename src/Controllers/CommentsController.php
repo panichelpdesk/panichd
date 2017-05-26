@@ -3,9 +3,12 @@
 namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
+use Kordy\Ticketit\Models\Setting;
+use Kordy\Ticketit\Models\Status;
 use Kordy\Ticketit\Traits\Purifiable;
 
 class CommentsController extends Controller
@@ -57,13 +60,23 @@ class CommentsController extends Controller
 		
 		// Create comment
         $comment = new Models\Comment();
+		$comment->type = 'reply';
+		
+		$ticket = Models\Ticket::findOrFail($request->get('ticket_id'));
 		
 		$agent = Agent::find(\Auth::user()->id);
-		if ($agent and ($agent->canManageTicket($request->get('ticket_id')))){
-			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
-		}else{
-			$comment->type = 'reply';
-		}		
+		if ($agent){
+			// Response: reply or note
+			if ($agent->canManageTicket($request->get('ticket_id'))){
+				$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+			}
+			
+			// Close ticket + new status
+			if ($agent->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
+				$ticket->completed_at = Carbon::now();				
+				$ticket->status_id = Status::where('id',$request->get('status_id'))->count()==1 ? $request->get('status_id') : Setting::grab('default_close_status_id');				
+			}
+		}			
 		
         $comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
@@ -72,8 +85,7 @@ class CommentsController extends Controller
         $comment->user_id = \Auth::user()->id;
         $comment->save();
 
-		// Update parent ticket
-        $ticket = Models\Ticket::find($comment->ticket_id);
+		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
         
 		if ($request->has('add_to_intervention')){
