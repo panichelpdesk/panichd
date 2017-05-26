@@ -165,6 +165,9 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment=Models\Comment::findOrFail($id);        
+        $comment->delete();
+
+        return back()->with('status', 'El comentari s\'ha eliminat correctament');
     }
 }

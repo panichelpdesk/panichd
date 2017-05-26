@@ -9,6 +9,10 @@
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>
 					@endif
 					{!! $comment->updated_at->diffForHumans() !!} 
+					@if ($u->canManageTicket($ticket->id) and $comment->type=='note')
+						<button type="button" class="btn btn-default btn-sm comment_deleteit" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="Eliminar comentari">
+						<span class="glyphicon glyphicon-remove" aria-label="Eliminar" style="color: gray"></span></button>
+					@endif
 					</span>
                 </h3>
             </div>
@@ -20,9 +24,20 @@
 					@endif
                 </div>
 				@if ($u->canManageTicket($ticket->id) and $comment->type=='note')
-					<button type="button" class="btn btn-default btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">Editar</button>
+					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">Editar</button>
 				@endif
             </div>
         </div>
     @endforeach
+	
+	{!! CollectiveForm::open([
+		'method' => 'DELETE',
+		'route' => [
+					$setting->grab('main_route').'-comment.destroy',
+					'action_comment_id'
+					],
+		'id' => "delete-comment-form"
+		])
+	!!}
+	{!! CollectiveForm::close() !!}
 @endif

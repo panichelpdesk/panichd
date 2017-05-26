@@ -5,10 +5,10 @@
         @include('ticketit::tickets.partials.ticket_body')
 		
         <div class="row" style="margin-top: 2em;">
-        	<div class="col-xs-6">
+        	<div class="col-xs-4">
 				<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}</h2>
 			</div>
-        	<div class="col-xs-6 text-right">
+        	<div class="col-xs-4 text-center">
         		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ticket-comment-modal">Afegir comentari</button>
         	</div>
         </div>
@@ -65,11 +65,15 @@
 				
 			});
 
-			$('#ticket-edit-comment-modal').on('show.bs.modal', function (e) {
-				/*var elem = $(e.relatedTarget);
-				var htmlcode = $('#jquery_comment_edit_'+$(elem).attr('data-id')).clone();
-				alert($(elem.currentTarget).find('.note-editable :first').toString()) //.append(htmlcode);*/
-			});
+			$( ".comment_deleteit" ).click(function( event ) {
+                event.preventDefault();
+                if (confirm("Estàs segur que vols eliminar aquesta nota de " + $(this).attr("data-text") + " ?"))
+                {
+                    var action = $('#delete-comment-form').attr('action');
+					$('#delete-comment-form').attr('action',action.replace('action_comment_id',$(this).attr('data-id')));			
+                    $("#delete-comment-form").submit();
+                }
+            });
         });
     </script>
     @include('ticketit::tickets.partials.summernote')
