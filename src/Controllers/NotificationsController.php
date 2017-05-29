@@ -90,8 +90,22 @@ class NotificationsController extends Controller
 		if (in_array($type,['comment_reply','status']) and $ticket->user->email != $notification_owner->email and $ticket->agent->email != $ticket->user->email){
 			$a_to[] = $ticket->user;
 		}
-		
-        if (LaravelVersion::lt('5.4')) {
+
+		$this->sendNotification_exec($a_to, $template, $data, $notification_owner, $subject);
+        
+    }
+	
+	/**
+     * Send email notifications from the action owner to other involved users.
+     *
+     * @param string $template
+     * @param array  $data
+     * @param object $ticket
+     * @param object $notification_owner
+     */
+    public function sendNotification_exec($a_to, $template, $data, $notification_owner, $subject)
+    {
+		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
 				$mail_callback = function ($m) use ($to, $notification_owner, $subject) {
 					$m->to($to->email, $to->name);
@@ -121,5 +135,5 @@ class NotificationsController extends Controller
 			
 			
         }
-    }
+	}
 }
