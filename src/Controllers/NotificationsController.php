@@ -3,6 +3,7 @@
 namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Comment;
@@ -68,6 +69,32 @@ class NotificationsController extends Controller
             $notification_owner->name.trans('ticketit::lang.notify-created-ticket').$ticket->subject, 'agent');
     }
 
+	/**
+     * Send new email notification.
+     *
+	 */
+	public function notificationResend(Request $request)
+	{
+		$comment=Comment::findOrFail($request->input('comment_id'));
+		$ticket=$comment->ticket;
+		$notification_owner = $comment->user;
+		$data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
+		
+		$a_to = [];
+		
+		if ($request->has('to_agent')){
+			$a_to[] = $ticket->agent;
+		}
+		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->user->email!=$ticket->agent->email))){
+			$a_to[] = $ticket->user;
+		}
+		
+		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, $notification_owner, trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject);
+		
+		return back()->with('status','Notificacions reenviades correctament');
+	}
+	
+	
     /**
      * Send email notifications from the action owner to other involved users.
      *

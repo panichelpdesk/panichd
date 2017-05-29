@@ -4,7 +4,11 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <span class="glyphicons {{ $comment->type=='note' ? 'glyphicon glyphicon-pencil text-info' : 'glyphicon glyphicon-envelope text-warning'}}" aria-hidden="true"></span> {!! $comment->user->name !!}
-                    <span class="pull-right">
+                    @if ($u->canManageTicket($ticket->id) and $comment->type=='reply')
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}" style="color: #aaa">Reenviar correu</button>
+					@endif
+					
+					<span class="pull-right">
 					@if ($comment->created_at!=$comment->updated_at)
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>
 					@endif
@@ -40,4 +44,5 @@
 		])
 	!!}
 	{!! CollectiveForm::close() !!}
+	@include('ticketit::tickets.partials.email_resend')
 @endif

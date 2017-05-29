@@ -55,6 +55,7 @@
                 $(this).data('form').submit();
             });
 			
+			// Comment modal
 			$('.response_type').click(function(){
 				var type = $(this).attr('data-type');				
 				$('#ticket-comment-modal #response_type').val(type);
@@ -65,6 +66,7 @@
 				
 			});
 
+			// Comment (note) delete button
 			$( ".comment_deleteit" ).click(function( event ) {
                 event.preventDefault();
                 if (confirm("Estàs segur que vols eliminar aquesta nota de " + $(this).attr("data-text") + " ?"))
@@ -73,6 +75,13 @@
 					$('#delete-comment-form').attr('action',action.replace('action_comment_id',$(this).attr('data-id')));			
                     $("#delete-comment-form").submit();
                 }
+            });
+			
+			// Comment (reply) notifications resend modal
+			$( "#email-resend-modal" ).on('show.bs.modal', function (e) {
+				var button = $(e.relatedTarget);
+				$(this).find('#owner').text($(button).attr('data-owner'));
+				$(this).find('#comment_id').val($(button).attr('data-id'))
             });
         });
     </script>
