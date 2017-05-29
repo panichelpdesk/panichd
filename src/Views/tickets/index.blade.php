@@ -41,7 +41,7 @@
 		@foreach ($counts['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"
 			@if ($ag->id==session('ticketit_filter_agent'))
-				<?php $agent_name="<u>".$ag->name."</u>";?>
+				<?php $agent_name='<span class="text-info">'.$ag->name.'</span>';?>
 				selected="selected"
 			@endif
 			>{{$ag->name}} ({!!$ag->agent_total_tickets_count !!})</option>		
@@ -58,7 +58,7 @@
 		@foreach ($counts['agent'] as $ag)
 			@if ($ag->id==session('ticketit_filter_agent'))
 				<button class="btn btn-info btn-sm">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></button>
-				<?php $agent_name="<u>".$ag->name."</u>";?>
+				<?php $agent_name='<span class="text-info">'.$ag->name.'</span>';?>
 			@else
 				<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default btn-sm">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
 			@endif			
@@ -92,7 +92,7 @@
 		?>
 		
 		<div class="row">
-        	<div class="col-sm-2">
+        	<div class="col-lg-2 col-sm-3">
 			@if( isset($counts['owner']))
 				<div class="pull-left">Owner 
 				<a href="{{ session('ticketit_filter_owner')==''?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/remove' }}" class="btn {{ session('ticketit_filter_owner')==''?'btn-warning':'btn-default' }} btn-sm">All <span class="badge">{{ $counts['owner']['all'] }}</span></a>
@@ -100,10 +100,10 @@
 				</div>
 			@endif
 			</div>
-        	<div class="col-sm-8">
-				<h2 class="text-center" style="margin: 0em;">{{ trans($cons, $vars)}}</h2>
+        	<div class="col-lg-8 col-sm-6">
+				<h2 class="text-center" style="margin: 0em;">{!! trans($cons, $vars) !!}</h2>
 			</div>
-        	<div class="col-sm-2">
+        	<div class="col-lg-2 col-sm-3">
 				{!! link_to_route($setting->grab('main_route').'.create', trans('ticketit::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-primary pull-right']) !!}
 			</div>
         </div>
