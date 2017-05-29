@@ -73,7 +73,15 @@
 					@endif
 	            @endif
 				{ data: 'tags', name: 'ticketit_tags.name' }
-	        ]
+	        ],
+			order: [
+				@if( $u->isAgent() || $u->isAdmin() )
+					[5,'desc']
+				@else
+					[4,'desc']
+				@endif				
+			]
+			
 	    });
 	</script>
 @append
