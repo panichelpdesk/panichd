@@ -71,16 +71,8 @@
 
 <div class="panel panel-default">
 
-    <div class="panel-heading">
-        @if( isset($counts['owner']))
-			<div class="pull-left">Owner 
-			<a href="{{ session('ticketit_filter_owner')==''?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/remove' }}" class="btn {{ session('ticketit_filter_owner')==''?'btn-warning':'btn-default' }} btn-sm">All <span class="badge">{{ $counts['owner']['all'] }}</span></a>
-			 <a href="{{ session('ticketit_filter_owner')=='me'?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/me' }}" class="btn {{ session('ticketit_filter_owner')=='me'?'btn-warning':'btn-default' }} btn-sm">Me <span class="badge">{{ $counts['owner']['me'] }}</span></a>
-			</div>
-		@endif
-		<h2><?php
-		
-		
+    <div class="panel-heading">		
+		<?php		
 		$cons='ticketit::lang.index';
 		$vars=array();
 		
@@ -97,9 +89,24 @@
 			$cons.="-in";
 			$vars['category']=$category_name;
 		}
-		echo trans($cons,$vars);?>
-            {!! link_to_route($setting->grab('main_route').'.create', trans('ticketit::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-primary pull-right']) !!}
-        </h2>
+		?>
+		
+		<div class="row">
+        	<div class="col-sm-2">
+			@if( isset($counts['owner']))
+				<div class="pull-left">Owner 
+				<a href="{{ session('ticketit_filter_owner')==''?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/remove' }}" class="btn {{ session('ticketit_filter_owner')==''?'btn-warning':'btn-default' }} btn-sm">All <span class="badge">{{ $counts['owner']['all'] }}</span></a>
+				 <a href="{{ session('ticketit_filter_owner')=='me'?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/me' }}" class="btn {{ session('ticketit_filter_owner')=='me'?'btn-warning':'btn-default' }} btn-sm">Me <span class="badge">{{ $counts['owner']['me'] }}</span></a>
+				</div>
+			@endif
+			</div>
+        	<div class="col-sm-8">
+				<h2 class="text-center" style="margin: 0em;">{{ trans($cons, $vars)}}</h2>
+			</div>
+        	<div class="col-sm-2">
+				{!! link_to_route($setting->grab('main_route').'.create', trans('ticketit::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-primary pull-right']) !!}
+			</div>
+        </div>
     </div>
 
     <div class="panel-body">
