@@ -3,15 +3,46 @@
         <div class="panel {!! $comment->user->tickets_role ? "panel-info" : "panel-default" !!}">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    {!! $comment->user->name !!}
-                    <span class="pull-right"> {!! $comment->created_at->diffForHumans() !!} </span>
+                    <span class="glyphicons {{ $comment->type=='note' ? 'glyphicon glyphicon-pencil text-info' : 'glyphicon glyphicon-envelope text-warning'}}" aria-hidden="true"></span> {!! $comment->user->name !!}
+                    @if ($u->canManageTicket($ticket->id) and $comment->type=='reply')
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}" style="color: #aaa">Reenviar correu</button>
+					@endif
+					
+					<span class="pull-right">
+					@if ($comment->created_at!=$comment->updated_at)
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>
+					@endif
+					{!! $comment->updated_at->diffForHumans() !!} 
+					@if ($u->canManageTicket($ticket->id) and $comment->type=='note')
+						<button type="button" class="btn btn-default btn-sm comment_deleteit" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="Eliminar comentari">
+						<span class="glyphicon glyphicon-remove" aria-label="Eliminar" style="color: gray"></span></button>
+					@endif
+					</span>
                 </h3>
             </div>
             <div class="panel-body">
                 <div class="content">
-                    <p> {!! $comment->html !!} </p>
+                    <p id="jquery_comment_edit_{{$comment->id}}"> {!! $comment->html !!} </p>
+					@if ($u->canManageTicket($ticket->id))
+						@include('ticketit::tickets.partials.note_edit')
+					@endif
                 </div>
+				@if ($u->canManageTicket($ticket->id) and $comment->type=='note')
+					<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">Editar</button>
+				@endif
             </div>
         </div>
     @endforeach
+	
+	{!! CollectiveForm::open([
+		'method' => 'DELETE',
+		'route' => [
+					$setting->grab('main_route').'-comment.destroy',
+					'action_comment_id'
+					],
+		'id' => "delete-comment-form"
+		])
+	!!}
+	{!! CollectiveForm::close() !!}
+	@include('ticketit::tickets.partials.email_resend')
 @endif

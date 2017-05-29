@@ -3,6 +3,7 @@
 namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Comment;
@@ -19,7 +20,7 @@ class NotificationsController extends Controller
         $data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
 
         $this->sendNotification($template, $data, $ticket, $notification_owner,
-            trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment');
+            trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment_'.$comment->type);
     }
 
     public function ticketStatusUpdated(Ticket $ticket, Ticket $original_ticket)
@@ -68,6 +69,32 @@ class NotificationsController extends Controller
             $notification_owner->name.trans('ticketit::lang.notify-created-ticket').$ticket->subject, 'agent');
     }
 
+	/**
+     * Send new email notification.
+     *
+	 */
+	public function notificationResend(Request $request)
+	{
+		$comment=Comment::findOrFail($request->input('comment_id'));
+		$ticket=$comment->ticket;
+		$notification_owner = $comment->user;
+		$data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
+		
+		$a_to = [];
+		
+		if ($request->has('to_agent')){
+			$a_to[] = $ticket->agent;
+		}
+		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->user->email!=$ticket->agent->email))){
+			$a_to[] = $ticket->user;
+		}
+		
+		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, $notification_owner, trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject);
+		
+		return back()->with('status','Notificacions reenviades correctament');
+	}
+	
+	
     /**
      * Send email notifications from the action owner to other involved users.
      *
@@ -82,18 +109,30 @@ class NotificationsController extends Controller
          * @var User
          */
         $a_to=[];
+		
+		if ($ticket->agent->email != $notification_owner->email){
+			$a_to[] = $ticket->agent;
+		}
+		
+		if (in_array($type,['comment_reply','status']) and $ticket->user->email != $notification_owner->email and $ticket->agent->email != $ticket->user->email){
+			$a_to[] = $ticket->user;
+		}
 
-		if ($type != 'agent') {
-            $a_to[] = $ticket->user;
-
-            if ($ticket->agent->email != $notification_owner->email) {
-                $a_to[] = $ticket->agent;
-            }
-        } else {
-            $a_to[] = $ticket->agent;
-        }
-
-        if (LaravelVersion::lt('5.4')) {
+		$this->sendNotification_exec($a_to, $template, $data, $notification_owner, $subject);
+        
+    }
+	
+	/**
+     * Send email notifications from the action owner to other involved users.
+     *
+     * @param string $template
+     * @param array  $data
+     * @param object $ticket
+     * @param object $notification_owner
+     */
+    public function sendNotification_exec($a_to, $template, $data, $notification_owner, $subject)
+    {
+		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
 				$mail_callback = function ($m) use ($to, $notification_owner, $subject) {
 					$m->to($to->email, $to->name);
@@ -123,5 +162,5 @@ class NotificationsController extends Controller
 			
 			
         }
-    }
+	}
 }

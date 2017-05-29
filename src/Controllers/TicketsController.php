@@ -389,7 +389,7 @@ class TicketsController extends Controller
             $agent_lists = ['auto' => 'Auto Select'];
         }
 
-        $comments = $ticket->comments()->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
             compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
@@ -602,19 +602,9 @@ class TicketsController extends Controller
      */
     public function permToClose($id)
     {
-        $close_ticket_perm = Setting::grab('close_ticket_perm');
-
-        if ($this->agent->isAdmin() && $close_ticket_perm['admin'] == 'yes') {
-            return 'yes';
-        }
-        if ($this->agent->isAgent() && $close_ticket_perm['agent'] == 'yes') {
-            return 'yes';
-        }
-        if ($this->agent->isTicketOwner($id) && $close_ticket_perm['owner'] == 'yes') {
-            return 'yes';
-        }
-
-        return 'no';
+        $user = $this->agent->find(auth()->user()->id);
+		
+		return $user->canCloseTicket($id) ? "yes" : "no";
     }
 
     /**

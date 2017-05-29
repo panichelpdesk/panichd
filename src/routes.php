@@ -50,6 +50,9 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         Route::get("$main_route_path/{id}/reopen", 'Kordy\Ticketit\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
     //});
+	
+	Route::post("$main_route_path-notification.resend", 'Kordy\Ticketit\Controllers\NotificationsController@notificationResend')
+		->name("$main_route-notification.resend");
 
     Route::group(['middleware' => 'Kordy\Ticketit\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 
