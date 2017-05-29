@@ -15,7 +15,7 @@
 					</div>					
 					<div class="form-group">
 						<div class="col-lg-12">
-						<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> Afegir el text al camp actuació</label>
+						<label><input type="checkbox" name="add_to_intervention" value="yes"> Afegir el text al camp actuació</label>
 						</div>
 					</div>
 					<div class="text-right col-md-12">
