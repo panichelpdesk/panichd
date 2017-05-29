@@ -85,7 +85,8 @@ class TicketsController extends Controller
                 \DB::raw('group_concat(ticketit_tags.name) AS tags'),
                 \DB::raw('group_concat(ticketit_tags.bg_color) AS tags_bg_color'),
                 \DB::raw('group_concat(ticketit_tags.text_color) AS tags_text_color'),
-            ]);
+            ])
+			->withCount('comments');
 
         $collection = $datatables->of($collection);
 
@@ -105,6 +106,16 @@ class TicketsController extends Controller
                 $ticket->id
             );
         });
+		
+		$collection->editColumn('intervention', function ($ticket) {
+			$field=$ticket->intervention;
+			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
+			if ($ticket->comments_count>0){
+				$field.=$ticket->comments_count.' <span class="glyphicons glyphicon glyphicon-transfer" title="Comentaris"></span>';
+			}
+			
+			return $field;
+		});
 
         $collection->editColumn('status', function ($ticket) {
             $color = $ticket->color_status;
