@@ -11,10 +11,18 @@ class FiltersController extends Controller
 {
     public function manage(Request $request, $filter, $value)
     {
-
+		$a_filters = ['agent', 'category', 'owner'];
         //### PENDING: User permissions check or redirect back
 
-        if (in_array($filter, ['agent', 'category', 'owner']) == true) {
+        if ($filter=="all" and $value=="remove"){
+			// Delete each filter from session
+			foreach ($a_filters as $single){
+				$request->session()->forget('ticketit_filter_'.$single);
+			}
+			
+			// General filter uncheck
+			$request->session()->forget('ticketit_filters');
+		}elseif (in_array($filter, $a_filters) == true) {
             if ($value == 'remove') {
                 // Delete filter
                 $request->session()->forget('ticketit_filter_'.$filter);
@@ -43,6 +51,9 @@ class FiltersController extends Controller
                 // Add filter
                 if ($add) {
                     $request->session()->put('ticketit_filter_'.$filter, $value);
+					
+					// General filter check
+					$request->session()->put('ticketit_filters','yes');
                 }
             }
         }
