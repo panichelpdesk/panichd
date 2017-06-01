@@ -35,16 +35,19 @@
 	
 	<div class="title agent">Agent</div> 
 	@if (count($counts['agent'])>3)
-		<select class="nav_filter_select" style="width: 200px">
-		<option value="/filter/agent/remove">Tots ({{$counts['total_agent']}})</option>
-		@foreach ($counts['agent'] as $ag)			
-			<option value="/filter/agent/{{$ag->id}}"
-			@if ($ag->id==session('ticketit_filter_agent'))
-				selected="selected"
-			@endif
-			>{{$ag->name}} ({!!$ag->agent_total_tickets_count !!})</option>		
-		@endforeach
-		</select>
+		
+		<div id="select_agent_container" class="{{ session('ticketit_filter_agent')=="" ? 'all' : 'single'}}">
+			<select id="select_agent" style="width: 200px">
+			<option value="/filter/agent/remove">Tots ({{$counts['total_agent']}})</option>
+			@foreach ($counts['agent'] as $ag)			
+				<option value="/filter/agent/{{$ag->id}}"
+				@if ($ag->id==session('ticketit_filter_agent'))
+					selected="selected"
+				@endif
+				>{{$ag->name}} ({!!$ag->agent_total_tickets_count !!})</option>		
+			@endforeach
+			</select>
+		</div>
 	@else
 		@if (session('ticketit_filter_agent')!="")
 			<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">Tots <span class="badge">{{$counts['total_agent']}}</span></a>

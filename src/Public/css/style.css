@@ -56,6 +56,31 @@ body {
 	background: white;
 }
 
+#select_agent_container {
+	display: inline-block;
+}
+
+
+#select_agent_container .select2-selection__rendered {
+	color: white;
+	font-weight: bold;
+	background-color: #84bef5;
+}
+
+#select_agent_container.all .select2-selection__rendered {
+	background-color: #b1d5fc;
+}
+
+#select_agent_container .select2-selection--single {
+	border-color: transparent;
+}
+
+#select_agent_container #select2-select_agent-container {
+	border-radius: 4px;
+}
+
+
+
 .btn-default .badge {
 	background-color: #bbb ;
 }
