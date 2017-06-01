@@ -53,3 +53,4 @@
         @endif
     @endif
 </script>
+<link href="{{ asset('/vendor/ticketit/css/style.css') }}" rel="stylesheet">

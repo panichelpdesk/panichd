@@ -236,7 +236,7 @@ class TicketsController extends Controller
 
         // Forget agent if it doesn't exist in current category
         $agent = session('ticketit_filter_agent');
-        if ($counts['agent']->filter(function ($q) use ($agent) {
+        if (isset($counts['agent']) and $counts['agent']->filter(function ($q) use ($agent) {
             return $q->id == $agent;
         })->count() == 0) {
             $request->session()->forget('ticketit_filter_agent');
