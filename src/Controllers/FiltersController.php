@@ -22,10 +22,23 @@ class FiltersController extends Controller
 			
 			// General filter uncheck
 			$request->session()->forget('ticketit_filters');
+			
 		}elseif (in_array($filter, $a_filters) == true) {
             if ($value == 'remove') {
                 // Delete filter
                 $request->session()->forget('ticketit_filter_'.$filter);
+				
+				// General filter uncheck if none
+				$current = false;
+				foreach ($a_filters as $single){
+					if ($request->session()->exists('ticketit_filter_'.$single)){
+						$current = true;
+						break;
+					}
+				}
+				if (!$current){
+					$request->session()->forget('ticketit_filters');
+				}
             } else {
                 $add = false;
 
