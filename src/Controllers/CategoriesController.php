@@ -138,7 +138,7 @@ class CategoriesController extends Controller
                     $tag = $request->input('jquery_tag_name_'.$i);
                     $request->merge(['jquery_tag_name_'.$i=>$tag]);
                     $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $tag;
-                    $request['tag_name_'.$i] = $tag;
+                    $request['jquery_tag_name_'.$i] = $tag;
                     $rules['jquery_tag_name_'.$i] = $tag_rule;
                 }
 
@@ -167,7 +167,7 @@ class CategoriesController extends Controller
         foreach ($a_tags_update as $id=>$fields) {
             $tag = Tag::where('id', $id)->first();
             if (isset($fields['name'])) {
-                $tag->name = $name;
+                $tag->name = $fields['name'];
             }
             if (isset($fields['color'])) {
                 $a_colors = explode('_', $fields['color']);
