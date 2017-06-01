@@ -71,8 +71,8 @@
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
-	            @endif
-				{ data: 'tags', name: 'ticketit_tags.name' }
+					{ data: 'tags', name: 'ticketit_tags.name' }
+	            @endif				
 	        ],
 			order: [
 				@if( $u->isAgent() || $u->isAdmin() )
