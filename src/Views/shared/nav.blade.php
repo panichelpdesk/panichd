@@ -1,12 +1,43 @@
 <ul class="nav nav-pills">
-	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}">
-		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}">{{ trans('ticketit::lang.nav-active-tickets') }}
-			<span class="badge">{{ Kordy\Ticketit\Models\Ticket::active()->Visible()->count() }}</span>
+	<?php $title="";
+	if (session()->has('ticketit_filters')){
+		$title = isset($ticket) ? 'Compte segons filtre':'Compte total';
+	}?>
+	
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}" title="{{ $title }}">
+		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}" >{{ trans('ticketit::lang.nav-active-tickets') }}		
+			<span class="badge">
+			@if (session()->has('ticketit_filters') and isset($ticket))
+				<span class="glyphicon glyphicon-filter"></span>
+			@endif
+			@if (isset($ticket))
+				{{ Kordy\Ticketit\Models\Ticket::active()->visible()->filtered()->count() }}
+			@else
+				{{ Kordy\Ticketit\Models\Ticket::active()->visible()->count() }}
+			@endif
+			
+			</span>
+			@if (session()->has('ticketit_filters') and !isset($ticket))
+				<span class="glyphicon glyphicon-filter"></span>
+			@endif
 		</a>
 	</li>
-	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}">
-		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete') }}">{{ trans('ticketit::lang.nav-completed-tickets') }}
-			<span class="badge">{{ Kordy\Ticketit\Models\Ticket::complete()->Visible()->count() }}</span>
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}" title="{{ $title }}">
+		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete') }}">{{ trans('ticketit::lang.nav-completed-tickets') }}			
+			<span class="badge">
+			@if (session()->has('ticketit_filters') and isset($ticket))
+				<span class="glyphicon glyphicon-filter"></span>
+			@endif
+			@if (isset($ticket))
+				{{ Kordy\Ticketit\Models\Ticket::complete()->visible()->filtered()->count() }}
+			@else
+				{{ Kordy\Ticketit\Models\Ticket::complete()->visible()->count() }}
+			@endif
+			
+			</span>
+			@if (session()->has('ticketit_filters') and !isset($ticket))
+				<span class="glyphicon glyphicon-filter"></span>
+			@endif
 		</a>
 	</li>
 

@@ -406,7 +406,7 @@ class TicketsController extends Controller
             compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
-
+	
     /**
      * Update the specified resource in storage.
      *

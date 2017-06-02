@@ -252,6 +252,42 @@ class Ticket extends Model
             return $query->AgentTickets($id);
         }
     }
+	
+	/**
+     * Get tickets that pass all list filters.
+     *
+     * @param $query
+     * @param $id
+     *
+     * @return mixed
+     */
+	public function scopeFiltered($query)
+	{
+		if (session()->has('ticketit_filters')){
+			// Category filter
+			if (session()->has('ticketit_filter_category')){
+				$category = session('ticketit_filter_category');
+				$query = $query->whereHas('category', function ($q1) use ($category) {
+						$q1->where('id', $category);
+					});
+			}
+			
+			// Agent filter
+			if (session()->has('ticketit_filter_agent')){
+				$agent = session('ticketit_filter_agent');
+				$query = $query->whereHas('agent', function ($q2) use ($agent) {
+						$q2->where('id', $agent);
+					});
+			}
+
+			// Owner filter
+			if (session()->has('ticketit_filter_owner') and session('ticketit_filter_owner')=="me"){
+				$query = $query->where('user_id',auth()->user()->id);
+			}			
+		}
+		
+		return $query;		
+	}
 
     /**
      * Get all tickets in specified category.

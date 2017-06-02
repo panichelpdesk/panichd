@@ -1,11 +1,7 @@
 <div id="ticketit_filter_panel" class="panel panel-default">	
 	@if (isset($counts['agent']))
 	<div class="panel-body text-left">
-    @if( isset($counts['owner']))
-		<div class="title owner">Propietari</div>
-		<a href="{{ session('ticketit_filter_owner')==''?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/remove' }}" class="btn btn-default {{ session('ticketit_filter_owner')==''?'owner-current':'owner-link' }} btn-sm">Tots <span class="badge">{{ $counts['owner']['all'] }}</span></a>
-		 <a href="{{ session('ticketit_filter_owner')=='me'?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/me' }}" class="btn btn-default {{ session('ticketit_filter_owner')=='me'?'owner-current':'owner-link' }} btn-sm">Jo <span class="badge">{{ $counts['owner']['me'] }}</span></a>		
-	@endif
+    
 
 	<div class="title category">Categoria</div> 
 	@if (count($counts['category'])==1)
@@ -62,6 +58,12 @@
 				<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link btn-sm">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
 			@endif			
 		@endforeach
+	@endif
+	
+	@if( isset($counts['owner']))
+		<div class="title owner">Propietari</div>
+		<a href="{{ session('ticketit_filter_owner')==''?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/remove' }}" class="btn btn-default {{ session('ticketit_filter_owner')==''?'owner-current':'owner-link' }} btn-sm">Tots <span class="badge">{{ $counts['owner']['all'] }}</span></a>
+		 <a href="{{ session('ticketit_filter_owner')=='me'?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/me' }}" class="btn btn-default {{ session('ticketit_filter_owner')=='me'?'owner-current':'owner-link' }} btn-sm">Jo <span class="badge">{{ $counts['owner']['me'] }}</span></a>		
 	@endif
 	
 	{!! link_to_route($setting->grab('main_route').'.create', trans('ticketit::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-primary pull-right']) !!}
