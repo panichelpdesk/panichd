@@ -4,6 +4,27 @@
 		$title = isset($ticket) ? 'Compte segons filtre':'Compte total';
 	}?>
 	
+	@if($u->canViewNewTickets())
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest')) ? "active" : "" !!}" title="{{ $title }}">
+		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest') }}" >Nous		
+			<span class="badge">
+			@if (session()->has('ticketit_filters') and isset($ticket))
+				<span class="glyphicon glyphicon-filter"></span>
+			@endif
+			@if (isset($ticket))
+				{{ Kordy\Ticketit\Models\Ticket::newest()->visible()->filtered()->count() }}
+			@else
+				{{ Kordy\Ticketit\Models\Ticket::newest()->visible()->count() }}
+			@endif
+			
+			</span>
+			@if (session()->has('ticketit_filters') and !isset($ticket))
+				<span class="glyphicon glyphicon-filter"></span>
+			@endif
+		</a>
+	</li>	
+	@endif
+	
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}" title="{{ $title }}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}" >{{ trans('ticketit::lang.nav-active-tickets') }}		
 			<span class="badge">

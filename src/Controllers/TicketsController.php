@@ -32,11 +32,12 @@ class TicketsController extends Controller
         $this->agent = $agent;
     }
 
-    public function data(Datatables $datatables, $complete = false)
+	// This is loaded via AJAX at file Views\index.blade.php
+    public function data(Datatables $datatables, $ticketList = 'active')
     {
         $user = $this->agent->find(auth()->user()->id);
 
-        $collection = Ticket::listComplete($complete);
+        $collection = Ticket::inList($ticketList);
 
         // Category filter
         if (session('ticketit_filter_category') != '') {
@@ -169,9 +170,17 @@ class TicketsController extends Controller
      */
     public function index(Request $request)
     {
-        $complete = false;
-
-        return view('ticketit::index', ['complete'=>$complete, 'counts'=>$this->ticketCounts($request, $complete)]);
+        return view('ticketit::index', ['ticketList'=>'active', 'counts'=>$this->ticketCounts($request, 'active')]);
+    }
+	
+	/**
+     * Display a listing of active tickets related to user.
+     *
+     * @return Response
+     */
+    public function indexNewest(Request $request)
+    {
+		return view('ticketit::index', ['ticketList'=>'newest', 'counts'=>$this->ticketCounts($request, 'newest')]);
     }
 
     /**
@@ -181,9 +190,7 @@ class TicketsController extends Controller
      */
     public function indexComplete(Request $request)
     {
-        $complete = true;
-
-        return view('ticketit::index', ['complete'=>$complete, 'counts'=>$this->ticketCounts($request, $complete)]);
+        return view('ticketit::index', ['ticketList'=>'complete', 'counts'=>$this->ticketCounts($request, 'complete')]);
     }
 
     /**
@@ -191,23 +198,23 @@ class TicketsController extends Controller
      *
      * @return
      */
-    public function ticketCounts($request, $complete)
+    public function ticketCounts($request, $ticketList)
     {
         $counts = [];
         $category = session('ticketit_filter_category') == '' ? null : session('ticketit_filter_category');
 
         if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
             // Ticket count for all categories
-            $counts['total_category'] = Ticket::ListComplete($complete)->Visible()->count();
+            $counts['total_category'] = Ticket::inList($ticketList)->visible()->count();
 
             // Ticket count for each Category
             if ($this->agent->isAdmin()) {
-                $counts['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($complete) {
-                    $q->ListComplete($complete);
+                $counts['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
+                    $q->inList($ticketList);
                 }])->get();
             } else {
-                $counts['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($complete) {
-                    $q->ListComplete($complete);
+                $counts['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
+                    $q->inList($ticketList);
                 }])->get();
             }
 
@@ -229,8 +236,8 @@ class TicketsController extends Controller
                 $counts['agent'] = Agent::visible();
             }
 
-            $counts['agent'] = $counts['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($complete, $category) {
-                $q2->listComplete($complete)->visible()->inCategory($category);
+            $counts['agent'] = $counts['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($ticketList, $category) {
+                $q2->inList($ticketList)->visible()->inCategory($category);
             }])->get();
         }
 
@@ -249,14 +256,14 @@ class TicketsController extends Controller
                     $counts['owner']['all'] = $counts['total_agent'];
                 } else {
                     // Case of agent with agent_restrict == 1
-                    $counts['owner']['all'] = Ticket::listComplete($complete)->inCategory($category)->agentTickets(auth()->user()->id)->count();
+                    $counts['owner']['all'] = Ticket::inList($ticketList)->inCategory($category)->agentTickets(auth()->user()->id)->count();
                 }
             } else {
-                $counts['owner']['all'] = Ticket::listComplete($complete)->inCategory($category)->agentTickets(session('ticketit_filter_agent'))->visible()->count();
+                $counts['owner']['all'] = Ticket::inList($ticketList)->inCategory($category)->agentTickets(session('ticketit_filter_agent'))->visible()->count();
             }
 
             // Current user Tickets
-            $me = Ticket::listComplete($complete)->userTickets(auth()->user()->id);
+            $me = Ticket::inList($ticketList)->userTickets(auth()->user()->id);
             if (session('ticketit_filter_agent') != '') {
                 $me = $me->agentTickets(session('ticketit_filter_agent'));
             }
