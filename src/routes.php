@@ -58,11 +58,14 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
 		Route::get("$main_route_path/newest", 'Kordy\Ticketit\Controllers\TicketsController@indexNewest')
             ->name("$main_route-newest");
 		
+		// Ticket list: Change agent for a ticket
+		Route::patch("$main_route_path-change.agent", 'Kordy\Ticketit\Controllers\TicketsController@changeAgent')
+			->name("$main_route-change.agent");
+		
 		// Send again comment (reply) notification
 		Route::post("$main_route_path-notification.resend", 'Kordy\Ticketit\Controllers\NotificationsController@notificationResend')
 			->name("$main_route-notification.resend");
-	
-	
+			
         //API return list of agents in particular category
         Route::get("$main_route_path/agents/list/{category_id?}/{ticket_id?}", [
             'as'   => $main_route.'agentselectlist',

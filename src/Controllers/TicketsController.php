@@ -142,7 +142,7 @@ class TicketsController extends Controller
         $collection->editColumn('agent', function ($ticket) {
             $ticket = $this->tickets->find($ticket->id);
 
-            return $ticket->agent->name;
+            return '<a href="#" class="agent_change" data-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" title="canviar agent">'.$ticket->agent->name.'</a>';
         });
 
         $collection->editColumn('tags', function ($ticket) {
@@ -198,9 +198,12 @@ class TicketsController extends Controller
 	*/
 	public function indexProcess($request, $ticketList)
 	{
+		//$a_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get()->toArray();
+			
 		return view('ticketit::index', [
 			'ticketList'=>$ticketList,
-			'counts'=>$this->ticketCounts($request, $ticketList)
+			'counts'=>$this->ticketCounts($request, $ticketList),
+			//'a_agents'=>$a_agents			
 		]);
 	}
 
@@ -604,14 +607,12 @@ class TicketsController extends Controller
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-do-this'));
     }
 
-    public function agentSelectList($category_id, $ticket_id)
+	/*
+	 * Returns HTML <SELECT> with Agent List for specified category
+	*/
+	public function agentSelectList($category_id, $ticket_id)
     {
-        $cat_agents = Models\Category::find($category_id)->agents()->agentsLists();
-        if (is_array($cat_agents)) {
-            $agents = ['auto' => 'Auto Select'] + $cat_agents;
-        } else {
-            $agents = ['auto' => 'Auto Select'];
-        }
+		$agents = $this->agentList($category_id);
 
         $selected_Agent = $this->tickets->find($ticket_id)->agent->id;
         $select = '<select class="form-control" id="agent_id" name="agent_id">';
@@ -623,6 +624,19 @@ class TicketsController extends Controller
 
         return $select;
     }
+	
+	/*
+	 * Returns array with Agent List for specified category
+	*/
+	public function agentList ($category_id)
+	{
+		$cat_agents = Models\Category::find($category_id)->agents()->agentsLists();
+        if (is_array($cat_agents)) {
+            return ['auto' => 'Auto Select'] + $cat_agents;
+        } else {
+            return ['auto' => 'Auto Select'];
+        }
+	}
 
     /**
      * @param $id

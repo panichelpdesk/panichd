@@ -7,6 +7,7 @@
 @section('content')
     @include('ticketit::shared.header')
     @include('ticketit::tickets.index')
+	@include('ticketit::tickets.partials.modal_agent')
 @stop
 
 @section('footer')
@@ -14,12 +15,9 @@
 	<script src="//cdn.datatables.net/plug-ins/505bef35b56/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	<script src="//cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
 	<script>
-	    $(function(){
-			$('#select_agent').select2().on("change", function (e) {				
-				window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
-			});
-		});
+	$(function(){
 		
+		// Ticket list load
 		$('.table').DataTable({
 	        processing: false,
 	        serverSide: true,
@@ -83,5 +81,28 @@
 			]
 			
 	    });
+		
+		// Filter menu agent change
+		$('#select_agent').select2().on("change", function (e) {				
+			window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
+		});
+		
+		// Ticket List: Change ticket agent
+		$('#tickets-table').on('draw.dt', function(e){
+			$('.agent_change').click(function(e){
+				e.preventDefault();
+				$('#agentChange').modal('show');	
+			});
+		});
+		
+		var a_categories = [];
+		
+		
+		$('#agentChange').on('show.bs.modal', function (e) {
+			var button = $(e.relatedTarget);
+			$(this).find('#nom_triat').text($(button).attr('data-id'));			
+		});
+		
+	});
 	</script>
 @append
