@@ -142,7 +142,7 @@ class TicketsController extends Controller
         $collection->editColumn('agent', function ($ticket) {
             $ticket = $this->tickets->find($ticket->id);
 
-            return '<a href="#" class="agent_change" data-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" title="canviar agent">'.$ticket->agent->name.'</a>';
+            return '<a href="#" class="agent_change" data-ticket-id="'.$ticket->id.'" data-ticket-subject="'.$ticket->subject.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent->id.'" data-agent-name="'.$ticket->agent->name.'" title="canviar agent">'.$ticket->agent->name.'</a>';
         });
 
         $collection->editColumn('tags', function ($ticket) {
@@ -198,12 +198,12 @@ class TicketsController extends Controller
 	*/
 	public function indexProcess($request, $ticketList)
 	{
-		//$a_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get()->toArray();
+		$a_cat_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
 			
 		return view('ticketit::index', [
 			'ticketList'=>$ticketList,
 			'counts'=>$this->ticketCounts($request, $ticketList),
-			//'a_agents'=>$a_agents			
+			'a_cat_agents'=>$a_cat_agents			
 		]);
 	}
 
@@ -637,6 +637,24 @@ class TicketsController extends Controller
             return ['auto' => 'Auto Select'];
         }
 	}
+	
+	public function changeAgent(Request $request){
+		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		Agent::findOrFail($request->input('agent_id'));
+		
+		if ($ticket->agent_id==$request->input('agent_id')){
+			return redirect()->back()->with('warning', 'No has canviat l\'agent');
+		}else{
+			$ticket->agent_id = $request->input('agent_id');
+			
+			if ($ticket->status_id==Setting::grab('default_status_id')){
+				$ticket->status_id=Setting::grab('default_reopen_status_id');
+			}
+			$ticket->save();
+			return redirect()->back()->with('status', 'Agent canviat correctament');
+		}		
+	}
+	
 
     /**
      * @param $id

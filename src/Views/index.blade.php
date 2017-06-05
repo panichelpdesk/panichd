@@ -91,18 +91,18 @@
 		$('#tickets-table').on('draw.dt', function(e){
 			$('.agent_change').click(function(e){
 				e.preventDefault();
-				$('#agentChange').modal('show');	
+				
+				$('#agentChange #agent_ticket_id_text').text($(this).attr('data-ticket-id'));
+				$('#agentChange #agent_ticket_id_field').val($(this).attr('data-ticket-id'));
+				$('#agentChange #ticket_subject').text($(this).attr('data-ticket-subject'));
+				$('#agentChange #current_agent').text($(this).attr('data-agent-name'));
+				
+				$('#agentChange').modal('show');
+				$('#agentChange .categories_agent_change').hide();
+				$('#agentChange #category_'+$(this).attr('data-category-id')+'_agents').show()
+					.find(":radio[value="+$(this).attr('data-agent-id')+"]").prop('checked',true);
 			});
-		});
-		
-		var a_categories = [];
-		
-		
-		$('#agentChange').on('show.bs.modal', function (e) {
-			var button = $(e.relatedTarget);
-			$(this).find('#nom_triat').text($(button).attr('data-id'));			
-		});
-		
+		});	
 	});
 	</script>
 @append
