@@ -4,8 +4,13 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
 
     //Route::group(['middleware' => '', function () use ($main_route) {
         //Ticket public route
-        Route::get("$main_route_path/complete", 'Kordy\Ticketit\Controllers\TicketsController@indexComplete')
-            ->name("$main_route-complete");
+    Route::get("$main_route_path/complete", 'Kordy\Ticketit\Controllers\TicketsController@indexComplete')
+        ->name("$main_route-complete");
+		
+	// Get newest tickets list
+	Route::get("$main_route_path/newest", 'Kordy\Ticketit\Controllers\TicketsController@indexNewest')
+        ->name("$main_route-newest")
+		->middleware('Kordy\Ticketit\Middleware\IsAgentMiddleware');
 		
     Route::get("$main_route_path/data/{id?}", 'Kordy\Ticketit\Controllers\TicketsController@data')
             ->name("$main_route.data");
@@ -54,10 +59,6 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
 
     Route::group(['middleware' => 'Kordy\Ticketit\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 
-		// Get newest tickets list
-		Route::get("$main_route_path/newest", 'Kordy\Ticketit\Controllers\TicketsController@indexNewest')
-            ->name("$main_route-newest");
-		
 		// Ticket list: Change agent for a ticket
 		Route::patch("$main_route_path-change.agent", 'Kordy\Ticketit\Controllers\TicketsController@changeAgent')
 			->name("$main_route-change.agent");
