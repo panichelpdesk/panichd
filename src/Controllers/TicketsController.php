@@ -170,7 +170,7 @@ class TicketsController extends Controller
      */
     public function index(Request $request)
     {
-        return view('ticketit::index', ['ticketList'=>'active', 'counts'=>$this->ticketCounts($request, 'active')]);
+        return $this->indexProcess($request, 'active');		
     }
 	
 	/**
@@ -180,7 +180,7 @@ class TicketsController extends Controller
      */
     public function indexNewest(Request $request)
     {
-		return view('ticketit::index', ['ticketList'=>'newest', 'counts'=>$this->ticketCounts($request, 'newest')]);
+		return $this->indexProcess($request, 'newest');		
     }
 
     /**
@@ -190,8 +190,19 @@ class TicketsController extends Controller
      */
     public function indexComplete(Request $request)
     {
-        return view('ticketit::index', ['ticketList'=>'complete', 'counts'=>$this->ticketCounts($request, 'complete')]);
+        return $this->indexProcess($request, 'complete');
     }
+	
+	/*
+	 * Processes the selected index with data 
+	*/
+	public function indexProcess($request, $ticketList)
+	{
+		return view('ticketit::index', [
+			'ticketList'=>$ticketList,
+			'counts'=>$this->ticketCounts($request, $ticketList)
+		]);
+	}
 
     /**
      * Calculates Tickets counts to show.
