@@ -6,8 +6,7 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         //Ticket public route
         Route::get("$main_route_path/complete", 'Kordy\Ticketit\Controllers\TicketsController@indexComplete')
             ->name("$main_route-complete");
-		Route::get("$main_route_path/newest", 'Kordy\Ticketit\Controllers\TicketsController@indexNewest')
-            ->name("$main_route-newest");
+		
     Route::get("$main_route_path/data/{id?}", 'Kordy\Ticketit\Controllers\TicketsController@data')
             ->name("$main_route.data");
 
@@ -52,18 +51,25 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         Route::get("$main_route_path/{id}/reopen", 'Kordy\Ticketit\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
     //});
-	
-	Route::post("$main_route_path-notification.resend", 'Kordy\Ticketit\Controllers\NotificationsController@notificationResend')
-		->name("$main_route-notification.resend");
 
     Route::group(['middleware' => 'Kordy\Ticketit\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 
+		// Get newest tickets list
+		Route::get("$main_route_path/newest", 'Kordy\Ticketit\Controllers\TicketsController@indexNewest')
+            ->name("$main_route-newest");
+		
+		// Send again comment (reply) notification
+		Route::post("$main_route_path-notification.resend", 'Kordy\Ticketit\Controllers\NotificationsController@notificationResend')
+			->name("$main_route-notification.resend");
+	
+	
         //API return list of agents in particular category
         Route::get("$main_route_path/agents/list/{category_id?}/{ticket_id?}", [
             'as'   => $main_route.'agentselectlist',
             'uses' => 'Kordy\Ticketit\Controllers\TicketsController@agentSelectList',
         ]);
-
+		
+		// Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'Kordy\Ticketit\Controllers\FiltersController@manage');
     });
 
