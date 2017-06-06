@@ -6,8 +6,8 @@ return [
   *  Constants
   */
 
-  'nav-active-tickets'               => 'Tiquets Oberts',
-  'nav-completed-tickets'            => 'Tiquets Resolts',
+  'nav-active-tickets'               => 'Oberts',
+  'nav-completed-tickets'            => 'Tancats',
 
   // Tables
   'table-id'                         => '#',
@@ -72,20 +72,9 @@ return [
   'index-title'                      => 'Tiquets',
 
 // tickets/____
-  'index-my-tickets'                 => 'Tiquets meus',
-  'index-my-tickets-in'              => 'Tiquets meus a :category',
-  'index-tickets'                    => 'Tots els Tiquets',
-  'index-tickets-in'                 => 'Tiquets a :category',
-  'index-other-agent-tickets'        => 'Tiquets per a :agent',
-  'index-other-agent-tickets-in'     => 'Tiquets per a :agent a :category',
-  'index-current-agent-tickets'      => 'Tiquets assignats',
-  'index-current-agent-tickets-in'   => 'Tiquets assignats a :category',
-  'index-other-agent-my-tickets'     => 'Tiquets meus per a :agent',
-  'index-other-agent-my-tickets-in'  => 'Tiquets meus per a :agent a :category',
-  'index-current-agent-my-tickets'   => 'Tiquets meus assignats',
-  'index-current-agent-my-tickets-in'=> 'Tiquets meus assignats a :category',
+  'index-my-tickets'                 => 'Els meus Tiquets',
   
-  'btn-create-new-ticket'            => 'Crear nou tiquet',
+  'btn-create-new-ticket'            => 'Crear nou',
   'index-complete-none'              => 'No hi han tiquets tancats',
   'index-active-check'               => 'Assegureu-vos de revisar els tiquets oberts si no pot trobar el seu tiquet.',
   'index-active-none'                => 'No hi ha tiquets oberts,',

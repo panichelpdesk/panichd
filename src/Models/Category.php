@@ -34,7 +34,7 @@ class Category extends Model
      */
     public function agents()
     {
-        return $this->belongsToMany('\Kordy\Ticketit\Models\Agent', 'ticketit_categories_users', 'category_id', 'user_id')->withPivot('autoassign');
+        return $this->belongsToMany('\Kordy\Ticketit\Models\Agent', 'ticketit_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
     }
 
     /**

@@ -28,6 +28,17 @@ class Ticket extends Model
         return (bool) $this->completed_at;
     }
 
+	
+	/**
+     * List of active tickets.
+     *
+     * @return Collection
+     */
+    public function scopeActive($query)
+    {
+        return $query->whereNull('completed_at');
+    }
+	
     /**
      * List of completed tickets.
      *
@@ -38,14 +49,14 @@ class Ticket extends Model
         return $query->whereNotNull('completed_at');
     }
 
-    /**
-     * List of active tickets.
+	/**
+     * List of new tickets (active with status "new")
      *
      * @return Collection
      */
-    public function scopeActive($query)
+    public function scopeNewest($query)
     {
-        return $query->whereNull('completed_at');
+        return $query->whereNull('completed_at')->where('status_id',Setting::grab('default_status_id'));
     }
 
     /**
@@ -53,13 +64,19 @@ class Ticket extends Model
      *
      * @return Collection
      */
-    public function scopeListComplete($query, $complete)
+    public function scopeInList($query, $ticketList = 'active')
     {
-        if ($complete == false) {
-            return $query->Active($query);
-        }
-
-        return $query->Complete($query);
+        switch ($ticketList){
+			case 'newest':
+				return $query->newest($query);
+				break;
+			case 'complete':
+				return $query->complete($query);
+				break;			
+			default:
+				return $query->active($query);
+				break;
+		}        
     }
 
     /**
@@ -252,6 +269,42 @@ class Ticket extends Model
             return $query->AgentTickets($id);
         }
     }
+	
+	/**
+     * Get tickets that pass all list filters.
+     *
+     * @param $query
+     * @param $id
+     *
+     * @return mixed
+     */
+	public function scopeFiltered($query)
+	{
+		if (session()->has('ticketit_filters')){
+			// Category filter
+			if (session()->has('ticketit_filter_category')){
+				$category = session('ticketit_filter_category');
+				$query = $query->whereHas('category', function ($q1) use ($category) {
+						$q1->where('id', $category);
+					});
+			}
+			
+			// Agent filter
+			if (session()->has('ticketit_filter_agent')){
+				$agent = session('ticketit_filter_agent');
+				$query = $query->whereHas('agent', function ($q2) use ($agent) {
+						$q2->where('id', $agent);
+					});
+			}
+
+			// Owner filter
+			if (session()->has('ticketit_filter_owner') and session('ticketit_filter_owner')=="me"){
+				$query = $query->where('user_id',auth()->user()->id);
+			}			
+		}
+		
+		return $query;		
+	}
 
     /**
      * Get all tickets in specified category.

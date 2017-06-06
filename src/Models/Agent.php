@@ -206,6 +206,31 @@ class Agent extends User
 		
 		return false;
 	}
+	
+	/**
+     * Check if user can view new tickets button.
+     *
+     * @param int $id ticket id
+     *
+     * @return bool
+     */
+	public static function canViewNewTickets()
+	{
+		if (!auth()->check()) return false;
+		$agent = Agent::find(auth()->user()->id);
+		
+		if ($agent->isAdmin()){
+			return true;
+		}elseif($agent->isAgent()){		
+			if(Setting::grab('agent_restrict')==1){
+				return $agent->categories()->wherePivot('autoassign','1')->count()==0 ? false : true;			
+			}else{
+				return true;
+			}
+		}else{
+			return false;
+		}
+	}
 
     /**
      * Get related categories.

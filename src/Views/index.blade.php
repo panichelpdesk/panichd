@@ -7,6 +7,7 @@
 @section('content')
     @include('ticketit::shared.header')
     @include('ticketit::tickets.index')
+	@include('ticketit::tickets.partials.modal_agent')
 @stop
 
 @section('footer')
@@ -14,19 +15,16 @@
 	<script src="//cdn.datatables.net/plug-ins/505bef35b56/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	<script src="//cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
 	<script>
-	    $(function(){
-			$('.nav_filter_select').select2().on("change", function (e) {				
-				window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
-			});
-		});
+	$(function(){
 		
+		// Ticket list load
 		$('.table').DataTable({
 	        processing: false,
 	        serverSide: true,
 	        responsive: true,
             pageLength: {{ $setting->grab('paginate_items') }},
         	lengthMenu: {{ json_encode($setting->grab('length_menu')) }},
-	        ajax: '{!! route($setting->grab('main_route').'.data', $complete) !!}',
+	        ajax: '{!! route($setting->grab('main_route').'.data', $ticketList) !!}',
 	        language: {
 				decimal:        "{{ trans('ticketit::lang.table-decimal') }}",
 				emptyTable:     "{{ trans('ticketit::lang.table-empty') }}",
@@ -71,9 +69,40 @@
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
-	            @endif
-				{ data: 'tags', name: 'ticketit_tags.name' }
-	        ]
+					{ data: 'tags', name: 'ticketit_tags.name' }
+	            @endif				
+	        ],
+			order: [
+				@if( $u->isAgent() || $u->isAdmin() )
+					[5,'desc']
+				@else
+					[4,'desc']
+				@endif				
+			]
+			
 	    });
+		
+		// Filter menu agent change
+		$('#select_agent').select2().on("change", function (e) {				
+			window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
+		});
+		
+		// Ticket List: Change ticket agent
+		$('#tickets-table').on('draw.dt', function(e){
+			$('.agent_change').click(function(e){
+				e.preventDefault();
+				
+				$('#agentChange #agent_ticket_id_text').text($(this).attr('data-ticket-id'));
+				$('#agentChange #agent_ticket_id_field').val($(this).attr('data-ticket-id'));
+				$('#agentChange #ticket_subject').text($(this).attr('data-ticket-subject'));
+				$('#agentChange #current_agent').text($(this).attr('data-agent-name'));
+				
+				$('#agentChange').modal('show');
+				$('#agentChange .categories_agent_change').hide();
+				$('#agentChange #category_'+$(this).attr('data-category-id')+'_agents').show()
+					.find(":radio[value="+$(this).attr('data-agent-id')+"]").prop('checked',true);
+			});
+		});	
+	});
 	</script>
 @append

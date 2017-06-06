@@ -30,7 +30,7 @@
                 }
 
             });
-            $('#category_id').change(function(){				
+            $('#category_id').change(function(){
 				// Update agent list
 				var loadpage = "{!! route($setting->grab('main_route').'agentselectlist') !!}/" + $(this).val() + "/{{ $ticket->id }}";
                 $('#agent_id').load(loadpage);
@@ -39,6 +39,12 @@
 				$('#jquery_select2_container .select2-container').hide();
 				$('#jquery_tag_category_'+$(this).val()).next().show();
             });
+			
+			$('#agent_id').change(function(){
+				if ($('#status_id').val()=="{!! $setting->grab('default_status_id') !!}"){
+					$('#status_id').val("{!! $setting->grab('default_reopen_status_id') !!}")
+				}
+			});
             $('#confirmDelete').on('show.bs.modal', function (e) {
                 $message = $(e.relatedTarget).attr('data-message');
                 $(this).find('.modal-body p').text($message);

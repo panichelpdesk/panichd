@@ -32,11 +32,12 @@ class TicketsController extends Controller
         $this->agent = $agent;
     }
 
-    public function data(Datatables $datatables, $complete = false)
+	// This is loaded via AJAX at file Views\index.blade.php
+    public function data(Datatables $datatables, $ticketList = 'active')
     {
         $user = $this->agent->find(auth()->user()->id);
 
-        $collection = Ticket::listComplete($complete);
+        $collection = Ticket::inList($ticketList);
 
         // Category filter
         if (session('ticketit_filter_category') != '') {
@@ -141,7 +142,7 @@ class TicketsController extends Controller
         $collection->editColumn('agent', function ($ticket) {
             $ticket = $this->tickets->find($ticket->id);
 
-            return $ticket->agent->name;
+            return '<a href="#" class="agent_change" data-ticket-id="'.$ticket->id.'" data-ticket-subject="'.$ticket->subject.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent->id.'" data-agent-name="'.$ticket->agent->name.'" title="canviar agent">'.$ticket->agent->name.'</a>';
         });
 
         $collection->editColumn('tags', function ($ticket) {
@@ -169,9 +170,17 @@ class TicketsController extends Controller
      */
     public function index(Request $request)
     {
-        $complete = false;
-
-        return view('ticketit::index', ['complete'=>$complete, 'counts'=>$this->ticketCounts($request, $complete)]);
+        return $this->indexProcess($request, 'active');		
+    }
+	
+	/**
+     * Display a listing of active tickets related to user.
+     *
+     * @return Response
+     */
+    public function indexNewest(Request $request)
+    {
+		return $this->indexProcess($request, 'newest');		
     }
 
     /**
@@ -181,33 +190,45 @@ class TicketsController extends Controller
      */
     public function indexComplete(Request $request)
     {
-        $complete = true;
-
-        return view('ticketit::index', ['complete'=>$complete, 'counts'=>$this->ticketCounts($request, $complete)]);
+        return $this->indexProcess($request, 'complete');
     }
+	
+	/*
+	 * Processes the selected index with data 
+	*/
+	public function indexProcess($request, $ticketList)
+	{
+		$a_cat_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
+			
+		return view('ticketit::index', [
+			'ticketList'=>$ticketList,
+			'counts'=>$this->ticketCounts($request, $ticketList),
+			'a_cat_agents'=>$a_cat_agents			
+		]);
+	}
 
     /**
      * Calculates Tickets counts to show.
      *
      * @return
      */
-    public function ticketCounts($request, $complete)
+    public function ticketCounts($request, $ticketList)
     {
         $counts = [];
         $category = session('ticketit_filter_category') == '' ? null : session('ticketit_filter_category');
 
         if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
             // Ticket count for all categories
-            $counts['total_category'] = Ticket::ListComplete($complete)->Visible()->count();
+            $counts['total_category'] = Ticket::inList($ticketList)->visible()->count();
 
             // Ticket count for each Category
             if ($this->agent->isAdmin()) {
-                $counts['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($complete) {
-                    $q->ListComplete($complete);
+                $counts['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
+                    $q->inList($ticketList);
                 }])->get();
             } else {
-                $counts['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($complete) {
-                    $q->ListComplete($complete);
+                $counts['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
+                    $q->inList($ticketList);
                 }])->get();
             }
 
@@ -229,14 +250,14 @@ class TicketsController extends Controller
                 $counts['agent'] = Agent::visible();
             }
 
-            $counts['agent'] = $counts['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($complete, $category) {
-                $q2->listComplete($complete)->visible()->inCategory($category);
+            $counts['agent'] = $counts['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($ticketList, $category) {
+                $q2->inList($ticketList)->visible()->inCategory($category);
             }])->get();
         }
 
         // Forget agent if it doesn't exist in current category
         $agent = session('ticketit_filter_agent');
-        if ($counts['agent']->filter(function ($q) use ($agent) {
+        if (isset($counts['agent']) and $counts['agent']->filter(function ($q) use ($agent) {
             return $q->id == $agent;
         })->count() == 0) {
             $request->session()->forget('ticketit_filter_agent');
@@ -249,14 +270,14 @@ class TicketsController extends Controller
                     $counts['owner']['all'] = $counts['total_agent'];
                 } else {
                     // Case of agent with agent_restrict == 1
-                    $counts['owner']['all'] = Ticket::listComplete($complete)->inCategory($category)->agentTickets(auth()->user()->id)->count();
+                    $counts['owner']['all'] = Ticket::inList($ticketList)->inCategory($category)->agentTickets(auth()->user()->id)->count();
                 }
             } else {
-                $counts['owner']['all'] = Ticket::listComplete($complete)->inCategory($category)->agentTickets(session('ticketit_filter_agent'))->visible()->count();
+                $counts['owner']['all'] = Ticket::inList($ticketList)->inCategory($category)->agentTickets(session('ticketit_filter_agent'))->visible()->count();
             }
 
             // Current user Tickets
-            $me = Ticket::listComplete($complete)->userTickets(auth()->user()->id);
+            $me = Ticket::inList($ticketList)->userTickets(auth()->user()->id);
             if (session('ticketit_filter_agent') != '') {
                 $me = $me->agentTickets(session('ticketit_filter_agent'));
             }
@@ -406,7 +427,7 @@ class TicketsController extends Controller
             compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
-
+	
     /**
      * Update the specified resource in storage.
      *
@@ -586,14 +607,12 @@ class TicketsController extends Controller
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-do-this'));
     }
 
-    public function agentSelectList($category_id, $ticket_id)
+	/*
+	 * Returns HTML <SELECT> with Agent List for specified category
+	*/
+	public function agentSelectList($category_id, $ticket_id)
     {
-        $cat_agents = Models\Category::find($category_id)->agents()->agentsLists();
-        if (is_array($cat_agents)) {
-            $agents = ['auto' => 'Auto Select'] + $cat_agents;
-        } else {
-            $agents = ['auto' => 'Auto Select'];
-        }
+		$agents = $this->agentList($category_id);
 
         $selected_Agent = $this->tickets->find($ticket_id)->agent->id;
         $select = '<select class="form-control" id="agent_id" name="agent_id">';
@@ -605,6 +624,37 @@ class TicketsController extends Controller
 
         return $select;
     }
+	
+	/*
+	 * Returns array with Agent List for specified category
+	*/
+	public function agentList ($category_id)
+	{
+		$cat_agents = Models\Category::find($category_id)->agents()->agentsLists();
+        if (is_array($cat_agents)) {
+            return ['auto' => 'Auto Select'] + $cat_agents;
+        } else {
+            return ['auto' => 'Auto Select'];
+        }
+	}
+	
+	public function changeAgent(Request $request){
+		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		Agent::findOrFail($request->input('agent_id'));
+		
+		if ($ticket->agent_id==$request->input('agent_id')){
+			return redirect()->back()->with('warning', 'No has canviat l\'agent');
+		}else{
+			$ticket->agent_id = $request->input('agent_id');
+			
+			if ($ticket->status_id==Setting::grab('default_status_id')){
+				$ticket->status_id=Setting::grab('default_reopen_status_id');
+			}
+			$ticket->save();
+			return redirect()->back()->with('status', 'Agent canviat correctament');
+		}		
+	}
+	
 
     /**
      * @param $id
