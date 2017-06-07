@@ -60,7 +60,7 @@ return [
   'priority'                         => 'Prioritat',
   'reopen-ticket'                    => 'Reobrir Tiquet',
   'reply'                            => 'Respondre',
-  'responsible'                      => 'Responsable',
+  'responsible'                      => 'Tècnic',
   'status'                           => 'Estat',
   'subject'                          => 'Tema',
 

@@ -489,8 +489,13 @@ class TicketsController extends Controller
         $reopen_perm = $this->permToReopen($id);
 
         $agent_lists = $this->agentList($ticket->category_id);
-
-        $comments = $ticket->comments()->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
+		
+		if (Agent::levelIn($ticket->category_id) > 1){
+			$comments = $ticket->comments();
+		}else{
+			$comments = $ticket->comments()->where('type','reply');
+		}
+        $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
             compact('ticket', 'a_tags_selected', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
