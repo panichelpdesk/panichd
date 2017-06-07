@@ -56,9 +56,15 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         Route::get("$main_route_path/{id}/reopen", 'Kordy\Ticketit\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
     //});
+	
+			// Returns permission_level for category_id
+        Route::get("$main_route_path/permissionLevel/{category_id?}", [
+            'as'   => $main_route.'-permissionLevel',
+            'uses' => 'Kordy\Ticketit\Controllers\TicketsController@permissionLevel',
+        ]);
 
     Route::group(['middleware' => 'Kordy\Ticketit\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
-
+		
 		// Ticket list: Change agent for a ticket
 		Route::patch("$main_route_path-change.agent", 'Kordy\Ticketit\Controllers\TicketsController@changeAgent')
 			->name("$main_route-change.agent");

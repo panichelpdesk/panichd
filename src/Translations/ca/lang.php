@@ -90,6 +90,12 @@ return [
   'show-ticket-js-delete'            => 'Esteu segur que voleu esborrar?: ',
   'show-ticket-modal-delete-title'   => 'Esborrar Tiquet',
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
+  
+  'validate-ticket-subject.required' => 'Cal indicar un tema. Si us plau, indica en poques paraules de què es tracta',
+  'validate-ticket-subject.min'      => 'Cal que indiquis un tema més llarg',
+  'validate-ticket-content.required' => 'Cal indicar una descripció. Si adjuntes alguna imatge és necessari que també afegeixis un text explicatiu',
+  'validate-ticket-content.min'      => 'Cal indicar una descripció més llarga, encara que ja hi hagi imatges adjuntes',
+  
 
  /*
   *  Controllers

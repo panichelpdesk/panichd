@@ -294,16 +294,56 @@ class TicketsController extends Controller
      */
     public function create()
     {
-        $user = $this->agent->find(auth()->user()->id);
-
         if (version_compare(app()->version(), '5.2.0', '>=')) {
-            $priorities = Models\Priority::pluck('name', 'id');
+            $status_lists = Models\Status::pluck('name', 'id');
+			$priorities = Models\Priority::pluck('name', 'id');
             $categories = Models\Category::pluck('name', 'id');
         } else { // if Laravel 5.1
-            $priorities = Models\Priority::lists('name', 'id');
+            $status_lists = Models\Status::lists('name', 'id');
+			$priorities = Models\Priority::lists('name', 'id');
             $categories = Models\Category::lists('name', 'id');
         }
+		
+		$user = $this->agent->find(auth()->user()->id);
+		$a_current = [];
+		
+		if (!old('category_id')){
+			$a_current['complete'] = "no";
+			
+			// Default category		
+			$a_current['cat_id'] = @$user->tickets()->latest()->first()->category_id;
 
+			if ($a_current['cat_id'] == null){
+				if ($user->isAgent() and $a_current['cat_id'] = $user->categories()->wherePivot('autoassign','1')->first()->id){
+				
+				}else{
+					$a_current['cat_id'] = key($categories);
+				}
+			}
+			
+			// Default agent
+			$a_current['agent_id'] = $user->id;
+			
+		}else{
+			// Form old values
+			$a_current['complete'] = old('complete');
+			$a_current['cat_id'] = old('category_id');
+			$a_current['agent_id'] = old('agent_id');
+		}
+
+		
+		// Agent list
+		$agent_lists = $this->agentList($a_current['cat_id']);
+		
+		
+		// Permission level for category
+		$permission_level = Agent::levelIn($a_current['cat_id']);
+		
+		// Current default status
+		$a_current['status_id'] = $permission_level > 1 ? Setting::grab('default_reopen_status_id') : Setting::grab('default_status_id');
+
+		
+		// Tag lists
         $tag_lists = Category::whereHas('tags')
         ->with([
             'tags'=> function ($q1) {
@@ -314,8 +354,11 @@ class TicketsController extends Controller
             },
         ])
         ->select('id', 'name')->get();
-
-        return view('ticketit::tickets.create', compact('priorities', 'categories', 'tag_lists'));
+		
+		// Selected tags
+		$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [];
+		
+        return view('ticketit::tickets.create', compact('priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected'));
     }
 
     /**
@@ -327,49 +370,80 @@ class TicketsController extends Controller
      */
     public function store(Request $request)
     {	
-	    $a_content = $this->purifyHtml($request->get('content'));
+	    $user = $this->agent->find(auth()->user()->id);
+		$permission_level = $user->levelIn($request->category_id);
+		
+		$a_content = $this->purifyHtml($request->get('content'));
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
+			'content_html'=> $a_content['html'],
         ]);
 		
 		$fields = [
             'subject'     => 'required|min:3',
-            'content'     => 'required|min:6',
-            'priority_id' => 'required|exists:ticketit_priorities,id',
+            'content'     => 'required|min:6',            
             'category_id' => 'required|exists:ticketit_categories,id',
         ];
 		
-		$user = $this->agent->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {			
+		if ($permission_level > 1) {
+			$fields['status_id'] = 'required|exists:ticketit_statuses,id';
+			$fields['priority_id'] = 'required|exists:ticketit_priorities,id';
+			
 			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
-				'intervention'=> $a_intervention['intervention']
+				'intervention'=> $a_intervention['intervention'],
+				'intervention_html'=> $a_intervention['intervention_html'],
 			]);
         }
 
-        $this->validate($request, $fields);
-
+		// Custom validation messages
+		$custom_messages = [
+			'subject.required' => 'ticketit::lang.validate-ticket-subject.required',
+			'subject.min' => 'ticketit::lang.validate-ticket-subject.min',
+			'content.required' => 'ticketit::lang.validate-ticket-content.required',
+			'content.min' => 'ticketit::lang.validate-ticket-content.min',
+		];
+		foreach ($custom_messages as $field => $lang_key){
+			$trans = trans ($lang_key);
+			if ($lang_key == $trans){
+				unset($custom_messages[$field]);
+			}else{
+				$custom_messages[$field] = $trans;
+			}
+		}		
+		
+		// Form validation
+        $this->validate($request, $fields, $custom_messages);
+		
         $ticket = new Ticket();
 
         $ticket->subject = $request->subject;
+		$ticket->user_id = auth()->user()->id;
+		
+		if ($permission_level > 1) {
+			if ($request->complete=='yes'){
+				$ticket->completed_at = Carbon::now();
+			}
+			
+			$ticket->status_id = $request->status_id;
+			$ticket->priority_id = $request->priority_id;			
+		}else{
+			$ticket->status_id = Setting::grab('default_status_id');		
+			$ticket->priority_id = Models\Priority::first()->id;
+		}		
 
+		$ticket->category_id = $request->category_id;
+		$ticket->autoSelectAgent();
+		
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-		$user = $this->agent->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
+        if ($permission_level > 1) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
-
-        $ticket->priority_id = $request->priority_id;
-        $ticket->category_id = $request->category_id;
-
-        $ticket->status_id = Setting::grab('default_status_id');
-        $ticket->user_id = auth()->user()->id;
-        $ticket->autoSelectAgent();
-
+		
         $ticket->save();
 
         $this->sync_ticket_tags($request, $ticket);
@@ -394,12 +468,12 @@ class TicketsController extends Controller
             $status_lists = Models\Status::pluck('name', 'id');
             $priority_lists = Models\Priority::pluck('name', 'id');
             $category_lists = $a_categories = Models\Category::pluck('name', 'id');
-            $ticket_tags = $ticket->tags()->pluck('name', 'id')->toArray();
+            $a_tags_selected = $ticket->tags()->pluck('id')->toArray();
         } else { // if Laravel 5.1
             $status_lists = Models\Status::lists('name', 'id');
             $priority_lists = Models\Priority::lists('name', 'id');
             $category_lists = $a_categories = Models\Category::lists('name', 'id');
-            $ticket_tags = $ticket->tags()->lists('name', 'id')->toArray();
+            $a_tags_selected = $ticket->tags()->lists('id')->toArray();
         }
 
         // Category tags
@@ -414,17 +488,12 @@ class TicketsController extends Controller
         $close_perm = $this->permToClose($id);
         $reopen_perm = $this->permToReopen($id);
 
-        $cat_agents = Models\Category::find($ticket->category_id)->agents()->agentsLists();
-        if (is_array($cat_agents)) {
-            $agent_lists = ['auto' => 'Auto Select'] + $cat_agents;
-        } else {
-            $agent_lists = ['auto' => 'Auto Select'];
-        }
+        $agent_lists = $this->agentList($ticket->category_id);
 
         $comments = $ticket->comments()->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
-            compact('ticket', 'ticket_tags', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
+            compact('ticket', 'a_tags_selected', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
 	
@@ -610,11 +679,10 @@ class TicketsController extends Controller
 	/*
 	 * Returns HTML <SELECT> with Agent List for specified category
 	*/
-	public function agentSelectList($category_id, $ticket_id)
+	public function agentSelectList($category_id, $selected_Agent = false)
     {
 		$agents = $this->agentList($category_id);
 
-        $selected_Agent = $this->tickets->find($ticket_id)->agent->id;
         $select = '<select class="form-control" id="agent_id" name="agent_id">';
         foreach ($agents as $id => $name) {
             $selected = ($id == $selected_Agent) ? 'selected' : '';
@@ -638,6 +706,9 @@ class TicketsController extends Controller
         }
 	}
 	
+	/*
+	 * Change agent in ticket list
+	*/
 	public function changeAgent(Request $request){
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
 		Agent::findOrFail($request->input('agent_id'));
@@ -653,6 +724,11 @@ class TicketsController extends Controller
 			$ticket->save();
 			return redirect()->back()->with('status', 'Agent canviat correctament');
 		}		
+	}
+	
+	public function permissionLevel ($category_id)
+	{
+		return Agent::levelIn($category_id);
 	}
 	
 
