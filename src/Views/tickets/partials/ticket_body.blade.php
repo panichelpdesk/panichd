@@ -4,9 +4,9 @@
 			<div class="col-md-8">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">
 				@if ($ticket->completed_at)
-					<span class="text-success"><span class="glyphicon glyphicon-ok-circle" title="tiquet completat" style="cursor: help"></span><span style="margin: 0em 1em 0em 0.2em">{{ "#".$ticket->id }}</span><span>{{ $ticket->subject }}</span></span>
+					<span class="text-success"><span class="glyphicon glyphicon-ok-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@else
-					<span class="text-warning"><span class="glyphicon glyphicon-file" title="tiquet obert" style="cursor: help"></span><span style="margin: 0em 1em 0em 0.2em">{{ "#".$ticket->id }}</span><span>{{ $ticket->subject }}</span></span>
+					<span class="text-warning"><span class="glyphicon glyphicon-file" title="tiquet obert" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@endif
 				</h2>
 			</div>
@@ -53,10 +53,11 @@
 		<div class="row">
 			<div class="col-lg-3 col-sm-4">				
 				<p>
+				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
 				@if ($u->maxLevel > 1)
-					<strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->user->name }}<br />
+					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
 				@endif
-				<strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
+				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
 					@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
 						<span style="color: blue">Complete</span>
 					@else

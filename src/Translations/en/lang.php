@@ -47,6 +47,7 @@ return [
   'btn-mark-complete'                => 'Mark Complete',
   'btn-submit'                       => 'Submit',
 
+  'ticket'                           => 'Ticket',
   'agent'                            => 'Agent',
   'category'                         => 'Category',
   'colon'                            => ': ',

@@ -47,6 +47,7 @@ return [
   'btn-mark-complete'                => 'Tancar Tiquet',
   'btn-submit'                       => 'Enviar',
 
+  'ticket'                           => 'Tiquet',
   'agent'                            => 'Agent',
   'category'                         => 'Categoria',
   'colon'                            => ': ',

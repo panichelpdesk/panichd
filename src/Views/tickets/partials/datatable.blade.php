@@ -4,9 +4,7 @@
             <td>{{ trans('ticketit::lang.table-id') }}</td>
             <td>{{ trans('ticketit::lang.table-subject') }}</td>
             <td>Description</td>
-			@if( $u->maxLevel > 1 )
-				<td>Intervention</td>
-			@endif
+			<td>Intervention</td>
 			<td>{{ trans('ticketit::lang.table-status') }}</td>
             <td>{{ trans('ticketit::lang.table-last-updated') }}</td>
 			  @if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)

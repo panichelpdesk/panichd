@@ -53,9 +53,7 @@
 	            { data: 'id', name: 'ticketit.id' },
 	            { data: 'subject', name: 'subject' },
 				{ data: 'content', name: 'content' },
-				@if( $u->maxLevel > 1 )
-					{ data: 'intervention', name: 'intervention' },
-				@endif
+				{ data: 'intervention', name: 'intervention' },
 	            { data: 'status', name: 'ticketit_statuses.name' },
 	            { data: 'updated_at', name: 'ticketit.updated_at' },
             	@if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)
@@ -73,11 +71,7 @@
 	            @endif				
 	        ],
 			order: [
-				@if( $u->maxLevel > 1 )
-					[5,'desc']
-				@else
-					[4,'desc']
-				@endif				
+				[5,'desc']				
 			]
 			
 	    });
