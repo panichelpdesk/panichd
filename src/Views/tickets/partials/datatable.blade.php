@@ -4,15 +4,13 @@
             <td>{{ trans('ticketit::lang.table-id') }}</td>
             <td>{{ trans('ticketit::lang.table-subject') }}</td>
             <td>Description</td>
-			@if( $u->isAgent() || $u->isAdmin() )
-				<td>Intervention</td>
-			@endif
+			<td>Intervention</td>
 			<td>{{ trans('ticketit::lang.table-status') }}</td>
             <td>{{ trans('ticketit::lang.table-last-updated') }}</td>
-			  @if (session('ticketit_filter_agent')=="" || (!$u->isAgent() && !$u->isAdmin()))
+			  @if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)
 				<td>{{ trans('ticketit::lang.table-agent') }}</td>	
 			  @endif			
-			  @if( $u->isAgent() || $u->isAdmin() )			
+			  @if( $u->maxLevel > 1 )			
 				<td>{{ trans('ticketit::lang.table-priority') }}</td>
 				@if (session('ticketit_filter_owner')=="")
 					<td>{{ trans('ticketit::lang.table-owner') }}</td>

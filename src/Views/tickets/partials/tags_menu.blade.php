@@ -8,7 +8,7 @@
 	
 	?>				
 	@foreach ($cat_tags as $i=>$tag)
-		<option value="{{$tag->id}}" {{ array_key_exists($tag->id,$ticket_tags)?' selected="selected"':' style=""'}}>{{$tag->name}}</option>
+		<option value="{{$tag->id}}" {{ in_array($tag->id, $a_tags_selected)?' selected="selected"':' style=""'}}>{{$tag->name}}</option>
 	@endforeach
 	
 	</select>

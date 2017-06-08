@@ -155,6 +155,54 @@ class Agent extends User
     }
 	
 	/**
+     * Get general maximum permission level for current user.
+     *
+     * @param int $id category id
+     *
+     * @return integer
+     */
+	public static function maxLevel()
+	{
+		if (!auth()->check()) return false;
+		$agent = Agent::find(auth()->user()->id);
+		if ($agent->isAdmin()){
+			return 3;
+		}elseif($agent->isAgent()){
+			return 2;
+		}else
+			return 1;
+	}
+	
+	/**
+     * Get permission level for specified category.
+     *
+     * @param int $id category id
+     *
+     * @return integer
+     */
+	public static function levelIn($id = false)
+	{
+		if (!auth()->check()) return false;
+		$agent = Agent::find(auth()->user()->id);
+		
+		if ($agent->isAdmin()){
+			return 3;
+		}elseif(!$agent->isAgent()){
+			return 1;
+		}else{
+			if ($id == false){
+				return 1; # user level by default
+			}else{
+				if ($agent->categories()->where('id',$id)->count()==1){
+					return 2;
+				}else{
+					return 1;
+				}
+			}
+		}
+	}	
+	
+	/**
      * Check if user has manage permissions on a ticket.
      *
      * @param int $id ticket id
@@ -239,7 +287,7 @@ class Agent extends User
      */
     public function categories()
     {
-        return $this->belongsToMany('Kordy\Ticketit\Models\Category', 'ticketit_categories_users', 'user_id', 'category_id')->withPivot('autoassign');
+        return $this->belongsToMany('Kordy\Ticketit\Models\Category', 'ticketit_categories_users', 'user_id', 'category_id')->withPivot('autoassign')->orderBy('name');
     }
 
     /**

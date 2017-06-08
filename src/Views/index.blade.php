@@ -53,15 +53,13 @@
 	            { data: 'id', name: 'ticketit.id' },
 	            { data: 'subject', name: 'subject' },
 				{ data: 'content', name: 'content' },
-				@if( $u->isAgent() || $u->isAdmin() )
-					{ data: 'intervention', name: 'intervention' },
-				@endif
+				{ data: 'intervention', name: 'intervention' },
 	            { data: 'status', name: 'ticketit_statuses.name' },
 	            { data: 'updated_at', name: 'ticketit.updated_at' },
-            	@if (session('ticketit_filter_agent')=="" || (!$u->isAgent() && !$u->isAdmin()))
+            	@if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)
 					{ data: 'agent', name: 'users.name' },
 				@endif				
-	            @if( $u->isAgent() || $u->isAdmin() )
+	            @if( $u->maxLevel > 1 )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	@if (session('ticketit_filter_owner')=="")
 						{ data: 'owner', name: 'users.name' },
@@ -73,11 +71,7 @@
 	            @endif				
 	        ],
 			order: [
-				@if( $u->isAgent() || $u->isAdmin() )
-					[5,'desc']
-				@else
-					[4,'desc']
-				@endif				
+				[5,'desc']				
 			]
 			
 	    });

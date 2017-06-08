@@ -4,9 +4,9 @@
 			<div class="col-md-8">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">
 				@if ($ticket->completed_at)
-					<span class="glyphicon glyphicon-ok-circle text-success" title="tiquet completat" style="cursor: help"></span> <span class="text-success">{{ $ticket->subject }}</span>
+					<span class="text-success"><span class="glyphicon glyphicon-ok-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@else
-					<span class="glyphicon glyphicon-file text-warning" title="tiquet obert" style="cursor: help"></span> <span class="text-warning">{{ $ticket->subject }}</span>
+					<span class="text-warning"><span class="glyphicon glyphicon-file" title="tiquet obert" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@endif
 				</h2>
 			</div>
@@ -52,26 +52,31 @@
 
 		<div class="row">
 			<div class="col-lg-3 col-sm-4">				
-				<p><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->user->name }}<br />
-				<strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
+				<p>
+				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
+				@if ($u->maxLevel > 1)
+					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
+				@endif
+				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
 					@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
 						<span style="color: blue">Complete</span>
 					@else
 						<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
 					@endif
-				<br /><strong>{{ trans('ticketit::lang.priority') }}</strong>{{ trans('ticketit::lang.colon') }}
+				@if ($u->maxLevel > 1)
+					<br /><strong>{{ trans('ticketit::lang.priority') }}</strong>{{ trans('ticketit::lang.colon') }}
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
 					</span>
-				</p>
+					</p><p>
+					<strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}
+				@endif
+				<br /><strong>{{ trans('ticketit::lang.category') }}</strong>{{ trans('ticketit::lang.colon') }}
+				<span style="color: {{ $ticket->category->color }}">
+					{{ $ticket->category->name }}
+				</span>
 				
-				
-				<p><strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}<br />
-				<strong>{{ trans('ticketit::lang.category') }}</strong>{{ trans('ticketit::lang.colon') }}
-					<span style="color: {{ $ticket->category->color }}">
-						{{ $ticket->category->name }}
-					</span>				
-				@if ($ticket->has('tags'))
+				@if ($u->maxLevel > 1 and $ticket->has('tags'))
 					<br /><strong>Etiquetes</strong>{{ trans('ticketit::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-default btn-tag btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
