@@ -16,8 +16,8 @@
 			@endif
 			
 			<div class="form-group"><!-- SUBJECT -->
-                {!! CollectiveForm::label('subject', '*' . trans('ticketit::lang.subject') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
-                <div class="col-lg-9">
+                {!! CollectiveForm::label('subject', '*' . trans('ticketit::lang.subject') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label level_class', 'data-level-1-class' => 'col-lg-2', 'data-level-2-class' => 'col-lg-3']) !!}
+                <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
                     {!! CollectiveForm::text('subject', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('ticketit::lang.create-ticket-brief-issue')]) !!}                    
                 </div>
             </div>
@@ -53,8 +53,8 @@
 			@endif
 			
 			<div class="form-group"><!-- CATEGORY -->
-				{!! CollectiveForm::label('category', '*' . trans('ticketit::lang.category') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
-				<div class="col-lg-9">
+				{!! CollectiveForm::label('category', '*' . trans('ticketit::lang.category') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label  level_class', 'data-level-1-class' => 'col-lg-2', 'data-level-2-class' => 'col-lg-3']) !!}
+				<div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
 					{!! CollectiveForm::select('category_id', $categories, $a_current['cat_id'], ['id'=>($u->maxLevel > 1 ? 'category_change' : 'category_id'), 'class' => 'form-control', 'required' => 'required']) !!}
 				</div>
 			</div>
@@ -143,12 +143,19 @@
 							$(this).addClass($(this).attr('data-class'));						
 						});
 						$('.jquery_level2_show').show();
+						
 					}else{
 						$('.jquery_level2_class').each(function(elem){
 							$(this).attr('class','jquery_level2_class');						
 						});
 						$('.jquery_level2_show').hide();
 					}
+					
+					var other = resp == 1 ? 2 : 1;
+					$('.level_class').each(function(){						
+						$(this).removeClass($(this).attr('data-level-'+other+'-class'));
+						$(this).addClass($(this).attr('data-level-'+resp+'-class'));
+					});
 				});
 			@endif
 			
