@@ -61,14 +61,6 @@
 	
 @endif
 
-{{--@if( isset($counts['owner']))
-	<div class="title owner">Propietari</div>
-	<a href="{{ session('ticketit_filter_owner')==''?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/remove' }}" class="btn btn-default {{ session('ticketit_filter_owner')==''?'owner-current':'owner-link' }} btn-sm">Tots</a>
-	 <a href="{{ session('ticketit_filter_owner')=='me'?'#':action('\Kordy\Ticketit\Controllers\TicketsController@index').'/filter/owner/me' }}" class="btn btn-default {{ session('ticketit_filter_owner')=='me'?'owner-current':'owner-link' }} btn-sm">Jo</a>		
-@endif--}}
-
-{!! link_to_route($setting->grab('main_route').'.create', trans('ticketit::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-default pull-right']) !!}
-
 <script type="text/javascript">
 @section('footer_jquery')
 	// Filter menu agent change

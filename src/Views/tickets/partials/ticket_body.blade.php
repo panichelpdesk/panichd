@@ -54,7 +54,7 @@
 			<div class="col-lg-3 col-sm-4">				
 				<p>
 				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
-				@if ($u->maxLevel > 1)
+				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
 				@endif
 				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
@@ -63,7 +63,7 @@
 					@else
 						<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
 					@endif
-				@if ($u->maxLevel > 1)
+				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('ticketit::lang.priority') }}</strong>{{ trans('ticketit::lang.colon') }}
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
@@ -76,7 +76,7 @@
 					{{ $ticket->category->name }}
 				</span>
 				
-				@if ($u->maxLevel > 1 and $ticket->has('tags'))
+				@if ($u->currentLevel() > 1 and $ticket->has('tags'))
 					<br /><strong>Etiquetes</strong>{{ trans('ticketit::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-default btn-tag btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
@@ -117,7 +117,7 @@
 			{!! link_to_route($setting->grab('main_route').'.reopen', trans('ticketit::lang.reopen-ticket'), $ticket->id,
 									['class' => 'btn btn-default']) !!}
 		@endif
-		@if($u->isAgent() || $u->isAdmin())
+		@if($u->currentLevel() > 1)
 			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ticket-edit-modal">
 				{{ trans('ticketit::lang.btn-edit')  }}
 			</button>

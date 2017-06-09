@@ -37,24 +37,7 @@ class TicketsController extends Controller
     {
         $user = $this->agent->find(auth()->user()->id);
 
-        $collection = Ticket::inList($ticketList);
-
-        // Category filter
-        if (session('ticketit_filter_category') != '') {
-            $collection = $collection->where('category_id', session('ticketit_filter_category'));
-        }
-
-        // Agent filter
-        if (session('ticketit_filter_agent') != '') {
-            $collection = $collection->agentTickets(session('ticketit_filter_agent'));
-        }
-
-        // Owner filter
-        if (session('ticketit_filter_owner') == 'me') {
-            $collection = $collection->userTickets(auth()->user()->id);
-        } else {
-            $collection = $collection->visible();
-        }
+        $collection = Ticket::inList($ticketList)->visible()->filtered();
 
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')

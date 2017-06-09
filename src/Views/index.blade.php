@@ -55,10 +55,10 @@
 				{ data: 'intervention', name: 'intervention' },
 	            { data: 'status', name: 'ticketit_statuses.name' },
 	            { data: 'updated_at', name: 'ticketit.updated_at' },
-            	@if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)
+            	@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
 					{ data: 'agent', name: 'users.name' },
 				@endif				
-	            @if( $u->maxLevel > 1 )
+	            @if( $u->currentLevel() > 1 )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	@if (session('ticketit_filter_owner')=="")
 						{ data: 'owner', name: 'users.name' },

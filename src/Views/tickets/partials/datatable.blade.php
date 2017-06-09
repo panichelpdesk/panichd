@@ -7,10 +7,10 @@
 			<td>{{ trans('ticketit::lang.table-intervention') }}</td>
 			<td>{{ trans('ticketit::lang.table-status') }}</td>
             <td>{{ trans('ticketit::lang.table-last-updated') }}</td>
-			  @if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)
+			  @if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
 				<td>{{ trans('ticketit::lang.table-agent') }}</td>	
 			  @endif			
-			  @if( $u->maxLevel > 1 )			
+			  @if( $u->currentLevel() > 1 )			
 				<td>{{ trans('ticketit::lang.table-priority') }}</td>
 				@if (session('ticketit_filter_owner')=="")
 					<td>{{ trans('ticketit::lang.table-owner') }}</td>

@@ -4,6 +4,7 @@ namespace Kordy\Ticketit\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
+use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Traits\ContentEllipse;
 
 class Ticket extends Model
@@ -229,7 +230,8 @@ class Ticket extends Model
 
     /**
      * Get all visible tickets for current user.
-     *
+     * Includes: general user permissions and applied filters
+	 *
      * @param $query
      * @param $id
      *
@@ -239,10 +241,10 @@ class Ticket extends Model
     {
         if (auth()->user()->ticketit_admin) {
             return $query;
-        } elseif (auth()->user()->ticketit_agent) {
-            return $query->VisibleForAgent(auth()->user()->id);
+        } elseif (auth()->user()->ticketit_agent){
+			return $query->visibleForAgent(auth()->user()->id);
         } else {
-            return $query->UserTickets(auth()->user()->id);
+            return $query->userTickets(auth()->user()->id);
         }
     }
 
@@ -254,24 +256,37 @@ class Ticket extends Model
      *
      * @return mixed
      */
-    public function scopeVisibleForAgent($query, $id)
+    public function scopeVisibleForAgent($query, $id = false)
     {
-        // Depends on agent_restrict
-        if (Setting::grab('agent_restrict') == 0) {
-            // Returns all tickets on Categories where Agent with $id belongs to.
-            return $query->whereHas('category', function ($q1) use ($id) {
-                $q1->whereHas('agents', function ($q2) use ($id) {
-                    $q2->where('id', $id);
-                });
-            });
-        } else {
-            // Returns all tickets Owned by Agent with $id only
-            return $query->AgentTickets($id);
-        }
+        if (!$id) $id = auth()->user()->id;
+		$agent = Agent::findOrFail($id);		
+		
+		if ($agent->currentLevel() == 2) {
+			// Depends on agent_restrict
+			if (Setting::grab('agent_restrict') == 0) {
+				// Returns all tickets on Categories where Agent with $id belongs to.
+				return $query->whereHas('category', function ($q1) use ($id) {
+					$q1->whereHas('agents', function ($q2) use ($id) {
+						$q2->where('id', $id);
+					});
+				});
+			} else {
+				// Returns all tickets Owned by Agent with $id only
+				return $query->agentTickets($id);
+			}
+		}else{
+			return $query->userTickets($id)
+				->whereDoesntHave('category',function($q1) use($id){
+					$q1->whereHas('agents',function($q2) use($id){
+						$q2->where('id',$id);
+					});
+				});
+		}
+		
     }
 	
 	/**
-     * Get tickets that pass all list filters.
+     * Filters to ticket list
      *
      * @param $query
      * @param $id
@@ -280,30 +295,33 @@ class Ticket extends Model
      */
 	public function scopeFiltered($query)
 	{
-		if (session()->has('ticketit_filters')){
-			// Category filter
-			if (session()->has('ticketit_filter_category')){
-				$category = session('ticketit_filter_category');
-				$query = $query->whereHas('category', function ($q1) use ($category) {
-						$q1->where('id', $category);
-					});
+		$agent = Agent::find(auth()->user()->id);
+		
+		if ($agent->currentLevel() == 1){
+			// If session()->has('ticketit_filter_currentLevel')
+			return $query->userTickets(auth()->user()->id);
+		}else{
+			if (session()->has('ticketit_filters')){
+				// Category filter
+				if (session()->has('ticketit_filter_category')){
+					$category = session('ticketit_filter_category');
+					$query = $query->where('category_id', session('ticketit_filter_category'));
+				}
+				
+				// Agent filter
+				if (session()->has('ticketit_filter_agent')){
+					$agent = session('ticketit_filter_agent');
+					$query = $query->agentTickets(session('ticketit_filter_agent'));
+				}
+
+				// Owner filter
+				if (session()->has('ticketit_filter_owner') and session('ticketit_filter_owner')=="me"){
+					$query = $query->userTickets(auth()->user()->id);
+				}			
 			}
 			
-			// Agent filter
-			if (session()->has('ticketit_filter_agent')){
-				$agent = session('ticketit_filter_agent');
-				$query = $query->whereHas('agent', function ($q2) use ($agent) {
-						$q2->where('id', $agent);
-					});
-			}
-
-			// Owner filter
-			if (session()->has('ticketit_filter_owner') and session('ticketit_filter_owner')=="me"){
-				$query = $query->where('user_id',auth()->user()->id);
-			}			
-		}
-		
-		return $query;		
+			return $query;
+		}		
 	}
 
     /**

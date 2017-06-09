@@ -163,12 +163,35 @@ class Agent extends User
      */
 	public static function maxLevel()
 	{
-		if (!auth()->check()) return false;
+		if (!auth()->check()) return 0;
 		$agent = Agent::find(auth()->user()->id);
 		if ($agent->isAdmin()){
 			return 3;
 		}elseif($agent->isAgent()){
 			return 2;
+		}else
+			return 1;
+	}
+	
+	/**
+     * Get current permission level for user.
+     *
+     * @param int $id category id
+     *
+     * @return integer
+     */
+	public static function currentLevel()
+	{
+		if (!auth()->check()) return 0;
+		$agent = Agent::find(auth()->user()->id);
+		if ($agent->isAdmin()){
+			return 3;
+		}elseif($agent->isAgent()){
+			if (session()->exists('ticketit_filter_currentLevel') and session('ticketit_filter_currentLevel')==1){
+				return 1;
+			}else{
+				return 2;
+			}
 		}else
 			return 1;
 	}
@@ -269,7 +292,7 @@ class Agent extends User
 		
 		if ($agent->isAdmin()){
 			return true;
-		}elseif($agent->isAgent()){		
+		}elseif($agent->isAgent() and $agent->currentLevel() == 2){		
 			if(Setting::grab('agent_restrict')==1){
 				return $agent->categories()->wherePivot('autoassign','1')->count()==0 ? false : true;			
 			}else{
@@ -428,15 +451,21 @@ class Agent extends User
      */
     public function scopeVisibleForAgent($query, $id)
     {
-        // Depends on agent_restrict
-        if (Setting::grab('agent_restrict') == 0) {
-            return $query->whereHas('categories', function ($q1) use ($id) {
-                $q1->whereHas('agents', function ($q2) use ($id) {
-                    $q2->where('id', $id);
-                });
-            })->orderBy('name', 'ASC');
-        } else {
-            return $query->where('id', $id);
-        }
+        $agent = Agent::findOrFail($id);
+		
+		if ($agent->currentLevel() == 2) {
+			// Depends on agent_restrict
+			if (Setting::grab('agent_restrict') == 0) {
+				return $query->whereHas('categories', function ($q1) use ($id) {
+					$q1->whereHas('agents', function ($q2) use ($id) {
+						$q2->where('id', $id);
+					});
+				})->orderBy('name', 'ASC');
+			} else {
+				return $query->where('id', $id);
+			}
+		}else{
+			return false;
+		}
     }
 }

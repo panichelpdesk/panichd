@@ -17,7 +17,7 @@ body {
 	margin: 0em 0.2em 0em 1em;
 }
 
-#ticketit_filter_panel .title.category {	
+#ticketit_filter_panel .title.pov {	
 	margin: 0em 0.2em 0em 0em;
 }
 
@@ -25,11 +25,11 @@ body {
 	font-size: 1.2em;
 }
 
-#ticketit_filter_panel .btn.agent-link, #ticketit_filter_panel .btn.agent-current {
+#ticketit_filter_panel .btn.pov-link, #ticketit_filter_panel .btn.agent-link, #ticketit_filter_panel .btn.agent-current {
 	padding: 0.3em 0.6em;
 }
 
-#ticketit_filter_panel .btn.agent-link {
+#ticketit_filter_panel .btn.pov-link, #ticketit_filter_panel .btn.agent-link {
 	border: none;
 }
 

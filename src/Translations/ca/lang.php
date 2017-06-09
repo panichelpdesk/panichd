@@ -43,6 +43,8 @@ return [
   
   'filter-pov'                       => 'Vista',
   'filter-category-all'              => 'Totes',
+  'filter-on-total'                  => 'Compte segons filtre',
+  'filter-off-total'                 => 'Compte total',
 
   'btn-back'                         => 'Enrere',
   'btn-cancel'                       => 'Cancel·lar',

@@ -43,6 +43,8 @@ return [
   
   'filter-pov'                       => 'View as',
   'filter-category-all'              => 'All',
+  'filter-on-total'                  => 'Count depends on active filters',
+  'filter-off-total'                 => 'Total total',
 
   'btn-back'                         => 'Back',
   'btn-cancel'                       => 'Cancel', // NEW

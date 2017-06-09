@@ -11,7 +11,7 @@ class FiltersController extends Controller
 {
     public function manage(Request $request, $filter, $value)
     {
-		$a_filters = ['agent', 'category', 'owner'];
+		$a_filters = ['currentLevel', 'owner', 'category', 'agent'];
         //### PENDING: User permissions check or redirect back
 
         if ($filter=="removeall"){
@@ -47,23 +47,21 @@ class FiltersController extends Controller
                 $add = false;
 
                 // Filter checks
-                if ($filter == 'agent') {
-                    if (Models\Agent::where('id', $value)->count() == 1) {
-                        $add = true;
-                    }
+                if ($filter=='currentLevel' and in_array($value,[1,2,3])){
+					$add = true;
+				}
+				
+				if ($filter == 'owner' and $value == 'me') {
+					$add = true;
                 }
-
-                if ($filter == 'category') {
-                    if (Models\Category::where('id', $value)->count() == 1) {
-                        $add = true;
-                    }
+				
+				if ($filter == 'category' and Models\Category::where('id', $value)->count() == 1) {
+                    $add = true;
                 }
-
-                if ($filter == 'owner') {
-                    if ($value == 'me') {
-                        $add = true;
-                    }
-                }
+				
+				if ($filter == 'agent' and Models\Agent::where('id', $value)->count() == 1) {
+                    $add = true;
+                }  
 
                 // Add filter
                 if ($add) {
