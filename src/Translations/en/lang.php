@@ -12,6 +12,8 @@ return [
   // Tables
   'table-id'                         => '#',
   'table-subject'                    => 'Subject',
+  'table-description'                => 'Description',
+  'table-intervention'               => 'Intevention',
   'table-owner'                      => 'Owner',
   'table-status'                     => 'Status',
   'table-last-updated'               => 'Last Updated',
@@ -38,6 +40,9 @@ return [
   'table-paginate-prev'              => 'Previous',
   'table-aria-sort-asc'              => ': activate to sort column ascending',
   'table-aria-sort-desc'             => ': activate to sort column descending',
+  
+  'filter-pov'                       => 'View as',
+  'filter-category-all'              => 'All',
 
   'btn-back'                         => 'Back',
   'btn-cancel'                       => 'Cancel', // NEW
@@ -48,6 +53,7 @@ return [
   'btn-submit'                       => 'Submit',
 
   'ticket'                           => 'Ticket',
+  'user'                             => 'User',
   'agent'                            => 'Agent',
   'category'                         => 'Category',
   'colon'                            => ': ',

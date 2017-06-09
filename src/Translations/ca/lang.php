@@ -12,6 +12,8 @@ return [
   // Tables
   'table-id'                         => '#',
   'table-subject'                    => 'Tema',
+  'table-description'                => 'Descripció',
+  'table-intervention'               => 'Actuació',
   'table-owner'                      => 'Propietari',
   'table-status'                     => 'Estat',
   'table-last-updated'               => 'Última actualització',
@@ -38,6 +40,9 @@ return [
   'table-paginate-prev'              => 'Anterior',
   'table-aria-sort-asc'              => ': activar per ordenar ordre ascendent',
   'table-aria-sort-desc'             => ': activar per ordenar ordre descendent',
+  
+  'filter-pov'                       => 'Vista',
+  'filter-category-all'              => 'Totes',
 
   'btn-back'                         => 'Enrere',
   'btn-cancel'                       => 'Cancel·lar',
@@ -48,6 +53,7 @@ return [
   'btn-submit'                       => 'Enviar',
 
   'ticket'                           => 'Tiquet',
+  'user'                             => 'Usuari',
   'agent'                            => 'Agent',
   'category'                         => 'Categoria',
   'colon'                            => ': ',

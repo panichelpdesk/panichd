@@ -3,8 +3,8 @@
         <tr>
             <td>{{ trans('ticketit::lang.table-id') }}</td>
             <td>{{ trans('ticketit::lang.table-subject') }}</td>
-            <td>Description</td>
-			<td>Intervention</td>
+            <td>{{ trans('ticketit::lang.table-description') }}</td>
+			<td>{{ trans('ticketit::lang.table-intervention') }}</td>
 			<td>{{ trans('ticketit::lang.table-status') }}</td>
             <td>{{ trans('ticketit::lang.table-last-updated') }}</td>
 			  @if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)

@@ -21,18 +21,6 @@ body {
 	margin: 0em 0.2em 0em 0em;
 }
 
-#ticketit_filter_panel .btn.owner-current {
-	color: white;
-	background: #f6b26b;
-	border: none;
-}
-
-#ticketit_filter_panel .btn.owner-current .badge {
-	color: #f6b26b;
-	background: white;
-}
-
-
 #ticketit_filter_panel .btn-category {
 	font-size: 1.2em;
 }
@@ -41,44 +29,55 @@ body {
 	padding: 0.3em 0.6em;
 }
 
-#ticketit_filter_panel .btn.owner-link, #ticketit_filter_panel .btn.agent-link {
+#ticketit_filter_panel .btn.agent-link {
 	border: none;
 }
 
 #ticketit_filter_panel .btn.agent-current {
-	color: white;
-	background: #84bef5;
+	background: white;
 	border: none;
 }
 
 #ticketit_filter_panel .btn.agent-current .badge {
-	color: #84bef5;
-	background: white;
+	color: white;
 }
 
+/*
+ * Agent filter menu with select2 script
+*/
 #select_agent_container {
 	display: inline-block;
 }
-
-
-#select_agent_container .select2-selection__rendered {
-	color: white;
-	font-weight: bold;
-	background-color: #84bef5;
+#select_agent {
+	display: none; /* don't show select until it is rendered */
 }
-
-#select_agent_container.all .select2-selection__rendered {
-	background-color: #b1d5fc;
-}
-
-#select_agent_container .select2-selection--single {
-	border-color: transparent;
-}
-
 #select_agent_container #select2-select_agent-container {
 	border-radius: 4px;
 }
-
+#select_agent_container * {
+	outline: none;
+}
+#select_agent_container .select2-selection--single {
+	border-color: transparent;
+}
+#select_agent_container .select2-selection--single:active, #select_agent_container .select2-selection--single:hover {
+	background-color: #eee;
+}
+#select_agent_container .select2-selection__rendered {
+	color: blue; /* selected option color */
+	font-weight: bold;
+}
+#select_agent_container.all .select2-selection__rendered {
+	
+}
+#select_agent_container .select2-selection__arrow b {
+	border-top-color: blue; /* arrow on closed dropdown */
+	border-bottom-color: blue; /* arrow on opened dropdown */
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background: #84bef5;
+    color: #fff;
+}
 
 
 .btn-default .badge {
@@ -113,10 +112,12 @@ body {
 .text-info {
 	color: #549ee8;
 }
+/* btn-info: #84bef5; */
 
 .text-warning {
 	color: #e69138;
 }
+/* btn-warning background: #f6b26b; */
 
 .text-success {
 	color: #68c240;

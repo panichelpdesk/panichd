@@ -15,8 +15,7 @@
 	<script src="//cdn.datatables.net/plug-ins/505bef35b56/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	<script src="//cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
 	<script>
-	$(function(){
-		
+	$(function(){		
 		// Ticket list load
 		$('.table').DataTable({
 	        processing: false,
@@ -74,12 +73,7 @@
 				[5,'desc']				
 			]
 			
-	    });
-		
-		// Filter menu agent change
-		$('#select_agent').select2().on("change", function (e) {				
-			window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
-		});
+	    });		
 		
 		// Ticket List: Change ticket agent
 		$('#tickets-table').on('draw.dt', function(e){
@@ -96,7 +90,9 @@
 				$('#agentChange #category_'+$(this).attr('data-category-id')+'_agents').show()
 					.find(":radio[value="+$(this).attr('data-agent-id')+"]").prop('checked',true);
 			});
-		});	
+		});
+
+		@yield('footer_jquery')
 	});
 	</script>
 @append
