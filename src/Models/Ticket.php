@@ -2,6 +2,7 @@
 
 namespace Kordy\Ticketit\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
 use Kordy\Ticketit\Models\Agent;
@@ -138,6 +139,16 @@ class Ticket extends Model
     public function comments()
     {
         return $this->hasMany('Kordy\Ticketit\Models\Comment', 'ticket_id');
+    }
+	
+	/**
+     * Get Ticket comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function recentComments()
+    {
+        return $this->hasMany('Kordy\Ticketit\Models\Comment', 'ticket_id')->where('ticketit_comments.updated_at','>', Carbon::yesterday());
     }
 
 //    /**
