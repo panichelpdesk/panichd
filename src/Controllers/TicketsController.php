@@ -83,6 +83,30 @@ class TicketsController extends Controller
 
     public function renderTicketTable(EloquentEngine $collection)
     {
+		// Agents for each category
+		$a_cat_pre = Category::select('id')
+			->withCount('agents')
+			->with([
+				'agents' => function($q1){
+					$q1->select('id','name');
+				}
+			
+			])
+			->get()->toArray();
+		
+		$a_cat = [];
+		foreach ($a_cat_pre as $cat){
+			$a_cat[$cat['id']] = $cat;
+			$html = '<div>';
+			foreach ($cat['agents'] as $agent){
+				$html.='<label><input type="radio" name="%1$s_agent" value="'.$agent['id'].'"> '.$agent['name'].'</label><br />';
+			}
+			$html.='<br /><button type="button" class="jquery_submit_integrated_agent" data-ticket-id="%1$s">'.trans('ticketit::lang.btn-change').'</button></div>';
+			$a_cat[$cat['id']]['html']=$html;
+			
+		}
+		
+		// Column edits		
         $collection->editColumn('subject', function ($ticket) {
             return (string) link_to_route(
                 Setting::grab('main_route').'.show',
@@ -122,10 +146,22 @@ class TicketsController extends Controller
             return "<div style='color: $color'>$category</div>";
         });
 
-        $collection->editColumn('agent', function ($ticket) {
+        $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);
-
-            return '<a href="#" class="agent_change" data-ticket-id="'.$ticket->id.'" data-ticket-subject="'.$ticket->subject.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent->id.'" data-agent-name="'.$ticket->agent->name.'" title="canviar agent">'.$ticket->agent->name.'</a>';
+			$count = $a_cat[$ticket->category_id]['agents_count'];
+			
+            $text = '<a href="#" class="jquery_agent_change_'.($count>4 ? 'modal' : ($count == 1 ? 'info' : 'integrated')).'" ';
+			
+			if($count>4){
+				$text.= ' title="'.trans('ticketit::lang.table-change-agent').'"';
+			}elseif($count==1){
+				$text.= ' title="'.trans('ticketit::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+			}else{
+				$text.= ' title="'.trans('ticketit::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
+			}
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent->id.'">'.$ticket->agent->name.'</a>';
+				
+			return $text;
         });
 
         $collection->editColumn('tags', function ($ticket) {

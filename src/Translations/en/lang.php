@@ -21,6 +21,10 @@ return [
   'table-agent'                      => 'Agent',
   'table-category'                   => 'Category',
 
+  // Agent related
+  'table-change-agent'               => 'Change agent',
+  'table-one-agent'                  => 'There is one agent in this category',
+  
   // Datatables
   'table-decimal'                    => '',
   'table-empty'                      => 'No data available in table',
@@ -47,7 +51,8 @@ return [
   'filter-off-total'                 => 'Total total',
 
   'btn-back'                         => 'Back',
-  'btn-cancel'                       => 'Cancel', // NEW
+  'btn-cancel'                       => 'Cancel',
+  'btn-change'                       => 'Change',
   'btn-close'                        => 'Close',
   'btn-delete'                       => 'Delete',
   'btn-edit'                         => 'Edit',
@@ -57,6 +62,7 @@ return [
   'ticket'                           => 'Ticket',
   'user'                             => 'User',
   'agent'                            => 'Agent',
+  'agents'                            => 'Agents',
   'category'                         => 'Category',
   'colon'                            => ': ',
   'comments'                         => 'Comments',

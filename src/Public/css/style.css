@@ -80,6 +80,14 @@ body {
 }
 
 
+/*
+ * Datatable styles
+*/
+.table-hover tbody tr:hover td, .table-hover tbody tr.hover td {
+	background-color: #ddd; /*lightorange: #FFE2B3*/
+}
+
+
 .btn-default .badge {
 	background-color: #bbb ;
 }

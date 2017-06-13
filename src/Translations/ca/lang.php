@@ -18,8 +18,12 @@ return [
   'table-status'                     => 'Estat',
   'table-last-updated'               => 'Última actualització',
   'table-priority'                   => 'Prioritat',
-  'table-agent'                      => 'Agent',
+  'table-agent'                      => 'Tècnic',
   'table-category'                   => 'Categoria',
+  
+  // Agent related
+  'table-change-agent'               => 'Canviar tècnic',
+  'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
 
   // Datatables
   'table-decimal'                    => '',
@@ -48,6 +52,7 @@ return [
 
   'btn-back'                         => 'Enrere',
   'btn-cancel'                       => 'Cancel·lar',
+  'btn-change'                       => 'Canviar',
   'btn-close'                        => 'Tancar',
   'btn-delete'                       => 'Esborrar',
   'btn-edit'                         => 'Editar',
@@ -56,7 +61,8 @@ return [
 
   'ticket'                           => 'Tiquet',
   'user'                             => 'Usuari',
-  'agent'                            => 'Agent',
+  'agent'                            => 'Tècnic',
+  'agents'                           => 'Tècnics',
   'category'                         => 'Categoria',
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
