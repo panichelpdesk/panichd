@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-body">        
+    <div id="ticket-body" class="panel-body">        
 		<div class="row" style="margin-bottom: 0.2em;">
 			<div class="col-md-8">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">
@@ -12,9 +12,13 @@
 			</div>
 			<div class="col-md-4 text-right">
 				@if ($ticket->updated_at!=$ticket->created_at)
-				<span class="glyphicon glyphicon-pencil" title="darrer canvi" style="color: #aaa; cursor: help"></span> {{ $ticket->updated_at->diffForHumans() }} 
+					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('ticketit::lang.date-info-updated') }}" style="color: #aaa; cursor: help">
+						<span class="glyphicon glyphicon-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
+					</span>
 				@endif
-				<span class="glyphicon glyphicon-certificate" title="data de creació" style="color: #aaa; cursor: help"></span> {{ $ticket->created_at->diffForHumans() }}&nbsp;
+				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('ticketit::lang.date-info-created') }}" style="color: #aaa; cursor: help">
+					<span class="glyphicon glyphicon-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
+				</span>&nbsp;
 								
 				@if($u->isAdmin())
 					@if($setting->grab('delete_modal_type') == 'builtin')
@@ -51,7 +55,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-lg-3 col-sm-4">				
+			<div class="col-lg-2 col-sm-3">				
 				<p>
 				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
@@ -85,26 +89,20 @@
 				@endif
 				</p>				
 			</div>
-			<div class="col-lg-9 col-sm-8">
-				<div class="row">
-					<div class="{{ $ticket->intervention_html ? 'col-md-6' : 'col-md-12'}}">
-						<div class="panel panel-default">
-						<div class="panel-body">
+			<div class="col-lg-10 col-sm-9">
+				<div class="row row-eq-height">
+					<div class="description-col {{ $ticket->intervention_html ? 'col-md-6' : 'col-md-12'}}">
 						<div>
 							<b>Descripció</b>
 						</div>
 						<p> {!! $ticket->html !!} </p>
-						</div></div>
 					</div>
 					@if ($ticket->intervention_html)
-						<div class="col-md-6">
-							<div class="panel panel-default">
-							<div class="panel-body">
+						<div class="intervention-col col-md-6">
 							<div>
 								<b>Actuació</b>
 							</div>
 							<p> {!! $ticket->intervention_html !!} </p>
-							</div></div>
 						</div>
 					@endif
 				</div>

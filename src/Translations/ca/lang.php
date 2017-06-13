@@ -67,6 +67,8 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
+  'date-info-created'                => 'Data de creació',
+  'date-info-updated'                => 'Data de darrer canvi',
   'description'                      => 'Descripció',
   'flash-x'                          => '×', // &times;
   'last-update'                      => 'Última actualització',

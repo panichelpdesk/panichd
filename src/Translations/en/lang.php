@@ -67,6 +67,8 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
+  'date-info-created'                => 'Creation date',
+  'date-info-updated'                => 'Last update date',
   'description'                      => 'Description',
   'flash-x'                          => '×', // &times;
   'last-update'                      => 'Last Update',

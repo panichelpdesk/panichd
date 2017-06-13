@@ -42,6 +42,10 @@ body {
 	color: white;
 }
 
+.btn-default .badge {
+	background-color: #bbb ;
+}
+
 /*
  * Agent filter menu with select2 script
 */
@@ -88,8 +92,31 @@ body {
 }
 
 
-.btn-default .badge {
-	background-color: #bbb ;
+/*
+ * Ticket show
+*/
+/* sm and up */
+@media screen and (min-width: 992px){
+	#ticket-body .row.row-eq-height {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+	}	
+}
+
+
+#ticket-body .description-col, #ticket-body .intervention-col {
+	border: 1px solid #ddd;
+	margin: 0px 15px 0px 0px;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+@media screen and (max-width: 991px){
+	#ticket-body .description-col, #ticket-body .intervention-col {
+		margin: 15px;
+	}
 }
 
 
