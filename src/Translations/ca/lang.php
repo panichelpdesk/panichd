@@ -20,6 +20,7 @@ return [
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
   'table-category'                   => 'Categoria',
+  'table-tags'                       => 'Etiquetes',
   
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
@@ -71,6 +72,7 @@ return [
   'date-info-updated'                => 'Data de darrer canvi',
   'description'                      => 'Descripció',
   'flash-x'                          => '×', // &times;
+  'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',
   'no-replies'                       => 'Sense respostes.',
   'owner'                            => 'Propietari',
@@ -80,6 +82,7 @@ return [
   'responsible'                      => 'Tècnic',
   'status'                           => 'Estat',
   'subject'                          => 'Tema',
+  'tags'                             => 'Etiquetes',
 
  /*
   *  Page specific

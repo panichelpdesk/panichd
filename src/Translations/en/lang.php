@@ -20,6 +20,7 @@ return [
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
   'table-category'                   => 'Category',
+  'table-tags'                       => 'Tags',
 
   // Agent related
   'table-change-agent'               => 'Change agent',
@@ -71,6 +72,7 @@ return [
   'date-info-updated'                => 'Last update date',
   'description'                      => 'Description',
   'flash-x'                          => '×', // &times;
+  'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
@@ -80,6 +82,7 @@ return [
   'responsible'                      => 'Responsible',
   'status'                           => 'Status',
   'subject'                          => 'Subject',
+  'tags'                             => 'Tags',
 
  /*
   *  Page specific
