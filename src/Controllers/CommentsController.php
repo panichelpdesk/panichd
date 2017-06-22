@@ -17,8 +17,8 @@ class CommentsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['edit', 'update', 'destroy']]);
-        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => 'store']);
+        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['store','edit', 'update', 'destroy']]);
+        
     }
 
     /**
@@ -153,7 +153,7 @@ class CommentsController extends Controller
 			$ticket->save();			
 		}		
 		
-		return back()->with('status', 'El comentari s\'ha actualitzat correctament');
+		return back()->with('status', trans('ticketit::lang.comment-has-been-updated'));
     }
 
     /**
@@ -168,6 +168,6 @@ class CommentsController extends Controller
         $comment=Models\Comment::findOrFail($id);        
         $comment->delete();
 
-        return back()->with('status', 'El comentari s\'ha eliminat correctament');
+        return back()->with('status', trans('ticketit::lang.comment-has-been-deleted'));
     }
 }
