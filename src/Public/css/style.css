@@ -119,8 +119,21 @@ body {
 	}
 }
 
+.panel-highlight {
+	border-color: #FFE171;
+}
 
-/* Panell d'etiquetes dels tiquets */
+.panel-highlight > .panel-heading {
+	background-color: #FFE171;
+}
+
+.panel-highlight > .panel-body {
+	background-color: lightyellow;
+}
+
+
+
+/* Tags panel */
 .btn-group-panel .btn-group {
 	margin-right: 25px;
 	margin-bottom: 10px;

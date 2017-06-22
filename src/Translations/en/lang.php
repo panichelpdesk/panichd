@@ -110,6 +110,27 @@ return [
   'show-ticket-js-delete'            => 'Are you sure you want to delete: ',
   'show-ticket-modal-delete-title'   => 'Delete Ticket',
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',
+  
+  'show-ticket-add-comment'                => 'Add comment',
+  'show-ticket-add-comment-type'           => 'Type',
+  'show-ticket-add-comment-note'           => 'Internal note',
+  'show-ticket-add-comment-reply'          => 'Reply to user',
+  'show-ticket-add-com-check-intervention' => 'Append this text in intervention field',
+  'show-ticket-add-com-check-resolve'      => 'Resolve this ticket and apply the status',
+  
+   
+  'show-ticket-edit-comment'         => 'Edit comment',
+  'show-ticket-edit-com-check-int'   => 'Add text to the intervention field',
+  'show-ticket-delete-comment'       => 'Delete comment',
+  'show-ticket-delete-comment-msg'   => 'Are you sure you want to delete this comment?',
+  'show-ticket-email-resend'         => 'Resend email',
+  'show-ticket-email-resend-user'    => 'To user: ',
+  'show-ticket-email-resend-agent'   => 'To agent: ',
+  
+  /*'validate-ticket-subject.required' => '',
+  'validate-ticket-subject.min'      => '',
+  'validate-ticket-content.required' => '',
+  'validate-ticket-content.min'      => '',*/
 
  /*
   *  Controllers
@@ -141,6 +162,8 @@ return [
 
 // CommentsController
   'comment-has-been-added-ok'        => 'Comment has been added successfully',
+  'comment-has-been-updated'         => 'Comment has been updated',
+  'comment-has-been-deleted'         => 'Comment has been deleted',
 
 // NotificationsController
   'notify-new-comment-from'          => 'New comment from ',

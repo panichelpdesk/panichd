@@ -111,6 +111,21 @@ return [
   'show-ticket-modal-delete-title'   => 'Esborrar Tiquet',
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
   
+  'show-ticket-add-comment'                => 'Afegir comentari',
+  'show-ticket-add-comment-type'           => 'Tipus',
+  'show-ticket-add-comment-note'           => 'Nota interna',
+  'show-ticket-add-comment-reply'          => 'Resposta a usuari', 
+  'show-ticket-add-com-check-intervention' => 'Afegir aquesta resposta al camp actuació',
+  'show-ticket-add-com-check-resolve'      => 'Resoldre el tiquet amb estat',
+  
+  'show-ticket-edit-comment'         => 'Editar comentari',
+  'show-ticket-edit-com-check-int'   => 'Afegir el text al camp actuació',
+  'show-ticket-delete-comment'       => 'Eliminar comentari',
+  'show-ticket-delete-comment-msg'   => 'Estàs segur que vols eliminar aquest comentari?',
+  'show-ticket-email-resend'         => 'Reenviar notificacions',
+  'show-ticket-email-resend-user'    => 'A l\'usuari: ',
+  'show-ticket-email-resend-agent'   => 'Al tècnic: ',
+  
   'validate-ticket-subject.required' => 'Cal indicar un tema. Si us plau, indica en poques paraules de què es tracta',
   'validate-ticket-subject.min'      => 'Cal que indiquis un tema més llarg',
   'validate-ticket-content.required' => 'Cal indicar una descripció. Si adjuntes alguna imatge és necessari que també afegeixis un text explicatiu',
@@ -140,13 +155,15 @@ return [
   'priority-all-tickets-here'        => 'Totes les prioritats relacionades amb els tiquets',
 
 // StatusesController
-  'status-name-has-been-created'   => 'The status :name s\'ha creat!',
-  'status-name-has-been-modified'  => 'The status :name s\'ha modificat!',
-  'status-name-has-been-deleted'   => 'The status :name s\'ha esborrat!',
-  'status-all-tickets-here'        => 'Tots els registres relacionats amb l\'estat',
+  'status-name-has-been-created'     => 'The status :name s\'ha creat!',
+  'status-name-has-been-modified'    => 'The status :name s\'ha modificat!',
+  'status-name-has-been-deleted'     => 'The status :name s\'ha esborrat!',
+  'status-all-tickets-here'          => 'Tots els registres relacionats amb l\'estat',
 
 // CommentsController
   'comment-has-been-added-ok'        => 'El comentari s\'ha afegit correctament',
+  'comment-has-been-updated'         => 'El comentari s\'ha actualitzat correctament',
+  'comment-has-been-deleted'         => 'El comentari s\'ha eliminat correctament',
 
 // NotificationsController
   'notify-new-comment-from'          => 'Nou comentari de ',
