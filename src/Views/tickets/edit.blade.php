@@ -1,5 +1,5 @@
 <div class="modal fade" id="ticket-edit-modal" tabindex="-1" role="dialog" aria-labelledby="ticket-edit-modal-Label">
-    <div class="modal-dialog model-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             {!! CollectiveForm::model($ticket, [
                  'route' => [$setting->grab('main_route').'.update', $ticket->id],
@@ -11,79 +11,110 @@
                 <h4 class="modal-title" id="ticket-edit-modal-Label">{{ $ticket->subject }}</h4>
             </div>
             <div class="modal-body">
-                <div class="col-sm-12">
-                    {{--@if($u->isAdmin())--}}
-                    <div class="form-group">
-                        {!! CollectiveForm::text('subject', $ticket->subject, ['class' => 'form-control', 'required']) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! CollectiveForm::label('content', 'Content' . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
-						<div class="col-lg-12">{!! CollectiveForm::textarea('content', $ticket->html, [
-                        	    'class' => 'form-control summernote-editor', 'rows' => '5', 'required'
-                        	]) !!}</div>
-                    </div>
-					@if ($u->isAgent() or $u->isAdmin())
-						<div class="form-group">
-							{!! CollectiveForm::label('intervention', 'Intervention' . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
-							<div class="col-lg-12">{!! CollectiveForm::textarea('intervention', $ticket->intervention_html, [
-								'class' => 'form-control summernote-editor', 'rows' => '5'
-							]) !!}</div>
-						</div>
-					@endif
-                    {{--@endif--}}
 
-                    <div class="form-group col-lg-6">
-                        {!! CollectiveForm::label('priority_id', trans('ticketit::lang.priority') . trans('ticketit::lang.colon'), ['class' => 'col-lg-4 control-label']) !!}
-                        <div class="col-lg-8">
-                            {!! CollectiveForm::select('priority_id', $priority_lists, $ticket->priority_id, ['class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-6">
-                        {!! CollectiveForm::label('agent_id', trans('ticketit::lang.agent') . trans('ticketit::lang.colon'), [
-                            'class' => 'col-lg-4 control-label'
-                        ]) !!}
-                        <div class="col-lg-8">
-                            {!! CollectiveForm::select(
-                                'agent_id',
-                                $agent_lists,
-                                $ticket->agent_id,
-                                ['class' => 'form-control']) !!}
+				
+				<div class="row">
+					<div class="col-sm-4">
+						
+						<div class="form-group">
+							{!! CollectiveForm::label('status_id', trans('ticketit::lang.subject') . trans('ticketit::lang.colon'), [
+									'class' => 'col-sm-12 control-label',
+									'style' => 'text-align: left'
+								]) !!}
+							<div class="col-sm-12">
+								{!! CollectiveForm::text('subject', $ticket->subject, ['class' => 'form-control', 'required']) !!}
+							</div>
 						</div>
+						
+						<div class="form-group">
+							{!! CollectiveForm::label('status_id', trans('ticketit::lang.status') . trans('ticketit::lang.colon'), [
+								'class' => 'col-lg-6 control-label'
+							]) !!}
+							<div class="col-lg-6">
+								{!! CollectiveForm::select('status_id', $status_lists, $ticket->status_id, ['class' => 'form-control']) !!}
+							</div>
+						</div>
+						
+						<div class="form-group">
+							{!! CollectiveForm::label('priority_id', trans('ticketit::lang.priority') . trans('ticketit::lang.colon'), ['class' => 'col-lg-6 control-label']) !!}
+							<div class="col-lg-6">
+								{!! CollectiveForm::select('priority_id', $priority_lists, $ticket->priority_id, ['class' => 'form-control']) !!}
+							</div>
+						</div>
+						
+						<div class="form-group">
+							{!! CollectiveForm::label('category_id',  trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
+								'class' => 'col-lg-6 control-label'
+							]) !!}
+							<div class="col-lg-6">
+								{!! CollectiveForm::select('category_id', $category_lists, $ticket->category_id, ['class' => 'form-control']) !!}
+								</div>
+						</div>
+						<div class="form-group">
+							{!! CollectiveForm::label('agent_id', trans('ticketit::lang.agent') . trans('ticketit::lang.colon'), [
+								'class' => 'col-lg-6 control-label'
+							]) !!}
+							<div class="col-lg-6">
+								{!! CollectiveForm::select(
+									'agent_id',
+									$agent_lists,
+									$ticket->agent_id,
+									['class' => 'form-control']) !!}
+							</div>
+						</div>
+						
+						<div class="form-group">						
+							{!! CollectiveForm::label('tags', trans('ticketit::lang.tags') . trans('ticketit::lang.colon'), [
+								'class' => 'col-sm-12 control-label',
+								'style' => 'text-align: left'
+							]) !!}							
+							<div id="jquery_select2_container" class="col-sm-12">
+							
+							<?php $categories = $category_lists; ?>
+							@include('ticketit::tickets.partials.tags_menu')
+							
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-8">
+					                    
+						<div class="form-group">
+							{!! CollectiveForm::label('content', trans('ticketit::lang.description') . trans('ticketit::lang.colon'), [
+								'class' => 'col-sm-12 control-label',
+								'style' => 'text-align: left'
+							]) !!}
+							<div class="col-sm-12">{!! CollectiveForm::textarea('content', $ticket->html, [
+									'class' => 'form-control summernote-editor', 'rows' => '5', 'required'
+								]) !!}</div>
+						</div>
+						@if ($u->currentLevel() > 1)
+							<div class="form-group">
+								{!! CollectiveForm::label('intervention', trans('ticketit::lang.intervention') . trans('ticketit::lang.colon'), [
+									'class' => 'col-sm-12 control-label',
+									'style' => 'text-align: left'
+								]) !!}
+								<div class="col-sm-12">{!! CollectiveForm::textarea('intervention', $ticket->intervention_html, [
+									'class' => 'form-control summernote-editor', 'rows' => '5'
+								]) !!}</div>
+							</div>
+						@endif
+					                    {{--@endif--}}
+					
+					                    
+
 					</div>
 				</div>
 
-                <div class="clearfix"></div>
+                
 
-                    <div class="form-group col-lg-12">
-                        {!! CollectiveForm::label('category_id',  trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
-                            'class' => 'col-lg-6 control-label'
-                        ]) !!}
-                        <div class="col-lg-6">
-                            {!! CollectiveForm::select('category_id', $category_lists, $ticket->category_id, ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-12">
-                        {!! CollectiveForm::label('status_id', trans('ticketit::lang.status') . trans('ticketit::lang.colon'), [
-                            'class' => 'col-lg-6 control-label'
-                        ]) !!}
-                        <div class="col-lg-6">
-                            {!! CollectiveForm::select('status_id', $status_lists, $ticket->status_id, ['class' => 'form-control']) !!}
-                        </div>
-                    </div>
 
-                    <div class="clearfix"></div>		
+                    </div>
+                    
+
+                    
 
 					
-					<div class="form-group col-lg-12">						
-						<label class="control-label col-lg-2">Etiquetes</label>
-						<div id="jquery_select2_container" class="col-lg-10">
-						
-						<?php $categories = $category_lists; ?>
-						@include('ticketit::tickets.partials.tags_menu')
-						
-						</div>
-					</div>				
+								
 					
 					<div class="clearfix"></div>
 

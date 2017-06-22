@@ -15,8 +15,7 @@
 	<script src="//cdn.datatables.net/plug-ins/505bef35b56/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	<script src="//cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
 	<script>
-	$(function(){
-		
+	$(function(){		
 		// Ticket list load
 		$('.table').DataTable({
 	        processing: false,
@@ -56,10 +55,10 @@
 				{ data: 'intervention', name: 'intervention' },
 	            { data: 'status', name: 'ticketit_statuses.name' },
 	            { data: 'updated_at', name: 'ticketit.updated_at' },
-            	@if (session('ticketit_filter_agent')=="" && $u->maxLevel > 1)
+            	@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
 					{ data: 'agent', name: 'users.name' },
 				@endif				
-	            @if( $u->maxLevel > 1 )
+	            @if( $u->currentLevel() > 1 )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	@if (session('ticketit_filter_owner')=="")
 						{ data: 'owner', name: 'users.name' },
@@ -74,29 +73,68 @@
 				[5,'desc']				
 			]
 			
-	    });
-		
-		// Filter menu agent change
-		$('#select_agent').select2().on("change", function (e) {				
-			window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
-		});
+	    });		
 		
 		// Ticket List: Change ticket agent
 		$('#tickets-table').on('draw.dt', function(e){
-			$('.agent_change').click(function(e){
-				e.preventDefault();
+			
+			// Agent change: Modal for > 4 agents
+			$('.jquery_agent_change_modal').click(function(e){
+				e.preventDefault();				
 				
-				$('#agentChange #agent_ticket_id_text').text($(this).attr('data-ticket-id'));
-				$('#agentChange #agent_ticket_id_field').val($(this).attr('data-ticket-id'));
-				$('#agentChange #ticket_subject').text($(this).attr('data-ticket-subject'));
-				$('#agentChange #current_agent').text($(this).attr('data-agent-name'));
+				// Row hover
+				$(this).closest('tr').addClass('hover');				
 				
-				$('#agentChange').modal('show');
-				$('#agentChange .categories_agent_change').hide();
-				$('#agentChange #category_'+$(this).attr('data-category-id')+'_agents').show()
+				// Form fields
+				$('#modalAgentChange #agent_ticket_id_field').val($(this).attr('data-ticket-id'));
+				
+				// Modal itself
+				$('#modalAgentChange').modal('show');
+				$('#modalAgentChange .categories_agent_change').hide();
+				$('#modalAgentChange #category_'+$(this).attr('data-category-id')+'_agents').show()
 					.find(":radio[value="+$(this).attr('data-agent-id')+"]").prop('checked',true);
 			});
-		});	
+			
+			$('#modalAgentChange').on('hidden.bs.modal', function () {
+				$(document).find('tr').removeClass('hover');
+			});
+			
+			// Agent change: Popover menu
+			$(".jquery_agent_change_integrated").popover({ trigger: "manual" , html: true, animation:false})				
+				.on("mouseenter", function () {
+					var _this = this;
+					$(this).popover("show");
+					$(".popover").on("mouseleave", function () {
+						$(_this).popover('hide');
+					});					
+				}).on("mouseleave", function () {
+					var _this = this;
+					setTimeout(function () {
+						if (!$(".popover:hover").length) {
+							$(_this).popover("hide");
+						}
+					}, 200);					
+			});
+			
+			// Agent change: Popover menu submit
+			$(document).on('click','.jquery_submit_integrated_agent',function(e){
+				e.preventDefault();
+								
+				// Form fields
+				$('#modalAgentChange #agent_ticket_id_field').val($(this).attr('data-ticket-id'));
+				$('#modalAgentChange').find(":radio[value="+$(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_agent]:checked').val()+"]").prop('checked',true);
+			
+				// Form submit
+				$('#modalAgentChange').find('form').submit();
+				
+			});
+
+			// Agent change: Tooltip for 1 agents
+			$(".jquery_agent_change_info").tooltip();
+			
+		});
+
+		@yield('footer_jquery')
 	});
 	</script>
 @append

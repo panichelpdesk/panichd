@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-body">        
+    <div id="ticket-body" class="panel-body">        
 		<div class="row" style="margin-bottom: 0.2em;">
 			<div class="col-md-8">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">
@@ -12,9 +12,13 @@
 			</div>
 			<div class="col-md-4 text-right">
 				@if ($ticket->updated_at!=$ticket->created_at)
-				<span class="glyphicon glyphicon-pencil" title="darrer canvi" style="color: #aaa; cursor: help"></span> {{ $ticket->updated_at->diffForHumans() }} 
+					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('ticketit::lang.date-info-updated') }}" style="color: #aaa; cursor: help">
+						<span class="glyphicon glyphicon-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
+					</span>
 				@endif
-				<span class="glyphicon glyphicon-certificate" title="data de creació" style="color: #aaa; cursor: help"></span> {{ $ticket->created_at->diffForHumans() }}&nbsp;
+				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('ticketit::lang.date-info-created') }}" style="color: #aaa; cursor: help">
+					<span class="glyphicon glyphicon-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
+				</span>&nbsp;
 								
 				@if($u->isAdmin())
 					@if($setting->grab('delete_modal_type') == 'builtin')
@@ -51,60 +55,59 @@
 		</div>
 
 		<div class="row">
-			<div class="col-lg-3 col-sm-4">				
+			<div class="col-lg-2 col-sm-3">				
 				<p>
 				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
-				@if ($u->maxLevel > 1)
+				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
 				@endif
+				
 				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
 					@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
 						<span style="color: blue">Complete</span>
 					@else
 						<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
 					@endif
-				@if ($u->maxLevel > 1)
+					
+				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('ticketit::lang.priority') }}</strong>{{ trans('ticketit::lang.colon') }}
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
 					</span>
-					</p><p>
-					<strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}
+					</p><p>					
 				@endif
-				<br /><strong>{{ trans('ticketit::lang.category') }}</strong>{{ trans('ticketit::lang.colon') }}
+				
+				<strong>{{ trans('ticketit::lang.category') }}</strong>{{ trans('ticketit::lang.colon') }}
 				<span style="color: {{ $ticket->category->color }}">
 					{{ $ticket->category->name }}
 				</span>
 				
-				@if ($u->maxLevel > 1 and $ticket->has('tags'))
-					<br /><strong>Etiquetes</strong>{{ trans('ticketit::lang.colon') }}
+				@if ($u->currentLevel() > 1)
+					<br /><strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}
+				@endif
+								
+				@if ($u->currentLevel() > 1 and $ticket->has('tags'))
+					<br /><strong>{{ trans('ticketit::lang.tags') }}</strong>{{ trans('ticketit::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-default btn-tag btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
-					@endforeach
-					
+					@endforeach					
 				@endif
 				</p>				
 			</div>
-			<div class="col-lg-9 col-sm-8">
-				<div class="row">
-					<div class="{{ $ticket->intervention_html ? 'col-md-6' : 'col-md-12'}}">
-						<div class="panel panel-default">
-						<div class="panel-body">
+			<div class="col-lg-10 col-sm-9">
+				<div class="row row-eq-height">
+					<div class="description-col {{ $ticket->intervention_html ? 'col-md-6' : 'col-md-12'}}">
 						<div>
-							<b>Descripció</b>
+							<b>{{ trans('ticketit::lang.description') }}</b>
 						</div>
 						<p> {!! $ticket->html !!} </p>
-						</div></div>
 					</div>
 					@if ($ticket->intervention_html)
-						<div class="col-md-6">
-							<div class="panel panel-default">
-							<div class="panel-body">
+						<div class="intervention-col col-md-6">
 							<div>
-								<b>Actuació</b>
+								<b>{{ trans('ticketit::lang.intervention') }}</b>
 							</div>
 							<p> {!! $ticket->intervention_html !!} </p>
-							</div></div>
 						</div>
 					@endif
 				</div>
@@ -117,7 +120,7 @@
 			{!! link_to_route($setting->grab('main_route').'.reopen', trans('ticketit::lang.reopen-ticket'), $ticket->id,
 									['class' => 'btn btn-default']) !!}
 		@endif
-		@if($u->isAgent() || $u->isAdmin())
+		@if($u->currentLevel() > 1)
 			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ticket-edit-modal">
 				{{ trans('ticketit::lang.btn-edit')  }}
 			</button>

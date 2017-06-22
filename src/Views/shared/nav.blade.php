@@ -1,14 +1,11 @@
 <ul class="nav nav-pills">
-	<?php $title="";
-	if (session()->has('ticketit_filters')){
-		$title = isset($ticket) ? 'Compte segons filtre':'Compte total';
-	}?>
+	<?php $title = trans('ticketit::lang.filter-'.((session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters'))) ? 'on' : 'off').'-total');	?>
 	
 	@if($u->canViewNewTickets())
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest')) ? "active" : "" !!}" title="{{ $title }}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest') }}" >Nous		
 			<span class="badge">
-			@if (session()->has('ticketit_filters') and isset($ticket))
+			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
@@ -18,7 +15,7 @@
 			@endif
 			
 			</span>
-			@if (session()->has('ticketit_filters') and !isset($ticket))
+			@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 		</a>
@@ -28,7 +25,7 @@
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}" title="{{ $title }}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}" >{{ trans('ticketit::lang.nav-active-tickets') }}		
 			<span class="badge">
-			@if (session()->has('ticketit_filters') and isset($ticket))
+			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
@@ -38,7 +35,7 @@
 			@endif
 			
 			</span>
-			@if (session()->has('ticketit_filters') and !isset($ticket))
+			@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 		</a>
@@ -46,7 +43,7 @@
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}" title="{{ $title }}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete') }}">{{ trans('ticketit::lang.nav-completed-tickets') }}			
 			<span class="badge">
-			@if (session()->has('ticketit_filters') and isset($ticket))
+			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
@@ -56,7 +53,7 @@
 			@endif
 			
 			</span>
-			@if (session()->has('ticketit_filters') and !isset($ticket))
+			@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 		</a>

@@ -17,76 +17,123 @@ body {
 	margin: 0em 0.2em 0em 1em;
 }
 
-#ticketit_filter_panel .title.category {	
+#ticketit_filter_panel .title.pov {	
 	margin: 0em 0.2em 0em 0em;
 }
-
-#ticketit_filter_panel .btn.owner-current {
-	color: white;
-	background: #f6b26b;
-	border: none;
-}
-
-#ticketit_filter_panel .btn.owner-current .badge {
-	color: #f6b26b;
-	background: white;
-}
-
 
 #ticketit_filter_panel .btn-category {
 	font-size: 1.2em;
 }
 
-#ticketit_filter_panel .btn.agent-link, #ticketit_filter_panel .btn.agent-current {
+#ticketit_filter_panel .btn.pov-link, #ticketit_filter_panel .btn.agent-link, #ticketit_filter_panel .btn.agent-current {
 	padding: 0.3em 0.6em;
 }
 
-#ticketit_filter_panel .btn.owner-link, #ticketit_filter_panel .btn.agent-link {
+#ticketit_filter_panel .btn.pov-link, #ticketit_filter_panel .btn.agent-link {
 	border: none;
 }
 
 #ticketit_filter_panel .btn.agent-current {
-	color: white;
-	background: #84bef5;
+	background: white;
 	border: none;
 }
 
 #ticketit_filter_panel .btn.agent-current .badge {
-	color: #84bef5;
-	background: white;
-}
-
-#select_agent_container {
-	display: inline-block;
-}
-
-
-#select_agent_container .select2-selection__rendered {
 	color: white;
-	font-weight: bold;
-	background-color: #84bef5;
 }
-
-#select_agent_container.all .select2-selection__rendered {
-	background-color: #b1d5fc;
-}
-
-#select_agent_container .select2-selection--single {
-	border-color: transparent;
-}
-
-#select_agent_container #select2-select_agent-container {
-	border-radius: 4px;
-}
-
-
 
 .btn-default .badge {
 	background-color: #bbb ;
 }
 
+/*
+ * Agent filter menu with select2 script
+*/
+#select_agent_container {
+	display: inline-block;
+}
+#select_agent {
+	display: none; /* don't show select until it is rendered */
+}
+#select_agent_container #select2-select_agent-container {
+	border-radius: 4px;
+}
+#select_agent_container * {
+	outline: none;
+}
+#select_agent_container .select2-selection--single {
+	border-color: transparent;
+}
+#select_agent_container .select2-selection--single:active, #select_agent_container .select2-selection--single:hover {
+	background-color: #eee;
+}
+#select_agent_container .select2-selection__rendered {
+	color: blue; /* selected option color */
+	font-weight: bold;
+}
+#select_agent_container.all .select2-selection__rendered {
+	
+}
+#select_agent_container .select2-selection__arrow b {
+	border-top-color: blue; /* arrow on closed dropdown */
+	border-bottom-color: blue; /* arrow on opened dropdown */
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background: #84bef5;
+    color: #fff;
+}
 
-/* Panell d'etiquetes dels tiquets */
+
+/*
+ * Datatable styles
+*/
+.table-hover tbody tr:hover td, .table-hover tbody tr.hover td {
+	background-color: #ddd; /*lightorange: #FFE2B3*/
+}
+
+
+/*
+ * Ticket show
+*/
+/* sm and up */
+@media screen and (min-width: 992px){
+	#ticket-body .row.row-eq-height {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+	}	
+}
+
+
+#ticket-body .description-col, #ticket-body .intervention-col {
+	border: 1px solid #ddd;
+	margin: 0px 15px 0px 0px;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+@media screen and (max-width: 991px){
+	#ticket-body .description-col, #ticket-body .intervention-col {
+		margin: 15px;
+	}
+}
+
+.panel-highlight {
+	border-color: #FFE171;
+}
+
+.panel-highlight > .panel-heading {
+	background-color: #FFE171;
+}
+
+.panel-highlight > .panel-body {
+	background-color: lightyellow;
+}
+
+
+
+/* Tags panel */
 .btn-group-panel .btn-group {
 	margin-right: 25px;
 	margin-bottom: 10px;
@@ -113,10 +160,12 @@ body {
 .text-info {
 	color: #549ee8;
 }
+/* btn-info: #84bef5; */
 
 .text-warning {
 	color: #e69138;
 }
+/* btn-warning background: #f6b26b; */
 
 .text-success {
 	color: #68c240;

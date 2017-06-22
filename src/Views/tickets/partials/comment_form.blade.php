@@ -5,17 +5,17 @@
 			{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
-                <h4 class="modal-title" id="ticket-comment-modal-Label">Afegir comentari</h4>
+                <h4 class="modal-title" id="ticket-comment-modal-Label">{{ trans('ticketit::lang.show-ticket-add-comment') }}</h4>
             </div>
             <div class="modal-body">
 
 				<fieldset>
 					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
-							{!! CollectiveForm::label('type', 'Tipus' . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+							{!! CollectiveForm::label('type', trans('ticketit::lang.show-ticket-add-comment-type') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 							<div class="col-lg-10">
-								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="glyphicons glyphicon glyphicon-pencil"></span> Nota interna</button>&nbsp;
-								<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="glyphicons glyphicon glyphicon-envelope"></span> Resposta a usuari</button>
+								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="glyphicons glyphicon glyphicon-pencil"></span> {{ trans('ticketit::lang.show-ticket-add-comment-note') }}</button>&nbsp;
+								<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="glyphicons glyphicon glyphicon-envelope"></span> {{ trans('ticketit::lang.show-ticket-add-comment-reply') }}</button>
 								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
 							</div>
 						</div>
@@ -28,11 +28,11 @@
 					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
 							<div class="col-lg-12">
-							<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> Afegir aquesta resposta al camp actuació</label>
+							<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> {{ trans('ticketit::lang.show-ticket-add-com-check-intervention') }}</label>
 							</div>
 							@if ($u->canCloseTicket($ticket->id))
 								<div class="col-lg-12">
-								<label><input type="checkbox" name="complete_ticket" value="yes" {{ ($ticket->comments->count()>0) ? '' : 'checked="checked"'}}> Resoldre el tiquet amb estat</label>
+								<label><input type="checkbox" name="complete_ticket" value="yes" {{ ($ticket->comments->count()>0) ? '' : 'checked="checked"'}}> {{ trans('ticketit::lang.show-ticket-add-com-check-resolve') . trans('ticketit::lang.colon')}}</label>
 								&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
 								</div>
 							@endif

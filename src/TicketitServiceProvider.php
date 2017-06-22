@@ -38,7 +38,6 @@ class TicketitServiceProvider extends ServiceProvider
             view()->composer('*', function ($view) {
                 if (auth()->check()) {
                     $u = Agent::find(auth()->user()->id);
-					$u->maxLevel = $u->maxLevel();
                     $view->with('u', $u);
                 }
                 $setting = new Setting();

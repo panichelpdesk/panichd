@@ -23,7 +23,7 @@ class ResAccessMiddleware
         }
 
         // All Agents have access in none restricted mode
-        if (Setting::grab('agent_restrict') == 'no') {
+        if (Setting::grab('agent_restrict') == 0) {
             if (Agent::isAgent()) {
                 return $next($request);
             }

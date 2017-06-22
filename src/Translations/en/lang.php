@@ -12,13 +12,20 @@ return [
   // Tables
   'table-id'                         => '#',
   'table-subject'                    => 'Subject',
+  'table-description'                => 'Description',
+  'table-intervention'               => 'Intevention',
   'table-owner'                      => 'Owner',
   'table-status'                     => 'Status',
   'table-last-updated'               => 'Last Updated',
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
   'table-category'                   => 'Category',
+  'table-tags'                       => 'Tags',
 
+  // Agent related
+  'table-change-agent'               => 'Change agent',
+  'table-one-agent'                  => 'There is one agent in this category',
+  
   // Datatables
   'table-decimal'                    => '',
   'table-empty'                      => 'No data available in table',
@@ -38,9 +45,15 @@ return [
   'table-paginate-prev'              => 'Previous',
   'table-aria-sort-asc'              => ': activate to sort column ascending',
   'table-aria-sort-desc'             => ': activate to sort column descending',
+  
+  'filter-pov'                       => 'View as',
+  'filter-category-all'              => 'All',
+  'filter-on-total'                  => 'Count depends on active filters',
+  'filter-off-total'                 => 'Total total',
 
   'btn-back'                         => 'Back',
-  'btn-cancel'                       => 'Cancel', // NEW
+  'btn-cancel'                       => 'Cancel',
+  'btn-change'                       => 'Change',
   'btn-close'                        => 'Close',
   'btn-delete'                       => 'Delete',
   'btn-edit'                         => 'Edit',
@@ -48,13 +61,18 @@ return [
   'btn-submit'                       => 'Submit',
 
   'ticket'                           => 'Ticket',
+  'user'                             => 'User',
   'agent'                            => 'Agent',
+  'agents'                            => 'Agents',
   'category'                         => 'Category',
   'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
+  'date-info-created'                => 'Creation date',
+  'date-info-updated'                => 'Last update date',
   'description'                      => 'Description',
   'flash-x'                          => '×', // &times;
+  'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
@@ -64,6 +82,7 @@ return [
   'responsible'                      => 'Responsible',
   'status'                           => 'Status',
   'subject'                          => 'Subject',
+  'tags'                             => 'Tags',
 
  /*
   *  Page specific
@@ -91,6 +110,27 @@ return [
   'show-ticket-js-delete'            => 'Are you sure you want to delete: ',
   'show-ticket-modal-delete-title'   => 'Delete Ticket',
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',
+  
+  'show-ticket-add-comment'                => 'Add comment',
+  'show-ticket-add-comment-type'           => 'Type',
+  'show-ticket-add-comment-note'           => 'Internal note',
+  'show-ticket-add-comment-reply'          => 'Reply to user',
+  'show-ticket-add-com-check-intervention' => 'Append this text in intervention field',
+  'show-ticket-add-com-check-resolve'      => 'Resolve this ticket and apply the status',
+  
+   
+  'show-ticket-edit-comment'         => 'Edit comment',
+  'show-ticket-edit-com-check-int'   => 'Add text to the intervention field',
+  'show-ticket-delete-comment'       => 'Delete comment',
+  'show-ticket-delete-comment-msg'   => 'Are you sure you want to delete this comment?',
+  'show-ticket-email-resend'         => 'Resend email',
+  'show-ticket-email-resend-user'    => 'To user: ',
+  'show-ticket-email-resend-agent'   => 'To agent: ',
+  
+  /*'validate-ticket-subject.required' => '',
+  'validate-ticket-subject.min'      => '',
+  'validate-ticket-content.required' => '',
+  'validate-ticket-content.min'      => '',*/
 
  /*
   *  Controllers
@@ -122,6 +162,8 @@ return [
 
 // CommentsController
   'comment-has-been-added-ok'        => 'Comment has been added successfully',
+  'comment-has-been-updated'         => 'Comment has been updated',
+  'comment-has-been-deleted'         => 'Comment has been deleted',
 
 // NotificationsController
   'notify-new-comment-from'          => 'New comment from ',

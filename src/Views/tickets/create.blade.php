@@ -11,7 +11,7 @@
 			]) !!}
             <legend>{!! trans('ticketit::lang.create-new-ticket') !!}</legend>
             
-			@if ($u->maxLevel > 1)
+			@if ($u->maxLevel() > 1)
 				<div class="jquery_level2_class row" data-class="row"><div class="jquery_level2_class col-md-4" data-class="col-md-4"><!--</div></div>-->
 			@endif
 			
@@ -22,7 +22,7 @@
                 </div>
             </div>
 			
-			@if ($u->maxLevel > 1)
+			@if ($u->maxLevel() > 1)
 			<div class="jquery_level2_show">
 				<div class="form-group"><!-- ACTIVE / COMPLETE -->
 					{!! CollectiveForm::label('status_id', 'Llistat' . trans('ticketit::lang.colon'), [
@@ -55,11 +55,11 @@
 			<div class="form-group"><!-- CATEGORY -->
 				{!! CollectiveForm::label('category', '*' . trans('ticketit::lang.category') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label  level_class', 'data-level-1-class' => 'col-lg-2', 'data-level-2-class' => 'col-lg-3']) !!}
 				<div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-					{!! CollectiveForm::select('category_id', $categories, $a_current['cat_id'], ['id'=>($u->maxLevel > 1 ? 'category_change' : 'category_id'), 'class' => 'form-control', 'required' => 'required']) !!}
+					{!! CollectiveForm::select('category_id', $categories, $a_current['cat_id'], ['id'=>($u->maxLevel() > 1 ? 'category_change' : 'category_id'), 'class' => 'form-control', 'required' => 'required']) !!}
 				</div>
 			</div>
 			
-			@if ($u->maxLevel > 1)				
+			@if ($u->maxLevel() > 1)				
 			<div class="jquery_level2_show">
 				<div class="form-group"><!-- AGENT -->
 					{!! CollectiveForm::label('agent_id', trans('ticketit::lang.agent') . trans('ticketit::lang.colon'), [
@@ -86,7 +86,7 @@
 				{!! CollectiveForm::hidden('agent_id', 'auto') !!}
 			@endif
 			
-			@if ($u->maxLevel > 1)
+			@if ($u->maxLevel() > 1)
 				</div><div class="jquery_level2_class col-md-8" data-class="col-md-8">
 			@endif
 			
@@ -97,7 +97,7 @@
                 </div>
             </div>
 			
-			@if ($u->maxLevel > 1)
+			@if ($u->maxLevel() > 1)
 			<div class="jquery_level2_show">
 				<div class="form-group"><!-- INTERVENTION -->
 					<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
@@ -125,7 +125,7 @@
 	var category_id=<?=$a_current['cat_id'];?>;
 
 	$(function(){		
-		// Category select with $u->maxLevel > 1 only
+		// Category select with $u->maxLevel() > 1 only
 		$('#category_change').change(function(){
 			// Update agent list
 			$('#agent_id').prop('disabled',true);
@@ -135,7 +135,7 @@
 			});
 			
 			
-			@if ($u->maxLevel == 2)
+			@if ($u->maxLevel() == 2)
 				// Get permission level for chosen category
 				$.get("{!! route($setting->grab('main_route').'-permissionLevel') !!}/" + $(this).val(),{},function(resp,status){
 					if (resp > 1){

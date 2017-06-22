@@ -4,13 +4,10 @@
         @include('ticketit::shared.header')
         @include('ticketit::tickets.partials.ticket_body')
 		
-        <div class="row" style="margin-top: 2em;">
-        	<div class="col-xs-4">
-				<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}</h2>
-			</div>
-        	<div class="col-xs-4 text-center">
-        		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ticket-comment-modal">Afegir comentari</button>
-        	</div>
+        <div style="margin-top: 2em;">
+        	<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ticket-comment-modal">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+			</h2>
         </div>
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
@@ -21,6 +18,9 @@
     <script>
 		var category_id=<?=$ticket->category_id;?>;
         $(document).ready(function() {
+			// Tooltips
+			$('.tooltip-info').tooltip();
+			
             $( ".deleteit" ).click(function( event ) {
                 event.preventDefault();
                 if (confirm("{!! trans('ticketit::lang.show-ticket-js-delete') !!}" + $(this).attr("node") + " ?"))
@@ -72,16 +72,36 @@
 				
 			});
 
-			// Comment (note) delete button
-			$( ".comment_deleteit" ).click(function( event ) {
+			// Highlight related comment when showing related modal
+			$('.jquery_panel_hightlight').on('show.bs.modal', function (e) {
+                $(e.relatedTarget).closest('div.panel').addClass('panel-highlight');				
+			});
+			
+			$('.jquery_panel_hightlight').on('hidden.bs.modal', function (e) {
+                $('div.panel').removeClass('panel-highlight');
+			});
+			
+			// Click "X" to delete comment
+			$('#modal-comment-delete').on('show.bs.modal', function (e) {
+				if ($('#delete-comment-form').attr('data-default-action') == ''){
+					$('#delete-comment-form').attr('data-default-action',$('#delete-comment-form').attr('action'));
+				}
+				
+				// Add value to form
+				$('#delete-comment-form').attr('action',$('#delete-comment-form').attr('action').replace('action_comment_id',$(e.relatedTarget).attr('data-id')));
+			});
+			
+			// Dismiss comment deletion
+			$('#modal-comment-delete').on('hidden.bs.modal', function (e) {
+				$('#delete-comment-form').attr('action',$('#delete-comment-form').attr('data-default-action'));
+			});
+			
+			// Comment confirm delete
+			$( "#delete-comment-submit" ).click(function( event ) {
                 event.preventDefault();
-                if (confirm("Estàs segur que vols eliminar aquesta nota de " + $(this).attr("data-text") + " ?"))
-                {
-                    var action = $('#delete-comment-form').attr('action');
-					$('#delete-comment-form').attr('action',action.replace('action_comment_id',$(this).attr('data-id')));			
-                    $("#delete-comment-form").submit();
-                }
-            });
+                $("#delete-comment-form").submit();
+            });	
+			
 			
 			// Comment (reply) notifications resend modal
 			$( "#email-resend-modal" ).on('show.bs.modal', function (e) {
