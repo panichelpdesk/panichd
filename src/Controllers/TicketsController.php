@@ -3,8 +3,10 @@
 namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Category;
@@ -79,6 +81,12 @@ class TicketsController extends Controller
 
         $collection->editColumn('updated_at', '{!! \Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $updated_at)->diffForHumans() !!}');
 
+        // method rawColumns was introduced in laravel-datatables 7, which is only compatible with >L5.4
+        // in previous laravel-datatables versions escaping columns wasn't defaut
+        if (LaravelVersion::min('5.4')) {
+            $collection->rawColumns(['subject', 'status', 'priority', 'category', 'agent']);
+        }
+
         return $collection->make(true);
     }
 
@@ -131,21 +139,21 @@ class TicketsController extends Controller
 
         $collection->editColumn('status', function ($ticket) {
             $color = $ticket->color_status;
-            $status = $ticket->status;
+            $status = e($ticket->status);
 
             return "<div style='color: $color'>$status</div>";
         });
 
         $collection->editColumn('priority', function ($ticket) {
             $color = $ticket->color_priority;
-            $priority = $ticket->priority;
+            $priority = e($ticket->priority);
 
             return "<div style='color: $color'>$priority</div>";
         });
 
         $collection->editColumn('category', function ($ticket) {
             $color = $ticket->color_category;
-            $category = $ticket->category;
+            $category = e($ticket->category);
 
             return "<div style='color: $color'>$category</div>";
         });
@@ -311,21 +319,40 @@ class TicketsController extends Controller
     }
 
     /**
+     * Returns priorities, categories and statuses lists in this order
+     * Decouple it with list()
+     *
+     * @return array
+     */
+    protected function PCS()
+    {
+        $priorities = Cache::remember('ticketit::priorities', 60, function() {
+            return Models\Priority::all();
+        });
+
+        $categories = Cache::remember('ticketit::categories', 60, function() {
+            return Models\Category::all();
+        });
+
+        $statuses = Cache::remember('ticketit::statuses', 60, function() {
+            return Models\Status::all();
+        });
+
+        if (LaravelVersion::min('5.3.0')) {
+            return [$priorities->pluck('name', 'id'), $categories->pluck('name', 'id'), $statuses->pluck('name', 'id')];
+        } else {
+            return [$priorities->lists('name', 'id'), $categories->lists('name', 'id'), $statuses->lists('name', 'id')];
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return Response
      */
     public function create()
     {
-        if (version_compare(app()->version(), '5.2.0', '>=')) {
-            $status_lists = Models\Status::pluck('name', 'id');
-			$priorities = Models\Priority::pluck('name', 'id');
-            $categories = Models\Category::pluck('name', 'id');
-        } else { // if Laravel 5.1
-            $status_lists = Models\Status::lists('name', 'id');
-			$priorities = Models\Priority::lists('name', 'id');
-            $categories = Models\Category::lists('name', 'id');
-        }
+		list($priorities, $categories, $status_lists) = $this->PCS();
 		
 		$user = $this->agent->find(auth()->user()->id);
 		$a_current = [];
@@ -488,16 +515,12 @@ class TicketsController extends Controller
         $ticket = $this->tickets->with('tags')->find($id);
 
         if (version_compare(app()->version(), '5.3.0', '>=')) {
-            $status_lists = Models\Status::pluck('name', 'id');
-            $priority_lists = Models\Priority::pluck('name', 'id');
-            $category_lists = $a_categories = Models\Category::pluck('name', 'id');
             $a_tags_selected = $ticket->tags()->pluck('id')->toArray();
         } else { // if Laravel 5.1
-            $status_lists = Models\Status::lists('name', 'id');
-            $priority_lists = Models\Priority::lists('name', 'id');
-            $category_lists = $a_categories = Models\Category::lists('name', 'id');
             $a_tags_selected = $ticket->tags()->lists('id')->toArray();
         }
+
+        list($priority_lists, $category_lists, $status_lists) = $this->PCS();
 
         // Category tags
         $tag_lists = Category::whereHas('tags')

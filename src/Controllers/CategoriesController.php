@@ -17,7 +17,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('tags')->get();
+        $categories = \Cache::remember('ticketit::categories', 60, function() {
+            return Category::with('tags')->get();
+        });
 
         return view('ticketit::admin.category.index', compact('categories'));
     }
@@ -49,6 +51,8 @@ class CategoriesController extends Controller
         $this->sync_category_tags($request, $a_tags_new, $a_tags_update, $category);
 
         Session::flash('status', trans('ticketit::lang.category-name-has-been-created', ['name' => $request->name]));
+
+        \Cache::forget('ticketit::categories');
 
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
     }
@@ -99,6 +103,8 @@ class CategoriesController extends Controller
         $this->sync_category_tags($request, $a_tags_new, $a_tags_update, $category);
 
         Session::flash('status', trans('ticketit::lang.category-name-has-been-modified', ['name' => $request->name]));
+
+        \Cache::forget('ticketit::categories');
 
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
     }
@@ -232,6 +238,8 @@ class CategoriesController extends Controller
         Tag::doesntHave('categories')->doesntHave('tickets')->delete();
 
         Session::flash('status', trans('ticketit::lang.category-name-has-been-deleted', ['name' => $name]));
+
+        \Cache::forget('ticketit::categories');
 
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
     }
