@@ -110,6 +110,11 @@ return [
   'category-create-name'          => 'Name',
   'category-create-color'         => 'Color',
   'category-edit-title'           => 'Edit Category: :name',
+  'category-edit-new-tags'        => 'New tags',
+  'category-edit-current-tags'    => 'Current tags',
+  'category-edit-tag'             => 'Edit tag',
+  'category-edit-tag-background'  => 'Background',
+  'category-edit-tag-text'        => 'Text',
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Priorities Management',

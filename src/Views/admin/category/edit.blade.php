@@ -45,7 +45,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
-                <h4 class="modal-title" id="tag-edit-modal-Label">Edit tag "<span id="jquery_popup_tag_title"></span>"</h4>
+                <h4 class="modal-title" id="tag-edit-modal-Label">{{ trans('ticketit::admin.category-edit-tag') . trans('ticketit::admin.colon') }} "<span id="jquery_popup_tag_title"></span>"</h4>
             </div>
             <div class="modal-body">
                 <div class="col-sm-12">
@@ -58,13 +58,13 @@
 
 				<div class="row">
 					<div class="col-sm-6">
-						<h4>Background</h4>
+						<h4>{{ trans('ticketit::admin.category-edit-tag-background') }}</h4>
 						<div id="pick_bg" class="colorpickerplus-embed">
 						  <div class="colorpickerplus-container"> </div>
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<h4>Text</h4>
+						<h4>{{ trans('ticketit::admin.category-edit-tag-text') }}</h4>
 						<div id="pick_text" class="colorpickerplus-embed">
 						  <div class="colorpickerplus-container"> </div>
 						</div>

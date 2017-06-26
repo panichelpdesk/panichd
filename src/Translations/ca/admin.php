@@ -104,6 +104,11 @@ return [
   'category-create-name'          => 'Nom',
   'category-create-color'         => 'Color',
   'category-edit-title'           => 'Editar Categoria: :name',
+  'category-edit-new-tags'        => 'Etiq. noves',
+  'category-edit-current-tags'    => 'Etiq. actuals',
+  'category-edit-tag'             => 'Editar etiqueta',
+  'category-edit-tag-background'  => 'Fons',
+  'category-edit-tag-text'        => 'Text',
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
