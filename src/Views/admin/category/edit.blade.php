@@ -40,12 +40,16 @@
         @include('ticketit::admin.category.form', ['update', true])
         {!! CollectiveForm::close() !!}
     </div>
+	@include('ticketit::admin.category.modal-reason')
 	@include('ticketit::admin.category.modal-tag')
 	@include('ticketit::admin.category.color_script')
 	@include('ticketit::admin.category.tags_script')
 	<script type="text/javascript">
 	var elem_i="";
 	$(function(){		
+		$('.tooltip-info').tooltip();
+		
+		
 		$('#tag-edit-modal').on('show.bs.modal', function (e)
 		{
 			var button=$(e.relatedTarget);

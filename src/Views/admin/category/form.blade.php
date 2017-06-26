@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-sm-3">
+	<div class="col-md-3">
 	<div class="form-group">
 		{!! CollectiveForm::label('name', trans('ticketit::admin.category-create-name') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
 		<div class="col-lg-10">
@@ -16,7 +16,24 @@
 		</div>
 	</div>
 	</div>
-	<div class="col-sm-9">	
+	<div class="col-md-9">
+	<div class="form-group">
+		<label class="control-label col-sm-2 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-edit-closing-reasons-help') }}">{{ trans('ticketit::admin.category-edit-closing-reasons') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
+		<div class="col-sm-10">
+			<p><button type="button" class="btn btn-default" id="button_new_reason" data-toggle="modal" data-target="#reason-edit-modal">{{ trans('ticketit::admin.btn-create') }}</button></p>
+			
+			
+			
+			<div class="btn-group">
+			<?php $i=1;?>
+			<a href="#" role="button" id="reason_text_{{$i}}" class="btn btn-default" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}" title="{{ trans('ticketit::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-reason_name="reason" data-tag_i="{{$i}}">reason</a>
+			
+			<a href="#" role="button" id="jquery_reason_{{$i}}" class="btn btn-default jquery_reason_check" title="{{ trans('ticketit::admin.category-delete-reason') }}" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>			
+			</div>
+			
+		</div>
+	</div>
+	
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="admin-select2-tags">{{ trans('ticketit::admin.category-edit-new-tags') . trans('ticketit::admin.colon') }}</label>
 		<div class="col-sm-10">
