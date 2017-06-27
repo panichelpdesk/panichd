@@ -132,16 +132,13 @@ body {
 }
 
 
-
-/* Tags panel */
+/* Admin > Category: Edit: Tags panel */
 .btn-group-panel .btn-group {
-	margin-right: 25px;
-	margin-bottom: 10px;
+	margin: 0px 25px 10px 0px;
 }
 
 .btn-group-panel .btn-group.unchecked .btn-default {
-	color: gray;
-	
+	color: gray;	
 }
 .btn-group-panel .btn-group.unchecked .btn-text {
 	background: white;
@@ -157,6 +154,22 @@ body {
 	background: #f2ffe6;
 }
 
+/* Tag panel check / uncheck styles */
+.jquery_tag_group_unchecked .glyphicon-ok, .jquery_tag_group_checked .glyphicon-remove {
+	display: none;
+}
+.jquery_tag_group_checked .glyphicon-ok, .jquery_tag_group_unchecked .glyphicon-remove {
+	display: inline !important;
+}	
+
+.jquery_tag_group_checked .jquery_tag_text {
+	text-decoration: line-through;
+	color: black !important;
+	background-color: #ff9999 !important;
+}
+
+
+/* Common elements */
 .text-info {
 	color: #549ee8;
 }
@@ -169,4 +182,12 @@ body {
 
 .text-success {
 	color: #68c240;
+}
+
+.tooltip-info {
+	cursor: help;
+}
+
+.tooltip-info .glyphicon-question-sign {
+	color: #bbb;
 }

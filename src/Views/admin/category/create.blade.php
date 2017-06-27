@@ -8,7 +8,9 @@
             <legend>{{ trans('ticketit::admin.category-create-title') }}</legend>
             @include('ticketit::admin.category.form')
         {!! CollectiveForm::close() !!}
-    </div>
-	@include('ticketit::admin.category.color_script')
-	@include('ticketit::admin.category.tags_script')
+    </div>	
+	@include('ticketit::admin.category.modal-reason')
+	@include('ticketit::admin.category.modal-tag')	
+
+	@include('ticketit::admin.category.scripts-create-edit')
 @stop
