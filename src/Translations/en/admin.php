@@ -30,6 +30,7 @@ return [
   'table-edit'                    => 'Edit',
 
   'btn-back'                      => 'Back',
+  'btn-change'                    => 'Change',
   'btn-create'                    => 'Create',
   'btn-delete'                    => 'Delete',
   'btn-edit'                      => 'Edit',
@@ -115,6 +116,7 @@ return [
   'category-edit-closing-reasons-help' => 'Options that user may choose when closing ticket',
   'category-edit-reason'          => 'Closing reason',
   'category-edit-reason-label'    => 'Reason',
+  'category-edit-reason-status'   => 'Status',
   'category-delete-reason'        => 'Delete reason',
   'category-edit-new-tags'        => 'New tags',
   'category-edit-current-tags'    => 'Current tags',

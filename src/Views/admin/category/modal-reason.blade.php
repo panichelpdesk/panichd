@@ -7,22 +7,28 @@
             </div>
             <div class="modal-body">
                 
-				<div class="form-group">
-					{!! CollectiveForm::label('reason', trans('ticketit::admin.category-edit-reason-label') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
-					
-					<div class="col-lg-10">{!! CollectiveForm::text('text', null, [
-							'id'=>'jquery_popup_reason_input',
-							'class' => 'form-control', 'required'
-						]) !!}
+				
+				<form action="" class="form-horizontal">
+					<div class="form-group">
+						{!! CollectiveForm::label('reason', trans('ticketit::admin.category-edit-reason-label') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
+						
+						<div class="col-lg-10">{!! CollectiveForm::text('text', null, [
+								'id'=>'jquery_popup_reason_text',
+								'class' => 'form-control', 'required'
+							]) !!}
+						</div>
 					</div>
-				</div>
-				<div class="clearfix"></div>
-				<br />
-				
-				
+					
+					<div class="form-group">
+						{!! CollectiveForm::label('status', trans('ticketit::admin.category-edit-reason-status') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
+						
+						<div class="col-lg-10">{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), ['id' => 'jquery_popup_select_status', 'class' => 'form-control']) !!}
+						</div>
+					</div>
+				</form>			
 
 				<div class="modal-footer">					
-					{!! CollectiveForm::button(trans('ticketit::admin.btn-save'), ['id'=>'jquery_popup_reason_submit', 'class' => 'btn btn-primary']) !!}
+					{!! CollectiveForm::button(trans('ticketit::admin.btn-change'), ['id'=>'jquery_popup_reason_submit', 'class' => 'btn btn-primary']) !!}
 				</div>
 				
 			</div>

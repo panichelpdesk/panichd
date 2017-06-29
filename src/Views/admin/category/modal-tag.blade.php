@@ -30,7 +30,7 @@
 				</div>				
 
 				<div class="modal-footer">					
-					{!! CollectiveForm::button(trans('ticketit::lang.btn-submit'), ['id'=>'jquery_popup_tag_submit', 'class' => 'btn btn-primary']) !!}
+					{!! CollectiveForm::button(trans('ticketit::lang.btn-change'), ['id'=>'jquery_popup_tag_submit', 'class' => 'btn btn-primary']) !!}
 				</div>
 				
 			</div>

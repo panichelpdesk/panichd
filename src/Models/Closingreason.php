@@ -11,11 +11,21 @@ class Closingreason extends Model
     /**
      * Get related category.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
      */
     public function category()
     {
         return $this->belongsTo('Kordy\Ticketit\Models\Category', 'category_id');
+    }
+	
+	/**
+     * Get related status.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
+     */
+    public function status()
+    {
+        return $this->belongsTo('Kordy\Ticketit\Models\Status', 'status_id');
     }
 
 }

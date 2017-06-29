@@ -26,4 +26,14 @@ class Status extends Model
     {
         return $this->hasMany('Kordy\Ticketit\Models\Ticket', 'status_id');
     }
+	
+	/**
+     * Get related closing reasons.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function closingReasons()
+    {
+        return $this->hasMany('Kordy\Ticketit\Models\Closingreason', 'status_id');
+    }
 }

@@ -30,6 +30,7 @@ return [
   'table-edit'                    => 'Editar',
 
   'btn-back'                      => 'Endarrere',
+  'btn-change'                    => 'Canviar',
   'btn-create'                    => 'Crear',
   'btn-delete'                    => 'Eliminar',
   'btn-edit'                      => 'Editar',
@@ -109,6 +110,7 @@ return [
   'category-edit-closing-reasons-help' => 'Opcions que l\'usuari haurà de triar quan tanqui un tiquet',
   'category-edit-reason'          => 'Raó de tancament',
   'category-edit-reason-label'    => 'Raó',
+  'category-edit-reason-status'   => 'Estat',
   'category-delete-reason'        => 'Eliminar raó',
   'category-edit-new-tags'        => 'Etiq. noves',
   'category-edit-current-tags'    => 'Etiq. actuals',

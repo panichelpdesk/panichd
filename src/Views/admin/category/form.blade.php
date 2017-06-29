@@ -20,15 +20,44 @@
 	<div class="form-group">
 		<label class="control-label col-sm-2 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-edit-closing-reasons-help') }}">{{ trans('ticketit::admin.category-edit-closing-reasons') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
 		<div class="col-sm-10">
-			<p><button type="button" class="btn btn-default" id="button_new_reason" data-toggle="modal" data-target="#reason-edit-modal">{{ trans('ticketit::admin.btn-create') }}</button></p>
+			<p><button type="button" class="btn btn-default" id="button_new_reason" data-toggle="modal" data-target="#reason-edit-modal" data-i="new">{{ trans('ticketit::admin.btn-create') }}</button></p>
 			
+			<div id="reason_list" class="grouped_check_list deletion-list">
+			@if (isset($category) and $category->has('closingReasons'))
+			@foreach ($category->closingReasons as $i=>$reason)					
+				<div style="margin-bottom: 10px">
+					<div class="btn-group unchecked">
+					<a href="#" role="button" id="reason_{{$i}}" class="btn btn-default text_button" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}" title="{{ trans('ticketit::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-text="{{ $reason->text }}" data-reason_status_id="{{ $reason->status_id }}" data-i="{{$i}}" data-delete_id="jquery_delete_reason_"><span class="reason_text">{{ $reason->text }}</span> <span class="glyphicon glyphicon-arrow-right" style="color: #bbb"></span> <span class="reason_status">{{ $reason->status->name }}</span></a>
+					
+					<a href="#" role="button" id="jquery_reason_{{$i}}" class="btn btn-default check_button" title="{{ trans('ticketit::admin.category-delete-reason') }}" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>			
+					</div>
+					
+					<input type="hidden" id="jquery_delete_reason_{{$i}}" name="jquery_delete_reason_{{$i}}" value="{{$reason->id}}" disabled="disabled">
+					<input type="hidden" id="jquery_reason_ordering_{{$i}}" name="reason_ordering[]" value="{{$i}}">
+					<input type="hidden" id="jquery_reason_id_{{$i}}" name="jquery_reason_id_{{$i}}" value="{{$reason->id}}">
+					<input type="hidden" id="jquery_reason_text_{{$i}}" name="jquery_reason_text_{{$i}}" value="{{$reason->text}}" disabled="disabled">
+					<input type="hidden" id="jquery_reason_status_id_{{$i}}" name="jquery_reason_status_id_{{$i}}" value="{{$reason->status_id}}" disabled="disabled">
+				</div>				
+			@endforeach
+				<input type="hidden" id="reasons_count" name="reasons_count" value="<?=isset($i)?$i+1:0;?>">
+			@endif
+			</div>
 			
-			
-			<div class="btn-group">
-			<?php $i=1;?>
-			<a href="#" role="button" id="reason_text_{{$i}}" class="btn btn-default" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}" title="{{ trans('ticketit::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-reason_name="reason" data-tag_i="{{$i}}">reason</a>
-			
-			<a href="#" role="button" id="jquery_reason_{{$i}}" class="btn btn-default jquery_reason_check" title="{{ trans('ticketit::admin.category-delete-reason') }}" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>			
+			<div id="reason_template" style="display: none">				
+				<div style="margin-bottom: 10px">
+					<div class="btn-group unchecked">
+					<?php $i=1;?>
+					<a href="#" role="button" id="reason_tempnum" class="btn btn-default text_button" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}" title="{{ trans('ticketit::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-text="button text" data-i="i" data-delete_id="jquery_delete_reason_"><span class="reason_text">reason text</span> <span class="glyphicon glyphicon-arrow-right" style="color: #bbb"></span> <span class="reason_status">reason status name</span></a>
+					
+					<a href="#" role="button" id="jquery_reason_{{$i}}" class="btn btn-default check_button" title="{{ trans('ticketit::admin.category-delete-reason') }}" aria-label="{{ trans('ticketit::admin.category-delete-reason') }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>			
+					</div>
+					
+					<input type="hidden" id="jquery_delete_reason_tempnum" name="jquery_delete_reason_tempnum" value="tempnum" disabled="disabled">
+					<input type="hidden" id="jquery_reason_ordering_tempnum" name="reason_ordering[]" value="tempnum" disabled="disabled">
+					<input type="hidden" id="jquery_reason_id_tempnum" name="jquery_reason_id_tempnum" value="new" disabled="disabled">
+					<input type="hidden" id="jquery_reason_text_tempnum" name="jquery_reason_text_tempnum" value="reason text" disabled="disabled">
+					<input type="hidden" id="jquery_reason_status_id_tempnum" name="jquery_reason_status_id_tempnum" value="status_id" disabled="disabled">
+				</div>				
 			</div>
 			
 		</div>
@@ -45,7 +74,7 @@
 		<label class="control-label col-sm-2">{{ trans('ticketit::admin.category-edit-current-tags') . trans('ticketit::admin.colon') }}</label>
 		<div class="col-sm-10">					
 			<div id="tag-panel" class="btn-group-panel pull-left">
-				@foreach ($category->tags as $i=>$tag)		
+				@foreach ($category->tags as $i=>$tag)
 					<div class="btn-group jquery_tag_group_unchecked">				
 					<a href="#" role="button" id="jquery_tag_check_{{$i}}" class="btn btn-default jquery_tag_check" title="Eliminar etiqueta {{$tag->name}}" aria-label="Eliminar etiqueta {{$tag->name}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>								
 					<a href="#" role="button" id="tag_text_{{$i}}" class="btn btn-default btn-tag jquery_tag_text" aria-label="Etiqueta {{$tag->name}}" title="Etiqueta '{{$tag->name}}' conté {{$tag->tickets_count}} tiquets relacionats" data-toggle="modal" data-target="#tag-edit-modal" data-tag_name="{{$tag->name}}" data-tag_i="{{$i}}" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
@@ -57,7 +86,7 @@
 					<input type="hidden" id="jquery_tag_color_{{$i}}" name="jquery_tag_color_{{$i}}" value="{{$tag->bg_color.'_'.$tag->text_color}}" disabled="disabled">
 				@endforeach
 			</div>
-			<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>}}">			
+			<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>">
 
 		</div>
 	</div>

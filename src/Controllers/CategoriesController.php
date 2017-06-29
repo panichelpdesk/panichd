@@ -3,8 +3,11 @@
 namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
+use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Kordy\Ticketit\Helpers\LaravelVersion;
+use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Category;
 use Kordy\Ticketit\Models\Tag;
 
@@ -31,7 +34,9 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('ticketit::admin.category.create');
+        $status_lists = $this->Statuses();
+		
+		return view('ticketit::admin.category.create', compact('status_lists'));
     }
 
     /**
@@ -43,12 +48,20 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        list($a_tags_new, $a_tags_update) = $this->validation_with_tags($request);
+        list($request, $reason_rules, $a_reasons) = $this->add_reasons_to($request);
+		
+		list($request, $tag_rules, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
+		
+		// Do Laravel validation
+		$rules = array_merge($reason_rules, $tag_rules);		
+		$this->do_validate($request, $rules);
 
         $category = new Category();
         $category = $category->create(['name' => $request->name, 'color' => $request->color]);
 
-        $this->sync_category_tags($request, $a_tags_new, $a_tags_update, $category);
+		$this->sync_reasons($request, $category, $a_reasons);
+		
+        $this->sync_category_tags($request, $category, $a_tags_new, $a_tags_update);
 
         Session::flash('status', trans('ticketit::lang.category-name-has-been-created', ['name' => $request->name]));
 
@@ -78,11 +91,35 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::with(['tags'=> function ($q) {
-            $q->withCount('tickets');
-        }])->findOrFail($id);
+        $category = Category::with([
+			'tags'=> function ($q) {
+				$q->withCount('tickets');
+			}
+		])->with('closingReasons.status')->findOrFail($id);
+		
+		$status_lists = $this->Statuses();
 
-        return view('ticketit::admin.category.edit', compact('category'));
+        return view('ticketit::admin.category.edit', compact('category', 'status_lists'));
+    }
+	
+	 /**
+     * Returns statuses list
+     * Decouple it with list()
+     *
+     * @return array
+     */
+    protected function Statuses()
+    {
+
+        $statuses = Cache::remember('ticketit::statuses', 60, function() {
+            return Models\Status::all();
+        });
+
+        if (LaravelVersion::min('5.3.0')) {
+            return $statuses->pluck('name', 'id');
+        } else {
+            return $statuses->lists('name', 'id');
+        }
     }
 
     /**
@@ -94,13 +131,21 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
-    {
-        list($a_tags_new, $a_tags_update) = $this->validation_with_tags($request);
-
+    {		
+		list($request, $reason_rules, $a_reasons) = $this->add_reasons_to($request);
+		
+		list($request, $tag_rules, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
+		
+		// Do Laravel validation
+		$rules = array_merge($reason_rules, $tag_rules);		
+		$this->do_validate($request, $rules);
+		
         $category = Category::findOrFail($id);
         $category->update(['name' => $request->name, 'color' => $request->color]);
 
-        $this->sync_category_tags($request, $a_tags_new, $a_tags_update, $category);
+		$this->sync_reasons($request, $category, $a_reasons);
+		
+        $this->sync_category_tags($request, $category, $a_tags_new, $a_tags_update);
 
         Session::flash('status', trans('ticketit::lang.category-name-has-been-modified', ['name' => $request->name]));
 
@@ -109,20 +154,59 @@ class CategoriesController extends Controller
         return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
     }
 
-    /**
-     * Does the request validation.
+	/**
+     * Adds reason fields to $request
      *
      * @param Request $request
      *
      * Return Array
      */
-    protected function validation_with_tags($request)
-    {
-        $rules = [
-            'name'      => 'required',
-            'color'     => 'required',
-        ];
-        // Allow alphanumeric and the following: ? @ / - _
+    protected function add_reasons_to($request)
+    {        
+        $rules = $a_new = $a_update = $a_delete = [];
+		
+		if ($request->exists('reason_ordering')){			
+			foreach ($request->input('reason_ordering') as $ordering=>$i){
+				if ($request->has('jquery_delete_reason_'.$i)){
+					$a_delete[] = $request->input('jquery_reason_id_'.$i);
+				}elseif($request->has('jquery_reason_id_'.$i)) {
+                
+					$reason = [
+						'ordering'=>$ordering
+					];
+					if ($request->exists('jquery_reason_text_'.$i)){
+						$reason['text'] = $request->input('jquery_reason_text_'.$i);
+						$rules['jquery_reason_text_'.$i] = "required|min:5|regex:/^[A-Za-z0-9@\/\-_\s]+$/";
+					}
+					if ($request->exists('jquery_reason_status_id_'.$i)){
+						$reason['status_id'] = $request->input('jquery_reason_status_id_'.$i);
+						$rules['jquery_reason_status_id_'.$i] = "required|exists:ticketit_statuses,id";
+					}				
+					
+					if ($request->input('jquery_reason_id_'.$i) == "new"){
+						$a_new[] = $reason;					
+					}else{
+						$a_update[$request->input('jquery_reason_id_'.$i)] = $reason;
+					}		
+				}
+			}
+		}
+		
+        return [$request, $rules, ['new'=>$a_new, 'update'=>$a_update, 'delete'=>$a_delete]];
+    }
+	
+    /**
+     * Adds tag fields to $request
+     *
+     * @param Request $request
+     *
+     * Return Array
+     */
+    protected function add_tags_to($request)
+    {        
+        $rules = [];
+		
+		// Allow alphanumeric and the following: ? @ / - _
         $tag_rule = "required|regex:/^[A-Za-z0-9?@\/\-_\s]+$/";
 
         // Add validation for new tags like it were fields
@@ -153,13 +237,69 @@ class CategoriesController extends Controller
                     $a_tags_update[$request->input('jquery_tag_id_'.$i)]['color'] = $request->input('jquery_tag_color_'.$i);
                 }
             }
-        }
+        }        
 
-        $this->validate($request, $rules);
-
-        return [$a_tags_new, $a_tags_update];
+        return [$request, $rules, $a_tags_new, $a_tags_update];
     }
+	
+	/**
+     * Does the request validation.
+     *
+     * @param Request $request
+     */
+	protected function do_validate($request, $rules)
+	{
+		$rules = array_merge($rules, [
+            'name'      => 'required',
+            'color'     => 'required',
+        ]);		
+		
+		$this->validate($request, $rules);
+	}
 
+	/**
+     * Syncs reasons for category.
+     *
+     * @param $request
+     * @param $a_tags_new Array
+     * @param $category instance of Kordy\Ticketit\Models\Category
+     */
+    protected function sync_reasons($request, $category, $a_reasons)
+    {        
+		// Add new reasons
+		foreach ($a_reasons['new'] as $fields) {
+			$new = new Models\Closingreason;
+			$new->text = $fields['text'];
+			$new->status_id = $fields['status_id'];
+			$new->category_id = $category->id;
+			$new->ordering = $fields['ordering'];
+			$new->save();		
+		}
+		
+		// Update reasons
+        foreach ($a_reasons['update'] as $id=>$fields) {
+            $reason = Models\Closingreason::where('id', $id)->first();
+			$update = false;
+            if (isset($fields['text'])) {
+                $reason->text = $fields['text'];
+				$update = true;
+            }
+            if (isset($fields['status_id'])) {
+                $reason->status_id = $fields['status_id'];
+				$update = true;
+            }
+			if ($reason->ordering != $fields['ordering']){
+				$reason->ordering=$fields['ordering'];
+				$update = true;
+			}
+			
+			if ($update) $reason->save();
+        }
+		
+		// Delete marked reasons
+		if ($a_reasons['delete']) Models\Closingreason::destroy($a_reasons['delete']);
+    }
+	
     /**
      * Syncs tags for category instance.
      *
@@ -167,7 +307,7 @@ class CategoriesController extends Controller
      * @param $a_tags_new Array
      * @param $category instance of Kordy\Ticketit\Models\Category
      */
-    protected function sync_category_tags($request, $a_tags_new, $a_tags_update, $category)
+    protected function sync_category_tags($request, $category, $a_tags_new, $a_tags_update )
     {
         // Update renamed tags
         foreach ($a_tags_update as $id=>$fields) {

@@ -3,6 +3,8 @@ var elem_i="";
 $(function(){	
 	$('.tooltip-info').tooltip();
 	
+	$('.grouped_check_list').sortable();
+	
 	// Category color picker
 	var catColorPicker = $('#category_color_picker');
 	catColorPicker.colorpickerplus();
@@ -24,7 +26,7 @@ $(function(){
 			var button=$(e.relatedTarget);
 			
 			// Element identifier to modal
-			elem_i=button.data('reason_i');
+			elem_i=button.data('i');
 			
 			// Text to modal
 			$(this).find('#jquery_popup_reason_text').val($('#jquery_reason_text_'+elem_i).val());
@@ -41,8 +43,8 @@ $(function(){
 		if (modal_text != ""){
 			if (elem_i == 'new'){
 				
-				new_i = parseInt($('#reasons_count').val())+1;
-				$('#reasons_count').val(new_i);
+				new_i = $('#reasons_count').val();
+				$('#reasons_count').val(parseInt(new_i)+1);
 				
 				
 				newreason = $('#reason_template').clone()
@@ -51,8 +53,8 @@ $(function(){
 				// Button element
 				newreason.find('#reason_tempnum')
 					.attr('id','reason_'+new_i)						
-					.attr('data-reason_i', new_i)
-					.attr('data-reason_text', modal_text);
+					.attr('data-i', new_i)
+					.attr('data-text', modal_text);
 				
 				// Text element
 				newreason.find('.reason_text').text(modal_text);
@@ -62,17 +64,19 @@ $(function(){
 				newreason.find('input:hidden').each(function(elem){
 					$(this).attr('id',$(this).attr('id').replace('tempnum',new_i));
 					$(this).attr('name',$(this).attr('name').replace('tempnum',new_i));
+					$(this).prop('disabled', false);
 				});
-				newreason.find('#jquery_reason_text_'+new_i).val(modal_text).prop('disabled', false);
-				newreason.find('#jquery_reason_status_id_'+new_i).val(modal_status_id).prop('disabled', false);
+				newreason.find('#jquery_delete_reason_'+new_i).val(new_i).prop('disabled', true);
+				newreason.find('#jquery_reason_ordering_'+new_i).val(new_i);
+				newreason.find('#jquery_reason_text_'+new_i).val(modal_text);
+				newreason.find('#jquery_reason_status_id_'+new_i).val(modal_status_id);
 				
 				// Append to DOM
 				$('#reason_list').append(newreason);
 
 			}else{
 				// Text change
-				var disable=true;
-				
+				var disable=true;				
 				
 				if ($('#reason_'+elem_i).data('reason_text') != modal_text){
 					disable=false;
@@ -81,9 +85,7 @@ $(function(){
 				} 	
 				$('#jquery_reason_text_'+elem_i).prop('disabled', disable);
 				
-				// Status change
-				
-		
+				// Status change		
 				if ($('#jquery_reason_status_id_'+elem_i).val()!=modal_status_id){
 					$('#jquery_reason_status_id_'+elem_i).val(modal_status_id);
 					$('#reason_'+elem_i).find('.reason_status').text(modal_status_text);
@@ -92,11 +94,33 @@ $(function(){
 				}
 				
 			}
-		}
-		
+		}		
 		
 		$('#reason-edit-modal').modal('hide');
 	});
+	
+	// General Grouped Check List check / uncheck
+	$('.grouped_check_list').on('click', '.check_button', function(e)
+	{
+		var i = $(this).parent('.btn-group').find('.text_button').data('i');
+		var delete_id = $(this).parent('.btn-group').find('.text_button').data('delete_id');
+				
+		if ($(this).parent('.btn-group').hasClass('unchecked')){
+			// Check tag to delete it
+			$(this).parent('.btn-group').removeClass('unchecked').addClass('checked');
+			
+			$('#'+delete_id+i).prop('disabled',false);
+		}else{
+			// Uncheck tag to keep it
+			$(this).parent('.btn-group').removeClass('checked').addClass('unchecked');
+			
+			$('#'+delete_id+i).prop('disabled',true);
+		}
+		
+		e.preventDefault();			
+	});
+	
+	
 	
 	// NEW Tags select2
 	$('#admin-select2-tags').select2({

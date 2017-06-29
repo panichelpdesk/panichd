@@ -54,6 +54,6 @@ class Category extends Model
      */
     public function closingReasons()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Closingreason', 'category_id');
+        return $this->hasMany('Kordy\Ticketit\Models\Closingreason', 'category_id')->orderBy('ordering');
     }
 }
