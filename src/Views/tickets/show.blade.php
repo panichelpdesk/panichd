@@ -3,6 +3,7 @@
 @section('content')
         @include('ticketit::shared.header')
         @include('ticketit::tickets.partials.ticket_body')
+		@include('ticketit::tickets.partials.modal_complete')
 		
         <div style="margin-top: 2em;">
         	<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
@@ -60,6 +61,22 @@
             $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
                 $(this).data('form').submit();
             });
+			
+			// Complete modal submit button
+			$('#complete_form_submit').click(function(e){				
+				@if ($u->currentLevel()>1)
+					// Agent / Admin
+					@if (!$ticket->intervention_html)
+						if (!$('#blank_intervention_check').prop('checked')){
+							alert('{{ trans('ticketit::lang.show-ticket-modal-complete-blank-alert') }}');
+							return false;
+						}
+					@endif
+				@else
+					// User Level
+				@endif
+				$('#complete-ticket-form').submit();				
+			});			
 			
 			// Comment modal
 			$('.response_type').click(function(){

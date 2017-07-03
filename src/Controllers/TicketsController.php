@@ -676,15 +676,30 @@ class TicketsController extends Controller
      *
      * @return Response
      */
-    public function complete($id)
+    public function complete(Request $request, $id)
     {
         if ($this->permToClose($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
-            $ticket->completed_at = Carbon::now();
+			$user = $this->agent->find(auth()->user()->id);
+			
+			if ($user->currentLevel()>1){
+				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
+					return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-modal-complete-blank-alert'));
+				}else{
+					$status_id = $request->input('status_id');
+					try {
+						Models\Status::findOrFail($status_id);
+					}catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-bad-status'));
+					}
+				}
 
-            if (Setting::grab('default_close_status_id')) {
-                $ticket->status_id = Setting::grab('default_close_status_id');
-            }
+				$ticket->status_id = $status_id;
+			}else{
+				
+			}
+			
+			$ticket->completed_at = Carbon::now();
 
             $subject = $ticket->subject;
             $ticket->save();

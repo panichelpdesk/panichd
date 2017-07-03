@@ -114,6 +114,10 @@ return [
   'show-ticket-modal-delete-title'   => 'Delete Ticket',
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',
   
+  'show-ticket-modal-complete-blank-check' => 'Leave blank intervention',
+  'show-ticket-modal-complete-blank-alert' => 'To continue you must confirm that you leave intervention field blank',
+  'show-ticket-complete-bad-status'        => 'Ticket not completed: The specified status is not valid',
+  
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-comment-type'           => 'Type',
   'show-ticket-add-comment-note'           => 'Internal note',

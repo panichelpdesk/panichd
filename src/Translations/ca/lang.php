@@ -115,6 +115,10 @@ return [
   'show-ticket-modal-delete-title'   => 'Esborrar Tiquet',
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
   
+  'show-ticket-modal-complete-blank-check' => 'Deixar actuació en blanc',
+  'show-ticket-modal-complete-blank-alert' => 'Per a continuar cal que confirmis que deixes el camp actuació en blanc',
+  'show-ticket-complete-bad-status'        => 'Tiquet no completat: L\'estat indicat no és vàlid',
+  
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-comment-type'           => 'Tipus',
   'show-ticket-add-comment-note'           => 'Nota interna',
