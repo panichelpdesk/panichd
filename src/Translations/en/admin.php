@@ -108,6 +108,8 @@ return [
   'category-index-no-categories'  => 'There are no categories, ',
   'category-index-create-new'     => 'create new category',
   'category-index-js-delete'      => 'Are you sure you want to delete the category: ',
+  'category-index-reasons'        => 'Closing reasons',
+  'category-index-tags'           => 'Tags',
   'category-create-title'         => 'Create New Category',
   'category-create-name'          => 'Name',
   'category-create-color'         => 'Color',

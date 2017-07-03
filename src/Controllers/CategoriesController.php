@@ -21,7 +21,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = \Cache::remember('ticketit::categories', 60, function() {
-            return Category::with('tags')->get();
+            return Category::with('closingReasons')->with('tags')->get();
         });
 
         return view('ticketit::admin.category.index', compact('categories'));

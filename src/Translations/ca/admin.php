@@ -102,6 +102,8 @@ return [
   'category-index-no-categories'  => 'No hi ha categories, ',
   'category-index-create-new'     => 'crear nova categoria',
   'category-index-js-delete'      => 'Estàs segur/a que vols eliminar la categoria: ',
+  'category-index-reasons'        => 'Raons tancament',
+  'category-index-tags'           => 'Etiquetes',
   'category-create-title'         => 'Crear Nova Categoria',
   'category-create-name'          => 'Nom',
   'category-create-color'         => 'Color',
