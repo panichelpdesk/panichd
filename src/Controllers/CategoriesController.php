@@ -164,6 +164,7 @@ class CategoriesController extends Controller
     protected function add_reasons_to($request)
     {        
         $rules = $a_new = $a_update = $a_delete = [];
+		$regex_text = trans('ticketit::lang.regex-text-inline');
 		
 		if ($request->exists('reason_ordering')){			
 			foreach ($request->input('reason_ordering') as $ordering=>$i){
@@ -176,7 +177,7 @@ class CategoriesController extends Controller
 					];
 					if ($request->exists('jquery_reason_text_'.$i)){
 						$reason['text'] = $request->input('jquery_reason_text_'.$i);
-						$rules['jquery_reason_text_'.$i] = "required|min:5|regex:/^[A-Za-z0-9@\/\-_\s]+$/";
+						$rules['jquery_reason_text_'.$i] = "required|min:5|regex:".$regex_text;
 					}
 					if ($request->exists('jquery_reason_status_id_'.$i)){
 						$reason['status_id'] = $request->input('jquery_reason_status_id_'.$i);

@@ -8,6 +8,10 @@ return [
 
   'nav-active-tickets'               => 'Oberts',
   'nav-completed-tickets'            => 'Tancats',
+  
+  // Regular expressions
+  'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
+  
 
   // Tables
   'table-id'                         => '#',
