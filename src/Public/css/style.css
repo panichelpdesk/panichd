@@ -131,42 +131,52 @@ body {
 	background-color: lightyellow;
 }
 
-
-/* Admin > Category: Edit: Tags panel */
-.btn-group-panel .btn-group {
-	margin: 0px 25px 10px 0px;
+/* Tags */
+.btn.btn-tag {
+	border: transparent;
 }
 
-.btn-group-panel .btn-group.unchecked .btn-default {
-	color: gray;	
-}
-.btn-group-panel .btn-group.unchecked .btn-text {
-	background: white;
-}
-
-.btn-group-panel .btn-group.checked a.btn-default {
-	color: #00e600;
-}
-.btn-group-panel .btn-group.checked .btn-text {
-	color: black;
-}
-.btn-group-panel .btn-group.checked .btn-text {
-	background: #f2ffe6;
-}
-
-/* Tag panel check / uncheck styles */
-.jquery_tag_group_unchecked .glyphicon-ok, .jquery_tag_group_checked .glyphicon-remove {
+/* Grouped check list check / uncheck styles : Deletion list style */
+.grouped_check_list.deletion-list .btn-group.unchecked .glyphicon-ok, .grouped_check_list.deletion-list .btn-group.checked .glyphicon-remove {
 	display: none;
 }
-.jquery_tag_group_checked .glyphicon-ok, .jquery_tag_group_unchecked .glyphicon-remove {
+.grouped_check_list.deletion-list .btn-group.checked .glyphicon-ok, .grouped_check_list.deletion-list .btn-group.unchecked .glyphicon-remove {
 	display: inline !important;
 }	
 
-.jquery_tag_group_checked .jquery_tag_text {
+.grouped_check_list.deletion-list .btn-group.checked .text_button {
 	text-decoration: line-through;
 	color: black !important;
 	background-color: #ff9999 !important;
 }
+
+/* Grouped check list - Style: no-border */
+.grouped_check_list.no-border .btn {
+	border: transparent;
+}
+
+/* Grouped check list - Style: Coloured btn elements by default */
+.grouped_check_list.coloured-list .btn-group {
+	margin: 0px 25px 10px 0px;
+}
+
+.grouped_check_list.coloured-list .btn-group.unchecked .btn-default {
+	color: gray;	
+}
+.grouped_check_list.coloured-list .btn-group.unchecked .text_button {
+	background: white;
+}
+
+.grouped_check_list.coloured-list .btn-group.checked a.btn-default {
+	color: #00e600;
+}
+.grouped_check_list.coloured-list .btn-group.checked .text_button {
+	color: black;
+}
+.grouped_check_list.coloured-list .btn-group.checked .text_button {
+	background: #f2ffe6;
+}
+
 
 
 /* Common elements */

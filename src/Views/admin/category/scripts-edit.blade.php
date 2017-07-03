@@ -10,7 +10,7 @@ $(function(){
 		$(this).find('#jquery_popup_tag_input').val(button.data('tag_name'));
 		
 		// Element identifier to modal
-		elem_i=button.data('tag_i');
+		elem_i=button.data('i');
 		
 		// Colors to modal
 		var a_colors=$('#jquery_tag_color_'+elem_i).val().split("_");

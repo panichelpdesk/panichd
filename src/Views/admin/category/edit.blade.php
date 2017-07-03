@@ -4,10 +4,6 @@
 @section('content')
     @include('ticketit::shared.header')
     <style type="text/css">
-	#tag-panel .btn {
-		border: transparent;
-	}
-	
 	#tag-panel .glyphicon {
 		color: #777;
 	}

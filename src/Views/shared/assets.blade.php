@@ -16,10 +16,6 @@
 <link rel="StyleSheet" href="{{asset('vendor/ticketit/css/bootstrap-colorpicker.min.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/ticketit/css/bootstrap-colorpicker-plus.css')}}">
 <style type="text/css">
-.btn.btn-tag {
-	border: transparent;
-}
-
 .color-fill-icon{
 	display:inline-block;width:16px;height:16px;border:1px solid #000;background-color:#fff;margin: 2px;
 }

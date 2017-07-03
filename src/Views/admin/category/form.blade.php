@@ -73,11 +73,11 @@
 	<div class="form-group">
 		<label class="control-label col-sm-2">{{ trans('ticketit::admin.category-edit-current-tags') . trans('ticketit::admin.colon') }}</label>
 		<div class="col-sm-10">					
-			<div id="tag-panel" class="btn-group-panel pull-left">
+			<div id="tag-panel" class="grouped_check_list deletion-list no-border coloured-list pull-left">
 				@foreach ($category->tags as $i=>$tag)
-					<div class="btn-group jquery_tag_group_unchecked">				
-					<a href="#" role="button" id="jquery_tag_check_{{$i}}" class="btn btn-default jquery_tag_check" title="Eliminar etiqueta {{$tag->name}}" aria-label="Eliminar etiqueta {{$tag->name}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>								
-					<a href="#" role="button" id="tag_text_{{$i}}" class="btn btn-default btn-tag jquery_tag_text" aria-label="Etiqueta {{$tag->name}}" title="Etiqueta '{{$tag->name}}' conté {{$tag->tickets_count}} tiquets relacionats" data-toggle="modal" data-target="#tag-edit-modal" data-tag_name="{{$tag->name}}" data-tag_i="{{$i}}" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
+					<div class="btn-group unchecked">				
+					<a href="#" role="button" id="jquery_tag_check_{{$i}}" class="btn btn-default check_button" title="Eliminar etiqueta {{$tag->name}}" aria-label="Eliminar etiqueta {{$tag->name}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>								
+					<a href="#" role="button" id="tag_text_{{$i}}" class="btn btn-default btn-tag text_button" aria-label="Etiqueta {{$tag->name}}" title="Etiqueta '{{$tag->name}}' conté {{$tag->tickets_count}} tiquets relacionats" data-toggle="modal" data-target="#tag-edit-modal" data-tag_name="{{$tag->name}}" data-i="{{$i}}" data-delete_id="jquery_delete_tag_" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
 					
 					</div>
 					<input type="hidden" id="jquery_delete_tag_{{$i}}" name="jquery_delete_tag_{{$i}}" value="{{$tag->id}}" disabled="disabled">
