@@ -69,6 +69,8 @@ return [
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
   'category'                         => 'Categoria',
+  'closing-reason'                   => 'Raó de tancament',
+  'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
@@ -115,9 +117,14 @@ return [
   'show-ticket-modal-delete-title'   => 'Esborrar Tiquet',
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
   
-  'show-ticket-modal-complete-blank-check' => 'Deixar actuació en blanc',
-  'show-ticket-modal-complete-blank-alert' => 'Per a continuar cal que confirmis que deixes el camp actuació en blanc',
-  'show-ticket-complete-bad-status'        => 'Tiquet no completat: L\'estat indicat no és vàlid',
+  'show-ticket-modal-complete-blank-intervention-check' => 'Deixar actuació en blanc',
+  'show-ticket-complete-blank-intervention-alert'       => 'Per a tancar el tiquet cal que confirmis que deixes el camp actuació en blanc',
+  'show-ticket-modal-complete-blank-reason-alert'       => 'Per a tancar el tiquet cal que indiquis una raó de tancament',
+  'show-ticket-complete-bad-status'                     => 'Tiquet no completat: L\'estat indicat no és vàlid',
+  'show-ticket-complete-bad-reason-id'                  => 'Tiquet no completat: La raó indicada no és vàlida',
+  
+  'complete-by-user'                 => 'Tiquet tancat per :user',
+  'complete-text'                    => 'Tiquet tancat',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-comment-type'           => 'Tipus',

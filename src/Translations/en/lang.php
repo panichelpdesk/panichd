@@ -69,6 +69,8 @@ return [
   'agents'                            => 'Agents',
   'category'                         => 'Category',
   'colon'                            => ': ',
+  'closing-reason'                   => 'Closing reason',
+  'closing-clarifications'           => 'Clarifications',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
   'date-info-created'                => 'Creation date',
@@ -114,9 +116,14 @@ return [
   'show-ticket-modal-delete-title'   => 'Delete Ticket',
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',
   
-  'show-ticket-modal-complete-blank-check' => 'Leave blank intervention',
-  'show-ticket-modal-complete-blank-alert' => 'To continue you must confirm that you leave intervention field blank',
-  'show-ticket-complete-bad-status'        => 'Ticket not completed: The specified status is not valid',
+  'show-ticket-modal-complete-blank-intervention-check' => 'Leave blank intervention',
+  'show-ticket-complete-blank-intervention-alert'       => 'To complete the ticket you must confirm that you leave intervention field blank',
+  'show-ticket-modal-complete-blank-reason-alert'       => 'To complete the ticket you must indicate a closing reason'
+  'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',
+  'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
+  
+  'complete-by-user'                 => 'Ticket complete by :user',
+  'complete-text'                    => 'Tiquet tancat',
   
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-comment-type'           => 'Type',
