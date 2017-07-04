@@ -125,6 +125,8 @@ return [
   
   'complete-by-user'                 => 'Tiquet tancat per :user',
   'complete-text'                    => 'Tiquet tancat',
+  'reopened-by-user'                 => 'Tiquet reobert per :user',
+  'reopened-text'                    => 'Tiquet reobert',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-comment-type'           => 'Tipus',

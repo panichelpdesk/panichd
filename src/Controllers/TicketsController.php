@@ -769,16 +769,30 @@ class TicketsController extends Controller
     {
         if ($this->permToReopen($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
+			$user = $this->agent->find(auth()->user()->id);
+			
             $ticket->completed_at = null;
 
             if (Setting::grab('default_reopen_status_id')) {
                 $ticket->status_id = Setting::grab('default_reopen_status_id');
             }
+			if ($user->currentLevel()<2){
+				$ticket->intervention = $ticket->intervention . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
+				$ticket->intervention_html = $ticket->intervention_html . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
+			}
 
-            $subject = $ticket->subject;
             $ticket->save();
+			
+			if ($user->currentLevel()<2){
+				$comment = new Models\Comment;
+				$comment->type = "reply";
+				$comment->content = $comment->html = trans('ticketit::lang.reopened-text');
+				$comment->ticket_id = $id;
+				$comment->user_id = $user->id;
+				$comment->save();
+			}
 
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', ['name' => $subject]));
+            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', ['name' => '#'.$id.' '.$ticket->subject]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }

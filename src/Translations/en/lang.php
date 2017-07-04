@@ -123,7 +123,9 @@ return [
   'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
   
   'complete-by-user'                 => 'Ticket complete by :user',
-  'complete-text'                    => 'Tiquet tancat',
+  'complete-text'                    => 'Ticket complete',
+  'reopened-by-user'                 => 'Ticket reopened by :user',
+  'reopened-text'                    => 'Ticket reopened',
   
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-comment-type'           => 'Type',
