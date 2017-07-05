@@ -124,9 +124,12 @@ return [
   'show-ticket-complete-bad-reason-id'                  => 'Tiquet no completat: La raó indicada no és vàlida',
   
   'complete-by-user'                 => 'Tiquet tancat per :user',
-  'complete-text'                    => 'Tiquet tancat',
   'reopened-by-user'                 => 'Tiquet reobert per :user',
-  'reopened-text'                    => 'Tiquet reobert',
+  
+  'ticket-comment-type-reply'        => 'Resposta',
+  'ticket-comment-type-note'         => 'Nota interna (oculta per a l\'usuari)',
+  'ticket-comment-type-complete'     => 'Tiquet tancat',
+  'ticket-comment-type-reopen'       => 'Tiquet reobert',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-comment-type'           => 'Tipus',

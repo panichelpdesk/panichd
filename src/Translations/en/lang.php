@@ -122,10 +122,13 @@ return [
   'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',
   'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
   
-  'complete-by-user'                 => 'Ticket complete by :user',
-  'complete-text'                    => 'Ticket complete',
+  'complete-by-user'                 => 'Ticket complete by :user',  
   'reopened-by-user'                 => 'Ticket reopened by :user',
-  'reopened-text'                    => 'Ticket reopened',
+  
+  'ticket-comment-type-reply'        => 'Reply',
+  'ticket-comment-type-note'         => 'Internal note (hidden for user)',
+  'ticket-comment-type-complete'     => 'Ticket complete',
+  'ticket-comment-type-reopen'       => 'Ticket reopened',
   
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-comment-type'           => 'Type',

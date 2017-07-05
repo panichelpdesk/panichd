@@ -545,7 +545,7 @@ class TicketsController extends Controller
 		if (Agent::levelIn($ticket->category_id) > 1){
 			$comments = $ticket->comments();
 		}else{
-			$comments = $ticket->comments()->where('type','reply');
+			$comments = $ticket->comments()->where('type','!=','note');
 		}
         $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
@@ -688,6 +688,8 @@ class TicketsController extends Controller
             $ticket = $this->tickets->findOrFail($id);
 			$user = $this->agent->find(auth()->user()->id);
 			
+			$reason_text = trans('ticketit::lang.complete-by-user', ['user' => $user->name]);
+			
 			if ($user->currentLevel()>1){
 				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
 					return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-blank-intervention-alert'));
@@ -714,17 +716,18 @@ class TicketsController extends Controller
 						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-bad-reason-id'));
 					}
 					
-					$reason_text = trans('ticketit::lang.complete-by-user', ['user' => $user->name]) . trans('ticketit::lang.colon') . $reason->text;
+					$reason_text .= trans('ticketit::lang.colon') . $reason->text;
 					$ticket->status_id = $reason->status_id;
-				}else{
-					$reason_text = trans('ticketit::lang.complete-by-user', ['user' => $user->name]);
+				}else{					
 					$ticket->status_id = Setting::grab('default_close_status_id');
-				}
-				
-				// Add Closing Reason to intervention field
-				$ticket->intervention = $ticket->intervention . $reason_text;
-				$ticket->intervention_html = $ticket->intervention_html . '<br />' .$reason_text;
-				
+				}				
+			}
+			
+			// Add Closing Reason to intervention field
+			$ticket->intervention = $ticket->intervention . $reason_text;
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' .$reason_text;
+			
+			if ($user->currentLevel()<2){
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
 				if ($a_clarification['content'] != ""){
@@ -737,21 +740,25 @@ class TicketsController extends Controller
 
             $ticket->save();
 			
-			// Add closing comment
-			if ($user->currentLevel()<2){
-				$comment = new Models\Comment;
-				$comment->type = "reply";
-				$comment->content = $comment->html = trans('ticketit::lang.complete-text') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
-								
+			// Add closing comment			
+			$comment = new Models\Comment;
+			$comment->type = "complete";
+			
+			if ($user->currentLevel()>1){ 
+				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete');
+			}else{
+				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
+							
 				if ($a_clarification['content'] != ""){
 					$comment->content = $comment->content . $a_clarification['content'];
 					$comment->html = $comment->html . $a_clarification['html'];
 				}
+			}			
 
-				$comment->ticket_id = $id;
-				$comment->user_id = $user->id;
-				$comment->save();
-			}
+			$comment->ticket_id = $id;
+			$comment->user_id = $user->id;
+			$comment->save();
+			
 			
             session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -783,22 +790,22 @@ class TicketsController extends Controller
 
             if (Setting::grab('default_reopen_status_id')) {
                 $ticket->status_id = Setting::grab('default_reopen_status_id');
-            }
-			if ($user->currentLevel()<2){
-				$ticket->intervention = $ticket->intervention . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
-				$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
-			}
+            }			
+			
+			$ticket->intervention = $ticket->intervention . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
+			
 
             $ticket->save();
 			
-			if ($user->currentLevel()<2){
-				$comment = new Models\Comment;
-				$comment->type = "reply";
-				$comment->content = $comment->html = trans('ticketit::lang.reopened-text');
-				$comment->ticket_id = $id;
-				$comment->user_id = $user->id;
-				$comment->save();
-			}
+			// Add reopen comment
+			$comment = new Models\Comment;
+			$comment->type = "reopen";
+			$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-reopen');
+			$comment->ticket_id = $id;
+			$comment->user_id = $user->id;
+			$comment->save();
+			
 
             session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', [
 				'name' => '#'.$id.' '.$ticket->subject,
