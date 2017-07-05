@@ -28,7 +28,8 @@
                     <tr>
                         <td>{{ trans('ticketit::admin.table-id') }}</td>
                         <td>{{ trans('ticketit::admin.table-name') }}</td>
-                        <td>Etiquetes</td>
+                        <td>{{ trans('ticketit::admin.category-index-reasons') }}</td>
+						<td>{{ trans('ticketit::admin.category-index-tags') }}</td>
 						<td>{{ trans('ticketit::admin.table-action') }}</td>
                     </tr>
                 </thead>
@@ -42,6 +43,15 @@
                             {{ $category->name }}
                         </td>
                         <td>
+							@if ($category->has('closingReasons'))
+								<ul>
+								@foreach ($category->closingReasons as $reason)
+									<li>{{ $reason->text }}</li>
+								@endforeach
+								</ul>
+							@endif
+						</td>
+						<td>
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
 								<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>

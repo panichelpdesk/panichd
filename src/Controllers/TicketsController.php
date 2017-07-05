@@ -498,7 +498,11 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created'));
+        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created', [
+			'name' => '#'.$ticket->id.' '.$ticket->subject,
+			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+			'title' => trans('ticketit::lang.ticket-status-link-title')
+		]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index');
     }
@@ -512,12 +516,14 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets->with('tags')->find($id);
+        $ticket = $this->tickets->with('category.closingReasons')->with('tags')->find($id);
 
         if (version_compare(app()->version(), '5.3.0', '>=')) {
-            $a_tags_selected = $ticket->tags()->pluck('id')->toArray();
+            $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
+			$a_tags_selected = $ticket->tags()->pluck('id')->toArray();
         } else { // if Laravel 5.1
-            $a_tags_selected = $ticket->tags()->lists('id')->toArray();
+            $a_reasons = $ticket->category->closingReasons()->lists('text','id')->toArray();
+			$a_tags_selected = $ticket->tags()->lists('id')->toArray();
         }
 
         list($priority_lists, $category_lists, $status_lists) = $this->PCS();
@@ -539,12 +545,12 @@ class TicketsController extends Controller
 		if (Agent::levelIn($ticket->category_id) > 1){
 			$comments = $ticket->comments();
 		}else{
-			$comments = $ticket->comments()->where('type','reply');
+			$comments = $ticket->comments()->where('type','!=','note');
 		}
         $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
-            compact('ticket', 'a_tags_selected', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
+            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
 	
@@ -676,20 +682,89 @@ class TicketsController extends Controller
      *
      * @return Response
      */
-    public function complete($id)
+    public function complete(Request $request, $id)
     {
         if ($this->permToClose($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
-            $ticket->completed_at = Carbon::now();
+			$user = $this->agent->find(auth()->user()->id);
+			
+			$reason_text = trans('ticketit::lang.complete-by-user', ['user' => $user->name]);
+			
+			if ($user->currentLevel()>1){
+				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
+					return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-blank-intervention-alert'));
+				}else{
+					$status_id = $request->input('status_id');
+					try {
+						Models\Status::findOrFail($status_id);
+					}catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-bad-status'));
+					}
+				}
 
-            if (Setting::grab('default_close_status_id')) {
-                $ticket->status_id = Setting::grab('default_close_status_id');
-            }
+				$ticket->status_id = $status_id;
+			}else{
+				// Verify Closing Reason
+				if ($ticket->has('category.closingReasons')){
+					if (!$request->exists('reason_id')){
+						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-modal-complete-blank-reason-alert'));					
+					}
+					
+					try {
+						$reason = Models\Closingreason::findOrFail($request->input('reason_id'));
+					}catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-bad-reason-id'));
+					}
+					
+					$reason_text .= trans('ticketit::lang.colon') . $reason->text;
+					$ticket->status_id = $reason->status_id;
+				}else{					
+					$ticket->status_id = Setting::grab('default_close_status_id');
+				}				
+			}
+			
+			// Add Closing Reason to intervention field
+			$ticket->intervention = $ticket->intervention . $reason_text;
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' .$reason_text;
+			
+			if ($user->currentLevel()<2){
+				// Check clarification text
+				$a_clarification = $this->purifyHtml($request->get('clarification'));
+				if ($a_clarification['content'] != ""){
+					$ticket->intervention = $ticket->intervention . $a_clarification['content'];
+					$ticket->intervention_html = $ticket->intervention_html . $a_clarification['html'];
+				}
+			}
+			
+			$ticket->completed_at = Carbon::now();
 
-            $subject = $ticket->subject;
             $ticket->save();
+			
+			// Add closing comment			
+			$comment = new Models\Comment;
+			$comment->type = "complete";
+			
+			if ($user->currentLevel()>1){ 
+				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete');
+			}else{
+				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
+							
+				if ($a_clarification['content'] != ""){
+					$comment->content = $comment->content . $a_clarification['content'];
+					$comment->html = $comment->html . $a_clarification['html'];
+				}
+			}			
 
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', ['name' => $subject]));
+			$comment->ticket_id = $id;
+			$comment->user_id = $user->id;
+			$comment->save();
+			
+			
+            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', [
+				'name' => '#'.$id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }
@@ -709,16 +784,34 @@ class TicketsController extends Controller
     {
         if ($this->permToReopen($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
+			$user = $this->agent->find(auth()->user()->id);
+			
             $ticket->completed_at = null;
 
             if (Setting::grab('default_reopen_status_id')) {
                 $ticket->status_id = Setting::grab('default_reopen_status_id');
-            }
+            }			
+			
+			$ticket->intervention = $ticket->intervention . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
+			
 
-            $subject = $ticket->subject;
             $ticket->save();
+			
+			// Add reopen comment
+			$comment = new Models\Comment;
+			$comment->type = "reopen";
+			$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-reopen');
+			$comment->ticket_id = $id;
+			$comment->user_id = $user->id;
+			$comment->save();
+			
 
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', ['name' => $subject]));
+            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', [
+				'name' => '#'.$id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }

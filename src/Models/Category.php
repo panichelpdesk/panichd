@@ -46,4 +46,14 @@ class Category extends Model
     {
         return $this->morphToMany('Kordy\Ticketit\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
     }
+	
+	/**
+     * Get related closing reasons.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function closingReasons()
+    {
+        return $this->hasMany('Kordy\Ticketit\Models\Closingreason', 'category_id')->orderBy('ordering');
+    }
 }

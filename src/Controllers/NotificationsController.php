@@ -18,9 +18,11 @@ class NotificationsController extends Controller
         $notification_owner = $comment->user;
         $template = 'ticketit::emails.comment';
         $data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
-
-        $this->sendNotification($template, $data, $ticket, $notification_owner,
-            trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment_'.$comment->type);
+		
+		if (!in_array($comment->type, ['complete', 'reopen'])){
+			$this->sendNotification($template, $data, $ticket, $notification_owner,
+				trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment_'.$comment->type);
+		}        
     }
 
     public function ticketStatusUpdated(Ticket $ticket, Ticket $original_ticket)

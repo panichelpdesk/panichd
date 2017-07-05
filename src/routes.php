@@ -49,7 +49,7 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         ]);
 
         //Ticket complete route for permitted user.
-        Route::get("$main_route_path/{id}/complete", 'Kordy\Ticketit\Controllers\TicketsController@complete')
+        Route::patch("$main_route_path/{id}/complete", 'Kordy\Ticketit\Controllers\TicketsController@complete')
             ->name("$main_route.complete");
 
         //Ticket reopen route for permitted user.

@@ -8,6 +8,9 @@ return [
 
   'nav-active-tickets'               => 'Active Tickets',
   'nav-completed-tickets'            => 'Completed Tickets',
+  
+  // Regular expressions
+  'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-Z\'0-9¡!¿?,;.:\-\s]*$/',
 
   // Tables
   'table-id'                         => '#',
@@ -66,6 +69,8 @@ return [
   'agents'                            => 'Agents',
   'category'                         => 'Category',
   'colon'                            => ': ',
+  'closing-reason'                   => 'Closing reason',
+  'closing-clarifications'           => 'Clarifications',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
   'date-info-created'                => 'Creation date',
@@ -110,6 +115,20 @@ return [
   'show-ticket-js-delete'            => 'Are you sure you want to delete: ',
   'show-ticket-modal-delete-title'   => 'Delete Ticket',
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',
+  
+  'show-ticket-modal-complete-blank-intervention-check' => 'Leave blank intervention',
+  'show-ticket-complete-blank-intervention-alert'       => 'To complete the ticket you must confirm that you leave intervention field blank',
+  'show-ticket-modal-complete-blank-reason-alert'       => 'To complete the ticket you must indicate a closing reason'
+  'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',
+  'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
+  
+  'complete-by-user'                 => 'Ticket complete by :user',  
+  'reopened-by-user'                 => 'Ticket reopened by :user',
+  
+  'ticket-comment-type-reply'        => 'Reply',
+  'ticket-comment-type-note'         => 'Internal note (hidden for user)',
+  'ticket-comment-type-complete'     => 'Ticket complete',
+  'ticket-comment-type-reopen'       => 'Ticket reopened',
   
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-comment-type'           => 'Type',
@@ -176,11 +195,13 @@ return [
   'notify-updated'                   => ' updated ',
 
  // TicketsController
-  'the-ticket-has-been-created'      => 'The ticket has been created!',
+  'the-ticket-has-been-created'      => 'The ticket has been created! <a href=":link" title=":title"><u>:name</u></a>',
   'the-ticket-has-been-modified'     => 'The ticket has been modified!',
   'the-ticket-has-been-deleted'      => 'The ticket :name has been deleted!',
-  'the-ticket-has-been-completed'    => 'The ticket :name has been completed!',
-  'the-ticket-has-been-reopened'     => 'The ticket :name has been reopened!',
+  'the-ticket-has-been-completed'    => 'The ticket has been completed! <a href=":link" title=":title"><u>:name</u></a>',
+  'the-ticket-has-been-reopened'     => 'The ticket :name has been reopened! <a href=":link" title=":title"><u>:name</u></a>',
+  'ticket-status-link-title'         => 'View ticket',
+  
   'you-are-not-permitted-to-do-this' => 'You are not permitted to do this action!',
 
  /*

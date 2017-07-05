@@ -131,32 +131,55 @@ body {
 	background-color: lightyellow;
 }
 
-
-
-/* Tags panel */
-.btn-group-panel .btn-group {
-	margin-right: 25px;
-	margin-bottom: 10px;
+/* Tags */
+.btn.btn-tag {
+	border: transparent;
 }
 
-.btn-group-panel .btn-group.unchecked .btn-default {
-	color: gray;
-	
+/* Grouped check list check / uncheck styles : Deletion list style */
+.grouped_check_list.deletion-list .btn-group.unchecked .glyphicon-ok, .grouped_check_list.deletion-list .btn-group.checked .glyphicon-remove {
+	display: none;
 }
-.btn-group-panel .btn-group.unchecked .btn-text {
+.grouped_check_list.deletion-list .btn-group.checked .glyphicon-ok, .grouped_check_list.deletion-list .btn-group.unchecked .glyphicon-remove {
+	display: inline !important;
+}	
+
+.grouped_check_list.deletion-list .btn-group.checked .text_button {
+	text-decoration: line-through;
+	color: black !important;
+	background-color: #ff9999 !important;
+}
+
+/* Grouped check list - Style: no-border */
+.grouped_check_list.no-border .btn {
+	border: transparent;
+}
+
+/* Grouped check list - Style: Coloured btn elements by default */
+.grouped_check_list.coloured-list .btn-group {
+	margin: 0px 25px 10px 0px;
+}
+
+.grouped_check_list.coloured-list .btn-group.unchecked .btn-default {
+	color: gray;	
+}
+.grouped_check_list.coloured-list .btn-group.unchecked .text_button {
 	background: white;
 }
 
-.btn-group-panel .btn-group.checked a.btn-default {
+.grouped_check_list.coloured-list .btn-group.checked a.btn-default {
 	color: #00e600;
 }
-.btn-group-panel .btn-group.checked .btn-text {
+.grouped_check_list.coloured-list .btn-group.checked .text_button {
 	color: black;
 }
-.btn-group-panel .btn-group.checked .btn-text {
+.grouped_check_list.coloured-list .btn-group.checked .text_button {
 	background: #f2ffe6;
 }
 
+
+
+/* Common elements */
 .text-info {
 	color: #549ee8;
 }
@@ -169,4 +192,12 @@ body {
 
 .text-success {
 	color: #68c240;
+}
+
+.tooltip-info {
+	cursor: help;
+}
+
+.tooltip-info .glyphicon-question-sign {
+	color: #bbb;
 }

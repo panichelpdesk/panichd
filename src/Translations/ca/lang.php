@@ -8,6 +8,10 @@ return [
 
   'nav-active-tickets'               => 'Oberts',
   'nav-completed-tickets'            => 'Tancats',
+  
+  // Regular expressions
+  'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
+  
 
   // Tables
   'table-id'                         => '#',
@@ -65,6 +69,8 @@ return [
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
   'category'                         => 'Categoria',
+  'closing-reason'                   => 'Raó de tancament',
+  'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
@@ -110,6 +116,20 @@ return [
   'show-ticket-js-delete'            => 'Esteu segur que voleu esborrar?: ',
   'show-ticket-modal-delete-title'   => 'Esborrar Tiquet',
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
+  
+  'show-ticket-modal-complete-blank-intervention-check' => 'Deixar actuació en blanc',
+  'show-ticket-complete-blank-intervention-alert'       => 'Per a tancar el tiquet cal que confirmis que deixes el camp actuació en blanc',
+  'show-ticket-modal-complete-blank-reason-alert'       => 'Per a tancar el tiquet cal que indiquis una raó de tancament',
+  'show-ticket-complete-bad-status'                     => 'Tiquet no completat: L\'estat indicat no és vàlid',
+  'show-ticket-complete-bad-reason-id'                  => 'Tiquet no completat: La raó indicada no és vàlida',
+  
+  'complete-by-user'                 => 'Tiquet tancat per :user',
+  'reopened-by-user'                 => 'Tiquet reobert per :user',
+  
+  'ticket-comment-type-reply'        => 'Resposta',
+  'ticket-comment-type-note'         => 'Nota interna (oculta per a l\'usuari)',
+  'ticket-comment-type-complete'     => 'Tiquet tancat',
+  'ticket-comment-type-reopen'       => 'Tiquet reobert',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-comment-type'           => 'Tipus',
@@ -176,11 +196,13 @@ return [
   'notify-updated'                   => ' actualitzat ',
 
  // TicketsController
-  'the-ticket-has-been-created'      => 'El tiquet s\'ha creat!',
+  'the-ticket-has-been-created'      => 'S\'ha creat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
   'the-ticket-has-been-modified'     => 'El tiquet :name s\'ha modificat!', //revisar no tenia :name
   'the-ticket-has-been-deleted'      => 'El tiquet :name s\'ha esborrat!',
-  'the-ticket-has-been-completed'    => 'El tiquet :name s\'ha tancat!',
-  'the-ticket-has-been-reopened'     => 'El tiquet :name s\'ha reobert',
+  'the-ticket-has-been-completed'    => 'S\'ha tancat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
+  'the-ticket-has-been-reopened'     => 'S\'ha reobert el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
+  'ticket-status-link-title'         => 'Veure tiquet',
+  
   'you-are-not-permitted-to-do-this' => 'No tens permisos per fer aquesta acció!',
 
  /*
