@@ -193,11 +193,13 @@ return [
   'notify-updated'                   => ' actualitzat ',
 
  // TicketsController
-  'the-ticket-has-been-created'      => 'El tiquet s\'ha creat!',
+  'the-ticket-has-been-created'      => 'S\'ha creat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
   'the-ticket-has-been-modified'     => 'El tiquet :name s\'ha modificat!', //revisar no tenia :name
   'the-ticket-has-been-deleted'      => 'El tiquet :name s\'ha esborrat!',
-  'the-ticket-has-been-completed'    => 'El tiquet :name s\'ha tancat!',
-  'the-ticket-has-been-reopened'     => 'El tiquet :name s\'ha reobert',
+  'the-ticket-has-been-completed'    => 'S\'ha tancat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
+  'the-ticket-has-been-reopened'     => 'S\'ha reobert el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
+  'ticket-status-link-title'         => 'Veure tiquet',
+  
   'you-are-not-permitted-to-do-this' => 'No tens permisos per fer aquesta acció!',
 
  /*

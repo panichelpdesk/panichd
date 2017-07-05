@@ -192,11 +192,13 @@ return [
   'notify-updated'                   => ' updated ',
 
  // TicketsController
-  'the-ticket-has-been-created'      => 'The ticket has been created!',
+  'the-ticket-has-been-created'      => 'The ticket has been created! <a href=":link" title=":title"><u>:name</u></a>',
   'the-ticket-has-been-modified'     => 'The ticket has been modified!',
   'the-ticket-has-been-deleted'      => 'The ticket :name has been deleted!',
-  'the-ticket-has-been-completed'    => 'The ticket :name has been completed!',
-  'the-ticket-has-been-reopened'     => 'The ticket :name has been reopened!',
+  'the-ticket-has-been-completed'    => 'The ticket has been completed! <a href=":link" title=":title"><u>:name</u></a>',
+  'the-ticket-has-been-reopened'     => 'The ticket :name has been reopened! <a href=":link" title=":title"><u>:name</u></a>',
+  'ticket-status-link-title'         => 'View ticket',
+  
   'you-are-not-permitted-to-do-this' => 'You are not permitted to do this action!',
 
  /*

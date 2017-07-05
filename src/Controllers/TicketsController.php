@@ -498,7 +498,11 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created'));
+        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created', [
+			'name' => '#'.$ticket->id.' '.$ticket->subject,
+			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+			'title' => trans('ticketit::lang.ticket-status-link-title')
+		]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index');
     }
@@ -719,7 +723,7 @@ class TicketsController extends Controller
 				
 				// Add Closing Reason to intervention field
 				$ticket->intervention = $ticket->intervention . $reason_text;
-				$ticket->intervention_html = $ticket->intervention_html . $reason_text;
+				$ticket->intervention_html = $ticket->intervention_html . '<br />' .$reason_text;
 				
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
@@ -749,7 +753,11 @@ class TicketsController extends Controller
 				$comment->save();
 			}
 			
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', ['name' => '#'.$id.' '.$ticket->subject]));
+            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', [
+				'name' => '#'.$id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }
@@ -778,7 +786,7 @@ class TicketsController extends Controller
             }
 			if ($user->currentLevel()<2){
 				$ticket->intervention = $ticket->intervention . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
-				$ticket->intervention_html = $ticket->intervention_html . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
+				$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
 			}
 
             $ticket->save();
@@ -792,7 +800,11 @@ class TicketsController extends Controller
 				$comment->save();
 			}
 
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', ['name' => '#'.$id.' '.$ticket->subject]));
+            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', [
+				'name' => '#'.$id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }
