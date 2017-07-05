@@ -178,5 +178,6 @@ return [
   'config-edit-auth-failed'       => 'Password mismatch', //Added: 2016-01-16
   'config-edit-eval-error'        => 'Invalid value', //Added: 2016-01-16
   'config-edit-tools'             => 'Tools:',
+  'config-update-confirm'         => 'Configuration :name has been updated',
 
 ];

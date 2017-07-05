@@ -172,5 +172,6 @@ return [
   'config-edit-auth-failed'       => 'La contrasenya no coincideix',
   'config-edit-eval-error'        => 'Valor no vàlid',
   'config-edit-tools'             => 'Eines:',
+  'config-update-confirm'         => 'El paràmetre :name s\'ha actualitzat',
 
 ];
