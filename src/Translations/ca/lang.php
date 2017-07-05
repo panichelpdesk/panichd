@@ -16,6 +16,7 @@ return [
   // Tables
   'table-id'                         => '#',
   'table-subject'                    => 'Tema',
+  'table-department'                 => 'Departament',
   'table-description'                => 'Descripció',
   'table-intervention'               => 'Actuació',
   'table-owner'                      => 'Propietari',

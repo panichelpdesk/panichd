@@ -15,6 +15,7 @@ return [
   // Tables
   'table-id'                         => '#',
   'table-subject'                    => 'Subject',
+  'table-department'                 => 'Department',
   'table-description'                => 'Description',
   'table-intervention'               => 'Intevention',
   'table-owner'                      => 'Owner',

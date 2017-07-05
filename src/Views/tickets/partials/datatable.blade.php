@@ -14,6 +14,7 @@
 				<td>{{ trans('ticketit::lang.table-priority') }}</td>
 				@if (session('ticketit_filter_owner')=="")
 					<td>{{ trans('ticketit::lang.table-owner') }}</td>
+					<td>{{ trans('ticketit::lang.table-department') }}</td>
 				@endif
 				@if (session('ticketit_filter_category')=="")
 					<td>{{ trans('ticketit::lang.table-category') }}</td>

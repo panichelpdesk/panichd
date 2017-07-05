@@ -43,14 +43,24 @@ class TicketsController extends Controller
 
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')
-            ->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
+			
+			// Department joins
+			->leftJoin('ticketit_departments_persons', function ($join1) {
+				$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
+			})	
+			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id')			
+		
+			->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
             ->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
             ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')
-            ->leftJoin('ticketit_taggables', function ($join) {
+            
+			// Tags joins
+			->leftJoin('ticketit_taggables', function ($join) {
                 $join->on('ticketit.id', '=', 'ticketit_taggables.taggable_id')
                     ->where('ticketit_taggables.taggable_type', '=', 'Kordy\\Ticketit\\Models\\Ticket');
             })
             ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id')
+			
             ->groupBy('ticketit.id')
             ->select([
                 'ticketit.id',
@@ -65,8 +75,15 @@ class TicketsController extends Controller
                 'ticketit.updated_at AS updated_at',
                 'ticketit_priorities.name AS priority',
                 'users.name AS owner',
-                'ticketit.agent_id',
+				'ticketit.agent_id',
                 'ticketit_categories.name AS category',
+				
+				// Department columns				
+				\DB::raw('group_concat(distinct(ticketit_departments.department)) AS dept_info'),
+				\DB::raw('group_concat(distinct(ticketit_departments.shortening)) AS dept_short'),
+				\DB::raw('group_concat(distinct(ticketit_departments.sub1)) AS dept_sub1'),	
+				
+				// Tag Columns
                 \DB::raw('group_concat(ticketit_tags.id) AS tags_id'),
                 \DB::raw('group_concat(ticketit_tags.name) AS tags'),
                 \DB::raw('group_concat(ticketit_tags.bg_color) AS tags_bg_color'),
@@ -156,6 +173,18 @@ class TicketsController extends Controller
             $category = e($ticket->category);
 
             return "<div style='color: $color'>$category</div>";
+        });
+		
+		$collection->editColumn('dept_info', function ($ticket) {
+			$title = "";			
+			
+			if ($ticket->dept_sub1 != ""){
+				$dept_info = $ticket->dept_short . ": " . ucwords(mb_strtolower($ticket->dept_sub1));
+				$title = 'title="'.ucwords(mb_strtolower($ticket->dept_info)).'"';
+			}else
+				$dept_info = ucwords(mb_strtolower($ticket->dept_info));
+			
+            return "<span $title>$dept_info</span>";
         });
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
