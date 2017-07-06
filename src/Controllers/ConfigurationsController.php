@@ -127,7 +127,7 @@ class ConfigurationsController extends Controller
 
       $configuration->update(['value' => $value, 'lang' => $request->lang]);
 
-      Session::flash('configuration', trans('ticketit::lang.configuration-name-has-been-modified', ['name' => $request->name]));
+      Session::flash('configuration', trans('ticketit::admin.config-update-confirm', ['name' => $request->name]));
       // refresh cached settings
       \Cache::forget('ticketit::settings');
       \Cache::forget('ticketit::settings.' . $configuration->slug);

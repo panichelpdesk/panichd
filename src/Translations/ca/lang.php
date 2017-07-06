@@ -16,6 +16,7 @@ return [
   // Tables
   'table-id'                         => '#',
   'table-subject'                    => 'Tema',
+  'table-department'                 => 'Departament',
   'table-description'                => 'Descripció',
   'table-intervention'               => 'Actuació',
   'table-owner'                      => 'Propietari',
@@ -76,6 +77,8 @@ return [
   'created'                          => 'Creat',
   'date-info-created'                => 'Data de creació',
   'date-info-updated'                => 'Data de darrer canvi',
+  'department'                       => 'Departament',
+  'dept_sub1'                        => 'Area',
   'description'                      => 'Descripció',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',

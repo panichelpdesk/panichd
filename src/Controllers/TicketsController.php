@@ -43,35 +43,57 @@ class TicketsController extends Controller
 
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')
-            ->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
+			->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
             ->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
             ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')
-            ->leftJoin('ticketit_taggables', function ($join) {
+            
+			// Tags joins
+			->leftJoin('ticketit_taggables', function ($join) {
                 $join->on('ticketit.id', '=', 'ticketit_taggables.taggable_id')
                     ->where('ticketit_taggables.taggable_type', '=', 'Kordy\\Ticketit\\Models\\Ticket');
             })
-            ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id')
+            ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id');
+				
+		$a_select = [
+			'ticketit.id',
+			'ticketit.subject AS subject',
+			'ticketit.content AS content',
+			'ticketit.intervention AS intervention',
+			'ticketit_statuses.name AS status',
+			'ticketit_statuses.color AS color_status',
+			'ticketit_priorities.color AS color_priority',
+			'ticketit_categories.color AS color_category',
+			'ticketit.id AS agent',
+			'ticketit.updated_at AS updated_at',
+			'ticketit_priorities.name AS priority',
+			'users.name AS owner',
+			'ticketit.agent_id',
+			'ticketit_categories.name AS category',			
+			
+			// Tag Columns
+			\DB::raw('group_concat(ticketit_tags.id) AS tags_id'),
+			\DB::raw('group_concat(ticketit_tags.name) AS tags'),
+			\DB::raw('group_concat(ticketit_tags.bg_color) AS tags_bg_color'),
+			\DB::raw('group_concat(ticketit_tags.text_color) AS tags_text_color'),
+		];
+		
+		if (Setting::grab('departments_feature')){			
+			// Department joins
+			$collection				
+				->leftJoin('ticketit_departments_persons', function ($join1) {
+					$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
+				})	
+				->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id');
+			
+			// Department columns				
+			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.department)) AS dept_info');
+			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.shortening)) AS dept_short');
+			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.sub1)) AS dept_sub1');			
+		}
+		
+		$collection
             ->groupBy('ticketit.id')
-            ->select([
-                'ticketit.id',
-                'ticketit.subject AS subject',
-                'ticketit.content AS content',
-                'ticketit.intervention AS intervention',
-                'ticketit_statuses.name AS status',
-                'ticketit_statuses.color AS color_status',
-                'ticketit_priorities.color AS color_priority',
-                'ticketit_categories.color AS color_category',
-                'ticketit.id AS agent',
-                'ticketit.updated_at AS updated_at',
-                'ticketit_priorities.name AS priority',
-                'users.name AS owner',
-                'ticketit.agent_id',
-                'ticketit_categories.name AS category',
-                \DB::raw('group_concat(ticketit_tags.id) AS tags_id'),
-                \DB::raw('group_concat(ticketit_tags.name) AS tags'),
-                \DB::raw('group_concat(ticketit_tags.bg_color) AS tags_bg_color'),
-                \DB::raw('group_concat(ticketit_tags.text_color) AS tags_text_color'),
-            ])
+            ->select($a_select)
 			->withCount('comments')
 			->withCount('recentComments');
 
@@ -157,6 +179,20 @@ class TicketsController extends Controller
 
             return "<div style='color: $color'>$category</div>";
         });
+		
+		if (Setting::grab('departments_feature')){
+			$collection->editColumn('dept_info', function ($ticket) {
+				$title = "";			
+				
+				if ($ticket->dept_sub1 != ""){
+					$dept_info = $ticket->dept_short . ": " . ucwords(mb_strtolower($ticket->dept_sub1));
+					$title = 'title="'.ucwords(mb_strtolower($ticket->dept_info)).'"';
+				}else
+					$dept_info = ucwords(mb_strtolower($ticket->dept_info));
+				
+				return "<span $title>$dept_info</span>";
+			});
+		}
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);
@@ -516,7 +552,19 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets->with('category.closingReasons')->with('tags')->find($id);
+        $ticket = $this->tickets;
+		$user = $this->agent->find(auth()->user()->id);
+		
+		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
+			// Departments related
+			$ticket = $ticket->join('users', 'users.id', '=', 'ticketit.user_id')
+			->leftJoin('ticketit_departments_persons', function ($join1) {
+					$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
+				})	
+			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id');
+		}
+		
+		$ticket = $ticket->with('category.closingReasons')->with('tags')->find($id);
 
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
