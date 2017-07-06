@@ -62,8 +62,10 @@
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	@if (session('ticketit_filter_owner')=="")
 						{ data: 'owner', name: 'users.name' },
-						{ data: 'dept_info', name: 'dept_info' },
-		            @endif
+						@if ($setting::grab('departments_feature'))
+							{ data: 'dept_info', name: 'dept_info' },
+						@endif
+					@endif
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif

@@ -269,6 +269,11 @@ class SettingsTableSeeder extends Seeder
              * Default: __DIR__.'/routes.php'
              */
             'routes' => base_path('vendor/kordy/ticketit/src').'/routes.php',
+			
+			/*
+			 * Ticketit optional features
+			*/
+			'departments_feature' => 'no',			
 
         ];
     }
