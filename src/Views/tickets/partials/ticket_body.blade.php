@@ -60,6 +60,14 @@
 				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
+					@if ($setting->grab('departments_feature'))
+						@if ($ticket->department)
+							<br /><strong>{{ trans('ticketit::lang.department') }}</strong>{{ trans('ticketit::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
+						@endif
+						@if ($ticket->sub1)
+							<br /><strong>{{ trans('ticketit::lang.dept_sub1') }}</strong>{{ trans('ticketit::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
+						@endif
+					@endif
 				@endif
 				
 				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}

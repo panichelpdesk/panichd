@@ -76,6 +76,8 @@ return [
   'created'                          => 'Created',
   'date-info-created'                => 'Creation date',
   'date-info-updated'                => 'Last update date',
+  'department'                       => 'Department',
+  'dept_sub1'                        => 'Subdepartment',
   'description'                      => 'Description',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
