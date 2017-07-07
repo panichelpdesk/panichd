@@ -44,8 +44,10 @@ class TicketsController extends Controller
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')
 			->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
-            ->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
-            ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')
+            ->join('users as agent', 'agent.id', '=', 'ticketit.agent_id')
+			->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
+            ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')			
+			
             
 			// Tags joins
 			->leftJoin('ticketit_taggables', function ($join) {
@@ -62,14 +64,14 @@ class TicketsController extends Controller
 			'ticketit_statuses.name AS status',
 			'ticketit_statuses.color AS color_status',
 			'ticketit_priorities.color AS color_priority',
-			'ticketit_categories.color AS color_category',
-			'ticketit.id AS agent',
+			'ticketit_categories.color AS color_category',			
 			'ticketit.updated_at AS updated_at',
+			'ticketit.agent_id',
+			\DB::raw('group_concat(agent.name) AS agent_name'),
 			'ticketit_priorities.name AS priority',
 			'users.name AS owner',
 			'ticketit.user_id',
-			'ticketit.creator_id',
-			'ticketit.agent_id',
+			'ticketit.creator_id',		
 			'ticketit_categories.name AS category',			
 			
 			// Tag Columns
@@ -208,7 +210,7 @@ class TicketsController extends Controller
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);
-			$count = $a_cat[$ticket->category_id]['agents_count'];
+			$count = $a_cat[$ticket->category_id]['agents_count'];			
 			
             $text = '<a href="#" class="jquery_agent_change_'.($count>4 ? 'modal' : ($count == 1 ? 'info' : 'integrated')).'" ';
 			
@@ -219,7 +221,7 @@ class TicketsController extends Controller
 			}else{
 				$text.= ' title="'.trans('ticketit::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
 			}
-			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent->id.'">'.$ticket->agent->name.'</a>';
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
 				
 			return $text;
         });
