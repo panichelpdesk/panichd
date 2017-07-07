@@ -59,6 +59,10 @@
 				<p>
 				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
+					@if ($ticket->user_id != $ticket->creator_id)
+						<br /><strong>{{ trans('ticketit::lang.show-ticket-creator') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->creator->name }}<br />
+					@endif
+					
 					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
 					@if ($setting->grab('departments_feature'))
 						@if ($ticket->department)

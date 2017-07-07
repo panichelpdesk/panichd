@@ -111,6 +111,16 @@ class Ticket extends Model
         return $this->belongsTo('Kordy\Ticketit\Models\Category', 'category_id');
     }
 
+	/**
+     * Get Ticket creator.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo('App\User', 'creator_id');
+    }
+	
     /**
      * Get Ticket owner.
      *

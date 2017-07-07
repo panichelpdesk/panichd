@@ -111,10 +111,13 @@ return [
 
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
+  'create-ticket-owner'              => 'Sender',
+  'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
 
   'show-ticket-title'                => 'Ticket',
+  'show-ticket-creator'              => 'Created by',
   'show-ticket-js-delete'            => 'Are you sure you want to delete: ',
   'show-ticket-modal-delete-title'   => 'Delete Ticket',
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',

@@ -67,6 +67,8 @@ class TicketsController extends Controller
 			'ticketit.updated_at AS updated_at',
 			'ticketit_priorities.name AS priority',
 			'users.name AS owner',
+			'ticketit.user_id',
+			'ticketit.creator_id',
 			'ticketit.agent_id',
 			'ticketit_categories.name AS category',			
 			
@@ -94,6 +96,7 @@ class TicketsController extends Controller
 		$collection
             ->groupBy('ticketit.id')
             ->select($a_select)
+			->with('creator')
 			->withCount('comments')
 			->withCount('recentComments');
 
@@ -193,6 +196,15 @@ class TicketsController extends Controller
 				return "<span $title>$dept_info</span>";
 			});
 		}
+		
+		$collection->editColumn('owner', function ($ticket) {
+			$return = str_replace (" ", "&nbsp;", $ticket->owner);
+			if ($ticket->user_id != $ticket->creator_id){
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+			}
+			
+			return $return;
+		});
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);
@@ -468,8 +480,9 @@ class TicketsController extends Controller
 		
 		$fields = [
             'subject'     => 'required|min:3',
+			'owner_id'    => 'required|exists:users,id',
+			'category_id' => 'required|exists:ticketit_categories,id',
             'content'     => 'required|min:6',            
-            'category_id' => 'required|exists:ticketit_categories,id',
         ];
 		
 		if ($permission_level > 1) {
@@ -504,8 +517,9 @@ class TicketsController extends Controller
 		
         $ticket = new Ticket();
 
-        $ticket->subject = $request->subject;
-		$ticket->user_id = auth()->user()->id;
+        $ticket->subject = $request->subject;		
+		$ticket->creator_id = auth()->user()->id;
+		$ticket->user_id = $request->owner_id;
 		
 		if ($permission_level > 1) {
 			if ($request->complete=='yes'){

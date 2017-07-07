@@ -26,6 +26,19 @@
                 </div>
             </div>
 			
+			<div class="form-group"><!-- OWNER -->
+                
+				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('ticketit::lang.create-ticket-owner-help') }}" style="cursor: help"> *{{trans('ticketit::lang.create-ticket-owner')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+
+                <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+                    <select name="owner_id" id="owner_select2" class="form-control" style="display: none; width: 100%">
+					@foreach (App\User::orderBy('name')->get() as $owner)
+						<option value="{{ $owner->id }}" {{ $owner->id == $u->id ? 'selected="selected"' : '' }}>{{ $owner->name }}</option>
+					@endforeach
+					</select>            
+                </div>
+            </div>
+			
 			@if ($u->maxLevel() > 1)
 			<div class="jquery_level2_show">
 				<div class="form-group"><!-- ACTIVE / COMPLETE -->
@@ -57,7 +70,7 @@
 			@endif
 			
 			<div class="form-group"><!-- CATEGORY -->
-				{!! CollectiveForm::label('category', '*' . trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
+				{!! CollectiveForm::label('category_id', '*' . trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
 					'class' => ($u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3').' control-label  level_class',
 					'data-level-1-class' => 'col-lg-2',
 					'data-level-2-class' => 'col-lg-3'
@@ -133,6 +146,9 @@
 	var category_id=<?=$a_current['cat_id'];?>;
 
 	$(function(){		
+		// User select
+		$('#owner_select2').select2();
+		
 		// Category select with $u->maxLevel() > 1 only
 		$('#category_change').change(function(){
 			// Update agent list
