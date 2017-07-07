@@ -297,6 +297,27 @@ class Agent extends User
 		}
 	}
 
+	/**
+     * Get directly associated department (ticketit_department)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userDepartment()
+    {
+        return $this->belongsTo('Kordy\Ticketit\Models\Department', 'ticketit_department', 'id');
+    }
+	
+	/**
+     * Get associated department through person_id
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function personDepartment()
+    {
+        return $this->belongsToMany('Kordy\Ticketit\Models\Department', 'ticketit_departments_persons', 'person_id', 'department_id');
+    }
+	
+	
     /**
      * Get related categories.
      *
