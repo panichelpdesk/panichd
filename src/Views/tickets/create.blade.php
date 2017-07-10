@@ -33,7 +33,7 @@
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
                     <select name="owner_id" id="owner_select2" class="form-control" style="display: none; width: 100%">
 					@foreach (App\User::orderBy('name')->get() as $owner)
-						<option value="{{ $owner->id }}" {{ $owner->id == $u->id ? 'selected="selected"' : '' }}>{{ $owner->name }}</option>
+						<option value="{{ $owner->id }}" {{ $owner->id == $u->id ? 'selected="selected"' : '' }}>{{ ($owner->ticketit_department ? trans('ticketit::lang.department-shortening').trans('ticketit::lang.colon'):'').$owner->name }}</option>
 					@endforeach
 					</select>            
                 </div>

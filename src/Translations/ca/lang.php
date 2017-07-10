@@ -78,6 +78,7 @@ return [
   'date-info-created'                => 'Data de creació',
   'date-info-updated'                => 'Data de darrer canvi',
   'department'                       => 'Departament',
+  'department-shortening'            => 'Dep.',
   'dept_sub1'                        => 'Area',
   'description'                      => 'Descripció',
   'flash-x'                          => '×', // &times;
