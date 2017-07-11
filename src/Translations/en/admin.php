@@ -11,6 +11,7 @@ return [
   'nav-categories'                => 'Categories',
   'nav-priorities'                => 'Priorities',
   'nav-statuses'                  => 'Statuses',
+  'nav-dept-users'                => 'Department users',
   'nav-configuration'             => 'Configuration',
   'nav-administrator'             => 'Administrator',  //new
 
@@ -147,7 +148,15 @@ return [
   'status-create-name'            => 'Name',
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Edit Status: :name',
-
+  
+// tickets-admin/deptsuser/____
+  'deptsuser-index-title'         => 'Departmental users management',
+  'btn-create-new-deptsuser'      => 'Add user',
+  'deptsuser-index-empty'         => 'There are no configured relations,',
+  'deptsuser-index-user'          => 'User',
+  'deptsuser-index-email'         => 'E-mail',
+  'deptsuser-index-department'    => 'Department',
+  
 // tickets-admin/configuration/____
   'config-index-title'            => 'Configuration Settings',
   'config-index-subtitle'         => 'Settings',

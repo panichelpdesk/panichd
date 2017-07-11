@@ -273,7 +273,18 @@ class SettingsTableSeeder extends Seeder
 			/*
 			 * Ticketit optional features
 			*/
-			'departments_feature' => 'no',			
+			
+			/*
+			 * View department and sub1 where ticket owner belongs
+			*/
+			'departments_feature' => 'no',	
+			
+			/*
+			 * This feature represents two connected functionalities:
+			 * - Ability of associate certain users to departments.
+			 * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
+			*/
+			'departments_notices_feature' => 'no',
 
         ];
     }

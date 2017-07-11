@@ -308,15 +308,14 @@ class Agent extends User
     }
 	
 	/**
-     * Get associated department through person_id
+     * Get associated department list through person_id
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function personDepartment()
-    {
-        return $this->belongsToMany('Kordy\Ticketit\Models\Department', 'ticketit_departments_persons', 'person_id', 'department_id');
-    }
-	
+	public function personDepts()
+	{
+		return $this->HasMany('Kordy\Ticketit\Models\DepartmentPerson', 'person_id', 'person_id');
+	}	
 	
     /**
      * Get related categories.
