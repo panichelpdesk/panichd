@@ -69,7 +69,7 @@ class TicketsController extends Controller
 			'ticketit.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
 			'ticketit_priorities.name AS priority',
-			'users.name AS owner',
+			'users.name AS owner_name',
 			'ticketit.user_id',
 			'ticketit.creator_id',		
 			'ticketit_categories.name AS category',			
@@ -99,6 +99,7 @@ class TicketsController extends Controller
             ->groupBy('ticketit.id')
             ->select($a_select)
 			->with('creator')
+			->with('owner.personDepts.department')
 			->withCount('comments')
 			->withCount('recentComments');
 
@@ -187,20 +188,19 @@ class TicketsController extends Controller
 		
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_info', function ($ticket) {
-				$title = "";			
+				$dept_info = $title = "";			
 				
-				if ($ticket->dept_sub1 != ""){
-					$dept_info = $ticket->dept_short . ": " . ucwords(mb_strtolower($ticket->dept_sub1));
-					$title = 'title="'.ucwords(mb_strtolower($ticket->dept_info)).'"';
-				}else
-					$dept_info = ucwords(mb_strtolower($ticket->dept_info));
+				if ($ticket->owner->person_id and $ticket->owner->personDepts[0]){
+					$dept_info = $ticket->owner->personDepts[0]->department->resume();
+					$title = $ticket->owner->personDepts[0]->department->title();
+				}				
 				
-				return "<span $title>$dept_info</span>";
+				return "<span title=\"$title\">$dept_info</span>";
 			});
 		}
 		
-		$collection->editColumn('owner', function ($ticket) {
-			$return = str_replace (" ", "&nbsp;", $ticket->owner);
+		$collection->editColumn('owner_name', function ($ticket) {
+			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
 			if ($ticket->user_id != $ticket->creator_id){
 				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
 			}

@@ -61,7 +61,7 @@
 	            @if( $u->currentLevel() > 1 )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	@if (session('ticketit_filter_owner')=="")
-						{ data: 'owner', name: 'users.name' },
+						{ data: 'owner_name', name: 'users.name' },
 						@if ($setting::grab('departments_feature'))
 							{ data: 'dept_info', name: 'ticketit_departments.sub1' },
 						@endif
