@@ -147,12 +147,9 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         Route::resource("$admin_route_path/deptsuser", 'Kordy\Ticketit\Controllers\DeptsUsersController', [
             'names' => [
                 'index'   => "$admin_route.deptsuser.index",
-                'store'   => "$admin_route.deptsuser.store",
-                'create'  => "$admin_route.deptsuser.create",
-                'update'  => "$admin_route.deptsuser.update",
-                'show'    => "$admin_route.deptsuser.show",
-                'destroy' => "$admin_route.deptsuser.destroy",
-                'edit'    => "$admin_route.deptsuser.edit",
+                'store'   => "$admin_route.deptsuser.store",                
+                'update'  => "$admin_route.deptsuser.update",                
+                'destroy' => "$admin_route.deptsuser.destroy",                
             ],
         ]);
 

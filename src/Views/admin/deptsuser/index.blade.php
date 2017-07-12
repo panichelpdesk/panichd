@@ -38,13 +38,17 @@
                             {{ $d_user->email }}
                         </td>
 						<td style="vertical-align: middle">
-                            {{-- $d_user->userDepartment()->first()->resume(true) --}}
-							<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
+                            @if ($d_user->userDepartment)
+								<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
+							@else
+								<span>{{ trans('ticketit::admin.deptsuser-modal-any-dept') }}</span>
+							@endif
+							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-department_id="{{ $d_user->userDepartment->id }}" data-route="update">{{ trans('ticketit::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.deptsuser.update', ['id' => $d_user->id ]) }}">{{ trans('ticketit::admin.btn-edit') }}</button>
 							{!! link_to_route(
-							$setting->grab('admin_route').'.category.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
+							$setting->grab('admin_route').'.deptsuser.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
 							[
 							'class' => 'btn btn-danger deleteit',
 							'form' => "delete-$d_user->id",
@@ -54,7 +58,7 @@
                             {!! CollectiveForm::open([
                                             'method' => 'DELETE',
                                             'route' => [
-                                                        $setting->grab('admin_route').'.category.destroy',
+                                                        $setting->grab('admin_route').'.deptsuser.destroy',
                                                         $d_user->id
                                                         ],
                                             'id' => "delete-$d_user->id"
@@ -77,25 +81,29 @@
 			
 				if ( $(this).data('route') == 'update'){
 					// Form
-					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-'+$(this).data('route'))+'/'+$(this).data('user_id'));
+					$('#modalDepartmentUser form').prop('action',$(this).data('form_action'));
 					$("#modalDepartmentUser input[name='_method']").first().val('PATCH');
 					
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptuser-modal-title-update') }}");
+					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptsuser-modal-title-update') }}");
 					
 					// Selects
 					$("#modalDepartmentUser #user_select2 option[value='"+$(this).data('user_id')+"']").prop('selected', true);
+					$("#modalDepartmentUser #user_select2").hide();				
+					$("#modalDepartmentUser #modal_user_name").show().text($(this).data('user_name'));
 					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('department_id')+"']").prop('selected', true);
 				}else{
-					// Form
-					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-'+$(this).data('route')));
+					// Form action
+					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-create'));			
 					$("#modalDepartmentUser input[name='_method']").first().val('POST');
 					
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptuser-modal-title-create') }}");
+					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptsuser-modal-title-create') }}");
 					
 					// Selects
+					$("#modalDepartmentUser #modal_user_name").text('').hide();					
 					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").prop('selectedIndex',0);
+					$("#modalDepartmentUser #user_select2").show();
 				}			
 							
 				$('#modalDepartmentUser').modal('show');				
@@ -106,7 +114,7 @@
 			
 			$( ".deleteit" ).click(function( event ) {
 				event.preventDefault();
-				if (confirm("{!! trans('ticketit::admin.category-index-js-delete') !!}" + $(this).attr("node") + " ?"))
+				if (confirm("{{ trans('ticketit::admin.deptsuser-index-js-delete') }} " + $(this).attr("node") + " ?"))
 				{
 					var form = $(this).attr("form");
 					$("#" + form).submit();

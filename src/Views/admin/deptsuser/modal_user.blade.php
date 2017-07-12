@@ -8,11 +8,10 @@
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
-			'route' => [$setting->grab('admin_route').'.deptsuser.create'],
+			'route' => [$setting->grab('admin_route').'.deptsuser.store'],
 			'method' => 'PATCH',
 			'class' => 'form-horizontal',
-			'data-route-create' => $setting->grab('admin_route').'.deptsuser.store',
-			'data-route-update' => $setting->grab('admin_route').'.deptsuser.update'
+			'data-route-create' => route($setting->grab('admin_route').'.deptsuser.store')
 			]) !!}
 	
 		<div class="form-group">
@@ -21,6 +20,7 @@
 			]) !!}
 			
 			<div class="col-lg-9">
+				<div id="modal_user_name"></div>
 				<select name="user_id" id="user_select2" class="form_select2 form-control" style="xdisplay: none; xwidth: 100%">
 				@foreach (App\User::orderBy('name')->get() as $user)
 					<option value="{{ $user->id }}">{{ ($user->ticketit_department ? trans('ticketit::lang.department-shortening').trans('ticketit::lang.colon'):'').$user->name }}</option>
@@ -36,6 +36,7 @@
 		
 			<div class="col-lg-9">
 				<select name="department_id" id="department_select2" class="form_select2 form-control" style="xdisplay: none; xwidth: 100%">
+				<option value="0">{{ trans('ticketit::admin.deptsuser-modal-any-dept') }}</option>
 				<?php $department = $a_depts[0]->deptName(); ?>
 				<optgroup label="{{ $department }}">				
 				@foreach ($a_depts as $dept)
@@ -53,7 +54,7 @@
 		 
 		</div>
 		<div class="modal-footer">
-		<button type="submit" class="btn btn-danger">{{ trans('ticketit::lang.btn-change') }}</button>
+		<button type="submit" class="btn btn-danger">{{ trans('ticketit::lang.btn-submit') }}</button>
 		</div>
 		{!! CollectiveForm::close() !!}
     </div>

@@ -156,8 +156,12 @@ return [
   'deptsuser-index-user'          => 'User',
   'deptsuser-index-email'         => 'E-mail',
   'deptsuser-index-department'    => 'Department',
-  'deptuser-modal-title-create'   => 'Assign user to department',
-  'deptuser-modal-title-update'   => 'Update departmental user',
+  'deptsuser-modal-title-create'   => 'Assign user to department',
+  'deptsuser-modal-title-update'   => 'Update departmental user',
+  'deptsuser-modal-any-dept'       => 'Any department',
+  'deptsuser-saved-ok'             => 'Association saved correctly',
+  'deptsuser-deleted-ok'           => 'Association deleted',
+  'deptsuser-index-js-delete'      => 'Are you sure you want to delete the assignment from user',
   
 // tickets-admin/configuration/____
   'config-index-title'            => 'Configuration Settings',
