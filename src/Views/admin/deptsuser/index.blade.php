@@ -15,10 +15,18 @@
             </div>
         </h3>
     </div>
-    @if(!$a_users)
+    <div class="panel-body">
+	@if(!$a_users)
         <div class="well text-center">{{ trans('ticketit::admin.deptsuser-index-empty') }}</div>
     @else
-        <div id="message"></div>
+		@if (!session()->exists('status'))
+			<div class="alert alert-info alert-dismissable fade in">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {{ trans('ticketit::admin.deptsuser-index-definition') }}
+			</div>
+		@endif
+
+		<div id="message"></div>
             <table class="table table-hover">
                 <thead>
                     <tr>                        
@@ -71,7 +79,8 @@
                 </tbody>
             </table>
         @endif
-    </div>
+	</div>
+</div>
 	@include('ticketit::admin.deptsuser.modal_user')
 @stop
 @section('footer')
@@ -89,9 +98,13 @@
 					
 					// Selects
 					$("#modalDepartmentUser #user_select2 option[value='"+$(this).data('user_id')+"']").prop('selected', true);
-					$("#modalDepartmentUser #user_select2").hide();				
+					//$("#modalDepartmentUser #user_select2").hide();				
 					$("#modalDepartmentUser #modal_user_name").show().text($(this).data('user_name'));
 					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('department_id')+"']").prop('selected', true);
+					
+					// Select2
+					$("#modalDepartmentUser .modal_user_wrap .select2-container").remove();
+					$("#modalDepartmentUser #department_select2").select2();
 				}else{
 					// Form action
 					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-create'));			
@@ -103,9 +116,12 @@
 					// Selects
 					$("#modalDepartmentUser #modal_user_name").text('').hide();					
 					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").prop('selectedIndex',0);
-					$("#modalDepartmentUser #user_select2").show();
+					//$("#modalDepartmentUser #user_select2").show();
+					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").select2();
 				}			
-							
+				
+				
+				
 				$('#modalDepartmentUser').modal('show');				
 				
 				e.preventDefault();

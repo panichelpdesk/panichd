@@ -147,6 +147,7 @@ return [
   'deptsuser-index-title'         => 'Gestió d\'usuaris departamentals',
   'btn-create-new-deptsuser'      => 'Assignar usuari',
   'deptsuser-index-empty'         => 'No hi ha relacions configurades,',
+  'deptsuser-index-definition'    => 'Al menú de crear tiquet, un usuari qualsevol hi veurà avisos dels tiquets oberts dels usuaris aquí llistats que es trobin explícitament al seu departament o als relacionats',  
   'deptsuser-index-user'          => 'Usuari',
   'deptsuser-index-email'         => 'E-mail',
   'deptsuser-index-department'    => 'Departament',

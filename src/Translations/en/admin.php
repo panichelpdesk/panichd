@@ -153,6 +153,7 @@ return [
   'deptsuser-index-title'         => 'Departmental users management',
   'btn-create-new-deptsuser'      => 'Assign user',
   'deptsuser-index-empty'         => 'There are no configured relations,',
+  'deptsuser-index-definition'    => 'In the create ticket menu, every user will see notices from open tickets from users on this list that are in his own explicit department or related ones',
   'deptsuser-index-user'          => 'User',
   'deptsuser-index-email'         => 'E-mail',
   'deptsuser-index-department'    => 'Department',
