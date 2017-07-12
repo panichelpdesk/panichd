@@ -27,7 +27,7 @@
 		@endif
 
 		<div id="message"></div>
-            <table class="table table-hover">
+            <table class="table table-hover table-striped">
                 <thead>
                     <tr>                        
                         <td>{{ trans('ticketit::admin.deptsuser-index-user') }}</td>

@@ -3,7 +3,35 @@
 
 @section('content')
 @include('ticketit::shared.header')
-    <div class="well bs-component">
+    
+	@if ($a_notices->count() > 0)	
+	<div class="panel panel-default">
+		<div class="panel-heading">{{ trans('ticketit::lang.ticket-notices-title') . ' (' . $a_notices->count() . ')' }}</div>
+		<div class="panel-body">
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>                        
+						<td>{{ trans('ticketit::lang.table-subject') }}</td>
+						<td>{{ trans('ticketit::lang.table-description') }}</td>
+						<td>{{ trans('ticketit::lang.table-department') }}</td>						
+					</tr>
+				</thead>
+				<tbody>
+				@foreach ($a_notices as $notice)
+					<tr>
+					<td>{{ $notice->subject }}</td>
+					<td>{{ $notice->content }}</td>
+					<td><span title="{{ trans('ticketit::lang.show-ticket-creator') . trans('ticketit::lang.colon') . $notice->owner->name }}">{{ $notice->owner->ticketit_department == 0 ? trans('ticketit::lang.ticket-notices-all-depts') : $notice->owner->userDepartment->resume(true) }}</span></td>
+					</tr>				
+				@endforeach
+				</tbody>
+			</table>
+		</div>
+	</div>
+	@endif
+	
+	
+	<div class="well bs-component">
         {!! CollectiveForm::open([
 			'route'=>$setting->grab('main_route').'.store',
 			'method' => 'POST',

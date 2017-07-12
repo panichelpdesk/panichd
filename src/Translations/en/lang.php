@@ -110,6 +110,9 @@ return [
   'index-create-new-ticket'          => 'create new ticket',
   'index-complete-check'             => 'Be sure to check Complete Tickets if you cannot find your ticket.',
 
+  'ticket-notices-title'             => 'Notices',
+  'ticket-notices-all-depts'         => 'All',
+  
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
   'create-ticket-owner'              => 'Sender',

@@ -402,9 +402,53 @@ class TicketsController extends Controller
      */
     public function create()
     {
+		$user = $this->agent->find(auth()->user()->id);
+		
+		// Get my related departments
+		$related_departments = [];
+		foreach ($user->personDepts()->get() as $dept){
+			foreach ($dept->department()->first()->related() as $rel){
+				$related_departments [] = $rel->id;
+			}			
+		}
+
+		/*
+     	 *	Get related Departamental users from my related departments
+		 *
+		 * Conditions:
+		 *    - agent ticketit_department in related_departments
+		 *    - agent person in related_departments
+		*/
+		$related_users = Agent::where('id','!=',$user->id)
+			->whereIn('ticketit_department', $related_departments);
+			
+			/*		
+			########## ->whereHas('personDepts', function ($q) use($related_departments){
+				$q->whereIn('department_id', $related_departments);
+			})*/
+			
+		
+		// Get users that are visible by all departments
+		$all_dept_users = Agent::where('ticketit_department','0');
+		
+		if (version_compare(app()->version(), '5.3.0', '>=')) {
+			$related_users = $related_users->pluck('id')->toArray();
+			$related_users = array_unique(array_merge($related_users, $all_dept_users->pluck('id')->toArray()));
+		}else{
+			$related_users = $related_users->lists('id')->toArray();
+			$related_users = array_unique(array_merge($related_users, $all_dept_users->lists('id')->toArray()));
+		}
+		
+		########## \Debugbar::info(implode(', ', $related_users));
+		
+		// Get notices from related users
+		$a_notices = Ticket::active()->whereIn('user_id', $related_users)
+			->with('owner.personDepts.department')->get();			
+			
+		
+				
 		list($priorities, $categories, $status_lists) = $this->PCS();
 		
-		$user = $this->agent->find(auth()->user()->id);
 		$a_current = [];
 		
 		if (!old('category_id')){
@@ -458,7 +502,7 @@ class TicketsController extends Controller
 		// Selected tags
 		$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [];
 		
-        return view('ticketit::tickets.create', compact('priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected'));
+        return view('ticketit::tickets.create', compact('a_notices', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected'));
     }
 
     /**
