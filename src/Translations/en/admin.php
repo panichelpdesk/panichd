@@ -151,11 +151,13 @@ return [
   
 // tickets-admin/deptsuser/____
   'deptsuser-index-title'         => 'Departmental users management',
-  'btn-create-new-deptsuser'      => 'Add user',
+  'btn-create-new-deptsuser'      => 'Assign user',
   'deptsuser-index-empty'         => 'There are no configured relations,',
   'deptsuser-index-user'          => 'User',
   'deptsuser-index-email'         => 'E-mail',
   'deptsuser-index-department'    => 'Department',
+  'deptuser-modal-title-create'   => 'Assign user to department',
+  'deptuser-modal-title-update'   => 'Update departmental user',
   
 // tickets-admin/configuration/____
   'config-index-title'            => 'Configuration Settings',

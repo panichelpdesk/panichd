@@ -145,11 +145,13 @@ return [
 
 // tickets-admin/deptsuser/____
   'deptsuser-index-title'         => 'Gestió d\'usuaris departamentals',
-  'btn-create-new-deptsuser'      => 'Afegir usuari',
+  'btn-create-new-deptsuser'      => 'Assignar usuari',
   'deptsuser-index-empty'         => 'No hi ha relacions configurades,',
   'deptsuser-index-user'          => 'Usuari',
   'deptsuser-index-email'         => 'E-mail',
   'deptsuser-index-department'    => 'Departament',
+  'deptuser-modal-title-create'   => 'Assignar usuari a un departament',
+  'deptuser-modal-title-update'   => 'Actualitzar usuari departamental',
   
 // tickets-admin/configuration/____
   'config-index-title'            => 'Paràmetres de configuració',

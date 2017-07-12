@@ -11,7 +11,7 @@
     <div class="panel-heading">
         <h3>{{ trans('ticketit::admin.deptsuser-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-default">{{ trans('ticketit::admin.btn-create-new-deptsuser') }}</button>
+                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('ticketit::admin.btn-create-new-deptsuser') }}</button>
             </div>
         </h3>
     </div>
@@ -42,7 +42,7 @@
 							<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
                         </td>
 						<td>
-                            <button type="button" class="btn btn-info">{{ trans('ticketit::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-department_id="{{ $d_user->userDepartment->id }}" data-route="update">{{ trans('ticketit::admin.btn-edit') }}</button>
 							{!! link_to_route(
 							$setting->grab('admin_route').'.category.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
 							[
@@ -68,17 +68,52 @@
             </table>
         @endif
     </div>
+	@include('ticketit::admin.deptsuser.modal_user')
 @stop
 @section('footer')
     <script>
-        $( ".deleteit" ).click(function( event ) {
-            event.preventDefault();
-            if (confirm("{!! trans('ticketit::admin.category-index-js-delete') !!}" + $(this).attr("node") + " ?"))
-            {
-                var form = $(this).attr("form");
-                $("#" + form).submit();
-            }
+        $(function(){
+			$('.btn_modal_user').click(function(e){
+			
+				if ( $(this).data('route') == 'update'){
+					// Form
+					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-'+$(this).data('route'))+'/'+$(this).data('user_id'));
+					$("#modalDepartmentUser input[name='_method']").first().val('PATCH');
+					
+					// Title
+					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptuser-modal-title-update') }}");
+					
+					// Selects
+					$("#modalDepartmentUser #user_select2 option[value='"+$(this).data('user_id')+"']").prop('selected', true);
+					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('department_id')+"']").prop('selected', true);
+				}else{
+					// Form
+					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-'+$(this).data('route')));
+					$("#modalDepartmentUser input[name='_method']").first().val('POST');
+					
+					// Title
+					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptuser-modal-title-create') }}");
+					
+					// Selects
+					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").prop('selectedIndex',0);
+				}			
+							
+				$('#modalDepartmentUser').modal('show');				
+				
+				e.preventDefault();
+			});
+			
+			
+			$( ".deleteit" ).click(function( event ) {
+				event.preventDefault();
+				if (confirm("{!! trans('ticketit::admin.category-index-js-delete') !!}" + $(this).attr("node") + " ?"))
+				{
+					var form = $(this).attr("form");
+					$("#" + form).submit();
+				}
 
-        });
+			});
+		});
+		
     </script>
 @append

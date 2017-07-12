@@ -73,12 +73,22 @@ class Department extends Model
 	}
 	
 	/*
+	 * Get formatted department name
+	 * 
+	 * @Return string
+	*/
+	public function deptName(){
+		return ucwords(mb_strtolower($this->department));
+	}
+	
+	
+	/*
 	 * Get formatted department name as title
 	 * 
 	 * @Return string
 	*/
 	public function title ()
 	{
-		return trans('ticketit::lang.department-shortening').trans('ticketit::lang.colon').ucwords(mb_strtolower($this->department));
+		return trans('ticketit::lang.department-shortening').trans('ticketit::lang.colon').$this->deptName();
 	}
 }
