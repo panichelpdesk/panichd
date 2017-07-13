@@ -111,7 +111,7 @@ return [
   'index-create-new-ticket'          => 'crear nou tiquet',
   'index-complete-check'             => 'Assegureu-vos de revisar els tiquets tancats si no pot trobar el seu tiquet.',
 
-  'ticket-notices-title'             => 'Avisos',
+  'ticket-notices-title'             => 'Avisos actius',
   'ticket-notices-all-depts'         => 'Tots',
   
   'create-ticket-title'              => 'Nou formulari de Tiquet',

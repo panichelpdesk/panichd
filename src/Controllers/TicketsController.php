@@ -443,7 +443,8 @@ class TicketsController extends Controller
 		
 		// Get notices from related users
 		$a_notices = Ticket::active()->whereIn('user_id', $related_users)
-			->with('owner.personDepts.department')->get();			
+			->with('owner.personDepts.department')
+			->with('status')->get();			
 			
 		
 				
