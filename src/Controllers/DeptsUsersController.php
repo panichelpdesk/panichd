@@ -8,7 +8,13 @@ use Kordy\Ticketit\Models;
 
 class DeptsUsersController extends Controller
 {
-    /**
+    public function __construct()
+	{
+		 $this->middleware('Kordy\Ticketit\Middleware\RequiredSettingMiddleware:DeptsUser');
+	}
+	
+	
+	/**
      * Display a listing of the resource.
      *
      * @return Response
