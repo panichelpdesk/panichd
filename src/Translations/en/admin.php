@@ -159,7 +159,6 @@ return [
   'deptsuser-index-department'    => 'Department',
   'deptsuser-modal-title-create'   => 'Assign user to department',
   'deptsuser-modal-title-update'   => 'Update departmental user',
-  'deptsuser-modal-any-dept'       => 'Any department',
   'deptsuser-saved-ok'             => 'Association saved correctly',
   'deptsuser-deleted-ok'           => 'Association deleted',
   'deptsuser-index-js-delete'      => 'Are you sure you want to delete the assignment from user',

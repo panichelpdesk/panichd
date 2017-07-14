@@ -153,7 +153,6 @@ return [
   'deptsuser-index-department'    => 'Departament',
   'deptsuser-modal-title-create'   => 'Assignar usuari a un departament',
   'deptsuser-modal-title-update'   => 'Actualitzar usuari departamental',
-  'deptsuser-modal-any-dept'       => 'Qualsevol departament',
   'deptsuser-saved-ok'             => 'Associació desada correctament',
   'deptsuser-deleted-ok'           => 'Associació eliminada',
   'deptsuser-index-js-delete'      => 'Estàs segur/a que vols eliminar aquesta associació per a',

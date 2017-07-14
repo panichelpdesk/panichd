@@ -36,7 +36,7 @@
 		
 			<div class="col-lg-9">
 				<select name="department_id" id="department_select2" class="form_select2 form-control" style="display: none; width: 100%">
-				<option value="0">{{ trans('ticketit::admin.deptsuser-modal-any-dept') }}</option>
+				<option value="0">{{ trans('ticketit::lang.all-depts') }}</option>
 				<?php $department = $a_depts[0]->deptName(); ?>
 				<optgroup label="{{ $department }}">				
 				@foreach ($a_depts as $dept)

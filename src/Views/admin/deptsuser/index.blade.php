@@ -49,7 +49,7 @@
                             @if ($d_user->userDepartment)
 								<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
 							@else
-								<span>{{ trans('ticketit::admin.deptsuser-modal-any-dept') }}</span>
+								<span>{{ trans('ticketit::lang.all-depts') }}</span>
 							@endif
 							
                         </td>

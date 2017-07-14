@@ -93,6 +93,7 @@ return [
   'status'                           => 'Estat',
   'subject'                          => 'Tema',
   'tags'                             => 'Etiquetes',
+  'all-depts'                        => 'Tots',
 
  /*
   *  Page specific
@@ -111,12 +112,12 @@ return [
   'index-create-new-ticket'          => 'crear nou tiquet',
   'index-complete-check'             => 'Assegureu-vos de revisar els tiquets tancats si no pot trobar el seu tiquet.',
 
-  'ticket-notices-title'             => 'Avisos actius',
-  'ticket-notices-all-depts'         => 'Tots',
+  'ticket-notices-title'             => 'Avisos actius', 
   
   'create-ticket-title'              => 'Nou formulari de Tiquet',
   'create-new-ticket'                => 'Crear Nou Tiquet',
   'create-ticket-owner'              => 'Remitent',
+  'create-ticket-notices'            => 'Avís per',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
