@@ -113,13 +113,21 @@ class NotificationsController extends Controller
         $a_to=[];
 		
 		if ($ticket->agent->email != $notification_owner->email){
-			$a_to[] = $ticket->agent;
+			$a_to[] = ['recipient' => $ticket->agent];
 		}
 		
-		if (in_array($type,['comment_reply','status']) 
-			and $ticket->user->email != $notification_owner->email 
-			and $ticket->agent->email != $ticket->user->email){
-				$a_to[] = $ticket->user;
+		if (in_array($type,['comment_reply','status'])){
+			if ($ticket->user->email != $notification_owner->email and $ticket->agent->email != $ticket->user->email){
+				$a_to[] = ['recipient' => $ticket->user];
+			}
+		}elseif($type=="newTicket"){
+			if (Setting::grab('departments_notices_feature') and ($ticket->user->ticketit_department == '0' || $ticket->user->ticketit_department != "" )){
+				$a_to[] = [
+					'recipient' => $ticket->user,
+					'subject' => $ticket->subject . ' [' .  trans('ticketit::lang.ticket') . ' ' . trans('ticketit::lang.table-id') . $ticket->id .']',
+					'template' => 'ticketit::emails.simple'
+				];
+			}
 		}
 
 		$this->sendNotification_exec($a_to, $template, $data, $notification_owner, $subject);
@@ -138,29 +146,35 @@ class NotificationsController extends Controller
     {
 		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
-				$mail_callback = function ($m) use ($to, $notification_owner, $subject) {
-					$m->to($to->email, $to->name);
+				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
+				$mail_template = isset($to['template']) ? $to['template'] : $template;
+				
+				$mail_callback = function ($m) use ($to, $notification_owner, $mail_subject) {
+					$m->to($to['recipient']->email, $to['recipient']->name);
 
 					$m->replyTo($notification_owner->email, $notification_owner->name);
 
-					$m->subject($subject);
+					$m->subject($mail_subject);
 				};
 
 				if (Setting::grab('queue_emails') == 'yes') {
-					Mail::queue($template, $data, $mail_callback);
+					Mail::queue($mail_template, $data, $mail_callback);
 				} else {
-					Mail::send($template, $data, $mail_callback);
+					Mail::send($mail_template, $data, $mail_callback);
 				}
 			}
 			
         } elseif (LaravelVersion::min('5.4')) {
             foreach ($a_to as $to){
-				$mail = new \Kordy\Ticketit\Mail\TicketitNotification($template, $data, $notification_owner, $subject);
+				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
+				$mail_template = isset($to['template']) ? $to['template'] : $template;
+				
+				$mail = new \Kordy\Ticketit\Mail\TicketitNotification($mail_template, $data, $notification_owner, $subject);
 
 				if (Setting::grab('queue_emails') == 'yes') {
-					Mail::to($to)->queue($mail);
+					Mail::to($to['recipient'])->queue($mail);
 				} else {
-					Mail::to($to)->send($mail);
+					Mail::to($to['recipient'])->send($mail);
 				}
 			}
 			
