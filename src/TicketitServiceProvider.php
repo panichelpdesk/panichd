@@ -177,7 +177,7 @@ class TicketitServiceProvider extends ServiceProvider
             Ticket::created(function ($ticket) {
                 if (Setting::grab('assigned_notification')) {
                     $notification = new NotificationsController();
-                    $notification->newTicketNotifyAgent($ticket);
+                    $notification->newTicket($ticket);
                 }
 
                 return true;

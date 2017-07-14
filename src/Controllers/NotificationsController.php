@@ -58,7 +58,7 @@ class NotificationsController extends Controller
             $notification_owner->name.trans('ticketit::lang.notify-transferred').$ticket->subject.trans('ticketit::lang.notify-to-you'), 'agent');
     }
 
-    public function newTicketNotifyAgent(Ticket $ticket)
+    public function newTicket(Ticket $ticket)
     {
         $notification_owner = auth()->user();
         $template = 'ticketit::emails.assigned';
@@ -68,7 +68,7 @@ class NotificationsController extends Controller
         ];
 
         $this->sendNotification($template, $data, $ticket, $notification_owner,
-            $notification_owner->name.trans('ticketit::lang.notify-created-ticket').$ticket->subject, 'agent');
+            $notification_owner->name.trans('ticketit::lang.notify-created-ticket').$ticket->subject, 'newTicket');
     }
 
 	/**
@@ -116,8 +116,10 @@ class NotificationsController extends Controller
 			$a_to[] = $ticket->agent;
 		}
 		
-		if (in_array($type,['comment_reply','status']) and $ticket->user->email != $notification_owner->email and $ticket->agent->email != $ticket->user->email){
-			$a_to[] = $ticket->user;
+		if (in_array($type,['comment_reply','status']) 
+			and $ticket->user->email != $notification_owner->email 
+			and $ticket->agent->email != $ticket->user->email){
+				$a_to[] = $ticket->user;
 		}
 
 		$this->sendNotification_exec($a_to, $template, $data, $notification_owner, $subject);
