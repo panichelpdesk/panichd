@@ -40,6 +40,6 @@
 {!! trans('ticketit::email/simple.salutation') !!}
 {!! $ticket->html !!}
 {!! trans('ticketit::email/simple.closing') !!}
-{!! $notification_owner->name !!}
+{{ $setting->grab('email.signature') }}
 </body>
 </html>

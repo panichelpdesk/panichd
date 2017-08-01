@@ -125,7 +125,7 @@ class NotificationsController extends Controller
 				$a_to[] = [
 					'recipient' => $ticket->user,
 					'subject' => $ticket->subject . ' [' .  trans('ticketit::lang.ticket') . ' ' . trans('ticketit::lang.table-id') . $ticket->id .']',
-					'template' => 'ticketit::emails.simple'
+					'template' => Setting::grab('email.owner.newticket.template')
 				];
 			}
 		}

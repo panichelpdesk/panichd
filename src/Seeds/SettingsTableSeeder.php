@@ -101,6 +101,7 @@ class SettingsTableSeeder extends Seeder
              * Default: ticketit::emails.templates.ticketit
              */
             'email.template' => 'ticketit::emails.templates.ticketit',
+			'email.owner.newticket.template' => 'ticketit::emails.templates.simple',
             // resources/views/emails/templates/ticketit.blade.php
             'email.header'           => 'Ticket Update',
             'email.signoff'          => 'Thank you for your patience!',
