@@ -56,14 +56,14 @@
 	            { data: 'status', name: 'ticketit_statuses.name' },
 	            { data: 'updated_at', name: 'ticketit.updated_at' },
             	@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
-					{ data: 'agent', name: 'users.name' },
+					{ data: 'agent', name: 'agent.name' },
 				@endif				
 	            @if( $u->currentLevel() > 1 )
 		            { data: 'priority', name: 'ticketit_priorities.name' },
 	            	@if (session('ticketit_filter_owner')=="")
-						{ data: 'owner', name: 'users.name' },
+						{ data: 'owner_name', name: 'users.name' },
 						@if ($setting::grab('departments_feature'))
-							{ data: 'dept_info', name: 'dept_info' },
+							{ data: 'dept_info', name: 'ticketit_departments.sub1' },
 						@endif
 					@endif
 					@if (session('ticketit_filter_category')=="")

@@ -23,7 +23,7 @@ class ConfigurationsController extends Controller
       $configurations_by_sections = ['init' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
       $init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'routes'];
       $email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
-        'email.template', 'email.header', 'email.signoff', 'email.signature', 'email.dashboard',
+        'email.template', 'email.owner.newticket.template', 'email.header', 'email.signoff', 'email.signature', 'email.dashboard',
         'email.google_plus_link', 'email.facebook_link', 'email.twitter_link', 'email.footer', 'email.footer_link',
         'email.color_body_bg', 'email.color_header_bg', 'email.color_content_bg', 'email.color_footer_bg',
         'email.color_button_bg', ];

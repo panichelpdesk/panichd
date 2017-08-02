@@ -149,15 +149,19 @@ class TicketitServiceProvider extends ServiceProvider
                 }
             });
 
-            // Send notification when ticket status is modified
+            
             Ticket::updating(function ($modified_ticket) {
-                if (Setting::grab('status_notification')) {
+                
+				// Send notification when ticket status is modified
+				if (Setting::grab('status_notification')) {
                     $original_ticket = Ticket::find($modified_ticket->id);
                     if ($original_ticket->status_id != $modified_ticket->status_id || $original_ticket->completed_at != $modified_ticket->completed_at) {
                         $notification = new NotificationsController();
                         $notification->ticketStatusUpdated($modified_ticket, $original_ticket);
                     }
                 }
+				
+				// Send notification when agent is modified
                 if (Setting::grab('assigned_notification')) {
                     $original_ticket = Ticket::find($modified_ticket->id);
                     if ($original_ticket->agent->id != $modified_ticket->agent->id) {
@@ -169,11 +173,11 @@ class TicketitServiceProvider extends ServiceProvider
                 return true;
             });
 
-            // Send notification when ticket status is modified
+            // Send notification when ticket is created
             Ticket::created(function ($ticket) {
                 if (Setting::grab('assigned_notification')) {
                     $notification = new NotificationsController();
-                    $notification->newTicketNotifyAgent($ticket);
+                    $notification->newTicket($ticket);
                 }
 
                 return true;

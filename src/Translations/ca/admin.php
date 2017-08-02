@@ -11,6 +11,7 @@ return [
   'nav-categories'                => 'Categories',
   'nav-priorities'                => 'Prioritats',
   'nav-statuses'                  => 'Estats',
+  'nav-dept-users'                => 'Usuaris departamentals',
   'nav-configuration'             => 'Configuració',
   'nav-administrator'             => 'Administrador',
 
@@ -142,6 +143,20 @@ return [
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Editar Estat: :name',
 
+// tickets-admin/deptsuser/____
+  'deptsuser-index-title'         => 'Gestió d\'usuaris departamentals',
+  'btn-create-new-deptsuser'      => 'Assignar usuari',
+  'deptsuser-index-empty'         => 'No hi ha relacions configurades,',
+  'deptsuser-index-definition'    => 'Al menú de crear tiquet, un usuari qualsevol hi veurà avisos dels tiquets oberts dels usuaris aquí llistats que es trobin explícitament al seu departament o als relacionats',  
+  'deptsuser-index-user'          => 'Usuari',
+  'deptsuser-index-email'         => 'E-mail',
+  'deptsuser-index-department'    => 'Departament',
+  'deptsuser-modal-title-create'   => 'Assignar usuari a un departament',
+  'deptsuser-modal-title-update'   => 'Actualitzar usuari departamental',
+  'deptsuser-saved-ok'             => 'Associació desada correctament',
+  'deptsuser-deleted-ok'           => 'Associació eliminada',
+  'deptsuser-index-js-delete'      => 'Estàs segur/a que vols eliminar aquesta associació per a',
+  
 // tickets-admin/configuration/____
   'config-index-title'            => 'Paràmetres de configuració',
   'config-index-subtitle'         => 'configuració',

@@ -111,8 +111,18 @@ class Ticket extends Model
         return $this->belongsTo('Kordy\Ticketit\Models\Category', 'category_id');
     }
 
+	/**
+     * Get Ticket creator.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo('App\User', 'creator_id');
+    }
+	
     /**
-     * Get Ticket owner.
+     * Get Ticket owner as App\User model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -120,6 +130,17 @@ class Ticket extends Model
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+	
+	/**
+     * Get Ticket owner as App\User model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo('Kordy\Ticketit\Models\Agent', 'user_id');
+    }	
+	
 
     /**
      * Get Ticket agent.

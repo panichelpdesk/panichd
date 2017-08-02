@@ -44,8 +44,10 @@ class TicketsController extends Controller
         $collection
             ->join('users', 'users.id', '=', 'ticketit.user_id')
 			->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
-            ->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
-            ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')
+            ->join('users as agent', 'agent.id', '=', 'ticketit.agent_id')
+			->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
+            ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')			
+			
             
 			// Tags joins
 			->leftJoin('ticketit_taggables', function ($join) {
@@ -62,12 +64,14 @@ class TicketsController extends Controller
 			'ticketit_statuses.name AS status',
 			'ticketit_statuses.color AS color_status',
 			'ticketit_priorities.color AS color_priority',
-			'ticketit_categories.color AS color_category',
-			'ticketit.id AS agent',
+			'ticketit_categories.color AS color_category',			
 			'ticketit.updated_at AS updated_at',
-			'ticketit_priorities.name AS priority',
-			'users.name AS owner',
 			'ticketit.agent_id',
+			\DB::raw('group_concat(agent.name) AS agent_name'),
+			'ticketit_priorities.name AS priority',
+			'users.name AS owner_name',
+			'ticketit.user_id',
+			'ticketit.creator_id',		
 			'ticketit_categories.name AS category',			
 			
 			// Tag Columns
@@ -94,6 +98,8 @@ class TicketsController extends Controller
 		$collection
             ->groupBy('ticketit.id')
             ->select($a_select)
+			->with('creator')
+			->with('owner.personDepts.department')
 			->withCount('comments')
 			->withCount('recentComments');
 
@@ -182,21 +188,29 @@ class TicketsController extends Controller
 		
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_info', function ($ticket) {
-				$title = "";			
+				$dept_info = $title = "";			
 				
-				if ($ticket->dept_sub1 != ""){
-					$dept_info = $ticket->dept_short . ": " . ucwords(mb_strtolower($ticket->dept_sub1));
-					$title = 'title="'.ucwords(mb_strtolower($ticket->dept_info)).'"';
-				}else
-					$dept_info = ucwords(mb_strtolower($ticket->dept_info));
+				if ($ticket->owner->person_id and $ticket->owner->personDepts[0]){
+					$dept_info = $ticket->owner->personDepts[0]->department->resume();
+					$title = $ticket->owner->personDepts[0]->department->title();
+				}				
 				
-				return "<span $title>$dept_info</span>";
+				return "<span title=\"$title\">$dept_info</span>";
 			});
 		}
+		
+		$collection->editColumn('owner_name', function ($ticket) {
+			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			if ($ticket->user_id != $ticket->creator_id){
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+			}
+			
+			return $return;
+		});
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);
-			$count = $a_cat[$ticket->category_id]['agents_count'];
+			$count = $a_cat[$ticket->category_id]['agents_count'];			
 			
             $text = '<a href="#" class="jquery_agent_change_'.($count>4 ? 'modal' : ($count == 1 ? 'info' : 'integrated')).'" ';
 			
@@ -207,7 +221,7 @@ class TicketsController extends Controller
 			}else{
 				$text.= ' title="'.trans('ticketit::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
 			}
-			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent->id.'">'.$ticket->agent->name.'</a>';
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
 				
 			return $text;
         });
@@ -388,9 +402,48 @@ class TicketsController extends Controller
      */
     public function create()
     {
+		$user = $this->agent->find(auth()->user()->id);
+		
+		if (Setting::grab('departments_notices_feature')){
+			// Get my related departments
+			$related_departments = [];
+			foreach ($user->personDepts()->get() as $dept){
+				foreach ($dept->department()->first()->related() as $rel){
+					$related_departments [] = $rel->id;
+				}			
+			}
+
+			/*
+			 *	Get related Departamental users from my related departments
+			 *
+			 * Conditions:
+			 *    - agent ticketit_department in related_departments
+			 *    - agent person in related_departments
+			*/
+			$related_users = Agent::where('id','!=',$user->id)
+				->whereIn('ticketit_department', $related_departments);		
+			
+			// Get users that are visible by all departments
+			$all_dept_users = Agent::where('ticketit_department','0');
+			
+			if (version_compare(app()->version(), '5.3.0', '>=')) {
+				$related_users = $related_users->pluck('id')->toArray();
+				$related_users = array_unique(array_merge($related_users, $all_dept_users->pluck('id')->toArray()));
+			}else{
+				$related_users = $related_users->lists('id')->toArray();
+				$related_users = array_unique(array_merge($related_users, $all_dept_users->lists('id')->toArray()));
+			}
+			
+			// Get notices from related users
+			$a_notices = Ticket::active()->whereIn('user_id', $related_users)
+				->with('owner.personDepts.department')
+				->with('status')->get();
+		}else{
+			$a_notices = [];
+		}
+			
 		list($priorities, $categories, $status_lists) = $this->PCS();
 		
-		$user = $this->agent->find(auth()->user()->id);
 		$a_current = [];
 		
 		if (!old('category_id')){
@@ -444,7 +497,7 @@ class TicketsController extends Controller
 		// Selected tags
 		$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [];
 		
-        return view('ticketit::tickets.create', compact('priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected'));
+        return view('ticketit::tickets.create', compact('a_notices', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected'));
     }
 
     /**
@@ -468,8 +521,9 @@ class TicketsController extends Controller
 		
 		$fields = [
             'subject'     => 'required|min:3',
+			'owner_id'    => 'required|exists:users,id',
+			'category_id' => 'required|exists:ticketit_categories,id',
             'content'     => 'required|min:6',            
-            'category_id' => 'required|exists:ticketit_categories,id',
         ];
 		
 		if ($permission_level > 1) {
@@ -504,8 +558,9 @@ class TicketsController extends Controller
 		
         $ticket = new Ticket();
 
-        $ticket->subject = $request->subject;
-		$ticket->user_id = auth()->user()->id;
+        $ticket->subject = $request->subject;		
+		$ticket->creator_id = auth()->user()->id;
+		$ticket->user_id = $request->owner_id;
 		
 		if ($permission_level > 1) {
 			if ($request->complete=='yes'){
@@ -552,7 +607,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets;
+        $ticket = $this->tickets;		
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
@@ -564,8 +619,8 @@ class TicketsController extends Controller
 			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id');
 		}
 		
-		$ticket = $ticket->with('category.closingReasons')->with('tags')->find($id);
-
+		$ticket = $ticket->with('category.closingReasons')->with('tags')->select('*')->find($id);
+		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
 			$a_tags_selected = $ticket->tags()->pluck('id')->toArray();
