@@ -607,7 +607,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets;
+        $ticket = $this->tickets;		
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
@@ -619,8 +619,8 @@ class TicketsController extends Controller
 			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id');
 		}
 		
-		$ticket = $ticket->with('category.closingReasons')->with('tags')->find($id);
-
+		$ticket = $ticket->with('category.closingReasons')->with('tags')->select('*')->find($id);
+		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
 			$a_tags_selected = $ticket->tags()->pluck('id')->toArray();
