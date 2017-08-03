@@ -4,56 +4,27 @@
 @section('content')
 @include('ticketit::shared.header')
     
-	@if ($setting->grab('departments_notices_feature') && $a_notices->count() > 0)	
-	<div class="panel panel-default">
-		<div class="panel-heading">{{ trans('ticketit::lang.ticket-notices-title') . ' (' . $a_notices->count() . ')' }}</div>
-		<div class="panel-body">
-			<table class="table table-hover table-striped">
-				<thead>
-					<tr>                        
-						<td>{{ trans('ticketit::lang.table-id') }}</td>
-						<td>{{ trans('ticketit::lang.table-subject') }}</td>
-						<td>{{ trans('ticketit::lang.table-department') }}</td>
-						<td>{{ trans('ticketit::lang.table-description') }}</td>
-						<td>{{ trans('ticketit::lang.table-intervention') }}</td>
-						
-						<td>{{ trans('ticketit::lang.table-status') }}</td>
-						<td>{{ trans('ticketit::lang.table-last-updated') }}</td>
-					</tr>
-				</thead>
-				<tbody>
-				@foreach ($a_notices as $notice)
-					<tr>
-					<td>{{ $notice->id }}</td>
-					<td>
-					@if ($u->currentLevel() > 2)
-						{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}
-					@else
-						{{ $notice->subject }}
-					@endif
-					</td>
-					<td><span title="{{ $u->currentLevel() > 2 ? trans('ticketit::lang.show-ticket-creator') . trans('ticketit::lang.colon') . $notice->owner->name : '' }}">{{ $notice->owner->ticketit_department == 0 ? trans('ticketit::lang.all-depts') : $notice->owner->userDepartment->resume(true) }}</span></td>
-					<td>{{ $notice->content }}</td>
-					<td>{{ $notice->intervention }}</td>
-					
-					<td style="color: {{ $notice->status->color }}">{{ $notice->status->name }}</td>
-					<td>{!! $notice->updated_at->diffForHumans() !!}</td>
-					</tr>				
-				@endforeach
-				</tbody>
-			</table>
-		</div>
-	</div>
+	@if (!isset($ticket) && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)	
+		@include('ticketit::tickets.partials.notices')
 	@endif
 	
 	
 	<div class="well bs-component">
-        {!! CollectiveForm::open([
-			'route'=>$setting->grab('main_route').'.store',
-			'method' => 'POST',
-			'class' => 'form-horizontal'
+        @if (isset($ticket))
+			{!! CollectiveForm::model($ticket, [
+				 'route' => [$setting->grab('main_route').'.update', $ticket->id],
+				 'method' => 'PATCH',
+				 'class' => 'form-horizontal'
+			 ]) !!}
+		@else
+			{!! CollectiveForm::open([
+				'route'=>$setting->grab('main_route').'.store',
+				'method' => 'POST',
+				'class' => 'form-horizontal'
 			]) !!}
-            <legend>{!! trans('ticketit::lang.create-new-ticket') !!}</legend>
+		@endif		
+		
+            <legend>{!! isset($ticket) ? trans('ticketit::lang.edit-ticket') . ' #'.$ticket->id : trans('ticketit::lang.create-new-ticket') !!}</legend>
             
 			@if ($u->maxLevel() > 1)
 				<div class="jquery_level2_class row" data-class="row"><div class="jquery_level2_class col-md-4" data-class="col-md-4"><!--</div></div>-->
@@ -66,7 +37,7 @@
 					'data-level-2-class' => 'col-lg-3'
 				]) !!}
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-                    {!! CollectiveForm::text('subject', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('ticketit::lang.create-ticket-brief-issue')]) !!}                    
+                    {!! CollectiveForm::text('subject', isset($ticket) ? $ticket->subject : null , ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('ticketit::lang.create-ticket-brief-issue')]) !!}                    
                 </div>
             </div>
 			
@@ -77,7 +48,7 @@
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
                     <select name="owner_id" id="owner_select2" class="form-control" style="display: none; width: 100%">
 					@foreach (Kordy\Ticketit\Models\Agent::with('userDepartment')->orderBy('name')->get() as $owner)
-						<option value="{{ $owner->id }}" {{ $owner->id == $u->id ? 'selected="selected"' : '' }}>{{ $owner->name . (strpos($owner->email, '@tordera.cat') === false ? '' : ' - ' . $owner->email) }}
+						<option value="{{ $owner->id }}" {{ $owner->id == $ticket_owner_id ? 'selected="selected"' : '' }}>{{ $owner->name . (strpos($owner->email, '@tordera.cat') === false ? '' : ' - ' . $owner->email) }}
 						@if ($setting->grab('departments_notices_feature'))
 							@if ($owner->ticketit_department == '0')
 								{{ ' - ' . trans('ticketit::lang.create-ticket-notices') . ' ' . trans('ticketit::lang.all-depts')}}
@@ -166,7 +137,7 @@
             <div class="form-group"><!-- DESCRIPTION -->
                 <label for="content" class="col-lg-2 control-label" title="{{ trans('ticketit::lang.create-ticket-describe-issue') }}" style="cursor: help"> *{{trans('ticketit::lang.description')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
                 <div class="col-lg-10">
-                <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! old('content_html') !!}</textarea>                   
+                <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>                   
                 </div>
             </div>
 			
@@ -175,7 +146,7 @@
 				<div class="form-group"><!-- INTERVENTION -->
 					<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
 					<div class="col-lg-10">
-					<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! old('intervention_html') !!}</textarea>			
+					<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
 					</div>
 				</div>
 			</div>

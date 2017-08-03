@@ -402,6 +402,27 @@ class TicketsController extends Controller
      */
     public function create()
     {
+		$data = $this->create_edit_data();
+		
+		$data['ticket_owner_id'] = auth()->user()->id;
+		
+        return view('ticketit::tickets.createedit', $data);
+    }
+	
+	public function edit($id){
+		$ticket = $this->tickets->findOrFail($id);
+		
+		$data = $this->create_edit_data($ticket);
+		
+		$data['ticket'] = $ticket;
+		
+		$data['ticket_owner_id'] = $data['ticket']->user_id;
+		
+        return view('ticketit::tickets.createedit', $data);
+	}
+	
+	public function create_edit_data($ticket = false)
+	{
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if (Setting::grab('departments_notices_feature')){
@@ -444,9 +465,23 @@ class TicketsController extends Controller
 			
 		list($priorities, $categories, $status_lists) = $this->PCS();
 		
-		$a_current = [];
+		$a_current = [];		
 		
-		if (!old('category_id')){
+		if (old('category_id')){
+			// Form old values
+			$a_current['complete'] = old('complete');
+			$a_current['cat_id'] = old('category_id');
+			$a_current['agent_id'] = old('agent_id');
+			
+		}elseif($ticket){
+			// Edition values
+			$a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
+			$a_current['cat_id'] = $ticket->category_id;
+			$a_current['agent_id'] = $ticket->agent_id;
+			$a_current['status_id'] = $ticket->status_id;
+			
+		}else{
+			// Defaults
 			$a_current['complete'] = "no";
 			
 			// Default category		
@@ -461,27 +496,34 @@ class TicketsController extends Controller
 			}
 			
 			// Default agent
-			$a_current['agent_id'] = $user->id;
-			
-		}else{
-			// Form old values
-			$a_current['complete'] = old('complete');
-			$a_current['cat_id'] = old('category_id');
-			$a_current['agent_id'] = old('agent_id');
+			$a_current['agent_id'] = $user->id;			
 		}
-
 		
 		// Agent list
 		$agent_lists = $this->agentList($a_current['cat_id']);
-		
-		
+				
 		// Permission level for category
 		$permission_level = Agent::levelIn($a_current['cat_id']);
 		
 		// Current default status
-		$a_current['status_id'] = $permission_level > 1 ? Setting::grab('default_reopen_status_id') : Setting::grab('default_status_id');
-
+		if (!$ticket){
+			$a_current['status_id'] = $permission_level > 1 ? Setting::grab('default_reopen_status_id') : Setting::grab('default_status_id');
+		}else{
+			$a_current['status_id'] = $ticket->status_id;
+		}
 		
+		// Current description and intervention
+		if(old('category_id')){
+			$a_current['description'] = old('content_html');
+			$a_current['intervention'] = old('intervention_html');
+		}elseif ($ticket){
+			$a_current['description'] = $ticket->html;
+			$a_current['intervention'] = $ticket->intervention_html;
+		}else{
+			$a_current['description'] = $a_current['intervention'] = "";
+		}
+		
+				
 		// Tag lists
         $tag_lists = Category::whereHas('tags')
         ->with([
@@ -495,10 +537,21 @@ class TicketsController extends Controller
         ->select('id', 'name')->get();
 		
 		// Selected tags
-		$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [];
+		if (old('category_id') and old('category_'.old('category_id').'_tags')){
+			$a_tags_selected = old('category_'.old('category_id').'_tags');
+			
+		}elseif($ticket){
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$a_tags_selected = $ticket->tags()->pluck('id')->toArray();
+			} else { // if Laravel 5.1				
+				$a_tags_selected = $ticket->tags()->lists('id')->toArray();
+			}			
+		}else{
+			$a_tags_selected = [];
+		}
 		
-        return view('ticketit::tickets.create', compact('a_notices', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected'));
-    }
+		return compact('a_notices', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+	}
 
     /**
      * Store a newly created ticket and auto assign an agent for it.
@@ -675,12 +728,12 @@ class TicketsController extends Controller
 		
 		
 		$fields = [
-            'subject'     => 'required|min:3',
-            'content'     => 'required|min:6',
+            'subject'     => 'required|min:3',            
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|exists:ticketit_categories,id',
             'status_id'   => 'required|exists:ticketit_statuses,id',
             'agent_id'    => 'required',
+			'content'     => 'required|min:6',
         ];
 
         $user = $this->agent->find(auth()->user()->id);
@@ -691,7 +744,23 @@ class TicketsController extends Controller
 			]);
         }
 
-        $this->validate($request, $fields);
+		// Custom validation messages
+		$custom_messages = [
+			'subject.required' => 'ticketit::lang.validate-ticket-subject.required',
+			'subject.min' => 'ticketit::lang.validate-ticket-subject.min',
+			'content.required' => 'ticketit::lang.validate-ticket-content.required',
+			'content.min' => 'ticketit::lang.validate-ticket-content.min',
+		];
+		foreach ($custom_messages as $field => $lang_key){
+			$trans = trans ($lang_key);
+			if ($lang_key == $trans){
+				unset($custom_messages[$field]);
+			}else{
+				$custom_messages[$field] = $trans;
+			}
+		}
+		
+        $this->validate($request, $fields, $custom_messages);
 
         $ticket = $this->tickets->findOrFail($id);
 
@@ -720,7 +789,7 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified'));
+        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified', ['name' => '#'.$ticket->id.' "'.$ticket->subject.'"']));
 
         return redirect()->route(Setting::grab('main_route').'.show', $id);
     }

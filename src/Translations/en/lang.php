@@ -120,6 +120,8 @@ return [
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
+  
+  'edit-ticket'                      => 'Edit Ticket',
 
   'show-ticket-title'                => 'Ticket',
   'show-ticket-creator'              => 'Created by',

@@ -132,9 +132,8 @@
 									['class' => 'btn btn-default']) !!}
 		@endif
 		@if($u->currentLevel() > 1)
-			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ticket-edit-modal">
-				{{ trans('ticketit::lang.btn-edit')  }}
-			</button>
+			{!! link_to_route($setting->grab('main_route').'.edit', trans('ticketit::lang.btn-edit'), $ticket->id,
+									['class' => 'btn btn-default']) !!}
 			<div class="visible-xs"><br /></div>
 		@endif
         
@@ -150,10 +149,6 @@
         {!! CollectiveForm::close() !!}
     </div>
 </div>
-
-    @if($u->isAgent() || $u->isAdmin())
-        @include('ticketit::tickets.edit')
-    @endif
 
 {{-- // OR; Modal Window: 2/2 --}}
     @if($u->isAdmin())

@@ -121,6 +121,8 @@ return [
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
+  
+  'edit-ticket'                      => 'Editar Tiquet',
 
   'show-ticket-title'                => 'Tiquet',
   'show-ticket-creator'              => 'Creat per',
