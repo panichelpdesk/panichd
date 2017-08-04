@@ -660,19 +660,20 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets;
+        $ticket = $this->tickets->with('category.closingReasons')->with('tags');
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
 			// Departments related
 			$ticket = $ticket->join('users', 'users.id', '=', 'ticketit.user_id')
 			->leftJoin('ticketit_departments_persons', function ($join1) {
-					$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
-				})	
-			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id');
+				$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
+			})
+			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id')
+			->select('ticketit.*', 'ticketit_departments.department', 'ticketit_departments.sub1');
 		}
 		
-		$ticket = $ticket->with('category.closingReasons')->with('tags')->select('ticketit.*', 'ticketit_departments.department', 'ticketit_departments.sub1')->find($id);
+		$ticket = $ticket->find($id);
 		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
