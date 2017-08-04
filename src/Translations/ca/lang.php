@@ -84,12 +84,14 @@ return [
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',
+  'limit-date'                       => 'Data límit',
   'no-replies'                       => 'Sense respostes.',
   'owner'                            => 'Propietari',
   'priority'                         => 'Prioritat',
   'reopen-ticket'                    => 'Reobrir Tiquet',
   'reply'                            => 'Respondre',
   'responsible'                      => 'Tècnic',
+  'start-date'                       => 'Data inici',
   'status'                           => 'Estat',
   'subject'                          => 'Tema',
   'tags'                             => 'Etiquetes',
@@ -120,6 +122,8 @@ return [
   'create-ticket-notices'            => 'Avís per',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
+  'create-ticket-info-start-date'    => 'Predeterminat: Ara',
+  'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
   
   'edit-ticket'                      => 'Editar Tiquet',

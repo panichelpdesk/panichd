@@ -83,12 +83,14 @@ return [
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
+  'limit-date'                       => 'Limit date',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
   'priority'                         => 'Priority',
   'reopen-ticket'                    => 'Reopen Ticket',
   'reply'                            => 'Reply',
   'responsible'                      => 'Responsible',
+  'start-date'                       => 'Start date',
   'status'                           => 'Status',
   'subject'                          => 'Subject',
   'tags'                             => 'Tags',
@@ -119,6 +121,8 @@ return [
   'create-ticket-notices'            => 'Notices',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
+  'create-ticket-info-start-date'    => 'Default: Now',
+  'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
   
   'edit-ticket'                      => 'Edit Ticket',
