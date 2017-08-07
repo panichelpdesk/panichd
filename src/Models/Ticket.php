@@ -334,6 +334,37 @@ class Ticket extends Model
 			return $query->userTickets(auth()->user()->id);
 		}else{
 			if (session()->has('ticketit_filters')){
+				// Calendar filter
+				if (session()->has('ticketit_filter_calendar')){
+					$cld = session('ticketit_filter_calendar');
+					
+					if ($cld == "expired"){
+						$query = $query->where('limit_date', '<', Carbon::now());
+					}else{
+						$query = $query->where('limit_date', '>=', Carbon::now()->today());
+					}					
+					
+					switch ($cld){
+						case 'today':
+							$query = $query->where('limit_date', '<', Carbon::now()->tomorrow());
+							break;
+							
+						case 'tomorrow':
+							$query = $query->where('limit_date', '>=', Carbon::now()->tomorrow());
+							$query = $query->where('limit_date', '<', Carbon::now()->addDays(3)->startOfDay());
+							break;
+							
+						case 'week':
+							$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
+							break;
+						
+						case 'month':
+							$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
+							break;
+					}
+				}
+				
+				
 				// Category filter
 				if (session()->has('ticketit_filter_category')){
 					$category = session('ticketit_filter_category');
