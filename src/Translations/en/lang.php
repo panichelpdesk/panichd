@@ -58,7 +58,17 @@ return [
   'table-aria-sort-desc'             => ': activate to sort column descending',
   
   'filter-pov'                       => 'View as',
+  'filter-calendar'                  => 'Calendar',
+  'filter-calendar-all'              => 'All',
+  'filter-calendar-expired'          => 'Expired',
+  'filter-calendar-today'            => 'Expires today',
+  'filter-calendar-tomorrow'         => 'Expires tomorrow',
+  'filter-calendar-week'             => 'This week',
+  'filter-calendar-month'            => 'Aquest mes',
+  'filter-category'                  => 'Category',
   'filter-category-all'              => 'All',
+  'filter-agent'                     => 'Agent',
+  'filter-agent-all'                 => 'All',
   'filter-on-total'                  => 'Count depends on active filters',
   'filter-off-total'                 => 'Total total',
 

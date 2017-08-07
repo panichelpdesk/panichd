@@ -183,15 +183,29 @@ body {
 .text-info {
 	color: #549ee8;
 }
+
+.text-info .badge {
+	background-color: #549ee8;
+}
 /* btn-info: #84bef5; */
 
 .text-warning {
 	color: #e69138;
 }
+.text-warning .badge {
+	background-color: #e69138;
+}
 /* btn-warning background: #f6b26b; */
+
+.text-danger .badge {
+	background-color: #a94442;
+}
 
 .text-success {
 	color: #68c240;
+}
+.text-success .badge {
+	background-color: #68c240;
 }
 
 .tooltip-info {

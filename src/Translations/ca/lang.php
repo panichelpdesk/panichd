@@ -59,7 +59,17 @@ return [
   'table-aria-sort-desc'             => ': activar per ordenar ordre descendent',
   
   'filter-pov'                       => 'Vista',
+  'filter-calendar'                  => 'Agenda',
+  'filter-calendar-all'              => 'Tot',
+  'filter-calendar-expired'          => 'Caducats',
+  'filter-calendar-today'            => 'Per avui',
+  'filter-calendar-tomorrow'         => 'Per demà',
+  'filter-calendar-week'             => 'Aquesta setmana',
+  'filter-calendar-month'            => 'Aquest mes',
+  'filter-category'                  => 'Categoria',
   'filter-category-all'              => 'Totes',
+  'filter-agent'                     => 'Agent',
+  'filter-agent-all'                 => 'Tots',
   'filter-on-total'                  => 'Compte segons filtre',
   'filter-off-total'                 => 'Compte total',
 

@@ -350,10 +350,46 @@ class TicketsController extends Controller
     {
         $counts = [];
         $category = session('ticketit_filter_category') == '' ? null : session('ticketit_filter_category');
-
-        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
-            // Ticket count for all categories
-            $counts['total_category'] = Ticket::inList($ticketList)->visible()->count();
+		
+		if ($this->agent->isAdmin() or $this->agent->isAgent()){
+			// Ticket count for all categories
+            $counts['total'] = Ticket::inList($ticketList)->visible()->count();
+			
+			// Calendar expired count
+			$counts['calendar']['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now())->count();
+						
+			// Calendar forth counts
+			$cals = Ticket::inList($ticketList)->visible()->whereBetween('limit_date', [
+				Carbon::now()->today(),
+				Carbon::now()->endOfWeek()
+			])
+			->orWhereBetween('limit_date', [
+				Carbon::now()->today(),
+				Carbon::now()->endOfMonth()
+			])->get();
+			
+			$counts['calendar']['today'] = $cals->filter(function($q){
+				return $q->limit_date < Carbon::now()->tomorrow(); 
+			})->count();
+			
+			$counts['calendar']['tomorrow'] = $cals->filter(function($q){
+				return $q->limit_date >= Carbon::now()->tomorrow(); 
+			})
+			->filter(function($q2){
+				return $q2->limit_date < Carbon::now()->addDays(3)->startOfDay(); 
+			})->count();
+			
+			$counts['calendar']['week'] = $cals->filter(function($q){
+				return $q->limit_date < Carbon::now()->endOfWeek();
+			})->count();
+			
+			$counts['calendar']['month'] = $cals->filter(function($q){
+				return $q->limit_date < Carbon::now()->endOfMonth();
+			})->count();
+		}
+		
+		
+        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {            
 
             // Ticket count for each Category
             if ($this->agent->isAdmin()) {
@@ -372,7 +408,7 @@ class TicketsController extends Controller
                     return $q->id == $category;
                 })->first()->tickets_count;
             } else {
-                $counts['total_agent'] = $counts['total_category'];
+                $counts['total_agent'] = $counts['total'];
             }
 
             // Ticket counts for each visible Agent
