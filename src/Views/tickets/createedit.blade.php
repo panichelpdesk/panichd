@@ -64,7 +64,7 @@
 			
 			@if ($u->maxLevel() > 1)
 			<div class="jquery_level2_show">
-				<div class="form-group"><!-- ACTIVE / COMPLETE -->
+				<div class="form-group" style="margin-bottom: 3em"><!-- ACTIVE / COMPLETE -->
 					{!! CollectiveForm::label('status_id', 'Llistat' . trans('ticketit::lang.colon'), [
 						'class' => 'col-lg-3 control-label'
 					]) !!}
@@ -83,10 +83,33 @@
 						{!! CollectiveForm::select('status_id', $status_lists, $a_current['status_id'], ['id' => 'select_status', 'class' => 'form-control']) !!}
 					</div>
 				</div>
-				<div class="form-group" style="margin-bottom: 3em"><!-- PRIORITY -->
+				<div class="form-group"><!-- PRIORITY -->
 					{!! CollectiveForm::label('priority', trans('ticketit::lang.priority') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
 						{!! CollectiveForm::select('priority_id', $priorities, null, ['class' => 'form-control', 'required' => 'required']) !!}
+					</div>
+				</div>
+				
+				<div class="form-group">
+					{!! CollectiveForm::label('start_date', trans('ticketit::lang.start-date') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+					<div class="col-lg-9">
+						<div class="input-group date" id="start_date">
+							<input type="text" class="form-control" name="start_date" value="{{ $a_current['start_date'] }}"/>
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group" style="margin-bottom: 3em">
+					{!! CollectiveForm::label('limit_date', trans('ticketit::lang.limit-date') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+					<div class="col-lg-9">
+						<div class="input-group date" id="limit_date">
+							<input type="text" class="form-control" name="limit_date" />
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -218,6 +241,25 @@
 			$('#complete_'+other).show();
 			$('#select_status').val($(this).attr('data-click-status'));
 		});
+		
+		$('#start_date').datetimepicker({
+			locale: '{{App::getLocale()}}',
+			format: 'YYYY-MM-DD HH:mm'
+		});
+		$('#limit_date').datetimepicker({			
+			locale: '{{App::getLocale()}}',
+			format: 'YYYY-MM-DD HH:mm',
+			useCurrent: false
+			@if ($a_current['start_date'] != "")
+				, minDate: '{{ $a_current['start_date'] }}'
+			@endif
+		});
+        $("#start_date").on("dp.change", function (e) {
+            $('#limit_date').data("DateTimePicker").minDate(e.date);
+        });
+        $("#limit_date").on("dp.change", function (e) {
+            $('#start_date').data("DateTimePicker").maxDate(e.date);
+        });		
 	});	
 	</script>	
 	@include('ticketit::tickets.partials.summernote')

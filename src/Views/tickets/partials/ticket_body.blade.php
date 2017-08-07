@@ -86,6 +86,13 @@
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
 					</span>
+					@php
+						\Carbon\Carbon::setLocale(config('app.locale'));
+					@endphp
+					<br /><strong>{{ trans('ticketit::lang.start-date') }}</strong>{{ trans('ticketit::lang.colon') .  \Carbon\Carbon::parse($ticket->start_date)->diffForHumans() }}
+					@if ($ticket->limit_date != "")
+						<br /><strong>{{ trans('ticketit::lang.limit-date') }}</strong>{{ trans('ticketit::lang.colon') . \Carbon\Carbon::parse($ticket->limit_date)->diffForHumans() }}
+					@endif
 					</p><p>					
 				@endif
 				

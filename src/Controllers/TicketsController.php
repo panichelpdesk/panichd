@@ -465,24 +465,33 @@ class TicketsController extends Controller
 			
 		list($priorities, $categories, $status_lists) = $this->PCS();
 		
-		$a_current = [];		
+		$a_current = [];
+
+		\Carbon\Carbon::setLocale(config('app.locale'));
 		
 		if (old('category_id')){
 			// Form old values
 			$a_current['complete'] = old('complete');
+			
+			$a_current['start_date'] = old ('start_date');
+			
 			$a_current['cat_id'] = old('category_id');
 			$a_current['agent_id'] = old('agent_id');
 			
 		}elseif($ticket){
 			// Edition values
 			$a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
-			$a_current['cat_id'] = $ticket->category_id;
-			$a_current['agent_id'] = $ticket->agent_id;
 			$a_current['status_id'] = $ticket->status_id;
 			
+			$a_current['start_date'] = $ticket->start_date;
+			
+			$a_current['cat_id'] = $ticket->category_id;
+			$a_current['agent_id'] = $ticket->agent_id;			
 		}else{
 			// Defaults
 			$a_current['complete'] = "no";
+			
+			$a_current['start_date'] = "";
 			
 			// Default category		
 			$a_current['cat_id'] = @$user->tickets()->latest()->first()->category_id;
@@ -625,6 +634,17 @@ class TicketsController extends Controller
 		}else{
 			$ticket->status_id = Setting::grab('default_status_id');		
 			$ticket->priority_id = Models\Priority::first()->id;
+		}
+
+		if ($request->start_date != ""){
+			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
+		}else{
+			$ticket->start_date = date('Y-m-d H:i:s');
+		}
+		if ($request->limit_date == ""){
+			$ticket->limit_date = null;
+		}else{
+			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
 		}		
 
 		$ticket->category_id = $request->category_id;
@@ -779,6 +799,17 @@ class TicketsController extends Controller
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority_id = $request->priority_id;
+		
+		if ($request->start_date != ""){
+			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
+		}else{
+			$ticket->start_date = date('Y-m-d H:i:s');
+		}
+		if ($request->limit_date == ""){
+			$ticket->limit_date = null;
+		}else{
+			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
+		}		
 
         if ($request->input('agent_id') == 'auto') {
             $ticket->autoSelectAgent();
