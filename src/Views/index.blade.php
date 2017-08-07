@@ -15,7 +15,7 @@
 	<script src="//cdn.datatables.net/plug-ins/505bef35b56/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 	<script src="//cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.min.js"></script>
 	<script>
-	$(function(){		
+	$(function(){	
 		// Ticket list load
 		$('.table').DataTable({
 	        processing: false,
@@ -66,6 +66,7 @@
 							{ data: 'dept_info', name: 'ticketit_departments.sub1' },
 						@endif
 					@endif
+					{ data: 'calendar', name: 'ticketit.start_date' },
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
@@ -134,6 +135,8 @@
 
 			// Agent change: Tooltip for 1 agents
 			$(".jquery_agent_change_info").tooltip();
+			
+			$(".tooltip-info").tooltip();
 			
 		});
 

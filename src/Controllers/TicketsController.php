@@ -65,6 +65,8 @@ class TicketsController extends Controller
 			'ticketit_statuses.color AS color_status',
 			'ticketit_priorities.color AS color_priority',
 			'ticketit_categories.color AS color_category',			
+			'ticketit.start_date',
+			'ticketit.limit_date',
 			'ticketit.updated_at AS updated_at',
 			'ticketit.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
@@ -105,6 +107,8 @@ class TicketsController extends Controller
 
         $collection = $datatables->of($collection);
 
+		\Carbon\Carbon::setLocale(config('app.locale'));
+		
         $this->renderTicketTable($collection);
 
         $collection->editColumn('updated_at', '{!! \Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $updated_at)->diffForHumans() !!}');
@@ -178,13 +182,15 @@ class TicketsController extends Controller
 
             return "<div style='color: $color'>$priority</div>";
         });
-
-        $collection->editColumn('category', function ($ticket) {
-            $color = $ticket->color_category;
-            $category = e($ticket->category);
-
-            return "<div style='color: $color'>$category</div>";
-        });
+		
+		$collection->editColumn('owner_name', function ($ticket) {
+			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			if ($ticket->user_id != $ticket->creator_id){
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+			}
+			
+			return $return;
+		});
 		
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_info', function ($ticket) {
@@ -199,14 +205,61 @@ class TicketsController extends Controller
 			});
 		}
 		
-		$collection->editColumn('owner_name', function ($ticket) {
-			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
-			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+		$collection->editColumn('calendar', function ($ticket) {
+            
+			$date = $title = $icon = "";
+			$color = "text-muted";
+			$start_days_diff = Carbon::now()->diffInDays(Carbon::parse($ticket->start_date), false);
+			if ($ticket->limit_date != ""){
+				$limit_days_diff = Carbon::now()->diffInDays(Carbon::parse($ticket->limit_date), false);
+				if ($limit_days_diff == 0){
+					$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($ticket->limit_date), false);
+				}
+			}else{
+				$limit_days_diff = false;
 			}
 			
-			return $return;
-		});
+			if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
+				// Expired
+				$date = $ticket->limit_date;
+				$title = trans('ticketit::lang.calendar-expired');
+				$icon = "glyphicon-exclamation-sign";
+				$color = "text-danger";
+			}elseif($limit_days_diff > 0 or $limit_days_diff === false){
+				if ($start_days_diff > 0){
+					// Scheduled
+					$date = $ticket->start_date;
+					$title = trans('ticketit::lang.calendar-scheduled');
+					$icon = "glyphicon-calendar";
+					$color = "text-info";
+				}elseif($limit_days_diff){
+					// Active with limit
+					$date = $ticket->limit_date;
+					$title = trans('ticketit::lang.calendar-expiration');
+					$icon = "glyphicon-time";
+				}else{
+					// Active without limit
+					$date = $ticket->start_date;
+					$title = trans('ticketit::lang.calendar-active');
+					$icon = "glyphicon-file";					
+				}				
+			}else{
+				// Due today
+				$date = $ticket->limit_date;
+				$title = trans('ticketit::lang.calendar-expires-today');
+				$icon = "glyphicon-warning-sign";
+				$color = "text-warning";
+			}
+
+			return "<div class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> ".Carbon::parse($date)->diffForHumans()."</div>";            
+        });
+
+        $collection->editColumn('category', function ($ticket) {
+            $color = $ticket->color_category;
+            $category = e($ticket->category);
+
+            return "<div style='color: $color'>$category</div>";
+        });
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);

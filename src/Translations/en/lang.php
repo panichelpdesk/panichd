@@ -23,9 +23,16 @@ return [
   'table-last-updated'               => 'Last Updated',
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
+  'table-calendar'                   => 'Agenda',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
 
+  'calendar-active'            => 'Start date',
+  'calendar-expired'           => 'Expired since this date',
+  'calendar-expiration'        => 'Expires this date',
+  'calendar-expires-today'     => 'Expires today',
+  'calendar-scheduled'         => 'Scheduled for this date',
+  
   // Agent related
   'table-change-agent'               => 'Change agent',
   'table-one-agent'                  => 'There is one agent in this category',

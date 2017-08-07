@@ -24,8 +24,15 @@ return [
   'table-last-updated'               => 'Última actualització',
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
+  'table-calendar'                   => 'Calendar',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
+  
+  'calendar-active'            => 'Data d\'inici',
+  'calendar-expired'           => 'Caducat des d\'aquest dia',
+  'calendar-expiration'        => 'Caduca aquest dia',
+  'calendar-expires-today'     => 'Caduca avui',
+  'calendar-scheduled'         => 'Programat en data',
   
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
