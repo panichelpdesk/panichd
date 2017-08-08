@@ -105,7 +105,7 @@
 					{!! CollectiveForm::label('limit_date', trans('ticketit::lang.limit-date') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
 						<div class="input-group date" id="limit_date">
-							<input type="text" class="form-control" name="limit_date" />
+							<input type="text" class="form-control" name="limit_date"  value="{{ $a_current['limit_date'] }}"/>
 							<span class="input-group-addon">
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
