@@ -889,6 +889,12 @@ class TicketsController extends Controller
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
 
+		if ($request->complete=='yes'){
+			$ticket->completed_at = Carbon::now();
+		}else{
+			$ticket->completed_at = null;
+		}
+		
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority_id = $request->priority_id;
