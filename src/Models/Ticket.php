@@ -369,9 +369,9 @@ class Ticket extends Model
 					
 					if ($cld == "expired"){
 						$query = $query->where('limit_date', '<', Carbon::now());
-					}else{
+					}else{										
 						$query = $query->where('limit_date', '>=', Carbon::now()->today());
-					}					
+					}
 					
 					switch ($cld){
 						case 'today':
@@ -380,7 +380,7 @@ class Ticket extends Model
 							
 						case 'tomorrow':
 							$query = $query->where('limit_date', '>=', Carbon::now()->tomorrow());
-							$query = $query->where('limit_date', '<', Carbon::now()->addDays(3)->startOfDay());
+							$query = $query->where('limit_date', '<', Carbon::now()->addDays(2)->startOfDay());
 							break;
 							
 						case 'week':

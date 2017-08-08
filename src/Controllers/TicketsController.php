@@ -361,14 +361,16 @@ class TicketsController extends Controller
 			$counts['calendar']['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now())->count();
 						
 			// Calendar forth counts
-			$cals = Ticket::inList($ticketList)->visible()->whereBetween('limit_date', [
+			$cals = Ticket::whereBetween('limit_date', [
 				Carbon::now()->today(),
 				Carbon::now()->endOfWeek()
 			])
 			->orWhereBetween('limit_date', [
 				Carbon::now()->today(),
 				Carbon::now()->endOfMonth()
-			])->get();
+			]);
+			
+			$cals = $cals->inList($ticketList)->visible()->get();			
 			
 			$counts['calendar']['today'] = $cals->filter(function($q){
 				return $q->limit_date < Carbon::now()->tomorrow(); 
@@ -378,7 +380,7 @@ class TicketsController extends Controller
 				return $q->limit_date >= Carbon::now()->tomorrow(); 
 			})
 			->filter(function($q2){
-				return $q2->limit_date < Carbon::now()->addDays(3)->startOfDay(); 
+				return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
 			})->count();
 			
 			$counts['calendar']['week'] = $cals->filter(function($q){
