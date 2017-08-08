@@ -82,10 +82,10 @@ return [
   'btn-mark-complete'                => 'Tancar Tiquet',
   'btn-submit'                       => 'Enviar',
 
-  'ticket'                           => 'Tiquet',
-  'user'                             => 'Usuari',
+  // Vocabulary  
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
+  'all-depts'                        => 'Tots',
   'category'                         => 'Categoria',
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
@@ -112,7 +112,12 @@ return [
   'status'                           => 'Estat',
   'subject'                          => 'Tema',
   'tags'                             => 'Etiquetes',
-  'all-depts'                        => 'Tots',
+  'ticket'                           => 'Tiquet',
+  'today'                            => 'Avui',
+  'tomorrow'                         => 'Demà',
+  'user'                             => 'Usuari',
+  'yesterday'                        => 'Ahir',
+  
 
  /*
   *  Page specific

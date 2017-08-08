@@ -209,9 +209,11 @@ class TicketsController extends Controller
             
 			$date = $title = $icon = "";
 			$color = "text-muted";
-			$start_days_diff = Carbon::now()->diffInDays(Carbon::parse($ticket->start_date), false);
+			$start_days_diff = Carbon::now()->startOfDay()->diffInWeekDays(Carbon::parse($ticket->start_date)->startOfDay(), false);
+			#$start_days_diff = intval(floor((strtotime($ticket->start_date)-time()) / (60*60*24)));
 			if ($ticket->limit_date != ""){
-				$limit_days_diff = Carbon::now()->diffInDays(Carbon::parse($ticket->limit_date), false);
+				$limit_days_diff = Carbon::now()->startOfDay()->diffInWeekDays(Carbon::parse($ticket->limit_date)->startOfDay(), false);
+				#$limit_days_diff = intval(floor((strtotime($ticket->limit_date)-time()) / (60*60*24)));
 				if ($limit_days_diff == 0){
 					$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($ticket->limit_date), false);
 				}
@@ -250,8 +252,10 @@ class TicketsController extends Controller
 				$icon = "glyphicon-warning-sign";
 				$color = "text-warning";
 			}
-
-			return "<div class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> ".Carbon::parse($date)->diffForHumans()."</div>";            
+			
+			$date_text = $ticket->getDateForHumans($date);
+			
+			return "<div class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> $date_text</div>";            
         });
 
         $collection->editColumn('category', function ($ticket) {
@@ -483,7 +487,7 @@ class TicketsController extends Controller
             return [$priorities->lists('name', 'id'), $categories->lists('name', 'id'), $statuses->lists('name', 'id')];
         }
     }
-
+	
     /**
      * Show the form for creating a new resource.
      *

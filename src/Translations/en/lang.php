@@ -81,14 +81,14 @@ return [
   'btn-mark-complete'                => 'Mark Complete',
   'btn-submit'                       => 'Submit',
 
-  'ticket'                           => 'Ticket',
-  'user'                             => 'User',
+  // Vocabulary  
   'agent'                            => 'Agent',
-  'agents'                            => 'Agents',
-  'category'                         => 'Category',
-  'colon'                            => ': ',
+  'agents'                           => 'Agents',
+  'all-depts'                        => 'All',
+  'category'                         => 'Category',  
   'closing-reason'                   => 'Closing reason',
   'closing-clarifications'           => 'Clarifications',
+  'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
   'date-info-created'                => 'Creation date',
@@ -111,7 +111,12 @@ return [
   'status'                           => 'Status',
   'subject'                          => 'Subject',
   'tags'                             => 'Tags',
-  'all-depts'                        => 'All',
+  'ticket'                           => 'Ticket',
+  'today'                            => 'Today',
+  'tomorrow'                         => 'Tomorrow',
+  'user'                             => 'User',
+  'yesterday'                        => 'Ahir',
+  
 
  /*
   *  Page specific
