@@ -23,7 +23,7 @@ return [
   'table-last-updated'               => 'Last Updated',
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
-  'table-calendar'                   => 'Agenda',
+  'table-calendar'                   => 'Calendar',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
 
@@ -117,7 +117,16 @@ return [
   'user'                             => 'User',
   'yesterday'                        => 'Ahir',
   
-
+  // Days of week
+  'day_1'                            => 'Monday',
+  'day_2'                            => 'Tuesday',
+  'day_3'                            => 'Wednesday',
+  'day_4'                            => 'Thursday',
+  'day_5'                            => 'Friday',
+  'day_6'                            => 'Saturday',
+  'day_7'                            => 'Sunday',
+  
+  
  /*
   *  Page specific
   */

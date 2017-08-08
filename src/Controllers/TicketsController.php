@@ -209,11 +209,9 @@ class TicketsController extends Controller
             
 			$date = $title = $icon = "";
 			$color = "text-muted";
-			$start_days_diff = Carbon::now()->startOfDay()->diffInWeekDays(Carbon::parse($ticket->start_date)->startOfDay(), false);
-			#$start_days_diff = intval(floor((strtotime($ticket->start_date)-time()) / (60*60*24)));
+			$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->start_date)->startOfDay(), false);			
 			if ($ticket->limit_date != ""){
-				$limit_days_diff = Carbon::now()->startOfDay()->diffInWeekDays(Carbon::parse($ticket->limit_date)->startOfDay(), false);
-				#$limit_days_diff = intval(floor((strtotime($ticket->limit_date)-time()) / (60*60*24)));
+				$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->limit_date)->startOfDay(), false);				
 				if ($limit_days_diff == 0){
 					$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($ticket->limit_date), false);
 				}

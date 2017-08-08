@@ -24,7 +24,7 @@ return [
   'table-last-updated'               => 'Última actualització',
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
-  'table-calendar'                   => 'Calendar',
+  'table-calendar'                   => 'Agenda',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
   
@@ -118,6 +118,14 @@ return [
   'user'                             => 'Usuari',
   'yesterday'                        => 'Ahir',
   
+  // Days of week
+  'day_1'                            => 'Dilluns',
+  'day_2'                            => 'Dimarts',
+  'day_3'                            => 'Dimecres',
+  'day_4'                            => 'Dijous',
+  'day_5'                            => 'Divendres',
+  'day_6'                            => 'Dissabte',
+  'day_7'                            => 'Diumenge',
 
  /*
   *  Page specific

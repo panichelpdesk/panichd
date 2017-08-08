@@ -228,17 +228,22 @@ class Ticket extends Model
 	*/
 	public function getDateForHumans($date)
 	{		
-		$date_diff = Carbon::now()->startOfDay()->diffInWeekDays(Carbon::parse($date)->startOfDay(), false);
-			$date_text = date('H:i', strtotime($date));
-			if ($date_diff == -1){
-				$date_text = trans('ticketit::lang.yesterday') . ", " . $date_text;
-			}elseif ($date_diff === 0){
-				$date_text = trans('ticketit::lang.today') . ", " . $date_text;
-			}elseif ($date_diff == 1){
-				$date_text = trans('ticketit::lang.tomorrow') . ", " . $date_text;
-			}else{
-				$date_text = Carbon::parse($date)->diffForHumans();
-			}
+		$parsed = Carbon::parse($date);
+		
+		$date_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
+		$date_text = date('H:i', strtotime($date));
+		
+		if ($date_diff == -1){
+			$date_text = trans('ticketit::lang.yesterday') . ", " . $date_text;
+		}elseif ($date_diff === 0){
+			$date_text = trans('ticketit::lang.today') . ", " . $date_text;
+		}elseif ($date_diff == 1){
+			$date_text = trans('ticketit::lang.tomorrow') . ", " . $date_text;
+		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->endOfWeek(), false) > 0){
+			$date_text = trans('ticketit::lang.day_'.$parsed->dayOfWeek) . ", " . $date_text;
+		}else{
+			$date_text = Carbon::parse($date)->diffForHumans();
+		}
 			
 		return $date_text;
 	}
