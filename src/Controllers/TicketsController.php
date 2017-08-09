@@ -95,7 +95,7 @@ class TicketsController extends Controller
 			// Department columns				
 			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.department)) AS dept_info');
 			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.sub1)) AS dept_sub1');
-			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(ticketit_departments.department)), group_concat(distinct(ticketit_departments.sub1))) as dept_order');
+			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(ticketit_departments.department)), group_concat(distinct(ticketit_departments.sub1))) as dept_full');
 		}
 		
 		$collection

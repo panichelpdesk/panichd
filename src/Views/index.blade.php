@@ -63,7 +63,7 @@
 	            	@if (session('ticketit_filter_owner')=="")
 						{ data: 'owner_name', name: 'users.name' },
 						@if ($setting::grab('departments_feature'))
-							{ data: 'dept_info', name: 'dept_order', searchable: false },
+							{ data: 'dept_info', name: 'dept_full', searchable: false },
 						@endif
 					@endif
 					{ data: 'calendar', name: 'calendar_order', searchable: false },
