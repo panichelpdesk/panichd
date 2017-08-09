@@ -66,7 +66,7 @@
 							{ data: 'dept_info', name: 'ticketit_departments.sub1' },
 						@endif
 					@endif
-					{ data: 'calendar', name: 'ticketit.start_date' },
+					{ data: 'calendar', name: 'calendar_order' },
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif

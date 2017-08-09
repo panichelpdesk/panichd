@@ -67,6 +67,7 @@ class TicketsController extends Controller
 			'ticketit_categories.color AS color_category',			
 			'ticketit.start_date',
 			'ticketit.limit_date',
+			\DB::raw('concat(if(ticketit.limit_date, ticketit.limit_date, \'9999\'), ticketit.start_date) as calendar_order'),
 			'ticketit.updated_at AS updated_at',
 			'ticketit.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
