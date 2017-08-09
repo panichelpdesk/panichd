@@ -24,8 +24,15 @@ return [
   'table-last-updated'               => 'Última actualització',
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
+  'table-calendar'                   => 'Agenda',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
+  
+  'calendar-active'            => 'Data d\'inici',
+  'calendar-expired'           => 'Caducat des d\'aquest dia',
+  'calendar-expiration'        => 'Caduca aquest dia',
+  'calendar-expires-today'     => 'Caduca avui',
+  'calendar-scheduled'         => 'Programat en data',
   
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
@@ -52,7 +59,17 @@ return [
   'table-aria-sort-desc'             => ': activar per ordenar ordre descendent',
   
   'filter-pov'                       => 'Vista',
+  'filter-calendar'                  => 'Agenda',
+  'filter-calendar-all'              => 'Tot',
+  'filter-calendar-expired'          => 'Caducats',
+  'filter-calendar-today'            => 'Per avui',
+  'filter-calendar-tomorrow'         => 'Per demà',
+  'filter-calendar-week'             => 'Aquesta setmana',
+  'filter-calendar-month'            => 'Aquest mes',
+  'filter-category'                  => 'Categoria',
   'filter-category-all'              => 'Totes',
+  'filter-agent'                     => 'Agent',
+  'filter-agent-all'                 => 'Tots',
   'filter-on-total'                  => 'Compte segons filtre',
   'filter-off-total'                 => 'Compte total',
 
@@ -65,10 +82,10 @@ return [
   'btn-mark-complete'                => 'Tancar Tiquet',
   'btn-submit'                       => 'Enviar',
 
-  'ticket'                           => 'Tiquet',
-  'user'                             => 'Usuari',
+  // Vocabulary  
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
+  'all-depts'                        => 'Tots',
   'category'                         => 'Categoria',
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
@@ -84,16 +101,31 @@ return [
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',
+  'limit-date'                       => 'Data límit',
   'no-replies'                       => 'Sense respostes.',
   'owner'                            => 'Propietari',
   'priority'                         => 'Prioritat',
   'reopen-ticket'                    => 'Reobrir Tiquet',
   'reply'                            => 'Respondre',
   'responsible'                      => 'Tècnic',
+  'start-date'                       => 'Data inici',
   'status'                           => 'Estat',
   'subject'                          => 'Tema',
   'tags'                             => 'Etiquetes',
-  'all-depts'                        => 'Tots',
+  'ticket'                           => 'Tiquet',
+  'today'                            => 'Avui',
+  'tomorrow'                         => 'Demà',
+  'user'                             => 'Usuari',
+  'yesterday'                        => 'Ahir',
+  
+  // Days of week
+  'day_1'                            => 'Dilluns',
+  'day_2'                            => 'Dimarts',
+  'day_3'                            => 'Dimecres',
+  'day_4'                            => 'Dijous',
+  'day_5'                            => 'Divendres',
+  'day_6'                            => 'Dissabte',
+  'day_7'                            => 'Diumenge',
 
  /*
   *  Page specific
@@ -120,6 +152,8 @@ return [
   'create-ticket-notices'            => 'Avís per',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
+  'create-ticket-info-start-date'    => 'Predeterminat: Ara',
+  'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
   
   'edit-ticket'                      => 'Editar Tiquet',

@@ -23,9 +23,16 @@ return [
   'table-last-updated'               => 'Last Updated',
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
+  'table-calendar'                   => 'Calendar',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
 
+  'calendar-active'            => 'Start date',
+  'calendar-expired'           => 'Expired since this date',
+  'calendar-expiration'        => 'Expires this date',
+  'calendar-expires-today'     => 'Expires today',
+  'calendar-scheduled'         => 'Scheduled for this date',
+  
   // Agent related
   'table-change-agent'               => 'Change agent',
   'table-one-agent'                  => 'There is one agent in this category',
@@ -51,7 +58,17 @@ return [
   'table-aria-sort-desc'             => ': activate to sort column descending',
   
   'filter-pov'                       => 'View as',
+  'filter-calendar'                  => 'Calendar',
+  'filter-calendar-all'              => 'All',
+  'filter-calendar-expired'          => 'Expired',
+  'filter-calendar-today'            => 'Expires today',
+  'filter-calendar-tomorrow'         => 'Expires tomorrow',
+  'filter-calendar-week'             => 'This week',
+  'filter-calendar-month'            => 'Aquest mes',
+  'filter-category'                  => 'Category',
   'filter-category-all'              => 'All',
+  'filter-agent'                     => 'Agent',
+  'filter-agent-all'                 => 'All',
   'filter-on-total'                  => 'Count depends on active filters',
   'filter-off-total'                 => 'Total total',
 
@@ -64,14 +81,14 @@ return [
   'btn-mark-complete'                => 'Mark Complete',
   'btn-submit'                       => 'Submit',
 
-  'ticket'                           => 'Ticket',
-  'user'                             => 'User',
+  // Vocabulary  
   'agent'                            => 'Agent',
-  'agents'                            => 'Agents',
-  'category'                         => 'Category',
-  'colon'                            => ': ',
+  'agents'                           => 'Agents',
+  'all-depts'                        => 'All',
+  'category'                         => 'Category',  
   'closing-reason'                   => 'Closing reason',
   'closing-clarifications'           => 'Clarifications',
+  'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
   'date-info-created'                => 'Creation date',
@@ -83,17 +100,33 @@ return [
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
+  'limit-date'                       => 'Limit date',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
   'priority'                         => 'Priority',
   'reopen-ticket'                    => 'Reopen Ticket',
   'reply'                            => 'Reply',
   'responsible'                      => 'Responsible',
+  'start-date'                       => 'Start date',
   'status'                           => 'Status',
   'subject'                          => 'Subject',
   'tags'                             => 'Tags',
-  'all-depts'                        => 'All',
-
+  'ticket'                           => 'Ticket',
+  'today'                            => 'Today',
+  'tomorrow'                         => 'Tomorrow',
+  'user'                             => 'User',
+  'yesterday'                        => 'Ahir',
+  
+  // Days of week
+  'day_1'                            => 'Monday',
+  'day_2'                            => 'Tuesday',
+  'day_3'                            => 'Wednesday',
+  'day_4'                            => 'Thursday',
+  'day_5'                            => 'Friday',
+  'day_6'                            => 'Saturday',
+  'day_7'                            => 'Sunday',
+  
+  
  /*
   *  Page specific
   */
@@ -119,6 +152,8 @@ return [
   'create-ticket-notices'            => 'Notices',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
+  'create-ticket-info-start-date'    => 'Default: Now',
+  'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
   
   'edit-ticket'                      => 'Edit Ticket',

@@ -218,6 +218,35 @@ class Ticket extends Model
 
         return Date::instance($value);
     }
+	
+	/*
+	 * Improves Carbon diffForHumans to specify yesterday, today and tomorrow dates
+	 *
+	 * @param $date Eloquent property from timestamp field
+	 *
+	 * @return string
+	*/
+	public function getDateForHumans($date)
+	{		
+		$parsed = Carbon::parse($date);
+		
+		$date_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
+		$date_text = date('H:i', strtotime($date));
+		
+		if ($date_diff == -1){
+			$date_text = trans('ticketit::lang.yesterday') . ", " . $date_text;
+		}elseif ($date_diff === 0){
+			$date_text = trans('ticketit::lang.today') . ", " . $date_text;
+		}elseif ($date_diff == 1){
+			$date_text = trans('ticketit::lang.tomorrow') . ", " . $date_text;
+		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->endOfWeek(), false) > 0){
+			$date_text = trans('ticketit::lang.day_'.$parsed->dayOfWeek) . ", " . $date_text;
+		}else{
+			$date_text = Carbon::parse($date)->diffForHumans();
+		}
+			
+		return $date_text;
+	}
 
     /**
      * Get all user tickets.
@@ -334,6 +363,37 @@ class Ticket extends Model
 			return $query->userTickets(auth()->user()->id);
 		}else{
 			if (session()->has('ticketit_filters')){
+				// Calendar filter
+				if (session()->has('ticketit_filter_calendar')){
+					$cld = session('ticketit_filter_calendar');
+					
+					if ($cld == "expired"){
+						$query = $query->where('limit_date', '<', Carbon::now());
+					}else{										
+						$query = $query->where('limit_date', '>=', Carbon::now()->today());
+					}
+					
+					switch ($cld){
+						case 'today':
+							$query = $query->where('limit_date', '<', Carbon::now()->tomorrow());
+							break;
+							
+						case 'tomorrow':
+							$query = $query->where('limit_date', '>=', Carbon::now()->tomorrow());
+							$query = $query->where('limit_date', '<', Carbon::now()->addDays(2)->startOfDay());
+							break;
+							
+						case 'week':
+							$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
+							break;
+						
+						case 'month':
+							$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
+							break;
+					}
+				}
+				
+				
 				// Category filter
 				if (session()->has('ticketit_filter_category')){
 					$category = session('ticketit_filter_category');

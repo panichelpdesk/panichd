@@ -1,4 +1,57 @@
-<div class="title category">{{ trans('ticketit::lang.table-category') }}</div> 
+<div class="title calendar">{{ trans('ticketit::lang.filter-calendar') }}</div>
+<?php $text_cld = "";
+$calendar_name = "All";
+$cld_class = "";
+
+$cld_options = [
+	'expired' => [
+		'class' => 'text-danger',
+		'icon' => 'glyphicon-exclamation-sign',
+	],
+	'today' => [
+		'class' => 'text-warning',
+		'icon' => 'glyphicon-warning-sign',
+	],
+	'tomorrow' => [
+		'icon' => 'glyphicon-time',
+	],
+	'week' => [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	],
+	'month' => [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	],
+
+];
+
+?>
+@foreach ($counts['calendar'] as $cld=>$count)			
+	<?php $text_cld.='<li><a href="'.url($setting->grab('main_route').'/filter/calendar/'.$cld).'">';
+	
+	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('ticketit::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
+	?>
+	@if ($cld==session('ticketit_filter_calendar'))
+		<?php $calendar_name = $this_cld;
+		$cld_class = isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "";?>
+	@endif
+	<?php $text_cld.= $this_cld . '</a></li>';?>		
+@endforeach
+<div class="dropdown" style="display: inline-block;">
+<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('ticketit::lang.filter-calendar-all') : $calendar_name !!}
+<span class="caret {{ $cld_class }}"></span></button>
+<ul class="dropdown-menu">
+@if ($calendar_name!="All")
+<li><a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('ticketit::lang.filter-calendar-all') }}</a></li>
+@endif
+{!! $text_cld !!}</ul>
+</div>
+
+
+
+
+<div class="title category">{{ trans('ticketit::lang.filter-category') }}</div> 
 @if (count($counts['category'])==1)
 	<?php $cat_color = $counts['category']{0}->color;?>
 	<span class="btn-category" style="color: {{ $cat_color }}">{{$counts['category']{0}->name}}</span>
@@ -25,12 +78,12 @@
 	</div>
 @endif
 
-<div class="title agent">Agent</div> 
+<div class="title agent">{{ trans('ticketit::lang.filter-agent') }}</div> 
 @if (count($counts['agent'])>4)
 	
 	<div id="select_agent_container" class="{{ session('ticketit_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">
-		<option value="/filter/agent/remove">Tots</option>
+		<option value="/filter/agent/remove">{{ trans('ticketit::lang.filter-agent-all') }}</option>
 		@foreach ($counts['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"
 			@if ($ag->id==session('ticketit_filter_agent'))
@@ -45,9 +98,9 @@
 		<button class="btn btn-default btn-sm agent-current" style="color: {{ $cat_color }}">{{$counts['agent']{0}->name}}</button>
 	@else
 		@if (session('ticketit_filter_agent')!="")
-			<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">Tots</a>
+			<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('ticketit::lang.filter-agent-all') }}</a>
 		@elseif(count($counts['agent'])>1)
-			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">Tots</button>		
+			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">{{ trans('ticketit::lang.filter-agent-all') }}</button>		
 		@endif
 	
 		@foreach ($counts['agent'] as $ag)

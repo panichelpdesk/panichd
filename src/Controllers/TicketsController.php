@@ -65,6 +65,9 @@ class TicketsController extends Controller
 			'ticketit_statuses.color AS color_status',
 			'ticketit_priorities.color AS color_priority',
 			'ticketit_categories.color AS color_category',			
+			'ticketit.start_date',
+			'ticketit.limit_date',
+			\DB::raw('concat(if(ticketit.limit_date, ticketit.limit_date, \'9999\'), ticketit.start_date) as calendar_order'),
 			'ticketit.updated_at AS updated_at',
 			'ticketit.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
@@ -91,8 +94,8 @@ class TicketsController extends Controller
 			
 			// Department columns				
 			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.department)) AS dept_info');
-			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.shortening)) AS dept_short');
-			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.sub1)) AS dept_sub1');			
+			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.sub1)) AS dept_sub1');
+			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(ticketit_departments.department)), group_concat(distinct(ticketit_departments.sub1))) as dept_full');
 		}
 		
 		$collection
@@ -105,6 +108,8 @@ class TicketsController extends Controller
 
         $collection = $datatables->of($collection);
 
+		\Carbon\Carbon::setLocale(config('app.locale'));
+		
         $this->renderTicketTable($collection);
 
         $collection->editColumn('updated_at', '{!! \Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $updated_at)->diffForHumans() !!}');
@@ -115,7 +120,7 @@ class TicketsController extends Controller
             $collection->rawColumns(['subject', 'status', 'priority', 'category', 'agent']);
         }
 
-        return $collection->make(true);
+        return $collection->make(true);		
     }
 
     public function renderTicketTable(EloquentEngine $collection)
@@ -178,13 +183,15 @@ class TicketsController extends Controller
 
             return "<div style='color: $color'>$priority</div>";
         });
-
-        $collection->editColumn('category', function ($ticket) {
-            $color = $ticket->color_category;
-            $category = e($ticket->category);
-
-            return "<div style='color: $color'>$category</div>";
-        });
+		
+		$collection->editColumn('owner_name', function ($ticket) {
+			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			if ($ticket->user_id != $ticket->creator_id){
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+			}
+			
+			return $return;
+		});
 		
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_info', function ($ticket) {
@@ -199,14 +206,63 @@ class TicketsController extends Controller
 			});
 		}
 		
-		$collection->editColumn('owner_name', function ($ticket) {
-			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
-			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+		$collection->editColumn('calendar', function ($ticket) {
+            
+			$date = $title = $icon = "";
+			$color = "text-muted";
+			$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->start_date)->startOfDay(), false);			
+			if ($ticket->limit_date != ""){
+				$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->limit_date)->startOfDay(), false);				
+				if ($limit_days_diff == 0){
+					$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($ticket->limit_date), false);
+				}
+			}else{
+				$limit_days_diff = false;
 			}
 			
-			return $return;
-		});
+			if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
+				// Expired
+				$date = $ticket->limit_date;
+				$title = trans('ticketit::lang.calendar-expired');
+				$icon = "glyphicon-exclamation-sign";
+				$color = "text-danger";
+			}elseif($limit_days_diff > 0 or $limit_days_diff === false){
+				if ($start_days_diff > 0){
+					// Scheduled
+					$date = $ticket->start_date;
+					$title = trans('ticketit::lang.calendar-scheduled');
+					$icon = "glyphicon-calendar";
+					$color = "text-info";
+				}elseif($limit_days_diff){
+					// Active with limit
+					$date = $ticket->limit_date;
+					$title = trans('ticketit::lang.calendar-expiration');
+					$icon = "glyphicon-time";
+				}else{
+					// Active without limit
+					$date = $ticket->start_date;
+					$title = trans('ticketit::lang.calendar-active');
+					$icon = "glyphicon-file";					
+				}				
+			}else{
+				// Due today
+				$date = $ticket->limit_date;
+				$title = trans('ticketit::lang.calendar-expires-today');
+				$icon = "glyphicon-warning-sign";
+				$color = "text-warning";
+			}
+			
+			$date_text = $ticket->getDateForHumans($date);
+			
+			return "<div class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> $date_text</div>";            
+        });
+
+        $collection->editColumn('category', function ($ticket) {
+            $color = $ticket->color_category;
+            $category = e($ticket->category);
+
+            return "<div style='color: $color'>$category</div>";
+        });
 
         $collection->editColumn('agent', function ($ticket) use($a_cat) {
             $ticket = $this->tickets->find($ticket->id);
@@ -297,10 +353,48 @@ class TicketsController extends Controller
     {
         $counts = [];
         $category = session('ticketit_filter_category') == '' ? null : session('ticketit_filter_category');
-
-        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
-            // Ticket count for all categories
-            $counts['total_category'] = Ticket::inList($ticketList)->visible()->count();
+		
+		if ($this->agent->isAdmin() or $this->agent->isAgent()){
+			// Ticket count for all categories
+            $counts['total'] = Ticket::inList($ticketList)->visible()->count();
+			
+			// Calendar expired count
+			$counts['calendar']['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now())->count();
+						
+			// Calendar forth counts
+			$cals = Ticket::whereBetween('limit_date', [
+				Carbon::now()->today(),
+				Carbon::now()->endOfWeek()
+			])
+			->orWhereBetween('limit_date', [
+				Carbon::now()->today(),
+				Carbon::now()->endOfMonth()
+			]);
+			
+			$cals = $cals->inList($ticketList)->visible()->get();			
+			
+			$counts['calendar']['today'] = $cals->filter(function($q){
+				return $q->limit_date < Carbon::now()->tomorrow(); 
+			})->count();
+			
+			$counts['calendar']['tomorrow'] = $cals->filter(function($q){
+				return $q->limit_date >= Carbon::now()->tomorrow(); 
+			})
+			->filter(function($q2){
+				return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
+			})->count();
+			
+			$counts['calendar']['week'] = $cals->filter(function($q){
+				return $q->limit_date < Carbon::now()->endOfWeek();
+			})->count();
+			
+			$counts['calendar']['month'] = $cals->filter(function($q){
+				return $q->limit_date < Carbon::now()->endOfMonth();
+			})->count();
+		}
+		
+		
+        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {            
 
             // Ticket count for each Category
             if ($this->agent->isAdmin()) {
@@ -319,7 +413,7 @@ class TicketsController extends Controller
                     return $q->id == $category;
                 })->first()->tickets_count;
             } else {
-                $counts['total_agent'] = $counts['total_category'];
+                $counts['total_agent'] = $counts['total'];
             }
 
             // Ticket counts for each visible Agent
@@ -394,7 +488,7 @@ class TicketsController extends Controller
             return [$priorities->lists('name', 'id'), $categories->lists('name', 'id'), $statuses->lists('name', 'id')];
         }
     }
-
+	
     /**
      * Show the form for creating a new resource.
      *
@@ -465,24 +559,35 @@ class TicketsController extends Controller
 			
 		list($priorities, $categories, $status_lists) = $this->PCS();
 		
-		$a_current = [];		
+		$a_current = [];
+
+		\Carbon\Carbon::setLocale(config('app.locale'));
 		
 		if (old('category_id')){
 			// Form old values
 			$a_current['complete'] = old('complete');
+			
+			$a_current['start_date'] = old ('start_date');
+			$a_current['limit_date'] = old ('limit_date');
+			
 			$a_current['cat_id'] = old('category_id');
 			$a_current['agent_id'] = old('agent_id');
 			
 		}elseif($ticket){
 			// Edition values
 			$a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
-			$a_current['cat_id'] = $ticket->category_id;
-			$a_current['agent_id'] = $ticket->agent_id;
 			$a_current['status_id'] = $ticket->status_id;
 			
+			$a_current['start_date'] = $ticket->start_date;
+			$a_current['limit_date'] = $ticket->limit_date;
+			
+			$a_current['cat_id'] = $ticket->category_id;
+			$a_current['agent_id'] = $ticket->agent_id;			
 		}else{
 			// Defaults
 			$a_current['complete'] = "no";
+			
+			$a_current['start_date'] = $a_current['limit_date'] = "";
 			
 			// Default category		
 			$a_current['cat_id'] = @$user->tickets()->latest()->first()->category_id;
@@ -625,6 +730,17 @@ class TicketsController extends Controller
 		}else{
 			$ticket->status_id = Setting::grab('default_status_id');		
 			$ticket->priority_id = Models\Priority::first()->id;
+		}
+
+		if ($request->start_date != ""){
+			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
+		}else{
+			$ticket->start_date = date('Y-m-d H:i:s');
+		}
+		if ($request->limit_date == ""){
+			$ticket->limit_date = null;
+		}else{
+			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
 		}		
 
 		$ticket->category_id = $request->category_id;
@@ -776,9 +892,26 @@ class TicketsController extends Controller
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
 
+		if ($request->complete=='yes'){
+			$ticket->completed_at = Carbon::now();
+		}else{
+			$ticket->completed_at = null;
+		}
+		
         $ticket->status_id = $request->status_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority_id = $request->priority_id;
+		
+		if ($request->start_date != ""){
+			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
+		}else{
+			$ticket->start_date = date('Y-m-d H:i:s');
+		}
+		if ($request->limit_date == ""){
+			$ticket->limit_date = null;
+		}else{
+			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
+		}		
 
         if ($request->input('agent_id') == 'auto') {
             $ticket->autoSelectAgent();

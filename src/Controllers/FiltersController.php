@@ -11,7 +11,7 @@ class FiltersController extends Controller
 {
     public function manage(Request $request, $filter, $value)
     {
-		$a_filters = ['currentLevel', 'owner', 'category', 'agent'];
+		$a_filters = ['currentLevel', 'owner', 'calendar', 'category', 'agent'];
         //### PENDING: User permissions check or redirect back
 
         if ($filter=="removeall"){
@@ -54,6 +54,10 @@ class FiltersController extends Controller
 				if ($filter == 'owner' and $value == 'me') {
 					$add = true;
                 }
+				
+				if ($filter == 'calendar' and in_array($value, ['expired', 'today', 'tomorrow', 'week', 'month'])){
+					$add = true;
+				}
 				
 				if ($filter == 'category' and Models\Category::where('id', $value)->count() == 1) {
                     $add = true;

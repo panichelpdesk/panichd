@@ -17,6 +17,7 @@
 					@if ($setting::grab('departments_feature'))
 						<td>{{ trans('ticketit::lang.table-department') }}</td>
 					@endif
+					<td>{{ trans('ticketit::lang.table-calendar') }}</td>
 				@endif
 				@if (session('ticketit_filter_category')=="")
 					<td>{{ trans('ticketit::lang.table-category') }}</td>
