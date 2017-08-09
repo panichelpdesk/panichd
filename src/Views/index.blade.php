@@ -63,10 +63,10 @@
 	            	@if (session('ticketit_filter_owner')=="")
 						{ data: 'owner_name', name: 'users.name' },
 						@if ($setting::grab('departments_feature'))
-							{ data: 'dept_info', name: 'dept_order' },
+							{ data: 'dept_info', name: 'dept_order', searchable: false },
 						@endif
 					@endif
-					{ data: 'calendar', name: 'calendar_order' },
+					{ data: 'calendar', name: 'calendar_order', searchable: false },
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
