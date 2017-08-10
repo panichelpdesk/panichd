@@ -464,21 +464,21 @@ class TicketsController extends Controller
 
     /**
      * Returns priorities, categories and statuses lists in this order
-     * Decouple it with list()
+     * Decouple it with list().
      *
      * @return array
      */
     protected function PCS()
     {
-        $priorities = Cache::remember('ticketit::priorities', 60, function() {
+        $priorities = Cache::remember('ticketit::priorities', 60, function () {
             return Models\Priority::all();
         });
 
-        $categories = Cache::remember('ticketit::categories', 60, function() {
+        $categories = Cache::remember('ticketit::categories', 60, function () {
             return Models\Category::all();
         });
 
-        $statuses = Cache::remember('ticketit::statuses', 60, function() {
+        $statuses = Cache::remember('ticketit::statuses', 60, function () {
             return Models\Status::all();
         });
 
@@ -789,7 +789,7 @@ class TicketsController extends Controller
 			->select('ticketit.*', 'ticketit_departments.department', 'ticketit_departments.sub1');
 		}
 		
-		$ticket = $ticket->find($id);
+		$ticket = $ticket->findOrFail($id);
 		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();

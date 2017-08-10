@@ -8,7 +8,7 @@ It will integrate into your current Laravel project within minutes, and you can 
 2. Users can create tickets, keep track of their tickets status, giving comments, and close their own tickets (access permissions are configurable)
 3. Auto assigning agents to tickets, the system searches for agents in specific department and auto select the agent with lowest queue
 4. Simple admin panel 
-5. Localization (Arabic, Brazilian Portuguese, Deutsch (German), English, Farsi, French, Hungarian, Persian, Russian, and Spanish language packs are included)
+5. Localization (Arabic, Brazilian Portuguese, Deutsch (German), English, Farsi, French, Hungarian, Italian, Persian, Russian, and Spanish language packs are included)
 6. Very simple installation and integration process
 7. Admin dashboard with statistics and performance tracking graphs
 8. Simple text editor for tickets descriptions and comments allows images upload
@@ -44,12 +44,12 @@ However if you'd like to include Ticketit in your existing project, skip to the 
 
 Step 1. Run this code via your terminal (1-2 minutes)
 ```shell
-	composer require kordy/ticketit:0.*
+composer require kordy/ticketit:0.*
 ```
 
 Step 2. After install, you have to add this line on your `config/app.php` in Service Providers section (1-2 minutes).
 ```php
-	Kordy\Ticketit\TicketitServiceProvider::class,
+Kordy\Ticketit\TicketitServiceProvider::class,
 ```
 
 Step 3. [Check if App\User exists](https://github.com/thekordy/ticketit/wiki/Make-sure-that-App%5CUser-exists)
@@ -66,7 +66,11 @@ Default ticketit front route: http://your-project-url/tickets
 
 Default ticketit admin route: http://your-project-url/tickets-admin
 
-**Note:** Make sure you have created at least one status, one prority, and one category before you start creating tickets.
+**Notes:**
+
+Make sure you have created at least one status, one prority, and one category before you start creating tickets.
+
+If you move your installation folder to another path (or server), you need to update the row with slug='routes' in table `ticketit_settings`. After that, don't forget to flush the entire cache.
 
 ## Documentation
 [Ticketit Wiki](https://github.com/thekordy/ticketit/wiki)
