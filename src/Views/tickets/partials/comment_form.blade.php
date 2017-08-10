@@ -1,7 +1,12 @@
 <div class="modal fade" id="ticket-comment-modal" tabindex="-1" role="dialog" aria-labelledby="ticket-comment-modal-Label">
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">			
-			{!! CollectiveForm::open(['method' => 'POST', 'route' => $setting->grab('main_route').'-comment.store', 'class' => 'form-horizontal']) !!}
+			{!! CollectiveForm::open([
+				'method' => 'POST',
+				'route' => $setting->grab('main_route').'-comment.store',
+				'class' => 'form-horizontal',
+				'enctype' => 'multipart/form-data'
+			]) !!}
 			{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
@@ -25,6 +30,14 @@
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>
+					
+	                <div class="form-group">
+						{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+						<div class="col-lg-10">
+							{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
+						</div>
+					</div>
+					
 					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
 							<div class="col-lg-12">
@@ -38,11 +51,9 @@
 							@endif
 						</div>
 					@endif
-
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
 					</div>
-
 				</fieldset>
 			</div>
 			{!! CollectiveForm::close() !!}

@@ -132,6 +132,16 @@
 				</div>
 			</div>
 		</div>
+		@if($ticket->attachments->count() > 0)
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+					@foreach($ticket->attachments as $attachment)
+						@include('ticketit::tickets.partials.attachment', ['attachment' => $attachment])
+					@endforeach
+				</div>
+			</div>
+		@endif
 		@if(! $ticket->completed_at && $close_perm == 'yes')			
 			<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('ticketit::lang.btn-mark-complete') }}</button>						
 		@elseif($ticket->completed_at && $reopen_perm == 'yes')

@@ -14,13 +14,15 @@
 			{!! CollectiveForm::model($ticket, [
 				 'route' => [$setting->grab('main_route').'.update', $ticket->id],
 				 'method' => 'PATCH',
-				 'class' => 'form-horizontal'
+				 'class' => 'form-horizontal',
+				 'enctype' => 'multipart/form-data'
 			 ]) !!}
 		@else
 			{!! CollectiveForm::open([
 				'route'=>$setting->grab('main_route').'.store',
 				'method' => 'POST',
-				'class' => 'form-horizontal'
+				'class' => 'form-horizontal',
+				'enctype' => 'multipart/form-data'
 			]) !!}
 		@endif		
 		
@@ -177,7 +179,21 @@
 				</div></div>
 			@endif
             
-        	
+        	<div class="row">
+				<div class="form-group">
+					<ul class="list-group">
+						@if (isset($ticket))
+							@foreach($ticket->attachments as $attachment)
+								@include('ticketit::tickets.partials.attachment-small', ['attachment' => $attachment])
+							@endforeach
+						@endif
+						<li class="list-group-item">
+							{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
+						</li>
+					</ul>
+				</div>
+			</div>
+			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
                     {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}

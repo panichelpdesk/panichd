@@ -5,15 +5,21 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Cache;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
+use Kordy\Ticketit\Models\Attachment;
 use Kordy\Ticketit\Models\Category;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Models\Tag;
 use Kordy\Ticketit\Models\Ticket;
 use Kordy\Ticketit\Traits\Purifiable;
+use Log;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Yajra\Datatables\Datatables;
 use Yajra\Datatables\Engines\EloquentEngine;
 
@@ -674,7 +680,7 @@ class TicketsController extends Controller
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
-			'content_html'=> $a_content['html'],
+			'content_html'=> $a_content['html']
         ]);
 		
 		$fields = [
@@ -693,6 +699,10 @@ class TicketsController extends Controller
 				'intervention'=> $a_intervention['intervention'],
 				'intervention_html'=> $a_intervention['intervention_html'],
 			]);
+			
+			if ($request->exists('attachments')){
+				$fields = ['attachments' => 'array'];
+			}
         }
 
 		// Custom validation messages
@@ -714,6 +724,7 @@ class TicketsController extends Controller
 		// Form validation
         $this->validate($request, $fields, $custom_messages);
 		
+		DB::beginTransaction();
         $ticket = new Ticket();
 
         $ticket->subject = $request->subject;		
@@ -755,6 +766,11 @@ class TicketsController extends Controller
 		}
 		
         $ticket->save();
+		
+		$this->saveAttachments($ticket, $request);
+        
+		// End transaction
+		DB::commit();
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -765,6 +781,31 @@ class TicketsController extends Controller
 		]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index');
+    }
+
+    public function downloadAttachment($attachment_id)
+    {
+        /** @var Agent $user */
+        $user = $this->agent->find(auth()->user()->id);
+
+        /** @var Attachment $attachment */
+        $attachment = Attachment::query()
+            ->where('id', $attachment_id)
+            ->whereHas('ticket', function ($ticketQuery) use ($user) {
+                // Ensure user has permissions to access the ticket
+
+                if ($user->isAdmin()) {
+                    // No restriction for admin
+                } elseif ($user->isAgent()) {
+                    $ticketQuery->agentUserTickets($user->id);
+                } else {
+                    $ticketQuery->userTickets($user->id);
+                }
+            })
+            ->firstOrFail();
+
+        return response()
+            ->download($attachment->file_path, $attachment->original_filename);
     }
 
     /**
@@ -852,6 +893,10 @@ class TicketsController extends Controller
             'agent_id'    => 'required',
 			'content'     => 'required|min:6',
         ];
+		
+		if ($request->has('attachments')){
+			$fields = ['attachments' => 'array'];
+		}
 
         $user = $this->agent->find(auth()->user()->id);
         if ($user->isAgent() or $user->isAdmin()) {			
@@ -879,10 +924,12 @@ class TicketsController extends Controller
 		
         $this->validate($request, $fields, $custom_messages);
 
+
+		DB::beginTransaction();
+			
         $ticket = $this->tickets->findOrFail($id);
 
         $ticket->subject = $request->subject;
-
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
@@ -913,13 +960,19 @@ class TicketsController extends Controller
 			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
 		}		
 
-        if ($request->input('agent_id') == 'auto') {
-            $ticket->autoSelectAgent();
-        } else {
-            $ticket->agent_id = $request->input('agent_id');
-        }
 
-        $ticket->save();
+		if ($request->input('agent_id') == 'auto') {
+			$ticket->autoSelectAgent();
+		} else {
+			$ticket->agent_id = $request->input('agent_id');
+		}
+
+		$ticket->save();
+
+		$this->saveAttachments($ticket, $request);		
+        
+		// End transaction
+		DB::commit();		
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -1293,5 +1346,42 @@ class TicketsController extends Controller
         $performance_average = $performance_count / $counter;
 
         return $performance_average;
+    }
+
+    protected function saveAttachments(Ticket $ticket, $request)
+    {
+		if (!$request->attachments){			
+			return false;
+		}
+				
+		foreach ($request->attachments as $uploadedFile) {
+            /** @var UploadedFile $uploadedFile */
+            if (is_null($uploadedFile)) {
+                // No files attached
+                break;
+            }
+
+            if (!$uploadedFile instanceof UploadedFile) {
+                Log::error('File object expected, given: '.print_r($uploadedFile, true));
+                throw new InvalidArgumentException();
+				break;
+            }
+
+            $attachments_path = Setting::grab('attachments_path');
+            $file_name = auth()->user()->id.'_'.$ticket->id.'_'.md5(Str::random().$uploadedFile->getClientOriginalName());
+            $file_directory = storage_path($attachments_path);
+
+            $attachment = new Attachment();
+            $attachment->ticket_id = $ticket->id;
+            $attachment->uploaded_by_id = $ticket->user_id;
+            $attachment->original_filename = $uploadedFile->getClientOriginalName() ?: '';
+            $attachment->bytes = $uploadedFile->getSize();
+            $attachment->mimetype = $uploadedFile->getMimeType() ?: '';
+            $attachment->file_path = $file_directory.DIRECTORY_SEPARATOR.$file_name;
+            $attachment->save();
+
+            // Should be called when you no need anything from this file, otherwise it fails with Exception that file does not exists (old path being used)
+            $uploadedFile->move(storage_path($attachments_path), $file_name);
+        }
     }
 }

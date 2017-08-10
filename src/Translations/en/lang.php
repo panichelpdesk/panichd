@@ -77,14 +77,17 @@ return [
   'btn-change'                       => 'Change',
   'btn-close'                        => 'Close',
   'btn-delete'                       => 'Delete',
+  'btn-download'                     => 'Download',
   'btn-edit'                         => 'Edit',
   'btn-mark-complete'                => 'Mark Complete',
   'btn-submit'                       => 'Submit',
+  
 
   // Vocabulary  
   'agent'                            => 'Agent',
   'agents'                           => 'Agents',
   'all-depts'                        => 'All',
+  'attachments'                      => 'Attachments',
   'category'                         => 'Category',  
   'closing-reason'                   => 'Closing reason',
   'closing-clarifications'           => 'Clarifications',
@@ -126,7 +129,7 @@ return [
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
   
-  
+
  /*
   *  Page specific
   */

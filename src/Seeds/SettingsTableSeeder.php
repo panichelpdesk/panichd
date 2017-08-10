@@ -287,6 +287,12 @@ class SettingsTableSeeder extends Seeder
 			*/
 			'departments_notices_feature' => 'no',
 
+            /*
+             * Defines relative path under storage_path() where to store attached files
+             *
+             * Default: <storage_path>/ticketit_attachments
+             */
+            'attachments_path' => 'ticketit_attachments',
         ];
     }
 }

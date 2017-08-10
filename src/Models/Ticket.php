@@ -3,11 +3,17 @@
 namespace Kordy\Ticketit\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Traits\ContentEllipse;
 
+/**
+ * @property Attachment[]|Collection attachments
+ *
+ * @see Ticket::attachments()
+ */
 class Ticket extends Model
 {
     use ContentEllipse;
@@ -170,6 +176,15 @@ class Ticket extends Model
     public function recentComments()
     {
         return $this->hasMany('Kordy\Ticketit\Models\Comment', 'ticket_id')->where('ticketit_comments.updated_at','>', Carbon::yesterday());
+    }
+
+    /**
+     * Ticket attachments (NOT including its comments attachments).
+     */
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class, 'ticket_id')
+            ->whereNull('comment_id');
     }
 
 //    /**
