@@ -765,7 +765,10 @@ class TicketsController extends Controller
 		
         $ticket->save();
 		
-		$this->saveAttachments($request, $ticket);
+		$attach_error = $this->saveAttachments($request, $ticket);
+		if ($attach_error){
+			return redirect()->back()->with('warning', $attach_error);
+		}
         
 		// End transaction
 		DB::commit();
@@ -967,7 +970,10 @@ class TicketsController extends Controller
 
 		$ticket->save();
 
-		$this->saveAttachments($request, $ticket);
+		$attach_error = $this->saveAttachments($request, $ticket);
+		if ($attach_error){
+			return redirect()->back()->with('warning', $attach_error);
+		}
         
 		// End transaction
 		DB::commit();		

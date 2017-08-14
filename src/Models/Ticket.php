@@ -180,12 +180,24 @@ class Ticket extends Model
 
     /**
      * Ticket attachments (NOT including its comments attachments).
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function attachments()
     {
         return $this->hasMany(Attachment::class, 'ticket_id')
             ->whereNull('comment_id');
     }
+	
+	/**
+     * All related attachments for Ticket (+comment attachments) 
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+	public function allAttachments()
+	{
+		return $this->hasMany(Attachment::class, 'ticket_id');
+	}
 
 //    /**
     //     * Get Ticket audits

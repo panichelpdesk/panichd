@@ -105,7 +105,10 @@ class CommentsController extends Controller
 		
 		$ticket->save();
 		
-		$this->saveAttachments($request, $ticket, $comment);
+		$attach_error = $this->saveAttachments($request, $ticket);
+		if ($attach_error){
+			return redirect()->back()->with('warning', $attach_error);
+		}
 		
 		DB::commit();
 

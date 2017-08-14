@@ -176,6 +176,12 @@ return [
   'complete-by-user'                 => 'Ticket complete by :user',  
   'reopened-by-user'                 => 'Ticket reopened by :user',
   
+  'ticket-error-not-valid-file'      => 'A no valid file was attached',
+  'ticket-error-not-valid-object'    => 'This file can\'t be processed: :name',
+  'ticket-error-max-size-reached'    => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_kb KiloBytes',
+  'ticket-error-max-attachments-count-reached' => 'The file ":name" and following can\'t be attached as they exceed the max number of :max_count attached files per ticket', 
+  
+  
   'ticket-comment-type-reply'        => 'Reply',
   'ticket-comment-type-note'         => 'Internal note (hidden for user)',
   'ticket-comment-type-complete'     => 'Ticket complete',

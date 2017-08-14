@@ -117,6 +117,7 @@ class SettingsTableSeeder extends Seeder
             'email.color_content_bg' => '#F46B45',
             'email.color_footer_bg'  => '#414141',
             'email.color_button_bg'  => '#AC4D2F',
+			
             /*
              * The default status for new created tickets
              * Default: 1
@@ -142,6 +143,28 @@ class SettingsTableSeeder extends Seeder
              * Default: 1
              */
             'paginate_items' => 10,
+			
+			
+			/*
+			 * Max total size for attached files (ticket + comments)
+			 *
+			 * Default: 2 (Size in MegaBytes)
+			 */
+			'attachments_ticket_max_size' => '2',
+			/*
+			 * Max total file number for a ticket (ticket + comments)
+			 *
+			*/
+			'attachments_ticket_max_files_num' => '20',
+			
+			/*
+             * Defines relative path under storage_path() where to store attached files
+             *
+             * Default: <storage_path>/ticketit_attachments
+             */
+            'attachments_path' => 'ticketit_attachments',
+					
+			
             /*
              * Pagination length: For tickets table.
              * Default: 1
@@ -286,13 +309,6 @@ class SettingsTableSeeder extends Seeder
 			 * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
 			*/
 			'departments_notices_feature' => 'no',
-
-            /*
-             * Defines relative path under storage_path() where to store attached files
-             *
-             * Default: <storage_path>/ticketit_attachments
-             */
-            'attachments_path' => 'ticketit_attachments',
         ];
     }
 }
