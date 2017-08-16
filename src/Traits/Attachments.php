@@ -13,9 +13,12 @@ trait Attachments
 	/**
      * Saves form attached files in name="attachments[]"
      *
-     * @param string $rawHtml
+     * @param Request $request
+	 * @param $ticket instance of Kordy\Ticketit\Models\Ticket
+	 * @param $comment instance of Kordy\Ticketit\Models\Comment
      *
-     * @return bool
+     * @return string
+	 * @return bool
      */
     protected function saveAttachments($request, $ticket, $comment = false)
     {

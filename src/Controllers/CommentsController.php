@@ -106,7 +106,7 @@ class CommentsController extends Controller
 		$ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->saveAttachments($request, $ticket);
+			$attach_error = $this->saveAttachments($request, $ticket, $comment);
 			if ($attach_error){
 				return redirect()->back()->with('warning', $attach_error);
 			}
