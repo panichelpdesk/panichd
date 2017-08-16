@@ -48,7 +48,7 @@
 				
 				@endif
             </div>
-            @if($comment->attachments->count() > 0)
+            @if($setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0)
                 <div class="panel-footer">
                     @foreach($comment->attachments as $attachment)
                         @include('ticketit::tickets.partials.attachment', ['attachment' => $attachment])

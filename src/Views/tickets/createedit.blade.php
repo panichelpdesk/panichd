@@ -179,20 +179,22 @@
 				</div></div>
 			@endif
             
-        	<div class="row">
-				<div class="form-group">
-					<ul class="list-group">
-						@if (isset($ticket))
-							@foreach($ticket->attachments as $attachment)
-								@include('ticketit::tickets.partials.attachment-small', ['attachment' => $attachment])
-							@endforeach
-						@endif
-						<li class="list-group-item">
-							{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
-						</li>
-					</ul>
+        	@if ($setting->grab('ticket_attachments_feature'))
+				<div class="row">
+					<div class="form-group">
+						<ul class="list-group">
+							@if (isset($ticket))
+								@foreach($ticket->attachments as $attachment)
+									@include('ticketit::tickets.partials.attachment-small', ['attachment' => $attachment])
+								@endforeach
+							@endif
+							<li class="list-group-item">
+								{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
+			@endif
 			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">

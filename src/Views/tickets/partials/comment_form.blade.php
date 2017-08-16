@@ -31,12 +31,14 @@
 						</div>
 					</div>
 					
-	                <div class="form-group">
-						{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
-						<div class="col-lg-10">
-							{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
+					@if($setting->grab('ticket_attachments_feature'))
+						<div class="form-group">
+							{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+							<div class="col-lg-10">
+								{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
+							</div>
 						</div>
-					</div>
+					@endif
 					
 					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">

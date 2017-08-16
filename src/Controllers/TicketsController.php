@@ -765,10 +765,13 @@ class TicketsController extends Controller
 		
         $ticket->save();
 		
-		$attach_error = $this->saveAttachments($request, $ticket);
-		if ($attach_error){
-			return redirect()->back()->with('warning', $attach_error);
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->saveAttachments($request, $ticket);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
 		}
+		
         
 		// End transaction
 		DB::commit();
@@ -970,10 +973,12 @@ class TicketsController extends Controller
 
 		$ticket->save();
 
-		$attach_error = $this->saveAttachments($request, $ticket);
-		if ($attach_error){
-			return redirect()->back()->with('warning', $attach_error);
-		}
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->saveAttachments($request, $ticket);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+		}		
         
 		// End transaction
 		DB::commit();		

@@ -309,6 +309,11 @@ class SettingsTableSeeder extends Seeder
 			 * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
 			*/
 			'departments_notices_feature' => 'no',
+			
+			/**
+			 * Allow file attachments for tickets and comments
+			*/
+			'ticket_attachments_feature' => 'yes',
         ];
     }
 }
