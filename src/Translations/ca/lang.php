@@ -178,7 +178,10 @@ return [
   'ticket-error-not-valid-file'      => 'S\'ha adjuntat un fitxer no vàlid',
   'ticket-error-not-valid-object'    => 'Aquest fitxer no es pot processar: :name',
   'ticket-error-max-size-reached'    => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen l\'espai disponible per aquest tiquet que és de :available_kb KiloBytes',
-  'ticket-error-max-attachments-count-reached' => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen el número màxim de :max_count fitxers adjunts que pot contenir cada tiquet', 
+  'ticket-error-max-attachments-count-reached' => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen el número màxim de :max_count fitxers adjunts que pot contenir cada tiquet',
+  'ticket-error-delete-files'        => 'No s\'ha pogut eliminar alguns fitxers',
+  'ticket-error-file-not-found'      => 'No s\'ha localitzat el fitxer ":name"',
+  'ticket-error-file-not-deleted'    => 'El fitxer ":name" no s\'ha pogut eliminar',
   
   'ticket-comment-type-reply'        => 'Resposta',
   'ticket-comment-type-note'         => 'Nota interna (oculta per a l\'usuari)',

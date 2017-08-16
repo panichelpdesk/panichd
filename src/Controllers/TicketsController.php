@@ -1033,6 +1033,14 @@ class TicketsController extends Controller
     {
         $ticket = $this->tickets->findOrFail($id);
         $subject = $ticket->subject;
+		
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->destroyAttachments($ticket);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+		}
+		
         $ticket->delete();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));

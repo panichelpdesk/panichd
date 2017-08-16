@@ -87,4 +87,44 @@ trait Attachments
 		
 		return false;
     }
+	
+	/**
+     * Destroys related attachments of $ticket or $comment
+     *
+     * @param $ticket instance of Kordy\Ticketit\Models\Ticket
+	 * @param $comment instance of Kordy\Ticketit\Models\Comment
+     *
+     * @return string
+	 * @return bool
+     */
+    protected function destroyAttachments($ticket, $comment = false)
+    {
+		if ($comment){
+			$attachments = Attachment::where('comment_id',$comment->id)->get();
+		}else{
+			$attachments = Attachment::where('ticket_id',$ticket->id)->get();
+		}
+		
+		$delete_errors = [];
+				
+		foreach ($attachments as $attachment){			
+			if(!\File::exists($attachment->file_path)){
+				$delete_errors [] = trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$attachment->original_filename]);
+			}else{
+				\File::delete($attachment->file_path);
+				
+				if(\File::exists($attachment->file_path)){
+					$delete_errors [] = trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$attachment->original_filename]);
+				}else{
+					$attachment->delete();
+				}
+			}				
+		}
+		
+		if ($delete_errors){
+			return trans('ticketit::lang.ticket-error-delete-files').trans('ticketit::lang.colon').implode('. ', $delete_errors);
+		}else{
+			return false;
+		}
+	}
 }
