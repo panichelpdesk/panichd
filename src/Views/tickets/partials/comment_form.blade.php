@@ -33,11 +33,18 @@
 					
 					@if($setting->grab('ticket_attachments_feature'))
 						<div class="form-group">
-							{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+							{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), [
+								'class' => 'col-lg-2 control-label'
+							]) !!}
 							<div class="col-lg-10">
-								{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
+								<ul class="list-group">							
+									<button type="button" class="btn btn-default btn_attach" data-after="comment_attached" style="margin: 0em 0em 1em 0em;"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ trans('ticketit::lang.attach-files') }}</span></button>			
+									<div id="comment_attached" class="panel-group grouped_check_list deletion_list">
+									
+									</div>								
+								</ul>
 							</div>
-						</div>
+						</div>						
 					@endif
 					
 					@if ($u->canManageTicket($ticket->id))
