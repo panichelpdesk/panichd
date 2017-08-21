@@ -158,6 +158,7 @@ return [
   'create-ticket-info-start-date'    => 'Default: Now',
   'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
+  'attach-files'                     => 'Attach files',
   
   'edit-ticket'                      => 'Edit Ticket',
 
@@ -178,7 +179,7 @@ return [
   
   'ticket-error-not-valid-file'      => 'A no valid file was attached',
   'ticket-error-not-valid-object'    => 'This file can\'t be processed: :name',
-  'ticket-error-max-size-reached'    => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_kb KiloBytes',
+  'ticket-error-max-size-reached'    => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_MB MB',
   'ticket-error-max-attachments-count-reached' => 'The file ":name" and following can\'t be attached as they exceed the max number of :max_count attached files per ticket',
   'ticket-error-delete-files'        => 'Some files could not be deleted',
   'ticket-error-file-not-found'      => 'The file ":name" could not be found',

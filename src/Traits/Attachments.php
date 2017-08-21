@@ -50,7 +50,7 @@ trait Attachments
 				
 				return trans('ticketit::lang.ticket-error-max-size-reached', [
 					'name' => $original_filename,
-					'available_kb' => round(Setting::grab('attachments_ticket_max_size')*1024-$bytes/1024)
+					'available_MB' => round(Setting::grab('attachments_ticket_max_size')-$bytes/1024/1024)
 				]);
 			}			
 			$bytes = $new_bytes;						
@@ -105,20 +105,32 @@ trait Attachments
 			$attachments = Attachment::where('ticket_id',$ticket->id)->get();
 		}
 		
+		return $this->destroyAttachmentLoop($attachments);
+	}
+	
+	
+	protected function destroyAttachmentIds($a_id)
+	{
+		$attachments = Attachment::whereIn('id', $a_id)->get();		
+		
+		return $this->destroyAttachmentLoop($attachments);
+	}
+	
+	/**
+	 * Iterates through selected $attachments as instances of Attachment model
+	 *
+	 * @param $ticket instance of Kordy\Ticketit\Models\Ticket
+	 *
+     * @return string
+	 * @return bool
+	*/
+	protected function destroyAttachmentLoop($attachments)
+	{
 		$delete_errors = [];
 				
 		foreach ($attachments as $attachment){			
-			if(!\File::exists($attachment->file_path)){
-				$delete_errors [] = trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$attachment->original_filename]);
-			}else{
-				\File::delete($attachment->file_path);
-				
-				if(\File::exists($attachment->file_path)){
-					$delete_errors [] = trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$attachment->original_filename]);
-				}else{
-					$attachment->delete();
-				}
-			}				
+			$single = $this->destroyAttachedElement($attachment);
+			if ($single) $delete_errors[] = $single;
 		}
 		
 		if ($delete_errors){
@@ -127,4 +139,25 @@ trait Attachments
 			return false;
 		}
 	}
+	
+	/**
+	 * Destroy for single attachment model instance
+	*/
+	protected function destroyAttachedElement($attachment)
+	{
+		if(!\File::exists($attachment->file_path)){
+			return trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$attachment->original_filename]);
+		}else{
+			\File::delete($attachment->file_path);
+			
+			if(\File::exists($attachment->file_path)){
+				return trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$attachment->original_filename]);
+			}else{
+				$attachment->delete();
+				return false;
+			}
+		}
+	}
+	
+
 }

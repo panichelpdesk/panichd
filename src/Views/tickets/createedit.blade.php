@@ -167,34 +167,43 @@
             </div>
 			
 			@if ($u->maxLevel() > 1)
-			<div class="jquery_level2_show">
-				<div class="form-group"><!-- INTERVENTION -->
-					<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
-					<div class="col-lg-10">
-					<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
+				<div class="jquery_level2_show">
+					<div class="form-group"><!-- INTERVENTION -->
+						<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
+						<div class="col-lg-10">
+						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
+						</div>
 					</div>
 				</div>
-			</div>
-				
+			@endif
+			
+			@if ($setting->grab('ticket_attachments_feature'))
+				<div class="jquery_level2_show">
+					<div class="form-group">
+						{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), [
+							'class' => 'col-lg-2 control-label'
+						]) !!}
+						<div class="col-lg-10">
+							<ul class="list-group">							
+								<button type="button" id="btn_attach" class="btn btn-default" style="margin: 0em 0em 1em 0em;"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ trans('ticketit::lang.attach-files') }}</span></button>						
+								<div id="attached" class="panel-group grouped_check_list deletion_list">
+								@if (isset($ticket))									
+									@foreach($ticket->attachments as $attachment)
+										@include('ticketit::tickets.partials.attachment', ['template'=>'createedit'])
+									@endforeach
+								@endif
+								</div>								
+							</ul>
+						</div>
+					</div>
+				</div>
+			@endif
+			
+			@if ($u->maxLevel() > 1)
 				</div></div>
 			@endif
             
-        	@if ($setting->grab('ticket_attachments_feature'))
-				<div class="row">
-					<div class="form-group">
-						<ul class="list-group">
-							@if (isset($ticket))
-								@foreach($ticket->attachments as $attachment)
-									@include('ticketit::tickets.partials.attachment-small', ['attachment' => $attachment])
-								@endforeach
-							@endif
-							<li class="list-group-item">
-								{!! CollectiveForm::file('attachments[]', ['class' => 'form-control', 'multiple']) !!}
-							</li>
-						</ul>
-					</div>
-				</div>
-			@endif
+        	
 			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
@@ -277,7 +286,42 @@
         });
         $("#limit_date").on("dp.change", function (e) {
             $('#start_date').data("DateTimePicker").maxDate(e.date);
-        });		
+        });
+		
+		// Attached files: mark for deletion
+		@include('ticketit::shared.grouped_check_list')
+		
+		// Attach files button
+		$('#btn_attach').on('click', function(e){
+			
+			var elem = $('<input type="file" name="attachments[]" class="full_file_inputs" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);	
+				
+			$(elem).insertAfter('#attached');
+			
+			elem.trigger('click');
+		});
+
+		// Add each attached file name to list when selected
+		$(document).on('change', '.full_file_inputs', function() {
+			var input = $(this),
+				files = $(this).prop('files'),
+				numFiles = input.get(0).files ? input.get(0).files.length : 1;	
+			
+			var list_i = $('#attached .panel').length;
+			
+			for(var i=0,file;file=files[i];i++) {
+				var num = list_i+i;
+				var check = $('<div class="panel panel-default text-warning"><div class="panel-body"><div class="media">'
+					+'<div class="media-left"><span class="media-object glyphicon glyphicon-paperclip"></span></div><div class="media-body">'+file.name
+					/*</div>'
+					+'<div class="media-right media-middle"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span>*/
+					+'<input type="checkbox" id="jquery_attachment_check_'+num+'" name="file_names[]" value="'+file.name+'" checked="checked" style="display: none"></div>'
+					+'</div></div></div>');
+				
+				$('#attached').append(check);
+			}	
+		});
+		
 	});	
 	</script>	
 	@include('ticketit::tickets.partials.summernote')

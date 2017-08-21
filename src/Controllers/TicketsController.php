@@ -977,6 +977,13 @@ class TicketsController extends Controller
 			$attach_error = $this->saveAttachments($request, $ticket);
 			if ($attach_error){
 				return redirect()->back()->with('warning', $attach_error);
+			}			
+			
+			if ($request->has('delete_files')){
+				$delete_error = $this->destroyAttachmentIds($request->delete_files);
+				if ($delete_error){
+					return redirect()->back()->with('warning', $delete_error);
+				}
 			}
 		}		
         

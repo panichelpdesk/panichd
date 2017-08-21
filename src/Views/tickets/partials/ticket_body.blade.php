@@ -128,20 +128,25 @@
 							</div>
 							<p> {!! $ticket->intervention_html !!} </p>
 						</div>
-					@endif
+					@endif					
 				</div>
+				
+				@if($setting->grab('ticket_attachments_feature') && $ticket->attachments->count() > 0)
+					<div class="row row-ticket-attachments" style="">							
+						<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attachments') }}</b></div>
+						<div class="col-xs-12">
+							<div id="attached" class="panel-group grouped_check_list deletion_list">
+													
+							@foreach($ticket->attachments as $attachment)							
+								@include('ticketit::tickets.partials.attachment', ['template'=>'view'])
+							@endforeach
+							</div>
+						</div>
+					</div>					
+				@endif
 			</div>
 		</div>
-		@if($setting->grab('ticket_attachments_feature') && $ticket->attachments->count() > 0)
-			<div class="row">
-				<div class="col-md-12">
-					<hr>
-					@foreach($ticket->attachments as $attachment)
-						@include('ticketit::tickets.partials.attachment', ['attachment' => $attachment])
-					@endforeach
-				</div>
-			</div>
-		@endif
+		
 		@if(! $ticket->completed_at && $close_perm == 'yes')			
 			<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('ticketit::lang.btn-mark-complete') }}</button>						
 		@elseif($ticket->completed_at && $reopen_perm == 'yes')

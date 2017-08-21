@@ -102,7 +102,11 @@ body {
 		display: -webkit-flex;
 		display: -ms-flexbox;
 		display: flex;
-	}	
+	}
+	
+	#ticket-body .row-ticket-attachments {
+		margin: 15px -15px 5px -30px;
+	}
 }
 
 
@@ -116,6 +120,10 @@ body {
 @media screen and (max-width: 991px){
 	#ticket-body .description-col, #ticket-body .intervention-col {
 		margin: 15px;
+	}
+	
+	#ticket-body .row-ticket-attachments {
+		margin: 15px -15px 5px -15px;
 	}
 }
 
@@ -137,16 +145,25 @@ body {
 }
 
 /* Grouped check list check / uncheck styles : Deletion list style */
-.grouped_check_list.deletion-list .btn-group.unchecked .glyphicon-ok, .grouped_check_list.deletion-list .btn-group.checked .glyphicon-remove {
+.grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.checked .glyphicon-remove {
 	display: none;
 }
-.grouped_check_list.deletion-list .btn-group.checked .glyphicon-ok, .grouped_check_list.deletion-list .btn-group.unchecked .glyphicon-remove {
+.grouped_check_list.deletion_list .check_parent.checked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-remove {
 	display: inline !important;
 }	
 
-.grouped_check_list.deletion-list .btn-group.checked .text_button {
+.grouped_check_list.deletion_list .check_parent.checked .check_info {
 	text-decoration: line-through;
 	color: black !important;
+	background-color: #ff9999 !important;
+}
+
+.grouped_check_list.deletion_list .check_parent.checked.check_related_text, .grouped_check_list.deletion_list .check_parent.checked .check_related_text {
+	text-decoration: line-through;
+	color: black !important;
+}
+
+.grouped_check_list.deletion_list .check_parent.checked.check_related_bg, .grouped_check_list.deletion_list .check_parent.checked .check_related_bg {
 	background-color: #ff9999 !important;
 }
 
@@ -156,24 +173,24 @@ body {
 }
 
 /* Grouped check list - Style: Coloured btn elements by default */
-.grouped_check_list.coloured-list .btn-group {
+.grouped_check_list.coloured-list .check_parent {
 	margin: 0px 25px 10px 0px;
 }
 
-.grouped_check_list.coloured-list .btn-group.unchecked .btn-default {
+.grouped_check_list.coloured-list .check_parent.unchecked .btn-default {
 	color: gray;	
 }
-.grouped_check_list.coloured-list .btn-group.unchecked .text_button {
+.grouped_check_list.coloured-list .check_parent.unchecked .check_info {
 	background: white;
 }
 
-.grouped_check_list.coloured-list .btn-group.checked a.btn-default {
+.grouped_check_list.coloured-list .check_parent.checked a.btn-default {
 	color: #00e600;
 }
-.grouped_check_list.coloured-list .btn-group.checked .text_button {
+.grouped_check_list.coloured-list .check_parent.checked .check_info {
 	color: black;
 }
-.grouped_check_list.coloured-list .btn-group.checked .text_button {
+.grouped_check_list.coloured-list .check_parent.checked .check_info {
 	background: #f2ffe6;
 }
 
@@ -214,4 +231,9 @@ body {
 
 .tooltip-info .glyphicon-question-sign {
 	color: #bbb;
+}
+
+/* Ticket attachments */
+#attached .media-left .glyphicon {
+	font-size: 2em;
 }
