@@ -135,7 +135,7 @@
 					<div class="row row-ticket-attachments" style="">							
 						<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attachments') }}</b></div>
 						<div class="col-xs-12">
-							<div id="attached" class="panel-group grouped_check_list deletion_list">
+							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 													
 							@foreach($ticket->attachments as $attachment)							
 								@include('ticketit::tickets.partials.attachment', ['template'=>'view'])

@@ -185,7 +185,7 @@
 						]) !!}
 						<div class="col-lg-10">							
 							@include('ticketit::shared.attach_files', ['attach_id' => 'ticket_attached'])
-							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list">
+							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 							@if (isset($ticket))									
 								@foreach($ticket->attachments as $attachment)
 									@include('ticketit::tickets.partials.attachment', ['template'=>'createedit'])

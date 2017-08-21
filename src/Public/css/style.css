@@ -127,6 +127,11 @@ body {
 	}
 }
 
+/* Tags */
+.btn.btn-tag {
+	border: transparent;
+}
+
 .panel-highlight {
 	border-color: #FFE171;
 }
@@ -139,9 +144,8 @@ body {
 	background-color: lightyellow;
 }
 
-/* Tags */
-.btn.btn-tag {
-	border: transparent;
+.comment_deleteit {
+	margin: -5px -10px 0px 0px;
 }
 
 /* Grouped check list check / uncheck styles : Deletion list style */
@@ -238,6 +242,10 @@ body {
 }
 
 /* Ticket attachments */
-#attached .media-left .glyphicon {
+.attached_list .media-left .glyphicon {
 	font-size: 2em;
+}
+
+.attached_list .text-default .media-left .glyphicon {
+	color: #aaa;
 }

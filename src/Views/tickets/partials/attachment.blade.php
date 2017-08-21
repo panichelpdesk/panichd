@@ -1,4 +1,4 @@
-<div class="panel panel-default check_parent unchecked check_related_bg">
+<div class="panel panel-default text-default check_parent unchecked check_related_bg">
 	<div class="panel-body">
 		<div class="media">
 		    <div class="media-left">

@@ -40,7 +40,7 @@
 						@endif
 					</div>
 					@if($setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0)
-						<div class="col-sm-5">
+						<div class="col-sm-5 attached_list">
 							@foreach($comment->attachments as $attachment)
 								@include('ticketit::tickets.partials.attachment', ['attachment' => $attachment])
 							@endforeach
