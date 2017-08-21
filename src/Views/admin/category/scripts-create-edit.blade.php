@@ -97,9 +97,7 @@ $(function(){
 		}		
 		
 		$('#reason-edit-modal').modal('hide');
-	});
-	
-	@include('ticketit::shared.grouped_check_list')
+	});	
 	
 	// NEW Tags select2
 	$('#admin-select2-tags').select2({
@@ -108,3 +106,5 @@ $(function(){
 	});	
 });
 </script>
+
+@include('ticketit::shared.grouped_check_list')

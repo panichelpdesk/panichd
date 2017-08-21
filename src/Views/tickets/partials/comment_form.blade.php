@@ -38,7 +38,7 @@
 							]) !!}
 							<div class="col-lg-10">
 								<ul class="list-group">							
-									<button type="button" class="btn btn-default btn_attach" data-after="comment_attached" style="margin: 0em 0em 1em 0em;"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ trans('ticketit::lang.attach-files') }}</span></button>			
+									@include('ticketit::shared.attach_files', ['attach_id' => 'comment_attached'])			
 									<div id="comment_attached" class="panel-group grouped_check_list deletion_list">
 									
 									</div>								

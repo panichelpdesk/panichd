@@ -25,7 +25,9 @@
     </div>
 	@include('ticketit::admin.category.modal-reason')
 	@include('ticketit::admin.category.modal-tag')
+@stop
 
+@section('footer')
 	@include('ticketit::admin.category.scripts-create-edit')
 	@include('ticketit::admin.category.scripts-edit')
-@stop
+@append
