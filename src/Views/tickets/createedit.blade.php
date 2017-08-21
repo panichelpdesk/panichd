@@ -311,11 +311,11 @@
 			
 			for(var i=0,file;file=files[i];i++) {
 				var num = list_i+i;
-				var check = $('<div class="panel panel-default text-warning"><div class="panel-body"><div class="media">'
-					+'<div class="media-left"><span class="media-object glyphicon glyphicon-paperclip"></span></div><div class="media-body">'+file.name
-					/*</div>'
-					+'<div class="media-right media-middle"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span>*/
-					+'<input type="checkbox" id="jquery_attachment_check_'+num+'" name="file_names[]" value="'+file.name+'" checked="checked" style="display: none"></div>'
+				var check = $('<div class="panel panel-default text-warning check_parent unchecked check_related_bg"><div class="panel-body"><div class="media">'
+					+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" title="{{ trans('ticketit::lang.pending-attachment') }}" style="cursor: help"></span></div><div class="media-body check_related_text">'+file.name+'</div>'
+					+'<div class="media-right media-middle">'
+					+'<a href="#" class="check_button" data-delete_id="delete_new_attachment_check_'+num+'"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>'
+					+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
 					+'</div></div></div>');
 				
 				$('#attached').append(check);

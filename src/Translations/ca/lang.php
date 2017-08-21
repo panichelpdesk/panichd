@@ -158,6 +158,7 @@ return [
   'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
   'attach-files'                     => 'Adjuntar fitxers',
+  'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
   
   'edit-ticket'                      => 'Editar Tiquet',
 

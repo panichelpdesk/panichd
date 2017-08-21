@@ -145,6 +145,10 @@ body {
 }
 
 /* Grouped check list check / uncheck styles : Deletion list style */
+.grouped_check_list .check_button, .grouped_check_list .check_button:visited {
+	color: #777;
+}
+
 .grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.checked .glyphicon-remove {
 	display: none;
 }

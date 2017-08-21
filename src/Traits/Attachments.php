@@ -30,7 +30,7 @@ trait Attachments
 		$num = $ticket->allAttachments()->count();
 		
 		$new_bytes = 0;
-				
+		
 		foreach ($request->attachments as $uploadedFile) {
             /** @var UploadedFile $uploadedFile */
             if (is_null($uploadedFile)) {
@@ -44,6 +44,12 @@ trait Attachments
             }
 			
 			$original_filename = $uploadedFile->getClientOriginalName() ?: '';
+			
+			// Denied uploads block process
+			if (is_array($request->block_file_names) and in_array($original_filename, $request->block_file_names)){
+				continue;
+			}			
+			
 			$new_bytes = $bytes + $uploadedFile->getSize();
 			
 			if ($new_bytes/1024/1024 > Setting::grab('attachments_ticket_max_size')){

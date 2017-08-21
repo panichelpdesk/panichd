@@ -159,6 +159,7 @@ return [
   'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
   'attach-files'                     => 'Attach files',
+  'pending-attachment'               => 'This file will be uploaded when the ticket is updated',
   
   'edit-ticket'                      => 'Edit Ticket',
 
