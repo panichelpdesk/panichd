@@ -38,7 +38,10 @@
 							]) !!}
 							<div class="col-lg-10">
 								<ul class="list-group">							
-									@include('ticketit::shared.attach_files', ['attach_id' => 'comment_attached'])			
+									@include('ticketit::shared.attach_files', [
+										'only' => 'button',
+										'attach_id' => 'comment_attached'
+									])			
 									<div id="comment_attached" class="panel-group grouped_check_list deletion_list attached_list">
 									
 									</div>								

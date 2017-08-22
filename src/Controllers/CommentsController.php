@@ -160,17 +160,35 @@ class CommentsController extends Controller
 		
 		// Update comment
 		$comment=Models\Comment::findOrFail($id);
+		
+		DB::beginTransaction();
 		$comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 		
 		$comment->save();
-						
-		if ($request->has('add_to_intervention')){
-			$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+		$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+		
+		if ($request->has('add_to_intervention')){			
 			$ticket->intervention = $ticket->intervention.$a_content['content'];
 			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
 			$ticket->save();			
-		}		
+		}
+		
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->saveAttachments($request, $ticket, $comment);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+			
+			if ($request->has('delete_files')){
+				$delete_error = $this->destroyAttachmentIds($request->delete_files);
+				if ($delete_error){
+					return redirect()->back()->with('warning', $delete_error);
+				}
+			}
+		}
+		
+		DB::commit();
 		
 		return back()->with('status', trans('ticketit::lang.comment-has-been-updated'));
     }
