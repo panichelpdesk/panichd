@@ -107,6 +107,7 @@ class TicketsController extends Controller
             ->select($a_select)
 			->with('creator')
 			->with('owner.personDepts.department')
+			->withCount('allAttachments')
 			->withCount('comments')
 			->withCount('recentComments');
 
@@ -161,6 +162,13 @@ class TicketsController extends Controller
             );
         });
 		
+		$collection->editColumn('content', function ($ticket) {
+			$field=$ticket->content;
+			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip" title="'.trans('ticketit::lang.attachments').'"></span>';
+						
+			return $field;
+		});
+		
 		$collection->editColumn('intervention', function ($ticket) {
 			$field=$ticket->intervention;
 			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
@@ -168,7 +176,7 @@ class TicketsController extends Controller
 				$field.=$ticket->recent_comments_count;
 			}
 			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-transfer" title="Comentaris"></span>';
+				$field.=' <span class="glyphicons glyphicon glyphicon-transfer" title="'.trans('ticketit::lang.comments').'"></span>';
 			}
 			
 			return $field;
