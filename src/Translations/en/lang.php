@@ -166,6 +166,8 @@ return [
   'attachment-edit'                  => 'Edit attachment',
   'attachment-edit-original-filename'=> 'Original filename',
   'attachment-edit-new-filename'     => 'New filename',
+  
+  'attachment-update-not-valid-name' => 'The new filename for ":file" must be at least 3 character long. HTML is not allowed',
 
   'show-ticket-title'                => 'Ticket',
   'show-ticket-creator'              => 'Created by',

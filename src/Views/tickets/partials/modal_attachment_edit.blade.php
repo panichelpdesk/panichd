@@ -36,6 +36,7 @@
 					</div>
 					
 					<div class="text-right col-md-12">
+						{!! CollectiveForm::hidden(null, null, ['id'=>'modal_attachment_prefix']) !!}
 						{!! CollectiveForm::button( trans('ticketit::lang.btn-submit'), [
 							'type' => 'button',
 							'id' => 'modal_attachment_edit_submit',
@@ -60,13 +61,13 @@ $(function(){
 		$(this).find('#modal_attachment_original_filename').text($(button).data('original_filename'));
 		$(this).find('#modal_attachment_new_filename').val($('#'+prefix+'new_filename').val());
 		$(this).find('#modal_attachment_description').val($('#'+prefix+'description').val());
-		$(this).find('#modal_attachment_edit_submit').attr('data-prefix', prefix);
-		
-		//alert($(this).find('#modal_attachment_edit_submit').data('prefix'));
+		$(this).find('#modal_attachment_prefix').val(prefix);		
 	});
 	
-	$('#modal_attachment_edit_submit').click(function(e){
-		var prefix = $(this).data('prefix');
+	$('#modal-attachment-edit #modal_attachment_edit_submit').click(function(e){		
+		
+		var prefix = $('#modal-attachment-edit #modal_attachment_prefix').val();		
+		
 		var original_filename = $('#modal-attachment-edit #modal_attachment_original_filename').text();
 		var new_filename = $('#modal-attachment-edit #modal_attachment_new_filename').val();
 		
