@@ -81,7 +81,7 @@ trait Attachments
 			}else{
 				$attachment->uploaded_by_id = $ticket->user_id;
 			}            
-            $attachment->original_filename = $original_filename;
+            $attachment->original_filename = $attachment->new_filename = $original_filename;
             $attachment->bytes = $uploadedFile->getSize();
             $attachment->mimetype = $uploadedFile->getMimeType() ?: '';
             $attachment->file_path = $file_directory.DIRECTORY_SEPARATOR.$file_name;
@@ -93,6 +93,35 @@ trait Attachments
 		
 		return false;
     }
+	
+	/**
+	 * Updates new_filename and description for any attachment
+	*/
+	protected function updateAttachmentFields($request, $attachments)
+	{
+		foreach($attachments as $att){
+			$save = false;
+			
+			if ($request->has('attachment_'.$att->id.'_new_filename')){
+				$new_filename = $request->input('attachment_'.$att->id.'_new_filename');
+				
+				if ($new_filename != "" and $new_filename != $att->new_filename){
+					$att->new_filename = $new_filename;
+					$save = true;					
+				}
+			}
+			
+			if ($request->has('attachment_'.$att->id.'_description')){
+				$description = $request->input('attachment_'.$att->id.'_description');
+				if ($description != "" and $description != $att->description){
+					$att->description = $description;
+					$save = true;
+				}
+			}
+			
+			if ($save) $att->save();
+		}
+	}
 	
 	/**
      * Destroys related attachments of $ticket or $comment

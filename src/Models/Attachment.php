@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int uploaded_by_id
  * @property string file_path
  * @property string original_filename
+ * @property string new_filename
+ * @property long description
  * @property int bytes
  * @property string mimetype
  * @property Ticket ticket

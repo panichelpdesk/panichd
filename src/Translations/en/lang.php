@@ -160,8 +160,12 @@ return [
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
   'attach-files'                     => 'Attach files',
   'pending-attachment'               => 'This file will be uploaded when the ticket is updated',
+  'attachment-new-name'              => 'New name',
   
   'edit-ticket'                      => 'Edit Ticket',
+  'attachment-edit'                  => 'Edit attachment',
+  'attachment-edit-original-filename'=> 'Original filename',
+  'attachment-edit-new-filename'     => 'New filename',
 
   'show-ticket-title'                => 'Ticket',
   'show-ticket-creator'              => 'Created by',

@@ -817,7 +817,7 @@ class TicketsController extends Controller
             ->firstOrFail();
 
         return response()
-            ->download($attachment->file_path, $attachment->original_filename);
+            ->download($attachment->file_path, $attachment->new_filename);
     }
 
     /**
@@ -993,6 +993,8 @@ class TicketsController extends Controller
 					return redirect()->back()->with('warning', $delete_error);
 				}
 			}
+			
+			$this->updateAttachmentFields($request, $ticket->attachments()->get());
 		}		
         
 		// End transaction

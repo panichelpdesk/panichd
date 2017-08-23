@@ -194,7 +194,7 @@
 							</div>							
 						</div>
 					</div>
-				</div>
+				</div>				
 			@endif
 			
 			@if ($u->maxLevel() > 1)
@@ -211,6 +211,8 @@
         {!! CollectiveForm::close() !!}
     </div>
 @endsection
+
+@include('ticketit::tickets.partials.modal_attachment_edit')
 
 @section('footer')
     <script type="text/javascript">

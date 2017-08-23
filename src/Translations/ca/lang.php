@@ -159,8 +159,12 @@ return [
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
   'attach-files'                     => 'Adjuntar fitxers',
   'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
+  'attachment-new-name'              => 'Nom nou',
   
   'edit-ticket'                      => 'Editar Tiquet',
+  'attachment-edit'                  => 'Editar adjunt',
+  'attachment-edit-original-filename'=> 'Nom original',
+  'attachment-edit-new-filename'     => 'Nom nou',
 
   'show-ticket-title'                => 'Tiquet',
   'show-ticket-creator'              => 'Creat per',
