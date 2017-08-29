@@ -87,6 +87,13 @@ trait Attachments
 			}            
             $attachment->original_filename = $original_filename;
 			
+			// Mimetype
+			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:'.Setting::grab('attachments_mimes') ]);
+
+			if($validator->fails()){
+				return trans('ticketit::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
+			}
+			
 			// New attachments edited fields
 			$a_fields = $a_errors = [];
 			if (isset($request->input('attachment_new_filenames')[$index])){

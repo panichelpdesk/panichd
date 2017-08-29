@@ -167,6 +167,7 @@ return [
   'attachment-edit-new-filename'     => 'Nom nou',
   
   'attachment-update-not-valid-name' => 'El nom nou per a ":file" ha de tenir almenys 3 caràcters. No es permet HTML',
+  'attachment-update-not-valid-mime' => 'El fitxer ":file" no és de cap tipus vàlid',
 
   'show-ticket-title'                => 'Tiquet',
   'show-ticket-creator'              => 'Creat per',

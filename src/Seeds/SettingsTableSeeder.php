@@ -157,12 +157,19 @@ class SettingsTableSeeder extends Seeder
 			*/
 			'attachments_ticket_max_files_num' => '20',
 			
+			/**
+			 * Attachment allowed mimetypes
+			 *
+			 * Default: jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf
+			*/
+			'attachments_mimes' => 'jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf',
+			
 			/*
              * Defines relative path under storage_path() where to store attached files
              *
              * Default: <storage_path>/ticketit_attachments
              */
-            'attachments_path' => 'ticketit_attachments',
+            'attachments_path' => 'ticketit_attachments',		
 					
 			
             /*
