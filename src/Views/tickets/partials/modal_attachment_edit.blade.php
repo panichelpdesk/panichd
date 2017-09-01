@@ -8,35 +8,11 @@
             </div>
             <div class="modal-body">
 				<fieldset class="form-horizontal">					
-					<div class="form-group">
-						{!! CollectiveForm::label('original_filename', trans('ticketit::lang.attachment-edit-original-filename') . trans('ticketit::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
-						<div class="col-md-9">
-							<span id="modal_attachment_original_filename"></span>
-						</div>
-					</div>
-										
-					<div class="form-group">
-						{!! CollectiveForm::label('new_filename', trans('ticketit::lang.attachment-edit-new-filename') . trans('ticketit::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
-						<div class="col-md-9">
-							{!! CollectiveForm::text('new_filename', null , [
-								'id' => 'modal_attachment_new_filename',
-								'class' => 'form-control',
-								]) !!} 
-						</div>						 
-					</div>
-					
-					<div class="form-group">
-						{!! CollectiveForm::label('description', trans('ticketit::lang.description') . trans('ticketit::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
-						<div class="col-md-9">
-							{!! CollectiveForm::text('description', null , [
-								'id' => 'modal_attachment_description',
-								'class' => 'form-control',
-								]) !!} 
-						</div>						 
-					</div>
+					@include('ticketit::tickets.partials.modal_attachment_edit_fields')
 					
 					<div class="text-right col-md-12">
-						{!! CollectiveForm::hidden(null, null, ['id'=>'modal_attachment_prefix']) !!}
+						{!! CollectiveForm::hidden(null, null, ['id'=>'attachment_form_prefix']) !!}
+						
 						{!! CollectiveForm::button( trans('ticketit::lang.btn-submit'), [
 							'type' => 'button',
 							'id' => 'modal_attachment_edit_submit',
@@ -58,22 +34,22 @@ $(function(){
 		var button = $(e.relatedTarget);
 		var prefix = $(button).data('prefix');
 
-		$(this).find('#modal_attachment_original_filename').text($(button).data('original_filename'));
-		$(this).find('#modal_attachment_new_filename').val($('#'+prefix+'new_filename').val());
-		$(this).find('#modal_attachment_description').val($('#'+prefix+'description').val());
-		$(this).find('#modal_attachment_prefix').val(prefix);		
+		$(this).find('#attachment_form_original_filename').text($(button).data('original_filename'));
+		$(this).find('#attachment_form_new_filename').val($('#'+prefix+'new_filename').val());
+		$(this).find('#attachment_form_description').val($('#'+prefix+'description').val());
+		$(this).find('#attachment_form_prefix').val(prefix);		
 	});
 	
 	$('#modal-attachment-edit #modal_attachment_edit_submit').click(function(e){		
 		
-		var prefix = $('#modal-attachment-edit #modal_attachment_prefix').val();		
+		var prefix = $('#modal-attachment-edit #attachment_form_prefix').val();		
 		
-		var original_filename = $('#modal-attachment-edit #modal_attachment_original_filename').text();
-		var new_filename = $('#modal-attachment-edit #modal_attachment_new_filename').val();
+		var original_filename = $('#modal-attachment-edit #attachment_form_original_filename').text();
+		var new_filename = $('#modal-attachment-edit #attachment_form_new_filename').val();
 		
 		// Fields
 		$('#'+prefix+'new_filename').val(new_filename);		
-		$('#'+prefix+'description').val($('#modal-attachment-edit #modal_attachment_description').val());
+		$('#'+prefix+'description').val($('#modal-attachment-edit #attachment_form_description').val());
 		
 		// Display values
 		if (original_filename == new_filename){
@@ -82,8 +58,8 @@ $(function(){
 			$('#'+prefix+'display_original_filename').text(' - '+original_filename);
 		}
 		$('#'+prefix+'display_new_filename').text(new_filename);
-		if ($('#modal-attachment-edit #modal_attachment_description').val() != ""){
-			$('#'+prefix+'display_description').text($('#modal-attachment-edit #modal_attachment_description').val());
+		if ($('#modal-attachment-edit #attachment_form_description').val() != ""){
+			$('#'+prefix+'display_description').text($('#modal-attachment-edit #attachment_form_description').val());
 		}else{
 			$('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
 		}

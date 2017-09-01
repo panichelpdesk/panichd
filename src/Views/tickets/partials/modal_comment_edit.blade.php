@@ -1,18 +1,18 @@
 <div class="modal fade jquery_panel_hightlight" id="comment-modal-edit-{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="comment-modal-edit-{{$comment->id}}-Label">
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">			
-			{!! CollectiveForm::open([
-				'method' => 'PATCH',
-				'route' => [$setting->grab('main_route').'-comment.update',$comment->id],
-				'class' => 'form-horizontal',
-				'enctype' => 'multipart/form-data'
-			]) !!}
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
                 <h4 class="modal-title" id="ticket-comment-modal-Label">{{ trans('ticketit::lang.show-ticket-edit-comment') }}</h4>
             </div>
             <div class="modal-body">
-				<fieldset>
+				<fieldset id="edit_comment_{{ $comment->id }}_comment">
+					{!! CollectiveForm::open([
+						'method' => 'PATCH',
+						'route' => [$setting->grab('main_route').'-comment.update',$comment->id],
+						'class' => 'form-horizontal',
+						'enctype' => 'multipart/form-data'
+					]) !!}
 					<div class="form-group">
 						<div class="col-lg-12">
 							{!! CollectiveForm::textarea('content', $comment->html, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
@@ -31,7 +31,12 @@
 									])			
 									<div id="comment_{{ $comment->id }}_attached" class="panel-group grouped_check_list deletion_list attached_list">
 									@foreach($comment->attachments as $attachment)
-										@include('ticketit::tickets.partials.attachment', ['template'=>'createedit'])
+										@include('ticketit::tickets.partials.attachment', [
+											'template'=>'createedit',
+											'edit_div' => 'edit_comment_'.$comment->id.'_attachment',
+											'back_div' => 'edit_comment_'.$comment->id.'_comment',
+											'attach_id' => 'comment_'.$comment->id.'_attached'
+										])
 									@endforeach
 									</div>
 								</ul>
@@ -46,9 +51,18 @@
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( 'Desar', ['class' => 'btn btn-primary']) !!}
 					</div>
+					{!! CollectiveForm::close() !!}
+				</fieldset>
+				
+				<!-- Div edit attachment -->
+				<fieldset id="edit_comment_{{ $comment->id }}_attachment" class="form-horizontal" style="display: none">
+					<button class="btn btn-default div-discard-attachment-update" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('ticketit::lang.discard') }}</button>
+					@include('ticketit::tickets.partials.modal_attachment_edit_fields')
+					
+					<button class="btn btn-primary div-update-attachment pull-right" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('ticketit::lang.update') }}</button>
 				</fieldset>
 			</div>
-			{!! CollectiveForm::close() !!}
+			
         </div>
     </div>
 </div>

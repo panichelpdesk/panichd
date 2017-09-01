@@ -18,7 +18,13 @@
 					</s>
 				@endif
 				@if($u->currentLevel() > 1 && isset($template) && $template == "createedit")
-					<button type="button" role="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-attachment-edit" data-original_filename="{{ $attachment->original_filename }}" data-prefix="attachment_{{ $attachment->id }}_" style="margin: 0em 0em 0em 1em;">{{ trans('ticketit::lang.btn-edit') }}</button>
+					<button type="button" role="button" class="btn btn-default btn-xs
+					@if (isset($edit_div) && isset($back_div))
+						 edit_attachment_in_div" data-edit-div="{{ $edit_div }}" data-back-div="{{ $back_div }}"
+					@else
+						" data-toggle="modal" data-target="#modal-attachment-edit"
+					@endif
+					data-original_filename="{{ $attachment->original_filename }}" data-prefix="attachment_{{ $attachment->id }}_" style="margin: 0em 0em 0em 1em;">{{ trans('ticketit::lang.btn-edit') }}</button>
 					<input type="hidden" id="attachment_{{ $attachment->id }}_new_filename" name="attachment_{{ $attachment->id }}_new_filename" value="{{ $attachment->new_filename }}">
 					<input type="hidden" id="attachment_{{ $attachment->id }}_description" name="attachment_{{ $attachment->id }}_description" value="{{ $attachment->description }}">
 				@endif

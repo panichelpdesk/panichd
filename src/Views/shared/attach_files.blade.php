@@ -53,7 +53,7 @@
 				
 				$('#'+$(this).data('attach-id')).append(check);
 			}	
-		});
+		});		
 	});
 	</script>
 	@include('ticketit::shared.grouped_check_list')

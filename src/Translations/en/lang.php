@@ -100,6 +100,7 @@ return [
   'department-shortening'            => 'Dept.',
   'dept_sub1'                        => 'Subdepartment',
   'description'                      => 'Description',
+  'discard'                          => 'Discard',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
@@ -117,6 +118,7 @@ return [
   'ticket'                           => 'Ticket',
   'today'                            => 'Today',
   'tomorrow'                         => 'Tomorrow',
+  'update'                           => 'Update',
   'user'                             => 'User',
   'yesterday'                        => 'Ahir',
   

@@ -185,6 +185,7 @@
 						]) !!}
 						<div class="col-lg-10">							
 							@include('ticketit::shared.attach_files', ['attach_id' => 'ticket_attached'])
+							@include('ticketit::tickets.partials.edit_attachment_div_script')
 							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 							@if (isset($ticket))									
 								@foreach($ticket->attachments as $attachment)
@@ -194,7 +195,7 @@
 							</div>							
 						</div>
 					</div>
-				</div>				
+				</div>			
 			@endif
 			
 			@if ($u->maxLevel() > 1)

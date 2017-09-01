@@ -100,6 +100,7 @@ return [
   'department-shortening'            => 'Dep.',
   'dept_sub1'                        => 'Area',
   'description'                      => 'Descripció',
+  'discard'                          => 'Descartar',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',
@@ -117,6 +118,7 @@ return [
   'ticket'                           => 'Tiquet',
   'today'                            => 'Avui',
   'tomorrow'                         => 'Demà',
+  'update'                           => 'Actualitzar',
   'user'                             => 'Usuari',
   'yesterday'                        => 'Ahir',
   
