@@ -1,11 +1,16 @@
 <div class="panel panel-default text-default check_parent unchecked check_related_bg">
 	<div class="panel-body">
 		<div class="media">
-		    <div class="media-left">
-		        <a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}">
-					<i class="glyphicon glyphicon-paperclip"></i>
-				</a>
-				
+		    <div class="media-left">		        
+				@if (preg_match('/image/', $attachment->mimetype))
+					<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename }}">
+						<img src="{{ URL::to('/').'/storage/ticketit_thumbnails/'.basename($attachment->file_path) }}">
+					</a>
+				@else
+					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}">
+						<i class="glyphicon glyphicon-paperclip"></i>
+					</a>
+				@endif
 		    </div>
 		    <div class="media-body check_related_text">
 		        <div>

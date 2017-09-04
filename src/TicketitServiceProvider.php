@@ -246,15 +246,18 @@ class TicketitServiceProvider extends ServiceProvider
          * Register the service provider for the dependency.
          */
         $this->app->register(\Collective\Html\HtmlServiceProvider::class);
-        $this->app->register(\Yajra\Datatables\DatatablesServiceProvider::class);
+		$this->app->register(\Intervention\Image\ImageServiceProvider::class);
         $this->app->register(\Jenssegers\Date\DateServiceProvider::class);
-        $this->app->register(\Mews\Purifier\PurifierServiceProvider::class);
+		$this->app->register(\Mews\Purifier\PurifierServiceProvider::class);
+		$this->app->register(\Yajra\Datatables\DatatablesServiceProvider::class);        
+        
         /*
          * Create aliases for the dependency.
          */
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('CollectiveForm', 'Collective\Html\FormFacade');
         $loader->alias('CollectiveHtml', 'Collective\Html\HtmlFacade');
+		$loader->alias('Image', 'Intervention\Image\Facades\Image');
 
         /*
          * Register htmlify command. Need to run this when upgrading from <=0.2.2

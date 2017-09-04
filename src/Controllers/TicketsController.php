@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
+use Intervention\Image\ImageManagerStatic as Image;
 use InvalidArgumentException;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
@@ -819,6 +820,32 @@ class TicketsController extends Controller
         return response()
             ->download($attachment->file_path, $attachment->new_filename);
     }
+	
+	public function viewAttachment($attachment_id)
+    {
+        /** @var Agent $user */
+        $user = $this->agent->find(auth()->user()->id);
+
+        /** @var Attachment $attachment */
+        $attachment = Attachment::query()
+            ->where('id', $attachment_id)
+            ->whereHas('ticket', function ($ticketQuery) use ($user) {
+                // Ensure user has permissions to access the ticket
+
+                if ($user->isAdmin()) {
+                    // No restriction for admin
+                } elseif ($user->isAgent()) {
+                    $ticketQuery->agentUserTickets($user->id);
+                } else {
+                    $ticketQuery->userTickets($user->id);
+                }
+            })
+            ->firstOrFail();
+			
+		$img = Image::make($attachment->file_path);
+
+        return $img->response();
+    }
 
     /**
      * Display the specified resource.
@@ -1053,7 +1080,7 @@ class TicketsController extends Controller
         $subject = $ticket->subject;
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->destroyAttachments($ticket);
+			$attach_error = $this->destroyAttachmentsFrom($ticket);
 			if ($attach_error){
 				return redirect()->back()->with('warning', $attach_error);
 			}
