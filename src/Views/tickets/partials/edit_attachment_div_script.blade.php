@@ -2,7 +2,7 @@
 	<script type="text/javascript">
 	$(function(){
 		// Edit attachment button when already in modal window (can't create another one)
-		$(document).on('click', '.edit_attachment_in_div', function(e){
+		$(document).on('click', '.edit_attachment', function(e){
 			var editdiv = '#'+$(this).data('edit-div');
 			var prefix = $(this).data('prefix');			
 			

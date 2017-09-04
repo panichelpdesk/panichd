@@ -1,4 +1,4 @@
-<div class="modal fade" id="ticket-comment-modal" tabindex="-1" role="dialog" aria-labelledby="ticket-comment-modal-Label">
+<div class="modal fade comment-modal" id="modal-comment-new" tabindex="-1" role="dialog" aria-labelledby="modal-comment-new-Label">
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">			
 			{!! CollectiveForm::open([
@@ -10,7 +10,7 @@
 			{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
-                <h4 class="modal-title" id="ticket-comment-modal-Label">{{ trans('ticketit::lang.show-ticket-add-comment') }}</h4>
+                <h4 class="modal-title" id="modal-comment-new-Label">{{ trans('ticketit::lang.show-ticket-add-comment') }}</h4>
             </div>
             <div class="modal-body">
 

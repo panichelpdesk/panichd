@@ -4,7 +4,7 @@
         <div class="modal-content">			
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
-                <h4 class="modal-title" id="ticket-comment-modal-Label">{{ trans('ticketit::lang.attachment-edit') }}</h4>
+                <h4 class="modal-title">{{ trans('ticketit::lang.attachment-edit') }}</h4>
             </div>
             <div class="modal-body">
 				<fieldset class="form-horizontal">					

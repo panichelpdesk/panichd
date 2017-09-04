@@ -7,7 +7,7 @@
 		
         <div style="margin-top: 2em;">
         	<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ticket-comment-modal">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
 			</h2>
         </div>
         @include('ticketit::tickets.partials.comments')
@@ -89,10 +89,16 @@
 				$('#complete-ticket-form').submit();				
 			});			
 			
-			// Comment modal
+			// When opening a comment modal, 
+			$('.comment-modal').on('show.bs.modal', function (e) {
+                $(this).find('.fieldset-for-comment').show();
+				$(this).find('.fieldset-for-attachment').hide();
+			});
+			
+			// Comment form: Response type (reply or note)
 			$('.response_type').click(function(){
 				var type = $(this).attr('data-type');				
-				$('#ticket-comment-modal #response_type').val(type);
+				$('#modal-comment-new #response_type').val(type);
 				$(this).addClass($(this).attr('data-active-class'));
 				
 				var alt = type == 'note' ? 'reply' : 'note';

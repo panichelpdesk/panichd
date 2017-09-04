@@ -20,7 +20,7 @@
 				@if($u->currentLevel() > 1 && isset($template) && $template == "createedit")
 					<button type="button" role="button" class="btn btn-default btn-xs
 					@if (isset($edit_div) && isset($back_div))
-						 edit_attachment_in_div" data-edit-div="{{ $edit_div }}" data-back-div="{{ $back_div }}"
+						 edit_attachment" data-edit-div="{{ $edit_div }}" data-back-div="{{ $back_div }}"
 					@else
 						" data-toggle="modal" data-target="#modal-attachment-edit"
 					@endif
