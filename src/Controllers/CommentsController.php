@@ -175,16 +175,19 @@ class CommentsController extends Controller
 		}
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->saveAttachments($request, $ticket, $comment);
-			if ($attach_error){
-				return redirect()->back()->with('warning', $attach_error);
-			}
+			$attachment_errors = false;
 			
-			if ($request->has('delete_files')){
-				$delete_error = $this->destroyAttachmentIds($request->delete_files);
-				if ($delete_error){
-					return redirect()->back()->with('warning', $delete_error);
-				}
+			// 1 - destroy checked attachments
+			if ($request->has('delete_files')) $attachment_errors = $this->destroyAttachmentIds($request->delete_files);
+			
+			// 2 - update existing attachment fields
+			if (!$attachment_errors) $attachment_errors = $this->updateAttachmentFields($request, $comment->attachments()->get());
+			
+			// 3 - add new attachments
+			if (!$attachment_errors) $attachment_errors = $this->saveAttachments($request, $ticket, $comment);
+			
+			if ($attachment_errors){
+				return redirect()->back()->with('warning', $attachment_errors);
 			}
 		}
 		

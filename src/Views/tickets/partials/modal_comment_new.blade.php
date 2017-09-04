@@ -1,20 +1,21 @@
 <div class="modal fade comment-modal" id="modal-comment-new" tabindex="-1" role="dialog" aria-labelledby="modal-comment-new-Label">
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">			
-			{!! CollectiveForm::open([
-				'method' => 'POST',
-				'route' => $setting->grab('main_route').'-comment.store',
-				'class' => 'form-horizontal',
-				'enctype' => 'multipart/form-data'
-			]) !!}
-			{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
                 <h4 class="modal-title" id="modal-comment-new-Label">{{ trans('ticketit::lang.show-ticket-add-comment') }}</h4>
             </div>
             <div class="modal-body">
 
-				<fieldset>
+				<fieldset id="new_comment_modal_comment" class="fieldset-for-comment">
+				{!! CollectiveForm::open([
+					'method' => 'POST',
+					'route' => $setting->grab('main_route').'-comment.store',
+					'class' => 'form-horizontal',
+					'enctype' => 'multipart/form-data'
+				]) !!}
+					{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
+			
 					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
 							{!! CollectiveForm::label('type', trans('ticketit::lang.show-ticket-add-comment-type') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
@@ -38,11 +39,8 @@
 							]) !!}
 							<div class="col-lg-10">
 								<ul class="list-group">							
-									@include('ticketit::shared.attach_files', [
-										'only' => 'button',
-										'attach_id' => 'comment_attached'
-									])			
-									<div id="comment_attached" class="panel-group grouped_check_list deletion_list attached_list">
+									@include('ticketit::shared.attach_files_button', ['attach_id' => 'comment_attached'])			
+									<div id="comment_attached" class="panel-group grouped_check_list deletion_list attached_list"  data-new-attachment-edit-div="new_comment_modal_attachment" data-new-attachment-back-div="new_comment_modal_comment">
 									
 									</div>								
 								</ul>
@@ -66,9 +64,17 @@
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
 					</div>
+				{!! CollectiveForm::close() !!}
+				</fieldset>
+				
+				<!-- Div edit attachment -->
+				<fieldset id="new_comment_modal_attachment"  class="fieldset-for-attachment form-horizontal" style="display: none">		
+					@include('ticketit::tickets.partials.attachment_form_fields')
+					<button class="btn btn-default div-discard-attachment-update" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('ticketit::lang.discard') }}</button>
+					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('ticketit::lang.update') }}</button>
 				</fieldset>
 			</div>
-			{!! CollectiveForm::close() !!}
+			
         </div>
     </div>
 </div>

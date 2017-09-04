@@ -24,3 +24,5 @@
 			]) !!} 
 	</div>						 
 </div>
+
+{!! CollectiveForm::hidden(null, null, ['id'=>'attachment_form_prefix']) !!}

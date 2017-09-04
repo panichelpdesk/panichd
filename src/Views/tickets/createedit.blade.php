@@ -184,9 +184,9 @@
 							'class' => 'col-lg-2 control-label'
 						]) !!}
 						<div class="col-lg-10">							
-							@include('ticketit::shared.attach_files', ['attach_id' => 'ticket_attached'])
-							@include('ticketit::tickets.partials.edit_attachment_div_script')
-							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
+							@include('ticketit::shared.attach_files_button', ['attach_id' => 'ticket_attached'])
+							@include('ticketit::shared.attach_files_script')							
+							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list" data-new-attachment-modal-id="modal-attachment-edit">
 							@if (isset($ticket))									
 								@foreach($ticket->attachments as $attachment)
 									@include('ticketit::tickets.partials.attachment', ['template'=>'createedit'])

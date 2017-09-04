@@ -25,11 +25,8 @@
 							]) !!}
 							<div class="col-lg-10">
 								<ul class="list-group">							
-									@include('ticketit::shared.attach_files', [
-										'only' => 'button',
-										'attach_id' => 'comment_'.$comment->id.'_attached'
-									])			
-									<div id="comment_{{ $comment->id }}_attached" class="panel-group grouped_check_list deletion_list attached_list">
+									@include('ticketit::shared.attach_files_button', ['attach_id' => 'comment_'.$comment->id.'_attached'])			
+									<div id="comment_{{ $comment->id }}_attached" class="panel-group grouped_check_list deletion_list attached_list" data-new-attachment-edit-div="edit_comment_{{ $comment->id  }}_attachment" data-new-attachment-back-div="edit_comment_{{ $comment->id }}_comment">
 									@foreach($comment->attachments as $attachment)
 										@include('ticketit::tickets.partials.attachment', [
 											'template'=>'createedit',
@@ -56,9 +53,9 @@
 				
 				<!-- Div edit attachment -->
 				<fieldset id="edit_comment_{{ $comment->id }}_attachment"  class="fieldset-for-attachment form-horizontal" style="display: none">		
-					@include('ticketit::tickets.partials.modal_attachment_edit_fields')
+					@include('ticketit::tickets.partials.attachment_form_fields')
 					<button class="btn btn-default div-discard-attachment-update" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('ticketit::lang.discard') }}</button>
-					<button class="btn btn-primary div-update-attachment pull-right" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('ticketit::lang.update') }}</button>
+					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('ticketit::lang.update') }}</button>
 				</fieldset>
 			</div>
 			

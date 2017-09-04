@@ -14,11 +14,7 @@
         {!! $comments->render() !!}
         @include('ticketit::tickets.partials.modal_comment_new')
 		@if ($setting->grab('ticket_attachments_feature') && $u->canManageTicket($ticket->id))
-			@include('ticketit::shared.attach_files', [
-				'only' => 'script',
-				'edit_att_on' => 'current'
-			])
-			@include('ticketit::tickets.partials.edit_attachment_div_script')
+			@include('ticketit::shared.attach_files_script')			
 		@endif
 @endsection
 
