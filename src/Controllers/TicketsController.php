@@ -841,10 +841,18 @@ class TicketsController extends Controller
                 }
             })
             ->firstOrFail();
-			
-		$img = Image::make($attachment->file_path);
-
-        return $img->response();
+		
+		$mime = $attachment->getShorthandMime($attachment->mimetype);
+		
+		if ( $mime == "image"){
+			$img = Image::make($attachment->file_path);
+			return $img->response();
+		}elseif($mime == "pdf"){
+			return response()->file($attachment->file_path);
+		}else{
+			return response()
+				->download($attachment->file_path, basename($attachment->file_path));
+		}		
     }
 
     /**

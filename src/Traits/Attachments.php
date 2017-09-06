@@ -132,7 +132,7 @@ trait Attachments
 
 				$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
 				
-				$img->heighten(30)->widen(60)->save($thumbnail_path.$file_name);
+				$img->heighten(30)->widen(30)->save($thumbnail_path.$file_name);
 			}
 			
 			$index++;

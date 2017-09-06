@@ -2,15 +2,28 @@
 	<div class="panel-body">
 		<div class="media">
 		    <div class="media-left">		        
-				@if (preg_match('/image/', $attachment->mimetype))
+				<?php 
+					$mime = $attachment->getShorthandMime($attachment->mimetype);
+				?>
+				
+				@if (in_array($mime, ['image','pdf']))
 					<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename }}">
-						<img src="{{ URL::to('/').'/storage/ticketit_thumbnails/'.basename($attachment->file_path) }}">
-					</a>
 				@else
 					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}">
-						<i class="glyphicon glyphicon-paperclip"></i>
-					</a>
-				@endif
+				@endif				
+				
+				@if ($mime == 'image')
+					<img src="{{ URL::to('/').'/storage/ticketit_thumbnails/'.basename($attachment->file_path) }}">
+				@elseif ($mime == 'pdf')
+					<i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i>
+				@elseif ($mime == 'msword')
+					<i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+				@elseif ($mime == 'msexcel')
+					<i class="fa fa-file-excel-o fa-2x" aria-hidden="true"></i>
+				@else
+					<i class="glyphicon glyphicon-paperclip"></i>
+				@endif		
+				</a>
 		    </div>
 		    <div class="media-body check_related_text">
 		        <div>
@@ -38,13 +51,7 @@
 		        
 		        <span class="text-muted">
 					{{ number_format($attachment->bytes/1024) }} KB - 
-					<span id="attachment_{{ $attachment->id }}_display_description" data-mimetype="{{ $attachment->mimetype }}">
-					@if($attachment->description == "")
-						{{ $attachment->mimetype }}
-					@else
-						{{ $attachment->description }}
-					@endif
-					</span>
+					<span id="attachment_{{ $attachment->id }}_display_description" data-mimetype="{{ $attachment->mimetype }}">{{ $attachment->description }}</span>
 		        </span>
 		    </div>
 			@if (isset($template) && $template == "createedit")
