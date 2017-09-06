@@ -31,7 +31,7 @@ class TicketsController extends Controller
 
     public function __construct(Ticket $tickets, Agent $agent)
     {
-        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show']]);
+        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAgentMiddleware', ['only' => ['edit', 'update']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
@@ -798,24 +798,8 @@ class TicketsController extends Controller
 
     public function downloadAttachment($attachment_id)
     {
-        /** @var Agent $user */
-        $user = $this->agent->find(auth()->user()->id);
-
         /** @var Attachment $attachment */
-        $attachment = Attachment::query()
-            ->where('id', $attachment_id)
-            ->whereHas('ticket', function ($ticketQuery) use ($user) {
-                // Ensure user has permissions to access the ticket
-
-                if ($user->isAdmin()) {
-                    // No restriction for admin
-                } elseif ($user->isAgent()) {
-                    $ticketQuery->agentUserTickets($user->id);
-                } else {
-                    $ticketQuery->userTickets($user->id);
-                }
-            })
-            ->firstOrFail();
+        $attachment = Attachment::findOrFail($attachment_id);
 
         return response()
             ->download($attachment->file_path, $attachment->new_filename);
@@ -823,24 +807,8 @@ class TicketsController extends Controller
 	
 	public function viewAttachment($attachment_id)
     {
-        /** @var Agent $user */
-        $user = $this->agent->find(auth()->user()->id);
-
         /** @var Attachment $attachment */
-        $attachment = Attachment::query()
-            ->where('id', $attachment_id)
-            ->whereHas('ticket', function ($ticketQuery) use ($user) {
-                // Ensure user has permissions to access the ticket
-
-                if ($user->isAdmin()) {
-                    // No restriction for admin
-                } elseif ($user->isAgent()) {
-                    $ticketQuery->agentUserTickets($user->id);
-                } else {
-                    $ticketQuery->userTickets($user->id);
-                }
-            })
-            ->firstOrFail();
+        $attachment = Attachment::findOrFail($attachment_id);
 		
 		$mime = $attachment->getShorthandMime($attachment->mimetype);
 		
