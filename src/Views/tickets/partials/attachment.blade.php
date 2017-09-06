@@ -7,9 +7,9 @@
 				?>
 				
 				@if (in_array($mime, ['image','pdf']))
-					<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename }}">
+					<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename }}" class="{{ $mime }}">
 				@else
-					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}">
+					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}" class="{{ $mime }}">
 				@endif				
 				
 				@if ($mime == 'image')
@@ -20,8 +20,10 @@
 					<i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
 				@elseif ($mime == 'msexcel')
 					<i class="fa fa-file-excel-o fa-2x" aria-hidden="true"></i>
+				@elseif ($mime == 'compressed')
+					<i class="fa fa-file-zip-o fa-2x" aria-hidden="true"></i>
 				@else
-					<i class="glyphicon glyphicon-paperclip"></i>
+					<i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
 				@endif		
 				</a>
 		    </div>

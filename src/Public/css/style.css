@@ -242,10 +242,28 @@ body {
 }
 
 /* Ticket attachments */
-.attached_list .media-left .glyphicon {
-	font-size: 2em;
+.attached_list .media-left a, .attached_list .media-left a:visited {
+	color: #bbb;
 }
 
-.attached_list .text-default .media-left .glyphicon {
-	color: #aaa;
+.attached_list .media-left a.pdf:hover, .attached_list .media-left a.pdf:active {
+	color: red;
 }
+
+.attached_list .media-left a.msword:hover, .attached_list .media-left a.msword:active {
+	color: #549ee8;
+}
+
+.attached_list .media-left a.msexcel:hover, .attached_list .media-left a.msexcel:active {
+	color: #77DD77;
+}
+
+.attached_list .media-left a.compressed:hover, .attached_list .media-left a.compressed:active {
+	color: #FFC125;
+}
+
+.attached_list .media-left a.default:hover, .attached_list .media-left a.default:active {
+	color: orange;
+}
+
+
