@@ -1,11 +1,31 @@
 <div class="panel panel-default text-default check_parent unchecked check_related_bg">
 	<div class="panel-body">
 		<div class="media">
-		    <div class="media-left">
-		        <a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}">
-					<i class="glyphicon glyphicon-paperclip"></i>
-				</a>
+		    <div class="media-left">		        
+				<?php 
+					$mime = $attachment->getShorthandMime($attachment->mimetype);
+				?>
 				
+				@if (in_array($mime, ['image','pdf']))
+					<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename }}" class="{{ $mime }}">
+				@else
+					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}" class="{{ $mime }}">
+				@endif				
+				
+				@if ($mime == 'image')
+					<img src="{{ URL::to('/').'/storage/ticketit_thumbnails/'.basename($attachment->file_path) }}">
+				@elseif ($mime == 'pdf')
+					<i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i>
+				@elseif ($mime == 'msword')
+					<i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+				@elseif ($mime == 'msexcel')
+					<i class="fa fa-file-excel-o fa-2x" aria-hidden="true"></i>
+				@elseif ($mime == 'compressed')
+					<i class="fa fa-file-zip-o fa-2x" aria-hidden="true"></i>
+				@else
+					<i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+				@endif		
+				</a>
 		    </div>
 		    <div class="media-body check_related_text">
 		        <div>
@@ -33,13 +53,7 @@
 		        
 		        <span class="text-muted">
 					{{ number_format($attachment->bytes/1024) }} KB - 
-					<span id="attachment_{{ $attachment->id }}_display_description" data-mimetype="{{ $attachment->mimetype }}">
-					@if($attachment->description == "")
-						{{ $attachment->mimetype }}
-					@else
-						{{ $attachment->description }}
-					@endif
-					</span>
+					<span id="attachment_{{ $attachment->id }}_display_description" data-mimetype="{{ $attachment->mimetype }}">{{ $attachment->description }}</span>
 		        </span>
 		    </div>
 			@if (isset($template) && $template == "createedit")

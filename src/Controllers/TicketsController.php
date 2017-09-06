@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
+use Intervention\Image\ImageManagerStatic as Image;
 use InvalidArgumentException;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
@@ -30,7 +31,7 @@ class TicketsController extends Controller
 
     public function __construct(Ticket $tickets, Agent $agent)
     {
-        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show']]);
+        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAgentMiddleware', ['only' => ['edit', 'update']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
@@ -797,27 +798,29 @@ class TicketsController extends Controller
 
     public function downloadAttachment($attachment_id)
     {
-        /** @var Agent $user */
-        $user = $this->agent->find(auth()->user()->id);
-
         /** @var Attachment $attachment */
-        $attachment = Attachment::query()
-            ->where('id', $attachment_id)
-            ->whereHas('ticket', function ($ticketQuery) use ($user) {
-                // Ensure user has permissions to access the ticket
-
-                if ($user->isAdmin()) {
-                    // No restriction for admin
-                } elseif ($user->isAgent()) {
-                    $ticketQuery->agentUserTickets($user->id);
-                } else {
-                    $ticketQuery->userTickets($user->id);
-                }
-            })
-            ->firstOrFail();
+        $attachment = Attachment::findOrFail($attachment_id);
 
         return response()
             ->download($attachment->file_path, $attachment->new_filename);
+    }
+	
+	public function viewAttachment($attachment_id)
+    {
+        /** @var Attachment $attachment */
+        $attachment = Attachment::findOrFail($attachment_id);
+		
+		$mime = $attachment->getShorthandMime($attachment->mimetype);
+		
+		if ( $mime == "image"){
+			$img = Image::make($attachment->file_path);
+			return $img->response();
+		}elseif($mime == "pdf"){
+			return response()->file($attachment->file_path);
+		}else{
+			return response()
+				->download($attachment->file_path, basename($attachment->file_path));
+		}		
     }
 
     /**
@@ -1053,7 +1056,7 @@ class TicketsController extends Controller
         $subject = $ticket->subject;
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->destroyAttachments($ticket);
+			$attach_error = $this->destroyAttachmentsFrom($ticket);
 			if ($attach_error){
 				return redirect()->back()->with('warning', $attach_error);
 			}

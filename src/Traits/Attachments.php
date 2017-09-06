@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Traits;
 use Kordy\Ticketit\Models\Attachment;
 use Kordy\Ticketit\Models\Setting;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManagerStatic as Image;
 use Log;
 use Mews\Purifier\Facades\Purifier;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -118,8 +119,21 @@ trait Attachments
             $attachment->file_path = $file_directory.DIRECTORY_SEPARATOR.$file_name;
             $attachment->save();
 
+			// Thumbnail for valid image types
+			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:jpg,png,gif,wbmp,webp,xbm,xpm' ]);
+			
+			$is_image = $validator->fails() ? false : true;
+			
             // Should be called when you no need anything from this file, otherwise it fails with Exception that file does not exists (old path being used)
             $uploadedFile->move(storage_path($attachments_path), $file_name);
+			
+			if ($is_image){
+				$img = Image::make($attachment->file_path);
+
+				$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
+				
+				$img->heighten(30)->widen(30)->save($thumbnail_path.$file_name);
+			}
 			
 			$index++;
         }
@@ -206,7 +220,7 @@ trait Attachments
      * @return string
 	 * @return bool
      */
-    protected function destroyAttachments($ticket, $comment = false)
+    protected function destroyAttachmentsFrom($ticket, $comment = false)
     {
 		if ($comment){
 			$attachments = Attachment::where('comment_id',$comment->id)->get();
@@ -214,7 +228,7 @@ trait Attachments
 			$attachments = Attachment::where('ticket_id',$ticket->id)->get();
 		}
 		
-		return $this->destroyAttachmentLoop($attachments);
+		return $this->destroyAttachmentsLoop($attachments);
 	}
 	
 	
@@ -222,7 +236,7 @@ trait Attachments
 	{
 		$attachments = Attachment::whereIn('id', $a_id)->get();		
 		
-		return $this->destroyAttachmentLoop($attachments);
+		return $this->destroyAttachmentsLoop($attachments);
 	}
 	
 	/**
@@ -233,7 +247,7 @@ trait Attachments
      * @return string
 	 * @return bool
 	*/
-	protected function destroyAttachmentLoop($attachments)
+	protected function destroyAttachmentsLoop($attachments)
 	{
 		$delete_errors = [];
 				
@@ -262,6 +276,14 @@ trait Attachments
 			if(\File::exists($attachment->file_path)){
 				return trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$attachment->original_filename]);
 			}else{
+				// Delete thumbnail
+				$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
+				
+				if (\File::exists($thumbnail_path.basename($attachment->file_path))){
+					\File::delete($thumbnail_path.basename($attachment->file_path));
+				}
+				
+				// Delete ticketit attachment instance				
 				$attachment->delete();
 				return false;
 			}

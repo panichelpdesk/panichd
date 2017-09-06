@@ -208,7 +208,7 @@ class CommentsController extends Controller
         $comment=Models\Comment::findOrFail($id);
 
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->destroyAttachments($comment->ticket, $comment);
+			$attach_error = $this->destroyAttachmentsFrom($comment->ticket, $comment);
 			if ($attach_error){
 				return redirect()->back()->with('warning', $attach_error);
 			}
