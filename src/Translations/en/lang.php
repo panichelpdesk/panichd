@@ -87,6 +87,8 @@ return [
   'agent'                            => 'Agent',
   'agents'                           => 'Agents',
   'all-depts'                        => 'All',
+  'attached-images'                  => 'Attached images',
+  'attached-files'                   => 'Attached files',
   'attachments'                      => 'Attachments',
   'category'                         => 'Category',  
   'closing-reason'                   => 'Closing reason',

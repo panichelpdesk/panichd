@@ -24,7 +24,7 @@ $(function(){
 			var html = '<div class="panel panel-default text-warning check_parent unchecked check_related_bg"><div class="panel-body"><div class="media">'
 				
 				// Upload icon
-				+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" title="{{ trans('ticketit::lang.pending-attachment') }}" style="cursor: help"></span></div>'
+				+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" style="font-size: 30px" title="{{ trans('ticketit::lang.pending-attachment') }}" style="cursor: help"></span></div>'
 				
 				// Filename
 				+'<div class="media-body check_related_text">'

@@ -120,7 +120,7 @@ trait Attachments
             $attachment->save();
 
 			// Thumbnail for valid image types
-			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:jpg,png,gif,wbmp,webp,xbm,xpm' ]);
+			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:jpeg,png,gif,wbmp,webp,xbm,xpm' ]);
 			
 			$is_image = $validator->fails() ? false : true;
 			
@@ -128,11 +128,15 @@ trait Attachments
             $uploadedFile->move(storage_path($attachments_path), $file_name);
 			
 			if ($is_image){
-				$img = Image::make($attachment->file_path);
+				$img = Image::make($attachment->file_path)->heighten(50)->widen(50)->encode('png');
 
 				$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
 				
-				$img->heighten(30)->widen(30)->save($thumbnail_path.$file_name);
+				$img->resizeCanvas(50, 50)->save($thumbnail_path.$file_name);
+				
+				// This method seems to cut borders on non square images. Image loses a lot of quality also
+				/*$thumb = Image::canvas(50, 50);
+				$thumb->insert($img, 'center')->save($thumbnail_path.$file_name);*/
 			}
 			
 			$index++;

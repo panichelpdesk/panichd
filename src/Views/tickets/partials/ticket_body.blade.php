@@ -132,16 +132,44 @@
 				</div>
 				
 				@if($setting->grab('ticket_attachments_feature') && $ticket->attachments->count() > 0)
-					<div class="row row-ticket-attachments" style="">							
-						<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attachments') }}</b></div>
-						<div class="col-xs-12">
-							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
-													
-							@foreach($ticket->attachments as $attachment)							
-								@include('ticketit::tickets.partials.attachment', ['template'=>'view'])
-							@endforeach
+					<div class="row row-ticket-attachments" style="">
+					<?php
+						$images_count = $ticket->attachments()->images()->count();
+						$notimages_count = $ticket->attachments()->notImages()->count();
+					?>
+						
+					@if($images_count > 0)
+						<div class="{{ $ticket->attachments()->notImages()->count() > 0 ? 'col-md-8 col-sm-6' : 'col-xs-12' }}">
+							<div class="row">
+							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attached-images') }}</b></div>
+							<div class="col-xs-12">
+								<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
+														
+								@foreach($ticket->attachments()->images()->get() as $attachment)							
+									@include('ticketit::tickets.partials.attachment_image')
+								@endforeach
+								</div>
+							</div>
 							</div>
 						</div>
+					@endif
+					@if($notimages_count > 0)
+						<div class="{{ $ticket->attachments()->images()->count() > 0 ? 'col-md-4 col-sm-6' : 'col-xs-12' }}">
+							<div class="row">
+							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attached-files') }}</b></div>
+							<div class="col-xs-12">
+								<div id="ticket_attached" class="row panel-group attached_list">
+														
+								@foreach($ticket->attachments()->notImages()->get() as $attachment)									
+									<div class="{{ $images_count > 0 ? 'col-xs-12' : 'col-lg-3 col-md-4 col-sm-6' }}" style="margin-bottom: {{ $images_count > 0 ? '10px' : '15px' }}">
+										@include('ticketit::tickets.partials.attachment', ['template'=>'view'])
+									</div>
+								@endforeach
+								</div>
+							</div>
+							</div>
+						</div>
+					@endif						
 					</div>					
 				@endif
 			</div>

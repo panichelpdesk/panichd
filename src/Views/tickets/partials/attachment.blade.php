@@ -13,7 +13,11 @@
 				@endif				
 				
 				@if ($mime == 'image')
-					<img src="{{ URL::to('/').'/storage/ticketit_thumbnails/'.basename($attachment->file_path) }}">
+					@if (\File::exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR).basename($attachment->file_path)))
+						<img width="40px" height="40px" src="{{ URL::to('/').'/storage/ticketit_thumbnails/'.basename($attachment->file_path) }}">
+					@else
+						<i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
+					@endif
 				@elseif ($mime == 'pdf')
 					<i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i>
 				@elseif ($mime == 'msword')
@@ -52,7 +56,11 @@
 		
 		        
 		        <span class="text-muted">
-					{{ number_format($attachment->bytes/1024) }} KB - 
+					<?php 
+						$size = $attachment->bytes/1024;
+						$size = $size < 1024 ? number_format($size)." KB" : number_format($size/1024, 1)." MB";
+					?>
+					{{ $size }} - 
 					<span id="attachment_{{ $attachment->id }}_display_description" data-mimetype="{{ $attachment->mimetype }}">{{ $attachment->description }}</span>
 		        </span>
 		    </div>

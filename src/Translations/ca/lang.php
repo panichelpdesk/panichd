@@ -11,7 +11,6 @@ return [
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
-  
 
   // Tables
   'table-id'                         => '#',
@@ -87,6 +86,8 @@ return [
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
   'all-depts'                        => 'Tots',
+  'attached-images'                  => 'Imatges adjuntes',
+  'attached-files'                   => 'Fitxers adjunts',
   'attachments'                      => 'Adjunts',
   'category'                         => 'Categoria',
   'closing-reason'                   => 'Raó de tancament',

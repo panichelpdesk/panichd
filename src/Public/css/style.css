@@ -242,8 +242,16 @@ body {
 }
 
 /* Ticket attachments */
+.attached_list .panel-body {
+	padding: 8px;
+}
+
 .attached_list .media-left a, .attached_list .media-left a:visited {
 	color: #bbb;
+}
+
+.attached_list .media-left a.image:hover, .attached_list .media-left a.image:active {
+	color: #ff3385;
 }
 
 .attached_list .media-left a.pdf:hover, .attached_list .media-left a.pdf:active {
@@ -265,5 +273,4 @@ body {
 .attached_list .media-left a.default:hover, .attached_list .media-left a.default:active {
 	color: orange;
 }
-
 
