@@ -2,7 +2,7 @@
 	$size = $attachment->bytes/1024;
 	$size = $size < 1024 ? number_format($size)." KB" : number_format($size/1024, 1)." MB";
 ?>
-<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename . ($attachment->description == "" ? ' - '.$size : trans('ticketit::lang.colon') . $attachment->description) }}" class="tooltip-show" data-toggle="tooltip" data-placement="auto top">
+<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename . ($attachment->description == "" ? ' - '.$size : trans('ticketit::lang.colon') . $attachment->description) }}" class="tooltip-show pwsp_gallery_link" data-pwsp-pid="{{ $attachment->id }}" data-toggle="tooltip" data-placement="auto top">
 <div class="panel panel-default" style="display: inline-block; width: 70px; height: 70px; margin: 5px">
 	<div class="panel-body">
 		@if (\File::exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR).basename($attachment->file_path)))
