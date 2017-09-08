@@ -25,4 +25,12 @@
 	</div>						 
 </div>
 
+<div class="row" id="attachment_form_image_row" style="display: none">
+<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.cut-image') }}</b></div>
+<div class="col-xs-12 image_wrap" style="text-align: center; margin: 0em 0em 1em 0em;">
+<img src="" style="max-width: 560px; max-height: 400px">
+</div>
+</div>
+
+
 {!! CollectiveForm::hidden(null, null, ['id'=>'attachment_form_prefix']) !!}

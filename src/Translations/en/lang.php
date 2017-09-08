@@ -96,6 +96,8 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
+  'cut'                              => 'Cut',
+  'cut-image'                        => 'Image cut',
   'date-info-created'                => 'Creation date',
   'date-info-updated'                => 'Last update date',
   'department'                       => 'Department',

@@ -66,6 +66,18 @@ $(function(){
 		$(editdiv).find('#attachment_form_original_filename').text($(this).data('original_filename'));
 		$(editdiv).find('#attachment_form_new_filename').val($('#'+prefix+'new_filename').val());
 		$(editdiv).find('#attachment_form_description').val($('#'+prefix+'description').val());
+		
+		// Image
+		$(editdiv).find('#attachment_form_image_row img').attr('src', '');
+		if ($(this).attr('data-image-url')){			
+			$(editdiv).find('#attachment_form_image_row').show();
+			
+			$(editdiv).find('#attachment_form_image_row img').attr('src', $(this).data('image-url')+'">');
+		}else{
+			$(editdiv).find('#attachment_form_image_row').hide();
+		}
+		
+		
 		$(editdiv).find('#attachment_form_prefix').val(prefix);			
 		
 		if ($(this).attr('data-modal-id')){

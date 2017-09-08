@@ -95,6 +95,8 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
+  'cut'                              => 'Retallar',
+  'cut-image'                        => 'Retallar imatge',
   'date-info-created'                => 'Data de creació',
   'date-info-updated'                => 'Data de darrer canvi',
   'department'                       => 'Departament',

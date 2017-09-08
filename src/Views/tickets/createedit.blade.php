@@ -215,6 +215,7 @@
 
 @include('ticketit::tickets.partials.modal_attachment_edit')
 @include('ticketit::shared.photoswipe_files')
+@include('ticketit::shared.jcrop_files')
 
 @section('footer')
     <script type="text/javascript">
