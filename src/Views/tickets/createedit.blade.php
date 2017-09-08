@@ -214,9 +214,28 @@
 @endsection
 
 @include('ticketit::tickets.partials.modal_attachment_edit')
+@include('ticketit::shared.photoswipe_files')
 
 @section('footer')
     <script type="text/javascript">
+	// PhotoSwipe items array (load before jQuery .pwsp_gallery_link click selector)
+	var pswpItems = [
+		@foreach($ticket->attachments()->images()->get() as $attachment)
+			@if($attachment->image_sizes != "")
+				<?php
+					$sizes = explode('x', $attachment->image_sizes);
+				?>
+				{
+					src: '{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}',
+					w: {{ $sizes[0] }},
+					h: {{ $sizes[1] }},
+					pid: {{ $attachment->id }},
+					title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
+				},
+			@endif
+		@endforeach
+	];
+	
 	var category_id=<?=$a_current['cat_id'];?>;
 
 	$(function(){		

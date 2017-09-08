@@ -8,7 +8,7 @@
 				
 				@if (in_array($mime, ['image','pdf']))
 					<a href="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" title="{{ $attachment->new_filename }}" 
-					@if($mime == 'image' && (!isset($template) || ( isset($template) && $template != "createedit")))
+					@if($mime == 'image')
 						class="{{ $mime }} pwsp_gallery_link" data-pwsp-pid="{{ $attachment->id }}"
 					@else
 						class="{{ $mime }}"

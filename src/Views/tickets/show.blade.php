@@ -22,6 +22,24 @@
 
 @section('footer')
     <script>
+		// PhotoSwipe items array (load before jQuery .pwsp_gallery_link click selector)
+		var pswpItems = [
+			@foreach($ticket->allAttachments()->images()->get() as $attachment)
+				@if($attachment->image_sizes != "")
+					<?php
+						$sizes = explode('x', $attachment->image_sizes);
+					?>
+					{
+						src: '{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}',
+						w: {{ $sizes[0] }},
+						h: {{ $sizes[1] }},
+						pid: {{ $attachment->id }},
+						title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
+					},
+				@endif
+			@endforeach
+		];
+	
 		var category_id=<?=$ticket->category_id;?>;
         $(document).ready(function() {
 			// Tooltips
@@ -140,53 +158,7 @@
 				var button = $(e.relatedTarget);
 				$(this).find('#owner').text($(button).attr('data-owner'));
 				$(this).find('#comment_id').val($(button).attr('data-id'))
-            });
-			
-			
-			// PhotoSwipe items array
-			var pswpItems = [
-				@foreach($ticket->allAttachments()->images()->get() as $attachment)
-					@if($attachment->image_sizes != "")
-						<?php
-							$sizes = explode('x', $attachment->image_sizes);
-						?>
-						{
-							src: '{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}',
-							w: {{ $sizes[0] }},
-							h: {{ $sizes[1] }},
-							pid: {{ $attachment->id }},
-							title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
-						},
-					@endif
-				@endforeach
-			];
-
-			// Modify link for each image in ticket to launch PhotoSwipe
-			$('.pwsp_gallery_link').click(function(e){
-				var openpid = $(this).data('pwsp-pid');
-				var openindex = 0;
-				
-				for (var i = 0, len = pswpItems.length; i < len; i++) {
-					if (pswpItems[i].pid === openpid){
-						openindex = i;
-						break;
-					}
-				}
-				
-				var options = {
-					bgOpacity: 0.8,
-					index: openindex
-				};
-				
-				// PhotoSwipe gallery
-				var pswpElement = document.querySelectorAll('.pswp')[0];
-				
-				// Initializes PhotoSwipe
-				var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, pswpItems, options);
-				gallery.init();
-				
-				e.preventDefault();
-			});	
+            });			
         });
     </script>
     @include('ticketit::tickets.partials.summernote')

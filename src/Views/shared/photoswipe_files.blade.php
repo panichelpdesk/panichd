@@ -58,7 +58,7 @@
 				</button>
 
 				<div class="pswp__caption">
-					<div class="pswp__caption__center"></div>
+					<div class="pswp__caption__center" style="font-size: 18px;"></div>
 				</div>
 
 			</div>
@@ -72,4 +72,34 @@
 @section('footer')
 	<script src="{{ asset('vendor/ticketit/js/photoswipe.min.js') }}"></script>
 	<script src="{{ asset('vendor/ticketit/js/photoswipe-ui-default.min.js') }}"></script>
+	<script>
+	$(function(){
+		// Modify link for each image in ticket to launch PhotoSwipe
+		$('.pwsp_gallery_link').click(function(e){
+			var openpid = $(this).data('pwsp-pid');
+			var openindex = 0;
+			
+			for (var i = 0, len = pswpItems.length; i < len; i++) {
+				if (pswpItems[i].pid === openpid){
+					openindex = i;
+					break;
+				}
+			}
+			
+			var options = {
+				bgOpacity: 0.8,
+				index: openindex
+			};
+			
+			// PhotoSwipe gallery
+			var pswpElement = document.querySelectorAll('.pswp')[0];
+			
+			// Initializes PhotoSwipe
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, pswpItems, options);
+			gallery.init();
+			
+			e.preventDefault();
+		});	
+	});
+	</script>
 @append
