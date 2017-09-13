@@ -19,6 +19,7 @@
 @endsection
 
 @include('ticketit::shared.photoswipe_files')
+@include('ticketit::shared.jcrop_files')
 
 @section('footer')
     <script>

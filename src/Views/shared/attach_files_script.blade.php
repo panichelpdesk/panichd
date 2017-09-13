@@ -59,6 +59,8 @@ $(function(){
 	});
 
 	// Edit attachment button
+	var jcrop_api;
+	
 	$(document).on('click', '.edit_attachment', function(e){
 		var editdiv = '#' + ($(this).attr('data-modal-id') ? $(this).data('modal-id') : $(this).data('edit-div'));		
 		var prefix = $(this).data('prefix');
@@ -68,11 +70,50 @@ $(function(){
 		$(editdiv).find('#attachment_form_description').val($('#'+prefix+'description').val());
 		
 		// Image
-		$(editdiv).find('#attachment_form_image_row img').attr('src', '');
-		if ($(this).attr('data-image-url')){			
-			$(editdiv).find('#attachment_form_image_row').show();
+		$(editdiv).find('#attachment_form_image_row .image_wrap').children().remove();
+		
+		if ($(this).attr('data-image-url')){
+			// Calculate sizes for max width 560px and max height 400px
+			var sizes = $(this).data('image-sizes').split('x');
+			var width_o = sizes[0], width = sizes[0], height_o = sizes[1], height = sizes[1];
+
+			if (width_o > 560){
+				width = 560;
+				height = height_o*(560/width_o);
+			}
+			if (height > 400){
+				height = 400;
+				width = width_o*(400/height_o);
+			}			
 			
-			$(editdiv).find('#attachment_form_image_row img').attr('src', $(this).data('image-url')+'">');
+			// Show image and enable Jcrop
+			$(editdiv).find('#attachment_form_image_row').show();			
+			$(editdiv).find('#attachment_form_image_row .image_wrap').append('<img src="'+$(this).data('image-url')+'" >'); // style="width: '+ width+'px; height: '+height+'px;"
+			$(editdiv).find('#attachment_form_image_row .image_wrap img').addClass('pull-center');
+			
+			
+			$(editdiv).find('#attachment_form_image_row .image_wrap img').Jcrop({ 
+					trueSize: [width_o, height_o],
+					maxSize: [560, 400],
+					boxWidth: 560, boxHeight: 400
+				}, function(){ jcrop_api = this; });			
+			
+			if ($('#'+prefix+'image_crop').val() != ""){
+				var sdata = $('#'+prefix+'image_crop').val().split(',');
+				
+				jcrop_api.setSelect([
+					sdata[0],sdata[1],sdata[2],sdata[3]
+				]);
+			}
+
+			$(editdiv).find('img, .jcrop-holder').css({
+				'width' : width+'px',
+				'height' : height+'px'
+			});
+			$(editdiv).find('.jcrop-tracker').css({
+				'width' : (width+4)+'px',
+				'height' : (height+4)+'px'
+			});
 		}else{
 			$(editdiv).find('#attachment_form_image_row').hide();
 		}
@@ -109,6 +150,19 @@ $(function(){
 		// Fields
 		$('#'+prefix+'new_filename').val(new_filename);		
 		$('#'+prefix+'description').val($(fieldset).find('#attachment_form_description').val());
+		
+		// Image crop field
+		if ($(fieldset).find('#attachment_form_image_row .image_wrap img').length > 0){
+			
+			var select = jcrop_api.tellSelect();
+			
+			$('#'+prefix+'image_crop').val(
+				select.x
+				+','+select.y
+				+','+select.x2
+				+','+select.y2
+			);
+		}		
 		
 		// Display values
 		if (original_filename == new_filename){
