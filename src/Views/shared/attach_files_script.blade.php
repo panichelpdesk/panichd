@@ -141,8 +141,10 @@ $(function(){
 	// Update attachment button
 	$(document).on('click', '.attachment_form_submit', function(e){
 		
+		// Attachment edition form
 		var fieldset = $(this).closest('fieldset');
 		
+		// Related id's in DOM for form submit
 		var prefix = $(fieldset).find('#attachment_form_prefix').val();		
 		
 		var original_filename = $(fieldset).find('#attachment_form_original_filename').text();
@@ -153,7 +155,7 @@ $(function(){
 		$('#'+prefix+'description').val($(fieldset).find('#attachment_form_description').val());
 		
 		// Image crop field
-		if ($(fieldset).find('#attachment_form_image_row .image_wrap img').length > 0){
+		if ($(fieldset).find('#attachment_form_image_row .jcrop-holder').children().first().width() > 0 && $(fieldset).find('#attachment_form_image_row .jcrop-holder').children().first().height()){
 			
 			var select = jcrop_api.tellSelect();
 			
@@ -163,6 +165,13 @@ $(function(){
 				+','+select.x2
 				+','+select.y2
 			);
+			
+			if ($('#'+prefix+'image_crop').closest('.media').find('.glyphicon-scissors').length == 0){
+				$('#'+prefix+'image_crop').closest('.media').find('.jquery_scissors_previous').after('<span class="glyphicon glyphicon-scissors pull-center" style="margin-left: 0.5em; color: orange;" aria-hidden="true" title="{{ trans('ticketit::lang.crop-image') }}"></span>');
+			}
+		}else{
+			$('#'+prefix+'image_crop').val('');			
+			$('#'+prefix+'image_crop').closest('.media').find('.glyphicon-scissors').remove();
 		}		
 		
 		// Display values

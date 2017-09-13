@@ -41,7 +41,7 @@
 		        <div>
 				<span id="attachment_{{ $attachment->id }}_display_new_filename">{{ $attachment->new_filename }}</span>
 				@if (isset($template) && $template == "createedit")
-					<s id="attachment_{{ $attachment->id }}_display_original_filename">
+					<s id="attachment_{{ $attachment->id }}_display_original_filename" class="jquery_scissors_previous">
 					@if ($attachment->original_filename != $attachment->new_filename)
 						 - {{ $attachment->original_filename }}
 					@endif
