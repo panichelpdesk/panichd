@@ -95,8 +95,7 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
-  'cut'                              => 'Retallar',
-  'cut-image'                        => 'Retallar imatge',
+  'crop-image'                       => 'Retallar imatge',
   'date-info-created'                => 'Data de creació',
   'date-info-updated'                => 'Data de darrer canvi',
   'department'                       => 'Departament',
@@ -170,9 +169,11 @@ return [
   'attachment-edit'                  => 'Editar adjunt',
   'attachment-edit-original-filename'=> 'Nom original',
   'attachment-edit-new-filename'     => 'Nom nou',
+  'attachment-edit-crop-info'        => 'Selecciona un requadre dins la imatge per a retallar-la. S\'aplicarà després d\'actualitzar els camps de l\'adjunt',
   
   'attachment-update-not-valid-name' => 'El nom nou per a ":file" ha de tenir almenys 3 caràcters. No es permet HTML',
   'attachment-update-not-valid-mime' => 'El fitxer ":file" no és de cap tipus vàlid',
+  'attachment-update-crop-error'     => 'La imatge no s\'ha pogut retallar amb les mides indicades',
 
   'show-ticket-title'                => 'Tiquet',
   'show-ticket-creator'              => 'Creat per',

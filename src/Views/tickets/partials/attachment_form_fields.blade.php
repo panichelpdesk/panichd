@@ -25,11 +25,19 @@
 	</div>						 
 </div>
 
-<div class="row" id="attachment_form_image_row" style="display: none">
-<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.cut-image') }}</b></div>
-<div class="col-xs-12 " style="text-align: center; margin: 0em 0em 1em 0em;">
-<div class="image_wrap" style="display: inline-block; margin: 0px auto;"></div>
-</div>
+<div id="attachment_form_image_row" style="display: none">
+	<div class="form-group">
+		{!! CollectiveForm::label(null, trans('ticketit::lang.crop-image') . trans('ticketit::lang.colon'), ['class' => 'col-md-3']) !!}
+		<div class="col-md-9">
+			<div class="text-muted">{{ trans('ticketit::lang.attachment-edit-crop-info') }}</div>
+		</div>
+	</div>
+	
+	<div class="row">
+	<div class="col-xs-12 " style="text-align: center; margin: 0em 0em 1em 0em;">
+	<div class="image_wrap" style="display: inline-block; margin: 0px auto;"></div>
+	</div>
+	</div>
 </div>
 
 

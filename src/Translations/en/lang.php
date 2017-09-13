@@ -96,8 +96,7 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
-  'cut'                              => 'Cut',
-  'cut-image'                        => 'Image cut',
+  'crop-image'                       => 'Image crop',
   'date-info-created'                => 'Creation date',
   'date-info-updated'                => 'Last update date',
   'department'                       => 'Department',
@@ -172,9 +171,11 @@ return [
   'attachment-edit'                  => 'Edit attachment',
   'attachment-edit-original-filename'=> 'Original filename',
   'attachment-edit-new-filename'     => 'New filename',
+  'attachment-edit-crop-info'        => 'Select an area inside the image to crop it. It will be applied after the attachment fields are updated',
   
   'attachment-update-not-valid-name' => 'The new filename for ":file" must be at least 3 character long. HTML is not allowed',
   'attachment-update-not-valid-mime' => 'The file ":file" is not of any valid type',
+  'attachment-update-crop-error'     => 'Image could not be cropped at specified sizes',
 
   'show-ticket-title'                => 'Ticket',
   'show-ticket-creator'              => 'Created by',

@@ -181,7 +181,7 @@ class CommentsController extends Controller
 			if ($request->has('delete_files')) $attachment_errors = $this->destroyAttachmentIds($request->delete_files);
 			
 			// 2 - update existing attachment fields
-			if (!$attachment_errors) $attachment_errors = $this->updateAttachmentFields($request, $comment->attachments()->get());
+			if (!$attachment_errors) $attachment_errors = $this->updateAttachments($request, $comment->attachments()->get());
 			
 			// 3 - add new attachments
 			if (!$attachment_errors) $attachment_errors = $this->saveAttachments($request, $ticket, $comment);

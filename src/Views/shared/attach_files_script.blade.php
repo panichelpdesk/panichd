@@ -88,7 +88,7 @@ $(function(){
 			
 			// Show image and enable Jcrop
 			$(editdiv).find('#attachment_form_image_row').show();			
-			$(editdiv).find('#attachment_form_image_row .image_wrap').append('<img src="'+$(this).data('image-url')+'" >'); // style="width: '+ width+'px; height: '+height+'px;"
+			$(editdiv).find('#attachment_form_image_row .image_wrap').append('<img src="'+$(this).data('image-url')+'" >');
 			$(editdiv).find('#attachment_form_image_row .image_wrap img').addClass('pull-center');
 			
 			
@@ -96,7 +96,9 @@ $(function(){
 					trueSize: [width_o, height_o],
 					maxSize: [560, 400],
 					boxWidth: 560, boxHeight: 400
-				}, function(){ jcrop_api = this; });			
+				}, function(){
+						jcrop_api = this;
+					});
 			
 			if ($('#'+prefix+'image_crop').val() != ""){
 				var sdata = $('#'+prefix+'image_crop').val().split(',');
@@ -110,10 +112,9 @@ $(function(){
 				'width' : width+'px',
 				'height' : height+'px'
 			});
-			$(editdiv).find('.jcrop-tracker').css({
-				'width' : (width+4)+'px',
-				'height' : (height+4)+'px'
-			});
+			
+			// .jcrop-tracker at least in Chrome didn't change sizes by css() method
+			$(editdiv).find('.jcrop-tracker').width(width+'px').height(height+'px');
 		}else{
 			$(editdiv).find('#attachment_form_image_row').hide();
 		}

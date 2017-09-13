@@ -75,7 +75,7 @@ trait Attachments
 			$num++;
 
             $attachments_path = Setting::grab('attachments_path');
-            $file_name = auth()->user()->id.'_'.$ticket->id.'_'.($comment ? $comment->id : '').md5(Str::random().$uploadedFile->getClientOriginalName());
+            $file_name = $this->makeFilename($uploadedFile->getClientOriginalName(), $ticket->id, ($comment ? $comment->id : ''));			
             $file_directory = storage_path($attachments_path);
 
             $attachment = new Attachment();
@@ -112,7 +112,7 @@ trait Attachments
 				];
 			}
 			$save = false;
-			if ($a_fields) $this->updateSingleAttFields($attachment, $a_fields, $a_errors, $save);			
+			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_errors, $save);			
 			
             $attachment->bytes = $uploadedFile->getSize();
             $attachment->mimetype = $uploadedFile->getMimeType() ?: '';
@@ -130,17 +130,11 @@ trait Attachments
 			if ($is_image){
 				$img = Image::make($attachment->file_path);
 				
-				// Image sizes
+				// Image sizes field
 				$attachment->image_sizes = $img->width()."x".$img->height();
 				
-				// Thumbnail
-				$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
-				
-				$img->heighten(50)->widen(50)->encode('png')->resizeCanvas(50, 50)->save($thumbnail_path.$file_name);
-				
-				// This method seems to cut borders on non square images. Image loses a lot of quality also
-				/*$thumb = Image::canvas(50, 50);
-				$thumb->insert($img, 'center')->save($thumbnail_path.$file_name);*/
+				// Image thumbnail
+				$this->makeThumbnailFromImage($img, $file_name);
 			}
 			
 			$attachment->save();
@@ -151,10 +145,31 @@ trait Attachments
 		return false;
     }
 	
+	protected function makeFilename($base, $var, $optvar)
+	{
+		return auth()->user()->id.'_'.$var.'_'.$optvar.md5(Str::random().$base);
+	}
+	
+	protected function makeThumbnailFromImage($img, $file_name)
+	{
+		// Thumbnail
+		$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
+		
+		// Delete previous thumbnail if present
+		if(\File::exists($thumbnail_path.$file_name))			
+			\File::delete($thumbnail_path.$file_name);
+		
+		$img->heighten(50)->widen(50)->encode('png')->resizeCanvas(50, 50)->save($thumbnail_path.$file_name);
+		
+		// The alternative method below seems to cut borders on non square images. Image loses a lot of quality also
+		/*$thumb = Image::canvas(50, 50);
+		$thumb->insert($img, 'center')->save($thumbnail_path.$file_name);*/
+	}
+	
 	/**
 	 * Updates new_filename and description. Applies to all existent files. Not the ones uploaded in current request
 	*/
-	protected function updateAttachmentFields($request, $attachments)
+	protected function updateAttachments($request, $attachments)
 	{
 		$a_errors = [];
 		
@@ -162,6 +177,7 @@ trait Attachments
 			$new_filename = $description = $save = false;
 			$a_fields = [];
 			
+			// New filename
 			$field = 'attachment_'.$att->id.'_new_filename';
 			if ($request->has($field)){
 				$a_fields['new_filename'] = [
@@ -170,6 +186,7 @@ trait Attachments
 				];
 			}
 			
+			// Description
 			$field = 'attachment_'.$att->id.'_description';			
 			if ($request->has($field)){
 				$a_fields['description'] = [
@@ -178,7 +195,13 @@ trait Attachments
 				];
 			}
 			
-			if ($a_fields) $this->updateSingleAttFields($att, $a_fields, $a_errors, $save);			
+			// Image cropping
+			$field = 'attachment_'.$att->id.'_image_crop';
+			if ($request->has($field)){
+				$a_fields['image_crop'] = $request->input($field);
+			}
+			
+			if ($a_fields) $this->updateSingleAttachment($att, $a_fields, $a_errors, $save);			
 			
 			if ($save) $att->save();
 		}
@@ -192,7 +215,7 @@ trait Attachments
 	/**
 	 * Updates new_filename and description for an Attachment instance
 	*/
-	protected function updateSingleAttFields(&$att, $a_fields, &$a_errors, &$save)
+	protected function updateSingleAttachment(&$att, $a_fields, &$a_errors, &$save)
 	{
 		extract($a_fields);
 		
@@ -218,7 +241,37 @@ trait Attachments
 				$att->description = $filtered;
 				$save = true;
 			}
-		}						
+		}
+		
+		// Image crop
+		if (isset($image_crop)){
+			$coords = explode(',', $image_crop);
+			if (count($coords) != 4 or ctype_digit(str_replace(",", "", str_replace(".", "", $coords)))){
+				$a_errors[] = trans('ticketit::lang.attachment-update-crop-error');
+			}else{
+				$img = Image::make($att->file_path);				
+								
+				// New filename
+				$new_filename = $this->makeFilename($att->new_filename.date('YmdHis', time()), $att->ticket_id, ($att->comment_id?$att->comment_id:''));
+				$new_file_path = storage_path(Setting::grab('attachments_path')).DIRECTORY_SEPARATOR.$new_filename;
+				
+				// Resize and save image				
+				$img->crop(intval($coords[2]-$coords[0]), intval($coords[3]-$coords[1]), intval($coords[0]), intval($coords[1]))->save($new_file_path);				
+				
+				// Delete stored images
+				$error = $this->destroyAttachedElement($att, false);
+				if ($error) $a_errors[] = $error;
+
+				// Updated fields
+				$att->image_sizes = $img->width()."x".$img->height();
+				$att->file_path = $new_file_path;
+				
+				// Image thumbnail
+				$this->makeThumbnailFromImage($img, $new_filename);
+				
+				$save = true;
+			}
+		}
 	}
 	
 	/**
@@ -276,7 +329,7 @@ trait Attachments
 	/**
 	 * Destroy for single attachment model instance
 	*/
-	protected function destroyAttachedElement($attachment)
+	protected function destroyAttachedElement($attachment, $delete_instance = true)
 	{
 		if(!\File::exists($attachment->file_path)){
 			return trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$attachment->original_filename]);
@@ -294,7 +347,7 @@ trait Attachments
 				}
 				
 				// Delete ticketit attachment instance				
-				$attachment->delete();
+				if ($delete_instance) $attachment->delete();
 				return false;
 			}
 		}
