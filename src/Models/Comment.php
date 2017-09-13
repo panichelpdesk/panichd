@@ -46,6 +46,6 @@ class Comment extends Model
 
     public function attachments()
     {
-        return $this->hasMany(Attachment::class, 'comment_id');
+        return $this->hasMany(Attachment::class, 'comment_id')->orderByRaw('CASE when mimetype LIKE "image/%" then 1 else 2 end');
     }
 }
