@@ -117,6 +117,7 @@ trait Attachments
             $attachment->bytes = $uploadedFile->getSize();
             $attachment->mimetype = $uploadedFile->getMimeType() ?: '';
             $attachment->file_path = $file_directory.DIRECTORY_SEPARATOR.$file_name;
+			$attachment->original_attachment = $file_name;
             
 
 			// Thumbnail for valid image types
@@ -256,19 +257,25 @@ trait Attachments
 				$new_file_path = storage_path(Setting::grab('attachments_path')).DIRECTORY_SEPARATOR.$new_filename;
 				
 				// Resize and save image				
-				$img->crop(intval($coords[2]-$coords[0]), intval($coords[3]-$coords[1]), intval($coords[0]), intval($coords[1]))->save($new_file_path);				
+				$img->crop(intval($coords[2]-$coords[0]), intval($coords[3]-$coords[1]), intval($coords[0]), intval($coords[1]))->save($new_file_path);
 				
-				// Delete stored images
-				$error = $this->destroyAttachedElement($att, false);
-				if ($error) $a_errors[] = $error;
+				// Create new thumbnail
+				$this->makeThumbnailFromImage($img, $new_filename);
+				
+				// Delete image if it's not the original one
+				if ($att->original_attachment != basename($att->file_path)){
+					// Delete image
+					$error = $this->deleteAttachmentFile($att->file_path, $att->original_filename);
+					if ($error) $a_errors[] = $error;
+				}
+				
+				// Delete old thumbnail
+				$this->deleteThumbnail(basename($att->file_path));
 
 				// Updated fields
 				$att->image_sizes = $img->width()."x".$img->height();
 				$att->file_path = $new_file_path;
-				
-				// Image thumbnail
-				$this->makeThumbnailFromImage($img, $new_filename);
-				
+
 				$save = true;
 			}
 		}
@@ -327,31 +334,54 @@ trait Attachments
 	}
 	
 	/**
-	 * Destroy for single attachment model instance
+	 * Destroy a single attachment files and model instance
 	*/
 	protected function destroyAttachedElement($attachment, $delete_instance = true)
 	{
-		if(!\File::exists($attachment->file_path)){
-			return trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$attachment->original_filename]);
+		// Delete attachment file
+		$error = $this->deleteAttachmentFile($attachment->file_path, $attachment->original_filename);
+		if ($error)	return $error;
+		
+		// Delete original file (if exists)
+		if ($attachment->original_attachment != basename($attachment->file_path)){
+			$original_path = pathinfo($attachment->file_path, PATHINFO_DIRNAME).DIRECTORY_SEPARATOR.$attachment->original_attachment;
+			$error = $this->deleteAttachmentFile($original_path, $attachment->original_filename);
+			if ($error)	return $error;
+		}		
+		
+		// Delete thumbnail
+		$this->deleteThumbnail(basename($attachment->file_path));
+		
+		// Delete ticketit attachment instance				
+		if ($delete_instance) $attachment->delete();
+		return false;		
+	}
+	
+	// Delete attachment file
+	protected function deleteAttachmentFile($file_path, $filename)
+	{
+		if(!\File::exists($file_path)){
+			return trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$filename]);
 		}else{
-			\File::delete($attachment->file_path);
+			\File::delete($file_path);
 			
-			if(\File::exists($attachment->file_path)){
-				return trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$attachment->original_filename]);
-			}else{
-				// Delete thumbnail
-				$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
-				
-				if (\File::exists($thumbnail_path.basename($attachment->file_path))){
-					\File::delete($thumbnail_path.basename($attachment->file_path));
-				}
-				
-				// Delete ticketit attachment instance				
-				if ($delete_instance) $attachment->delete();
+			if(\File::exists($file_path)){
+				return trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$filename]);
+			}else
 				return false;
-			}
 		}
 	}
 	
-
+	
+	// Delete thumbnail file
+	protected function deleteThumbnail ($file_name)
+	{		
+		$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
+		
+		if (\File::exists($thumbnail_path.$file_name)){
+			\File::delete($thumbnail_path.$file_name);
+		}
+		
+		return \File::exists($thumbnail_path.$file_name) ? false : true;
+	}
 }
