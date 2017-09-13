@@ -32,6 +32,13 @@ class Attachment extends Model
 {
     protected $table = 'ticketit_attachments';
 
+	/**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['ticket', 'comment'];
+	
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);

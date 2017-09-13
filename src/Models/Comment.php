@@ -16,6 +16,13 @@ class Comment extends Model
     use ContentEllipse;
 
     protected $table = 'ticketit_comments';
+	
+	/**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['ticket'];
 
     /**
      * Get related ticket.
