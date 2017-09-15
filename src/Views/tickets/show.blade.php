@@ -13,7 +13,7 @@
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
         @include('ticketit::tickets.partials.modal_comment_new')
-		@if ($setting->grab('ticket_attachments_feature') && $u->canManageTicket($ticket->id))
+		@if ($setting->grab('ticket_attachments_feature'))
 			@include('ticketit::shared.attach_files_script')			
 		@endif
 @endsection

@@ -75,11 +75,11 @@
 				@endif
 				
 				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
-					@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
-						<span style="color: blue">Complete</span>
-					@else
-						<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
-					@endif
+				@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
+					<span style="color: blue">Complete</span>
+				@else
+					<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
+				@endif
 					
 				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('ticketit::lang.priority') }}</strong>{{ trans('ticketit::lang.colon') }}
@@ -94,6 +94,8 @@
 						<br /><strong>{{ trans('ticketit::lang.limit-date') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->getDateForHumans($ticket->limit_date) }}
 					@endif
 					</p><p>					
+				@else
+					<br />
 				@endif
 				
 				<strong>{{ trans('ticketit::lang.category') }}</strong>{{ trans('ticketit::lang.colon') }}
