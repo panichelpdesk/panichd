@@ -4,16 +4,19 @@ namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Models\Status;
+use Kordy\Ticketit\Traits\Attachments;
 use Kordy\Ticketit\Traits\Purifiable;
 
 class CommentsController extends Controller
 {
-    use Purifiable;
+    use Attachments, Purifiable;
 
     public function __construct()
     {
@@ -52,13 +55,21 @@ class CommentsController extends Controller
     {
         $a_content = $this->purifyHtml($request->get('content'));
         $request->merge(['content'=>$a_content['content']]);
-
-        $this->validate($request, [
+				
+		$fields = [
             'ticket_id'   => 'required|exists:ticketit,id',
             'content'     => 'required|min:6',
-        ]);
+            'attachments' => 'array',
+        ];
+		
+		if ($request->exists('attachments')){
+			$fields['attachments'] = 'array';
+		}
+		
+        $this->validate($request, $fields);
 		
 		// Create comment
+		DB::beginTransaction();
         $comment = new Models\Comment();
 		$comment->type = 'reply';
 		
@@ -78,13 +89,12 @@ class CommentsController extends Controller
 			}
 		}			
 		
-        $comment->content = $a_content['content'];
-        $comment->html = $a_content['html'];
-
         $comment->ticket_id = $request->get('ticket_id');
         $comment->user_id = \Auth::user()->id;
-        $comment->save();
-
+		$comment->content = $a_content['content'];
+        $comment->html = $a_content['html'];
+		$comment->save();
+		
 		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
         
@@ -94,6 +104,15 @@ class CommentsController extends Controller
 		}
 		
 		$ticket->save();
+		
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->saveAttachments($request, $ticket, $comment);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+		}
+		
+		DB::commit();
 
         return back()->with('status', trans('ticketit::lang.comment-has-been-added-ok'));
     }
@@ -141,17 +160,38 @@ class CommentsController extends Controller
 		
 		// Update comment
 		$comment=Models\Comment::findOrFail($id);
+		
+		DB::beginTransaction();
 		$comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 		
 		$comment->save();
-						
-		if ($request->has('add_to_intervention')){
-			$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+		$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+		
+		if ($request->has('add_to_intervention')){			
 			$ticket->intervention = $ticket->intervention.$a_content['content'];
 			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
 			$ticket->save();			
-		}		
+		}
+		
+		if (Setting::grab('ticket_attachments_feature')){
+			$attachment_errors = false;
+			
+			// 1 - destroy checked attachments
+			if ($request->has('delete_files')) $attachment_errors = $this->destroyAttachmentIds($request->delete_files);
+			
+			// 2 - update existing attachment fields
+			if (!$attachment_errors) $attachment_errors = $this->updateAttachments($request, $comment->attachments()->get());
+			
+			// 3 - add new attachments
+			if (!$attachment_errors) $attachment_errors = $this->saveAttachments($request, $ticket, $comment);
+			
+			if ($attachment_errors){
+				return redirect()->back()->with('warning', $attachment_errors);
+			}
+		}
+		
+		DB::commit();
 		
 		return back()->with('status', trans('ticketit::lang.comment-has-been-updated'));
     }
@@ -165,7 +205,15 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        $comment=Models\Comment::findOrFail($id);        
+        $comment=Models\Comment::findOrFail($id);
+
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->destroyAttachmentsFrom($comment->ticket, $comment);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+		}
+		
         $comment->delete();
 
         return back()->with('status', trans('ticketit::lang.comment-has-been-deleted'));

@@ -11,7 +11,6 @@ return [
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
-  
 
   // Tables
   'table-id'                         => '#',
@@ -78,6 +77,7 @@ return [
   'btn-change'                       => 'Canviar',
   'btn-close'                        => 'Tancar',
   'btn-delete'                       => 'Esborrar',
+  'btn-download'                     => 'Descarregar',
   'btn-edit'                         => 'Editar',
   'btn-mark-complete'                => 'Tancar Tiquet',
   'btn-submit'                       => 'Enviar',
@@ -86,18 +86,23 @@ return [
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
   'all-depts'                        => 'Tots',
+  'attached-images'                  => 'Imatges adjuntes',
+  'attached-files'                   => 'Fitxers adjunts',
+  'attachments'                      => 'Adjunts',
   'category'                         => 'Categoria',
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
+  'crop-image'                       => 'Retallar imatge',
   'date-info-created'                => 'Data de creació',
   'date-info-updated'                => 'Data de darrer canvi',
   'department'                       => 'Departament',
   'department-shortening'            => 'Dep.',
   'dept_sub1'                        => 'Area',
   'description'                      => 'Descripció',
+  'discard'                          => 'Descartar',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',
@@ -115,6 +120,7 @@ return [
   'ticket'                           => 'Tiquet',
   'today'                            => 'Avui',
   'tomorrow'                         => 'Demà',
+  'update'                           => 'Actualitzar',
   'user'                             => 'Usuari',
   'yesterday'                        => 'Ahir',
   
@@ -155,8 +161,19 @@ return [
   'create-ticket-info-start-date'    => 'Predeterminat: Ara',
   'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
+  'attach-files'                     => 'Adjuntar fitxers',
+  'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
+  'attachment-new-name'              => 'Nom nou',
   
   'edit-ticket'                      => 'Editar Tiquet',
+  'attachment-edit'                  => 'Editar adjunt',
+  'attachment-edit-original-filename'=> 'Nom original',
+  'attachment-edit-new-filename'     => 'Nom nou',
+  'attachment-edit-crop-info'        => 'Selecciona un requadre dins la imatge per a retallar-la. S\'aplicarà després d\'actualitzar els camps de l\'adjunt',
+  
+  'attachment-update-not-valid-name' => 'El nom nou per a ":file" ha de tenir almenys 3 caràcters. No es permet HTML',
+  'attachment-update-not-valid-mime' => 'El fitxer ":file" no és de cap tipus vàlid',
+  'attachment-update-crop-error'     => 'La imatge no s\'ha pogut retallar amb les mides indicades',
 
   'show-ticket-title'                => 'Tiquet',
   'show-ticket-creator'              => 'Creat per',
@@ -172,6 +189,14 @@ return [
   
   'complete-by-user'                 => 'Tiquet tancat per :user',
   'reopened-by-user'                 => 'Tiquet reobert per :user',
+  
+  'ticket-error-not-valid-file'      => 'S\'ha adjuntat un fitxer no vàlid',
+  'ticket-error-not-valid-object'    => 'Aquest fitxer no es pot processar: :name',
+  'ticket-error-max-size-reached'    => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen l\'espai disponible per aquest tiquet que és de :available_MB MB',
+  'ticket-error-max-attachments-count-reached' => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen el número màxim de :max_count fitxers adjunts que pot contenir cada tiquet',
+  'ticket-error-delete-files'        => 'No s\'ha pogut eliminar alguns fitxers',
+  'ticket-error-file-not-found'      => 'No s\'ha localitzat el fitxer ":name"',
+  'ticket-error-file-not-deleted'    => 'El fitxer ":name" no s\'ha pogut eliminar',
   
   'ticket-comment-type-reply'        => 'Resposta',
   'ticket-comment-type-note'         => 'Nota interna (oculta per a l\'usuari)',

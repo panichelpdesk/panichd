@@ -33,10 +33,18 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="content">
-                    <p id="jquery_comment_edit_{{$comment->id}}"> {!! $comment->html !!} </p>
+                <div class="row">
+                    <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><p id="jquery_comment_edit_{{$comment->id}}"> {!! $comment->html !!} </p>
 					@if ($u->canManageTicket($ticket->id))
-						@include('ticketit::tickets.partials.note_edit')
+						@include('ticketit::tickets.partials.modal_comment_edit')
+					@endif
+					</div>
+					@if($setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0)
+						<div class="col-sm-5 attached_list">
+							@foreach($comment->attachments as $attachment)
+								@include('ticketit::tickets.partials.attachment', ['attachment' => $attachment])
+							@endforeach
+						</div>
 					@endif
                 </div>
 				@if ($u->canManageTicket($ticket->id))
@@ -48,6 +56,7 @@
 				
 				@endif
             </div>
+            
         </div>
     @endforeach
 	

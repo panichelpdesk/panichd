@@ -14,13 +14,15 @@
 			{!! CollectiveForm::model($ticket, [
 				 'route' => [$setting->grab('main_route').'.update', $ticket->id],
 				 'method' => 'PATCH',
-				 'class' => 'form-horizontal'
+				 'class' => 'form-horizontal',
+				 'enctype' => 'multipart/form-data'
 			 ]) !!}
 		@else
 			{!! CollectiveForm::open([
 				'route'=>$setting->grab('main_route').'.store',
 				'method' => 'POST',
-				'class' => 'form-horizontal'
+				'class' => 'form-horizontal',
+				'enctype' => 'multipart/form-data'
 			]) !!}
 		@endif		
 		
@@ -165,19 +167,43 @@
             </div>
 			
 			@if ($u->maxLevel() > 1)
-			<div class="jquery_level2_show">
-				<div class="form-group"><!-- INTERVENTION -->
-					<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
-					<div class="col-lg-10">
-					<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
+				<div class="jquery_level2_show">
+					<div class="form-group"><!-- INTERVENTION -->
+						<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
+						<div class="col-lg-10">
+						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
+						</div>
 					</div>
 				</div>
-			</div>
-				
+			@endif
+			
+			@if ($setting->grab('ticket_attachments_feature'))
+				<div class="jquery_level2_show">
+					<div class="form-group">
+						{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), [
+							'class' => 'col-lg-2 control-label'
+						]) !!}
+						<div class="col-lg-10">							
+							@include('ticketit::shared.attach_files_button', ['attach_id' => 'ticket_attached'])
+							@include('ticketit::shared.attach_files_script')							
+							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list" data-new-attachment-modal-id="modal-attachment-edit">
+							@if (isset($ticket))									
+								@foreach($ticket->attachments as $attachment)
+									@include('ticketit::tickets.partials.attachment', ['template'=>'createedit'])
+								@endforeach															
+							@endif
+							</div>							
+						</div>
+					</div>
+				</div>			
+			@endif
+			
+			@if ($u->maxLevel() > 1)
 				</div></div>
 			@endif
             
         	
+			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
                     {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
@@ -187,8 +213,30 @@
     </div>
 @endsection
 
+@include('ticketit::tickets.partials.modal_attachment_edit')
+@include('ticketit::shared.photoswipe_files')
+@include('ticketit::shared.jcrop_files')
+
 @section('footer')
     <script type="text/javascript">
+	// PhotoSwipe items array (load before jQuery .pwsp_gallery_link click selector)
+	var pswpItems = [
+		@foreach($ticket->attachments()->images()->get() as $attachment)
+			@if($attachment->image_sizes != "")
+				<?php
+					$sizes = explode('x', $attachment->image_sizes);
+				?>
+				{
+					src: '{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}',
+					w: {{ $sizes[0] }},
+					h: {{ $sizes[1] }},
+					pid: {{ $attachment->id }},
+					title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
+				},
+			@endif
+		@endforeach
+	];
+	
 	var category_id=<?=$a_current['cat_id'];?>;
 
 	$(function(){		

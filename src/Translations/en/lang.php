@@ -77,26 +77,33 @@ return [
   'btn-change'                       => 'Change',
   'btn-close'                        => 'Close',
   'btn-delete'                       => 'Delete',
+  'btn-download'                     => 'Download',
   'btn-edit'                         => 'Edit',
   'btn-mark-complete'                => 'Mark Complete',
   'btn-submit'                       => 'Submit',
+  
 
   // Vocabulary  
   'agent'                            => 'Agent',
   'agents'                           => 'Agents',
   'all-depts'                        => 'All',
+  'attached-images'                  => 'Attached images',
+  'attached-files'                   => 'Attached files',
+  'attachments'                      => 'Attachments',
   'category'                         => 'Category',  
   'closing-reason'                   => 'Closing reason',
   'closing-clarifications'           => 'Clarifications',
   'colon'                            => ': ',
   'comments'                         => 'Comments',
   'created'                          => 'Created',
+  'crop-image'                       => 'Image crop',
   'date-info-created'                => 'Creation date',
   'date-info-updated'                => 'Last update date',
   'department'                       => 'Department',
   'department-shortening'            => 'Dept.',
   'dept_sub1'                        => 'Subdepartment',
   'description'                      => 'Description',
+  'discard'                          => 'Discard',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
@@ -114,6 +121,7 @@ return [
   'ticket'                           => 'Ticket',
   'today'                            => 'Today',
   'tomorrow'                         => 'Tomorrow',
+  'update'                           => 'Update',
   'user'                             => 'User',
   'yesterday'                        => 'Ahir',
   
@@ -126,7 +134,7 @@ return [
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
   
-  
+
  /*
   *  Page specific
   */
@@ -155,8 +163,19 @@ return [
   'create-ticket-info-start-date'    => 'Default: Now',
   'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
+  'attach-files'                     => 'Attach files',
+  'pending-attachment'               => 'This file will be uploaded when the ticket is updated',
+  'attachment-new-name'              => 'New name',
   
   'edit-ticket'                      => 'Edit Ticket',
+  'attachment-edit'                  => 'Edit attachment',
+  'attachment-edit-original-filename'=> 'Original filename',
+  'attachment-edit-new-filename'     => 'New filename',
+  'attachment-edit-crop-info'        => 'Select an area inside the image to crop it. It will be applied after the attachment fields are updated',
+  
+  'attachment-update-not-valid-name' => 'The new filename for ":file" must be at least 3 character long. HTML is not allowed',
+  'attachment-update-not-valid-mime' => 'The file ":file" is not of any valid type',
+  'attachment-update-crop-error'     => 'Image could not be cropped at specified sizes',
 
   'show-ticket-title'                => 'Ticket',
   'show-ticket-creator'              => 'Created by',
@@ -172,6 +191,15 @@ return [
   
   'complete-by-user'                 => 'Ticket complete by :user',  
   'reopened-by-user'                 => 'Ticket reopened by :user',
+  
+  'ticket-error-not-valid-file'      => 'A no valid file was attached',
+  'ticket-error-not-valid-object'    => 'This file can\'t be processed: :name',
+  'ticket-error-max-size-reached'    => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_MB MB',
+  'ticket-error-max-attachments-count-reached' => 'The file ":name" and following can\'t be attached as they exceed the max number of :max_count attached files per ticket',
+  'ticket-error-delete-files'        => 'Some files could not be deleted',
+  'ticket-error-file-not-found'      => 'The file ":name" could not be found',
+  'ticket-error-file-not-deleted'    => 'The file ":name" could not be deleted',
+  
   
   'ticket-comment-type-reply'        => 'Reply',
   'ticket-comment-type-note'         => 'Internal note (hidden for user)',

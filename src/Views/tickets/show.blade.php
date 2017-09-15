@@ -7,20 +7,44 @@
 		
         <div style="margin-top: 2em;">
         	<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ticket-comment-modal">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
 			</h2>
         </div>
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
-        @include('ticketit::tickets.partials.comment_form')		
+        @include('ticketit::tickets.partials.modal_comment_new')
+		@if ($setting->grab('ticket_attachments_feature') && $u->canManageTicket($ticket->id))
+			@include('ticketit::shared.attach_files_script')			
+		@endif
 @endsection
+
+@include('ticketit::shared.photoswipe_files')
+@include('ticketit::shared.jcrop_files')
 
 @section('footer')
     <script>
+		// PhotoSwipe items array (load before jQuery .pwsp_gallery_link click selector)
+		var pswpItems = [
+			@foreach($ticket->allAttachments()->images()->get() as $attachment)
+				@if($attachment->image_sizes != "")
+					<?php
+						$sizes = explode('x', $attachment->image_sizes);
+					?>
+					{
+						src: '{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}',
+						w: {{ $sizes[0] }},
+						h: {{ $sizes[1] }},
+						pid: {{ $attachment->id }},
+						title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
+					},
+				@endif
+			@endforeach
+		];
+	
 		var category_id=<?=$ticket->category_id;?>;
         $(document).ready(function() {
 			// Tooltips
-			$('.tooltip-info').tooltip();
+			$('.tooltip-info, .tooltip-show').tooltip();
 			
             $( ".deleteit" ).click(function( event ) {
                 event.preventDefault();
@@ -82,10 +106,16 @@
 				$('#complete-ticket-form').submit();				
 			});			
 			
-			// Comment modal
+			// When opening a comment modal, 
+			$('.comment-modal').on('show.bs.modal', function (e) {
+                $(this).find('.fieldset-for-comment').show();
+				$(this).find('.fieldset-for-attachment').hide();
+			});
+			
+			// Comment form: Response type (reply or note)
 			$('.response_type').click(function(){
 				var type = $(this).attr('data-type');				
-				$('#ticket-comment-modal #response_type').val(type);
+				$('#modal-comment-new #response_type').val(type);
 				$(this).addClass($(this).attr('data-active-class'));
 				
 				var alt = type == 'note' ? 'reply' : 'note';
@@ -129,7 +159,7 @@
 				var button = $(e.relatedTarget);
 				$(this).find('#owner').text($(button).attr('data-owner'));
 				$(this).find('#comment_id').val($(button).attr('data-id'))
-            });
+            });			
         });
     </script>
     @include('ticketit::tickets.partials.summernote')

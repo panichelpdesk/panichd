@@ -3,11 +3,17 @@
 namespace Kordy\Ticketit\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Traits\ContentEllipse;
 
+/**
+ * @property Attachment[]|Collection attachments
+ *
+ * @see Ticket::attachments()
+ */
 class Ticket extends Model
 {
     use ContentEllipse;
@@ -171,6 +177,27 @@ class Ticket extends Model
     {
         return $this->hasMany('Kordy\Ticketit\Models\Comment', 'ticket_id')->where('ticketit_comments.updated_at','>', Carbon::yesterday());
     }
+
+    /**
+     * Ticket attachments (NOT including its comments attachments).
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class, 'ticket_id')
+            ->whereNull('comment_id')->orderByRaw('CASE when mimetype LIKE "image/%" then 1 else 2 end');
+    }
+	
+	/**
+     * All related attachments for Ticket (+comment attachments) 
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+	public function allAttachments()
+	{
+		return $this->hasMany(Attachment::class, 'ticket_id');
+	}
 
 //    /**
     //     * Get Ticket audits

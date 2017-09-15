@@ -97,28 +97,7 @@ $(function(){
 		}		
 		
 		$('#reason-edit-modal').modal('hide');
-	});
-	
-	// General Grouped Check List check / uncheck
-	$('.grouped_check_list').on('click', '.check_button', function(e)
-	{
-		var i = $(this).parent('.btn-group').find('.text_button').data('i');
-		var delete_id = $(this).parent('.btn-group').find('.text_button').data('delete_id');
-				
-		if ($(this).parent('.btn-group').hasClass('unchecked')){
-			// Check tag to delete it
-			$(this).parent('.btn-group').removeClass('unchecked').addClass('checked');
-			
-			$('#'+delete_id+i).prop('disabled',false);
-		}else{
-			// Uncheck tag to keep it
-			$(this).parent('.btn-group').removeClass('checked').addClass('unchecked');
-			
-			$('#'+delete_id+i).prop('disabled',true);
-		}
-		
-		e.preventDefault();			
-	});
+	});	
 	
 	// NEW Tags select2
 	$('#admin-select2-tags').select2({
@@ -127,3 +106,5 @@ $(function(){
 	});	
 });
 </script>
+
+@include('ticketit::shared.grouped_check_list')

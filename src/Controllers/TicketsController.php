@@ -5,28 +5,33 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Cache;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
+use Intervention\Image\ImageManagerStatic as Image;
+use InvalidArgumentException;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
+use Kordy\Ticketit\Models\Attachment;
 use Kordy\Ticketit\Models\Category;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Models\Tag;
 use Kordy\Ticketit\Models\Ticket;
+use Kordy\Ticketit\Traits\Attachments;
 use Kordy\Ticketit\Traits\Purifiable;
 use Yajra\Datatables\Datatables;
 use Yajra\Datatables\Engines\EloquentEngine;
 
 class TicketsController extends Controller
 {
-    use Purifiable;
+    use Attachments, Purifiable;
 
     protected $tickets;
     protected $agent;
 
     public function __construct(Ticket $tickets, Agent $agent)
     {
-        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show']]);
+        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAgentMiddleware', ['only' => ['edit', 'update']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
@@ -103,6 +108,7 @@ class TicketsController extends Controller
             ->select($a_select)
 			->with('creator')
 			->with('owner.personDepts.department')
+			->withCount('allAttachments')
 			->withCount('comments')
 			->withCount('recentComments');
 
@@ -157,6 +163,13 @@ class TicketsController extends Controller
             );
         });
 		
+		$collection->editColumn('content', function ($ticket) {
+			$field=$ticket->content;
+			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip" title="'.trans('ticketit::lang.attachments').'"></span>';
+						
+			return $field;
+		});
+		
 		$collection->editColumn('intervention', function ($ticket) {
 			$field=$ticket->intervention;
 			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
@@ -164,7 +177,7 @@ class TicketsController extends Controller
 				$field.=$ticket->recent_comments_count;
 			}
 			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-transfer" title="Comentaris"></span>';
+				$field.=' <span class="glyphicons glyphicon glyphicon-transfer" title="'.trans('ticketit::lang.comments').'"></span>';
 			}
 			
 			return $field;
@@ -674,7 +687,7 @@ class TicketsController extends Controller
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
-			'content_html'=> $a_content['html'],
+			'content_html'=> $a_content['html']
         ]);
 		
 		$fields = [
@@ -693,6 +706,10 @@ class TicketsController extends Controller
 				'intervention'=> $a_intervention['intervention'],
 				'intervention_html'=> $a_intervention['intervention_html'],
 			]);
+			
+			if ($request->exists('attachments')){
+				$fields = ['attachments' => 'array'];
+			}
         }
 
 		// Custom validation messages
@@ -714,6 +731,7 @@ class TicketsController extends Controller
 		// Form validation
         $this->validate($request, $fields, $custom_messages);
 		
+		DB::beginTransaction();
         $ticket = new Ticket();
 
         $ticket->subject = $request->subject;		
@@ -755,6 +773,17 @@ class TicketsController extends Controller
 		}
 		
         $ticket->save();
+		
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->saveAttachments($request, $ticket);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+		}
+		
+        
+		// End transaction
+		DB::commit();
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -765,6 +794,33 @@ class TicketsController extends Controller
 		]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index');
+    }
+
+    public function downloadAttachment($attachment_id)
+    {
+        /** @var Attachment $attachment */
+        $attachment = Attachment::findOrFail($attachment_id);
+
+        return response()
+            ->download($attachment->file_path, $attachment->new_filename);
+    }
+	
+	public function viewAttachment($attachment_id)
+    {
+        /** @var Attachment $attachment */
+        $attachment = Attachment::findOrFail($attachment_id);
+		
+		$mime = $attachment->getShorthandMime($attachment->mimetype);
+		
+		if ( $mime == "image"){
+			$img = Image::make($attachment->file_path);
+			return $img->response();
+		}elseif($mime == "pdf"){
+			return response()->file($attachment->file_path);
+		}else{
+			return response()
+				->download($attachment->file_path, basename($attachment->file_path));
+		}		
     }
 
     /**
@@ -852,6 +908,10 @@ class TicketsController extends Controller
             'agent_id'    => 'required',
 			'content'     => 'required|min:6',
         ];
+		
+		if ($request->has('attachments')){
+			$fields = ['attachments' => 'array'];
+		}
 
         $user = $this->agent->find(auth()->user()->id);
         if ($user->isAgent() or $user->isAdmin()) {			
@@ -879,10 +939,12 @@ class TicketsController extends Controller
 		
         $this->validate($request, $fields, $custom_messages);
 
+
+		DB::beginTransaction();
+			
         $ticket = $this->tickets->findOrFail($id);
 
         $ticket->subject = $request->subject;
-
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
@@ -913,13 +975,34 @@ class TicketsController extends Controller
 			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
 		}		
 
-        if ($request->input('agent_id') == 'auto') {
-            $ticket->autoSelectAgent();
-        } else {
-            $ticket->agent_id = $request->input('agent_id');
-        }
 
-        $ticket->save();
+		if ($request->input('agent_id') == 'auto') {
+			$ticket->autoSelectAgent();
+		} else {
+			$ticket->agent_id = $request->input('agent_id');
+		}
+
+		$ticket->save();
+
+		if (Setting::grab('ticket_attachments_feature')){
+			$attachment_errors = false;
+			
+			// 1 - destroy checked attachments
+			if ($request->has('delete_files')) $attachment_errors = $this->destroyAttachmentIds($request->delete_files);
+			
+			// 2 - update existing attachment fields
+			if (!$attachment_errors) $attachment_errors = $this->updateAttachments($request, $ticket->attachments()->get());
+			
+			// 3 - add new attachments
+			if (!$attachment_errors) $attachment_errors = $this->saveAttachments($request, $ticket);
+			
+			if ($attachment_errors){
+				return redirect()->back()->with('warning', $attachment_errors);
+			}
+		}		
+        
+		// End transaction
+		DB::commit();		
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -971,6 +1054,14 @@ class TicketsController extends Controller
     {
         $ticket = $this->tickets->findOrFail($id);
         $subject = $ticket->subject;
+		
+		if (Setting::grab('ticket_attachments_feature')){
+			$attach_error = $this->destroyAttachmentsFrom($ticket);
+			if ($attach_error){
+				return redirect()->back()->with('warning', $attach_error);
+			}
+		}
+		
         $ticket->delete();
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));
@@ -1294,4 +1385,6 @@ class TicketsController extends Controller
 
         return $performance_average;
     }
+
+    
 }
