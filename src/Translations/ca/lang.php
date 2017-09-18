@@ -281,7 +281,7 @@ return [
  *  Middlewares
  */
 
- //  IsAdminMiddleware IsAgentMiddleware ResAccessMiddleware
+ //  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access'     => 'No tens permisos per accedir a aquesta pàgina!',
 
 ];

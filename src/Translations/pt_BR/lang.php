@@ -120,7 +120,7 @@ return [
  *  Middlewares
  */
 
-//  IsAdminMiddleware IsAgentMiddleware ResAccessMiddleware
+//  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access-this-page'     => 'Você não tem permissão para acessar esta página!',
 
     // CommentsController
