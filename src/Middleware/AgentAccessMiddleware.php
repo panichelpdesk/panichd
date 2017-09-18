@@ -7,11 +7,11 @@ use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Traits\RouteTicketId;
 
-class UserAccessMiddleware 
+class AgentAccessMiddleware
 {
     use RouteTicketId;
 	/**
-     * Session user has at least user level on route or specified resource
+     * Run the request filter.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -29,12 +29,7 @@ class UserAccessMiddleware
 		
 		// Get Ticket instance. Fails if not found
 		$ticket = $this->routeTicketId($request);
-		
-		// Ticket Owner has access
-		if ($agent->isTicketOwner($ticket->id)) {
-			return $next($request);
-		}						
-		
+					
 		if ($agent->isAgent()) {
 			// Assigned Agent has access always
 			if ($agent->isAssignedAgent($ticket->id)){
@@ -47,8 +42,8 @@ class UserAccessMiddleware
 					return $next($request);
 				}
 			}
-		}
-		
+		}		
+
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index')
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-access'));
     }
