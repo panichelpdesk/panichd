@@ -143,7 +143,7 @@ return [
  *  Middlewares
  */
 
- //  IsAdminMiddleware IsAgentMiddleware ResAccessMiddleware
+ //  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access'     => 'شما اجازه دسرتسی به این صفحه را ندارید',
 
 ];

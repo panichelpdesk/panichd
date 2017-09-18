@@ -221,6 +221,7 @@
     <script type="text/javascript">
 	// PhotoSwipe items array (load before jQuery .pwsp_gallery_link click selector)
 	var pswpItems = [
+		@if(isset($ticket))
 		@foreach($ticket->attachments()->images()->get() as $attachment)
 			@if($attachment->image_sizes != "")
 				<?php
@@ -235,6 +236,7 @@
 				},
 			@endif
 		@endforeach
+		@endif
 	];
 	
 	var category_id=<?=$a_current['cat_id'];?>;

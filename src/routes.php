@@ -31,10 +31,10 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
             ],
         ]);
 
-    Route::get("$main_route_path/download-attachment/{id}", 'Kordy\Ticketit\Controllers\TicketsController@downloadAttachment')
+    Route::get("$main_route_path/download-attachment/{attachment}", 'Kordy\Ticketit\Controllers\TicketsController@downloadAttachment')
         ->name("$main_route.download-attachment");
 		
-	 Route::get("$main_route_path/view-attachment/{id}", 'Kordy\Ticketit\Controllers\TicketsController@viewAttachment')
+	 Route::get("$main_route_path/view-attachment/{attachment}", 'Kordy\Ticketit\Controllers\TicketsController@viewAttachment')
         ->name("$main_route.view-attachment");
 
         //Ticket Comments public route

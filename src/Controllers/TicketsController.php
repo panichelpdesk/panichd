@@ -31,8 +31,8 @@ class TicketsController extends Controller
 
     public function __construct(Ticket $tickets, Agent $agent)
     {
-        $this->middleware('Kordy\Ticketit\Middleware\ResAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('Kordy\Ticketit\Middleware\IsAgentMiddleware', ['only' => ['edit', 'update']]);
+        $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
+        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -621,7 +621,7 @@ class TicketsController extends Controller
 		$agent_lists = $this->agentList($a_current['cat_id']);
 				
 		// Permission level for category
-		$permission_level = Agent::levelIn($a_current['cat_id']);
+		$permission_level = Agent::levelInCategory($a_current['cat_id']);
 		
 		// Current default status
 		if (!$ticket){
@@ -681,7 +681,7 @@ class TicketsController extends Controller
     public function store(Request $request)
     {	
 	    $user = $this->agent->find(auth()->user()->id);
-		$permission_level = $user->levelIn($request->category_id);
+		$permission_level = $user->levelInCategory($request->category_id);
 		
 		$a_content = $this->purifyHtml($request->get('content'));
         $request->merge([
@@ -871,7 +871,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 		
-		if (Agent::levelIn($ticket->category_id) > 1){
+		if (Agent::levelInCategory($ticket->category_id) > 1){
 			$comments = $ticket->comments();
 		}else{
 			$comments = $ticket->comments()->where('type','!=','note');
@@ -1267,9 +1267,12 @@ class TicketsController extends Controller
 		}		
 	}
 	
+	/**
+	 * Return integer user level for specified category (false = no permission, 1 = user, 2 = agent, 3 = admin)
+	*/
 	public function permissionLevel ($category_id)
 	{
-		return Agent::levelIn($category_id);
+		return Agent::levelInCategory($category_id);
 	}
 	
 

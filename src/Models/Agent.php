@@ -197,7 +197,7 @@ class Agent extends User
      *
      * @return integer
      */
-	public static function levelIn($id = false)
+	public static function levelInCategory($id = false)
 	{
 		if (!auth()->check()) return false;
 		$agent = Agent::find(auth()->user()->id);

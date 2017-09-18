@@ -13,7 +13,7 @@
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
         @include('ticketit::tickets.partials.modal_comment_new')
-		@if ($setting->grab('ticket_attachments_feature') && $u->canManageTicket($ticket->id))
+		@if ($setting->grab('ticket_attachments_feature'))
 			@include('ticketit::shared.attach_files_script')			
 		@endif
 @endsection
@@ -88,7 +88,7 @@
 			
 			// Complete modal submit button
 			$('#complete_form_submit').click(function(e){				
-				@if ($u->currentLevel()>1)
+				@if ($u->canManageTicket($ticket->id))
 					// Agent / Admin
 					@if (!$ticket->intervention_html)
 						if (!$('#blank_intervention_check').prop('checked')){
