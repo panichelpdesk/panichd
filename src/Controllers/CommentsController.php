@@ -20,7 +20,8 @@ class CommentsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware'); # , ['only' => ['store', 'edit', 'update', 'destroy']]        
+        $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['store']]);
+		$this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['update', 'destroy']]);		
     }
 
     /**

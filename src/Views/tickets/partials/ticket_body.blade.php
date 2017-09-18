@@ -183,7 +183,7 @@
 			{!! link_to_route($setting->grab('main_route').'.reopen', trans('ticketit::lang.reopen-ticket'), $ticket->id,
 									['class' => 'btn btn-default']) !!}
 		@endif
-		@if($u->currentLevel() > 1)
+		@if($u->canManageTicket($ticket->id))
 			{!! link_to_route($setting->grab('main_route').'.edit', trans('ticketit::lang.btn-edit'), $ticket->id,
 									['class' => 'btn btn-default']) !!}
 			<div class="visible-xs"><br /></div>
