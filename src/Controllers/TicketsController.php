@@ -220,54 +220,7 @@ class TicketsController extends Controller
 		}
 		
 		$collection->editColumn('calendar', function ($ticket) {
-            
-			$date = $title = $icon = "";
-			$color = "text-muted";
-			$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->start_date)->startOfDay(), false);			
-			if ($ticket->limit_date != ""){
-				$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->limit_date)->startOfDay(), false);				
-				if ($limit_days_diff == 0){
-					$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($ticket->limit_date), false);
-				}
-			}else{
-				$limit_days_diff = false;
-			}
-			
-			if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
-				// Expired
-				$date = $ticket->limit_date;
-				$title = trans('ticketit::lang.calendar-expired');
-				$icon = "glyphicon-exclamation-sign";
-				$color = "text-danger";
-			}elseif($limit_days_diff > 0 or $limit_days_diff === false){
-				if ($start_days_diff > 0){
-					// Scheduled
-					$date = $ticket->start_date;
-					$title = trans('ticketit::lang.calendar-scheduled');
-					$icon = "glyphicon-calendar";
-					$color = "text-info";
-				}elseif($limit_days_diff){
-					// Active with limit
-					$date = $ticket->limit_date;
-					$title = trans('ticketit::lang.calendar-expiration');
-					$icon = "glyphicon-time";
-				}else{
-					// Active without limit
-					$date = $ticket->start_date;
-					$title = trans('ticketit::lang.calendar-active');
-					$icon = "glyphicon-file";					
-				}				
-			}else{
-				// Due today
-				$date = $ticket->limit_date;
-				$title = trans('ticketit::lang.calendar-expires-today');
-				$icon = "glyphicon-warning-sign";
-				$color = "text-warning";
-			}
-			
-			$date_text = $ticket->getDateForHumans($date);
-			
-			return "<div class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> $date_text</div>";            
+			return $ticket->getCalendarField($ticket);
         });
 
         $collection->editColumn('category', function ($ticket) {

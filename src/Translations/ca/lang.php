@@ -27,11 +27,13 @@ return [
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
   
-  'calendar-active'            => 'Data d\'inici',
-  'calendar-expired'           => 'Caducat des d\'aquest dia',
-  'calendar-expiration'        => 'Caduca aquest dia',
-  'calendar-expires-today'     => 'Caduca avui',
-  'calendar-scheduled'         => 'Programat en data',
+  'calendar-active'            => 'Va començar :description',
+  'calendar-active-future'     => 'Comença :description',
+  'calendar-expired'           => 'Caducat des de :description',
+  'calendar-expiration'        => 'Caduca :description',
+  'calendar-expires-today'     => 'Caduca avui a les :hour',
+  'calendar-scheduled'         => 'Programat per  :description',
+  'calendar-scheduled-period'  => 'Programat de :date1 a :date2',
   
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
@@ -96,6 +98,7 @@ return [
   'comments'                         => 'Comentaris',
   'created'                          => 'Creat',
   'crop-image'                       => 'Retallar imatge',
+  'date-format'                      => 'Y-m-d',
   'date-info-created'                => 'Data de creació',
   'date-info-updated'                => 'Data de darrer canvi',
   'department'                       => 'Departament',

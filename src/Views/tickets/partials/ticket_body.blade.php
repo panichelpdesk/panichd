@@ -88,11 +88,8 @@
 					</span>
 					@php
 						\Carbon\Carbon::setLocale(config('app.locale'));
-					@endphp
-					<br /><strong>{{ trans('ticketit::lang.start-date') }}</strong>{{ trans('ticketit::lang.colon') .  $ticket->getDateForHumans($ticket->start_date) }}
-					@if ($ticket->limit_date != "")
-						<br /><strong>{{ trans('ticketit::lang.limit-date') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->getDateForHumans($ticket->limit_date) }}
-					@endif
+					@endphp					
+					<br /><strong>{{ trans('ticketit::lang.table-calendar') }}</strong>{{ trans('ticketit::lang.colon') }}{!! $ticket->getCalendarField($ticket) !!}
 					</p><p>					
 				@else
 					<br />
