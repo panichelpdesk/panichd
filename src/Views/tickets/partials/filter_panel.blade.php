@@ -13,6 +13,7 @@ $cld_options = [
 		'icon' => 'glyphicon-warning-sign',
 	],
 	'tomorrow' => [
+		'class' => 'text-info',
 		'icon' => 'glyphicon-time',
 	],
 	'week' => [

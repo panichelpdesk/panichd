@@ -27,11 +27,13 @@ return [
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
 
-  'calendar-active'            => 'Start date',
-  'calendar-expired'           => 'Expired since this date',
-  'calendar-expiration'        => 'Expires this date',
-  'calendar-expires-today'     => 'Expires today',
-  'calendar-scheduled'         => 'Scheduled for this date',
+  'calendar-active'            => 'Started :description',
+  'calendar-active-future'     => 'Starts :description',
+  'calendar-expired'           => 'Expired since :description',
+  'calendar-expiration'        => 'Expires :description',
+  'calendar-expires-today'     => 'Expires today at :hour',
+  'calendar-scheduled'         => 'Scheduled for :description',
+  'calendar-scheduled-period'  => 'Scheduled from :date1 to :date2',
   
   // Agent related
   'table-change-agent'               => 'Change agent',
@@ -97,6 +99,7 @@ return [
   'comments'                         => 'Comments',
   'created'                          => 'Created',
   'crop-image'                       => 'Image crop',
+  'date-format'                      => 'Y-m-d',
   'date-info-created'                => 'Creation date',
   'date-info-updated'                => 'Last update date',
   'department'                       => 'Department',

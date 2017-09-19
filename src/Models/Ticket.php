@@ -253,7 +253,7 @@ class Ticket extends Model
 	 *
 	 * @return string
 	*/
-	public function getDateForHumans($date)
+	public function getDateForHumans($date, $descriptive = false)
 	{		
 		$parsed = Carbon::parse($date);
 		
@@ -269,7 +269,11 @@ class Ticket extends Model
 		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->endOfWeek(), false) > 0){
 			$date_text = trans('ticketit::lang.day_'.$parsed->dayOfWeek) . ", " . $date_text;
 		}else{
-			$date_text = Carbon::parse($date)->diffForHumans();
+			if ($descriptive){
+				$date_text = Carbon::parse($date)->diffForHumans();
+			}else{
+				$date_text = date(trans('ticketit::lang.date-format'), strtotime($date));
+			}
 		}
 			
 		return $date_text;
