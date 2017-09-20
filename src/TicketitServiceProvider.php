@@ -70,7 +70,7 @@ class TicketitServiceProvider extends ServiceProvider
             });
 
             //inlude font awesome css or not
-            view()->composer(['ticketit::shared.assets', 'ticketit::shared.assets_old'], function ($view) {
+            view()->composer('ticketit::shared.assets', function ($view) {
                 $include_font_awesome = Setting::grab('include_font_awesome');
                 $view->with(compact('include_font_awesome'));
             });
