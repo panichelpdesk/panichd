@@ -1,7 +1,10 @@
 @extends($master)
+
 @section('page', trans('ticketit::lang.show-ticket-title') . trans('ticketit::lang.colon') . $ticket->subject)
+
+@include('ticketit::shared.common')
+
 @section('content')
-        @include('ticketit::shared.header')
         @include('ticketit::tickets.partials.ticket_body')
 		@include('ticketit::tickets.partials.modal_complete')
 		

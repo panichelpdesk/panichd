@@ -1,8 +1,9 @@
 @extends($master)
 @section('page', trans('ticketit::admin.priority-edit-title', ['name' => ucwords($priority->name)]))
 
+@include('ticketit::shared.common')
+
 @section('content')
-    @include('ticketit::shared.header')
     <div class="well bs-component">
         {!! CollectiveForm::model($priority, [
                                     'route' => [$setting->grab('admin_route').'.priority.update', $priority->id],

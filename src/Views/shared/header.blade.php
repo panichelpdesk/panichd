@@ -1,1 +1,0 @@
-{{-- Files shared.assets, shared.nav and shared.errors are loaded manually at main template file --}}

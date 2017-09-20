@@ -4,8 +4,9 @@
     {{ trans('ticketit::lang.index-title') }}
 @stop
 
+@include('ticketit::shared.common')
+
 @section('content')
-    @include('ticketit::shared.header')
     @include('ticketit::tickets.index')
 	@include('ticketit::tickets.partials.modal_agent')
 @stop

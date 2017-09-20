@@ -4,8 +4,9 @@
     {{ trans('ticketit::admin.config-edit-subtitle') }}
 @stop
 
+@include('ticketit::shared.common')
+
 @section('content')
-    @include('ticketit::shared.header')
      <div class="panel panel-default">
       <div class="panel-heading">
         <h3>{{ trans('ticketit::admin.config-edit-title') }}
@@ -135,16 +136,10 @@
 
 
     @if($should_serialize)
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/{{ Kordy\Ticketit\Helpers\Cdn::CodeMirror }}/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/{{ Kordy\Ticketit\Helpers\Cdn::CodeMirror }}/mode/clike/clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/{{ Kordy\Ticketit\Helpers\Cdn::CodeMirror }}/mode/php/php.min.js"></script>
-
-
-    <script>
-
-        loadCSS({!! '"'.asset('https://cdnjs.cloudflare.com/ajax/libs/codemirror/' . Kordy\Ticketit\Helpers\Cdn::CodeMirror . '/codemirror.min.css').'"' !!});
-        loadCSS({!! '"'.asset('https://cdnjs.cloudflare.com/ajax/libs/codemirror/' . Kordy\Ticketit\Helpers\Cdn::CodeMirror . '/theme/monokai.min.css').'"' !!});
-
+	<script src="{{asset('vendor/ticketit/js/codemirror/codemirror.min.js')}}"></script>
+    <script src="{{asset('vendor/ticketit/js/codemirror/mode/clike.min.js')}}"></script>
+    <script src="{{asset('vendor/ticketit/js/codemirror/mode/php.min.js')}}"></script>
+    <script type="text/javascript">
         window.addEventListener('load', function(){
             CodeMirror.fromTextArea( document.querySelector("textarea[name='value']"), {
                 lineNumbers: true,

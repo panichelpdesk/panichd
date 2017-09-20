@@ -1,8 +1,10 @@
 @extends($master)
 @section('page', trans('ticketit::admin.category-edit-title', ['name' => ucwords($category->name)]))
 
-@section('content')
-    @include('ticketit::shared.header')
+@include('ticketit::shared.common')
+
+@section('content')	
+	@include('ticketit::shared.colorpicker')
     <style type="text/css">
 	#tag-panel .glyphicon {
 		color: #777;

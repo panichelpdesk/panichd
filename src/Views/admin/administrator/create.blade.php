@@ -1,8 +1,9 @@
 @extends($master)
 @section('page', trans('ticketit::admin.administrator-create-title'))
 
-@section('content')
-    @include('ticketit::shared.header')
+@include('ticketit::shared.common')
+
+@section('content')    
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>{{ trans('ticketit::admin.administrator-create-title') }}</h2>
