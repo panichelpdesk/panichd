@@ -4,8 +4,9 @@
     {{ trans('ticketit::admin.priority-index-title') }}
 @stop
 
+@include('ticketit::shared.common')
+
 @section('content')
-    @include('ticketit::shared.header')
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>{{ trans('ticketit::admin.priority-index-title') }}

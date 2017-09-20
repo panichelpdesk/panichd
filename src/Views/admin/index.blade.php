@@ -4,8 +4,9 @@
     {{ trans('ticketit::admin.index-title') }}
 @stop
 
+@include('ticketit::shared.common')
+
 @section('content')
-    @include('ticketit::shared.header')
     @if($tickets_count)
         <div class="row">
             <div class="col-lg-3 col-md-4 col-lg-offset-1">

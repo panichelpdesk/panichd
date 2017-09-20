@@ -5,8 +5,9 @@
 	@include('ticketit::shared.datetimepicker')
 @append
 
+@include('ticketit::shared.common')
+
 @section('content')
-	@include('ticketit::shared.header')
     
 	@if (!isset($ticket) && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)	
 		@include('ticketit::tickets.partials.notices')

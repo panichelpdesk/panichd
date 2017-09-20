@@ -4,8 +4,9 @@
 {{ trans('ticketit::admin.config-index-title') }}
 @stop
 
+@include('ticketit::shared.common')
+
 @section('content')
-@include('ticketit::shared.header')
 
 <div class="panel panel-default">
     <div class="panel-heading">
