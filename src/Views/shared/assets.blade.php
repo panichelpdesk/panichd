@@ -10,3 +10,22 @@
 		<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/codemirror/'.$codemirror_theme.'.min.css')}}">
 	@endif
 @endif
+
+<!-- SELECT 2: Ticket list, edit -->
+<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/select2.min.css')}}">
+<style type="text/css">
+.select2-selection__choice {
+	background-color: #cfe2f3 !important;
+	border-color: #6fa8dc !important;
+}
+
+.select2-selection__choice, .select2-selection__choice__remove {
+	color: #0b5394 !important;
+}
+
+</style>
+<script type="text/javascript" src="{{asset('vendor/ticketit/js/select2.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/ticketit/js/i18n/'.App::getLocale().'.js')}}"></script>
+<!-- /SELECT 2 -->
+
+<link href="{{ asset('/vendor/ticketit/css/style.css') }}" rel="stylesheet">

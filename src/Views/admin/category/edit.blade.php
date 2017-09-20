@@ -3,6 +3,8 @@
 
 @section('content')
     @include('ticketit::shared.header')
+	
+	@include('ticketit::shared.colorpicker')
     <style type="text/css">
 	#tag-panel .glyphicon {
 		color: #777;
