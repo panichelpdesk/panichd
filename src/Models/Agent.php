@@ -482,4 +482,45 @@ class Agent extends User
 			return false;
 		}
     }
+	
+	/**
+     * Get array with all user id's from the departments where current user belongs and users that have ticketit_department = 0
+     *
+     * @return array
+     */
+    public function getMyNoticesUsers()
+    {
+		$user = self::find(auth()->user()->id);
+		
+		// Get my related departments
+		$related_departments = [];
+		foreach ($user->personDepts()->get() as $dept){
+			foreach ($dept->department()->first()->related() as $rel){
+				$related_departments [] = $rel->id;
+			}			
+		}
+
+		/*
+		 *	Get related Departamental users from my related departments
+		 *
+		 * Conditions:
+		 *    - agent ticketit_department in related_departments
+		 *    - agent person in related_departments
+		*/
+		$related_users = Agent::where('id','!=',$user->id)
+			->whereIn('ticketit_department', $related_departments);		
+		
+		// Get users that are visible by all departments
+		$all_dept_users = Agent::where('ticketit_department','0');
+		
+		if (version_compare(app()->version(), '5.3.0', '>=')) {
+			$related_users = $related_users->pluck('id')->toArray();
+			$related_users = array_unique(array_merge($related_users, $all_dept_users->pluck('id')->toArray()));
+		}else{
+			$related_users = $related_users->lists('id')->toArray();
+			$related_users = array_unique(array_merge($related_users, $all_dept_users->lists('id')->toArray()));
+		}
+		
+		return $related_users;
+	}
 }

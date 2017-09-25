@@ -18,13 +18,7 @@
 			@foreach ($a_notices as $notice)
 				<tr>
 				<td>{{ $notice->id }}</td>
-				<td>
-				@if ($u->currentLevel() > 2)
-					{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}
-				@else
-					{{ $notice->subject }}
-				@endif
-				</td>
+				<td>{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}</td>
 				<td><span title="{{ $u->currentLevel() > 2 ? trans('ticketit::lang.show-ticket-creator') . trans('ticketit::lang.colon') . $notice->owner->name : '' }}">{{ $notice->owner->ticketit_department == 0 ? trans('ticketit::lang.all-depts') : $notice->owner->userDepartment->resume(true) }}</span></td>
 				<td>{{ $notice->content }}</td>
 				<td>{{ $notice->intervention }}</td>

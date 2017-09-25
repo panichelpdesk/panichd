@@ -49,6 +49,11 @@ class UserAccessMiddleware
 			}
 		}
 		
+		// Tickets from users in a visible ticketit_department value for current user
+		if (in_array($ticket->user_id, $agent->getMyNoticesUsers())){
+			return $next($request);
+		} 
+		
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index')
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-access'));
     }
