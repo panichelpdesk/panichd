@@ -8,9 +8,11 @@
         @include('ticketit::tickets.partials.ticket_body')
 		@include('ticketit::tickets.partials.modal_complete')
 		
-        <div style="margin-top: 2em;">
-        	<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+        <div style="margin-top: 2em;">        	
+			<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
+				@if ($u->canCommentTicket($ticket->id))
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+				@endif
 			</h2>
         </div>
         @include('ticketit::tickets.partials.comments')

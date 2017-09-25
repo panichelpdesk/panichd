@@ -220,29 +220,6 @@ class Agent extends User
 	}	
 	
 	/**
-     * Check if user has manage permissions on a ticket.
-     *
-     * @param int $id ticket id
-     *
-     * @return bool
-     */
-	public static function canManageTicket($id)
-	{
-		if (!auth()->check()) return false;
-		$agent = Agent::find(auth()->user()->id);
-		
-		if ($agent->isAdmin()){
-			return true;
-		}elseif ($ticket = Ticket::find($id) ){
-			if ($agent->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $agent->categories()->where('id',$ticket->category_id)->count() == 1)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
      * Check if user has close permissions on a ticket.
      *
      * @param int $id ticket id
@@ -272,6 +249,47 @@ class Agent extends User
 		return false;
 	}
 	
+	/**
+     * Check if user can make a comment on a ticket.
+     *
+     * @param int $id ticket id
+     *
+     * @return bool
+     */
+	public static function canCommentTicket($id)
+	{
+		if (!auth()->check()) return false;
+		
+		if (Agent::canManageTicket($id)){
+			return true;
+		}else{
+			return Agent::isTicketOwner($id);
+		}
+	}
+	
+	/**
+     * Check if user has manage permissions on a ticket.
+     *
+     * @param int $id ticket id
+     *
+     * @return bool
+     */
+	public static function canManageTicket($id)
+	{
+		if (!auth()->check()) return false;
+		$agent = Agent::find(auth()->user()->id);
+		
+		if ($agent->isAdmin()){
+			return true;
+		}elseif ($ticket = Ticket::find($id) ){
+			if ($agent->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $agent->categories()->where('id',$ticket->category_id)->count() == 1)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+		
 	/**
      * Check if user can view new tickets button.
      *

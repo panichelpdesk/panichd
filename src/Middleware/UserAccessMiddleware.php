@@ -49,9 +49,12 @@ class UserAccessMiddleware
 			}
 		}
 		
-		// Tickets from users in a visible ticketit_department value for current user
-		if (in_array($ticket->user_id, $agent->getMyNoticesUsers())){
-			return $next($request);
+		// Disable comment store for foreign user
+		if ($this->route_prefix != Setting::grab('main_route').'-comment') {
+			// Tickets from users in a visible ticketit_department value for current user
+			if (in_array($ticket->user_id, $agent->getMyNoticesUsers())){
+				return $next($request);
+			}
 		} 
 		
         return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index')
