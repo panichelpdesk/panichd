@@ -53,14 +53,14 @@ $cld_options = [
 
 
 <div class="title category">{{ trans('ticketit::lang.filter-category') }}</div> 
-@if (count($counts['category'])==1)
-	<?php $cat_color = $counts['category']{0}->color;?>
-	<span class="btn-category" style="color: {{ $cat_color }}">{{$counts['category']{0}->name}}</span>
+@if (count($filters['category'])==1)
+	<?php $cat_color = $filters['category']{0}->color;?>
+	<span class="btn-category" style="color: {{ $cat_color }}">{{$filters['category']{0}->name}}</span>
 @else		
 	<?php $text_cat = "";
 	$category_name = "All";
 	$cat_color = "gray";?>
-	@foreach ($counts['category'] as $cat)			
+	@foreach ($filters['category'] as $cat)			
 		<?php $text_cat.='<li><a href="'.url($setting->grab('main_route').'/filter/category/'.$cat->id).'">';?>
 		@if ($cat->id==session('ticketit_filter_category'))
 			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span>';
@@ -80,12 +80,12 @@ $cld_options = [
 @endif
 
 <div class="title agent">{{ trans('ticketit::lang.filter-agent') }}</div> 
-@if (count($counts['agent'])>4)
+@if (count($filters['agent'])>4)
 	
 	<div id="select_agent_container" class="{{ session('ticketit_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">
 		<option value="/filter/agent/remove">{{ trans('ticketit::lang.filter-agent-all') }}</option>
-		@foreach ($counts['agent'] as $ag)			
+		@foreach ($filters['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"
 			@if ($ag->id==session('ticketit_filter_agent'))
 				selected="selected"
@@ -95,16 +95,16 @@ $cld_options = [
 		</select>
 	</div>
 @else	
-	@if(count($counts['agent'])==1)
-		<button class="btn btn-default btn-sm agent-current" style="color: {{ $cat_color }}">{{$counts['agent']{0}->name}}</button>
+	@if(count($filters['agent'])==1)
+		<button class="btn btn-default btn-sm agent-current" style="color: {{ $cat_color }}">{{$filters['agent']{0}->name}}</button>
 	@else
 		@if (session('ticketit_filter_agent')!="")
 			<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('ticketit::lang.filter-agent-all') }}</a>
-		@elseif(count($counts['agent'])>1)
+		@elseif(count($filters['agent'])>1)
 			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">{{ trans('ticketit::lang.filter-agent-all') }}</button>		
 		@endif
 	
-		@foreach ($counts['agent'] as $ag)
+		@foreach ($filters['agent'] as $ag)
 			@if ($ag->id==session('ticketit_filter_agent'))
 				<button class="btn btn-default btn-sm agent-current"><span style="color: {{ $cat_color }}">{{$ag->name}}</span> <span class="badge" style="background: {{ $cat_color }}">{!!$ag->agent_total_tickets_count !!}</span></button>				
 			@else
