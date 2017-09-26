@@ -302,12 +302,14 @@ class TicketsController extends Controller
 	public function indexProcess($request, $ticketList)
 	{
 		$a_cat_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
-			
-		return view('ticketit::index', [
-			'ticketList'=>$ticketList,
-			'counts'=>$this->ticketCounts($request, $ticketList),
+		
+		$data = [
+			'ticketList'=>$ticketList,			
 			'a_cat_agents'=>$a_cat_agents			
-		]);
+		];
+		$data = array_merge ($data, $this->ticketCounts($request, $ticketList));
+		
+		return view('ticketit::index', $data);
 	}
 
     /**
@@ -317,115 +319,104 @@ class TicketsController extends Controller
      */
     public function ticketCounts($request, $ticketList)
     {
-        $counts = [];
+        $counts = $filters = [];
+		$tickets;
         $category = session('ticketit_filter_category') == '' ? null : session('ticketit_filter_category');
 		
 		if ($this->agent->isAdmin() or $this->agent->isAgent()){
-			// Ticket count for all categories
-            $counts['total'] = Ticket::inList($ticketList)->visible()->count();
-			
-			// Calendar expired count
-			$counts['calendar']['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now())->count();
-						
-			// Calendar forth counts
-			$cals = Ticket::whereBetween('limit_date', [
+			// Get all forth tickets
+			$forth_tickets = Ticket::whereBetween('limit_date', [
 				Carbon::now()->today(),
 				Carbon::now()->endOfWeek()
 			])
 			->orWhereBetween('limit_date', [
 				Carbon::now()->today(),
 				Carbon::now()->endOfMonth()
-			]);
+			]);			
+			$forth_tickets = $forth_tickets->inList($ticketList)->visible()->get();			
 			
-			$cals = $cals->inList($ticketList)->visible()->get();			
+			// Calendar expired filter
+			$a_cal['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now());
 			
-			$counts['calendar']['today'] = $cals->filter(function($q){
+			// Calendar forth filters
+			$a_cal['today'] = $forth_tickets->filter(function($q){
 				return $q->limit_date < Carbon::now()->tomorrow(); 
-			})->count();
+			});
 			
-			$counts['calendar']['tomorrow'] = $cals->filter(function($q){
+			$a_cal['tomorrow'] = $forth_tickets->filter(function($q){
 				return $q->limit_date >= Carbon::now()->tomorrow(); 
 			})
 			->filter(function($q2){
 				return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
-			})->count();
+			});
 			
-			$counts['calendar']['week'] = $cals->filter(function($q){
+			$a_cal['week'] = $forth_tickets->filter(function($q){
 				return $q->limit_date < Carbon::now()->endOfWeek();
-			})->count();
+			});
 			
-			$counts['calendar']['month'] = $cals->filter(function($q){
+			$a_cal['month'] = $forth_tickets->filter(function($q){
 				return $q->limit_date < Carbon::now()->endOfMonth();
-			})->count();
-		}
+			});
+			
+			// Calendar counts
+			foreach ($a_cal as $cal=>$cal_tickets){
+				$counts['calendar'][$cal] = $cal_tickets->count();
+			}
+			
+			// Calendar filter to tickets collection
+			if (session('ticketit_filter_calendar') != '') {
+				$tickets = $a_cal[session('ticketit_filter_calendar')];
+			}else{
+				// Tickets collection
+				$tickets = Ticket::inList($ticketList)->visible();
+			}
+			
+			// Get ticket ids array
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$a_tickets_id = $tickets->pluck('id')->toArray();
+			} else { // if Laravel 5.1				
+				$a_tickets_id = $tickets->lists('id')->toArray();
+			}
+		}		
 		
-		
-        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {            
+        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
+			
+			\Debugbar::info($tickets->count());
 
-            // Ticket count for each Category
+            // Ticket filter for each Category
             if ($this->agent->isAdmin()) {
-                $counts['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
-                    $q->inList($ticketList);
+                $filters['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+					$q->whereIn('id',$a_tickets_id);
                 }])->get();
             } else {
-                $counts['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
-                    $q->inList($ticketList);
+                $filters['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+					$q->whereIn('id',$a_tickets_id);					
                 }])->get();
             }
 
-            // Ticket count for all agents
+            // Ticket filter for each visible Agent
             if (session('ticketit_filter_category') != '') {
-                $counts['total_agent'] = $counts['category']->filter(function ($q) use ($category) {
-                    return $q->id == $category;
-                })->first()->tickets_count;
-            } else {
-                $counts['total_agent'] = $counts['total'];
-            }
-
-            // Ticket counts for each visible Agent
-            if (session('ticketit_filter_category') != '') {
-                $counts['agent'] = Agent::visible()->whereHas('categories', function ($q1) use ($category) {
+                $filters['agent'] = Agent::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 });
             } else {
-                $counts['agent'] = Agent::visible();
+                $filters['agent'] = Agent::visible();
             }
 
-            $counts['agent'] = $counts['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($ticketList, $category) {
-                $q2->inList($ticketList)->visible()->inCategory($category);
+            $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
+                $q2->whereIn('id',$a_tickets_id)->inCategory($category);
             }])->get();
         }
 
         // Forget agent if it doesn't exist in current category
         $agent = session('ticketit_filter_agent');
-        if (isset($counts['agent']) and $counts['agent']->filter(function ($q) use ($agent) {
+        if (isset($filters['agent']) and $filters['agent']->filter(function ($q) use ($agent) {
             return $q->id == $agent;
         })->count() == 0) {
             $request->session()->forget('ticketit_filter_agent');
         }
 
-        if ($this->agent->isAdmin() or $this->agent->isAgent()) {
-            // All visible Tickets (depends on selected Agent)
-            if (session('ticketit_filter_agent') == '') {
-                if (isset($counts['total_agent'])) {
-                    $counts['owner']['all'] = $counts['total_agent'];
-                } else {
-                    // Case of agent with agent_restrict == 1
-                    $counts['owner']['all'] = Ticket::inList($ticketList)->inCategory($category)->agentTickets(auth()->user()->id)->count();
-                }
-            } else {
-                $counts['owner']['all'] = Ticket::inList($ticketList)->inCategory($category)->agentTickets(session('ticketit_filter_agent'))->visible()->count();
-            }
-
-            // Current user Tickets
-            $me = Ticket::inList($ticketList)->userTickets(auth()->user()->id);
-            if (session('ticketit_filter_agent') != '') {
-                $me = $me->agentTickets(session('ticketit_filter_agent'));
-            }
-            $counts['owner']['me'] = $me->count();
-        }
-
-        return $counts;
+        return ['counts' => $counts, 'filters' => $filters];
     }
 
     /**
@@ -486,37 +477,8 @@ class TicketsController extends Controller
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if (Setting::grab('departments_notices_feature')){
-			// Get my related departments
-			$related_departments = [];
-			foreach ($user->personDepts()->get() as $dept){
-				foreach ($dept->department()->first()->related() as $rel){
-					$related_departments [] = $rel->id;
-				}			
-			}
-
-			/*
-			 *	Get related Departamental users from my related departments
-			 *
-			 * Conditions:
-			 *    - agent ticketit_department in related_departments
-			 *    - agent person in related_departments
-			*/
-			$related_users = Agent::where('id','!=',$user->id)
-				->whereIn('ticketit_department', $related_departments);		
-			
-			// Get users that are visible by all departments
-			$all_dept_users = Agent::where('ticketit_department','0');
-			
-			if (version_compare(app()->version(), '5.3.0', '>=')) {
-				$related_users = $related_users->pluck('id')->toArray();
-				$related_users = array_unique(array_merge($related_users, $all_dept_users->pluck('id')->toArray()));
-			}else{
-				$related_users = $related_users->lists('id')->toArray();
-				$related_users = array_unique(array_merge($related_users, $all_dept_users->lists('id')->toArray()));
-			}
-			
 			// Get notices from related users
-			$a_notices = Ticket::active()->whereIn('user_id', $related_users)
+			$a_notices = Ticket::active()->whereIn('user_id', $user->getMyNoticesUsers())
 				->with('owner.personDepts.department')
 				->with('status')->get();
 		}else{
