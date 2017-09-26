@@ -370,18 +370,27 @@ class TicketsController extends Controller
 				// Tickets collection
 				$tickets = Ticket::inList($ticketList)->visible();
 			}
+			
+			// Get ticket ids array
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$a_tickets_id = $tickets->pluck('id')->toArray();
+			} else { // if Laravel 5.1				
+				$a_tickets_id = $tickets->lists('id')->toArray();
+			}
 		}		
 		
-        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {            
+        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
+			
+			\Debugbar::info($tickets->count());
 
             // Ticket filter for each Category
             if ($this->agent->isAdmin()) {
-                $filters['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
-                    $q->inList($ticketList);
+                $filters['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+					$q->whereIn('id',$a_tickets_id);
                 }])->get();
             } else {
-                $filters['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($ticketList) {
-                    $q->inList($ticketList);
+                $filters['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+					$q->whereIn('id',$a_tickets_id);					
                 }])->get();
             }
 
@@ -394,8 +403,8 @@ class TicketsController extends Controller
                 $filters['agent'] = Agent::visible();
             }
 
-            $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($ticketList, $category) {
-                $q2->inList($ticketList)->visible()->inCategory($category);
+            $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
+                $q2->whereIn('id',$a_tickets_id)->inCategory($category);
             }])->get();
         }
 
