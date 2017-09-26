@@ -19,8 +19,8 @@ use Kordy\Ticketit\Models\Tag;
 use Kordy\Ticketit\Models\Ticket;
 use Kordy\Ticketit\Traits\Attachments;
 use Kordy\Ticketit\Traits\Purifiable;
-use Yajra\Datatables\Datatables;
-use Yajra\Datatables\Engines\EloquentEngine;
+/*use Yajra\Datatables\Datatables;
+use Yajra\Datatables\Engines\EloquentEngine;*/
 
 class TicketsController extends Controller
 {
@@ -40,8 +40,14 @@ class TicketsController extends Controller
     }
 
 	// This is loaded via AJAX at file Views\index.blade.php
-    public function data(Datatables $datatables, $ticketList = 'active')
+    public function data($ticketList = 'active')
     {
+        if (LaravelVersion::min('5.4')) {
+            $datatables = app(\Yajra\DataTables\DataTables::class);
+        } else {
+            $datatables = app(\Yajra\Datatables\Datatables::class);
+        }
+
         $user = $this->agent->find(auth()->user()->id);
 
         $collection = Ticket::inList($ticketList)->visible()->filtered();
@@ -129,7 +135,7 @@ class TicketsController extends Controller
         return $collection->make(true);		
     }
 
-    public function renderTicketTable(EloquentEngine $collection)
+    public function renderTicketTable($collection)
     {
 		// Agents for each category
 		$a_cat_pre = Category::select('id')

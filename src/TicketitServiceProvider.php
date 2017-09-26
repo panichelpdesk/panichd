@@ -12,6 +12,7 @@ use Kordy\Ticketit\Console\Htmlify;
 use Kordy\Ticketit\Controllers\InstallController;
 use Kordy\Ticketit\Controllers\NotificationsController;
 use Kordy\Ticketit\Controllers\ToolsController;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Comment;
 use Kordy\Ticketit\Models\Setting;

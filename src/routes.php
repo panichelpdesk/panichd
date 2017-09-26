@@ -3,7 +3,8 @@
 Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddleware()], function () use ($main_route, $main_route_path, $admin_route, $admin_route_path) {
 
     //Route::group(['middleware' => '', function () use ($main_route) {
-        //Ticket public route
+
+    //Ticket public route
     Route::get("$main_route_path/complete", 'Kordy\Ticketit\Controllers\TicketsController@indexComplete')
         ->name("$main_route-complete");
 		
@@ -11,7 +12,7 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
 	Route::get("$main_route_path/newest", 'Kordy\Ticketit\Controllers\TicketsController@indexNewest')
         ->name("$main_route-newest")
 		->middleware('Kordy\Ticketit\Middleware\IsAgentMiddleware');
-		
+
     Route::get("$main_route_path/data/{id?}", 'Kordy\Ticketit\Controllers\TicketsController@data')
             ->name("$main_route.data");
 
@@ -39,6 +40,7 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
 
         //Ticket Comments public route
         $field_name = last(explode('/', "$main_route_path-comment"));
+
     Route::resource("$main_route_path-comment", 'Kordy\Ticketit\Controllers\CommentsController', [
             'names' => [
                 'index'   => "$main_route-comment.index",
@@ -58,8 +60,8 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         Route::patch("$main_route_path/{id}/complete", 'Kordy\Ticketit\Controllers\TicketsController@complete')
             ->name("$main_route.complete");
 
-        //Ticket reopen route for permitted user.
-        Route::get("$main_route_path/{id}/reopen", 'Kordy\Ticketit\Controllers\TicketsController@reopen')
+    //Ticket reopen route for permitted user.
+    Route::get("$main_route_path/{id}/reopen", 'Kordy\Ticketit\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
     //});
 	
