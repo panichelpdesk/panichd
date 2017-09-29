@@ -6,7 +6,10 @@ Ticketit has three user roles: Users (from Laravel integrated auth), agents and 
 
 Ticketit developers currently have stopped major changes in current release and, from many moths ago, they're planning a new version of the package with more focus on developers.
 
-## PanicHD additional features
+## PanicHD main additional features
 We've added the following features to the package:
-* Tag system: Each category can have an own list of tags. Each ticket can have many tags that an agent can manage.
-* File attachments: For ticket or comment. List images separately and view them in a jquery gallery. Images can also be cropped.
+* Intervention field that can interact with comments. Description and intervention are also visible and searchable on ticket list.
+* Tag system: Each category can have it's own tag list. Agents can assign tags to tickets.
+* File attachments: For ticket or comment. List images separately and view them in a javascript gallery. Images can also be cropped. All attached files can be renamed and have a description.
+* Interactive ticket creation form: Admin, of course, always sees all fields in ticket form, but for user and agent roles, any user sees user or agent fields depending on chosen category in the form.
+* Department notices: It deppends on an externally managed department structure (not managed by the package). Users are related to persons that have an assigned department. You can assign a "department user" to a specific department (or to all departments option), so you can make all real users that are on the same department view open tickets from the "department user" just over the new ticket form.
