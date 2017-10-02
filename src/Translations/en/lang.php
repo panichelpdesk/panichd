@@ -26,6 +26,10 @@ return [
   'table-calendar'                   => 'Calendar',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
+  
+  'table-info-attachments-total'     => ':num attached files',
+  'table-comments-total'             => ':num Total comments.',
+  'table-comments-recent'            => ':num recent ones.',
 
   'calendar-active'            => 'Started :description',
   'calendar-active-future'     => 'Starts :description',

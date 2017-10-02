@@ -27,6 +27,10 @@ return [
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
   
+  'table-info-attachments-total'     => ':num fitxers adjunts',
+  'table-info-comments-total'        => ':num comentaris totals.',
+  'table-info-comments-recent'       => ':num recents.',
+  
   'calendar-active'            => 'Va començar :description',
   'calendar-active-future'     => 'Comença :description',
   'calendar-expired'           => 'Caducat des de :description',
@@ -95,7 +99,7 @@ return [
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
-  'comments'                         => 'Comentaris',
+  'comments'                         => 'Comentaris',  
   'created'                          => 'Creat',
   'crop-image'                       => 'Retallar imatge',
   'date-format'                      => 'Y-m-d',

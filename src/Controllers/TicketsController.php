@@ -171,7 +171,7 @@ class TicketsController extends Controller
 		
 		$collection->editColumn('content', function ($ticket) {
 			$field=$ticket->content;
-			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip" title="'.trans('ticketit::lang.attachments').'"></span>';
+			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('ticketit::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 						
 			return $field;
 		});
@@ -183,7 +183,7 @@ class TicketsController extends Controller
 				$field.=$ticket->recent_comments_count;
 			}
 			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-transfer" title="'.trans('ticketit::lang.comments').'"></span>';
+				$field.=' <span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('ticketit::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('ticketit::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
 			
 			return $field;
