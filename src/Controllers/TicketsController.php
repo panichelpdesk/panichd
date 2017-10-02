@@ -240,7 +240,7 @@ class TicketsController extends Controller
             $ticket = $this->tickets->find($ticket->id);
 			$count = $a_cat[$ticket->category_id]['agents_count'];			
 			
-            $text = '<a href="#" class="jquery_agent_change_'.($count>4 ? 'modal' : ($count == 1 ? 'info' : 'integrated')).'" ';
+            $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_agent_change_integrated')).'" ';
 			
 			if($count>4){
 				$text.= ' title="'.trans('ticketit::lang.table-change-agent').'"';

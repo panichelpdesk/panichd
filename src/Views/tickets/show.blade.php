@@ -48,9 +48,6 @@
 	
 		var category_id=<?=$ticket->category_id;?>;
         $(document).ready(function() {
-			// Tooltips
-			$('.tooltip-info, .tooltip-show').tooltip();
-			
             $( ".deleteit" ).click(function( event ) {
                 event.preventDefault();
                 if (confirm("{!! trans('ticketit::lang.show-ticket-js-delete') !!}" + $(this).attr("node") + " ?"))

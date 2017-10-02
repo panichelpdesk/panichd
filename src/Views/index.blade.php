@@ -122,10 +122,7 @@
 			});
 
 			// Agent change: Tooltip for 1 agents
-			$(".jquery_agent_change_info").tooltip();
-			
 			$(".tooltip-info").tooltip();
-			
 		});
 
 		@yield('footer_jquery')
