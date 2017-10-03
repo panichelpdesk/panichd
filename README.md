@@ -2,9 +2,9 @@
 This package is a ticketing system for [Laravel 5](https://laravel.com/) based on [Ticketit](https://github.com/thekordy/ticketit), a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. If you need to make a very customized ticketing project you should check it out; you probably won't find any better starting point.
 
 ## Ticketit features
-Ticketit has three user roles: Users (from Laravel integrated auth), agents and admins. Admins can create categories for tickets and assign agents to them. You can create tickets via form and attach screenshots to them. Users can list and view their open tickets and communicate with agent through a comment form. It also has statistics and a very flexible configuration system.
+Ticketit has three user roles: Users (from Laravel integrated auth), agents and admins. Admins can create categories for tickets and assign agents to them. You can create tickets via form and attach screenshots to them. Users can list and view their open tickets and communicate with agent through a comment form. It also has many statistics, a very flexible configuration system and many translations including German, Spanish, Russian, Arabic...
 
-Ticketit developers currently have stopped major changes in current release and, from many moths ago, they're planning a new version of the package with more focus on developers.
+Ticketit developers currently have stopped major changes in current release and, from many moths ago, they're planning a new version of the package with more focus on developers. If you want to read more about ticketit features, please follow [this link to their features and screenshots specific wiki page](https://github.com/thekordy/ticketit/wiki/v0.2-Features).
 
 ## PanicHD current features
 We've added the following features to ticketit package:
