@@ -3,9 +3,9 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) based o
 
 ## Table of contents
 
-* [Description](#Description)
-  + Ticketit features
-  + PanicHD features
+* [Description](#description)
+  + [Ticketit features](#ticketit-features)
+  + [PanicHD features](#panichd-features)
 
 ## Description
 ### Ticketit features
