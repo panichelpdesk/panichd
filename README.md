@@ -6,6 +6,8 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) based o
 * [Description](#description)
   + [Ticketit features](#ticketit-features)
   + [PanicHD features](#panichd-features)
+* [Contributing](#contributing)
+* Credits (to do)
 
 ## Description
 ### Ticketit features
@@ -29,3 +31,7 @@ We've added the following features to ticketit package:
   + Tickets that were just added and started some weeks ago
 * Ticket filters: You can filter the ticket list by many different criteria in a specific filters panel: Calendar, category and agent. Of course you still can make an even more specific filter within the ticket list thanks to Datatables engine.
 * Agent as a user: Agent may be a user on some categories and a manager on others, so we added a button to let them change their point of view, from agent to user and vice-versa.
+
+## Contributing
+
+We're still working on the main project development to get a good starting point to open it to other developers. At the moment we don't have any contributing guideline more than the obvious that... bug patches will be anytime very welcome! Once we have a development version that is suitable to install by others we'll add more detailed information here, so please take patience and keep coming here in a few days to look for something new.
