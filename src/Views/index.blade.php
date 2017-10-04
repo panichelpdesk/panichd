@@ -53,7 +53,6 @@
 				{ data: 'content', name: 'content' },
 				{ data: 'intervention', name: 'intervention' },
 	            { data: 'status', name: 'ticketit_statuses.name' },
-	            { data: 'updated_at', name: 'ticketit.updated_at' },
             	@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
 					{ data: 'agent', name: 'agent.name' },
 				@endif				
@@ -66,6 +65,9 @@
 						@endif
 					@endif
 					{ data: 'calendar', name: 'calendar_order', searchable: false },
+				@endif
+				{ data: 'updated_at', name: 'ticketit.updated_at' },
+				@if( $u->currentLevel() > 1 )
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
@@ -73,7 +75,7 @@
 	            @endif				
 	        ],
 			order: [
-				[5,'desc']				
+				[0,'desc']				
 			]
 			
 	    });		
