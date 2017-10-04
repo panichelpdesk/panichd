@@ -124,8 +124,6 @@ class TicketsController extends Controller
 		
         $this->renderTicketTable($collection);
 
-        $collection->editColumn('updated_at', '{!! \Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $updated_at)->diffForHumans() !!}');
-
         // method rawColumns was introduced in laravel-datatables 7, which is only compatible with >L5.4
         // in previous laravel-datatables versions escaping columns wasn't defaut
         if (LaravelVersion::min('5.4')) {
@@ -195,6 +193,10 @@ class TicketsController extends Controller
 
             return "<div style='color: $color'>$status</div>";
         });
+		
+		$collection->editColumn('updated_at', function ($ticket){
+			return '<span class="tooltip-info" data-toggle="tooltip" title="'.Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans().'">'.$ticket->getUpdatedAbbr().'</span>';
+		});
 
         $collection->editColumn('priority', function ($ticket) {
             $color = $ticket->color_priority;

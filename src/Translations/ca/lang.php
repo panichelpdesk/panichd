@@ -20,7 +20,7 @@ return [
   'table-intervention'               => 'Actuació',
   'table-owner'                      => 'Propietari',
   'table-status'                     => 'Estat',
-  'table-last-updated'               => 'Última actualització',
+  'table-last-updated'               => 'Act.',
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
   'table-calendar'                   => 'Agenda',
@@ -139,6 +139,14 @@ return [
   'day_5'                            => 'Divendres',
   'day_6'                            => 'Dissabte',
   'day_7'                            => 'Diumenge',
+  
+  // Time units abbreviations
+  'second-abbr'                      => 's.',
+  'minute-abbr'                      => 'mi.',
+  'hour-abbr'                        => 'h.',
+  'day-abbr'                         => 'd.',
+  'week-abbr'                        => 'st.',
+  'month-abbr'                       => 'ms.',
 
  /*
   *  Page specific

@@ -20,7 +20,7 @@ return [
   'table-intervention'               => 'Intevention',
   'table-owner'                      => 'Owner',
   'table-status'                     => 'Status',
-  'table-last-updated'               => 'Last Updated',
+  'table-last-updated'               => 'Upd.',
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
   'table-calendar'                   => 'Calendar',
@@ -140,6 +140,14 @@ return [
   'day_5'                            => 'Friday',
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
+  
+    // Time units abbreviations
+  'second-abbr'                      => 's.',
+  'minute-abbr'                      => 'mi.',
+  'hour-abbr'                        => 'h.',
+  'day-abbr'                         => 'd.',
+  'week-abbr'                        => 'wk.',
+  'month-abbr'                       => 'mo.',
   
 
  /*
