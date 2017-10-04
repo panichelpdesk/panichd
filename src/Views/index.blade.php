@@ -106,7 +106,12 @@
 			});
 			
 			// Agent / Priority change: Popover menu
-			$(".jquery_popover").popover({ html: true})
+			$(".jquery_popover")
+				.tooltip({
+					placement: 'top',
+					trigger: "hover"
+				})
+				.popover({ html: true})
 			.click(function(e){
 				e.preventDefault();
 			});
