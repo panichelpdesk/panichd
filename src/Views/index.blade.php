@@ -111,7 +111,7 @@
 			});
 			
 			// Agent change: Popover menu submit
-			$(document).on('click','.jquery_submit_integrated_agent',function(e){
+			$(document).on('click','.submit_agent_popover',function(e){
 				e.preventDefault();
 								
 				// Form fields
