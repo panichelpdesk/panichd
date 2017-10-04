@@ -71,12 +71,12 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
             'uses' => 'Kordy\Ticketit\Controllers\TicketsController@permissionLevel',
         ]);
 
+	// Ticket list: Change agent for a ticket
+	Route::patch("$main_route_path-change.agent", 'Kordy\Ticketit\Controllers\TicketsController@changeAgent')
+		->name("$main_route-change.agent");
+		
     Route::group(['middleware' => 'Kordy\Ticketit\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
-		
-		// Ticket list: Change agent for a ticket
-		Route::patch("$main_route_path-change.agent", 'Kordy\Ticketit\Controllers\TicketsController@changeAgent')
-			->name("$main_route-change.agent");
-		
+
 		// Send again comment (reply) notification
 		Route::post("$main_route_path-notification.resend", 'Kordy\Ticketit\Controllers\NotificationsController@notificationResend')
 			->name("$main_route-notification.resend");

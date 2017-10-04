@@ -32,7 +32,7 @@ class TicketsController extends Controller
     public function __construct(Ticket $tickets, Agent $agent)
     {
         $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update']]);
+        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -203,7 +203,7 @@ class TicketsController extends Controller
             $ticket = $this->tickets->find($ticket->id);
 			$count = $a_cat[$ticket->category_id]['agents_count'];			
 			
-            $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_agent_change_integrated')).'" ';
+            $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_popover')).'" ';
 			
 			if($count>4){
 				$text.= ' title="'.trans('ticketit::lang.table-change-agent').'"';
@@ -1074,12 +1074,11 @@ class TicketsController extends Controller
 					$comment->content = $comment->content . $a_clarification['content'];
 					$comment->html = $comment->html . $a_clarification['html'];
 				}
-			}			
+			}
 
 			$comment->ticket_id = $id;
 			$comment->user_id = $user->id;
 			$comment->save();
-			
 			
             session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -1176,10 +1175,15 @@ class TicketsController extends Controller
 	*/
 	public function changeAgent(Request $request){
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
-		Agent::findOrFail($request->input('agent_id'));
+		$old_agent = $ticket->agent()->first();
+		$new_agent = Agent::findOrFail($request->input('agent_id'));
 		
 		if ($ticket->agent_id==$request->input('agent_id')){
-			return redirect()->back()->with('warning', 'No has canviat l\'agent');
+			return redirect()->back()->with('warning', trans('ticketit::lang.update-agent-same', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
 		}else{
 			$ticket->agent_id = $request->input('agent_id');
 			
@@ -1187,7 +1191,16 @@ class TicketsController extends Controller
 				$ticket->status_id=Setting::grab('default_reopen_status_id');
 			}
 			$ticket->save();
-			return redirect()->back()->with('status', 'Agent canviat correctament');
+			
+			session()->flash('status', trans('ticketit::lang.update-agent-ok', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title'),
+				'old_agent' => $old_agent->name,
+				'new_agent' => $new_agent->name
+			]));
+			
+			return redirect()->route(Setting::grab('main_route').'.index');
 		}		
 	}
 	

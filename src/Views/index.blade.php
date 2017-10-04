@@ -105,7 +105,7 @@
 			});
 			
 			// Agent change: Popover menu
-			$(".jquery_agent_change_integrated").popover({ html: true})
+			$(".jquery_popover").popover({ html: true})
 			.click(function(e){
 				e.preventDefault();
 			});

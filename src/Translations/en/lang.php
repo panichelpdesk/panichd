@@ -169,6 +169,11 @@ return [
 
   'ticket-notices-title'             => 'Active notices',  
 
+// Ticket forms messages
+  'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
+  'update-agent-ok'                  => 'Agent was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  
+// tickets/create
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
   'create-ticket-owner'              => 'Sender',

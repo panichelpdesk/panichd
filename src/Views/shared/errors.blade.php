@@ -11,7 +11,7 @@
 @if(Session::has('warning'))
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">{{ trans('ticketit::lang.flash-x') }}</button>
-        {{ session('warning') }}
+        {!! session('warning') !!}
     </div>
 @endif
 @if(Session::has('status'))
