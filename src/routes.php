@@ -75,6 +75,10 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
 	Route::patch("$main_route_path-change.agent", 'Kordy\Ticketit\Controllers\TicketsController@changeAgent')
 		->name("$main_route-change.agent");
 		
+	// Ticket list: Change priority for a ticket
+	Route::patch("$main_route_path-change.priority", 'Kordy\Ticketit\Controllers\TicketsController@changePriority')
+		->name("$main_route-change.priority");
+
     Route::group(['middleware' => 'Kordy\Ticketit\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 
 		// Send again comment (reply) notification

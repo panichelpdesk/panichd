@@ -9,6 +9,7 @@
 @section('content')
     @include('ticketit::tickets.index')
 	@include('ticketit::tickets.partials.modal_agent')
+	@include('ticketit::tickets.partials.priority_popover_form')
 @stop
 
 @section('footer')
@@ -104,7 +105,7 @@
 				$(document).find('tr').removeClass('hover');
 			});
 			
-			// Agent change: Popover menu
+			// Agent / Priority change: Popover menu
 			$(".jquery_popover").popover({ html: true})
 			.click(function(e){
 				e.preventDefault();
@@ -120,6 +121,20 @@
 			
 				// Form submit
 				$('#modalAgentChange').find('form').submit();
+				
+			});
+			
+			// Agent change: Popover menu submit
+			$(document).on('click','.submit_priority_popover',function(e){
+				e.preventDefault();
+								
+				// Form fields
+				$('#PriorityPopoverForm #priority_ticket_id_field').val($(this).attr('data-ticket-id'));
+				var priority_val = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
+				$('#PriorityPopoverForm #priority_id_field').val(priority_val);
+			
+				// Form submit
+				$('#PriorityPopoverForm').find('form').submit();
 				
 			});
 

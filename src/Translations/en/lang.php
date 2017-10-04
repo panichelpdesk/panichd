@@ -43,6 +43,9 @@ return [
   'table-change-agent'               => 'Change agent',
   'table-one-agent'                  => 'There is one agent in this category',
   
+  // Priority related
+  'table-change-priority'            => 'Change priority',
+  
   // Datatables
   'table-decimal'                    => '',
   'table-empty'                      => 'No data available in table',
@@ -166,12 +169,13 @@ return [
   'index-active-none'                => 'There are no active tickets,',
   'index-create-new-ticket'          => 'create new ticket',
   'index-complete-check'             => 'Be sure to check Complete Tickets if you cannot find your ticket.',
-
   'ticket-notices-title'             => 'Active notices',  
 
 // Ticket forms messages
   'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-agent-ok'                  => 'Agent was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-priority-same'             => 'Priority was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
+  'update-priority-ok'               => 'Priority was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
   
 // tickets/create
   'create-ticket-title'              => 'New Ticket Form',

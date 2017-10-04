@@ -32,7 +32,7 @@ class TicketsController extends Controller
     public function __construct(Ticket $tickets, Agent $agent)
     {
         $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent']]);
+        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -218,10 +218,16 @@ class TicketsController extends Controller
         });		
 		
         $collection->editColumn('priority', function ($ticket) {
-            $color = $ticket->color_priority;
-            $priority = e($ticket->priority);
+            $a_priorities = Models\Priority::all();
+			$html = "";
+			foreach ($a_priorities as $priority){
+				$html.= '<label style="color: '.$priority->color.'"><input type="radio" name="'.$ticket->id.'_priority" value="'.$priority->id.'"> '.$priority->name.'</label><br />';
+			}
+			
+			$html = '<div>'.$html.'</div><br />'
+				.'<button type="button" class="submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('ticketit::lang.btn-change').'</button>';
 
-            return "<div style='color: $color'>$priority</div>";
+            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'.trans('ticketit::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
         });
 		
 		$collection->editColumn('owner_name', function ($ticket) {
@@ -1203,7 +1209,37 @@ class TicketsController extends Controller
 			return redirect()->route(Setting::grab('main_route').'.index');
 		}		
 	}
-	
+
+	/*
+	 * Change priority in ticket list
+	*/
+	public function changePriority(Request $request){
+		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$old_priority = $ticket->priority()->first();		
+		$new_priority = Models\Priority::findOrFail($request->input('priority_id'));
+		
+		if ($ticket->priority_id==$request->input('priority_id')){
+			return redirect()->back()->with('warning', trans('ticketit::lang.update-priority-same', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
+		}else{
+			$ticket->priority_id = $request->input('priority_id');
+			$ticket->save();
+			
+			session()->flash('status', trans('ticketit::lang.update-priority-ok', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title'),
+				'old' => $old_priority->name,
+				'new' => $new_priority->name
+			]));
+			
+			return redirect()->route(Setting::grab('main_route').'.index');
+		}		
+	}
+
 	/**
 	 * Return integer user level for specified category (false = no permission, 1 = user, 2 = agent, 3 = admin)
 	*/

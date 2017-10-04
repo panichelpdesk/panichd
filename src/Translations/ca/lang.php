@@ -42,6 +42,9 @@ return [
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
   'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
+  
+  // Priority related
+  'table-change-priority'            => 'Canviar la prioritat',
 
   // Datatables
   'table-decimal'                    => '',
@@ -164,12 +167,13 @@ return [
   'index-active-none'                => 'No hi ha tiquets oberts,',
   'index-create-new-ticket'          => 'crear nou tiquet',
   'index-complete-check'             => 'Assegureu-vos de revisar els tiquets tancats si no pot trobar el seu tiquet.',
-
   'ticket-notices-title'             => 'Avisos actius', 
 
 // Ticket forms messages
   'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
   'update-agent-ok'                  => 'Agent canviat correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-priority-same'             => 'No has canviat la prioritat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-priority-ok'               => 'Prioritat canviada correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
   
 // tickets/create
   'create-ticket-title'              => 'Nou formulari de Tiquet',
