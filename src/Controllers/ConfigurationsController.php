@@ -66,19 +66,6 @@ class ConfigurationsController extends Controller
         return view('ticketit::admin.configuration.create');
     }
 
-<<<<<<< HEAD
-      return view('ticketit::admin.configuration.index', compact('configurations', 'configurations_by_sections'));
-  }
-
-  /**
-   * Show the form for creating a new Setting.
-   *
-   * @return Response
-   */
-  public function create()
-  {
-      return view('ticketit::admin.configuration.create');
-  }
 
   /**
    * Store a newly created Configuration in storage.
@@ -96,7 +83,7 @@ class ConfigurationsController extends Controller
 
       Session::flash('configuration', 'Setting saved successfully.');
       \Cache::forget('ticketit::settings'); // refresh cached settings
-    return redirect()->action('\Kordy\Ticketit\Controllers\ConfigurationsController@index');
+    return redirect()->action('Kordy\Ticketit\Controllers\ConfigurationsController@index');
   }
 
   /**
@@ -147,75 +134,5 @@ class ConfigurationsController extends Controller
       \Cache::forget('ticketit::settings.'.$configuration->slug);
     //return redirect(route('ticketit::admin.configuration.index'));
     return redirect()->action('\Kordy\Ticketit\Controllers\ConfigurationsController@index');
-  }
-=======
-    /**
-     * Store a newly created Configuration in storage.
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        $input = $request->all();
-
-        $configuration = new Configuration();
-        $configuration->create($input);
-
-        Session::flash('configuration', 'Setting saved successfully.');
-        \Cache::forget('ticketit::settings'); // refresh cached settings
-        return redirect()->action('\Kordy\Ticketit\Controllers\ConfigurationsController@index');
-    }
-
-    /**
-     * Show the form for editing the specified Configuration.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $configuration = Configuration::findOrFail($id);
-        $should_serialize = Setting::is_serialized($configuration->value);
-        $default_serialized = Setting::is_serialized($configuration->default);
-
-        return view('ticketit::admin.configuration.edit', compact('configuration', 'should_serialize', 'default_serialized'));
-    }
-
-    /**
-     * Update the specified Configuration in storage.
-     *
-     * @param int     $id
-     * @param Request $request
-     *
-     * @return $this|\Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, $id)
-    {
-        $configuration = Configuration::findOrFail($id);
-
-        $value = $request->value;
-
-        if ($request->serialize) {
-            //if(!Hash::check($request->password, Auth::user()->password)){
-            if (!Auth::attempt($request->only('password'), false, false)) {
-                return back()->withErrors([trans('ticketit::admin.config-edit-auth-failed')]);
-            }
-            if (false === eval('$value = serialize('.$value.');')) {
-                return back()->withErrors([trans('ticketit::admin.config-edit-eval-error')]);
-            }
-        }
-
-        $configuration->update(['value' => $value, 'lang' => $request->lang]);
-
-        Session::flash('configuration', trans('ticketit::lang.configuration-name-has-been-modified', ['name' => $request->name]));
-        // refresh cached settings
-        \Cache::forget('ticketit::settings');
-        \Cache::forget('ticketit::settings.'.$configuration->slug);
-        //return redirect(route('ticketit::admin.configuration.index'));
-        return redirect()->action('\Kordy\Ticketit\Controllers\ConfigurationsController@index');
-    }
->>>>>>> 250612410d14af5b5e6b0b4680191258658eef18
+  }    
 }
