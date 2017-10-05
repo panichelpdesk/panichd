@@ -136,8 +136,13 @@ class TicketitServiceProvider extends ServiceProvider
                         }
                     }
                 }
+				
+				// User level uses it's own summernote options if specified
+				$user_editor = Agent::find(auth()->user()->id)->currentLevel() < 2 ? Setting::grab('summernote_options_user') : 0;
 
-                $editor_options = file_get_contents(base_path(Setting::grab('summernote_options_json_file')));
+
+				// Load summernote options
+				$editor_options = $user_editor != "0" ? $user_editor : file_get_contents(base_path(Setting::grab('summernote_options_json_file')));
 
                 $view->with(compact('editor_locale', 'editor_options'));
             });
