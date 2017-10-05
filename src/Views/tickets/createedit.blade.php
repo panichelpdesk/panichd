@@ -166,7 +166,7 @@
 			
             <div class="form-group"><!-- DESCRIPTION -->
                 <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('ticketit::lang.create-ticket-describe-issue') }}"> *{{trans('ticketit::lang.description')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
-                <div class="col-lg-10">
+                <div class="col-lg-10 summernote-text-wrapper">
                 <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>                   
                 </div>
             </div>
@@ -175,7 +175,7 @@
 				<div class="jquery_level2_show">
 					<div class="form-group"><!-- INTERVENTION -->
 						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="Accions realitzades per a la resolució del tiquet">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
-						<div class="col-lg-10">
+						<div class="col-lg-10 summernote-text-wrapper">
 						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
 						</div>
 					</div>

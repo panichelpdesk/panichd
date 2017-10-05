@@ -34,7 +34,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><p id="jquery_comment_edit_{{$comment->id}}"> {!! $comment->html !!} </p>
+                    <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><div id="jquery_comment_edit_{{$comment->id}}" class="summernote-text-wrapper"> {!! $comment->html !!} </div>
 					@if ($u->canManageTicket($ticket->id))
 						@include('ticketit::tickets.partials.modal_comment_edit')
 					@endif
