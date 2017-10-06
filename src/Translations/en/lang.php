@@ -6,8 +6,10 @@ return [
   *  Constants
   */
 
-  'nav-active-tickets'               => 'Active Tickets',
-  'nav-completed-tickets'            => 'Completed Tickets',
+  'nav-new-tickets'                  => 'New',
+  'nav-create-ticket'                => 'Create new',
+  'nav-active-tickets'               => 'Active',
+  'nav-completed-tickets'            => 'Completed',
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-Z\'0-9¡!¿?,;.:\-\s]*$/',

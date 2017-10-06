@@ -6,6 +6,8 @@ return [
   *  Constants
   */
 
+  'nav-new-tickets'                  => 'Nous',
+  'nav-create-ticket'                => 'Crear nou',
   'nav-active-tickets'               => 'Oberts',
   'nav-completed-tickets'            => 'Tancats',
   
