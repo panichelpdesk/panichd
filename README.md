@@ -32,4 +32,4 @@ We've created the following additional features to the ticketit package:
 
 ## Contributing
 
-We're still working on the main project development to get a good starting point to open it to other developers. At the moment we don't have any contributing guideline more than the obvious that... bug patches will be anytime very welcome! Once we have a development version that is suitable to install by others we'll add more detailed information here, so please take patience and keep coming here in a few days to look for something new.
+We're still working hard on the package main functionality development to get a good starting point before we publish it's source code. Once we have a development version that is suitable to install by others we'll publish the installation process and enable package issues menu. Anyway, we've already made a short [contributing reference](CONTRIBUTING.md). If you're already interested in collaborating with our project you can read it ;)
