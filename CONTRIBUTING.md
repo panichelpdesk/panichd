@@ -1,4 +1,4 @@
-# Thank you to come here! Any help will be much appreciated!
+# Thank you for coming here! Any help will be much appreciated!
 
 ## Contributions needed
 We will be very grateful to get help as new issues or Pull Requests in the following topics:
