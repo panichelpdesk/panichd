@@ -84,9 +84,9 @@ return [
   'agent-index-no-agents'         => 'There are no agents, ',
   'agent-index-create-new'        => 'Add agents',
   'agent-create-title'            => 'Add Agent',
+  'agent-create-form-agent'       => 'User',
   'agent-create-add-agents'       => 'Add Agents',
   'agent-create-no-users'         => 'There are no user accounts, create user accounts first.',
-  'agent-create-select-user'      => 'Select user accounts to be added as agents',
 
 // tickets-admin/agent/edit
   'agent-edit-title'                 => 'Categories for :agent',

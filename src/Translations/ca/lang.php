@@ -261,7 +261,7 @@ return [
   */
 
 // AgentsController
-  'agents-are-added-to-agents'                      => 'Agents :names S\'ha\n afegit com Agent\s',
+  'user-added-to-agents'                            => 'L\'usuari :name s\'ha afegit com a agent',
   'administrators-are-added-to-administrators'      => 'Administradors :names S\'ha\n agegit com Administrador\s',
   'agents-joined-categories-ok'                     => 'Categories triades amb èxit',
   'agents-is-removed-from-team'                     => 'Agent\s :name eliminat\s del grup d\'agents',

@@ -15,6 +15,9 @@
 	$(function(){
 		// Tooltips
 		$('.tooltip-info, .tooltip-show').tooltip();
+		
+		// Default Select2
+		$('.generate_default_select2').select2();
 	});
 	</script>
 @append

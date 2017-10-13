@@ -262,7 +262,7 @@ return [
   */
 
 // AgentsController
-  'agents-are-added-to-agents'                      => 'Agents :names are added to agents',
+  'user-added-to-agents'                            => 'User :names has been added to agents',
   'administrators-are-added-to-administrators'      => 'Administrators :names are added to administrators', //New
   'agents-joined-categories-ok'                     => 'Joined categories successfully',
   'agents-is-removed-from-team'                     => 'Removed agent\s :name from the agent team',

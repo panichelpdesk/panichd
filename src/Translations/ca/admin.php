@@ -84,9 +84,9 @@ return [
   'agent-index-no-agents'         => 'No hi ha agents, ',
   'agent-index-create-new'        => 'Afegir agents',
   'agent-create-title'            => 'Afegir Agent',
+  'agent-create-form-agent'       => 'Usuari',
   'agent-create-add-agents'       => 'Afegir Agents',
   'agent-create-no-users'         => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
-  'agent-create-select-user'      => 'Tria comptes d\'usuari per a utilitzar-se com agents',
 
 // tickets-admin/administrators/____
   'administrator-index-title'                   => 'Gestió d\'Administradors',
