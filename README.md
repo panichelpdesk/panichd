@@ -1,88 +1,35 @@
-# Ticketit
+# Panic Help Desk
+This package is a ticketing system for [Laravel 5](https://laravel.com/) based on [Ticketit](https://github.com/thekordy/ticketit). It has of course [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, tags, calendar fields and a new filters panel. It may be installed in any Laravel 5 based project as it has it's own routes and should not affect other packages.
 
-A simple helpdesk tickets system for Laravel 5.1+ (5.1, 5.2, 5.3, 5.4 and 5.5) which integrates smoothly with Laravel default users and auth system. 
-It will integrate into your current Laravel project within minutes, and you can offer your customers and your team a nice and simple support ticket system. 
+## Table of contents
 
-## Features:
-1. Three main users roles users, agents, and admins
-2. Users can create tickets, keep track of their tickets status, giving comments, and close their own tickets (access permissions are configurable)
-3. Auto assigning agents to tickets, the system searches for agents in specific department and auto select the agent with lowest queue
-4. Simple admin panel 
-5. Localization (Arabic, Brazilian Portuguese, Deutsch (German), English, Farsi, French, Hungarian, Italian, Persian, Russian, and Spanish language packs are included)
-6. Very simple installation and integration process
-7. Admin dashboard with statistics and performance tracking graphs
-8. Simple text editor for tickets descriptions and comments allows images upload
+* [Description](#description)
+  + [Ticketit features](#ticketit-features)
+  + [PanicHD features](#panichd-features)
+* [Contributing](#contributing)
+* Credits (to do)
 
-[Full features list (12+) and screen shots](https://github.com/thekordy/ticketit/wiki/v0.2.3-Features)
+## Description
+### Ticketit features
+Ticketit is a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. It has three user roles: Users (from Laravel integrated auth), agents and admins. Admins can create categories for tickets and assign agents to them. You can create tickets via form and attach screenshots to them. Users can list and view their open tickets and communicate with agent through a comment form. It also has many statistics, a very flexible configuration system and many translations including German, Spanish, Russian, Arabic...
 
-## Quick installation
+Ticketit developers currently have stopped major changes in current release and, from many moths ago, they're planning a new version of the package with more focus on developers. If you want to read more about ticketit features, please follow [this link to their features and screenshots specific wiki page](https://github.com/thekordy/ticketit/wiki/v0.2-Features).
 
-If you'd like to install Ticketit as a standalone app, use our [quick installer](https://github.com/balping/ticketit-app). This is a Laravel application pre-configured to work with Ticketit. Using the quick installer minimises the efforts and knowledge about Laravel needed to install Ticketit.
+### PanicHD features
+We've created the following additional features to the ticketit package:
+* Ticket tags: Agents and admins can manage and search them. Each category has an independent tag list from each other. Tags can be colored.
+* File attachments: For ticket or comment. List images separately and view them in a javascript gallery. Images can also be cropped. All attached files can be renamed and have a description.
+* Intervention field: It may hold taken actions resume for a ticket. It can get additional information from new comments.
+* Description and intervention fields are also visible and searchable in ticket list.
+* Interactive ticket creation form: Admin, of course, always sees all fields in ticket form, but for user and agent roles, any user sees user or agent fields depending on chosen category in the form. 
+* Ticket calendar: You can specify a start date and a limit date for a ticket. With a combination of this fields, you bring tickets in many different situations deppending on their calendar status, that you can filter and control, like:
+  + Tickets that are scheduled to some day in the future (this thurdsay? this month?)
+  + Tickets that end today or tomorrow
+  + Tickets that already expired
+  + Tickets that were just added and started some weeks ago
+* Ticket filters: You can filter the ticket list by many different criteria in a specific filters panel: Calendar, category and agent. Of course you still can make an even more specific filter within the ticket list thanks to Datatables engine.
+* Agent as a user: Agent may have user level on some categories and agent on others, so we added a button to let them switch their point of view, from agent to user and vice-versa.
 
-However if you'd like to include Ticketit in your existing project, skip to the [next section](#installation-manual).
+## Contributing
 
-## Installation (manual):
-
-### Requirements
-**First Make sure you have got this Laravel setup working:**
-
-1. [Laravel 5.1+](http://laravel.com/docs/5.4#installation)
-2. [Users table](http://laravel.com/docs/5.4/authentication)
-3. [Laravel email configuration](http://laravel.com/docs/5.4/mail#sending-mail)
-4. Bootstrap 3+
-5. Jquery
-
-**Dependents that are getting installed and configured automatically by Ticketit (no action required from you)**
-
-1. [LaravelCollective HTML](https://github.com/laravelcollective/html)
-2. [Laravel Datatables](https://github.com/yajra/laravel-datatables)
-3. [HTML Purifier](https://github.com/mewebstudio/Purifier)
-
-
-### Installation steps (4-8 minutes)
-
-
-Step 1. Run this code via your terminal (1-2 minutes)
-```shell
-composer require kordy/ticketit:0.*
-```
-
-Step 2. After install, you have to add this line on your `config/app.php` in Service Providers section (1-2 minutes).
-```php
-Kordy\Ticketit\TicketitServiceProvider::class,
-```
-
-Step 3. [Check if App\User exists](https://github.com/thekordy/ticketit/wiki/Make-sure-that-App%5CUser-exists)
-
-Step 4. Make sure you have [authentication](https://laravel.com/docs/5.4/authentication#introduction) set up. In 5.2+, you can use `php artisan make:auth`
-
-Step 5. [Setting up your master view for Ticketit integration (1-2 minutes)](https://github.com/thekordy/ticketit/wiki/Integrating-Ticketit-views-with-your-project-template)
-
-Step 6. Register at least one user into the system and log it in.
-
-Step 7. Go ahead to http://your-project-url/tickets-install to finalize the installation (1-2 minutes)
-
-Default ticketit front route: http://your-project-url/tickets
-
-Default ticketit admin route: http://your-project-url/tickets-admin
-
-**Notes:**
-
-Make sure you have created at least one status, one prority, and one category before you start creating tickets.
-
-If you move your installation folder to another path (or server), you need to update the row with slug='routes' in table `ticketit_settings`. After that, don't forget to flush the entire cache.
-
-## Documentation
-[Ticketit Wiki](https://github.com/thekordy/ticketit/wiki)
-
-## Support:
-[Review features requests, give your feedback, suggest features, report issues](https://github.com/thekordy/ticketit/issues)
-
-## Live Demo
-http://ticketit.kordy.info/tickets
-
-## Project contributors (the project heros):
-
-Big thank you for all active people who took from their time to give their feedback and suggestions, they helped a lot to improve Ticketit for all of us.
-
-https://github.com/thekordy/ticketit/graphs/contributors
+We're still working hard on the package main functionality development to get a good starting point before we publish it's source code. Once we have a development version that is suitable to install by others we'll publish the installation process and enable package issues menu. Anyway, we've already made a short [contributing reference](CONTRIBUTING.md). If you're already interested in collaborating with our project you can read it ;)
