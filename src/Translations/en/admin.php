@@ -21,7 +21,7 @@ return [
   'table-name'                    => 'Name',
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
-  'table-categories-autoassign'   => 'Category autoassign',
+  'table-categories-autoasg-title'=> 'Autoassign for new tickets',
   'table-remove-agent'            => 'Remove from agents',
   'table-remove-administrator'    => 'Remove from administrators', // New
 
@@ -89,10 +89,10 @@ return [
   'agent-create-no-users'         => 'There are no user accounts, create user accounts first.',
 
 // tickets-admin/agent/edit
-  'agent-edit-title'                 => 'Categories for :agent',
+  'agent-edit-title'                 => 'User permissions :agent',
   'agent-edit-table-category'        => 'Category',
-  'agent-edit-table-active'          => 'Active',
-  'agent-edit-table-autoassign'      => 'Autoassign',
+  'agent-edit-table-agent'           => 'Agent permission',
+  'agent-edit-table-autoassign'      => 'New tickets auto.',
 
 // tickets-admin/administrators/____
   'administrator-index-title'                   => 'Administrator Management',  //new

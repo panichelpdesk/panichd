@@ -28,7 +28,6 @@
                         <td>{{ trans('ticketit::admin.table-id') }}</td>
                         <td>{{ trans('ticketit::admin.table-name') }}</td>
                         <td>{{ trans('ticketit::admin.table-categories') }}</td>
-						<td>{{ trans('ticketit::admin.table-categories-autoassign') }}</td>                        
                         <td>{{ trans('ticketit::admin.table-remove-agent') }}</td>
                     </tr>
                 </thead>
@@ -43,25 +42,23 @@
                         </td>
                         <td>
                             @foreach($agent->categories as $category)
-                                <span style="color: {{ $category->color }}">
-                                    {{  $category->name }}
-                                </span>
-                            @endforeach
-							
-							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}">{{ trans('ticketit::admin.btn-edit')}}</button>
-							
-							@include ('ticketit::admin.agent.form_edit')
-                        </td>
-						<td>
-                            @foreach($agent->categories as $category)
-								@if ($category->pivot->autoassign==1)
+                                @if ($category->pivot->autoassign==1)
+									<span class="tooltip-info" style="display: inline-block; border: 1px solid {{ $category->color }}; border-width: 0px 0px 1px 0px; color: {{ $category->color }};  margin: 0em 0.5em; padding: 0.1em" title="{{ trans('ticketit::admin.table-categories-autoasg-title')}}">
+									{{  $category->name }}
+									 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+									</span>
+								@else
 									<span style="color: {{ $category->color }}">
 										{{  $category->name }}
 									</span>
 								@endif
 								
                             @endforeach
-                        </td>
+							
+							 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('ticketit::admin.btn-edit')}}</button>
+							
+							@include ('ticketit::admin.agent.form_edit')
+                        </td>						
                         <td>
                             {!! CollectiveForm::open([
                             'method' => 'DELETE',
@@ -71,7 +68,7 @@
                                         ],
                             'id' => "delete-$agent->id"
                             ]) !!}
-                            {!! CollectiveForm::submit(trans('ticketit::admin.btn-remove'), ['class' => 'btn btn-danger']) !!}
+                            {!! CollectiveForm::submit(trans('ticketit::admin.btn-remove'), ['class' => 'btn btn-default btn-sm']) !!}
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>

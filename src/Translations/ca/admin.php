@@ -21,6 +21,7 @@ return [
   'table-name'                    => 'Nom',
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
+  'table-categories-autoasg-title'=> 'Assignació automàtica a nous tiquets',
   'table-join-category'           => 'Categories afegides',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
@@ -88,6 +89,12 @@ return [
   'agent-create-add-agents'       => 'Afegir Agents',
   'agent-create-no-users'         => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
 
+  // tickets-admin/agent/edit
+  'agent-edit-title'                 => 'Permisos d\'usuari per a :agent',
+  'agent-edit-table-category'        => 'Categoria',
+  'agent-edit-table-agent'           => 'Permisos d\'agent',
+  'agent-edit-table-autoassign'      => 'Tiquets nous auto.',
+  
 // tickets-admin/administrators/____
   'administrator-index-title'                   => 'Gestió d\'Administradors',
   'btn-create-new-administrator'                => 'Crear nou administrador',

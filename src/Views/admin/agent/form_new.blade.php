@@ -25,7 +25,7 @@
 		<br /><br /><br />
 		<table class="table table-hover table-striped">
 			<thead><th>{{ trans('ticketit::admin.agent-edit-table-category') }}</th>
-			<th>{{ trans('ticketit::admin.agent-edit-table-active') }}</th>
+			<th>{{ trans('ticketit::admin.agent-edit-table-agent') }}</th>
 			<th>{{ trans('ticketit::admin.agent-edit-table-autoassign') }}</th></thead>
 			<tbody>
 			@foreach($categories as $category)
