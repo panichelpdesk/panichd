@@ -3,6 +3,7 @@
 namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Kordy\Ticketit\Models\Agent;
@@ -14,31 +15,37 @@ class AgentsController extends Controller
     public function index()
     {
         $agents = Agent::agents()->with('categories')->get();
+		$not_agents = Agent::where('ticketit_agent', '0')->get();
         $categories = Category::get();
 
-        return view('ticketit::admin.agent.index', compact('agents', 'categories'));
+        return view('ticketit::admin.agent.index', compact('agents', 'not_agents', 'categories'));
     }
 
     public function create()
     {
-        $users = Agent::paginate(Setting::grab('paginate_items'));
-
-        return view('ticketit::admin.agent.create', compact('users'));
+        
     }
 
     public function store(Request $request)
     {
-        $agents_list = $this->addAgents($request->input('agents'));
-        $agents_names = implode(',', $agents_list);
+        DB::beginTransaction();
+		
+		$user = Agent::findOrFail($request->agent_id);
+		$user->ticketit_agent = true;
+		$user->save();
+		
+		$this->syncAgentCategories($request, $user->id, $user);
+		
+		DB::commit();
 
-        Session::flash('status', trans('ticketit::lang.agents-are-added-to-agents', ['names' => $agents_names]));
+        Session::flash('status', trans('ticketit::lang.user-added-to-agents', ['name' => $user->name]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
     }
 
     public function update($id, Request $request)
     {
-        $this->syncAgentCategories($id, $request);
+        $this->syncAgentCategories($request, $id);
 
         Session::flash('status', trans('ticketit::lang.agents-joined-categories-ok'));
 
@@ -52,25 +59,6 @@ class AgentsController extends Controller
         Session::flash('status', trans('ticketit::lang.agents-is-removed-from-team', ['name' => $agent->name]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
-    }
-
-    /**
-     * Assign users as agents.
-     *
-     * @param $user_ids
-     *
-     * @return array
-     */
-    public function addAgents($user_ids)
-    {
-        $users = Agent::find($user_ids);
-        foreach ($users as $user) {
-            $user->ticketit_agent = true;
-            $user->save();
-            $users_list[] = $user->name;
-        }
-
-        return $users_list;
     }
 
     /**
@@ -104,9 +92,11 @@ class AgentsController extends Controller
      * @param $id
      * @param Request $request
      */
-    public function syncAgentCategories($id, Request $request)
+    public function syncAgentCategories(Request $request, $id, $agent = false)
     {
-        $form_cats = $fc = ($request->input('agent_cats') == null) ? [] : $request->input('agent_cats');
+        if (!$agent) $agent = Agent::findOrFail($id);
+		
+		$form_cats = $fc = ($request->input('agent_cats') == null) ? [] : $request->input('agent_cats');
         $form_auto = ($request->input('agent_cats_autoassign') == null) ? [] : $request->input('agent_cats_autoassign');
 
         // Attach Autoassign parameter
@@ -116,8 +106,6 @@ class AgentsController extends Controller
                 $form_cats[$cat] = ['autoassign'=>(in_array($cat, $form_auto) ? '1' : '0')];
             }
         }
-
-        $agent = Agent::find($id);
 
         // Update Agent Categories in ticketit_categories_users
         $agent->categories()->sync($form_cats);

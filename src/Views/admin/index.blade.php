@@ -14,7 +14,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 5em;">
-                                <i class="glyphicon glyphicon-th"></i>
+                                <i class="glyphicon glyphicon-book"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $tickets_count }}</h1>
@@ -25,11 +25,11 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-4">
-                <div class="panel panel-danger">
+                <div class="panel panel-warning">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 5em;">
-                                <i class="glyphicon glyphicon-wrench"></i>
+                                <i class="glyphicon glyphicon-file"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $open_tickets_count }}</h1>
@@ -44,7 +44,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 5em;">
-                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <i class="glyphicon glyphicon-ok-circle"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $closed_tickets_count }}</h1>

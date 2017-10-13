@@ -352,6 +352,31 @@ class Ticket extends Model
 		
 		return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> $date_text</span>";
 	}
+	
+	/**
+	 * Get abbreviated and localized last update time
+	 *
+	 * @return string
+	*/
+	public function getUpdatedAbbr()
+	{
+		$seconds = $this->updated_at->diffInSeconds();
+		$days = $this->updated_at->diffInDays();
+		
+		if ($seconds < 60){
+			return $seconds." ".trans('ticketit::lang.second-abbr');
+		}elseif($seconds < 3600){
+			return $this->updated_at->diffInMinutes()." ".trans('ticketit::lang.minute-abbr');
+		}elseif($days < 1){
+			return $this->updated_at->diffInHours()." ".trans('ticketit::lang.hour-abbr');
+		}elseif($days < 15){
+			return $days." ".trans('ticketit::lang.day-abbr');
+		}elseif($days < 32){
+			return $this->updated_at->diffInWeeks()." ".trans('ticketit::lang.week-abbr');
+		}else{
+			return $this->updated_at->diffInMonths()." ".trans('ticketit::lang.month-abbr');
+		}
+	}
 
     /**
      * Get all user tickets.

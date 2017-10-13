@@ -1,8 +1,6 @@
 <script type="text/javascript">
 var elem_i="";
 $(function(){	
-	$('.tooltip-info').tooltip();
-	
 	$('.grouped_check_list').sortable();
 	
 	// Category color picker

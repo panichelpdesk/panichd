@@ -9,6 +9,7 @@
 @section('content')
     @include('ticketit::tickets.index')
 	@include('ticketit::tickets.partials.modal_agent')
+	@include('ticketit::tickets.partials.priority_popover_form')
 @stop
 
 @section('footer')
@@ -53,7 +54,6 @@
 				{ data: 'content', name: 'content' },
 				{ data: 'intervention', name: 'intervention' },
 	            { data: 'status', name: 'ticketit_statuses.name' },
-	            { data: 'updated_at', name: 'ticketit.updated_at' },
             	@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
 					{ data: 'agent', name: 'agent.name' },
 				@endif				
@@ -66,6 +66,9 @@
 						@endif
 					@endif
 					{ data: 'calendar', name: 'calendar_order', searchable: false },
+				@endif
+				{ data: 'updated_at', name: 'ticketit.updated_at' },
+				@if( $u->currentLevel() > 1 )
 					@if (session('ticketit_filter_category')=="")
 						{ data: 'category', name: 'ticketit_categories.name' },
 					@endif
@@ -73,7 +76,7 @@
 	            @endif				
 	        ],
 			order: [
-				[5,'desc']				
+				[0,'desc']				
 			]
 			
 	    });		
@@ -102,25 +105,19 @@
 				$(document).find('tr').removeClass('hover');
 			});
 			
-			// Agent change: Popover menu
-			$(".jquery_agent_change_integrated").popover({ trigger: "manual" , html: true, animation:false})				
-				.on("mouseenter", function () {
-					var _this = this;
-					$(this).popover("show");
-					$(".popover").on("mouseleave", function () {
-						$(_this).popover('hide');
-					});					
-				}).on("mouseleave", function () {
-					var _this = this;
-					setTimeout(function () {
-						if (!$(".popover:hover").length) {
-							$(_this).popover("hide");
-						}
-					}, 200);					
+			// Agent / Priority change: Popover menu
+			$(".jquery_popover")
+				.tooltip({
+					placement: 'top',
+					trigger: "hover"
+				})
+				.popover({ html: true})
+			.click(function(e){
+				e.preventDefault();
 			});
 			
 			// Agent change: Popover menu submit
-			$(document).on('click','.jquery_submit_integrated_agent',function(e){
+			$(document).on('click','.submit_agent_popover',function(e){
 				e.preventDefault();
 								
 				// Form fields
@@ -131,12 +128,23 @@
 				$('#modalAgentChange').find('form').submit();
 				
 			});
+			
+			// Agent change: Popover menu submit
+			$(document).on('click','.submit_priority_popover',function(e){
+				e.preventDefault();
+								
+				// Form fields
+				$('#PriorityPopoverForm #priority_ticket_id_field').val($(this).attr('data-ticket-id'));
+				var priority_val = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
+				$('#PriorityPopoverForm #priority_id_field').val(priority_val);
+			
+				// Form submit
+				$('#PriorityPopoverForm').find('form').submit();
+				
+			});
 
 			// Agent change: Tooltip for 1 agents
-			$(".jquery_agent_change_info").tooltip();
-			
 			$(".tooltip-info").tooltip();
-			
 		});
 
 		@yield('footer_jquery')

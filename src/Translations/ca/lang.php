@@ -6,8 +6,16 @@ return [
   *  Constants
   */
 
+  'nav-new-tickets'                  => 'Nous',
+  'nav-new-tickets-title'            => 'Tiquets nous',
+  'nav-create-ticket'                => 'Crear nou',
+  'nav-create-ticket-title'          => 'Crear nou tiquet',
   'nav-active-tickets'               => 'Oberts',
+  'nav-active-tickets-title'         => 'Tiquets oberts',
   'nav-completed-tickets'            => 'Tancats',
+  'nav-completed-tickets-title'      => 'Tiquets tancats',
+
+  
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
@@ -20,12 +28,16 @@ return [
   'table-intervention'               => 'Actuació',
   'table-owner'                      => 'Propietari',
   'table-status'                     => 'Estat',
-  'table-last-updated'               => 'Última actualització',
+  'table-last-updated'               => 'Act.',
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
   'table-calendar'                   => 'Agenda',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
+  
+  'table-info-attachments-total'     => ':num fitxers adjunts',
+  'table-info-comments-total'        => ':num comentaris totals.',
+  'table-info-comments-recent'       => ':num recents.',
   
   'calendar-active'            => 'Va començar :description',
   'calendar-active-future'     => 'Comença :description',
@@ -38,6 +50,9 @@ return [
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
   'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
+  
+  // Priority related
+  'table-change-priority'            => 'Canviar la prioritat',
 
   // Datatables
   'table-decimal'                    => '',
@@ -95,7 +110,7 @@ return [
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
-  'comments'                         => 'Comentaris',
+  'comments'                         => 'Comentaris',  
   'created'                          => 'Creat',
   'crop-image'                       => 'Retallar imatge',
   'date-format'                      => 'Y-m-d',
@@ -135,6 +150,14 @@ return [
   'day_5'                            => 'Divendres',
   'day_6'                            => 'Dissabte',
   'day_7'                            => 'Diumenge',
+  
+  // Time units abbreviations
+  'second-abbr'                      => 's.',
+  'minute-abbr'                      => 'mi.',
+  'hour-abbr'                        => 'h.',
+  'day-abbr'                         => 'd.',
+  'week-abbr'                        => 'st.',
+  'month-abbr'                       => 'ms.',
 
  /*
   *  Page specific
@@ -152,9 +175,15 @@ return [
   'index-active-none'                => 'No hi ha tiquets oberts,',
   'index-create-new-ticket'          => 'crear nou tiquet',
   'index-complete-check'             => 'Assegureu-vos de revisar els tiquets tancats si no pot trobar el seu tiquet.',
-
   'ticket-notices-title'             => 'Avisos actius', 
+
+// Ticket forms messages
+  'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-agent-ok'                  => 'Agent canviat correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-priority-same'             => 'No has canviat la prioritat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-priority-ok'               => 'Prioritat canviada correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
   
+// tickets/create
   'create-ticket-title'              => 'Nou formulari de Tiquet',
   'create-new-ticket'                => 'Crear Nou Tiquet',
   'create-ticket-owner'              => 'Remitent',
@@ -232,7 +261,7 @@ return [
   */
 
 // AgentsController
-  'agents-are-added-to-agents'                      => 'Agents :names S\'ha\n afegit com Agent\s',
+  'user-added-to-agents'                            => 'L\'usuari :name s\'ha afegit com a agent',
   'administrators-are-added-to-administrators'      => 'Administradors :names S\'ha\n agegit com Administrador\s',
   'agents-joined-categories-ok'                     => 'Categories triades amb èxit',
   'agents-is-removed-from-team'                     => 'Agent\s :name eliminat\s del grup d\'agents',

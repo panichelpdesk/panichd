@@ -27,7 +27,7 @@
 						</div>
 					@endif					
 					<div class="form-group">
-						<div class="col-lg-12">
+						<div class="col-lg-12 summernote-text-wrapper">
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>

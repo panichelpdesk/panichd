@@ -32,7 +32,7 @@ class TicketsController extends Controller
     public function __construct(Ticket $tickets, Agent $agent)
     {
         $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update']]);
+        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority']]);
         $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -124,8 +124,6 @@ class TicketsController extends Controller
 		
         $this->renderTicketTable($collection);
 
-        $collection->editColumn('updated_at', '{!! \Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $updated_at)->diffForHumans() !!}');
-
         // method rawColumns was introduced in laravel-datatables 7, which is only compatible with >L5.4
         // in previous laravel-datatables versions escaping columns wasn't defaut
         if (LaravelVersion::min('5.4')) {
@@ -137,6 +135,47 @@ class TicketsController extends Controller
 
     public function renderTicketTable($collection)
     {
+
+		// Column edits		
+        $collection->editColumn('subject', function ($ticket) {
+            return (string) link_to_route(
+                Setting::grab('main_route').'.show',
+                $ticket->subject,
+                $ticket->id
+            );
+        });
+		
+		$collection->editColumn('content', function ($ticket) {
+			$field=$ticket->content;
+			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('ticketit::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+						
+			return $field;
+		});
+		
+		$collection->editColumn('intervention', function ($ticket) {
+			$field=$ticket->intervention;
+			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
+			if ($ticket->recent_comments_count>0){
+				$field.=$ticket->recent_comments_count;
+			}
+			if ($ticket->comments_count>0){
+				$field.=' <span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('ticketit::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('ticketit::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+			}
+			
+			return $field;
+		});
+
+        $collection->editColumn('status', function ($ticket) {
+            $color = $ticket->color_status;
+            $status = e($ticket->status);
+
+            return "<div style='color: $color'>$status</div>";
+        });
+		
+		$collection->editColumn('updated_at', function ($ticket){
+			return '<span class="tooltip-info" data-toggle="tooltip" title="'.Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans().'">'.$ticket->getUpdatedAbbr().'</span>';
+		});
+
 		// Agents for each category
 		$a_cat_pre = Category::select('id')
 			->withCount('agents')
@@ -155,52 +194,40 @@ class TicketsController extends Controller
 			foreach ($cat['agents'] as $agent){
 				$html.='<label><input type="radio" name="%1$s_agent" value="'.$agent['id'].'"> '.$agent['name'].'</label><br />';
 			}
-			$html.='<br /><button type="button" class="jquery_submit_integrated_agent" data-ticket-id="%1$s">'.trans('ticketit::lang.btn-change').'</button></div>';
+			$html.='<br /><button type="button" class="submit_agent_popover" data-ticket-id="%1$s">'.trans('ticketit::lang.btn-change').'</button></div>';
 			$a_cat[$cat['id']]['html']=$html;
-			
 		}
 		
-		// Column edits		
-        $collection->editColumn('subject', function ($ticket) {
-            return (string) link_to_route(
-                Setting::grab('main_route').'.show',
-                $ticket->subject,
-                $ticket->id
-            );
-        });
-		
-		$collection->editColumn('content', function ($ticket) {
-			$field=$ticket->content;
-			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip" title="'.trans('ticketit::lang.attachments').'"></span>';
-						
-			return $field;
-		});
-		
-		$collection->editColumn('intervention', function ($ticket) {
-			$field=$ticket->intervention;
-			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
-			if ($ticket->recent_comments_count>0){
-				$field.=$ticket->recent_comments_count;
+		// Agent column with $a_cat[]
+		$collection->editColumn('agent', function ($ticket) use($a_cat) {
+            $ticket = $this->tickets->find($ticket->id);
+			$count = $a_cat[$ticket->category_id]['agents_count'];			
+			
+            $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_popover')).'" ';
+			
+			if($count>4){
+				$text.= ' title="'.trans('ticketit::lang.table-change-agent').'"';
+			}elseif($count==1){
+				$text.= ' title="'.trans('ticketit::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+			}else{
+				$text.= ' title="'.trans('ticketit::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
 			}
-			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-transfer" title="'.trans('ticketit::lang.comments').'"></span>';
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
+				
+			return $text;
+        });		
+		
+        $collection->editColumn('priority', function ($ticket) {
+            $a_priorities = Models\Priority::all();
+			$html = "";
+			foreach ($a_priorities as $priority){
+				$html.= '<label style="color: '.$priority->color.'"><input type="radio" name="'.$ticket->id.'_priority" value="'.$priority->id.'"> '.$priority->name.'</label><br />';
 			}
 			
-			return $field;
-		});
+			$html = '<div>'.$html.'</div><br />'
+				.'<button type="button" class="submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('ticketit::lang.btn-change').'</button>';
 
-        $collection->editColumn('status', function ($ticket) {
-            $color = $ticket->color_status;
-            $status = e($ticket->status);
-
-            return "<div style='color: $color'>$status</div>";
-        });
-
-        $collection->editColumn('priority', function ($ticket) {
-            $color = $ticket->color_priority;
-            $priority = e($ticket->priority);
-
-            return "<div style='color: $color'>$priority</div>";
+            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'.trans('ticketit::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
         });
 		
 		$collection->editColumn('owner_name', function ($ticket) {
@@ -214,12 +241,12 @@ class TicketsController extends Controller
 		
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_info', function ($ticket) {
-				$dept_info = $title = "";			
+				$dept_info = $title = "";
 				
 				if ($ticket->owner->person_id and $ticket->owner->personDepts[0]){
 					$dept_info = $ticket->owner->personDepts[0]->department->resume();
 					$title = $ticket->owner->personDepts[0]->department->title();
-				}				
+				}
 				
 				return "<span title=\"$title\">$dept_info</span>";
 			});
@@ -234,24 +261,6 @@ class TicketsController extends Controller
             $category = e($ticket->category);
 
             return "<div style='color: $color'>$category</div>";
-        });
-
-        $collection->editColumn('agent', function ($ticket) use($a_cat) {
-            $ticket = $this->tickets->find($ticket->id);
-			$count = $a_cat[$ticket->category_id]['agents_count'];			
-			
-            $text = '<a href="#" class="jquery_agent_change_'.($count>4 ? 'modal' : ($count == 1 ? 'info' : 'integrated')).'" ';
-			
-			if($count>4){
-				$text.= ' title="'.trans('ticketit::lang.table-change-agent').'"';
-			}elseif($count==1){
-				$text.= ' title="'.trans('ticketit::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
-			}else{
-				$text.= ' title="'.trans('ticketit::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
-			}
-			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
-				
-			return $text;
         });
 
         $collection->editColumn('tags', function ($ticket) {
@@ -1071,12 +1080,11 @@ class TicketsController extends Controller
 					$comment->content = $comment->content . $a_clarification['content'];
 					$comment->html = $comment->html . $a_clarification['html'];
 				}
-			}			
+			}
 
 			$comment->ticket_id = $id;
 			$comment->user_id = $user->id;
 			$comment->save();
-			
 			
             session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -1173,10 +1181,15 @@ class TicketsController extends Controller
 	*/
 	public function changeAgent(Request $request){
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
-		Agent::findOrFail($request->input('agent_id'));
+		$old_agent = $ticket->agent()->first();
+		$new_agent = Agent::findOrFail($request->input('agent_id'));
 		
 		if ($ticket->agent_id==$request->input('agent_id')){
-			return redirect()->back()->with('warning', 'No has canviat l\'agent');
+			return redirect()->back()->with('warning', trans('ticketit::lang.update-agent-same', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
 		}else{
 			$ticket->agent_id = $request->input('agent_id');
 			
@@ -1184,10 +1197,49 @@ class TicketsController extends Controller
 				$ticket->status_id=Setting::grab('default_reopen_status_id');
 			}
 			$ticket->save();
-			return redirect()->back()->with('status', 'Agent canviat correctament');
+			
+			session()->flash('status', trans('ticketit::lang.update-agent-ok', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title'),
+				'old_agent' => $old_agent->name,
+				'new_agent' => $new_agent->name
+			]));
+			
+			return redirect()->route(Setting::grab('main_route').'.index');
 		}		
 	}
-	
+
+	/*
+	 * Change priority in ticket list
+	*/
+	public function changePriority(Request $request){
+		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$old_priority = $ticket->priority()->first();		
+		$new_priority = Models\Priority::findOrFail($request->input('priority_id'));
+		
+		if ($ticket->priority_id==$request->input('priority_id')){
+			return redirect()->back()->with('warning', trans('ticketit::lang.update-priority-same', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title')
+			]));
+		}else{
+			$ticket->priority_id = $request->input('priority_id');
+			$ticket->save();
+			
+			session()->flash('status', trans('ticketit::lang.update-priority-ok', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('ticketit::lang.ticket-status-link-title'),
+				'old' => $old_priority->name,
+				'new' => $new_priority->name
+			]));
+			
+			return redirect()->route(Setting::grab('main_route').'.index');
+		}		
+	}
+
 	/**
 	 * Return integer user level for specified category (false = no permission, 1 = user, 2 = agent, 3 = admin)
 	*/

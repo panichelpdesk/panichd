@@ -276,6 +276,8 @@ class SettingsTableSeeder extends Seeder
              * This setting stores the path to the json config file, relative to project route
              */
             'summernote_options_json_file' => 'vendor/kordy/ticketit/src/JSON/summernote_init.json',
+			/* User role specific summernote options json string */
+			'summernote_options_user' => 'no',
 
             /*
              * Set which html tags are allowed
@@ -321,6 +323,12 @@ class SettingsTableSeeder extends Seeder
 			 * Allow file attachments for tickets and comments
 			*/
 			'ticket_attachments_feature' => 'yes',
+			
+			/*
+			 * Bootstrap widths in where specified navigation elements get text replaced with an icon
+			*/
+			'nav_icons_user_sizes' => 'sm',
+			'nav_icons_admin_sizes' => 'sm,md',
         ];
     }
 }

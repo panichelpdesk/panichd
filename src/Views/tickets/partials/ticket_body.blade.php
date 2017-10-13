@@ -118,14 +118,14 @@
 						<div>
 							<b>{{ trans('ticketit::lang.description') }}</b>
 						</div>
-						<p> {!! $ticket->html !!} </p>
+						<div class="summernote-text-wrapper"> {!! $ticket->html !!} </div>
 					</div>
 					@if ($ticket->intervention_html)
 						<div class="intervention-col col-md-6">
 							<div>
 								<b>{{ trans('ticketit::lang.intervention') }}</b>
 							</div>
-							<p> {!! $ticket->intervention_html !!} </p>
+							<div class="summernote-text-wrapper"> {!! $ticket->intervention_html !!} </div>
 						</div>
 					@endif					
 				</div>

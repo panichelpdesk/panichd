@@ -8,6 +8,7 @@ return [
   'nav-settings'                  => 'Paràmetres',
   'nav-agents'                    => 'Agents',
   'nav-dashboard'                 => 'Panell admin.',
+  'nav-dashboard-title'           => 'Panell d\'administrador',
   'nav-categories'                => 'Categories',
   'nav-priorities'                => 'Prioritats',
   'nav-statuses'                  => 'Estats',
@@ -20,6 +21,7 @@ return [
   'table-name'                    => 'Nom',
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
+  'table-categories-autoasg-title'=> 'Assignació automàtica a nous tiquets',
   'table-join-category'           => 'Categories afegides',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
@@ -83,10 +85,16 @@ return [
   'agent-index-no-agents'         => 'No hi ha agents, ',
   'agent-index-create-new'        => 'Afegir agents',
   'agent-create-title'            => 'Afegir Agent',
+  'agent-create-form-agent'       => 'Usuari',
   'agent-create-add-agents'       => 'Afegir Agents',
   'agent-create-no-users'         => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
-  'agent-create-select-user'      => 'Tria comptes d\'usuari per a utilitzar-se com agents',
 
+  // tickets-admin/agent/edit
+  'agent-edit-title'                 => 'Permisos d\'usuari per a :agent',
+  'agent-edit-table-category'        => 'Categoria',
+  'agent-edit-table-agent'           => 'Permisos d\'agent',
+  'agent-edit-table-autoassign'      => 'Tiquets nous auto.',
+  
 // tickets-admin/administrators/____
   'administrator-index-title'                   => 'Gestió d\'Administradors',
   'btn-create-new-administrator'                => 'Crear nou administrador',

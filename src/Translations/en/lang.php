@@ -6,8 +6,14 @@ return [
   *  Constants
   */
 
-  'nav-active-tickets'               => 'Active Tickets',
-  'nav-completed-tickets'            => 'Completed Tickets',
+  'nav-new-tickets'                  => 'New',
+  'nav-new-tickets-title'            => 'New tickets',
+  'nav-create-ticket'                => 'Create new',
+  'nav-create-ticket-title'          => 'Create new ticket',
+  'nav-active-tickets'               => 'Active',
+  'nav-active-tickets-title'         => 'Active tickets',
+  'nav-completed-tickets'            => 'Completed',
+  'nav-completed-tickets-title'      => 'Completed tickets',
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-Z\'0-9¡!¿?,;.:\-\s]*$/',
@@ -20,12 +26,16 @@ return [
   'table-intervention'               => 'Intevention',
   'table-owner'                      => 'Owner',
   'table-status'                     => 'Status',
-  'table-last-updated'               => 'Last Updated',
+  'table-last-updated'               => 'Upd.',
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
   'table-calendar'                   => 'Calendar',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
+  
+  'table-info-attachments-total'     => ':num attached files',
+  'table-comments-total'             => ':num Total comments.',
+  'table-comments-recent'            => ':num recent ones.',
 
   'calendar-active'            => 'Started :description',
   'calendar-active-future'     => 'Starts :description',
@@ -38,6 +48,9 @@ return [
   // Agent related
   'table-change-agent'               => 'Change agent',
   'table-one-agent'                  => 'There is one agent in this category',
+  
+  // Priority related
+  'table-change-priority'            => 'Change priority',
   
   // Datatables
   'table-decimal'                    => '',
@@ -137,6 +150,14 @@ return [
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
   
+    // Time units abbreviations
+  'second-abbr'                      => 's.',
+  'minute-abbr'                      => 'mi.',
+  'hour-abbr'                        => 'h.',
+  'day-abbr'                         => 'd.',
+  'week-abbr'                        => 'wk.',
+  'month-abbr'                       => 'mo.',
+  
 
  /*
   *  Page specific
@@ -154,9 +175,15 @@ return [
   'index-active-none'                => 'There are no active tickets,',
   'index-create-new-ticket'          => 'create new ticket',
   'index-complete-check'             => 'Be sure to check Complete Tickets if you cannot find your ticket.',
-
   'ticket-notices-title'             => 'Active notices',  
 
+// Ticket forms messages
+  'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
+  'update-agent-ok'                  => 'Agent was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-priority-same'             => 'Priority was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
+  'update-priority-ok'               => 'Priority was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
+  
+// tickets/create
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
   'create-ticket-owner'              => 'Sender',
@@ -235,7 +262,7 @@ return [
   */
 
 // AgentsController
-  'agents-are-added-to-agents'                      => 'Agents :names are added to agents',
+  'user-added-to-agents'                            => 'User :names has been added to agents',
   'administrators-are-added-to-administrators'      => 'Administrators :names are added to administrators', //New
   'agents-joined-categories-ok'                     => 'Joined categories successfully',
   'agents-is-removed-from-team'                     => 'Removed agent\s :name from the agent team',

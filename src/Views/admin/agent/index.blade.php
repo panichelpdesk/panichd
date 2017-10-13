@@ -6,15 +6,13 @@
 
 @include('ticketit::shared.common')
 
+@include ('ticketit::admin.agent.form_new')
+
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>{{ trans('ticketit::admin.agent-index-title') }}
-                {!! link_to_route(
-                                    $setting->grab('admin_route').'.agent.create',
-                                    trans('ticketit::admin.btn-create-new-agent'), null,
-                                    ['class' => 'btn btn-primary pull-right'])
-                !!}
+                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('ticketit::admin.btn-create-new-agent') }}</button>
             </h2>
         </div>
 
@@ -30,7 +28,6 @@
                         <td>{{ trans('ticketit::admin.table-id') }}</td>
                         <td>{{ trans('ticketit::admin.table-name') }}</td>
                         <td>{{ trans('ticketit::admin.table-categories') }}</td>
-						<td>{{ trans('ticketit::admin.table-categories-autoassign') }}</td>                        
                         <td>{{ trans('ticketit::admin.table-remove-agent') }}</td>
                     </tr>
                 </thead>
@@ -45,72 +42,23 @@
                         </td>
                         <td>
                             @foreach($agent->categories as $category)
-                                <span style="color: {{ $category->color }}">
-                                    {{  $category->name }}
-                                </span>
-                            @endforeach
-							
-							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}">{{ trans('ticketit::admin.btn-edit')}}</button>
-							
-							<div class="modal fade" id="CategoriesPopupAgent{{ $agent->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-							  <div class="modal-dialog" role="document">
-								<div class="modal-content">
-								  <div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									<h4 class="modal-title" id="myModalLabel">{{ trans('ticketit::admin.agent-edit-title',['agent'=>$agent->name]) }}</h4>
-								  </div>
-								  <div class="modal-body">								  
-									{!! CollectiveForm::open([
-                                            'method' => 'PATCH',
-                                            'route' => [
-                                                        $setting->grab('admin_route').'.agent.update',
-                                                        $agent->id
-                                                        ],
-                                            ]) !!}
-									<table class="table table-hover table-striped">
-										<thead><th>{{ trans('ticketit::admin.agent-edit-table-category') }}</th>
-										<th>{{ trans('ticketit::admin.agent-edit-table-active') }}</th>
-										<th>{{ trans('ticketit::admin.agent-edit-table-autoassign') }}</th></thead>
-										<tbody>
-										@foreach($categories as $agent_cat)
-											<tr>
-											<td>{{ $agent_cat->name }}</td>
-											<td><input id="checkbox_agent_{!!$agent->id!!}_cat_{!! $agent_cat->id !!}" class="jquery_agent_cat{!! (count($agent->categories->whereIn('id',$agent_cat->id))>0) ? " checked" : ""  !!}" name="agent_cats[]"
-										   type="checkbox"
-										   value="{{ $agent_cat->id }}"
-										   {!! (count($agent->categories->whereIn('id',$agent_cat->id))>0) ? "checked=\"checked\"" : ""  !!}
-										   ></td>
-											<td><input id="checkbox_agent_{!!$agent->id!!}_cat_{!! $agent_cat->id !!}_auto" name="agent_cats_autoassign[]"
-										   type="checkbox"
-										   value="{{ $agent_cat->id }}" {!! ($agent->categories->whereIn('id',$agent_cat->id)->first()['pivot']['autoassign']==0) ? "" : "checked=\"checked\""  !!} 
-										   {!! (count($agent->categories->whereIn('id',$agent_cat->id)) == 0) ? "disabled=\"disabled\"" : ""  !!}
-										   
-										   ></td>
-											</tr>
-										@endforeach
-										</tbody>
-									</table>
-								  </div>
-								  <div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									{!! CollectiveForm::submit('Update', ['class' => 'btn btn-info']) !!}
-								  </div>
-								  
-									{!! CollectiveForm::close() !!}
-								</div>
-							  </div>
-							</div>
-                        </td>
-						<td>
-                            @foreach($agent->categories as $category)
-								@if ($category->pivot->autoassign==1)
+                                @if ($category->pivot->autoassign==1)
+									<span class="tooltip-info" style="display: inline-block; border: 1px solid {{ $category->color }}; border-width: 0px 0px 1px 0px; color: {{ $category->color }};  margin: 0em 0.5em; padding: 0.1em" title="{{ trans('ticketit::admin.table-categories-autoasg-title')}}">
+									{{  $category->name }}
+									 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+									</span>
+								@else
 									<span style="color: {{ $category->color }}">
 										{{  $category->name }}
 									</span>
 								@endif
 								
                             @endforeach
-                        </td>
+							
+							 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('ticketit::admin.btn-edit')}}</button>
+							
+							@include ('ticketit::admin.agent.form_edit')
+                        </td>						
                         <td>
                             {!! CollectiveForm::open([
                             'method' => 'DELETE',
@@ -120,7 +68,7 @@
                                         ],
                             'id' => "delete-$agent->id"
                             ]) !!}
-                            {!! CollectiveForm::submit(trans('ticketit::admin.btn-remove'), ['class' => 'btn btn-danger']) !!}
+                            {!! CollectiveForm::submit(trans('ticketit::admin.btn-remove'), ['class' => 'btn btn-default btn-sm']) !!}
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>
@@ -133,7 +81,7 @@
 
 @section('footer')
 <script type="text/javascript">
-	$(function(){
+	$(function(){		
 		$('.jquery_agent_cat').click(function(){
 			var checked=$(this).hasClass('checked');
 			if (checked){
@@ -146,4 +94,4 @@
 		});
 	});
 </script>
-@stop
+@append

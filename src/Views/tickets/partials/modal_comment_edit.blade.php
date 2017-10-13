@@ -14,7 +14,7 @@
 						'enctype' => 'multipart/form-data'
 					]) !!}
 					<div class="form-group">
-						<div class="col-lg-12">
+						<div class="col-lg-12 summernote-text-wrapper">
 							{!! CollectiveForm::textarea('content', $comment->html, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>

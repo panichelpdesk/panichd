@@ -50,10 +50,10 @@
 			
 			<div class="form-group"><!-- OWNER -->
                 
-				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('ticketit::lang.create-ticket-owner-help') }}" style="cursor: help"> *{{trans('ticketit::lang.create-ticket-owner')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('ticketit::lang.create-ticket-owner-help') }}"> *{{trans('ticketit::lang.create-ticket-owner')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
 
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-                    <select name="owner_id" id="owner_select2" class="form-control" style="display: none; width: 100%">
+                    <select name="owner_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
 					@foreach (Kordy\Ticketit\Models\Agent::with('userDepartment')->orderBy('name')->get() as $owner)
 						<option value="{{ $owner->id }}" {{ $owner->id == $ticket_owner_id ? 'selected="selected"' : '' }}>{{ $owner->name . (strpos($owner->email, '@tordera.cat') === false ? '' : ' - ' . $owner->email) }}
 						@if ($setting->grab('departments_notices_feature'))
@@ -165,8 +165,8 @@
 			@endif
 			
             <div class="form-group"><!-- DESCRIPTION -->
-                <label for="content" class="col-lg-2 control-label" title="{{ trans('ticketit::lang.create-ticket-describe-issue') }}" style="cursor: help"> *{{trans('ticketit::lang.description')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
-                <div class="col-lg-10">
+                <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('ticketit::lang.create-ticket-describe-issue') }}"> *{{trans('ticketit::lang.description')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+                <div class="col-lg-10 summernote-text-wrapper">
                 <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>                   
                 </div>
             </div>
@@ -174,8 +174,8 @@
 			@if ($u->maxLevel() > 1)
 				<div class="jquery_level2_show">
 					<div class="form-group"><!-- INTERVENTION -->
-						<label for="intervention" class="col-lg-2 control-label" title="Accions realitzades per a la resolució del tiquet" style="cursor: help">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
-						<div class="col-lg-10">
+						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="Accions realitzades per a la resolució del tiquet">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
+						<div class="col-lg-10 summernote-text-wrapper">
 						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
 						</div>
 					</div>
@@ -246,10 +246,7 @@
 	
 	var category_id=<?=$a_current['cat_id'];?>;
 
-	$(function(){		
-		// User select
-		$('#owner_select2').select2();
-		
+	$(function(){
 		// Category select with $u->maxLevel() > 1 only
 		$('#category_change').change(function(){
 			// Update agent list
