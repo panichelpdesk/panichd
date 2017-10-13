@@ -8,6 +8,7 @@ return [
   'nav-settings'                  => 'Paràmetres',
   'nav-agents'                    => 'Agents',
   'nav-dashboard'                 => 'Panell admin.',
+  'nav-dashboard-title'           => 'Panell d\'administrador',
   'nav-categories'                => 'Categories',
   'nav-priorities'                => 'Prioritats',
   'nav-statuses'                  => 'Estats',

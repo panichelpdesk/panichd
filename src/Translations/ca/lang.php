@@ -7,9 +7,15 @@ return [
   */
 
   'nav-new-tickets'                  => 'Nous',
+  'nav-new-tickets-title'            => 'Tiquets nous',
   'nav-create-ticket'                => 'Crear nou',
+  'nav-create-ticket-title'          => 'Crear nou tiquet',
   'nav-active-tickets'               => 'Oberts',
+  'nav-active-tickets-title'         => 'Tiquets oberts',
   'nav-completed-tickets'            => 'Tancats',
+  'nav-completed-tickets-title'      => 'Tiquets tancats',
+
+  
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',

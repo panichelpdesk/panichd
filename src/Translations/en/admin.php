@@ -8,6 +8,7 @@ return [
   'nav-settings'                  => 'Settings',
   'nav-agents'                    => 'Agents',
   'nav-dashboard'                 => 'Dashboard',
+  'nav-dashboard-title'           => 'Administrator dashboard',
   'nav-categories'                => 'Categories',
   'nav-priorities'                => 'Priorities',
   'nav-statuses'                  => 'Statuses',

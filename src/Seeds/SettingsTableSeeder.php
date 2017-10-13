@@ -323,6 +323,12 @@ class SettingsTableSeeder extends Seeder
 			 * Allow file attachments for tickets and comments
 			*/
 			'ticket_attachments_feature' => 'yes',
+			
+			/*
+			 * Bootstrap widths in where specified navigation elements get text replaced with an icon
+			*/
+			'nav_icons_user_sizes' => 'sm',
+			'nav_icons_admin_sizes' => 'sm,md',
         ];
     }
 }

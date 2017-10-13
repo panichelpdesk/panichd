@@ -7,9 +7,13 @@ return [
   */
 
   'nav-new-tickets'                  => 'New',
+  'nav-new-tickets-title'            => 'New tickets',
   'nav-create-ticket'                => 'Create new',
+  'nav-create-ticket-title'          => 'Create new ticket',
   'nav-active-tickets'               => 'Active',
+  'nav-active-tickets-title'         => 'Active tickets',
   'nav-completed-tickets'            => 'Completed',
+  'nav-completed-tickets-title'      => 'Completed tickets',
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-Z\'0-9¡!¿?,;.:\-\s]*$/',
