@@ -470,7 +470,15 @@ class TicketsController extends Controller
     {
 		$data = $this->create_edit_data();
 		
-		$data['ticket_owner_id'] = auth()->user()->id;
+		$data['ticket_owner_id'] = auth()->user()->id;		
+		
+		// Replace $data['categories'] filtered list
+		$categories = $this->agent->getNewTicketCategories();
+		if (LaravelVersion::min('5.3.0')){
+			$data['categories'] = $categories->pluck('name', 'id');
+		}else{
+			$data['categories'] = $categories->lists('name', 'id');
+		}
 		
         return view('ticketit::tickets.createedit', $data);
     }
@@ -620,10 +628,15 @@ class TicketsController extends Controller
 			'content_html'=> $a_content['html']
         ]);
 		
+		$cats = $user->getNewTicketCategories();
+		$cats = LaravelVersion::min('5.3.0') ? $cats->pluck('id') : $cats->lists('id');
+		
+		$allowed_categories = implode(",", $cats->toArray());
+		
 		$fields = [
             'subject'     => 'required|min:3',
 			'owner_id'    => 'required|exists:users,id',
-			'category_id' => 'required|exists:ticketit_categories,id',
+			'category_id' => 'required|in:'.$allowed_categories,
             'content'     => 'required|min:6',            
         ];
 		

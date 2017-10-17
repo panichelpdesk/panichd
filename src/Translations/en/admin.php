@@ -47,7 +47,7 @@ return [
 
   /* Access Levels */
   'level-1'                       => 'Everyone',
-  'level-2'                       => 'agents + admins.',
+  'level-2'                       => 'assigned agents + admins.',
   'level-3'                       => 'admins.',
   
  /*

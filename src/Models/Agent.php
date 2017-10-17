@@ -4,6 +4,7 @@ namespace Kordy\Ticketit\Models;
 
 use App\User;
 use Auth;
+use Kordy\Ticketit\Models\Category;
 
 class Agent extends User
 {
@@ -344,6 +345,24 @@ class Agent extends User
     {
         return $this->belongsToMany('Kordy\Ticketit\Models\Category', 'ticketit_categories_users', 'user_id', 'category_id')->withPivot('autoassign')->orderBy('name');
     }
+	
+	/**
+	 * Get categories where user has permission to create new tickets
+	*/
+	public function getNewTicketCategories()
+	{
+		if ($this->isAdmin()){
+			return Category::orderBy('name');			
+		}else{
+			$create_level_1 = Category::where('create_level', '1')->orderBy('name')->get();
+		}
+		if ($this->isAgent()){
+			$create_level_2 = $this->categories()->where('create_level', '2')->get();
+			return $create_level_1->merge($create_level_2)->sortBy('name');
+		}else{
+			return $create_level_1;
+		}
+	}
 
     /**
      * Get related agent tickets (To be deprecated).
