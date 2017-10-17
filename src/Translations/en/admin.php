@@ -19,6 +19,7 @@ return [
   'table-hash'                    => '#',
   'table-id'                      => 'ID',
   'table-name'                    => 'Name',
+  'table-create-level'            => 'New tickets',
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Autoassign for new tickets',
@@ -44,6 +45,11 @@ return [
 
   'colon'                         => ': ',
 
+  /* Access Levels */
+  'level-1'                       => 'Everyone',
+  'level-2'                       => 'agents + admins.',
+  'level-3'                       => 'admins.',
+  
  /*
   *  Page specific
   */
@@ -115,6 +121,8 @@ return [
   'category-create-title'         => 'Create New Category',
   'category-create-name'          => 'Name',
   'category-create-color'         => 'Color',
+  'category-create-new-tickets'   => 'New tickets',
+  'category-create-new-tickets-help'   => 'Minimum level to create tickets in category',
   'category-edit-title'           => 'Edit Category: :name',
   'category-edit-closing-reasons'      => 'Ticket closing reasons',
   'category-edit-closing-reasons-help' => 'Options that user may choose when closing ticket',

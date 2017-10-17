@@ -19,6 +19,7 @@ return [
   'table-hash'                    => '#',
   'table-id'                      => 'Id',
   'table-name'                    => 'Nom',
+  'table-create-level'            => 'Tiquets nous',
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica a nous tiquets',
@@ -45,6 +46,11 @@ return [
 
   'colon'                         => ': ',
 
+  /* Access Levels */
+  'level-1'                       => 'Tothom',
+  'level-2'                       => 'agents + admins.',
+  'level-3'                       => 'admins.',
+  
  /*
   *  Page specific
   */
@@ -116,7 +122,9 @@ return [
   'category-create-title'         => 'Crear Nova Categoria',
   'category-create-name'          => 'Nom',
   'category-create-color'         => 'Color',
-  'category-edit-title'           => 'Editar Categoria: :name',
+  'category-create-new-tickets'   => 'Tiquets nous',
+  'category-create-new-tickets-help'   => 'Nivell mínim a la categoria per a crear tiquets',
+  'category-edit-title'                => 'Editar Categoria: :name',  
   'category-edit-closing-reasons'      => 'Tancaments de tiquet',
   'category-edit-closing-reasons-help' => 'Opcions que l\'usuari haurà de triar quan tanqui un tiquet',
   'category-edit-reason'          => 'Raó de tancament',
