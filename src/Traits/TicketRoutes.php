@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Traits;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Attachment;
+use Kordy\Ticketit\Models\Category;
 use Kordy\Ticketit\Models\Comment;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Models\Ticket;
@@ -78,4 +79,26 @@ trait TicketRoutes
 		$this->route_ticket = Ticket::findOrFail($ticket_id);
 		return $this->route_ticket;
     }
+	
+	/**
+     * Returns related category instance to current route
+     *
+     * @return Kordy\Ticketit\Models\Category
+     */
+    public function getRouteCategory($request)
+    {
+		if ($request->has('category_id')){
+			$category_id = $request->category_id;
+		}else{
+			if ($this->route_ticket){
+				$category_id = $this->route_ticket->category_id;
+			}else{
+				$this->route_ticket = $this->getRouteTicket($request);
+				$category_id = $this->route_ticket->category_id;
+			}
+		}
+				
+		$cat = Category::findOrFail($category_id);
+		return $cat;
+	}
 }
