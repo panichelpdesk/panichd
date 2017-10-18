@@ -5,11 +5,11 @@ namespace Kordy\Ticketit\Middleware;
 use Closure;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Traits\RouteTicketId;
+use Kordy\Ticketit\Traits\TicketRoutes;
 
 class AgentAccessMiddleware
 {
-    use RouteTicketId;
+    use TicketRoutes;
 	/**
      * Run the request filter.
      *
@@ -28,7 +28,7 @@ class AgentAccessMiddleware
         }
 		
 		// Get Ticket instance. Fails if not found
-		$ticket = $this->routeTicketId($request);
+		$ticket = $this->getRouteTicket($request);
 					
 		if ($agent->isAgent()) {
 			// Assigned Agent has access always
