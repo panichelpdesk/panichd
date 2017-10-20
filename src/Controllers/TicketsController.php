@@ -440,24 +440,29 @@ class TicketsController extends Controller
      *
      * @return array
      */
-    protected function PCS()
+    protected function getCacheList($list)
     {
-        $priorities = Cache::remember('ticketit::priorities', 60, function () {
-            return Models\Priority::all();
-        });
-
-        $categories = Cache::remember('ticketit::categories', 60, function () {
-            return Models\Category::all();
-        });
-
-        $statuses = Cache::remember('ticketit::statuses', 60, function () {
-            return Models\Status::all();
-        });
+        $instance = false;
+		
+		switch ($list){
+			case 'priorities':
+				$instance = Cache::remember('ticketit::priorities', 60, function () {
+					return Models\Priority::all();
+				});
+				break;
+			case 'statuses':
+				$instance = Cache::remember('ticketit::statuses', 60, function () {
+					return Models\Status::all();
+				});
+				break;
+			default:
+				return false;
+		}
 
         if (LaravelVersion::min('5.3.0')) {
-            return [$priorities->pluck('name', 'id'), $categories->pluck('name', 'id'), $statuses->pluck('name', 'id')];
+            return $instance->pluck('name', 'id');
         } else {
-            return [$priorities->lists('name', 'id'), $categories->lists('name', 'id'), $statuses->lists('name', 'id')];
+            return $instance->lists('name', 'id');
         }
     }
 	
@@ -508,7 +513,8 @@ class TicketsController extends Controller
 			$a_notices = [];
 		}
 			
-		list($priorities, $categories, $status_lists) = $this->PCS();
+		$priorities = $this->getCacheList('priorities');
+		$status_lists = $this->getCacheList('statuses');		
 		
 		$a_current = [];
 
@@ -797,8 +803,8 @@ class TicketsController extends Controller
             $a_reasons = $ticket->category->closingReasons()->lists('text','id')->toArray();
 			$a_tags_selected = $ticket->tags()->lists('id')->toArray();
         }
-
-        list($priority_lists, $category_lists, $status_lists) = $this->PCS();
+		
+		$status_lists = $this->getCacheList('statuses');
 
         // Category tags
         $tag_lists = Category::whereHas('tags')
@@ -822,7 +828,7 @@ class TicketsController extends Controller
         $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
-            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
+            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
 	
