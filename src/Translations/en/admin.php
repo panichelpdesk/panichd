@@ -91,6 +91,10 @@ return [
   'agent-create-form-agent'       => 'User',
   'agent-create-add-agents'       => 'Add Agents',
   'agent-create-no-users'         => 'There are no user accounts, create user accounts first.',
+  'agent-store-ok'                => 'User ":name" has been added to agents',
+  'agent-updated-ok'              => 'Agent ":name" updated successfully',
+  'agent-excluded-ok'             => 'Agent ":name" excluded from agents',
+  
   'agent-store-error-no-category' => 'To add an agent you must check at least one category',
 
 // tickets-admin/agent/edit
@@ -98,6 +102,7 @@ return [
   'agent-edit-table-category'        => 'Category',
   'agent-edit-table-agent'           => 'Agent permission',
   'agent-edit-table-autoassign'      => 'New tickets auto.',
+  
 
 // tickets-admin/administrators/____
   'administrator-index-title'                   => 'Administrator Management',  //new

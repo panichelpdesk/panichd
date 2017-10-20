@@ -92,6 +92,10 @@ return [
   'agent-create-form-agent'       => 'Usuari',
   'agent-create-add-agents'       => 'Afegir Agents',
   'agent-create-no-users'         => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
+  'agent-store-ok'                => 'L\'usuari ":name" s\'ha afegit com a agent',
+  'agent-updated-ok'              => 'L\'agent ":name" s\'ha actualitzat correctament',
+  'agent-excluded-ok'            => 'L\'agent ":name" s\'ha exclòs',
+  
   'agent-store-error-no-category' => 'Per afegir un agent cal marcar com a mínim una categoria',
 
   // tickets-admin/agent/edit

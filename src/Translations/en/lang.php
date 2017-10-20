@@ -262,12 +262,9 @@ return [
   *  Controllers
   */
 
-// AgentsController
-  'user-added-to-agents'                            => 'User :names has been added to agents',
-  'administrators-are-added-to-administrators'      => 'Administrators :names are added to administrators', //New
-  'agents-joined-categories-ok'                     => 'Joined categories successfully',
-  'agents-is-removed-from-team'                     => 'Removed agent\s :name from the agent team',
-  'administrators-is-removed-from-team'             => 'Removed administrator\s :name from the administrators team', // New
+// AdministratorsController
+  'administrators-are-added-to-administrators'      => 'Administrators :names are added to administrators',
+  'administrators-is-removed-from-team'             => 'Removed administrator\s :name from the administrators team',
 
 // CategoriesController
   'category-name-has-been-created'   => 'The category :name has been created!',

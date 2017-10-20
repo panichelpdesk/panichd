@@ -261,11 +261,8 @@ return [
   *  Controllers
   */
 
-// AgentsController
-  'user-added-to-agents'                            => 'L\'usuari :name s\'ha afegit com a agent',
+// AdministratorsController
   'administrators-are-added-to-administrators'      => 'Administradors :names S\'ha\n agegit com Administrador\s',
-  'agents-joined-categories-ok'                     => 'Categories triades amb èxit',
-  'agents-is-removed-from-team'                     => 'Agent\s :name eliminat\s del grup d\'agents',
   'administrators-is-removed-from-team'             => 'Administrator\s :name eliminat\s del grup d\'administradors',
 
 // CategoriesController
