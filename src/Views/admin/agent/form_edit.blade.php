@@ -38,8 +38,7 @@
 		</table>
 	  </div>
 	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-		{!! CollectiveForm::submit('Update', ['class' => 'btn btn-info']) !!}
+		{!! CollectiveForm::submit( trans('ticketit::admin.btn-update') , ['class' => 'btn btn-info']) !!}
 	  </div>
 	  
 		{!! CollectiveForm::close() !!}

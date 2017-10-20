@@ -86,13 +86,12 @@ return [
 
 // tickets-admin/agent/____
   'agent-index-title'             => 'Agent Management',
-  'btn-create-new-agent'          => 'Create new agent',
-  'agent-index-no-agents'         => 'There are no agents, ',
-  'agent-index-create-new'        => 'Add agents',
-  'agent-create-title'            => 'Add Agent',
+  'agent-index-no-agents'         => 'There are no agents',
+  'agent-index-create-new'        => 'Add agent',
   'agent-create-form-agent'       => 'User',
   'agent-create-add-agents'       => 'Add Agents',
   'agent-create-no-users'         => 'There are no user accounts, create user accounts first.',
+  'agent-store-error-no-category' => 'To add an agent you must check at least one category',
 
 // tickets-admin/agent/edit
   'agent-edit-title'                 => 'User permissions :agent',

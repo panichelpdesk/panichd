@@ -87,6 +87,7 @@ return [
   'filter-on-total'                  => 'Count depends on active filters',
   'filter-off-total'                 => 'Total total',
 
+  'btn-add'                          => 'Add',
   'btn-back'                         => 'Back',
   'btn-cancel'                       => 'Cancel',
   'btn-change'                       => 'Change',

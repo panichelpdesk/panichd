@@ -89,6 +89,7 @@ return [
   'filter-on-total'                  => 'Compte segons filtre',
   'filter-off-total'                 => 'Compte total',
 
+  'btn-add'                          => 'Afegir',
   'btn-back'                         => 'Enrere',
   'btn-cancel'                       => 'Cancel·lar',
   'btn-change'                       => 'Canviar',

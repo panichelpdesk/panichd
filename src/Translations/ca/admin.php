@@ -87,13 +87,12 @@ return [
 
 // tickets-admin/agent/____
   'agent-index-title'             => 'Gestió d\'Agents',
-  'btn-create-new-agent'          => 'Crear nou agent',
-  'agent-index-no-agents'         => 'No hi ha agents, ',
-  'agent-index-create-new'        => 'Afegir agents',
-  'agent-create-title'            => 'Afegir Agent',
+  'agent-index-no-agents'         => 'No hi ha agents',
+  'agent-index-create-new'        => 'Afegir agent',
   'agent-create-form-agent'       => 'Usuari',
   'agent-create-add-agents'       => 'Afegir Agents',
   'agent-create-no-users'         => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
+  'agent-store-error-no-category' => 'Per afegir un agent cal marcar com a mínim una categoria',
 
   // tickets-admin/agent/edit
   'agent-edit-title'                 => 'Permisos d\'usuari per a :agent',

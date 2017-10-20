@@ -28,7 +28,11 @@ class AgentsController extends Controller
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
+        if ($request->input('agent_cats') == null){
+			return redirect()->back()->with('warning', trans('ticketit::admin.agent-store-error-no-category'));
+		}
+		
+		DB::beginTransaction();
 		
 		$user = Agent::findOrFail($request->agent_id);
 		$user->ticketit_agent = true;

@@ -12,14 +12,12 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>{{ trans('ticketit::admin.agent-index-title') }}
-                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('ticketit::admin.btn-create-new-agent') }}</button>
+                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('ticketit::admin.agent-index-create-new') }}</button>
             </h2>
         </div>
 
         @if ($agents->isEmpty())
-            <h3 class="text-center">{{ trans('ticketit::admin.agent-index-no-agents') }}
-                {!! link_to_route($setting->grab('admin_route').'.agent.create', trans('ticketit::admin.agent-index-create-new')) !!}
-            </h3>
+            <h3 class="text-center">{{ trans('ticketit::admin.agent-index-no-agents') }}</h3>
         @else
             <div id="message"></div>
             <table class="table table-hover">
