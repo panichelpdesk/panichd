@@ -4,6 +4,7 @@ namespace Kordy\Ticketit\Models;
 
 use App\User;
 use Auth;
+use Kordy\Ticketit\Helpers\LaravelVersion;
 use Kordy\Ticketit\Models\Category;
 
 class Agent extends User
@@ -348,20 +349,51 @@ class Agent extends User
 	
 	/**
 	 * Get categories where user has permission to create new tickets
+	 *
+	 * @return Array
 	*/
 	public function getNewTicketCategories()
 	{
 		if ($this->isAdmin()){
-			return Category::orderBy('name');			
+			$categories = Category::orderBy('name');			
 		}else{
-			$create_level_1 = Category::where('create_level', '1')->orderBy('name')->get();
-		}
-		if ($this->isAgent()){
-			$create_level_2 = $this->categories()->where('create_level', '2')->get();
-			return $create_level_1->merge($create_level_2)->sortBy('name');
+			$categories = Category::where('create_level', '1')->orderBy('name')->get();
+			
+			if ($this->isAgent() and $this->currentLevel() == 2){
+				$create_level_2 = $this->categories()->where('create_level', '2')->get();
+				
+				$categories = $categories->merge($create_level_2)->sortBy('name');
+
+			}
+		}		
+		
+		if (LaravelVersion::min('5.3.0')) {
+            return $categories->pluck('name', 'id');
+        } else {
+            return $categories->lists('name', 'id');
+        }
+	}
+	
+	/**
+	 * Get categories where user has permission to edit tickets
+	 *
+	 * @return Array
+	*/
+	public function getEditTicketCategories()
+	{
+		if ($this->isAdmin()){
+			$categories = Category::orderBy('name');
+		}elseif($this->isAgent() and $this->currentLevel() == 2){
+			$categories = $this->categories()->where('create_level', '<=', '2')->orderBy('name');
 		}else{
-			return $create_level_1;
+			return [];			
 		}
+		
+		if (LaravelVersion::min('5.3.0')) {
+            return $categories->pluck('name', 'id');
+        } else {
+            return $categories->lists('name', 'id');
+        }
 	}
 
     /**
