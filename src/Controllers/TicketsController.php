@@ -440,24 +440,29 @@ class TicketsController extends Controller
      *
      * @return array
      */
-    protected function PCS()
+    protected function getCacheList($list)
     {
-        $priorities = Cache::remember('ticketit::priorities', 60, function () {
-            return Models\Priority::all();
-        });
-
-        $categories = Cache::remember('ticketit::categories', 60, function () {
-            return Models\Category::all();
-        });
-
-        $statuses = Cache::remember('ticketit::statuses', 60, function () {
-            return Models\Status::all();
-        });
+        $instance = false;
+		
+		switch ($list){
+			case 'priorities':
+				$instance = Cache::remember('ticketit::priorities', 60, function () {
+					return Models\Priority::all();
+				});
+				break;
+			case 'statuses':
+				$instance = Cache::remember('ticketit::statuses', 60, function () {
+					return Models\Status::all();
+				});
+				break;
+			default:
+				return false;
+		}
 
         if (LaravelVersion::min('5.3.0')) {
-            return [$priorities->pluck('name', 'id'), $categories->pluck('name', 'id'), $statuses->pluck('name', 'id')];
+            return $instance->pluck('name', 'id');
         } else {
-            return [$priorities->lists('name', 'id'), $categories->lists('name', 'id'), $statuses->lists('name', 'id')];
+            return $instance->lists('name', 'id');
         }
     }
 	
@@ -471,7 +476,9 @@ class TicketsController extends Controller
 		$data = $this->create_edit_data();
 		
 		$data['ticket_owner_id'] = auth()->user()->id;
-		
+
+		$data['categories'] = $this->agent->findOrFail(auth()->user()->id)->getNewTicketCategories();
+
         return view('ticketit::tickets.createedit', $data);
     }
 	
@@ -483,6 +490,8 @@ class TicketsController extends Controller
 		$data['ticket'] = $ticket;
 		
 		$data['ticket_owner_id'] = $data['ticket']->user_id;
+		
+		$data['categories'] = $this->agent->findOrFail(auth()->user()->id)->getEditTicketCategories();
 		
         return view('ticketit::tickets.createedit', $data);
 	}
@@ -499,9 +508,10 @@ class TicketsController extends Controller
 		}else{
 			$a_notices = [];
 		}
-			
-		list($priorities, $categories, $status_lists) = $this->PCS();
 		
+		$priorities = $this->getCacheList('priorities');
+		$status_lists = $this->getCacheList('statuses');		
+
 		$a_current = [];
 
 		\Carbon\Carbon::setLocale(config('app.locale'));
@@ -536,11 +546,7 @@ class TicketsController extends Controller
 			$a_current['cat_id'] = @$user->tickets()->latest()->first()->category_id;
 
 			if ($a_current['cat_id'] == null){
-				if ($user->isAgent() and $a_current['cat_id'] = $user->categories()->wherePivot('autoassign','1')->first()->id){
-				
-				}else{
-					$a_current['cat_id'] = key($categories);
-				}
+				$a_current['cat_id'] = $user->getNewTicketCategories()->keys()->first();
 			}
 			
 			// Default agent
@@ -619,11 +625,13 @@ class TicketsController extends Controller
             'content'=> $a_content['content'],
 			'content_html'=> $a_content['html']
         ]);
+
+		$allowed_categories = implode(",", $user->getNewTicketCategories()->keys()->toArray());
 		
 		$fields = [
             'subject'     => 'required|min:3',
 			'owner_id'    => 'required|exists:users,id',
-			'category_id' => 'required|exists:ticketit_categories,id',
+			'category_id' => 'required|in:'.$allowed_categories,
             'content'     => 'required|min:6',            
         ];
 		
@@ -784,8 +792,8 @@ class TicketsController extends Controller
             $a_reasons = $ticket->category->closingReasons()->lists('text','id')->toArray();
 			$a_tags_selected = $ticket->tags()->lists('id')->toArray();
         }
-
-        list($priority_lists, $category_lists, $status_lists) = $this->PCS();
+		
+		$status_lists = $this->getCacheList('statuses');
 
         // Category tags
         $tag_lists = Category::whereHas('tags')
@@ -809,7 +817,7 @@ class TicketsController extends Controller
         $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('ticketit::tickets.show',
-            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'priority_lists', 'category_lists', 'a_categories', 'agent_lists', 'tag_lists',
+            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
 	
@@ -823,17 +831,20 @@ class TicketsController extends Controller
      */
     public function update(Request $request, $id)
     {
+		$user = $this->agent->find(auth()->user()->id);
+		
 		$a_content = $this->purifyHtml($request->get('content'));
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
         ]);
 		
+		$allowed_categories = implode(",", $user->getEditTicketCategories()->keys()->toArray());
 		
 		$fields = [
             'subject'     => 'required|min:3',            
             'priority_id' => 'required|exists:ticketit_priorities,id',
-            'category_id' => 'required|exists:ticketit_categories,id',
+            'category_id' => 'required|in:'.$allowed_categories,
             'status_id'   => 'required|exists:ticketit_statuses,id',
             'agent_id'    => 'required',
 			'content'     => 'required|min:6',
@@ -843,7 +854,6 @@ class TicketsController extends Controller
 			$fields = ['attachments' => 'array'];
 		}
 
-        $user = $this->agent->find(auth()->user()->id);
         if ($user->isAgent() or $user->isAdmin()) {			
 			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([

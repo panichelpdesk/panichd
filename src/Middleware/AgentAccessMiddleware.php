@@ -5,11 +5,11 @@ namespace Kordy\Ticketit\Middleware;
 use Closure;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Traits\RouteTicketId;
+use Kordy\Ticketit\Traits\TicketRoutes;
 
 class AgentAccessMiddleware
 {
-    use RouteTicketId;
+    use TicketRoutes;
 	/**
      * Run the request filter.
      *
@@ -28,8 +28,8 @@ class AgentAccessMiddleware
         }
 		
 		// Get Ticket instance. Fails if not found
-		$ticket = $this->routeTicketId($request);
-					
+		$ticket = $this->getRouteTicket($request);
+		
 		if ($agent->isAgent()) {
 			// Assigned Agent has access always
 			if ($agent->isAssignedAgent($ticket->id)){
@@ -38,7 +38,7 @@ class AgentAccessMiddleware
 			
 			if ($agent->currentLevel() > 1 and Setting::grab('agent_restrict') == 0){
 				// Check if element is a visible item for this agent
-				if ($agent->categories()->where('id',$ticket->category_id)->count() == 1){
+				if ($agent->categories()->where('id',$this->getRouteCategory($request)->id)->count() == 1){
 					return $next($request);
 				}
 			}

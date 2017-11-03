@@ -19,6 +19,7 @@ return [
   'table-hash'                    => '#',
   'table-id'                      => 'ID',
   'table-name'                    => 'Name',
+  'table-create-level'            => 'New tickets',
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Autoassign for new tickets',
@@ -44,6 +45,11 @@ return [
 
   'colon'                         => ': ',
 
+  /* Access Levels */
+  'level-1'                       => 'Everyone',
+  'level-2'                       => 'assigned agents + admins.',
+  'level-3'                       => 'admins.',
+  
  /*
   *  Page specific
   */
@@ -80,19 +86,23 @@ return [
 
 // tickets-admin/agent/____
   'agent-index-title'             => 'Agent Management',
-  'btn-create-new-agent'          => 'Create new agent',
-  'agent-index-no-agents'         => 'There are no agents, ',
-  'agent-index-create-new'        => 'Add agents',
-  'agent-create-title'            => 'Add Agent',
+  'agent-index-no-agents'         => 'There are no agents',
+  'agent-index-create-new'        => 'Add agent',
   'agent-create-form-agent'       => 'User',
   'agent-create-add-agents'       => 'Add Agents',
   'agent-create-no-users'         => 'There are no user accounts, create user accounts first.',
+  'agent-store-ok'                => 'User ":name" has been added to agents',
+  'agent-updated-ok'              => 'Agent ":name" updated successfully',
+  'agent-excluded-ok'             => 'Agent ":name" excluded from agents',
+  
+  'agent-store-error-no-category' => 'To add an agent you must check at least one category',
 
 // tickets-admin/agent/edit
   'agent-edit-title'                 => 'User permissions :agent',
   'agent-edit-table-category'        => 'Category',
   'agent-edit-table-agent'           => 'Agent permission',
   'agent-edit-table-autoassign'      => 'New tickets auto.',
+  
 
 // tickets-admin/administrators/____
   'administrator-index-title'                   => 'Administrator Management',  //new
@@ -115,6 +125,8 @@ return [
   'category-create-title'         => 'Create New Category',
   'category-create-name'          => 'Name',
   'category-create-color'         => 'Color',
+  'category-create-new-tickets'   => 'New tickets',
+  'category-create-new-tickets-help'   => 'Minimum level to create tickets in category',
   'category-edit-title'           => 'Edit Category: :name',
   'category-edit-closing-reasons'      => 'Ticket closing reasons',
   'category-edit-closing-reasons-help' => 'Options that user may choose when closing ticket',

@@ -1,18 +1,30 @@
 <div class="row">
 	<div class="col-md-3">
 	<div class="form-group">
-		{!! CollectiveForm::label('name', trans('ticketit::admin.category-create-name') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
-		<div class="col-lg-10">
+		{!! CollectiveForm::label('name', trans('ticketit::admin.category-create-name') . trans('ticketit::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
+		<div class="col-lg-8">
 			{!! CollectiveForm::text('name', isset($category->name) ? $category->name : null, ['class' => 'form-control']) !!}
 		</div>
 	</div>
 	<div class="form-group">
-		{!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
-		<div class="col-lg-10 ">
+		{!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
+		<div class="col-lg-8 ">
 			<!---->
 			<button class="btn btn-default pull-left" id="category_color_picker" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: {{isset($category->color) ? $category->color : "#000000"}};"></span>&nbsp;<b class="caret"></b></button>
 			<input type="hidden" id="category_color" name="color" value="{{isset($category->color) ? $category->color : '#000000'}}">
 
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-create-new-tickets-help') }}">{{ trans('ticketit::admin.category-create-new-tickets') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
+		<div class="col-lg-8">
+			<select name="create_level" class="generate_default_select2" style="display: none; width: 100%">
+				<?php $levels = [1, 2, 3];
+				$current_lv = isset($category) ? $category->create_level : 1; ?>
+				@foreach ($levels as $lv)
+					<option value="{{ $lv }}" {{ $lv == $current_lv ? 'selected="selected"' : '' }}>{{ trans('ticketit::admin.level-'.$lv) }}</option>
+				@endforeach
+			</select>
 		</div>
 	</div>
 	</div>

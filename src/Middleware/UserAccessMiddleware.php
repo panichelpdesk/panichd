@@ -5,11 +5,11 @@ namespace Kordy\Ticketit\Middleware;
 use Closure;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Traits\RouteTicketId;
+use Kordy\Ticketit\Traits\TicketRoutes;
 
 class UserAccessMiddleware 
 {
-    use RouteTicketId;
+    use TicketRoutes;
 	/**
      * Session user has at least user level on route or specified resource
      *
@@ -28,7 +28,7 @@ class UserAccessMiddleware
         }
 		
 		// Get Ticket instance. Fails if not found
-		$ticket = $this->routeTicketId($request);
+		$ticket = $this->getRouteTicket($request);
 		
 		// Ticket Owner has access
 		if ($agent->isTicketOwner($ticket->id)) {
@@ -50,7 +50,7 @@ class UserAccessMiddleware
 		}
 		
 		// Disable comment store for foreign user
-		if ($this->route_prefix != Setting::grab('main_route').'-comment') {
+		if ($this->mod_route_prefix != 'comment') {
 			// Tickets from users in a visible ticketit_department value for current user
 			if (in_array($ticket->user_id, $agent->getMyNoticesUsers())){
 				return $next($request);

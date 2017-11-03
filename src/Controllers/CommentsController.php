@@ -75,22 +75,21 @@ class CommentsController extends Controller
 		
 		$ticket = Models\Ticket::findOrFail($request->get('ticket_id'));
 		
-		$agent = Agent::find(\Auth::user()->id);
-		if ($agent){
-			// Response: reply or note
-			if ($agent->canManageTicket($request->get('ticket_id'))){
-				$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
-			}
-			
-			// Close ticket + new status
-			if ($agent->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
-				$ticket->completed_at = Carbon::now();				
-				$ticket->status_id = Status::where('id',$request->get('status_id'))->count()==1 ? $request->get('status_id') : Setting::grab('default_close_status_id');				
-			}
-		}			
+		$agent = Agent::findOrFail(\Auth::user()->id);
+		
+		// Response: reply or note
+		if ($agent->canManageTicket($request->get('ticket_id'))){
+			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+		}
+		
+		// Close ticket + new status
+		if ($agent->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
+			$ticket->completed_at = Carbon::now();				
+			$ticket->status_id = Status::where('id',$request->get('status_id'))->count()==1 ? $request->get('status_id') : Setting::grab('default_close_status_id');				
+		}
 		
         $comment->ticket_id = $request->get('ticket_id');
-        $comment->user_id = \Auth::user()->id;
+        $comment->user_id = $agent->id;
 		$comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 		$comment->save();
@@ -98,7 +97,7 @@ class CommentsController extends Controller
 		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
         
-		if ($request->has('add_to_intervention')){
+		if ($request->has('add_to_intervention') and $agent->canManageTicket($request->get('ticket_id'))){
 			$ticket->intervention = $ticket->intervention.$a_content['content'];
 			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
 		}

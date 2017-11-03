@@ -19,6 +19,7 @@ return [
   'table-hash'                    => '#',
   'table-id'                      => 'Id',
   'table-name'                    => 'Nom',
+  'table-create-level'            => 'Tiquets nous',
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica a nous tiquets',
@@ -45,6 +46,11 @@ return [
 
   'colon'                         => ': ',
 
+  /* Access Levels */
+  'level-1'                       => 'Tothom',
+  'level-2'                       => 'agents assignats + admins.',
+  'level-3'                       => 'admins.',
+  
  /*
   *  Page specific
   */
@@ -81,13 +87,16 @@ return [
 
 // tickets-admin/agent/____
   'agent-index-title'             => 'Gestió d\'Agents',
-  'btn-create-new-agent'          => 'Crear nou agent',
-  'agent-index-no-agents'         => 'No hi ha agents, ',
-  'agent-index-create-new'        => 'Afegir agents',
-  'agent-create-title'            => 'Afegir Agent',
+  'agent-index-no-agents'         => 'No hi ha agents',
+  'agent-index-create-new'        => 'Afegir agent',
   'agent-create-form-agent'       => 'Usuari',
   'agent-create-add-agents'       => 'Afegir Agents',
   'agent-create-no-users'         => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
+  'agent-store-ok'                => 'L\'usuari ":name" s\'ha afegit com a agent',
+  'agent-updated-ok'              => 'L\'agent ":name" s\'ha actualitzat correctament',
+  'agent-excluded-ok'            => 'L\'agent ":name" s\'ha exclòs',
+  
+  'agent-store-error-no-category' => 'Per afegir un agent cal marcar com a mínim una categoria',
 
   // tickets-admin/agent/edit
   'agent-edit-title'                 => 'Permisos d\'usuari per a :agent',
@@ -116,7 +125,9 @@ return [
   'category-create-title'         => 'Crear Nova Categoria',
   'category-create-name'          => 'Nom',
   'category-create-color'         => 'Color',
-  'category-edit-title'           => 'Editar Categoria: :name',
+  'category-create-new-tickets'   => 'Tiquets nous',
+  'category-create-new-tickets-help'   => 'Nivell mínim a la categoria per a crear tiquets',
+  'category-edit-title'                => 'Editar Categoria: :name',  
   'category-edit-closing-reasons'      => 'Tancaments de tiquet',
   'category-edit-closing-reasons-help' => 'Opcions que l\'usuari haurà de triar quan tanqui un tiquet',
   'category-edit-reason'          => 'Raó de tancament',

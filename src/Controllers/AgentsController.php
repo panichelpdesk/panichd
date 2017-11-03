@@ -28,7 +28,11 @@ class AgentsController extends Controller
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
+        if ($request->input('agent_cats') == null){
+			return redirect()->back()->with('warning', trans('ticketit::admin.agent-store-error-no-category'));
+		}
+		
+		DB::beginTransaction();
 		
 		$user = Agent::findOrFail($request->agent_id);
 		$user->ticketit_agent = true;
@@ -38,25 +42,31 @@ class AgentsController extends Controller
 		
 		DB::commit();
 
-        Session::flash('status', trans('ticketit::lang.user-added-to-agents', ['name' => $user->name]));
+        Session::flash('status', trans('ticketit::admin.agent-store-ok', ['name' => $user->name]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
     }
 
     public function update($id, Request $request)
     {
-        $this->syncAgentCategories($request, $id);
+        if ($request->input('agent_cats') == null){
+			return $this->destroy($id);
+		}else{
+			$this->syncAgentCategories($request, $id);
+			
+			$user = Agent::findOrFail($id);
+			
+			Session::flash('status', trans('ticketit::admin.agent-updated-ok', ['name' => $user->name]));
 
-        Session::flash('status', trans('ticketit::lang.agents-joined-categories-ok'));
-
-        return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
+			return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
+		}
     }
 
     public function destroy($id)
     {
         $agent = $this->removeAgent($id);
 
-        Session::flash('status', trans('ticketit::lang.agents-is-removed-from-team', ['name' => $agent->name]));
+        Session::flash('status', trans('ticketit::admin.agent-excluded-ok', ['name' => $agent->name]));
 
         return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
     }
