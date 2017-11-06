@@ -57,11 +57,13 @@ class CategoriesController extends Controller
 		$this->do_validate($request, $rules);
 
         $category = new Category();
-        $category = $category->create([
-			'name' => $request->name,
-			'color' => $request->color,
-			'create_level' => $request->create_level
-		]);
+        
+		$category->name = $request->name;
+		$category->color = $request->color;
+		$category->email = $request->email;
+		$category->create_level = $request->create_level;
+		
+		$category->save();
 
 		$this->sync_reasons($request, $category, $a_reasons);
 		
@@ -146,11 +148,12 @@ class CategoriesController extends Controller
 		
         $category = Category::findOrFail($id);		
 
-        $category->update([
-			'name' => $request->name,
-			'color' => $request->color,
-			'create_level' => $request->create_level
-		]);
+        $category->name = $request->name;
+		$category->color = $request->color;
+		$category->email = $request->email;
+		$category->create_level = $request->create_level;
+		
+		$category->save();
 
 		$this->sync_reasons($request, $category, $a_reasons);
 		
@@ -262,6 +265,7 @@ class CategoriesController extends Controller
 		$rules = array_merge($rules, [
             'name'         => 'required',
             'color'        => 'required',
+			'email'        => 'email',
 			'create_level' => 'required|in:1,2,3'
         ]);		
 		

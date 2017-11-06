@@ -29,6 +29,7 @@
                     <tr>
                         <td>{{ trans('ticketit::admin.table-id') }}</td>
                         <td>{{ trans('ticketit::admin.table-name') }}</td>
+						<td>{{ trans('ticketit::admin.category-index-email') }}</td>
                         <td>{{ trans('ticketit::admin.table-create-level') }}</td>
                         <td>{{ trans('ticketit::admin.category-index-reasons') }}</td>
 						<td>{{ trans('ticketit::admin.category-index-tags') }}</td>
@@ -44,6 +45,9 @@
                         </td>
                         <td style="color: {{ $category->color }}; vertical-align: middle">
                             {{ $category->name }}
+                        </td>
+						<td style="vertical-align: middle">
+                            {{ $category->email }}
                         </td>
 						<td style="vertical-align: middle">
 						{{ trans('ticketit::admin.level-'.$category->create_level) }}

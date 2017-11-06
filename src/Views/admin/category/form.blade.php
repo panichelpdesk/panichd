@@ -7,6 +7,15 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-info') }}">{{ trans('ticketit::admin.category-create-email') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
+		<div class="col-lg-8">
+			{!! CollectiveForm::text('email', isset($category->email) ? $category->email : null, [
+				'class' => 'form-control',
+				'placeholder' => trans('ticketit::admin.category-email-default')
+			]) !!}
+		</div>
+	</div>
+	<div class="form-group">
 		{!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
 		<div class="col-lg-8 ">
 			<!---->
