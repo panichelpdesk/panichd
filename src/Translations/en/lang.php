@@ -215,7 +215,7 @@ return [
   
   'show-ticket-modal-complete-blank-intervention-check' => 'Leave blank intervention',
   'show-ticket-complete-blank-intervention-alert'       => 'To complete the ticket you must confirm that you leave intervention field blank',
-  'show-ticket-modal-complete-blank-reason-alert'       => 'To complete the ticket you must indicate a closing reason'
+  'show-ticket-modal-complete-blank-reason-alert'       => 'To complete the ticket you must indicate a closing reason',
   'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',
   'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
   
