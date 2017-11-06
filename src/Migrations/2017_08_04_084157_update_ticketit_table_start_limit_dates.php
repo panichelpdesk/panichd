@@ -15,7 +15,7 @@ class UpdateTicketitTableStartLimitDates extends Migration
     public function up()
     {
         Schema::table('ticketit', function (Blueprint $table) {
-            $table->timestamp('start_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('start_date')->nullable();
 			$table->timestamp('limit_date')->nullable();
         });
 		
