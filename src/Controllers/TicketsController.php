@@ -700,7 +700,12 @@ class TicketsController extends Controller
 		}		
 
 		$ticket->category_id = $request->category_id;
-		$ticket->autoSelectAgent();
+		
+		if ($permission_level == 1 or $request->input('agent_id') == 'auto') {
+			$ticket->autoSelectAgent();
+		} else {
+			$ticket->agent_id = $request->input('agent_id');
+		}
 		
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
