@@ -155,7 +155,15 @@ class NotificationsController extends Controller
      */
     public function sendNotification_exec($a_to, $template, $data, $notification_owner, $subject)
     {
-		// Check category default sender
+		// Use tickets general email account
+		if (Setting::grab('email.account.name') != "default"){
+			$notification_owner->name = Setting::grab('email.account.name');
+		}
+		if (Setting::grab('email.account.mailbox') != "default"){
+			$notification_owner->email = Setting::grab('email.account.mailbox');
+		}
+		
+		// Use category email account
 		if ($this->category->email != ""){
 			$notification_owner->email = $this->category->email;
 		}
