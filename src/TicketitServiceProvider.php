@@ -150,7 +150,7 @@ class TicketitServiceProvider extends ServiceProvider
             // Send notification when new comment is added
             Comment::creating(function ($comment) {
                 if (Setting::grab('comment_notification')) {
-                    $notification = new NotificationsController();
+                    $notification = new NotificationsController($comment->ticket->category);
                     $notification->newComment($comment);
                 }
             });
@@ -162,7 +162,7 @@ class TicketitServiceProvider extends ServiceProvider
 				if (Setting::grab('status_notification')) {
                     $original_ticket = Ticket::find($modified_ticket->id);
                     if ($original_ticket->status_id != $modified_ticket->status_id || $original_ticket->completed_at != $modified_ticket->completed_at) {
-                        $notification = new NotificationsController();
+                        $notification = new NotificationsController($modified_ticket->category);
                         $notification->ticketStatusUpdated($modified_ticket, $original_ticket);
                     }
                 }
@@ -171,7 +171,7 @@ class TicketitServiceProvider extends ServiceProvider
                 if (Setting::grab('assigned_notification')) {
                     $original_ticket = Ticket::find($modified_ticket->id);
                     if ($original_ticket->agent->id != $modified_ticket->agent->id) {
-                        $notification = new NotificationsController();
+                        $notification = new NotificationsController($modified_ticket->category);
                         $notification->ticketAgentUpdated($modified_ticket, $original_ticket);
                     }
                 }
@@ -182,7 +182,7 @@ class TicketitServiceProvider extends ServiceProvider
             // Send notification when ticket is created
             Ticket::created(function ($ticket) {
                 if (Setting::grab('assigned_notification')) {
-                    $notification = new NotificationsController();
+                    $notification = new NotificationsController($ticket->category);
                     $notification->newTicket($ticket);
                 }
 

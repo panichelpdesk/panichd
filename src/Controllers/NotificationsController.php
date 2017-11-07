@@ -6,13 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Kordy\Ticketit\Helpers\LaravelVersion;
+use Kordy\Ticketit\Models\Category;
 use Kordy\Ticketit\Models\Comment;
 use Kordy\Ticketit\Models\Setting;
 use Kordy\Ticketit\Models\Ticket;
 
 class NotificationsController extends Controller
 {
-    public function newComment(Comment $comment)
+    protected $category;
+	
+	public function __construct(Category $category)
+	{
+		$this->category = $category;
+		
+		\Debugbar::info($category);
+	}
+	
+	
+	public function newComment(Comment $comment)
     {
         $ticket = $comment->ticket;
         $notification_owner = $comment->user;
@@ -144,6 +155,12 @@ class NotificationsController extends Controller
      */
     public function sendNotification_exec($a_to, $template, $data, $notification_owner, $subject)
     {
+		// Check category default sender
+		if ($this->category->email != ""){
+			$notification_owner->email = $this->category->email;
+		}
+		
+		// Send emails
 		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
@@ -151,7 +168,8 @@ class NotificationsController extends Controller
 				
 				$mail_callback = function ($m) use ($to, $notification_owner, $mail_subject) {
 					$m->to($to['recipient']->email, $to['recipient']->name);
-
+					
+					$m->from($notification_owner->email, $notification_owner->name);
 					$m->replyTo($notification_owner->email, $notification_owner->name);
 
 					$m->subject($mail_subject);
