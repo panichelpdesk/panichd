@@ -12,7 +12,8 @@ class TicketitNotification extends Mailable
 
     private $template;
     private $data;
-    private $notification_owner;
+    private $email_from;
+	private $email_replyto;
     public $subject;
 
     /**
@@ -20,11 +21,12 @@ class TicketitNotification extends Mailable
      *
      * @return void
      */
-    public function __construct($template, $data, $notification_owner, $subject)
+    public function __construct($template, $data, $email_from, $email_replyto, $subject)
     {
         $this->template = $template;
         $this->data = $data;
-        $this->notification_owner = $notification_owner;
+        $this->email_from = $email_from;
+		$this->email_replyto = $email_replyto;
         $this->subject = $subject;
     }
 
@@ -36,7 +38,8 @@ class TicketitNotification extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-            ->replyTo($this->notification_owner->email, $this->notification_owner->name)
+            ->from($this->email_from->email, $this->email_from->email_name)
+			->replyTo($this->email_replyto->email, $this->email_replyto->email_name)
             ->view($this->template)
             ->with($this->data);
     }

@@ -102,14 +102,14 @@ class NotificationsController extends Controller
 			$a_to[] = $ticket->user;
 		}
 		
-		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, $notification_owner, trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject);
+		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject);
 		
 		return back()->with('status','Notificacions reenviades correctament');
 	}
 	
 	
     /**
-     * Send email notifications from the action owner to other involved users.
+     * Prepare notification recipients and call sendNotification_exec() to send messages.
      *
      * @param string $template
      * @param array  $data
@@ -141,32 +141,44 @@ class NotificationsController extends Controller
 			}
 		}
 
-		$this->sendNotification_exec($a_to, $template, $data, $notification_owner, $subject);
+		$this->sendNotification_exec($a_to, $template, $data, $subject);
         
     }
 	
 	/**
-     * Send email notifications from the action owner to other involved users.
+     * Send email notifications from specified mailbox to to other involved users.
      *
      * @param string $template
      * @param array  $data
      * @param object $ticket
-     * @param object $notification_owner
      */
-    public function sendNotification_exec($a_to, $template, $data, $notification_owner, $subject)
+    public function sendNotification_exec($a_to, $template, $data, $subject)
     {
-		// Use tickets general email account
-		if (Setting::grab('email.account.name') != "default"){
-			$notification_owner->name = Setting::grab('email.account.name');
-		}
-		if (Setting::grab('email.account.mailbox') != "default"){
-			$notification_owner->email = Setting::grab('email.account.mailbox');
+		$email_replyto = new \stdClass();
+		
+		if(Setting::grab('email.account.name') != "default" and Setting::grab('email.account.mailbox') != "default"){
+			// ReplyTo: Use tickets email account
+			$email_replyto->email_name = Setting::grab('email.account.name');
+			$email_replyto->email = Setting::grab('email.account.mailbox');
+		}else{
+			// ReplyTo: Use Laravel general account
+			$email_replyto->email_name = env('MAIL_FROM_NAME');
+			$email_replyto->email = env('MAIL_FROM_ADDRESS');
 		}
 		
-		// Use category email account
-		if ($this->category->email != ""){
-			$notification_owner->email = $this->category->email;
-		}
+		// From: Use same as ReplyTo
+		$email_from = $email_replyto;
+		
+		if ($this->category->email_name != "" and $this->category->email != ""){
+			// From: Use category email account
+			$email_from->email_name = $this->category->email_name;
+			$email_from->email = $this->category->email;
+			
+			if ($this->category->email_replies == 1){
+				// ReplyTo: Use category email account
+				$email_replyto = $email_from;
+			}
+		}		
 		
 		// Send emails
 		if (LaravelVersion::lt('5.4')) {
@@ -174,11 +186,11 @@ class NotificationsController extends Controller
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
 				$mail_template = isset($to['template']) ? $to['template'] : $template;
 				
-				$mail_callback = function ($m) use ($to, $notification_owner, $mail_subject) {
+				$mail_callback = function ($m) use ($to, $email_from, $email_replyto, $mail_subject) {
 					$m->to($to['recipient']->email, $to['recipient']->name);
 					
-					$m->from($notification_owner->email, $notification_owner->name);
-					$m->replyTo($notification_owner->email, $notification_owner->name);
+					$m->from($email_from->email, $email_from->email_name);
+					$m->replyTo($email_replyto->email, $email_replyto->email_name);
 
 					$m->subject($mail_subject);
 				};
@@ -195,7 +207,7 @@ class NotificationsController extends Controller
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
 				$mail_template = isset($to['template']) ? $to['template'] : $template;
 				
-				$mail = new \Kordy\Ticketit\Mail\TicketitNotification($mail_template, $data, $notification_owner, $subject);
+				$mail = new \Kordy\Ticketit\Mail\TicketitNotification($mail_template, $data, $email_from, $email_replyto, $subject);
 
 				if (Setting::grab('queue_emails') == 'yes') {
 					Mail::to($to['recipient'])->queue($mail);

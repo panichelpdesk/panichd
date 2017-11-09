@@ -47,7 +47,15 @@
                             {{ $category->name }}
                         </td>
 						<td style="vertical-align: middle">
-                            {{ $category->email }}
+                            <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') }}
+							@if ($category->email != "")
+								{{ trans('ticketit::admin.category-email-origin-category') }}">{{ $category->email_name }} &lt;{{ $category->email }}>
+							@elseif($setting->grab('email.account.name') != 'default' && $setting->grab('email.account.mailbox') != 'default')
+								{{ trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.name') }} &lt;{{ $setting->grab('email.account.mailbox') }}>
+							@else
+								{{ trans('ticketit::admin.category-email-origin-website') }}">{{ env('MAIL_FROM_NAME') }} &lt;{{ env('MAIL_FROM_ADDRESS') }}>
+							@endif
+							 <span class="glyphicon glyphicon-question-sign"></span></span>
                         </td>
 						<td style="vertical-align: middle">
 						{{ trans('ticketit::admin.level-'.$category->create_level) }}

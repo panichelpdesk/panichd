@@ -23,6 +23,7 @@
 			]) !!}
         <legend>{{ trans('ticketit::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
         @include('ticketit::admin.category.form', ['update', true])
+		@include('ticketit::admin.category.modal-email')
         {!! CollectiveForm::close() !!}
     </div>
 	@include('ticketit::admin.category.modal-reason')

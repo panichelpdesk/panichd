@@ -18,6 +18,34 @@ $(function(){
 		}
 	});
 	
+	// Category notifications email edition
+	$('#email-edit-modal').on('show.bs.modal', function (e)
+	{
+		if ($('#email-edit-modal #email_scope_default input').is(':checked')){
+			$('#email_replies_0 input, #email_replies_1 input').prop('disabled', true);
+		}
+	});
+	
+	$('#email-edit-modal #email_scope_default').click(function(e){
+		$('.jquery_email').prop('disabled', true);
+		$('#email_replies_0 input').prop('checked', true);
+		$('#email_replies_0 input, #email_replies_1 input').prop('disabled', true);
+		$(this).find('input').prop('checked', true);
+		e.preventDefault(); // Avoid event executed twice
+	});
+	$('#email-edit-modal #email_scope_category').click(function(e){
+		$('.jquery_email').prop('disabled', false);
+		$('#email_replies_0 input, #email_replies_1 input').prop('disabled', false);
+		$(this).find('input').prop('checked', true);
+		e.preventDefault(); // Avoid event executed twice
+	});
+	
+	$('#jquery_popup_email_submit').click(function(e){
+		$('#email-edit-modal').modal('hide');
+		e.preventDefault();
+	});
+
+	
 	// Click on existing reason text
 	$('#reason-edit-modal').on('show.bs.modal', function (e)
 		{

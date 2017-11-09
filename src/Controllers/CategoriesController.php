@@ -59,8 +59,8 @@ class CategoriesController extends Controller
         $category = new Category();
         
 		$category->name = $request->name;
-		$category->color = $request->color;
-		$category->email = $request->email;
+		$category->color = $request->color;		
+		$category = $this->category_email_fields($request, $category);		
 		$category->create_level = $request->create_level;
 		
 		$category->save();
@@ -150,7 +150,7 @@ class CategoriesController extends Controller
 
         $category->name = $request->name;
 		$category->color = $request->color;
-		$category->email = $request->email;
+		$category = $this->category_email_fields($request, $category);		
 		$category->create_level = $request->create_level;
 		
 		$category->save();
@@ -265,11 +265,40 @@ class CategoriesController extends Controller
 		$rules = array_merge($rules, [
             'name'         => 'required',
             'color'        => 'required',
-			'email'        => 'email',
 			'create_level' => 'required|in:1,2,3'
-        ]);		
+        ]);
+
+		if ($request->email_scope != 'default'){
+			$rules = array_merge($rules, [
+				'email_name'   => 'required|string',
+				'email'        => 'required|email',
+			]);
+		}
 		
 		$this->validate($request, $rules);
+	}
+	
+	/*
+	 * Returns category instance with email fields updated in object
+	*/
+	protected function category_email_fields($request, $category)
+	{
+		if ($request->email_scope != 'default' and $request->has('email_name') and $request->has('email')){
+			$category->email_name = $request->email_name;
+			$category->email = $request->email;
+			
+			if ($request->email_replies == 1){
+				$category->email_replies = 1;
+			}else{
+				$category->email_replies = 0;
+			}
+		}else{
+			$category->email_name = null;
+			$category->email = null;
+			$category->email_replies = 0;
+		}
+		
+		return $category;
 	}
 
 	/**
