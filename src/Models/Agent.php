@@ -199,20 +199,17 @@ class Agent extends User
      *
      * @return integer
      */
-	public static function levelInCategory($id = false)
+	public function levelInCategory($id = false)
 	{
-		if (!auth()->check()) return false;
-		$agent = Agent::find(auth()->user()->id);
-		
-		if ($agent->isAdmin()){
+		if ($this->ticketit_admin){ # avoiding ->isAdmin()
 			return 3;
-		}elseif(!$agent->isAgent()){
+		}elseif(!$this->ticketit_agent){ # avoiding ->isAgent()
 			return 1;
 		}else{
 			if ($id == false){
 				return 1; # user level by default
 			}else{
-				if ($agent->categories()->where('id',$id)->count()==1){
+				if ($this->categories()->where('id',$id)->count()==1){
 					return 2;
 				}else{
 					return 1;

@@ -555,7 +555,7 @@ class TicketsController extends Controller
 		$agent_lists = $this->agentList($a_current['cat_id']);
 				
 		// Permission level for category
-		$permission_level = Agent::levelInCategory($a_current['cat_id']);
+		$permission_level = $user->levelInCategory($a_current['cat_id']);
 		
 		// Current default status
 		if (!$ticket){
@@ -812,7 +812,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 		
-		if (Agent::levelInCategory($ticket->category_id) > 1){
+		if ($user->levelInCategory($ticket->category_id) > 1){
 			$comments = $ticket->comments();
 		}else{
 			$comments = $ticket->comments()->where('type','!=','note');
@@ -1258,7 +1258,9 @@ class TicketsController extends Controller
 	*/
 	public function permissionLevel ($category_id)
 	{
-		return Agent::levelInCategory($category_id);
+		$user = $this->agent->find(auth()->user()->id);
+		
+		return $user->levelInCategory($category_id);
 	}
 	
 
