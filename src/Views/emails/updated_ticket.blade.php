@@ -8,11 +8,11 @@
 @extends($email)
 
 @section('content')
-	@if($change == 'close')
+	@if($notification_type == 'close')
 		<p>{!! trans('ticketit::email/globals.closed_ticket', ['user' => $notification_owner->name]) !!}</p>
-	@elseif($change == 'status')
+	@elseif($notification_type == 'status')
 		<p>{!! trans('ticketit::email/globals.updated_status', ['user' => $notification_owner->name]) !!}</p>
-	@elseif ($change == 'agent')
+	@elseif ($notification_type == 'agent')
 		<p>{!! trans('ticketit::email/globals.updated_agent', ['user' => $notification_owner->name]) !!}</p>
 	@endif
 	
