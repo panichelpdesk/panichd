@@ -14,14 +14,13 @@ use Kordy\Ticketit\Models\Ticket;
 class NotificationsController extends Controller
 {
     protected $category;
+	protected $subject;
 	
 	public function __construct(Category $category)
 	{
 		$this->category = $category;
-		
-		\Debugbar::info($category);
+		$this->subject = '['.trans('ticketit::email/globals.notify-ticket-category', ['name' => $category->name]).'] #';
 	}
-	
 	
 	public function newComment(Comment $comment)
     {
@@ -32,54 +31,62 @@ class NotificationsController extends Controller
 		
 		if (!in_array($comment->type, ['complete', 'reopen'])){
 			$this->sendNotification($template, $data, $ticket, $notification_owner,
-				trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject, 'comment_'.$comment->type);
+				trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject, 'comment_'.$comment->type);
 		}        
     }
 
     public function ticketStatusUpdated(Ticket $ticket, Ticket $original_ticket)
     {
         $notification_owner = auth()->user();
-        $template = 'ticketit::emails.status';
-        $data = [
+        $template = 'ticketit::emails.updated_ticket';
+		$subject = $this->subject.$ticket->id.' ';
+		if (!strtotime($original_ticket->completed_at) and strtotime($ticket->completed_at)) {
+			$subject .= trans('ticketit::email/globals.notify-closed-by', ['agent' => $notification_owner->name]).trans('ticketit::lang.colon').$ticket->subject;	
+			$change = 'close';
+		}else{
+			$subject .= trans('ticketit::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('ticketit::lang.colon').$ticket->subject;
+			$change = 'status';
+		}
+        
+		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
             'original_ticket'    => serialize($original_ticket),
+			'change'             => $change
         ];
-
-        if (strtotime($ticket->completed_at)) {
-            $this->sendNotification($template, $data, $ticket, $notification_owner,
-                $notification_owner->name.trans('ticketit::lang.notify-updated').$ticket->subject.trans('ticketit::lang.notify-status-to-complete'), 'status');
-        } else {
-            $this->sendNotification($template, $data, $ticket, $notification_owner,
-                $notification_owner->name.trans('ticketit::lang.notify-updated').$ticket->subject.trans('ticketit::lang.notify-status-to').$ticket->status->name, 'status');
-        }
+        
+        $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, $change);
     }
 
     public function ticketAgentUpdated(Ticket $ticket, Ticket $original_ticket)
     {
         $notification_owner = auth()->user();
-        $template = 'ticketit::emails.transfer';
-        $data = [
+        $template = 'ticketit::emails.updated_ticket';
+        $subject = $this->subject.$ticket->id.' '.trans('ticketit::email/globals.notify-assigned-to-you-by', ['agent' => $notification_owner->name]).trans('ticketit::lang.colon').$ticket->subject;
+		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
             'original_ticket'    => serialize($original_ticket),
+			'change'             => 'agent'
         ];
 
-        $this->sendNotification($template, $data, $ticket, $notification_owner,
-            $notification_owner->name.trans('ticketit::lang.notify-transferred').$ticket->subject.trans('ticketit::lang.notify-to-you'), 'agent');
+        $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'agent');
     }
 
     public function newTicket(Ticket $ticket)
     {
         $notification_owner = auth()->user();
-        $template = 'ticketit::emails.assigned';
-        $data = [
+        $template = 'ticketit::emails.new_ticket';
+        
+		// Affects only agent notification.
+		$subject = $this->subject.$ticket->id.' '.trans('ticketit::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('ticketit::lang.colon').$ticket->subject;
+		
+		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
         ];
 
-        $this->sendNotification($template, $data, $ticket, $notification_owner,
-            $notification_owner->name.trans('ticketit::lang.notify-created-ticket').$ticket->subject, 'newTicket');
+        $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'newTicket');
     }
 
 	/**
@@ -102,7 +109,7 @@ class NotificationsController extends Controller
 			$a_to[] = $ticket->user;
 		}
 		
-		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, trans('ticketit::lang.notify-new-comment-from').$notification_owner->name.trans('ticketit::lang.notify-on').$ticket->subject);
+		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject);
 		
 		return back()->with('status','Notificacions reenviades correctament');
 	}
@@ -178,7 +185,10 @@ class NotificationsController extends Controller
 				// ReplyTo: Use category email account
 				$email_replyto = $email_from;
 			}
-		}		
+		}
+		
+		// Add Email From to template
+		$data = array_merge ($data, [ 'email_from' => serialize($email_from) ]);
 		
 		// Send emails
 		if (LaravelVersion::lt('5.4')) {

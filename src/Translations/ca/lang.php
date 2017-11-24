@@ -111,7 +111,8 @@ return [
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
-  'comments'                         => 'Comentaris',  
+  'comments'                         => 'Comentaris', 
+  'complete'                         => 'Tancat',
   'created'                          => 'Creat',
   'crop-image'                       => 'Retallar imatge',
   'date-format'                      => 'Y-m-d',
@@ -288,14 +289,7 @@ return [
   'comment-has-been-deleted'         => 'El comentari s\'ha eliminat correctament',
 
 // NotificationsController
-  'notify-new-comment-from'          => 'Nou comentari de ',
-  'notify-on'                        => ' Conectat ',
-  'notify-status-to-complete'        => ' Estat per completear',
-  'notify-status-to'                 => ' Estat per ',
-  'notify-transferred'               => ' enviat ',
-  'notify-to-you'                    => ' per tu',
-  'notify-created-ticket'            => ' crear tiquet ',
-  'notify-updated'                   => ' actualitzat ',
+  // Les traduccions d'e-mail es troben a email/globals.php
 
  // TicketsController
   'the-ticket-has-been-created'      => 'S\'ha creat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',

@@ -22,7 +22,7 @@ return [
   'table-create-level'            => 'New tickets',
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
-  'table-categories-autoasg-title'=> 'Autoassign for new tickets',
+  'table-categories-autoasg-title'=> 'New tickets automatic assignment',
   'table-remove-agent'            => 'Remove from agents',
   'table-remove-administrator'    => 'Remove from administrators', // New
 

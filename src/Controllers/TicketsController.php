@@ -395,8 +395,6 @@ class TicketsController extends Controller
 		}		
 		
         if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
-			
-			\Debugbar::info($tickets->count());
 
             // Ticket filter for each Category
             if ($this->agent->isAdmin()) {

@@ -22,7 +22,7 @@ return [
   'table-create-level'            => 'Tiquets nous',
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
-  'table-categories-autoasg-title'=> 'Assignació automàtica a nous tiquets',
+  'table-categories-autoasg-title'=> 'Assignació automàtica de nous tiquets',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
 

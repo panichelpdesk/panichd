@@ -1,5 +1,8 @@
-<?php $comment = unserialize($comment);?>
-<?php $ticket = unserialize($ticket);?>
+<?php 
+	$comment = unserialize($comment);
+	$ticket = unserialize($ticket);
+	$email_from = unserialize($email_from);
+?>
 
 @extends($email)
 

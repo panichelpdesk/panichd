@@ -111,6 +111,7 @@ return [
   'closing-clarifications'           => 'Clarifications',
   'colon'                            => ': ',
   'comments'                         => 'Comments',
+  'complete'                         => 'Complete',
   'created'                          => 'Created',
   'crop-image'                       => 'Image crop',
   'date-format'                      => 'Y-m-d',
@@ -289,14 +290,7 @@ return [
   'comment-has-been-deleted'         => 'Comment has been deleted',
 
 // NotificationsController
-  'notify-new-comment-from'          => 'New comment from ',
-  'notify-on'                        => ' on ',
-  'notify-status-to-complete'        => ' status to Complete',
-  'notify-status-to'                 => ' status to ',
-  'notify-transferred'               => ' transferred ',
-  'notify-to-you'                    => ' to you',
-  'notify-created-ticket'            => ' created ticket ',
-  'notify-updated'                   => ' updated ',
+  // E-mail translations located at email/globals.php
 
  // TicketsController
   'the-ticket-has-been-created'      => 'The ticket has been created! <a href=":link" title=":title"><u>:name</u></a>',

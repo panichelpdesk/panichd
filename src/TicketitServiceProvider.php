@@ -158,7 +158,7 @@ class TicketitServiceProvider extends ServiceProvider
             
             Ticket::updating(function ($modified_ticket) {
                 
-				// Send notification when ticket status is modified
+				// Send notification when ticket status is modified or ticket is closed
 				if (Setting::grab('status_notification')) {
                     $original_ticket = Ticket::find($modified_ticket->id);
                     if ($original_ticket->status_id != $modified_ticket->status_id || $original_ticket->completed_at != $modified_ticket->completed_at) {
