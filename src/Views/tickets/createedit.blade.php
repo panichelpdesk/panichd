@@ -71,13 +71,13 @@
 			
 			@if ($u->maxLevel() > 1)
 			<div class="jquery_level2_show">
-				<div class="form-group" style="margin-bottom: 3em"><!-- ACTIVE / COMPLETE -->
-					{!! CollectiveForm::label('status_id', 'Llistat' . trans('ticketit::lang.colon'), [
+				<div class="form-group" style="margin-bottom: 3em"><!-- TICKET LIST -->
+					{!! CollectiveForm::label('status_id', trans('ticketit::lang.list') . trans('ticketit::lang.colon'), [
 						'class' => 'col-lg-3 control-label'
 					]) !!}
 					<div class="col-lg-9">
-						<button type="button" id="complete_no" class="btn btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="canviar llistat" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="glyphicon glyphicon-file"></span> Oberts</button>
-						<button type="button" id="complete_yes" class="btn btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="canviar llistat" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="glyphicon glyphicon-ok-circle"></span> Completats</button>					
+						<button type="button" id="complete_no" class="btn btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('ticketit::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="glyphicon glyphicon-file"></span> {{ trans('ticketit::lang.active-tickets-adjective') }}</button>
+						<button type="button" id="complete_yes" class="btn btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('ticketit::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="glyphicon glyphicon-ok-circle"></span> {{ trans('ticketit::lang.complete-tickets-adjective') }}</button>					
 					</div>
 					{!! CollectiveForm::hidden('complete', 'no',['id' => 'value_complete']) !!}
 				</div>			

@@ -1,11 +1,17 @@
 @if (is_object($original_ticket) && is_object($original_ticket->owner) && is_object($ticket) && is_object($ticket->owner))
-	<ul>	
+	<ul>
 	<li>
 		<b>{{ trans('ticketit::lang.owner') . trans('ticketit::lang.colon') }}</b>
 		@if ($original_ticket->owner->id != $ticket->owner->id)
 			<strike>{{ $original_ticket->owner->name }}</strike> 
 		@endif
 		{{ $ticket->owner->name }}
+	</li><li>
+		<b>{{ trans('ticketit::lang.list') . trans('ticketit::lang.colon') }}</b>
+		@if($original_ticket->isComplete() != $ticket->isComplete())
+			<strike>{{ trans('ticketit::lang.'.($original_ticket->isComplete() ? 'complete-tickets-adjective' : 'active-tickets-adjective')) }}</strike> 
+		@endif
+		<span>{{ trans('ticketit::lang.'.($ticket->isComplete() ? 'complete-tickets-adjective' : 'active-tickets-adjective')) }}</span>
 	</li><li>
 		<b>{{ trans('ticketit::lang.status') . trans('ticketit::lang.colon') }}</b>
 		@if ($original_ticket->status->id != $ticket->status->id)

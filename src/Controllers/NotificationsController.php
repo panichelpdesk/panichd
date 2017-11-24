@@ -98,18 +98,23 @@ class NotificationsController extends Controller
 		$comment=Comment::findOrFail($request->input('comment_id'));
 		$ticket=$comment->ticket;
 		$notification_owner = $comment->user;
+		$template = 'ticketit::emails.comment';
 		$data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
 		
 		$a_to = [];
 		
 		if ($request->has('to_agent')){
-			$a_to[] = $ticket->agent;
+			$a_to[] = [
+				'recipient' => $ticket->agent
+			];
 		}
 		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->user->email!=$ticket->agent->email))){
-			$a_to[] = $ticket->user;
+			$a_to[] = [
+				'recipient' => $ticket->user
+			];
 		}
 		
-		$this->sendNotification_exec($a_to, 'ticketit::emails.comment', $data, trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject);
+		$this->sendNotification_exec($a_to, $template, $data, trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject);
 		
 		return back()->with('status','Notificacions reenviades correctament');
 	}
@@ -130,17 +135,21 @@ class NotificationsController extends Controller
 
 		// Email to ticket->agent
 		if ($ticket->agent->email != $notification_owner->email){
-			$a_to[] = ['recipient' => $ticket->agent];
+			$a_to[] = [
+				'recipient' => $ticket->agent,
+			];
 		}
 		
 		// Email to ticket->owner
-		if ($ticket->user->email != $notification_owner->email and $ticket->agent->email != $ticket->user->email){
+		if ($ticket->owner->email != $notification_owner->email and $ticket->agent->email != $ticket->owner->email){
 			if (in_array($notification_type,['comment_reply','close','status'])){
-				$a_to[] = ['recipient' => $ticket->user];
+				$a_to[] = [
+					'recipient' => $ticket->owner
+				];
 			}elseif($notification_type=="newTicket"){
-				if (Setting::grab('departments_notices_feature') and ($ticket->user->ticketit_department == '0' || $ticket->user->ticketit_department != "" )){
+				if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" )){
 					$a_to[] = [
-						'recipient' => $ticket->user,
+						'recipient' => $ticket->owner,
 						'subject' => $ticket->subject . ' [' .  trans('ticketit::lang.ticket') . ' ' . trans('ticketit::lang.table-id') . $ticket->id .']',
 						'template' => Setting::grab('email.owner.newticket.template')
 					];
@@ -195,6 +204,9 @@ class NotificationsController extends Controller
 		// Send emails
 		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
+				// Pass recipient user object to every generated notification email
+				$data = array_merge ($data, ['recipient' => $to['recipient']]);
+				
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
 				$mail_template = isset($to['template']) ? $to['template'] : $template;
 				
@@ -216,6 +228,9 @@ class NotificationsController extends Controller
 			
         } elseif (LaravelVersion::min('5.4')) {
             foreach ($a_to as $to){
+				// Pass recipient user object to every generated notification email
+				$data = array_merge ($data, ['recipient' => $to['recipient']]);
+				
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
 				$mail_template = isset($to['template']) ? $to['template'] : $template;
 				

@@ -10,9 +10,7 @@ return [
   'nav-new-tickets-title'            => 'New tickets',
   'nav-create-ticket'                => 'Create new',
   'nav-create-ticket-title'          => 'Create new ticket',
-  'nav-active-tickets'               => 'Active',
   'nav-active-tickets-title'         => 'Active tickets',
-  'nav-completed-tickets'            => 'Completed',
   'nav-completed-tickets-title'      => 'Completed tickets',
   
   // Regular expressions
@@ -100,6 +98,7 @@ return [
   
 
   // Vocabulary  
+  'active-tickets-adjective'         => 'Active',
   'agent'                            => 'Agent',
   'agents'                           => 'Agents',
   'all-depts'                        => 'All',
@@ -112,6 +111,7 @@ return [
   'colon'                            => ': ',
   'comments'                         => 'Comments',
   'complete'                         => 'Complete',
+  'complete-tickets-adjective'       => 'Completed',
   'created'                          => 'Created',
   'crop-image'                       => 'Image crop',
   'date-format'                      => 'Y-m-d',
@@ -126,6 +126,7 @@ return [
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
   'limit-date'                       => 'Limit date',
+  'list'                             => 'List',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
   'priority'                         => 'Priority',
@@ -188,10 +189,11 @@ return [
 // tickets/create
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
+  'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-owner'              => 'Sender',
   'create-ticket-notices'            => 'Notices',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
-  'create-ticket-brief-issue'        => 'A brief of your issue ticket',
+  'create-ticket-change-list'        => 'List change',
   'create-ticket-info-start-date'    => 'Default: Now',
   'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',

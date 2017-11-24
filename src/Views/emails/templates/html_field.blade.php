@@ -1,4 +1,4 @@
-<?php	
+<?php
 	$dom = new DomDocument();
 	$dom->loadHtml( mb_convert_encoding($html_field, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
@@ -20,6 +20,5 @@
 		}
 	}
 	
-	echo $dom->saveHTML();
-		
+	echo $dom->saveHTML();	
 ?>
