@@ -199,8 +199,6 @@ class NotificationsController extends Controller
 		// Add Email From to template
 		$data = array_merge ($data, [ 'email_from' => serialize($email_from) ]);
 		
-		// Add 
-		
 		// Send emails
 		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
