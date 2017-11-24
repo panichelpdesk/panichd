@@ -78,14 +78,21 @@ class NotificationsController extends Controller
 
 	public function newComment(Comment $comment)
     {
-        $ticket = $comment->ticket;
-        $notification_owner = $comment->user;
-        $template = 'ticketit::emails.comment';
-        $data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
+        if (in_array($comment->type, ['reply', 'note'])){
+			$ticket = $comment->ticket;
+			$notification_owner = $comment->user;
+			$template = 'ticketit::emails.comment';
+			$subject = $this->subject.$ticket->id.' '
+				.trans('ticketit::email/globals.'.($comment->type == 'reply' ? 'notify-new-reply-by' : 'notify-new-note-by'), ['name' => $comment->user->name] )
+				.trans('ticketit::lang.colon').$ticket->subject;
+			$data = [
+				'comment' => serialize($comment),
+				'ticket' => serialize($ticket),
+				'notification_owner' => serialize($notification_owner),
+				'notification_type' => $comment->type
+			];
 		
-		if (!in_array($comment->type, ['complete', 'reopen'])){
-			$this->sendNotification($template, $data, $ticket, $notification_owner,
-				trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject, 'comment_'.$comment->type);
+			$this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'comment_'.$comment->type);
 		}        
     }
 

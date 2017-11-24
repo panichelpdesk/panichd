@@ -3,16 +3,14 @@
 return [
 	// Email subject
 	'notify-ticket-category'           => 'Tiquets :name',
+	
 	'notify-created-by'                => 'Nou de :name',
 	'notify-closed-by'                 => 'tancat per :agent',
 	'notify-status-updated-by'         => 'estat canviat per :agent',
 	'notify-ticket-closed-by'          => 'tiquet resolt per :agent',
 	'notify-assigned-to-you-by'        => 'assignat per :agent',
-
-	'notify-new-comment-from'          => 'Nou comentari de ',
-	'notify-on'                        => ' Conectat ',
-	'notify-updated'                   => ' actualitzat ',
-	
+	'notify-new-reply-by'              => 'nou comentari de :name',
+	'notify-new-note-by'               => 'nova nota interna de :name',	
 	
 	// Body: General
 	'salutation'          => 'Benvolgut/da,',
@@ -26,9 +24,10 @@ return [
 	'updated_status'   => '<b style="color: #fa4f10;">:user</b> ha canviat l\'estat d\'aquest tiquet.',
 	'updated_agent'    => '<b style="color: #fa4f10;">:user</b> t\'ha assignat aquest tiquet.',
 	
-    'comment'          => 'Nou Comentari',
-    'status'           => 'Estat canviat',
-    'transfer'         => 'Tiquet assignat a tu',
+	'added_reply'      => '<b style="color: #fa4f10;">:user</b> ha afegit una resposta a aquest tiquet.',
+	'added_note'       => '<b style="color: #fa4f10;">:user</b> ha afegit una <b>nota interna</b> a aquest tiquet.',
+    'new_reply_title'  => 'Nova resposta',
+	'new_note_title'   => 'Nova nota interna',
 	
 	// Body: Ticket link
 	'view-ticket-title'   => 'Fes clic aquí per veure el tiquet.',

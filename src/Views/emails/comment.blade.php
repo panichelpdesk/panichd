@@ -1,27 +1,24 @@
 <?php 
+	$notification_owner = unserialize($notification_owner);
 	$comment = unserialize($comment);
-	$ticket = unserialize($ticket);
+	$original_ticket = $ticket = unserialize($ticket);
 	$email_from = unserialize($email_from);
 ?>
 
 @extends($email)
 
-@section('subject')
-	{{ trans('ticketit::email/globals.comment') }}
-@stop
-
-@section('link')
-	<a style="color:#ffffff" href="{{ route($setting->grab('main_route').'.show', $ticket->id) }}">
-		{{ trans('ticketit::email/globals.view-ticket') }}
-	</a>
-@stop
-
 @section('content')
-	{!! trans('ticketit::email/comment.data', [
-	    'name'      =>  $comment->user->name,
-	    'subject'   =>  $ticket->subject,
-	    'status'    =>  $ticket->status->name,
-	    'category'  =>  $ticket->category->name,
-	    'comment'   =>  $comment->getShortContent()
-	]) !!}
+	@if($notification_type == 'reply')
+		<p>{!! trans('ticketit::email/globals.added_reply', ['user' => $notification_owner->name]) !!}</p>
+	@elseif($notification_type == 'note')
+		<p>{!! trans('ticketit::email/globals.added_note', ['user' => $notification_owner->name]) !!}</p>
+	@endif
+
+	@if ($recipient->levelInCategory($ticket->category->id) > 1)
+		@include('ticketit::emails.partial.common_fields')
+		<b>{{ trans('ticketit::email/globals.new_' . $notification_type . '_title') }}</b>
+		<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
+			<td>@include ('ticketit::emails.templates.html_field', ['html_field' => $comment->html])</td>
+		</tr></table><br /><br />
+	@endif
 @stop
