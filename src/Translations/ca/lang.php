@@ -121,6 +121,7 @@ return [
   'dept_sub1'                        => 'Area',
   'description'                      => 'Descripció',
   'discard'                          => 'Descartar',
+  'email-resend-abbr'                => 'RV',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',

@@ -106,7 +106,14 @@ class NotificationsController extends Controller
 		$ticket=$comment->ticket;
 		$notification_owner = $comment->user;
 		$template = 'ticketit::emails.comment';
-		$data = ['comment' => serialize($comment), 'ticket' => serialize($ticket)];
+		$subject = trans('ticketit::lang.email-resend-abbr') . trans('ticketit::lang.colon') . $this->subject.$ticket->id . ' ' . trans('ticketit::email/globals.notify-new-note-by', ['name' => $comment->user->name]) . trans('ticketit::lang.colon') . $ticket->subject;
+			// trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject;
+		$data = [
+			'comment' => serialize($comment), 
+			'ticket' => serialize($ticket),
+			'notification_owner' => serialize($notification_owner),
+			'notification_type' => $comment->type
+		];
 		
 		$a_to = [];
 		
@@ -115,13 +122,13 @@ class NotificationsController extends Controller
 				'recipient' => $ticket->agent
 			];
 		}
-		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->user->email!=$ticket->agent->email))){
+		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->owner->email!=$ticket->agent->email))){
 			$a_to[] = [
-				'recipient' => $ticket->user
+				'recipient' => $ticket->owner
 			];
 		}
 		
-		$this->sendNotification_exec($a_to, $template, $data, trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject);
+		$this->sendNotification_exec($a_to, $template, $data, $subject);
 		
 		return back()->with('status','Notificacions reenviades correctament');
 	}

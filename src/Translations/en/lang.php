@@ -122,6 +122,7 @@ return [
   'dept_sub1'                        => 'Subdepartment',
   'description'                      => 'Description',
   'discard'                          => 'Discard',
+  'email-resend-abbr'                => 'FW',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
