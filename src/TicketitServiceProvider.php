@@ -146,7 +146,14 @@ class TicketitServiceProvider extends ServiceProvider
 
                 $view->with(compact('editor_locale', 'editor_options'));
             });
-
+			
+			// Send notification when comment is modified
+			Comment::updating(function ($modified_comment) {
+				$original_comment = Comment::find($modified_comment->id);
+				$notification = new NotificationsController($modified_comment->ticket->category);
+                $notification->commentUpdate($modified_comment, $original_comment);
+			});
+			
             // Send notification when new comment is added
             Comment::creating(function ($comment) {
                 if (Setting::grab('comment_notification')) {

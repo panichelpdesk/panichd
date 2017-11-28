@@ -80,10 +80,10 @@ class NotificationsController extends Controller
     {
         if (in_array($comment->type, ['reply', 'note'])){
 			$ticket = $comment->ticket;
-			$notification_owner = $comment->user;
-			$template = 'ticketit::emails.comment';
+			$notification_owner = $comment->owner;
+			$template = 'ticketit::emails.new_comment';
 			$subject = $this->subject.$ticket->id.' '
-				.trans('ticketit::email/globals.'.($comment->type == 'reply' ? 'notify-new-reply-by' : 'notify-new-note-by'), ['name' => $comment->user->name] )
+				.trans('ticketit::email/globals.'.($comment->type == 'reply' ? 'notify-new-reply-by' : 'notify-new-note-by'), ['name' => $comment->owner->name] )
 				.trans('ticketit::lang.colon').$ticket->subject;
 			$data = [
 				'comment' => serialize($comment),
@@ -93,6 +93,42 @@ class NotificationsController extends Controller
 			];
 		
 			$this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'comment_'.$comment->type);
+		}        
+    }
+	
+	public function commentUpdate(Comment $comment, Comment $original_comment)
+    {
+        if ($comment->type == 'note'){
+			$ticket = $comment->ticket;
+			$notification_owner = auth()->user();
+			$template = 'ticketit::emails.updated_comment';
+			$subject = $this->subject.$ticket->id.' '
+				.trans('ticketit::email/globals.notify-note-updated-by', ['name' => $notification_owner->name] )
+				.trans('ticketit::lang.colon').$ticket->subject;
+			$data = [
+				'comment' => serialize($comment),
+				'original_comment' => serialize($original_comment),
+				'ticket' => serialize($ticket),
+				'notification_owner' => serialize($notification_owner)
+			];
+		
+			$a_to=[];
+
+			// Email to ticket->agent
+			if ($ticket->agent->email != $notification_owner->email){
+				$a_to[] = [
+					'recipient' => $ticket->agent,
+				];
+			}
+			
+			// Email to comment->owner
+			if ($comment->owner->email != $notification_owner->email and $comment->owner->email != $ticket->agent->email){
+				$a_to[] = [
+					'recipient' => $comment->owner,
+				];
+			}
+			
+			$this->sendNotification_exec($a_to, $template, $data, $subject);
 		}        
     }
 
