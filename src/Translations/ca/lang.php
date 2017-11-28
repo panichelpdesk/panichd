@@ -8,6 +8,9 @@ return [
 
   'nav-new-tickets'                  => 'Nous',
   'nav-new-tickets-title'            => 'Tiquets nous',
+  'nav-new-dd-list'                  => 'Llista',
+  'nav-new-dd-list-title'            => 'Llista de tiquets nous',
+  'nav-new-dd-create'                => 'Crear',
   'nav-create-ticket'                => 'Crear nou',
   'nav-create-ticket-title'          => 'Crear nou tiquet',
   'nav-active-tickets-title'         => 'Tiquets oberts',  

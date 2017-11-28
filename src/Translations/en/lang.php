@@ -8,6 +8,8 @@ return [
 
   'nav-new-tickets'                  => 'New',
   'nav-new-tickets-title'            => 'New tickets',
+  'nav-new-dd-list'                  => 'List',
+  'nav-new-dd-create'                => 'Create',
   'nav-create-ticket'                => 'Create new',
   'nav-create-ticket-title'          => 'Create new ticket',
   'nav-active-tickets-title'         => 'Active tickets',
