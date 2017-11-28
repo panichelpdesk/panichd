@@ -16,6 +16,33 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-from-info') }}">{{ trans('ticketit::admin.category-create-email') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
+		<div class="col-lg-8">
+			@if (isset($category->email))
+				@php
+					$email_origin = 'category';
+				@endphp
+			@else
+				@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
+					@php
+						$email_origin = 'tickets';
+					@endphp
+				@else
+					@php
+						$email_origin = 'website';
+					@endphp
+				@endif
+			@endif
+			<span id="email_scope_website" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ env('MAIL_FROM_NAME') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}" {!! $email_origin == 'website' ? '' : 'style="display: none"' !!}>{{ env('MAIL_FROM_ADDRESS') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+			
+			<span id="email_scope_tickets" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}" {!! $email_origin == 'tickets' ? '' : 'style="display: none"' !!}>{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+			
+			<span id="email_scope_category" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-category') }}" {!! $email_origin == 'category' ? '' : 'style="display: none"' !!}><span class="email">{{ $category->email }}</span> <span class="glyphicon glyphicon-question-sign"></span></span>
+			
+			<button type="button" class="btn btn-default btn-sm" id="edit_email" data-toggle="modal" data-target="#email-edit-modal">{{ trans('ticketit::admin.btn-edit') }}</button>
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-create-new-tickets-help') }}">{{ trans('ticketit::admin.category-create-new-tickets') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
 		<div class="col-lg-8">
 			<select name="create_level" class="generate_default_select2" style="display: none; width: 100%">

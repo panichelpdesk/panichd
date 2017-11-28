@@ -138,15 +138,14 @@ class Ticket extends Model
     }
 	
 	/**
-     * Get Ticket owner as App\User model
+     * Get Ticket owner as Kordy\Ticketit\Models\Agent model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
         return $this->belongsTo('Kordy\Ticketit\Models\Agent', 'user_id');
-    }	
-	
+    }
 
     /**
      * Get Ticket agent.

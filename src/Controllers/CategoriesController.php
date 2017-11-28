@@ -57,11 +57,13 @@ class CategoriesController extends Controller
 		$this->do_validate($request, $rules);
 
         $category = new Category();
-        $category = $category->create([
-			'name' => $request->name,
-			'color' => $request->color,
-			'create_level' => $request->create_level
-		]);
+        
+		$category->name = $request->name;
+		$category->color = $request->color;		
+		$category = $this->category_email_fields($request, $category);		
+		$category->create_level = $request->create_level;
+		
+		$category->save();
 
 		$this->sync_reasons($request, $category, $a_reasons);
 		
@@ -146,11 +148,12 @@ class CategoriesController extends Controller
 		
         $category = Category::findOrFail($id);		
 
-        $category->update([
-			'name' => $request->name,
-			'color' => $request->color,
-			'create_level' => $request->create_level
-		]);
+        $category->name = $request->name;
+		$category->color = $request->color;
+		$category = $this->category_email_fields($request, $category);		
+		$category->create_level = $request->create_level;
+		
+		$category->save();
 
 		$this->sync_reasons($request, $category, $a_reasons);
 		
@@ -263,9 +266,39 @@ class CategoriesController extends Controller
             'name'         => 'required',
             'color'        => 'required',
 			'create_level' => 'required|in:1,2,3'
-        ]);		
+        ]);
+
+		if ($request->email_scope != 'default'){
+			$rules = array_merge($rules, [
+				'email_name'   => 'required|string',
+				'email'        => 'required|email',
+			]);
+		}
 		
 		$this->validate($request, $rules);
+	}
+	
+	/*
+	 * Returns category instance with email fields updated in object
+	*/
+	protected function category_email_fields($request, $category)
+	{
+		if ($request->email_scope != 'default' and $request->has('email_name') and $request->has('email')){
+			$category->email_name = $request->email_name;
+			$category->email = $request->email;
+			
+			if ($request->email_replies == 1){
+				$category->email_replies = 1;
+			}else{
+				$category->email_replies = 0;
+			}
+		}else{
+			$category->email_name = null;
+			$category->email = null;
+			$category->email_replies = 0;
+		}
+		
+		return $category;
 	}
 
 	/**

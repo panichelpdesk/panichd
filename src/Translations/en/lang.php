@@ -10,9 +10,7 @@ return [
   'nav-new-tickets-title'            => 'New tickets',
   'nav-create-ticket'                => 'Create new',
   'nav-create-ticket-title'          => 'Create new ticket',
-  'nav-active-tickets'               => 'Active',
   'nav-active-tickets-title'         => 'Active tickets',
-  'nav-completed-tickets'            => 'Completed',
   'nav-completed-tickets-title'      => 'Completed tickets',
   
   // Regular expressions
@@ -100,6 +98,7 @@ return [
   
 
   // Vocabulary  
+  'active-tickets-adjective'         => 'Active',
   'agent'                            => 'Agent',
   'agents'                           => 'Agents',
   'all-depts'                        => 'All',
@@ -111,6 +110,8 @@ return [
   'closing-clarifications'           => 'Clarifications',
   'colon'                            => ': ',
   'comments'                         => 'Comments',
+  'complete'                         => 'Complete',
+  'complete-tickets-adjective'       => 'Completed',
   'created'                          => 'Created',
   'crop-image'                       => 'Image crop',
   'date-format'                      => 'Y-m-d',
@@ -121,10 +122,12 @@ return [
   'dept_sub1'                        => 'Subdepartment',
   'description'                      => 'Description',
   'discard'                          => 'Discard',
+  'email-resend-abbr'                => 'FW',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Intervention',
   'last-update'                      => 'Last Update',
   'limit-date'                       => 'Limit date',
+  'list'                             => 'List',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
   'priority'                         => 'Priority',
@@ -187,10 +190,11 @@ return [
 // tickets/create
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
+  'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-owner'              => 'Sender',
   'create-ticket-notices'            => 'Notices',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
-  'create-ticket-brief-issue'        => 'A brief of your issue ticket',
+  'create-ticket-change-list'        => 'List change',
   'create-ticket-info-start-date'    => 'Default: Now',
   'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
@@ -289,14 +293,7 @@ return [
   'comment-has-been-deleted'         => 'Comment has been deleted',
 
 // NotificationsController
-  'notify-new-comment-from'          => 'New comment from ',
-  'notify-on'                        => ' on ',
-  'notify-status-to-complete'        => ' status to Complete',
-  'notify-status-to'                 => ' status to ',
-  'notify-transferred'               => ' transferred ',
-  'notify-to-you'                    => ' to you',
-  'notify-created-ticket'            => ' created ticket ',
-  'notify-updated'                   => ' updated ',
+  // E-mail translations located at email/globals.php
 
  // TicketsController
   'the-ticket-has-been-created'      => 'The ticket has been created! <a href=":link" title=":title"><u>:name</u></a>',

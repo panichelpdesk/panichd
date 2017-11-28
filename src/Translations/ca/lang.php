@@ -10,12 +10,8 @@ return [
   'nav-new-tickets-title'            => 'Tiquets nous',
   'nav-create-ticket'                => 'Crear nou',
   'nav-create-ticket-title'          => 'Crear nou tiquet',
-  'nav-active-tickets'               => 'Oberts',
-  'nav-active-tickets-title'         => 'Tiquets oberts',
-  'nav-completed-tickets'            => 'Tancats',
+  'nav-active-tickets-title'         => 'Tiquets oberts',  
   'nav-completed-tickets-title'      => 'Tiquets tancats',
-
-  
   
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
@@ -101,6 +97,7 @@ return [
   'btn-submit'                       => 'Enviar',
 
   // Vocabulary  
+  'active-tickets-adjective'         => 'Oberts',
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
   'all-depts'                        => 'Tots',
@@ -111,7 +108,9 @@ return [
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
-  'comments'                         => 'Comentaris',  
+  'comments'                         => 'Comentaris', 
+  'complete'                         => 'Tancat',
+  'complete-tickets-adjective'       => 'Tancats',
   'created'                          => 'Creat',
   'crop-image'                       => 'Retallar imatge',
   'date-format'                      => 'Y-m-d',
@@ -122,10 +121,12 @@ return [
   'dept_sub1'                        => 'Area',
   'description'                      => 'Descripció',
   'discard'                          => 'Descartar',
+  'email-resend-abbr'                => 'RV',
   'flash-x'                          => '×', // &times;
   'intervention'                     => 'Actuació',
   'last-update'                      => 'Última actualització',
   'limit-date'                       => 'Data límit',
+  'list'                             => 'Llista',
   'no-replies'                       => 'Sense respostes.',
   'owner'                            => 'Propietari',
   'priority'                         => 'Prioritat',
@@ -187,10 +188,11 @@ return [
 // tickets/create
   'create-ticket-title'              => 'Nou formulari de Tiquet',
   'create-new-ticket'                => 'Crear Nou Tiquet',
+  'create-ticket-brief-issue'        => 'Tema del tiquet',
   'create-ticket-owner'              => 'Remitent',
   'create-ticket-notices'            => 'Avís per',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
-  'create-ticket-brief-issue'        => 'Tema del tiquet',
+  'create-ticket-change-list'        => 'Canviar de llista',
   'create-ticket-info-start-date'    => 'Predeterminat: Ara',
   'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
@@ -288,14 +290,7 @@ return [
   'comment-has-been-deleted'         => 'El comentari s\'ha eliminat correctament',
 
 // NotificationsController
-  'notify-new-comment-from'          => 'Nou comentari de ',
-  'notify-on'                        => ' Conectat ',
-  'notify-status-to-complete'        => ' Estat per completear',
-  'notify-status-to'                 => ' Estat per ',
-  'notify-transferred'               => ' enviat ',
-  'notify-to-you'                    => ' per tu',
-  'notify-created-ticket'            => ' crear tiquet ',
-  'notify-updated'                   => ' actualitzat ',
+  // Les traduccions d'e-mail es troben a email/globals.php
 
  // TicketsController
   'the-ticket-has-been-created'      => 'S\'ha creat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',

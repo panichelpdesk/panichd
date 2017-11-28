@@ -35,13 +35,23 @@ class Comment extends Model
     }
 
     /**
-     * Get comment owner.
+     * Get comment related App\User.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
+    }
+	
+	/**
+     * Get Comment owner as Kordy\Ticketit\Models\Agent model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo('Kordy\Ticketit\Models\Agent', 'user_id');
     }
 
     public function attachments()

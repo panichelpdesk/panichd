@@ -57,7 +57,7 @@
 	
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}" title="{{ $title }}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}" title="{{ trans('ticketit::lang.nav-active-tickets-title') }}">
-			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.nav-active-tickets') }}</span>
+			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.active-tickets-adjective') }}</span>
 			<span class="{{ $nav_icon }} glyphicon glyphicon-file"></span>			
 			
 			<span class="badge">
@@ -78,7 +78,7 @@
 	</li>
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}" title="{{ $title }}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete') }}" title="{{ trans('ticketit::lang.nav-completed-tickets-title') }}">
-			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.nav-completed-tickets') }}</span>
+			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.complete-tickets-adjective') }}</span>
 			<span class="{{ $nav_icon }} glyphicon glyphicon-ok-circle"></span>
 			
 			<span class="badge">

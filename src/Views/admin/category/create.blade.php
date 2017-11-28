@@ -8,8 +8,9 @@
         {!! CollectiveForm::open(['route'=> $setting->grab('admin_route').'.category.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
             <legend>{{ trans('ticketit::admin.category-create-title') }}</legend>
             @include('ticketit::admin.category.form')
+			@include('ticketit::admin.category.modal-email')
         {!! CollectiveForm::close() !!}
-    </div>	
+    </div>
 	@include('ticketit::admin.category.modal-reason')
 	@include('ticketit::admin.category.modal-tag')	
 @stop

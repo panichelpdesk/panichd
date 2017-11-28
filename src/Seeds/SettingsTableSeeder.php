@@ -97,6 +97,14 @@ class SettingsTableSeeder extends Seeder
              */
             'master_template' => 'master',
             /*
+			 * Tickets email account: The email address for all package notifications.
+			 * Overrides Laravel email and name but uses it's connection parameters
+			 * Default: use Laravel MAIL_FROM_NAME and MAIL_FROM_ADDRESS parameters from .env file
+			*/
+			'email.account.name' => 'default',
+			'email.account.mailbox' => 'default',
+			
+			/*
              * Template adherence: The email blade template to be extended
              * Default: ticketit::emails.templates.ticketit
              */

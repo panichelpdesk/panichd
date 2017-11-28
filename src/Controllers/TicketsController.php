@@ -395,8 +395,6 @@ class TicketsController extends Controller
 		}		
 		
         if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
-			
-			\Debugbar::info($tickets->count());
 
             // Ticket filter for each Category
             if ($this->agent->isAdmin()) {
@@ -557,7 +555,7 @@ class TicketsController extends Controller
 		$agent_lists = $this->agentList($a_current['cat_id']);
 				
 		// Permission level for category
-		$permission_level = Agent::levelInCategory($a_current['cat_id']);
+		$permission_level = $user->levelInCategory($a_current['cat_id']);
 		
 		// Current default status
 		if (!$ticket){
@@ -700,7 +698,12 @@ class TicketsController extends Controller
 		}		
 
 		$ticket->category_id = $request->category_id;
-		$ticket->autoSelectAgent();
+		
+		if ($permission_level == 1 or $request->input('agent_id') == 'auto') {
+			$ticket->autoSelectAgent();
+		} else {
+			$ticket->agent_id = $request->input('agent_id');
+		}
 		
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
@@ -809,7 +812,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 		
-		if (Agent::levelInCategory($ticket->category_id) > 1){
+		if ($user->levelInCategory($ticket->category_id) > 1){
 			$comments = $ticket->comments();
 		}else{
 			$comments = $ticket->comments()->where('type','!=','note');
@@ -1061,15 +1064,16 @@ class TicketsController extends Controller
 			}
 			
 			// Add Closing Reason to intervention field
-			$ticket->intervention = $ticket->intervention . $reason_text;
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' .$reason_text;
+			$date = date(trans('ticketit::lang.date-format'), time());
+			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . $reason_text;
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . $reason_text;
 			
 			if ($user->currentLevel()<2){
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
 				if ($a_clarification['content'] != ""){
-					$ticket->intervention = $ticket->intervention . $a_clarification['content'];
-					$ticket->intervention_html = $ticket->intervention_html . $a_clarification['html'];
+					$ticket->intervention = $ticket->intervention . ' ' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['content'];
+					$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['html'];
 				}
 			}
 			
@@ -1087,8 +1091,8 @@ class TicketsController extends Controller
 				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
 							
 				if ($a_clarification['content'] != ""){
-					$comment->content = $comment->content . $a_clarification['content'];
-					$comment->html = $comment->html . $a_clarification['html'];
+					$comment->content = $comment->content . ' ' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['content'];
+					$comment->html = $comment->html . '<br />' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['html'];
 				}
 			}
 
@@ -1128,8 +1132,9 @@ class TicketsController extends Controller
                 $ticket->status_id = Setting::grab('default_reopen_status_id');
             }			
 			
-			$ticket->intervention = $ticket->intervention . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
+			$date = date(trans('ticketit::lang.date-format'), time());
+			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
 			
 
             $ticket->save();
@@ -1255,7 +1260,9 @@ class TicketsController extends Controller
 	*/
 	public function permissionLevel ($category_id)
 	{
-		return Agent::levelInCategory($category_id);
+		$user = $this->agent->find(auth()->user()->id);
+		
+		return $user->levelInCategory($category_id);
 	}
 	
 
