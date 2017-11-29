@@ -55,7 +55,7 @@
 							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('ticketit::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('ticketit::admin.btn-edit') }}</button>
 							{!! link_to_route(
 							$setting->grab('admin_route').'.notice.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
 							[
