@@ -10,20 +10,20 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3>{{ trans('ticketit::admin.deptsuser-index-title') }}
+        <h3>{{ trans('ticketit::admin.notice-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('ticketit::admin.btn-create-new-deptsuser') }}</button>
+                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('ticketit::admin.btn-create-new-notice') }}</button>
             </div>
         </h3>
     </div>
     <div class="panel-body">
 	@if(!$a_users)
-        <div class="well text-center">{{ trans('ticketit::admin.deptsuser-index-empty') }}</div>
+        <div class="well text-center">{{ trans('ticketit::admin.notice-index-empty') }}</div>
     @else
 		@if (!session()->exists('status'))
 			<div class="alert alert-info alert-dismissable fade in">
 			<button type="button" class="close" data-dismiss="alert">×</button>
-			<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {{ trans('ticketit::admin.deptsuser-index-definition') }}
+			<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('ticketit::admin.notice-index-help') !!}
 			</div>
 		@endif
 
@@ -31,9 +31,9 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>                        
-                        <td>{{ trans('ticketit::admin.deptsuser-index-user') }}</td>
-                        <td>{{ trans('ticketit::admin.deptsuser-index-email') }}</td>
-						<td>{{ trans('ticketit::admin.deptsuser-index-department') }}</td>
+                        <td>{{ trans('ticketit::admin.notice-index-owner') }}</td>
+                        <td>{{ trans('ticketit::admin.notice-index-email') }}</td>
+						<td>{{ trans('ticketit::admin.notice-index-department') }}</td>
 						<td>{{ trans('ticketit::admin.table-action') }}</td>
                     </tr>
                 </thead>
@@ -55,19 +55,19 @@
 							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.deptsuser.update', ['id' => $d_user->id ]) }}">{{ trans('ticketit::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('ticketit::admin.btn-edit') }}</button>
 							{!! link_to_route(
-							$setting->grab('admin_route').'.deptsuser.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
+							$setting->grab('admin_route').'.notice.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
 							[
 							'class' => 'btn btn-danger deleteit',
 							'form' => "delete-$d_user->id",
-							"node" => $d_user->name
+							"user" => $d_user->name
 							])
                                 !!}
                             {!! CollectiveForm::open([
                                             'method' => 'DELETE',
                                             'route' => [
-                                                        $setting->grab('admin_route').'.deptsuser.destroy',
+                                                        $setting->grab('admin_route').'.notice.destroy',
                                                         $d_user->id
                                                         ],
                                             'id' => "delete-$d_user->id"
@@ -82,7 +82,7 @@
         @endif
 	</div>
 </div>
-	@include('ticketit::admin.deptsuser.modal_user')
+	@include('ticketit::admin.notice.modal_user')
 @stop
 @section('footer')
     <script>
@@ -95,7 +95,7 @@
 					$("#modalDepartmentUser input[name='_method']").first().val('PATCH');
 					
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptsuser-modal-title-update') }}");
+					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.notice-modal-title-update') }}");
 					
 					// Selects
 					$("#modalDepartmentUser #user_select2 option[value='"+$(this).data('user_id')+"']").prop('selected', true);
@@ -112,7 +112,7 @@
 					$("#modalDepartmentUser input[name='_method']").first().val('POST');
 					
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.deptsuser-modal-title-create') }}");
+					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.notice-modal-title-create') }}");
 					
 					// Selects
 					$("#modalDepartmentUser #modal_user_name").text('').hide();					
@@ -131,7 +131,7 @@
 			
 			$( ".deleteit" ).click(function( event ) {
 				event.preventDefault();
-				if (confirm("{{ trans('ticketit::admin.deptsuser-index-js-delete') }} " + $(this).attr("node") + " ?"))
+				if (confirm("{{ trans('ticketit::admin.notice-index-js-delete') }} "))
 				{
 					var form = $(this).attr("form");
 					$("#" + form).submit();

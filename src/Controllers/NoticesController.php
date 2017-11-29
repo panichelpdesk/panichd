@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Models;
 
-class DeptsUsersController extends Controller
+class NoticesController extends Controller
 {
     public function __construct()
 	{
-		 $this->middleware('Kordy\Ticketit\Middleware\RequiredSettingMiddleware:DeptsUser');
+		 $this->middleware('Kordy\Ticketit\Middleware\RequiredSettingMiddleware:Notices');
 	}
 	
 	
@@ -27,7 +27,7 @@ class DeptsUsersController extends Controller
 		// All departments
 		$a_depts = Models\Department::orderBy('department')->orderBy('sub1')->get();
 		
-		return view('ticketit::admin.deptsuser.index', compact('a_users', 'a_depts'));
+		return view('ticketit::admin.notice.index', compact('a_users', 'a_depts'));
 	}
 	
 	/**
@@ -52,9 +52,9 @@ class DeptsUsersController extends Controller
 		$user->ticketit_department = $request->input('department_id');
 		$user->save();
 				
-        \Session::flash('status', trans('ticketit::admin.deptsuser-saved-ok'));
+        \Session::flash('status', trans('ticketit::admin.notice-saved-ok'));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\DeptsUsersController@index');
+        return redirect()->action('\Kordy\Ticketit\Controllers\NoticesController@index');
     }
 	
 	public function update(Request $request)
@@ -67,8 +67,8 @@ class DeptsUsersController extends Controller
 		$user->ticketit_department = null;
 		$user->save();
 		
-		\Session::flash('status', trans('ticketit::admin.deptsuser-deleted-ok'));
+		\Session::flash('status', trans('ticketit::admin.notice-deleted-ok'));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\DeptsUsersController@index');
+        return redirect()->action('\Kordy\Ticketit\Controllers\NoticesController@index');
 	}
 }

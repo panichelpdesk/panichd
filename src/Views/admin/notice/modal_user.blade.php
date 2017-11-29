@@ -4,18 +4,18 @@
     <div class="modal-content">
 		<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('ticketit::admin.btn-create-new-deptsuser') }}</h4>
+		<h4 class="modal-title">{{ trans('ticketit::admin.btn-create-new-notice') }}</h4>
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
-			'route' => [$setting->grab('admin_route').'.deptsuser.store'],
+			'route' => [$setting->grab('admin_route').'.notice.store'],
 			'method' => 'PATCH',
 			'class' => 'form-horizontal',
-			'data-route-create' => route($setting->grab('admin_route').'.deptsuser.store')
+			'data-route-create' => route($setting->grab('admin_route').'.notice.store')
 			]) !!}
 	
 		<div class="form-group">
-			{!! CollectiveForm::label('user_id', trans('ticketit::lang.user') . trans('ticketit::lang.colon'), [
+			{!! CollectiveForm::label('user_id', trans('ticketit::lang.owner') . trans('ticketit::lang.colon'), [
 				'class' => 'control-label col-lg-3',
 			]) !!}
 			

@@ -125,7 +125,7 @@
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\PrioritiesController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\AgentsController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\CategoriesController@index').'*') ||
-			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\DeptsUsersController@index').'*') ||
+			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\NoticesController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\ConfigurationsController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\AdministratorsController@index').'*')
 			? "active" : "" !!}">
@@ -149,8 +149,8 @@
 					<a href="{{ action('\Kordy\Ticketit\Controllers\CategoriesController@index') }}">{{ trans('ticketit::admin.nav-categories') }}</a>
 				</li>
 				@if ($setting->grab('departments_notices_feature'))
-					<li role="presentation"  class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\DeptsUsersController@index').'*') ? "active" : "" !!}">
-						<a href="{{ action('\Kordy\Ticketit\Controllers\DeptsUsersController@index') }}">{{ trans('ticketit::admin.nav-dept-users') }}</a>
+					<li role="presentation"  class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\NoticesController@index').'*') ? "active" : "" !!}">
+						<a href="{{ action('\Kordy\Ticketit\Controllers\NoticesController@index') }}">{{ trans('ticketit::admin.nav-notices') }}</a>
 					</li>
 				@endif
 				<li role="presentation"  class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\ConfigurationsController@index').'*') ? "active" : "" !!}">

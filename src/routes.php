@@ -156,12 +156,12 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
         ]);
 		
 		//Departments management routes (ex. http://url/tickets-admin/agent)
-        Route::resource("$admin_route_path/deptsuser", 'Kordy\Ticketit\Controllers\DeptsUsersController', [
+        Route::resource("$admin_route_path/notice", 'Kordy\Ticketit\Controllers\NoticesController', [
             'names' => [
-                'index'   => "$admin_route.deptsuser.index",
-                'store'   => "$admin_route.deptsuser.store",                
-                'update'  => "$admin_route.deptsuser.update",                
-                'destroy' => "$admin_route.deptsuser.destroy",                
+                'index'   => "$admin_route.notice.index",
+                'store'   => "$admin_route.notice.store",                
+                'update'  => "$admin_route.notice.update",                
+                'destroy' => "$admin_route.notice.destroy",                
             ],
         ]);
 
