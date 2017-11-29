@@ -1,25 +1,43 @@
 @if(!$comments->isEmpty())
     @foreach($comments as $comment)
         <?php
-			$glyphicon = "glyphicon-envelope text-warning";
-			$title = "";
+			$comment_title = trans('ticketit::lang.comment-'.$comment->type.'-title');
+			
 			switch ($comment->type){
 				case 'note':
 					$glyphicon = "glyphicon-pencil text-info";
+					$comment_header = trans('ticketit::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
 					break;
 				case 'complete':
 					$glyphicon = "glyphicon-ok-circle text-success";
+					$comment_header = trans('ticketit::lang.comment-complete-by', ['owner' => $comment->owner->name]);
 					break;
 				case 'reopen':
 					$glyphicon = "glyphicon-backward text-warning";
+					$comment_header = trans('ticketit::lang.comment-reopen-by', ['owner' => $comment->owner->name]);
+					break;
+				default:
+					$glyphicon = "glyphicon-envelope ";
+					if ($comment->owner->levelInCategory($comment->ticket->category->id) >= 2){
+						$glyphicon .= "text-info";						
+					}else{
+						$glyphicon .= "text-warning";
+					}
+					if ($ticket->owner->id == $comment->owner->id){
+						$comment_header = trans('ticketit::lang.comment-reply-from-owner', ['owner' => $comment->owner->name]);
+					}else{
+						$comment_header = trans('ticketit::lang.reply-from-owner-to-owner', [
+							'owner1' => $comment->owner->name,
+							'owner2' => $ticket->owner->name
+						]);
+					}					
 					break;
 			}		
 		?>	
 		<div class="panel {!! $comment->user->tickets_role ? "panel-info" : "panel-default" !!}">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::lang.ticket-comment-type-'.$comment->type) }}"><span class="glyphicons glyphicon {{ $glyphicon }}" aria-hidden="true"></span> {!! $comment->user->name !!}</span>                   
-					
+                    <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $comment_title }}"><span class="glyphicons glyphicon {{ $glyphicon }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
 					<span class="pull-right">
 					@if ($comment->created_at!=$comment->updated_at)
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>

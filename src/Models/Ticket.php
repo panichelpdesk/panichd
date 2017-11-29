@@ -281,19 +281,17 @@ class Ticket extends Model
 	/**
 	 * Process start date and limit date and return a formatted div with resumed calendar information
 	 *
-	 * @param $ticket Instance of Kordy\Ticketit\Models\Ticket
-	 *
 	 * @return string
 	*/
-	public function getCalendarField($ticket)
+	public function getCalendarField($question_sign = false)
 	{
 		$date = $title = $icon = "";
 		$color = "text-muted";
-		$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->start_date)->startOfDay(), false);			
-		if ($ticket->limit_date != ""){
-			$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($ticket->limit_date)->startOfDay(), false);				
+		$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->start_date)->startOfDay(), false);			
+		if ($this->limit_date != ""){
+			$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay(), false);				
 			if ($limit_days_diff == 0){
-				$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($ticket->limit_date), false);
+				$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($this->limit_date), false);
 			}
 		}else{
 			$limit_days_diff = false;
@@ -301,55 +299,55 @@ class Ticket extends Model
 					
 		if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
 			// Expired
-			$date = $ticket->limit_date;
-			$title = trans('ticketit::lang.calendar-expired', ['description' => $ticket->getDateForHumans($date, true)]);
+			$date = $this->limit_date;
+			$title = trans('ticketit::lang.calendar-expired', ['description' => $this->getDateForHumans($date, true)]);
 			$icon = "glyphicon-exclamation-sign";
 			$color = "text-danger";
 		}elseif($limit_days_diff > 0 or $limit_days_diff === false){
 			if ($start_days_diff > 0){
 				// Scheduled
-				$date = $ticket->start_date;
+				$date = $this->start_date;
 				if ($limit_days_diff){
 					if ($start_days_diff == $limit_days_diff){
-						$title = trans('ticketit::lang.calendar-scheduled', ['description' => $ticket->getDateForHumans($date).'-'.date('H:i', strtotime($ticket->limit_date))]);
-						if ($ticket->start_date != $ticket->limit_date){
-							$date_text = $ticket->getDateForHumans($date)."-".date('H:i', strtotime($ticket->limit_date));
+						$title = trans('ticketit::lang.calendar-scheduled', ['description' => $this->getDateForHumans($date).'-'.date('H:i', strtotime($this->limit_date))]);
+						if ($this->start_date != $this->limit_date){
+							$date_text = $this->getDateForHumans($date)."-".date('H:i', strtotime($this->limit_date));
 						}
 					}else{
 						$title = trans('ticketit::lang.calendar-scheduled-period', [
-							'date1' => $ticket->getDateForHumans($date),
-							'date2' => $ticket->getDateForHumans($ticket->limit_date)]);
+							'date1' => $this->getDateForHumans($date),
+							'date2' => $this->getDateForHumans($this->limit_date)]);
 					}
 					$icon = $start_days_diff == 1 ? "glyphicon-time" : "glyphicon-calendar";
 					$color = "text-info";
 				}else{
-					$title = trans('ticketit::lang.calendar-active-future', ['description' => $ticket->getDateForHumans($date, true)]);
+					$title = trans('ticketit::lang.calendar-active-future', ['description' => $this->getDateForHumans($date, true)]);
 					$icon = "glyphicon-file";
 				}										
 				
 			}elseif($limit_days_diff){
 				// Active with limit
-				$date = $ticket->limit_date;
-				$title = trans('ticketit::lang.calendar-expiration', ['description' => $ticket->getDateForHumans($date, true)]);
+				$date = $this->limit_date;
+				$title = trans('ticketit::lang.calendar-expiration', ['description' => $this->getDateForHumans($date, true)]);
 				$icon = "glyphicon-time";
 				$color = "text-info";
 			}else{
 				// Active without limit
-				$date = $ticket->start_date;
-				$title = trans('ticketit::lang.calendar-active', ['description' => $ticket->getDateForHumans($date, true)]);
+				$date = $this->start_date;
+				$title = trans('ticketit::lang.calendar-active', ['description' => $this->getDateForHumans($date, true)]);
 				$icon = "glyphicon-file";					
 			}				
 		}else{
 			// Due today
-			$date = $ticket->limit_date;
+			$date = $this->limit_date;
 			$title = trans('ticketit::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($date))]);
 			$icon = "glyphicon-warning-sign";
 			$color = "text-warning";
 		}
 		
-		if (!isset($date_text)) $date_text = $ticket->getDateForHumans($date);
+		if (!isset($date_text)) $date_text = $this->getDateForHumans($date);
 		
-		return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\"><span class=\"glyphicon $icon\"></span> $date_text</span>";
+		return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> $date_text ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
 	}
 	
 	/**

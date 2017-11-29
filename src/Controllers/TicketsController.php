@@ -253,7 +253,7 @@ class TicketsController extends Controller
 		}
 		
 		$collection->editColumn('calendar', function ($ticket) {
-			return $ticket->getCalendarField($ticket);
+			return $ticket->getCalendarField();
         });
 
         $collection->editColumn('category', function ($ticket) {
