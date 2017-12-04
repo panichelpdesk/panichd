@@ -14,7 +14,7 @@ class UpdateTicketitAttachmentsTableDescription extends Migration
     public function up()
     {
         Schema::table('ticketit_attachments', function (Blueprint $table) {
-            $table->string('new_filename')->after('original_filename');
+            $table->string('new_filename')->nullable()->after('original_filename');
 			$table->longText('description')->nullable()->after('new_filename');
         });
     }
