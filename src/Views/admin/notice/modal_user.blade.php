@@ -4,26 +4,26 @@
     <div class="modal-content">
 		<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('ticketit::admin.btn-create-new-deptsuser') }}</h4>
+		<h4 class="modal-title">{{ trans('ticketit::admin.btn-create-new-notice') }}</h4>
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
-			'route' => [$setting->grab('admin_route').'.deptsuser.store'],
+			'route' => [$setting->grab('admin_route').'.notice.store'],
 			'method' => 'PATCH',
 			'class' => 'form-horizontal',
-			'data-route-create' => route($setting->grab('admin_route').'.deptsuser.store')
+			'data-route-create' => route($setting->grab('admin_route').'.notice.store')
 			]) !!}
 	
 		<div class="form-group">
-			{!! CollectiveForm::label('user_id', trans('ticketit::lang.user') . trans('ticketit::lang.colon'), [
+			{!! CollectiveForm::label('user_id', trans('ticketit::lang.owner') . trans('ticketit::lang.colon'), [
 				'class' => 'control-label col-lg-3',
 			]) !!}
 			
 			<div class="col-lg-9 modal_user_wrap">
 				<div id="modal_user_name"></div>
 				<select name="user_id" id="user_select2" class="form_select2 form-control" style="display: none; width: 100%">
-				@foreach (App\User::orderBy('name')->get() as $user)
-					<option value="{{ $user->id }}">{{ ($user->ticketit_department ? trans('ticketit::lang.department-shortening').trans('ticketit::lang.colon'):'').$user->name }}</option>
+				@foreach (App\User::whereNull('ticketit_department')->orderBy('name')->get() as $user)
+					<option value="{{ $user->id }}">{{ $user->name }} - {{ $user->email }}</option>
 				@endforeach
 				</select>
 			</div>

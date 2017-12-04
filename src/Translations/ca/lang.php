@@ -8,6 +8,9 @@ return [
 
   'nav-new-tickets'                  => 'Nous',
   'nav-new-tickets-title'            => 'Tiquets nous',
+  'nav-new-dd-list'                  => 'Llista',
+  'nav-new-dd-list-title'            => 'Llista de tiquets nous',
+  'nav-new-dd-create'                => 'Crear',
   'nav-create-ticket'                => 'Crear nou',
   'nav-create-ticket-title'          => 'Crear nou tiquet',
   'nav-active-tickets-title'         => 'Tiquets oberts',  
@@ -189,7 +192,6 @@ return [
   'create-ticket-title'              => 'Nou formulari de Tiquet',
   'create-new-ticket'                => 'Crear Nou Tiquet',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
-  'create-ticket-owner'              => 'Remitent',
   'create-ticket-notices'            => 'Avís per',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
   'create-ticket-change-list'        => 'Canviar de llista',
@@ -233,10 +235,18 @@ return [
   'ticket-error-file-not-found'      => 'No s\'ha localitzat el fitxer ":name"',
   'ticket-error-file-not-deleted'    => 'El fitxer ":name" no s\'ha pogut eliminar',
   
-  'ticket-comment-type-reply'        => 'Resposta',
-  'ticket-comment-type-note'         => 'Nota interna (oculta per a l\'usuari)',
-  'ticket-comment-type-complete'     => 'Tiquet tancat',
-  'ticket-comment-type-reopen'       => 'Tiquet reobert',
+  'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',
+  'comment-reply-from-owner'   => 'Resposta de <b>:owner</b>',
+  'reply-from-owner-to-owner'  => 'Resposta de <b>:owner1</b> a <b>:owner2</b>',
+  
+  'comment-note-title'         => 'Nota oculta per a l\'usuari',
+  'comment-note-from-agent'    => 'Nota de <b>:agent</b>',
+  
+  'comment-complete-title'     => 'Tiquet tancat',
+  'comment-complete-by'        => 'Tancat per <b>:owner</b>',
+  
+  'comment-reopen-title'       => 'Tiquet reobert',
+  'comment-reopen-by'          => 'Reobert per <b>:owner</b>',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-comment-type'           => 'Tipus',

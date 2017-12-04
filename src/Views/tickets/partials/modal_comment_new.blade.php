@@ -51,7 +51,7 @@
 					@if ($u->canManageTicket($ticket->id))
 						<div class="form-group">
 							<div class="col-lg-12">
-							<label><input type="checkbox" name="add_to_intervention" value="yes" checked="checked"> {{ trans('ticketit::lang.show-ticket-add-com-check-intervention') }}</label>
+							<label><input type="checkbox" name="add_to_intervention" value="yes"> {{ trans('ticketit::lang.show-ticket-add-com-check-intervention') }}</label>
 							</div>
 							@if ($u->canCloseTicket($ticket->id))
 								<div class="col-lg-12">

@@ -16,36 +16,36 @@
 	?>
 	
 	@if($u->canViewNewTickets())
-	<li role="presentation" class="dropdown {!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@create')) ? "active" : "" !!}" title="{{ $title }}">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('ticketit::lang.nav-new-tickets-title') }}">
-			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.nav-new-tickets') }}</span>
-			<span class="{{ $nav_icon }} glyphicon glyphicon-certificate"></span>
+		<li role="presentation" class="dropdown {!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@create')) ? "active" : "" !!}">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('ticketit::lang.nav-new-tickets-title') }}">
+				<span class="{{ $nav_text }}">{{ trans('ticketit::lang.nav-new-tickets') }}</span>
+				<span class="{{ $nav_icon }} glyphicon glyphicon-certificate"></span>
 
-			<span class="badge">
-			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
-				<span class="glyphicon glyphicon-filter"></span>
-			@endif
-			@if (isset($ticket))
-				{{ Kordy\Ticketit\Models\Ticket::newest()->visible()->filtered()->count() }}
-			@else
-				{{ Kordy\Ticketit\Models\Ticket::newest()->visible()->count() }}
-			@endif
-			
-			</span>
-			@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
-				<span class="glyphicon glyphicon-filter"></span>
-			@endif
-			 <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest').'*') ? "active" : "" !!}">
-				<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest') }}">{{ trans('ticketit::lang.nav-new-tickets') }}</a>
-			</li>
-			<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@create').'*') ? "active" : "" !!}">
-				<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@create') }}">{{ trans('ticketit::lang.nav-create-ticket') }}</a>
-			</li>
-		</ul>
-	</li>	
+				<span class="badge" title="{{ $title }}" style="cursor: help">
+				@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
+					<span class="glyphicon glyphicon-filter"></span>
+				@endif
+				@if (isset($ticket))
+					{{ Kordy\Ticketit\Models\Ticket::newest()->visible()->filtered()->count() }}
+				@else
+					{{ Kordy\Ticketit\Models\Ticket::newest()->visible()->count() }}
+				@endif
+				
+				</span>
+				@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
+					<span class="glyphicon glyphicon-filter"></span>
+				@endif
+				 <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest').'*') ? "active" : "" !!}">
+					<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexNewest') }}" title="{{ trans('ticketit::lang.nav-new-dd-list-title') }}">{{ trans('ticketit::lang.nav-new-dd-list') }}</a>
+				</li>
+				<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@create').'*') ? "active" : "" !!}">
+					<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@create') }}" title="{{ trans('ticketit::lang.nav-create-ticket-title') }}">{{ trans('ticketit::lang.nav-new-dd-create') }}</a>
+				</li>
+			</ul>
+		</li>
 	@else
 		<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@create')) ? "active" : "" !!}">
 			<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@create') }}" title="{{ trans('ticketit::lang.nav-create-ticket-title') }}">
@@ -55,12 +55,12 @@
 		</li>
 	@endif
 	
-	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}" title="{{ $title }}">
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@index')) ? "active" : "" !!}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}" title="{{ trans('ticketit::lang.nav-active-tickets-title') }}">
 			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.active-tickets-adjective') }}</span>
 			<span class="{{ $nav_icon }} glyphicon glyphicon-file"></span>			
 			
-			<span class="badge">
+			<span class="badge" title="{{ $title }}" style="cursor: help">
 			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
@@ -76,12 +76,12 @@
 			@endif
 		</a>
 	</li>
-	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}" title="{{ $title }}">
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}">
 		<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@indexComplete') }}" title="{{ trans('ticketit::lang.nav-completed-tickets-title') }}">
 			<span class="{{ $nav_text }}">{{ trans('ticketit::lang.complete-tickets-adjective') }}</span>
 			<span class="{{ $nav_icon }} glyphicon glyphicon-ok-circle"></span>
 			
-			<span class="badge">
+			<span class="badge" title="{{ $title }}" style="cursor: help">
 			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
@@ -125,7 +125,7 @@
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\PrioritiesController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\AgentsController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\CategoriesController@index').'*') ||
-			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\DeptsUsersController@index').'*') ||
+			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\NoticesController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\ConfigurationsController@index').'*') ||
 			$tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\AdministratorsController@index').'*')
 			? "active" : "" !!}">
@@ -149,8 +149,8 @@
 					<a href="{{ action('\Kordy\Ticketit\Controllers\CategoriesController@index') }}">{{ trans('ticketit::admin.nav-categories') }}</a>
 				</li>
 				@if ($setting->grab('departments_notices_feature'))
-					<li role="presentation"  class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\DeptsUsersController@index').'*') ? "active" : "" !!}">
-						<a href="{{ action('\Kordy\Ticketit\Controllers\DeptsUsersController@index') }}">{{ trans('ticketit::admin.nav-dept-users') }}</a>
+					<li role="presentation"  class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\NoticesController@index').'*') ? "active" : "" !!}">
+						<a href="{{ action('\Kordy\Ticketit\Controllers\NoticesController@index') }}">{{ trans('ticketit::admin.nav-notices') }}</a>
 					</li>
 				@endif
 				<li role="presentation"  class="{!! $tools->fullUrlIs(action('\Kordy\Ticketit\Controllers\ConfigurationsController@index').'*') ? "active" : "" !!}">

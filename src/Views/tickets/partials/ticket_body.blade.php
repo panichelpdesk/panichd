@@ -63,7 +63,7 @@
 						<br /><strong>{{ trans('ticketit::lang.show-ticket-creator') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->creator->name }}<br />
 					@endif
 					
-					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->user->name }}
+					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') }} <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{{ $ticket->owner->name }} <span class="glyphicon glyphicon-question-sign"></span></span>
 					@if ($setting->grab('departments_feature'))
 						@if ($ticket->department)
 							<br /><strong>{{ trans('ticketit::lang.department') }}</strong>{{ trans('ticketit::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
@@ -89,7 +89,7 @@
 					@php
 						\Carbon\Carbon::setLocale(config('app.locale'));
 					@endphp					
-					<br /><strong>{{ trans('ticketit::lang.table-calendar') }}</strong>{{ trans('ticketit::lang.colon') }}{!! $ticket->getCalendarField($ticket) !!}
+					<br /><strong>{{ trans('ticketit::lang.table-calendar') }}</strong>{{ trans('ticketit::lang.colon') }}{!! $ticket->getCalendarField(true) !!}
 					</p><p>					
 				@else
 					<br />

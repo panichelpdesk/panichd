@@ -8,6 +8,8 @@ return [
 
   'nav-new-tickets'                  => 'New',
   'nav-new-tickets-title'            => 'New tickets',
+  'nav-new-dd-list'                  => 'List',
+  'nav-new-dd-create'                => 'Create',
   'nav-create-ticket'                => 'Create new',
   'nav-create-ticket-title'          => 'Create new ticket',
   'nav-active-tickets-title'         => 'Active tickets',
@@ -191,7 +193,6 @@ return [
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
-  'create-ticket-owner'              => 'Sender',
   'create-ticket-notices'            => 'Notices',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
   'create-ticket-change-list'        => 'List change',
@@ -235,12 +236,19 @@ return [
   'ticket-error-file-not-found'      => 'The file ":name" could not be found',
   'ticket-error-file-not-deleted'    => 'The file ":name" could not be deleted',
   
+  'comment-reply-title'        => 'Messages between owner and agents',
+  'comment-reply-from-owner'   => 'Reply from <b>:owner</b>',
+  'reply-from-owner-to-owner'  => 'Reply from <b>:owner1</b> to <b>:owner2</b>',
   
-  'ticket-comment-type-reply'        => 'Reply',
-  'ticket-comment-type-note'         => 'Internal note (hidden for user)',
-  'ticket-comment-type-complete'     => 'Ticket complete',
-  'ticket-comment-type-reopen'       => 'Ticket reopened',
+  'comment-note-title'         => 'User hidden note',
+  'comment-note-from-agent'    => 'Note from <b>:agent</b>',
   
+  'comment-complete-title'     => 'Ticket complete',
+  'comment-complete-by'        => 'Tancat per <b>:owner</b>',
+  
+  'comment-reopen-title'       => 'Ticket reopened',
+  'comment-reopen-by'          => 'Reopened by <b>:owner</b>',
+   
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-comment-type'           => 'Type',
   'show-ticket-add-comment-note'           => 'Internal note',
