@@ -33,8 +33,8 @@ class UserAccessMiddleware
 		// Ticket Owner has access
 		if ($agent->isTicketOwner($ticket->id)) {
 			return $next($request);
-		}						
-		
+		}
+
 		if ($agent->isAgent()) {
 			// Assigned Agent has access always
 			if ($agent->isAssignedAgent($ticket->id)){

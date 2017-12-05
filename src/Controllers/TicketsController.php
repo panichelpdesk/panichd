@@ -499,7 +499,7 @@ class TicketsController extends Controller
 			// Get notices from related users
 			$a_notices = Ticket::active()->whereIn('user_id', $user->getMyNoticesUsers())
 				->with('owner.personDepts.department')
-				->with('status')->get();
+				->with('status')->with('tags')->get();
 		}else{
 			// Don't show notices
 			$a_notices = [];

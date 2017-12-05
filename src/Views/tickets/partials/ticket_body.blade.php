@@ -104,7 +104,7 @@
 					<br /><strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}
 				@endif
 								
-				@if ($u->currentLevel() > 1 and $ticket->has('tags'))
+				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
 					<br /><strong>{{ trans('ticketit::lang.tags') }}</strong>{{ trans('ticketit::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-default btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
