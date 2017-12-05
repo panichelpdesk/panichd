@@ -501,7 +501,14 @@ class TicketsController extends Controller
 				->with('owner.personDepts.department')
 				->with('status')->get();
 		}else{
+			// Don't show notices
 			$a_notices = [];
+		}
+		
+		if ($user->currentLevel() > 1){
+			$a_owners = Agent::with('userDepartment')->orderBy('name')->get();
+		}else{
+			$a_owners = Agent::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -599,7 +606,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 		
-		return compact('a_notices', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('a_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
     /**
