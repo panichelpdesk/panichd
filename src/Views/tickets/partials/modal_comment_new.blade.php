@@ -16,7 +16,7 @@
 				]) !!}
 					{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			
-					@if ($u->canManageTicket($ticket->id))
+					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 						<div class="form-group">
 							{!! CollectiveForm::label('type', trans('ticketit::lang.show-ticket-add-comment-type') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 							<div class="col-lg-10">
@@ -48,7 +48,7 @@
 						</div>						
 					@endif
 					
-					@if ($u->canManageTicket($ticket->id))
+					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 						<div class="form-group">
 							<div class="col-lg-12">
 							<label><input type="checkbox" name="add_to_intervention" value="yes"> {{ trans('ticketit::lang.show-ticket-add-com-check-intervention') }}</label>

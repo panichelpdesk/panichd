@@ -90,7 +90,7 @@
 			
 			// Complete modal submit button
 			$('#complete_form_submit').click(function(e){				
-				@if ($u->canManageTicket($ticket->id))
+				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					// Agent / Admin
 					@if (!$ticket->intervention_html)
 						if (!$('#blank_intervention_check').prop('checked')){

@@ -19,7 +19,7 @@
 			])
 		!!}
 		
-		@if ($u->canManageTicket($ticket->id))
+		@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 			<div class="form-group">
 				{!! CollectiveForm::label('status_id', trans('ticketit::lang.status') . trans('ticketit::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 				<div class="col-lg-10">
