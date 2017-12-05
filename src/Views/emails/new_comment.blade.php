@@ -18,7 +18,7 @@
 		@include('ticketit::emails.partial.common_fields')
 		<b>{{ trans('ticketit::email/globals.new_' . $notification_type . '_title') }}</b>
 		<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
-			<td>@include ('ticketit::emails.templates.html_field', ['html_field' => $comment->html])</td>
+			<td>@include ('ticketit::emails.partial.html_field', ['html_field' => $comment->html])</td>
 		</tr></table><br /><br />
 	@endif
 @stop

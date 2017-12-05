@@ -8,13 +8,15 @@
         @include('ticketit::tickets.partials.ticket_body')
 		@include('ticketit::tickets.partials.modal_complete')
 		
-        <div style="margin-top: 2em;">        	
-			<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
-				@if ($u->canCommentTicket($ticket->id))
-					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
-				@endif
-			</h2>
-        </div>
+		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->whereIN('type', ['reply','close','reopen'])->count() ) )
+			<div style="margin-top: 2em;">        	
+				<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
+					@if ($u->canCommentTicket($ticket->id))
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+					@endif
+				</h2>
+			</div>
+		@endif
         @include('ticketit::tickets.partials.comments')
         {!! $comments->render() !!}
         @include('ticketit::tickets.partials.modal_comment_new')
@@ -90,7 +92,7 @@
 			
 			// Complete modal submit button
 			$('#complete_form_submit').click(function(e){				
-				@if ($u->canManageTicket($ticket->id))
+				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					// Agent / Admin
 					@if (!$ticket->intervention_html)
 						if (!$('#blank_intervention_check').prop('checked')){

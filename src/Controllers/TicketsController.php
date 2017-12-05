@@ -499,9 +499,16 @@ class TicketsController extends Controller
 			// Get notices from related users
 			$a_notices = Ticket::active()->whereIn('user_id', $user->getMyNoticesUsers())
 				->with('owner.personDepts.department')
-				->with('status')->get();
+				->with('status')->with('tags')->get();
 		}else{
+			// Don't show notices
 			$a_notices = [];
+		}
+		
+		if ($user->currentLevel() > 1){
+			$a_owners = Agent::with('userDepartment')->orderBy('name')->get();
+		}else{
+			$a_owners = Agent::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -599,7 +606,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 		
-		return compact('a_notices', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('a_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
     /**
@@ -612,7 +619,8 @@ class TicketsController extends Controller
     public function store(Request $request)
     {	
 	    $user = $this->agent->find(auth()->user()->id);
-		$permission_level = $user->levelInCategory($request->category_id);
+		$category_level = $user->levelInCategory($request->category_id);
+		$permission_level = ($user->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 		
 		$a_content = $this->purifyHtml($request->get('content'));
         $request->merge([
@@ -842,7 +850,8 @@ class TicketsController extends Controller
 		$allowed_categories = implode(",", $user->getEditTicketCategories()->keys()->toArray());
 		
 		$fields = [
-            'subject'     => 'required|min:3',            
+            'subject'     => 'required|min:3',
+			'owner_id'    => 'exists:users,id',
             'priority_id' => 'required|exists:ticketit_priorities,id',
             'category_id' => 'required|in:'.$allowed_categories,
             'status_id'   => 'required|exists:ticketit_statuses,id',
@@ -885,6 +894,7 @@ class TicketsController extends Controller
         $ticket = $this->tickets->findOrFail($id);
 
         $ticket->subject = $request->subject;
+		$ticket->user_id = $request->owner_id;
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
@@ -1083,9 +1093,9 @@ class TicketsController extends Controller
 			$comment->type = "complete";
 			
 			if ($user->currentLevel()>1){ 
-				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete');
+				$comment->content = $comment->html = trans('ticketit::lang.comment-complete-title');
 			}else{
-				$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-complete') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
+				$comment->content = $comment->html = trans('ticketit::lang.comment-complete-title') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
 							
 				if ($a_clarification['content'] != ""){
 					$comment->content = $comment->content . ' ' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['content'];
@@ -1139,7 +1149,7 @@ class TicketsController extends Controller
 			// Add reopen comment
 			$comment = new Models\Comment;
 			$comment->type = "reopen";
-			$comment->content = $comment->html = trans('ticketit::lang.ticket-comment-type-reopen');
+			$comment->content = $comment->html = trans('ticketit::lang.comment-reopen-title');
 			$comment->ticket_id = $id;
 			$comment->user_id = $user->id;
 			$comment->save();

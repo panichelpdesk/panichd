@@ -78,7 +78,7 @@ class CommentsController extends Controller
 		$agent = Agent::findOrFail(\Auth::user()->id);
 		
 		// Response: reply or note
-		if ($agent->canManageTicket($request->get('ticket_id'))){
+		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id'))){
 			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 		}
 		
@@ -97,7 +97,7 @@ class CommentsController extends Controller
 		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
         
-		if ($request->has('add_to_intervention') and $agent->canManageTicket($request->get('ticket_id'))){
+		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id')) and $request->has('add_to_intervention')){
 			$ticket->intervention = $ticket->intervention.$a_content['content'];
 			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
 		}

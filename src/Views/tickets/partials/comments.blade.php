@@ -43,7 +43,7 @@
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>
 					@endif
 					{!! $comment->updated_at->diffForHumans() !!} 
-					@if ($u->canManageTicket($ticket->id) and $comment->type=='note')
+					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id) and $comment->type=='note')
 						<button type="button" class="btn btn-default btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('ticketit::lang.show-ticket-delete-comment') }}">
 						<span class="glyphicon glyphicon-remove" aria-label="{{ trans('ticketit::lang.btn-delete') }}" style="color: gray"></span></button>
 					@endif
@@ -53,7 +53,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><div id="jquery_comment_edit_{{$comment->id}}" class="summernote-text-wrapper"> {!! $comment->html !!} </div>
-					@if ($u->canManageTicket($ticket->id))
+					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 						@include('ticketit::tickets.partials.modal_comment_edit')
 					@endif
 					</div>
@@ -65,7 +65,7 @@
 						</div>
 					@endif
                 </div>
-				@if ($u->canManageTicket($ticket->id))
+				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					@if ($comment->type=='note')
 						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('ticketit::lang.show-ticket-edit-comment') }}</button>
 					@elseif($comment->type=='reply')

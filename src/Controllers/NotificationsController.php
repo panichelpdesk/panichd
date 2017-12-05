@@ -200,9 +200,11 @@ class NotificationsController extends Controller
 				if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" )){
 					$a_to[] = [
 						'recipient' => $ticket->owner,
-						'subject' => $ticket->subject . ' [' .  trans('ticketit::lang.ticket') . ' ' . trans('ticketit::lang.table-id') . $ticket->id .']',
+						'subject' => $this->subject.$ticket->id.trans('ticketit::lang.colon').$ticket->subject ,
 						'template' => Setting::grab('email.owner.newticket.template')
 					];
+					
+					$subject = $this->subject.$ticket->id.' '.trans('ticketit::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('ticketit::lang.colon').$ticket->subject;
 				}
 			}
 		}		
