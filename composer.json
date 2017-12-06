@@ -1,37 +1,32 @@
 {
-    "name": "kordy/ticketit",
-    "description": "A simple helpdesk tickets system for Laravel 5.1, 5.2, 5.3, 5.4 and 5.5 which integrates smoothly with Laravel default users and auth system",
+    "name": "panichd/panichd",
+    "description": "Ticketing system for Laravel 5.1 to 5.5 based on Kordy/Ticketit with some extra cool features like file attachments, ticket tags, filtering and scheduling. It can be installed and work within an existing laravel 5 project.",
     "type": "laravel-package",
-    "keywords": ["laravel","helpdesk", "ticket", "support"],
+    "keywords": ["ticketing-system", "helpdesk-ticketing", "laravel", "laravel-package", "laravel-5-package"],
     "require": {
         "laravel/framework": "^5.1",
         "laravelcollective/html": "^5.1",
         "illuminate/support": "^5.1",
-<<<<<<< HEAD
 		"intervention/image": "^2.4",
-        "yajra/laravel-datatables-oracle": "^6.0|^7.0",
-=======
         "yajra/laravel-datatables-oracle": "^6.0|^8.0",
->>>>>>> 250612410d14af5b5e6b0b4680191258658eef18
         "jenssegers/date": "^3.0",
         "mews/purifier": "^2.0",
         "doctrine/dbal": "^2.5"
-
     },
     "license": "MIT",
     "authors": [
         {
-            "name": "Ahmed Kordy",
-            "email": "ahmed@kordy.info"
+            "name": "ManelGP",
+            "email": "manelgp-email-here@gmail.com"
         },
         {
-            "name": "Balázs Kovács",
-            "email": "balping314@gmail.com"
+            "name": "XaviQV",
+            "email": "xaviqv@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Kordy\\Ticketit\\": "src"
+            "PanicHD\\PanicHD\\": "src"
         }
     }
 }
