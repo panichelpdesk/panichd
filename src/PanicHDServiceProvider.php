@@ -18,7 +18,7 @@ use PanicHD\PanicHD\Models\Comment;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
 
-class TicketitServiceProvider extends ServiceProvider
+class PanicHDServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
