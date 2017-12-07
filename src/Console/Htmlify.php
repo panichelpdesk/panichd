@@ -13,7 +13,7 @@ class Htmlify extends Command
      *
      * @var string
      */
-    protected $signature = 'ticketit:htmlify';
+    protected $signature = 'panichd:htmlify';
 
     /**
      * The console command description.

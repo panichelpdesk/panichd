@@ -128,7 +128,7 @@ class InstallController extends Controller
             // if this is the first install of the html editor, seed old posts text to the new html column
             if (in_array('2016_01_15_002617_add_htmlcontent_to_ticketit_and_comments', $inactive_migrations) &&
                 !(isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
-                Artisan::call('ticketit:htmlify');
+                Artisan::call('panichd:htmlify');
             }
         } elseif ($this->inactiveSettings()) { // new settings to be installed
 
