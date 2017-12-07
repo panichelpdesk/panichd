@@ -31,7 +31,7 @@ class InstallController extends Controller
         $assets = $this->allFilesList(base_path('vendor/panichd/panichd/src/Public'));
         if ($public !== $assets) {
             Artisan::call('vendor:publish', [
-                '--provider' => 'Kordy\\Ticketit\\TicketitServiceProvider',
+                '--provider' => 'PanicHD\\PanicHD\\TicketitServiceProvider',
                 '--tag'      => ['public'],
             ]);
         }
@@ -118,7 +118,7 @@ class InstallController extends Controller
         $inactive_migrations = $this->inactiveMigrations();
         if ($inactive_migrations) { // If a migration is missing, do the migrate
             Artisan::call('vendor:publish', [
-                '--provider' => 'Kordy\\Ticketit\\TicketitServiceProvider',
+                '--provider' => 'PanicHD\\PanicHD\\TicketitServiceProvider',
                 '--tag'      => ['db'],
             ]);
             Artisan::call('migrate');

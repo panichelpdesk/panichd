@@ -61,7 +61,7 @@ class TicketsController extends Controller
 			// Tags joins
 			->leftJoin('ticketit_taggables', function ($join) {
                 $join->on('ticketit.id', '=', 'ticketit_taggables.taggable_id')
-                    ->where('ticketit_taggables.taggable_type', '=', 'Kordy\\Ticketit\\Models\\Ticket');
+                    ->where('ticketit_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
             ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id');
 				

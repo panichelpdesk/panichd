@@ -281,9 +281,9 @@ class TicketitServiceProvider extends ServiceProvider
          * Register htmlify command. Need to run this when upgrading from <=0.2.2
          */
 
-        $this->app->singleton('command.kordy.ticketit.htmlify', function ($app) {
+        $this->app->singleton('command.panichd.panichd.htmlify', function ($app) {
             return new Htmlify();
         });
-        $this->commands('command.kordy.ticketit.htmlify');
+        $this->commands('command.panichd.panichd.htmlify');
     }
 }
