@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;

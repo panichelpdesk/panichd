@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Helpers;
+namespace PanicHD\PanicHD\Helpers;
 
 use Illuminate\Routing\Router;
 

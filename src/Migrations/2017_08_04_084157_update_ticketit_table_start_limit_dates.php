@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Kordy\Ticketit\Models\Ticket;
+use PanicHD\PanicHD\Models\Ticket;
 
 class UpdateTicketitTableStartLimitDates extends Migration
 {

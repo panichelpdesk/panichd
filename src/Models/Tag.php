@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +16,7 @@ class Tag extends Model
      */
     public function categories()
     {
-        return $this->morphedByMany('Kordy\Ticketit\Models\Category', 'taggable', 'ticketit_taggables')->orderBy('name');
+        return $this->morphedByMany('PanicHD\PanicHD\Models\Category', 'taggable', 'ticketit_taggables')->orderBy('name');
     }
 
     /**
@@ -26,6 +26,6 @@ class Tag extends Model
      */
     public function tickets()
     {
-        return $this->morphedByMany('Kordy\Ticketit\Models\Ticket', 'taggable', 'ticketit_taggables');
+        return $this->morphedByMany('PanicHD\PanicHD\Models\Ticket', 'taggable', 'ticketit_taggables');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class Closingreason extends Model
      */
     public function category()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Category', 'category_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Category', 'category_id');
     }
 	
 	/**
@@ -25,7 +25,7 @@ class Closingreason extends Model
      */
     public function status()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Status', 'status_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Status', 'status_id');
     }
 
 }

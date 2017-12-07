@@ -1,18 +1,18 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
-use Kordy\Ticketit\Models;
-use Kordy\Ticketit\Models\Agent;
-use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Models\Status;
-use Kordy\Ticketit\Traits\Attachments;
-use Kordy\Ticketit\Traits\Purifiable;
+use PanicHD\PanicHD\Models;
+use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Status;
+use PanicHD\PanicHD\Traits\Attachments;
+use PanicHD\PanicHD\Traits\Purifiable;
 
 class CommentsController extends Controller
 {
@@ -20,8 +20,8 @@ class CommentsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['store']]);
-		$this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['update', 'destroy']]);		
+        $this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['store']]);
+		$this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['update', 'destroy']]);		
     }
 
     /**

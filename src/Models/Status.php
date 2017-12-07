@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +24,7 @@ class Status extends Model
      */
     public function tickets()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Ticket', 'status_id');
+        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'status_id');
     }
 	
 	/**
@@ -34,6 +34,6 @@ class Status extends Model
      */
     public function closingReasons()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Closingreason', 'status_id');
+        return $this->hasMany('PanicHD\PanicHD\Models\Closingreason', 'status_id');
     }
 }

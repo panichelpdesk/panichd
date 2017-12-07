@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,14 +16,14 @@ class Department extends Model
      */
     public function users()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Agent', 'ticketit_department')->orderBy('name');
+        return $this->hasMany('PanicHD\PanicHD\Models\Agent', 'ticketit_department')->orderBy('name');
     }
 	
 	/*
 	 * Get main department of current one
 	*/
 	public function parent(){
-		return $this->belongsTo('Kordy\Ticketit\Models\Department', 'department_id');
+		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'department_id');
 	}
 	
 	/*
@@ -31,7 +31,7 @@ class Department extends Model
 	*/
 	public function children()
 	{
-		return $this->hasMany('Kordy\Ticketit\Models\Department', 'department_id', 'id');
+		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'department_id', 'id');
 	}
 	
 	/*

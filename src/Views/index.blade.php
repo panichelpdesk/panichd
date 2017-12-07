@@ -13,7 +13,7 @@
 @stop
 
 @section('footer')
-	<script src="//cdn.datatables.net/v/bs/dt-{{ Kordy\Ticketit\Helpers\Cdn::DataTables }}/r-{{ Kordy\Ticketit\Helpers\Cdn::DataTablesResponsive }}/datatables.min.js"></script>
+	<script src="//cdn.datatables.net/v/bs/dt-{{ PanicHD\PanicHD\Helpers\Cdn::DataTables }}/r-{{ PanicHD\PanicHD\Helpers\Cdn::DataTablesResponsive }}/datatables.min.js"></script>
 	<script>
 	$(function(){	
 		// Ticket list load

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +24,7 @@ class Category extends Model
      */
     public function tickets()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Ticket', 'category_id');
+        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'category_id');
     }
 
     /**
@@ -34,7 +34,7 @@ class Category extends Model
      */
     public function agents()
     {
-        return $this->belongsToMany('\Kordy\Ticketit\Models\Agent', 'ticketit_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
+        return $this->belongsToMany('\PanicHD\PanicHD\Models\Agent', 'ticketit_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
     }
 
     /**
@@ -44,7 +44,7 @@ class Category extends Model
      */
     public function tags()
     {
-        return $this->morphToMany('Kordy\Ticketit\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
+        return $this->morphToMany('PanicHD\PanicHD\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
     }
 	
 	/**
@@ -54,6 +54,6 @@ class Category extends Model
      */
     public function closingReasons()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Closingreason', 'category_id')->orderBy('ordering');
+        return $this->hasMany('PanicHD\PanicHD\Models\Closingreason', 'category_id')->orderBy('ordering');
     }
 }

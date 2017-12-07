@@ -1,9 +1,9 @@
 <?php
 
-namespace Kordy\Ticketit\Traits;
+namespace PanicHD\PanicHD\Traits;
 
-use Kordy\Ticketit\Models\Attachment;
-use Kordy\Ticketit\Models\Setting;
+use PanicHD\PanicHD\Models\Attachment;
+use PanicHD\PanicHD\Models\Setting;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 use Log;
@@ -17,8 +17,8 @@ trait Attachments
      * Saves form attached files in name="attachments[]"
      *
      * @param Request $request
-	 * @param $ticket instance of Kordy\Ticketit\Models\Ticket
-	 * @param $comment instance of Kordy\Ticketit\Models\Comment
+	 * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
+	 * @param $comment instance of PanicHD\PanicHD\Models\Comment
      *
      * @return string
 	 * @return bool
@@ -285,8 +285,8 @@ trait Attachments
 	/**
      * Destroys related attachments of $ticket or $comment
      *
-     * @param $ticket instance of Kordy\Ticketit\Models\Ticket
-	 * @param $comment instance of Kordy\Ticketit\Models\Comment
+     * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
+	 * @param $comment instance of PanicHD\PanicHD\Models\Comment
      *
      * @return string
 	 * @return bool
@@ -313,7 +313,7 @@ trait Attachments
 	/**
 	 * Iterates through selected $attachments as instances of Attachment model
 	 *
-	 * @param $ticket instance of Kordy\Ticketit\Models\Ticket
+	 * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
 	 *
      * @return string
 	 * @return bool

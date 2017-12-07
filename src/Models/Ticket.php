@@ -1,13 +1,13 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
-use Kordy\Ticketit\Models\Agent;
-use Kordy\Ticketit\Traits\ContentEllipse;
+use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Traits\ContentEllipse;
 
 /**
  * @property Attachment[]|Collection attachments
@@ -94,7 +94,7 @@ class Ticket extends Model
      */
     public function status()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Status', 'status_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Status', 'status_id');
     }
 
     /**
@@ -104,7 +104,7 @@ class Ticket extends Model
      */
     public function priority()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Priority', 'priority_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Priority', 'priority_id');
     }
 
     /**
@@ -114,7 +114,7 @@ class Ticket extends Model
      */
     public function category()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Category', 'category_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Category', 'category_id');
     }
 
 	/**
@@ -138,13 +138,13 @@ class Ticket extends Model
     }
 	
 	/**
-     * Get Ticket owner as Kordy\Ticketit\Models\Agent model
+     * Get Ticket owner as PanicHD\PanicHD\Models\Agent model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Agent', 'user_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Agent', 'user_id');
     }
 
     /**
@@ -154,7 +154,7 @@ class Ticket extends Model
      */
     public function agent()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Agent', 'agent_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Agent', 'agent_id');
     }
 
     /**
@@ -164,7 +164,7 @@ class Ticket extends Model
      */
     public function comments()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Comment', 'ticket_id');
+        return $this->hasMany('PanicHD\PanicHD\Models\Comment', 'ticket_id');
     }
 	
 	/**
@@ -174,7 +174,7 @@ class Ticket extends Model
      */
     public function recentComments()
     {
-        return $this->hasMany('Kordy\Ticketit\Models\Comment', 'ticket_id')->where('ticketit_comments.updated_at','>', Carbon::yesterday());
+        return $this->hasMany('PanicHD\PanicHD\Models\Comment', 'ticket_id')->where('ticketit_comments.updated_at','>', Carbon::yesterday());
     }
 
     /**
@@ -205,7 +205,7 @@ class Ticket extends Model
     //     */
     //    public function audits()
     //    {
-    //        return $this->hasMany('Kordy\Ticketit\Models\Audit', 'ticket_id');
+    //        return $this->hasMany('PanicHD\PanicHD\Models\Audit', 'ticket_id');
     //    }
     //
 
@@ -216,7 +216,7 @@ class Ticket extends Model
      */
     public function tags()
     {
-        return $this->morphToMany('Kordy\Ticketit\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
+        return $this->morphToMany('PanicHD\PanicHD\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
     }
 
     /**

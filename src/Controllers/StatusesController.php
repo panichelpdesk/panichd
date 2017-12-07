@@ -1,11 +1,11 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Kordy\Ticketit\Models\Status;
+use PanicHD\PanicHD\Models\Status;
 
 class StatusesController extends Controller
 {
@@ -54,7 +54,7 @@ class StatusesController extends Controller
 
         \Cache::forget('ticketit::statuses');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\StatusesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 
     /**
@@ -105,7 +105,7 @@ class StatusesController extends Controller
 
         \Cache::forget('ticketit::statuses');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\StatusesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 
     /**
@@ -125,6 +125,6 @@ class StatusesController extends Controller
 
         \Cache::forget('ticketit::statuses');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\StatusesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 }

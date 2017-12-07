@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Traits;
+namespace PanicHD\PanicHD\Traits;
 
 trait ContentEllipse
 {

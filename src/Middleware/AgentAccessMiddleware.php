@@ -1,11 +1,11 @@
 <?php
 
-namespace Kordy\Ticketit\Middleware;
+namespace PanicHD\PanicHD\Middleware;
 
 use Closure;
-use Kordy\Ticketit\Models\Agent;
-use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Traits\TicketRoutes;
+use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Traits\TicketRoutes;
 
 class AgentAccessMiddleware
 {
@@ -44,7 +44,7 @@ class AgentAccessMiddleware
 			}
 		}		
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index')
+        return redirect()->action('\PanicHD\PanicHD\Controllers\TicketsController@index')
             ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-access'));
     }
 }

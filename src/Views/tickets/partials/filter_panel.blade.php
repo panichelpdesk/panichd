@@ -44,7 +44,7 @@ $cld_options = [
 <span class="caret {{ $cld_class }}"></span></button>
 <ul class="dropdown-menu">
 @if ($calendar_name!="All")
-<li><a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('ticketit::lang.filter-calendar-all') }}</a></li>
+<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('ticketit::lang.filter-calendar-all') }}</a></li>
 @endif
 {!! $text_cld !!}</ul>
 </div>
@@ -73,7 +73,7 @@ $cld_options = [
 	<span class="caret" style="color: {{ $cat_color }}"></span></button>
 	<ul class="dropdown-menu">
 	@if ($category_name!="All")
-	<li><a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/category/remove">{{ trans('ticketit::lang.filter-category-all') }}</a></li>
+	<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/category/remove">{{ trans('ticketit::lang.filter-category-all') }}</a></li>
 	@endif
 	{!! $text_cat !!}</ul>
 	</div>
@@ -99,7 +99,7 @@ $cld_options = [
 		<button class="btn btn-default btn-sm agent-current" style="color: {{ $cat_color }}">{{$filters['agent']{0}->name}}</button>
 	@else
 		@if (session('ticketit_filter_agent')!="")
-			<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('ticketit::lang.filter-agent-all') }}</a>
+			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('ticketit::lang.filter-agent-all') }}</a>
 		@elseif(count($filters['agent'])>1)
 			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">{{ trans('ticketit::lang.filter-agent-all') }}</button>		
 		@endif
@@ -108,7 +108,7 @@ $cld_options = [
 			@if ($ag->id==session('ticketit_filter_agent'))
 				<button class="btn btn-default btn-sm agent-current"><span style="color: {{ $cat_color }}">{{$ag->name}}</span> <span class="badge" style="background: {{ $cat_color }}">{!!$ag->agent_total_tickets_count !!}</span></button>				
 			@else
-				<a href="{{ action('\Kordy\Ticketit\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link btn-sm">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link btn-sm">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
 			@endif			
 		@endforeach	
 	@endif

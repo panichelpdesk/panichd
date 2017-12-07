@@ -1,9 +1,9 @@
 <?php
 
-namespace Kordy\Ticketit\Seeds;
+namespace PanicHD\PanicHD\Seeds;
 
 use Illuminate\Database\Seeder;
-use Kordy\Ticketit\Models\Setting;
+use PanicHD\PanicHD\Models\Setting;
 
 class SettingsTableSeeder extends Seeder
 {
@@ -119,7 +119,7 @@ class SettingsTableSeeder extends Seeder
             'email.facebook_link'    => '#', // Toogle icon link: false or string
             'email.twitter_link'     => '#', // Toogle icon link: false or string
             'email.footer'           => 'Powered by Ticketit',
-            'email.footer_link'      => 'https://github.com/thekordy/ticketit',
+            'email.footer_link'      => 'https://github.com/panichelpdesk/panichd',
             'email.color_body_bg'    => '#FFFFFF',
             'email.color_header_bg'  => '#44B7B7',
             'email.color_content_bg' => '#F46B45',
@@ -283,7 +283,7 @@ class SettingsTableSeeder extends Seeder
              *
              * This setting stores the path to the json config file, relative to project route
              */
-            'summernote_options_json_file' => 'vendor/kordy/ticketit/src/JSON/summernote_init.json',
+            'summernote_options_json_file' => 'vendor/panichd/panichd/src/JSON/summernote_init.json',
 			/* User role specific summernote options json string */
 			'summernote_options_user' => 'no',
 

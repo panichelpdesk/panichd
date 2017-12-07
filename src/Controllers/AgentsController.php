@@ -1,14 +1,14 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Kordy\Ticketit\Models\Agent;
-use Kordy\Ticketit\Models\Category;
-use Kordy\Ticketit\Models\Setting;
+use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Setting;
 
 class AgentsController extends Controller
 {
@@ -44,7 +44,7 @@ class AgentsController extends Controller
 
         Session::flash('status', trans('ticketit::admin.agent-store-ok', ['name' => $user->name]));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
     }
 
     public function update($id, Request $request)
@@ -58,7 +58,7 @@ class AgentsController extends Controller
 			
 			Session::flash('status', trans('ticketit::admin.agent-updated-ok', ['name' => $user->name]));
 
-			return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
+			return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
 		}
     }
 
@@ -68,7 +68,7 @@ class AgentsController extends Controller
 
         Session::flash('status', trans('ticketit::admin.agent-excluded-ok', ['name' => $agent->name]));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\AgentsController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
     }
 
     /**

@@ -1,15 +1,15 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Kordy\Ticketit\Helpers\LaravelVersion;
-use Kordy\Ticketit\Models;
-use Kordy\Ticketit\Models\Category;
-use Kordy\Ticketit\Models\Tag;
+use PanicHD\PanicHD\Helpers\LaravelVersion;
+use PanicHD\PanicHD\Models;
+use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Tag;
 
 class CategoriesController extends Controller
 {
@@ -73,7 +73,7 @@ class CategoriesController extends Controller
 
         \Cache::forget('ticketit::categories');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\CategoriesController@index');
     }
 
     /**
@@ -163,7 +163,7 @@ class CategoriesController extends Controller
 
         \Cache::forget('ticketit::categories');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\CategoriesController@index');
     }
 
 	/**
@@ -306,7 +306,7 @@ class CategoriesController extends Controller
      *
      * @param $request
      * @param $a_tags_new Array
-     * @param $category instance of Kordy\Ticketit\Models\Category
+     * @param $category instance of PanicHD\PanicHD\Models\Category
      */
     protected function sync_reasons($request, $category, $a_reasons)
     {        
@@ -349,7 +349,7 @@ class CategoriesController extends Controller
      *
      * @param $request
      * @param $a_tags_new Array
-     * @param $category instance of Kordy\Ticketit\Models\Category
+     * @param $category instance of PanicHD\PanicHD\Models\Category
      */
     protected function sync_category_tags($request, $category, $a_tags_new, $a_tags_update )
     {
@@ -425,6 +425,6 @@ class CategoriesController extends Controller
 
         \Cache::forget('ticketit::categories');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\CategoriesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\CategoriesController@index');
     }
 }

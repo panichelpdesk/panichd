@@ -1,24 +1,24 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Cache;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use Kordy\Ticketit\Helpers\LaravelVersion;
+use PanicHD\PanicHD\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
 use InvalidArgumentException;
-use Kordy\Ticketit\Models;
-use Kordy\Ticketit\Models\Agent;
-use Kordy\Ticketit\Models\Attachment;
-use Kordy\Ticketit\Models\Category;
-use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Models\Tag;
-use Kordy\Ticketit\Models\Ticket;
-use Kordy\Ticketit\Traits\Attachments;
-use Kordy\Ticketit\Traits\Purifiable;
+use PanicHD\PanicHD\Models;
+use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Attachment;
+use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Tag;
+use PanicHD\PanicHD\Models\Ticket;
+use PanicHD\PanicHD\Traits\Attachments;
+use PanicHD\PanicHD\Traits\Purifiable;
 
 class TicketsController extends Controller
 {
@@ -29,9 +29,9 @@ class TicketsController extends Controller
 
     public function __construct(Ticket $tickets, Agent $agent)
     {
-        $this->middleware('Kordy\Ticketit\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('Kordy\Ticketit\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority']]);
-        $this->middleware('Kordy\Ticketit\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
         $this->agent = $agent;
@@ -739,7 +739,7 @@ class TicketsController extends Controller
 			'title' => trans('ticketit::lang.ticket-status-link-title')
 		]));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\TicketsController@index');
     }
 
     public function downloadAttachment($attachment_id)
@@ -964,7 +964,7 @@ class TicketsController extends Controller
     /**
      * Syncs tags for ticket instance.
      *
-     * @param $ticket instance of Kordy\Ticketit\Models\Ticket
+     * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
      */
     protected function sync_ticket_tags($request, $ticket)
     {

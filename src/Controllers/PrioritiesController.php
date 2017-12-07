@@ -1,11 +1,11 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Kordy\Ticketit\Models\Priority;
+use PanicHD\PanicHD\Models\Priority;
 
 class PrioritiesController extends Controller
 {
@@ -54,7 +54,7 @@ class PrioritiesController extends Controller
 
         \Cache::forget('ticketit::priorities');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\PrioritiesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 
     /**
@@ -105,7 +105,7 @@ class PrioritiesController extends Controller
 
         \Cache::forget('ticketit::priorities');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\PrioritiesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 
     /**
@@ -125,6 +125,6 @@ class PrioritiesController extends Controller
 
         \Cache::forget('ticketit::priorities');
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\PrioritiesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 }

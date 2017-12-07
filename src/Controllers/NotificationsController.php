@@ -1,15 +1,15 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Kordy\Ticketit\Helpers\LaravelVersion;
-use Kordy\Ticketit\Models\Category;
-use Kordy\Ticketit\Models\Comment;
-use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Models\Ticket;
+use PanicHD\PanicHD\Helpers\LaravelVersion;
+use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Comment;
+use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Ticket;
 
 class NotificationsController extends Controller
 {
@@ -284,7 +284,7 @@ class NotificationsController extends Controller
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
 				$mail_template = isset($to['template']) ? $to['template'] : $template;
 				
-				$mail = new \Kordy\Ticketit\Mail\TicketitNotification($mail_template, $data, $email_from, $email_replyto, $subject);
+				$mail = new \PanicHD\PanicHD\Mail\TicketitNotification($mail_template, $data, $email_from, $email_replyto, $subject);
 
 				if (Setting::grab('queue_emails') == 'yes') {
 					Mail::to($to['recipient'])->queue($mail);

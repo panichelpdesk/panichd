@@ -1,6 +1,6 @@
 <?php
 
-namespace Kordy\Ticketit\Mail;
+namespace PanicHD\PanicHD\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

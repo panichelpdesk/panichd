@@ -1,16 +1,16 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Kordy\Ticketit\Models;
+use PanicHD\PanicHD\Models;
 
 class NoticesController extends Controller
 {
     public function __construct()
 	{
-		 $this->middleware('Kordy\Ticketit\Middleware\RequiredSettingMiddleware:Notices');
+		 $this->middleware('PanicHD\PanicHD\Middleware\RequiredSettingMiddleware:Notices');
 	}
 	
 	
@@ -54,7 +54,7 @@ class NoticesController extends Controller
 				
         \Session::flash('status', trans('ticketit::admin.notice-saved-ok'));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\NoticesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\NoticesController@index');
     }
 	
 	public function update(Request $request)
@@ -69,6 +69,6 @@ class NoticesController extends Controller
 		
 		\Session::flash('status', trans('ticketit::admin.notice-deleted-ok'));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\NoticesController@index');
+        return redirect()->action('\PanicHD\PanicHD\Controllers\NoticesController@index');
 	}
 }

@@ -6,8 +6,8 @@
  * See Seeds/SettingsTableSeeder.php
  */
 
-$codemirrorVersion = Kordy\Ticketit\Helpers\Cdn::CodeMirror;
-$summernoteVersion = Kordy\Ticketit\Helpers\Cdn::Summernote;
+$codemirrorVersion = PanicHD\PanicHD\Helpers\Cdn::CodeMirror;
+$summernoteVersion = PanicHD\PanicHD\Helpers\Cdn::Summernote;
 
 return [
 

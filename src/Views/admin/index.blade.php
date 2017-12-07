@@ -69,17 +69,17 @@
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li>
-                                        <a href="{{ action('\Kordy\Ticketit\Controllers\DashboardController@index', 2) }}">
+                                        <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 2) }}">
                                             {{ trans('ticketit::admin.index-3-months') }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ action('\Kordy\Ticketit\Controllers\DashboardController@index', 5) }}">
+                                        <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 5) }}">
                                             {{ trans('ticketit::admin.index-6-months') }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ action('\Kordy\Ticketit\Controllers\DashboardController@index', 11) }}">
+                                        <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 11) }}">
                                             {{ trans('ticketit::admin.index-12-months') }}
                                         </a>
                                     </li>

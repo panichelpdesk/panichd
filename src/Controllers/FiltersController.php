@@ -1,10 +1,10 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Kordy\Ticketit\Models;
+use PanicHD\PanicHD\Models;
 
 
 class FiltersController extends Controller

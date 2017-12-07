@@ -1,14 +1,14 @@
 <?php
 
-namespace Kordy\Ticketit\Traits;
+namespace PanicHD\PanicHD\Traits;
 
 use Illuminate\Http\Request;
-use Kordy\Ticketit\Helpers\LaravelVersion;
-use Kordy\Ticketit\Models\Attachment;
-use Kordy\Ticketit\Models\Category;
-use Kordy\Ticketit\Models\Comment;
-use Kordy\Ticketit\Models\Setting;
-use Kordy\Ticketit\Models\Ticket;
+use PanicHD\PanicHD\Helpers\LaravelVersion;
+use PanicHD\PanicHD\Models\Attachment;
+use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Comment;
+use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Ticket;
 
 trait TicketRoutes
 {
@@ -46,7 +46,7 @@ trait TicketRoutes
 	/**
      * Returns related ticket instance to current route
      *
-     * @return Kordy\Ticketit\Models\Ticket
+     * @return PanicHD\PanicHD\Models\Ticket
      */
     public function getRouteTicket($request)
     {
@@ -83,7 +83,7 @@ trait TicketRoutes
 	/**
      * Returns related category instance to current route
      *
-     * @return Kordy\Ticketit\Models\Category
+     * @return PanicHD\PanicHD\Models\Category
      */
     public function getRouteCategory($request)
     {

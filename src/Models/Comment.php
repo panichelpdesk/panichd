@@ -1,10 +1,10 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Kordy\Ticketit\Traits\ContentEllipse;
+use PanicHD\PanicHD\Traits\ContentEllipse;
 
 /**
  * @property Attachment[]|Collection attachments
@@ -31,7 +31,7 @@ class Comment extends Model
      */
     public function ticket()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Ticket', 'ticket_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Ticket', 'ticket_id');
     }
 
     /**
@@ -45,13 +45,13 @@ class Comment extends Model
     }
 	
 	/**
-     * Get Comment owner as Kordy\Ticketit\Models\Agent model
+     * Get Comment owner as PanicHD\PanicHD\Models\Agent model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
-        return $this->belongsTo('Kordy\Ticketit\Models\Agent', 'user_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Agent', 'user_id');
     }
 
     public function attachments()

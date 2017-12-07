@@ -1,9 +1,9 @@
 <?php
 
-namespace Kordy\Ticketit\Models;
+namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
-use Kordy\Ticketit\Traits\ContentEllipse;
+use PanicHD\PanicHD\Traits\ContentEllipse;
 
 class Configuration extends Model
 {

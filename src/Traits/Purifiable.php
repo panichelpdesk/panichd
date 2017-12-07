@@ -1,8 +1,8 @@
 <?php
 
-namespace Kordy\Ticketit\Traits;
+namespace PanicHD\PanicHD\Traits;
 
-use Kordy\Ticketit\Models\Setting;
+use PanicHD\PanicHD\Models\Setting;
 use Mews\Purifier\Facades\Purifier;
 
 trait Purifiable

@@ -1,11 +1,11 @@
 <?php
 
-namespace Kordy\Ticketit\Controllers;
+namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
-use Kordy\Ticketit\Models\Agent;
-use Kordy\Ticketit\Models\Category;
-use Kordy\Ticketit\Models\Ticket;
+use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Ticket;
 
 class DashboardController extends Controller
 {
