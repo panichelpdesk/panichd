@@ -1,16 +1,16 @@
-@section('header')
+@section('panichd_assets')
 	@include('ticketit::shared.assets')
 @append
 
-@section('ticketit_nav')
+@section('panichd_nav')
 	@include('ticketit::shared.nav')
 @stop
 
-@section('ticketit_errors')
+@section('panichd_errors')
 	@include('ticketit::shared.errors')
 @stop
 
-@section('footer')
+@section('panichd_footer_scripts')
 	<script type="text/javascript">
 	$(function(){
 		// Tooltips
