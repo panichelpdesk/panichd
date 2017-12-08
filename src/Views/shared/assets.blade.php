@@ -1,18 +1,18 @@
-<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/dataTables.bootstrap.css')}}">
-<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/responsive.bootstrap.min.css')}}">
+<link rel="StyleSheet" href="{{asset('vendor/panichd/css/dataTables.bootstrap.css')}}">
+<link rel="StyleSheet" href="{{asset('vendor/panichd/css/responsive.bootstrap.min.css')}}">
 @if($editor_enabled)
-	<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/summernote/summernote.css')}}">
+	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/summernote/summernote.css')}}">
 	@if($include_font_awesome)
-		<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/font-awesome.min.css')}}">
+		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/font-awesome.min.css')}}">
 	@endif
 	@if($codemirror_enabled)
-		<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/codemirror/codemirror.min.css')}}">	
-		<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/codemirror/'.$codemirror_theme.'.min.css')}}">
+		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror.min.css')}}">	
+		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/'.$codemirror_theme.'.min.css')}}">
 	@endif
 @endif
 
 <!-- SELECT 2: Ticket list, edit -->
-<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/select2.min.css')}}">
+<link rel="StyleSheet" href="{{asset('vendor/panichd/css/select2.min.css')}}">
 <style type="text/css">
 .select2-selection__choice {
 	background-color: #cfe2f3 !important;
@@ -24,8 +24,8 @@
 }
 
 </style>
-<script type="text/javascript" src="{{asset('vendor/ticketit/js/select2.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('vendor/ticketit/js/i18n/'.App::getLocale().'.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/select2.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/i18n/'.App::getLocale().'.js')}}"></script>
 <!-- /SELECT 2 -->
 
 <link href="{{ asset('/vendor/ticketit/css/style.css') }}" rel="stylesheet">

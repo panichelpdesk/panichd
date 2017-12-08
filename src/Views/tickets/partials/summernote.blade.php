@@ -1,14 +1,14 @@
 @if($editor_enabled)
 
 @if($codemirror_enabled)
-    <script src="{{asset('vendor/ticketit/js/codemirror/codemirror.min.js')}}"></script>
-    <script src="{{asset('vendor/ticketit/js/codemirror/mode/xml.min.js')}}"></script>
+    <script src="{{asset('vendor/panichd/js/codemirror/codemirror.min.js')}}"></script>
+    <script src="{{asset('vendor/panichd/js/codemirror/mode/xml.min.js')}}"></script>
 	
 @endif
 
-<script src="{{ asset('vendor/ticketit/js/summernote/summernote.min.js') }}"></script>
+<script src="{{ asset('vendor/panichd/js/summernote/summernote.min.js') }}"></script>
 @if($editor_locale)
-    <script src="{{ asset('vendor/ticketit/js/summernote/lang/summernote-'.$editor_locale.'.min.js') }}"></script>
+    <script src="{{ asset('vendor/panichd/js/summernote/lang/summernote-'.$editor_locale.'.min.js') }}"></script>
 @endif
 <script>
 

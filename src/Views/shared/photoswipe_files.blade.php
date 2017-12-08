@@ -1,6 +1,6 @@
 @section('content')
-	<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/photoswipe.css')}}">
-	<link rel="StyleSheet" href="{{asset('vendor/ticketit/css/photoswipe-default-skin/default-skin.css')}}">
+	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/photoswipe.css')}}">
+	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/photoswipe-default-skin/default-skin.css')}}">
 	
 	<!-- Root element of PhotoSwipe. Must have class pswp. -->
 	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -70,8 +70,8 @@
 @append
 
 @section('footer')
-	<script src="{{ asset('vendor/ticketit/js/photoswipe.min.js') }}"></script>
-	<script src="{{ asset('vendor/ticketit/js/photoswipe-ui-default.min.js') }}"></script>
+	<script src="{{ asset('vendor/panichd/js/photoswipe.min.js') }}"></script>
+	<script src="{{ asset('vendor/panichd/js/photoswipe-ui-default.min.js') }}"></script>
 	<script>
 	$(function(){
 		// Modify link for each image in ticket to launch PhotoSwipe
