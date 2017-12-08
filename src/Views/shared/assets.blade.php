@@ -1,3 +1,4 @@
+<link rel="StyleSheet" href="{{asset('vendor/panichd/css/bootstrap/bootstrap-3.3.7.min.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/dataTables.bootstrap.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/responsive.bootstrap.min.css')}}">
 @if($editor_enabled)
@@ -11,7 +12,6 @@
 	@endif
 @endif
 
-<!-- SELECT 2: Ticket list, edit -->
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/select2.min.css')}}">
 <style type="text/css">
 .select2-selection__choice {
@@ -24,8 +24,12 @@
 }
 
 </style>
-<script type="text/javascript" src="{{asset('vendor/panichd/js/select2.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('vendor/panichd/js/i18n/'.App::getLocale().'.js')}}"></script>
-<!-- /SELECT 2 -->
 
-<link href="{{ asset('/vendor/ticketit/css/style.css') }}" rel="stylesheet">
+<link href="{{ asset('/vendor/panichd/css/panichd.css') }}" rel="stylesheet">
+
+<script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-3.2.1.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-ui-1.12.1.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/bootstrap/bootstrap-3.3.7.min.js')}}"></script>
+
+<script type="text/javascript" src="{{asset('vendor/panichd/js/select2/select2.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/select2/i18n/'.App::getLocale().'.js')}}"></script>

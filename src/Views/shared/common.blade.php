@@ -10,7 +10,7 @@
 	@include('ticketit::shared.errors')
 @stop
 
-@section('panichd_footer_scripts')
+@section('footer')
 	<script type="text/javascript">
 	$(function(){
 		// Tooltips

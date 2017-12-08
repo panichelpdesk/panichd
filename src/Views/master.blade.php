@@ -84,7 +84,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
-	@yield('panichd_footer_scripts')
+    
+	@yield('footer')
 </body>
 </html>
