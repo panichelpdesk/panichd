@@ -33,6 +33,8 @@ return [
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
   
+  'no-tickets-yet'                   => 'No tickets yet', # Pending to move old admin.index-empty-records in other languages
+  'list-no-tickets'                  => 'There are no tickets in this list',
   'table-info-attachments-total'     => ':num attached files',
   'table-comments-total'             => ':num Total comments.',
   'table-comments-recent'            => ':num recent ones.',
