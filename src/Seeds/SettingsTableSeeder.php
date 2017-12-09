@@ -283,7 +283,7 @@ class SettingsTableSeeder extends Seeder
              *
              * This setting stores the path to the json config file, relative to project route
              */
-            'summernote_options_json_file' => 'vendor/panichd/panichd/src/JSON/summernote_init.json',
+            'summernote_options_json_file' => 'default',
 			/* User role specific summernote options json string */
 			'summernote_options_user' => 'no',
 
