@@ -322,7 +322,7 @@ class TicketsController extends Controller
 		];
 		$data = array_merge ($data, $this->ticketCounts($request, $ticketList));
 		
-		return view('ticketit::index', $data);
+		return view('ticketit::tickets.index', $data);
 	}
 
     /**
