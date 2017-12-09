@@ -148,13 +148,15 @@
 					</div>
 				</div>
 			
-				<div class="form-group"><!-- TAGS -->
-					<label class="control-label col-lg-3">Etiquetes:</label>
-					<div id="jquery_select2_container" class="col-lg-9">
-					<?php //$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [] ?>
-					@include('ticketit::tickets.partials.tags_menu')				
-					</div>					
-				</div>
+				@if ($tag_lists->count() > 0)
+					<div class="form-group"><!-- TAGS -->
+						<label class="control-label col-lg-3">Etiquetes:</label>
+						<div id="jquery_select2_container" class="col-lg-9">
+						<?php //$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [] ?>
+						@include('ticketit::tickets.partials.tags_menu')				
+						</div>					
+					</div>
+				@endif
 			</div>
 			@else
 				{!! CollectiveForm::hidden('agent_id', 'auto') !!}
