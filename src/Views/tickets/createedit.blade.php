@@ -1,10 +1,6 @@
 @extends($master)
 @section('page', trans('ticketit::lang.create-ticket-title'))
 
-@section('header')
-	@include('ticketit::shared.datetimepicker')
-@append
-
 @include('ticketit::shared.common')
 
 @section('content')
@@ -222,6 +218,7 @@
 
 @include('ticketit::tickets.partials.modal_attachment_edit')
 @include('ticketit::shared.photoswipe_files')
+@include('ticketit::shared.datetimepicker')
 @include('ticketit::shared.jcrop_files')
 
 @section('footer')
