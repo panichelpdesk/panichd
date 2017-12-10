@@ -9,7 +9,12 @@ use PanicHD\PanicHD\Models\Ticket;
 
 class DashboardController extends Controller
 {
-    public function index($indicator_period = 2)
+    public function __construct()
+	{
+		$this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware');
+	}
+	
+	public function index($indicator_period = 2)
     {
         $tickets_count = Ticket::count();
         $open_tickets_count = Ticket::whereNull('completed_at')->count();

@@ -319,6 +319,9 @@ return [
  *  Middlewares
  */
 
+ // EnvironmentReadyMiddleware
+ 'environment-not-ready'                 => 'Administrator has not finished the required configuration to let tickets be created',
+ 
  //  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access'     => 'You are not permitted to access this page!',
 

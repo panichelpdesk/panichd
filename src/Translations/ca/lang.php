@@ -318,6 +318,9 @@ return [
  *  Middlewares
  */
 
+ // EnvironmentReadyMiddleware
+ 'environment-not-ready'                 => 'L\'Administrador no ha finalitzat la configuració per poder afegir tiquets',
+ 
  //  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access'     => 'No tens permisos per accedir a aquesta pàgina!',
 
