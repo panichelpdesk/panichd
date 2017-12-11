@@ -53,7 +53,7 @@
 							@elseif($setting->grab('email.account.name') != 'default' && $setting->grab('email.account.mailbox') != 'default')
 								{{ trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.name') }} &lt;{{ $setting->grab('email.account.mailbox') }}>
 							@else
-								{{ trans('ticketit::admin.category-email-origin-website') }}">{{ env('MAIL_FROM_NAME') }} &lt;{{ env('MAIL_FROM_ADDRESS') }}>
+								{{ trans('ticketit::admin.category-email-origin-website') }}">{{ config('mail.from.name') }} &lt;{{ config('mail.from.address') }}>
 							@endif
 							 <span class="glyphicon glyphicon-question-sign"></span></span>
                         </td>

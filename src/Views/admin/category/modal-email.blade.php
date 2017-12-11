@@ -19,7 +19,7 @@
 						@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
 							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@else
-							<span class="tooltip-info" title="{{ env('MAIL_FROM_NAME') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}">{{ env('MAIL_FROM_ADDRESS') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@endif
 						
 						</div>	
@@ -64,7 +64,7 @@
 						@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
 							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@else
-							<span class="tooltip-info" title="{{ env('MAIL_FROM_NAME') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}">{{ env('MAIL_FROM_ADDRESS') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@endif
 						
 						</div>	

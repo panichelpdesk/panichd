@@ -230,8 +230,8 @@ class NotificationsController extends Controller
 			$email_replyto->email = Setting::grab('email.account.mailbox');
 		}else{
 			// ReplyTo: Use Laravel general account
-			$email_replyto->email_name = env('MAIL_FROM_NAME');
-			$email_replyto->email = env('MAIL_FROM_ADDRESS');
+			$email_replyto->email_name = config('mail.from.name');
+			$email_replyto->email = config('mail.from.address');
 		}
 		
 		// From: Use same as ReplyTo

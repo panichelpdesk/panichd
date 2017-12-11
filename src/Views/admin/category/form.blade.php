@@ -33,7 +33,7 @@
 					@endphp
 				@endif
 			@endif
-			<span id="email_scope_website" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ env('MAIL_FROM_NAME') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}" {!! $email_origin == 'website' ? '' : 'style="display: none"' !!}>{{ env('MAIL_FROM_ADDRESS') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+			<span id="email_scope_website" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ config('mail.from.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}" {!! $email_origin == 'website' ? '' : 'style="display: none"' !!}>{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 			
 			<span id="email_scope_tickets" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}" {!! $email_origin == 'tickets' ? '' : 'style="display: none"' !!}>{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 			
