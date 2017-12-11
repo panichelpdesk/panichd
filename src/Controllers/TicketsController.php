@@ -65,7 +65,13 @@ class TicketsController extends Controller
                     ->where('ticketit_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
             ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id');
-				
+		
+		if (config('database.default')=='sqlite'){
+			$select_dates = 'ticketit.limit_date || \'9999\' || ticketit.start_date as calendar_order';
+		}else{
+			$select_dates = \DB::raw('concat(ticketit.limit_date, \'9999\', ticketit.start_date) as calendar_order');
+		}
+		
 		$a_select = [
 			'ticketit.id',
 			'ticketit.subject AS subject',
@@ -77,7 +83,7 @@ class TicketsController extends Controller
 			'ticketit_categories.color AS color_category',			
 			'ticketit.start_date',
 			'ticketit.limit_date',
-			\DB::raw('concat(if(ticketit.limit_date, ticketit.limit_date, \'9999\'), ticketit.start_date) as calendar_order'),
+			$select_dates,
 			'ticketit.updated_at AS updated_at',
 			'ticketit.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
