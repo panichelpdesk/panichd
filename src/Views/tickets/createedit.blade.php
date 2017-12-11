@@ -19,6 +19,7 @@
 			{!! CollectiveForm::model($ticket, [
 				 'route' => [$setting->grab('main_route').'.update', $ticket->id],
 				 'method' => 'PATCH',
+				 'id' => 'ticket_form',
 				 'class' => 'form-horizontal',
 				 'enctype' => 'multipart/form-data'
 			 ]) !!}
@@ -26,6 +27,7 @@
 			{!! CollectiveForm::open([
 				'route'=>$setting->grab('main_route').'.store',
 				'method' => 'POST',
+				'id' => 'ticket_form',
 				'class' => 'form-horizontal',
 				'enctype' => 'multipart/form-data'
 			]) !!}
@@ -211,7 +213,7 @@
 			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
-                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
+                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['id'=>'ticket_submit', 'class' => 'btn btn-primary']) !!}
                 </div>
             </div>
         {!! CollectiveForm::close() !!}
@@ -311,7 +313,46 @@
         });
         $("#limit_date").on("dp.change", function (e) {
             $('#start_date').data("DateTimePicker").maxDate(e.date);
-        });		
+        });
+		
+		// Validate form with AJAX POST before real form submit
+		$('#ticket_submit').click(function(e){
+			var form = $(this).closest('form');
+			
+			e.preventDefault();
+			
+			$.ajax({
+				type: "POST",
+				url: '{{ route($setting->grab('main_route').'.validation-test') }}',
+				
+				data: {
+					_token: "{{ csrf_token() }}",
+					subject: form.find('input[name=subject]').val(),
+					owner_id: form.find('select[name=owner_id]').val(),
+					category_id: form.find('select[name=category_id]').val(),
+					@if ($u->currentLevel() > 1)
+						status_id: form.find('select[name=status_id]').val(),
+						priority_id: form.find('select[name=priority_id]').val(),
+					@endif
+					content: form.find('textarea[name=content]').val(),
+				},
+				success: function( response ) {
+					$('#form_errors').find('ul li').remove();
+					
+					if (response.result != 'ok'){
+						$.each(response.messages,function(index, value){
+							$('#form_errors').find('ul').append('<li>'+value+'</li>');
+						});
+						
+						$('#form_errors').show();
+						document.body.scrollTop = 0;
+						document.documentElement.scrollTop = 0;
+					}else{
+						$('#ticket_form').submit();
+					}
+				}
+			});
+		});
 	});	
 	</script>	
 	@include('ticketit::tickets.partials.summernote')

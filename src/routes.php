@@ -31,6 +31,9 @@ Route::group(['middleware' => \Kordy\Ticketit\Helpers\LaravelVersion::authMiddle
                 $field_name => 'ticket',
             ],
         ]);
+		
+	Route::post("$main_route_path/validation-test", 'Kordy\Ticketit\Controllers\TicketsController@ajax_validation_test')
+        ->name("$main_route.validation-test");
 
     Route::get("$main_route_path/download-attachment/{attachment}", 'Kordy\Ticketit\Controllers\TicketsController@downloadAttachment')
         ->name("$main_route.download-attachment");

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Cache;
 use Carbon\Carbon;
 use DB;
+use Validator;
 use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -608,21 +609,22 @@ class TicketsController extends Controller
 		
 		return compact('a_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
-
-    /**
-     * Store a newly created ticket and auto assign an agent for it.
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {	
-	    $user = $this->agent->find(auth()->user()->id);
+	
+	/**
+	 * Previous tasks for ticket validation
+	*/
+	protected function validation_common($request)
+	{
+		$user = $this->agent->find(auth()->user()->id);
 		$category_level = $user->levelInCategory($request->category_id);
 		$permission_level = ($user->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 		
 		$a_content = $this->purifyHtml($request->get('content'));
+		$common_data = [
+			'a_content' => $a_content,
+			'permission_level' => $permission_level,
+		];
+		
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
@@ -642,7 +644,7 @@ class TicketsController extends Controller
 			$fields['status_id'] = 'required|exists:ticketit_statuses,id';
 			$fields['priority_id'] = 'required|exists:ticketit_priorities,id';
 			
-			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
+			$a_intervention = $common_data['a_intervention'] = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
 				'intervention'=> $a_intervention['intervention'],
 				'intervention_html'=> $a_intervention['intervention_html'],
@@ -667,7 +669,56 @@ class TicketsController extends Controller
 			}else{
 				$custom_messages[$field] = $trans;
 			}
-		}		
+		}
+				
+		$common_data = array_merge($common_data, [
+			'request' => $request,
+			'fields' => $fields,
+			'custom_messages' => $custom_messages,
+		]);
+		
+		return $common_data;
+	}
+	
+	/**
+	 * Do a form validation test previous to real ticket store / update,
+	 * preventing attached files to be left if an error is encountered in the form.
+	*/
+	public function ajax_validation_test (Request $request)
+	{
+		$common_data = $this->validation_common($request);
+		extract($common_data);
+		
+		// Form validation
+        $validator = Validator::make($request->all(), $fields, $custom_messages);
+		
+		if ($validator->fails()) {
+			
+			// $validator->errors()
+			$result = array_merge (['result'=>'error'] , [
+				'messages'=>(array)$validator->errors()->all(),
+				'fields'=>(array)$validator->errors()->messages()
+			]);
+			
+		}else{
+			$result = ['result'=>'ok'];
+		}
+		
+		return response()->json($result);
+	}
+	
+	
+    /**
+     * Store a newly created ticket and auto assign an agent for it.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {	
+		$common_data = $this->validation_common($request);
+		extract($common_data);
 		
 		// Form validation
         $this->validate($request, $fields, $custom_messages);
