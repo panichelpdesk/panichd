@@ -190,6 +190,7 @@ return [
   'notice-deleted-ok'           => 'Notice deleted',
   'notice-index-js-delete'      => 'Are you sure you want to delete this notice?',
   'notice-index-help'          => 'When a ticket set with one of the following owners is created, there will happen two things:<br /><br /><ol><li>An e-mail will be sent to ticket <b>owner</b>, with a specific e-mail template.</li><li>As long as the ticket is <b>open</b>, users in the same department will see the ticket as a <b>notice</b> in the create ticket menu.',
+  'notice-index-owner-alert'    => 'A normal user, when creating a new ticket, will not be able to see any user listed here',
   
 // tickets-admin/configuration/____
   'config-index-title'            => 'Configuration Settings',

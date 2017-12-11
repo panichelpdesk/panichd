@@ -17,16 +17,20 @@
         </h3>
     </div>
     <div class="panel-body">
-	@if(!$a_users)
-        <div class="well text-center">{{ trans('ticketit::admin.notice-index-empty') }}</div>
-    @else
 		@if (!session()->exists('status'))
 			<div class="alert alert-info alert-dismissable fade in">
-			<button type="button" class="close" data-dismiss="alert">×</button>
-			<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('ticketit::admin.notice-index-help') !!}
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('ticketit::admin.notice-index-help') !!}
+			</div>
+			<div class="alert alert-warning alert-dismissable fade in">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<span class="glyphicon glyphicon-warning-sign" style="color: orange;"></span> {!! trans('ticketit::admin.notice-index-owner-alert') !!}
 			</div>
 		@endif
 
+	@if(!$a_users)
+        <div class="well text-center">{{ trans('ticketit::admin.notice-index-empty') }}</div>
+    @else
 		<div id="message"></div>
             <table class="table table-hover table-striped">
                 <thead>
