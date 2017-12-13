@@ -213,7 +213,10 @@
 			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
-                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['id'=>'ticket_submit', 'class' => 'btn btn-primary']) !!}
+                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), [
+						'class' => 'btn btn-primary ajax_form_submit',
+						'data-errors_div' => 'form_errors'
+					]) !!}
                 </div>
             </div>
         {!! CollectiveForm::close() !!}
@@ -314,40 +317,6 @@
         $("#limit_date").on("dp.change", function (e) {
             $('#start_date').data("DateTimePicker").maxDate(e.date);
         });
-		
-		// Validate form with AJAX POST before real form submit
-		$('#ticket_submit').click(function(e){
-			var form = $(this).closest('form');
-			var formData = new FormData(form[0]);
-			
-			e.preventDefault();
-			
-			$.ajax({
-				type: "POST",
-				url: form.prop('action'),
-				contentType: false,
-				processData: false,
-				data: formData,
-				success: function( response ) {
-					$('#form_errors').find('ul li').remove();
-					
-					if (response.result != 'ok'){
-						$.each(response.messages,function(index, value){
-							$('#form_errors').find('ul').append('<li>'+value+'</li>');
-						});
-						
-						$('#form_errors').show();
-						document.body.scrollTop = 0;
-						document.documentElement.scrollTop = 0;
-					}else{
-						$('#form_errors').hide();
-						if (response.url != ""){
-							window.location.href=response.url;
-						}			
-					}
-				}
-			});
-		});
 	});	
 	</script>	
 	@include('ticketit::tickets.partials.summernote')
