@@ -5,6 +5,7 @@ namespace Kordy\Ticketit\Controllers;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use DB;
+use Validator;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Kordy\Ticketit\Models;
@@ -44,6 +45,57 @@ class CommentsController extends Controller
         //
     }
 
+	/**
+	 * Previous tasks for comment validation
+	*/
+	protected function validation_common($request, $new_comment = true)
+	{
+		$a_content = $this->purifyHtml($request->get('content'));
+        $request->merge(['content'=>$a_content['content']]);
+				
+		$fields = [
+            'ticket_id'   => 'required|exists:ticketit,id',
+            'content'     => 'required|min:6'
+        ];
+		
+		if ($request->exists('attachments')){
+			$fields['attachments'] = 'array';
+		}
+		
+		// Custom validation messages
+		$custom_messages = [
+			'content.required' => 'ticketit::lang.validate-comment-required',
+			'content.min' => 'ticketit::lang.validate-comment-min',
+		];
+		foreach ($custom_messages as $field => $lang_key){
+			$trans = trans ($lang_key);
+			if ($lang_key == $trans){
+				unset($custom_messages[$field]);
+			}else{
+				$custom_messages[$field] = $trans;
+			}
+		}
+		
+        // Form validation
+        $validator = Validator::make($request->all(), $fields, $custom_messages);
+		$a_result_errors = [];
+		
+		if ($validator->fails()) {
+			$a_result_errors = [
+				'messages'=>(array)$validator->errors()->all(),
+				'fields'=>(array)$validator->errors()->messages()
+			];
+		}
+		
+		$common_data = [
+			'request' => $request,
+			'a_content' => $a_content,
+			'a_result_errors' => $a_result_errors
+		];
+		return $common_data;
+	}
+	
+	
     /**
      * Store a newly created resource in storage.
      *
@@ -53,20 +105,8 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $a_content = $this->purifyHtml($request->get('content'));
-        $request->merge(['content'=>$a_content['content']]);
-				
-		$fields = [
-            'ticket_id'   => 'required|exists:ticketit,id',
-            'content'     => 'required|min:6',
-            'attachments' => 'array',
-        ];
-		
-		if ($request->exists('attachments')){
-			$fields['attachments'] = 'array';
-		}
-		
-        $this->validate($request, $fields);
+        $common_data = $this->validation_common($request);
+		extract($common_data);
 		
 		// Create comment
 		DB::beginTransaction();
@@ -107,13 +147,26 @@ class CommentsController extends Controller
 		if (Setting::grab('ticket_attachments_feature')){
 			$attach_error = $this->saveAttachments($request, $ticket, $comment);
 			if ($attach_error){
-				return redirect()->back()->with('warning', $attach_error);
+				$a_result_errors['messages'][] = $attach_error;
 			}
 		}
 		
+		// If errors present
+		if ($a_result_errors){
+			return response()->json(array_merge(
+				['result' => 'error'],
+				$a_result_errors
+			));
+		}
+		
 		DB::commit();
-
-        return back()->with('status', trans('ticketit::lang.comment-has-been-added-ok'));
+		
+		session()->flash('status', trans('ticketit::lang.comment-has-been-added-ok'));
+		
+		return response()->json([
+			'result' => 'ok',
+			'url' => route(Setting::grab('main_route').'.show', $ticket->id)
+		]);
     }
 
     /**
