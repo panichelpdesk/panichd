@@ -615,6 +615,7 @@ class TicketsController extends Controller
 	*/
 	protected function validation_common($request)
 	{
+		
 		$user = $this->agent->find(auth()->user()->id);
 		$category_level = $user->levelInCategory($request->category_id);
 		$permission_level = ($user->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
@@ -651,7 +652,7 @@ class TicketsController extends Controller
 			]);
 			
 			if ($request->exists('attachments')){
-				$fields = ['attachments' => 'array'];
+				$fields['attachments'] = 'array';
 			}
         }
 
@@ -685,7 +686,7 @@ class TicketsController extends Controller
 	 * preventing attached files to be left if an error is encountered in the form.
 	*/
 	public function ajax_validation_test (Request $request)
-	{
+	{	
 		$common_data = $this->validation_common($request);
 		extract($common_data);
 		
@@ -716,12 +717,20 @@ class TicketsController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
-    {	
+    {
 		$common_data = $this->validation_common($request);
 		extract($common_data);
 		
 		// Form validation
-        $this->validate($request, $fields, $custom_messages);
+        $validator = Validator::make($request->all(), $fields, $custom_messages);
+		$a_result_errors = [];
+		
+		if ($validator->fails()) {
+			$a_result_errors = [
+				'messages'=>(array)$validator->errors()->all(),
+				'fields'=>(array)$validator->errors()->messages()
+			];
+		}
 		
 		DB::beginTransaction();
         $ticket = new Ticket();
@@ -774,11 +783,19 @@ class TicketsController extends Controller
 		if (Setting::grab('ticket_attachments_feature')){
 			$attach_error = $this->saveAttachments($request, $ticket);
 			if ($attach_error){
-				return redirect()->back()->with('warning', $attach_error);
+				$a_result_errors['messages'][] = $attach_error;
 			}
 		}
 		
-        
+		// If errors present
+		if ($a_result_errors){
+			return response()->json(array_merge(
+				['result' => 'error'],
+				$a_result_errors
+			));
+		}
+		
+		
 		// End transaction
 		DB::commit();
 
@@ -790,7 +807,10 @@ class TicketsController extends Controller
 			'title' => trans('ticketit::lang.ticket-status-link-title')
 		]));
 
-        return redirect()->action('\Kordy\Ticketit\Controllers\TicketsController@index');
+        return response()->json([
+			'result' => 'ok',
+			'url' => action('\Kordy\Ticketit\Controllers\TicketsController@index')
+		]);
     }
 
     public function downloadAttachment($attachment_id)

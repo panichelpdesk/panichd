@@ -151,7 +151,7 @@
 				</div>
 			
 				<div class="form-group"><!-- TAGS -->
-					<label class="control-label col-lg-3">Etiquetes:</label>
+					<label class="control-label col-lg-3">{{ trans('ticketit::lang.tags') . trans('ticketit::lang.colon') }}</label>
 					<div id="jquery_select2_container" class="col-lg-9">
 					<?php //$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [] ?>
 					@include('ticketit::tickets.partials.tags_menu')				
@@ -318,24 +318,24 @@
 		// Validate form with AJAX POST before real form submit
 		$('#ticket_submit').click(function(e){
 			var form = $(this).closest('form');
+			var formData = new FormData(form[0]);
 			
 			e.preventDefault();
 			
 			$.ajax({
 				type: "POST",
-				url: '{{ route($setting->grab('main_route').'.validation-test') }}',
+				@if (isset($ticket))
+					url: '{{ route($setting->grab('main_route').'.validation-test') }}',
+				@else
+					url: form.prop('action'),
+					/*enctype: 'multipart/form-data',*/
+					contentType: false,
+					processData: false,
+					/*async: false,
+					cache: false,*/
+				@endif				
 				
-				data: {
-					_token: "{{ csrf_token() }}",
-					subject: form.find('input[name=subject]').val(),
-					owner_id: form.find('select[name=owner_id]').val(),
-					category_id: form.find('select[name=category_id]').val(),
-					@if ($u->currentLevel() > 1)
-						status_id: form.find('select[name=status_id]').val(),
-						priority_id: form.find('select[name=priority_id]').val(),
-					@endif
-					content: form.find('textarea[name=content]').val(),
-				},
+				data: formData,
 				success: function( response ) {
 					$('#form_errors').find('ul li').remove();
 					
@@ -348,7 +348,13 @@
 						document.body.scrollTop = 0;
 						document.documentElement.scrollTop = 0;
 					}else{
-						$('#ticket_form').submit();
+						if (response.url != ""){
+							// New ticket
+							window.location.href=response.url;
+						}else{
+							// #DEPRECATED# Update ticket: Do real form submit
+							$('#ticket_form').submit();
+						}						
 					}
 				}
 			});
