@@ -324,17 +324,9 @@
 			
 			$.ajax({
 				type: "POST",
-				@if (isset($ticket))
-					url: '{{ route($setting->grab('main_route').'.validation-test') }}',
-				@else
-					url: form.prop('action'),
-					/*enctype: 'multipart/form-data',*/
-					contentType: false,
-					processData: false,
-					/*async: false,
-					cache: false,*/
-				@endif				
-				
+				url: form.prop('action'),
+				contentType: false,
+				processData: false,
 				data: formData,
 				success: function( response ) {
 					$('#form_errors').find('ul li').remove();
@@ -348,13 +340,10 @@
 						document.body.scrollTop = 0;
 						document.documentElement.scrollTop = 0;
 					}else{
+						$('#form_errors').hide();
 						if (response.url != ""){
-							// New ticket
 							window.location.href=response.url;
-						}else{
-							// #DEPRECATED# Update ticket: Do real form submit
-							$('#ticket_form').submit();
-						}						
+						}			
 					}
 				}
 			});
