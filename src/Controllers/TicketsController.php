@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Kordy\Ticketit\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
 use InvalidArgumentException;
+use Kordy\Ticketit\Events\TicketCreated;
+use Kordy\Ticketit\Events\TicketUpdated;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Attachment;
@@ -771,6 +773,7 @@ class TicketsController extends Controller
 		
 		// End transaction
 		DB::commit();
+		event(new TicketCreated($ticket));
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -885,10 +888,11 @@ class TicketsController extends Controller
     {
 		$common_data = $this->validation_common($request, false);
 		extract($common_data);
+		
+		$original_ticket = Ticket::findOrFail($id); // Requires a specific object instance
+		$ticket = Ticket::findOrFail($id);
 
 		DB::beginTransaction();
-			
-        $ticket = $this->tickets->findOrFail($id);
 
         $ticket->subject = $request->subject;
 		$ticket->user_id = $request->owner_id;
@@ -957,7 +961,8 @@ class TicketsController extends Controller
 		}
 		
 		// End transaction
-		DB::commit();		
+		DB::commit();
+		event(new TicketUpdated($original_ticket, $ticket));
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -1210,7 +1215,8 @@ class TicketsController extends Controller
 	 * Change agent in ticket list
 	*/
 	public function changeAgent(Request $request){
-		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
 		$new_agent = Agent::findOrFail($request->input('agent_id'));
 		
@@ -1227,6 +1233,7 @@ class TicketsController extends Controller
 				$ticket->status_id=Setting::grab('default_reopen_status_id');
 			}
 			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
 			
 			session()->flash('status', trans('ticketit::lang.update-agent-ok', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
