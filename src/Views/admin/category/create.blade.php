@@ -2,6 +2,7 @@
 @section('page', trans('ticketit::admin.category-create-title'))
 
 @include('ticketit::shared.common')
+@include('ticketit::shared.colorpicker')
 
 @section('content')
 	<div class="well bs-component">

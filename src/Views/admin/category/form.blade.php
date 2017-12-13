@@ -3,22 +3,22 @@
 	<div class="form-group">
 		{!! CollectiveForm::label('name', trans('ticketit::admin.category-create-name') . trans('ticketit::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
 		<div class="col-lg-8">
-			{!! CollectiveForm::text('name', isset($category->name) ? $category->name : null, ['class' => 'form-control']) !!}
+			{!! CollectiveForm::text('name', isset($category) ? $category->name : null, ['class' => 'form-control']) !!}
 		</div>
 	</div>
 	<div class="form-group">
 		{!! CollectiveForm::label('color', trans('ticketit::admin.category-create-color') . trans('ticketit::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
 		<div class="col-lg-8 ">
 			<!---->
-			<button class="btn btn-default pull-left" id="category_color_picker" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: {{isset($category->color) ? $category->color : "#000000"}};"></span>&nbsp;<b class="caret"></b></button>
-			<input type="hidden" id="category_color" name="color" value="{{isset($category->color) ? $category->color : '#000000'}}">
+			<button class="btn btn-default pull-left" id="category_color_picker" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: {{isset($category) ? $category->color : "#000000"}};"></span>&nbsp;<b class="caret"></b></button>
+			<input type="hidden" id="category_color" name="color" value="{{isset($category) ? $category->color : '#000000'}}">
 
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-from-info') }}">{{ trans('ticketit::admin.category-create-email') . trans('ticketit::admin.colon') }}<span class="glyphicon glyphicon-question-sign"></span></label>
 		<div class="col-lg-8">
-			@if (isset($category->email))
+			@if (isset($category) && isset($category->email))
 				@php
 					$email_origin = 'category';
 				@endphp
@@ -37,7 +37,7 @@
 			
 			<span id="email_scope_tickets" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}" {!! $email_origin == 'tickets' ? '' : 'style="display: none"' !!}>{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 			
-			<span id="email_scope_category" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-category') }}" {!! $email_origin == 'category' ? '' : 'style="display: none"' !!}><span class="email">{{ $category->email }}</span> <span class="glyphicon glyphicon-question-sign"></span></span>
+			<span id="email_scope_category" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-category') }}" {!! $email_origin == 'category' ? '' : 'style="display: none"' !!}><span class="email">{{ isset($category) ? $category->email : '' }}</span> <span class="glyphicon glyphicon-question-sign"></span></span>
 			
 			<button type="button" class="btn btn-default btn-sm" id="edit_email" data-toggle="modal" data-target="#email-edit-modal">{{ trans('ticketit::admin.btn-edit') }}</button>
 		</div>
