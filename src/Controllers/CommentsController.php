@@ -147,10 +147,7 @@ class CommentsController extends Controller
 		$ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->saveAttachments($request, $ticket, $comment);
-			if ($attach_error){
-				$a_result_errors['messages'][] = $attach_error;
-			}
+			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket, $comment);
 		}
 		
 		// If errors present
@@ -236,10 +233,10 @@ class CommentsController extends Controller
 			if (!$attachment_errors) $attachment_errors = $this->updateAttachments($request, $comment->attachments()->get());
 			
 			// 3 - add new attachments
-			if (!$attachment_errors) $attachment_errors = $this->saveAttachments($request, $ticket, $comment);
+			if (!$attachment_errors) $a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket, $comment);
 			
 			if ($attachment_errors){
-				return redirect()->back()->with('warning', $attachment_errors);
+				$a_result_errors['messages'][] = $attach_error;
 			}
 		}
 		

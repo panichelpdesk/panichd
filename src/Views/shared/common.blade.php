@@ -50,8 +50,13 @@
 						
 						// Add field attached errors
 						$.each(response.fields,function(field, error){
+							// Form controls
 							form.find('.form-control[name='+field+']').closest('div').addClass('jquery_error');
 							form.find('.form-control[name='+field+']').closest('div').find('.jquery_error_text').text(error).show();
+							
+							// Attachment blocks
+							form.find('#'+field).parent('div').addClass('jquery_error');
+							form.find('#'+field).parent('div').find('.jquery_error_text').text(error).show();
 						});
 					}else{
 						$('#'+errors_div).hide();

@@ -6,7 +6,7 @@ $(function(){
 		
 		var elem = $('<input type="file" name="attachments[]" class="full_file_inputs" data-attach-id="'+$(this).data('attach-id')+'" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);	
 		
-		$(elem).insertAfter('#'+$(this).data('attach-id'));
+		$('#'+$(this).data('attach-id')).append(elem);
 		
 		elem.trigger('click');
 	});
@@ -21,7 +21,7 @@ $(function(){
 		
 		for(var i=0,file;file=files[i];i++) {
 			var num = list_i+i;
-			var html = '<div class="panel panel-default text-warning check_parent unchecked check_related_bg"><div class="panel-body"><div class="media">'
+			var html = '<div><div id="attachment_block_'+num+'" class="jquery_attachment_block panel panel-default text-warning check_parent unchecked check_related_bg"><div class="panel-body"><div class="media">'
 				
 				// Upload icon
 				+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" style="font-size: 30px" title="{{ trans('ticketit::lang.pending-attachment') }}" style="cursor: help"></span></div>'
@@ -52,7 +52,8 @@ $(function(){
 				+'<div class="media-right media-middle">'					
 				+'<a href="#" class="check_button" data-delete_id="delete_new_attachment_check_'+num+'"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>'
 				+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
-				+'</div></div></div>';
+				+'</div></div></div>'
+				+'<div class="jquery_error_text"></div></div>';
 			
 			$('#'+$(this).data('attach-id')).append($(html));
 		}	

@@ -6,7 +6,6 @@ use Kordy\Ticketit\Models\Attachment;
 use Kordy\Ticketit\Models\Setting;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
-use Log;
 use Mews\Purifier\Facades\Purifier;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Validator;
@@ -23,29 +22,34 @@ trait Attachments
      * @return string
 	 * @return bool
      */
-    protected function saveAttachments($request, $ticket, $comment = false)
+    protected function saveAttachments($request, $a_result_errors, $ticket, $comment = false)
     {
 		if (!$request->attachments){			
-			return false;
+			return $a_result_errors;
 		}
 		
 		$bytes = $ticket->allAttachments()->sum('bytes');
 		$num = $ticket->allAttachments()->count();
+		$block = $comment ? $comment->attachments()->count() : $ticket->attachments()->count();
 		
 		$new_bytes = 0;
 		
 		$index = 0;
+		$a_errors = [];
 		
 		foreach ($request->attachments as $uploadedFile) {
             /** @var UploadedFile $uploadedFile */
             if (is_null($uploadedFile)) {
                 // No files attached
-                return trans('ticketit::lang.ticket-error-not-valid-file');
+                $a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-not-valid-file');
+				$index++;
+				continue;
             }
 
             if (!$uploadedFile instanceof UploadedFile) {
-                Log::error('File object expected, given: '.print_r($uploadedFile, true));
-                return trans('ticketit::lang.ticket-error-not-valid-object', ['name'=>print_r($uploadedFile, true)]);
+				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-not-valid-object', ['name'=>print_r($uploadedFile, true)]);
+				$index++;
+				continue;
             }
 			
 			$original_filename = $uploadedFile->getClientOriginalName() ?: '';
@@ -60,18 +64,22 @@ trait Attachments
 			
 			if ($new_bytes/1024/1024 > Setting::grab('attachments_ticket_max_size')){
 				
-				return trans('ticketit::lang.ticket-error-max-size-reached', [
+				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-max-size-reached', [
 					'name' => $original_filename,
 					'available_MB' => round(Setting::grab('attachments_ticket_max_size')-$bytes/1024/1024)
 				]);
+				$index++;
+				continue;
 			}			
 			$bytes = $new_bytes;						
 			
 			if ($num + 1 > Setting::grab('attachments_ticket_max_files_num')){
-				return trans('ticketit::lang.ticket-error-max-attachments-count-reached', [
+				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-max-attachments-count-reached', [
 					'name' => $original_filename,
 					'max_count'=>Setting::grab('attachments_ticket_max_files_num')
 				]);
+				$index++;
+				continue;
 			}			
 			$num++;
 
@@ -93,11 +101,13 @@ trait Attachments
 			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:'.Setting::grab('attachments_mimes') ]);
 
 			if($validator->fails()){
-				return trans('ticketit::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
+				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
+				$index++;
+				continue;
 			}
 			
 			// New attachments edited fields
-			$a_fields = $a_errors = [];
+			$a_fields = $a_single_errors = [];
 			if (isset($request->input('attachment_new_filenames')[$index])){
 				$a_fields['new_filename'] = [
 					'name' => 'new_attachment_new_filename_'.$index, // Not real request input
@@ -113,7 +123,7 @@ trait Attachments
 				];
 			}
 			$save = false;
-			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_errors, $save);			
+			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_single_errors, $save);			
 			
             $attachment->bytes = $uploadedFile->getSize();
             $attachment->mimetype = $uploadedFile->getMimeType() ?: '';
@@ -144,7 +154,14 @@ trait Attachments
 			$index++;
         }
 		
-		return false;
+		if ($a_errors){
+			$a_error_messages = array_values($a_errors);
+			
+			$a_result_errors['messages'] = ($a_result_errors and isset($a_result_errors['messages'])) ? array_merge($a_result_errors['messages'], $a_error_messages) : $a_error_messages;
+			$a_result_errors['fields'] = ($a_result_errors and isset($a_result_errors['fields'])) ? array_merge($a_result_errors['fields'], $a_errors) : $a_errors;
+		}
+		
+		return $a_result_errors;
     }
 	
 	protected function makeFilename($base, $var, $optvar)
@@ -173,7 +190,7 @@ trait Attachments
 	*/
 	protected function updateAttachments($request, $attachments)
 	{
-		$a_errors = [];
+		$a_single_errors = [];
 		
 		foreach($attachments as $att){
 			$new_filename = $description = $save = false;
@@ -203,13 +220,13 @@ trait Attachments
 				$a_fields['image_crop'] = $request->input($field);
 			}
 			
-			if ($a_fields) $this->updateSingleAttachment($att, $a_fields, $a_errors, $save);			
+			if ($a_fields) $this->updateSingleAttachment($att, $a_fields, $a_single_errors, $save);			
 			
 			if ($save) $att->save();
 		}
 		
-		if ($a_errors){
-			return implode('. ', $a_errors);
+		if ($a_single_errors){
+			return implode('. ', $a_single_errors);
 		}else
 			return false;
 	}
@@ -217,7 +234,7 @@ trait Attachments
 	/**
 	 * Updates new_filename and description for an Attachment instance
 	*/
-	protected function updateSingleAttachment(&$att, $a_fields, &$a_errors, &$save)
+	protected function updateSingleAttachment(&$att, $a_fields, &$a_single_errors, &$save)
 	{
 		extract($a_fields);
 		
@@ -228,7 +245,7 @@ trait Attachments
 			$validator = Validator::make([$new_filename['name'] => $filtered], [ $new_filename['name'] => 'required|min:3' ]);
 
 			if($validator->fails()){
-				$a_errors[]= trans('ticketit::lang.attachment-update-not-valid-name', ['file' => $att->original_filename]);
+				$a_single_errors[]= trans('ticketit::lang.attachment-update-not-valid-name', ['file' => $att->original_filename]);
 			}elseif ($filtered != $att->new_filename) {
 				$att->new_filename = $filtered;
 				$save = true;
@@ -249,7 +266,7 @@ trait Attachments
 		if (isset($image_crop)){
 			$coords = explode(',', $image_crop);
 			if (count($coords) != 4 or ctype_digit(str_replace(",", "", str_replace(".", "", $coords)))){
-				$a_errors[] = trans('ticketit::lang.attachment-update-crop-error');
+				$a_single_errors[] = trans('ticketit::lang.attachment-update-crop-error');
 			}else{
 				$img = Image::make($att->file_path);				
 								
@@ -267,7 +284,7 @@ trait Attachments
 				if ($att->original_attachment != basename($att->file_path)){
 					// Delete image
 					$error = $this->deleteAttachmentFile($att->file_path, $att->original_filename);
-					if ($error) $a_errors[] = $error;
+					if ($error) $a_single_errors[] = $error;
 				}
 				
 				// Delete old thumbnail

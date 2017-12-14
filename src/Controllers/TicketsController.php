@@ -762,10 +762,7 @@ class TicketsController extends Controller
         $ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->saveAttachments($request, $ticket);
-			if ($attach_error){
-				$a_result_errors['messages'][] = $attach_error;
-			}
+			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 		}
 		
 		// If errors present
@@ -775,6 +772,11 @@ class TicketsController extends Controller
 				$a_result_errors
 			));
 		}
+		
+		return response()->json([
+			'result' => 'error',
+			'messages' => ['No messages']
+		]);
 		
 		// End transaction
 		DB::commit();
@@ -793,6 +795,8 @@ class TicketsController extends Controller
 			'url' => action('\Kordy\Ticketit\Controllers\TicketsController@index')
 		]);
     }
+	
+	
 
     public function downloadAttachment($attachment_id)
     {
@@ -950,7 +954,7 @@ class TicketsController extends Controller
 			if (!$attach_error) $attach_error = $this->updateAttachments($request, $ticket->attachments()->get());
 			
 			// 3 - add new attachments
-			if (!$attach_error) $attach_error = $this->saveAttachments($request, $ticket);
+			if (!$attach_error) $a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 			
 			if ($attach_error){
 				$a_result_errors['messages'][] = $attach_error;
