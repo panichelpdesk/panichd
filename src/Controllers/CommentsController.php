@@ -9,6 +9,7 @@ use Validator;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Kordy\Ticketit\Events\CommentCreated;
+use Kordy\Ticketit\Events\CommentUpdated;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
@@ -55,9 +56,9 @@ class CommentsController extends Controller
         $request->merge(['content'=>$a_content['content']]);
 				
 		$fields = [
-            'ticket_id'   => 'required|exists:ticketit,id',
             'content'     => 'required|min:6'
         ];
+		if ($new_comment) $fields['ticket_id'] = 'required|exists:ticketit,id';
 		
 		if ($request->exists('attachments')){
 			$fields['attachments'] = 'array';
@@ -205,15 +206,12 @@ class CommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $a_content = $this->purifyHtml($request->get('content'));
-        $request->merge(['content'=>$a_content['content']]);
-
-        $this->validate($request, [
-            'content'     => 'required|min:6',
-        ]);
+        $common_data = $this->validation_common($request, false);
+		extract($common_data);
 		
 		// Update comment
-		$comment=Models\Comment::findOrFail($id);
+		$comment = Models\Comment::findOrFail($id);
+		$original_comment = clone $comment;
 		
 		DB::beginTransaction();
 		$comment->content = $a_content['content'];
@@ -245,9 +243,23 @@ class CommentsController extends Controller
 			}
 		}
 		
-		DB::commit();
+		// If errors present
+		if ($a_result_errors){
+			return response()->json(array_merge(
+				['result' => 'error'],
+				$a_result_errors
+			));
+		}
 		
-		return back()->with('status', trans('ticketit::lang.comment-has-been-updated'));
+		DB::commit();
+		event(new CommentUpdated($original_comment, $comment));
+		
+		session()->flash('status', trans('ticketit::lang.comment-has-been-updated'));
+		
+		return response()->json([
+			'result' => 'ok',
+			'url' => route(Setting::grab('main_route').'.show', $ticket->id)
+		]);
     }
 
     /**

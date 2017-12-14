@@ -96,7 +96,7 @@ class NotificationsController extends Controller
 		}        
     }
 	
-	public function commentUpdate(Comment $comment, Comment $original_comment)
+	public function commentUpdate(Comment $original_comment, Comment $comment)
     {
         if ($comment->type == 'note'){
 			$ticket = $comment->ticket;

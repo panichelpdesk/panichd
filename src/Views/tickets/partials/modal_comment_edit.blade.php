@@ -6,6 +6,11 @@
                 <h4 class="modal-title">{{ trans('ticketit::lang.show-ticket-edit-comment') }}</h4>
             </div>
             <div class="modal-body">
+				<div id="edit_comment_errors" class="alert alert-danger" style="display: none;">
+					<button type="button" class="close" data-dismiss="alert">{{ trans('ticketit::lang.flash-x') }}</button>
+					<ul></ul>
+				</div>
+				
 				<fieldset id="edit_comment_{{ $comment->id }}_comment" class="fieldset-for-comment">
 					{!! CollectiveForm::open([
 						'method' => 'PATCH',
@@ -46,7 +51,10 @@
 						</div>
 					</div>
 					<div class="text-right col-md-12">
-						{!! CollectiveForm::submit( 'Desar', ['class' => 'btn btn-primary']) !!}
+						{!! CollectiveForm::submit( 'Desar', [
+							'class' => 'btn btn-primary ajax_form_submit',
+							'data-errors_div' => 'edit_comment_errors'
+						]) !!}
 					</div>
 					{!! CollectiveForm::close() !!}
 				</fieldset>

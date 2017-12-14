@@ -149,10 +149,12 @@ class TicketitServiceProvider extends ServiceProvider
             });
 			
 			// Send notification when comment is modified
-			Comment::updating(function ($modified_comment) {
-				$original_comment = Comment::find($modified_comment->id);
-				$notification = new NotificationsController($modified_comment->ticket->category);
-                $notification->commentUpdate($modified_comment, $original_comment);
+			Event::listen('Kordy\Ticketit\Events\CommentUpdated', function ($event) {
+				$original = $event->original;
+				$modified = $event->modified;
+				
+				$notification = new NotificationsController($modified->ticket->category);
+                $notification->commentUpdate($original, $modified);
 			});
 			
             // Send notification when new comment is added
