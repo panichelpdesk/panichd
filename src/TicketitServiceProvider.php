@@ -156,8 +156,9 @@ class TicketitServiceProvider extends ServiceProvider
 			});
 			
             // Send notification when new comment is added
-            Comment::creating(function ($comment) {
+            Event::listen('Kordy\Ticketit\Events\CommentCreated', function ($event) {
                 if (Setting::grab('comment_notification')) {
+					$comment = $event->comment;
                     $notification = new NotificationsController($comment->ticket->category);
                     $notification->newComment($comment);
                 }

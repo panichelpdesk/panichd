@@ -8,6 +8,7 @@ use DB;
 use Validator;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
+use Kordy\Ticketit\Events\CommentCreated;
 use Kordy\Ticketit\Models;
 use Kordy\Ticketit\Models\Agent;
 use Kordy\Ticketit\Models\Setting;
@@ -160,6 +161,7 @@ class CommentsController extends Controller
 		}
 		
 		DB::commit();
+		event(new CommentCreated($comment));
 		
 		session()->flash('status', trans('ticketit::lang.comment-has-been-added-ok'));
 		
