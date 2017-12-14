@@ -34,16 +34,25 @@
 				processData: false,
 				data: formData,
 				success: function( response ) {
+					// Reset error messages
 					$('#'+errors_div).find('ul li').remove();
+					form.find('.jquery_error .jquery_error_text').text('').hide();
+					form.find('.jquery_error').removeClass('jquery_error');
 					
 					if (response.result != 'ok'){
+						// Add error panel messages
 						$.each(response.messages,function(index, value){
 							$('#'+errors_div).find('ul').append('<li>'+value+'</li>');
 						});
-						
 						$('#'+errors_div).show();
 						document.body.scrollTop = 0;
 						document.documentElement.scrollTop = 0;
+						
+						// Add field attached errors
+						$.each(response.fields,function(field, error){
+							form.find('.form-control[name='+field+']').closest('div').addClass('jquery_error');
+							form.find('.form-control[name='+field+']').closest('div').find('.jquery_error_text').text(error).show();
+						});
 					}else{
 						$('#'+errors_div).hide();
 						if (response.url != ""){

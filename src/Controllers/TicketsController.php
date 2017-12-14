@@ -683,10 +683,15 @@ class TicketsController extends Controller
 		$a_result_errors = [];
 		
 		if ($validator->fails()) {
-			$a_result_errors = [
-				'messages'=>(array)$validator->errors()->all(),
-				'fields'=>(array)$validator->errors()->messages()
-			];
+			$a_result_errors['messages'] = (array)$validator->errors()->all();
+			
+			$a_fields = (array)$validator->errors()->messages();
+			
+			foreach ($a_fields as $field=>$errors){
+				$a_fields[$field] = implode('. ', $errors);
+			}
+			
+			$a_result_errors['fields'] = $a_fields;
 		}
 		
 		$common_data = array_merge($common_data, [
