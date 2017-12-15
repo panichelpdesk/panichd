@@ -1,4 +1,5 @@
-<div class="panel panel-default text-default check_parent unchecked check_related_bg">
+<div class=""><!-- for jquery_error -->
+<div id="attachment_block_{{ $loop->index }}" class="jquery_attachment_block panel panel-default text-default check_parent unchecked check_related_bg">
 	<div class="panel-body">
 		<div class="media">
 		    <div class="media-left">		        
@@ -84,4 +85,6 @@
 			@endif
 		</div>
 	</div>
+</div>
+<div class="jquery_error_text"></div>
 </div>

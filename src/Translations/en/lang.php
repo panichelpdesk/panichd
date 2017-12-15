@@ -265,10 +265,16 @@ return [
   'show-ticket-email-resend-user'    => 'To user: ',
   'show-ticket-email-resend-agent'   => 'To agent: ',
   
-  /*'validate-ticket-subject.required' => '',
+  /*
+  'validate-ticket-subject.required' => '',
   'validate-ticket-subject.min'      => '',
   'validate-ticket-content.required' => '',
-  'validate-ticket-content.min'      => '',*/
+  'validate-ticket-content.min'      => '',
+  
+  // Comment form
+  'validate-comment-required'        => '',
+  'validate-comment-min'             => '',
+  */
 
  /*
   *  Controllers

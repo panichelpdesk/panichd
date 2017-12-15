@@ -294,6 +294,24 @@ h1, h2, h3, h4, h5, h6 {
 	color: #bbb;
 }
 
+/* Ticket field error */
+.jquery_error_text {
+	display: none;
+}
+
+.note-editor.panel {
+	margin-bottom: 0px;
+}
+
+.jquery_error .form-control, .jquery_error .note-editor, .jquery_error .jquery_attachment_block {
+	border: 1px solid red;
+}
+.jquery_error .jquery_error_text {
+	display: block;
+	color: red;
+	font-weight: bold;
+}
+
 /* Ticket attachments */
 .attached_list .panel-body {
 	padding: 8px;

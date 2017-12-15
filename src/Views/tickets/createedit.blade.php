@@ -19,6 +19,7 @@
 			{!! CollectiveForm::model($ticket, [
 				 'route' => [$setting->grab('main_route').'.update', $ticket->id],
 				 'method' => 'PATCH',
+				 'id' => 'ticket_form',
 				 'class' => 'form-horizontal',
 				 'enctype' => 'multipart/form-data'
 			 ]) !!}
@@ -26,6 +27,7 @@
 			{!! CollectiveForm::open([
 				'route'=>$setting->grab('main_route').'.store',
 				'method' => 'POST',
+				'id' => 'ticket_form',
 				'class' => 'form-horizontal',
 				'enctype' => 'multipart/form-data'
 			]) !!}
@@ -44,7 +46,8 @@
 					'data-level-2-class' => 'col-lg-3'
 				]) !!}
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-                    {!! CollectiveForm::text('subject', isset($ticket) ? $ticket->subject : null , ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('ticketit::lang.create-ticket-brief-issue')]) !!}                    
+                    {!! CollectiveForm::text('subject', isset($ticket) ? $ticket->subject : null , ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('ticketit::lang.create-ticket-brief-issue')]) !!}
+					<div class="jquery_error_text"></div>
                 </div>
             </div>
 			
@@ -149,7 +152,7 @@
 				</div>
 			
 				<div class="form-group"><!-- TAGS -->
-					<label class="control-label col-lg-3">Etiquetes:</label>
+					<label class="control-label col-lg-3">{{ trans('ticketit::lang.tags') . trans('ticketit::lang.colon') }}</label>
 					<div id="jquery_select2_container" class="col-lg-9">
 					<?php //$a_tags_selected = (old('category_id') and old('category_'.old('category_id').'_tags')) ? old('category_'.old('category_id').'_tags') : [] ?>
 					@include('ticketit::tickets.partials.tags_menu')				
@@ -167,7 +170,8 @@
             <div class="form-group"><!-- DESCRIPTION -->
                 <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('ticketit::lang.create-ticket-describe-issue') }}"> *{{trans('ticketit::lang.description')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
                 <div class="col-lg-10 summernote-text-wrapper">
-                <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>                   
+                <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>
+				<div class="jquery_error_text"></div>
                 </div>
             </div>
 			
@@ -211,7 +215,10 @@
 			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
-                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
+                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), [
+						'class' => 'btn btn-primary ajax_form_submit',
+						'data-errors_div' => 'form_errors'
+					]) !!}
                 </div>
             </div>
         {!! CollectiveForm::close() !!}
@@ -311,7 +318,7 @@
         });
         $("#limit_date").on("dp.change", function (e) {
             $('#start_date').data("DateTimePicker").maxDate(e.date);
-        });		
+        });
 	});	
 	</script>	
 	@include('ticketit::tickets.partials.summernote')

@@ -6,7 +6,11 @@
                 <h4 class="modal-title" id="modal-comment-new-Label">{{ trans('ticketit::lang.show-ticket-add-comment') }}</h4>
             </div>
             <div class="modal-body">
-
+				<div id="new_comment_errors" class="alert alert-danger" style="display: none;">
+					<button type="button" class="close" data-dismiss="alert">{{ trans('ticketit::lang.flash-x') }}</button>
+					<ul></ul>
+				</div>
+				
 				<fieldset id="new_comment_modal_comment" class="fieldset-for-comment">
 				{!! CollectiveForm::open([
 					'method' => 'POST',
@@ -62,7 +66,10 @@
 						</div>
 					@endif
 					<div class="text-right col-md-12">
-						{!! CollectiveForm::submit( trans('ticketit::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
+						{!! CollectiveForm::submit( trans('ticketit::lang.btn-submit'), [
+							'class' => 'btn btn-primary ajax_form_submit',
+							'data-errors_div' => 'new_comment_errors'
+						]) !!}
 					</div>
 				{!! CollectiveForm::close() !!}
 				</fieldset>

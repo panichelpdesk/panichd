@@ -4,6 +4,7 @@ namespace Kordy\Ticketit;
 
 use Collective\Html\FormFacade as CollectiveForm;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ use Kordy\Ticketit\Models\Ticket;
 
 class TicketitServiceProvider extends ServiceProvider
 {
-    /**
+	/**
      * Bootstrap the application services.
      *
      * @return void
@@ -148,38 +149,40 @@ class TicketitServiceProvider extends ServiceProvider
             });
 			
 			// Send notification when comment is modified
-			Comment::updating(function ($modified_comment) {
-				$original_comment = Comment::find($modified_comment->id);
-				$notification = new NotificationsController($modified_comment->ticket->category);
-                $notification->commentUpdate($modified_comment, $original_comment);
+			Event::listen('Kordy\Ticketit\Events\CommentUpdated', function ($event) {
+				$original = $event->original;
+				$modified = $event->modified;
+				
+				$notification = new NotificationsController($modified->ticket->category);
+                $notification->commentUpdate($original, $modified);
 			});
 			
             // Send notification when new comment is added
-            Comment::creating(function ($comment) {
+            Event::listen('Kordy\Ticketit\Events\CommentCreated', function ($event) {
                 if (Setting::grab('comment_notification')) {
+					$comment = $event->comment;
                     $notification = new NotificationsController($comment->ticket->category);
                     $notification->newComment($comment);
                 }
             });
 
-            
-            Ticket::updating(function ($modified_ticket) {
-                
+            Event::listen('Kordy\Ticketit\Events\TicketUpdated', function ($event) {
+                $original = $event->original;
+				$modified = $event->modified;
+				
 				// Send notification when ticket status is modified or ticket is closed
 				if (Setting::grab('status_notification')) {
-                    $original_ticket = Ticket::find($modified_ticket->id);
-                    if ($original_ticket->status_id != $modified_ticket->status_id || $original_ticket->completed_at != $modified_ticket->completed_at) {
-                        $notification = new NotificationsController($modified_ticket->category);
-                        $notification->ticketStatusUpdated($modified_ticket, $original_ticket);
+                    if ($original->status_id != $modified->status_id || $original->completed_at != $modified->completed_at) {
+                        $notification = new NotificationsController($modified->category);
+                        $notification->ticketStatusUpdated($original, $modified);
                     }
                 }
 				
 				// Send notification when agent is modified
                 if (Setting::grab('assigned_notification')) {
-                    $original_ticket = Ticket::find($modified_ticket->id);
-                    if ($original_ticket->agent->id != $modified_ticket->agent->id) {
-                        $notification = new NotificationsController($modified_ticket->category);
-                        $notification->ticketAgentUpdated($modified_ticket, $original_ticket);
+                    if ($original->agent->id != $modified->agent->id) {
+                        $notification = new NotificationsController($modified->category);
+                        $notification->ticketAgentUpdated($original, $modified);
                     }
                 }
 
@@ -187,10 +190,10 @@ class TicketitServiceProvider extends ServiceProvider
             });
 
             // Send notification when ticket is created
-            Ticket::created(function ($ticket) {
+            Event::listen('Kordy\Ticketit\Events\TicketCreated', function ($event) {
                 if (Setting::grab('assigned_notification')) {
-                    $notification = new NotificationsController($ticket->category);
-                    $notification->newTicket($ticket);
+                    $notification = new NotificationsController($event->ticket->category);
+                    $notification->newTicket($event->ticket);
                 }
 
                 return true;

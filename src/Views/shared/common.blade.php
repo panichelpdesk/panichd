@@ -18,6 +18,60 @@
 		
 		// Default Select2
 		$('.generate_default_select2').select2();
+		
+		// jQuery general form AJAX POST
+		$('.ajax_form_submit').click(function(e){
+			var form = $(this).closest('form');
+			var formData = new FormData(form[0]);
+			var errors_div = $(this).data('errors_div');
+			
+			e.preventDefault();
+			
+			$.ajax({
+				type: "POST",
+				url: form.prop('action'),
+				contentType: false,
+				processData: false,
+				data: formData,
+				success: function( response ) {
+					// Reset error messages
+					$('#'+errors_div).find('ul li').remove();
+					form.find('.jquery_error .jquery_error_text').text('').hide();
+					form.find('.jquery_error').removeClass('jquery_error');
+					
+					if (response.result != 'ok'){
+						// Add error panel messages
+						$.each(response.messages,function(index, value){
+							$('#'+errors_div).find('ul').append('<li>'+value+'</li>');
+						});
+						$('#'+errors_div).show();
+						document.body.scrollTop = 0;
+						document.documentElement.scrollTop = 0;
+						
+						// Add field attached errors
+						$.each(response.fields,function(field, error){
+							// Form controls
+							form.find('.form-control[name='+field+']').closest('div').addClass('jquery_error');
+							form.find('.form-control[name='+field+']').closest('div').find('.jquery_error_text').text(error).show();
+							
+							// Attachment blocks
+							form.find('#'+field).parent('div').addClass('jquery_error');
+							form.find('#'+field).parent('div').find('.jquery_error_text').text(error).show();
+						});
+					}else{
+						$('#'+errors_div).hide();
+						if (response.url != ""){
+							window.location.href=response.url;
+						}			
+					}
+				}
+			});
+		});
 	});
+	
+	
+	function common_ajax_post(form, formData, errors_div){
+		
+	}
 	</script>
 @append

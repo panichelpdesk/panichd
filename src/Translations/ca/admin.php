@@ -188,8 +188,9 @@ return [
   'notice-saved-ok'             => 'Avís desat correctament',
   'notice-deleted-ok'           => 'Avís eliminat',
   'notice-index-js-delete'      => 'Estàs segur/a que vols eliminar aquest avís?',
-  'notice-index-help'          => 'Quan es crei un tiquet indicant algun d\'aquests propietaris, passarà dues coses:<br /><br /><p>
-  	<ol><li>S\'enviarà un correu electrònic al <b>propietari</b>, amb una plantilla de correu específica.</li><li>Mentre el tiquet estigui <b>obert</b>, els usuaris del mateix departament veuran el tiquet com un <b>avís</b> quan vagin al menú de crear tiquet.</li></ol></p>',  
+  'notice-index-help'           => 'Quan es crei un tiquet indicant algun d\'aquests propietaris, passarà dues coses:<br /><br /><p>
+  	<ol><li>S\'enviarà un correu electrònic al <b>propietari</b>, amb una plantilla de correu específica.</li><li>Mentre el tiquet estigui <b>obert</b>, els usuaris del mateix departament veuran el tiquet com un <b>avís</b> quan vagin al menú de crear tiquet.</li></ol></p>',
+  'notice-index-owner-alert'    => 'Un usuari normal, quan crei un nou tiquet, no podrà veure cap usuari llistat aquí', 
   
 // tickets-admin/configuration/____
   'config-index-title'            => 'Paràmetres de configuració',
