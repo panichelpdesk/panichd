@@ -3,6 +3,7 @@
 namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use PanicHD\PanicHD\Models\Tag;
 
 class Category extends Model
 {
@@ -17,6 +18,29 @@ class Category extends Model
      */
     public $timestamps = false;
 
+	/**
+	 * Delete all category relations prior of itself
+	*/
+	public function delete()
+	{
+		$this->tickets()->delete();
+		$this->closingReasons()->delete();
+		$this->agents()->detach();
+		
+		// Tags detach and delete
+		$a_tags = [];
+		foreach ($this->tags()->get() as $tag){
+			$a_tags[] = $tag->id;
+		};
+		if ($a_tags){
+			$this->tags()->detach();
+			Tag::whereIn('id', $a_tags)->delete();
+		}
+		
+		parent::delete();
+	}
+	
+	
     /**
      * Get related tickets.
      *

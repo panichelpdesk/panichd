@@ -24,6 +24,16 @@ class Comment extends Model
      */
     protected $touches = ['ticket'];
 
+	/**
+	 *
+	*/
+	public function delete()
+	{
+		$this->attachments()->delete();
+		parent::delete();
+	}
+	
+	
     /**
      * Get related ticket.
      *

@@ -4,6 +4,7 @@ namespace PanicHD\PanicHD\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use PanicHD\PanicHD\Traits\Attachments;
 
 /**
  * @property int id
@@ -30,7 +31,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Attachment extends Model
 {
-    protected $table = 'ticketit_attachments';
+    use Attachments;
+	
+	protected $table = 'ticketit_attachments';
 
 	/**
      * All of the relationships to be touched.
@@ -38,6 +41,15 @@ class Attachment extends Model
      * @var array
      */
     protected $touches = ['ticket', 'comment'];
+	
+	/**
+	 * Delete Attachment instance and related files at server storage folder
+	*/
+	public function delete()
+	{
+		$error = $this->destroyAttachedElement($this, true);
+		return $error ? false : true;
+	}
 	
     public function ticket()
     {

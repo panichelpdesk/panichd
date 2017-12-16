@@ -20,7 +20,19 @@ class Ticket extends Model
 
     protected $table = 'ticketit';
     protected $dates = ['completed_at'];
+	
+	/**
+	 * Delete Ticket instance and related ones
+	*/
+	public function delete()
+	{
+		$this->tags()->detach();
+		$this->allAttachments()->delete();
+		$this->comments()->delete();
 
+		parent::delete();
+	}
+	
     /**
      * List of completed tickets.
      *
