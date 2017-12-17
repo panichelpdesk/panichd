@@ -60,8 +60,7 @@ class DashboardController extends Controller
             $active_tab = 'cat';
         }
 
-        return view(
-            'ticketit::admin.index',
+        return view('panichd::admin.index',
             compact(
                 'open_tickets_count',
                 'closed_tickets_count',

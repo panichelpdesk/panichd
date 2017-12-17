@@ -66,8 +66,8 @@ class CommentsController extends Controller
 		
 		// Custom validation messages
 		$custom_messages = [
-			'content.required' => 'ticketit::lang.validate-comment-required',
-			'content.min' => 'ticketit::lang.validate-comment-min',
+			'content.required' => 'panichd::lang.validate-comment-required',
+			'content.min' => 'panichd::lang.validate-comment-min',
 		];
 		foreach ($custom_messages as $field => $lang_key){
 			$trans = trans ($lang_key);
