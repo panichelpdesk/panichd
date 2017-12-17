@@ -2,36 +2,36 @@
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</span></button>
-                <h4 class="modal-title" id="email-edit-modal-Label">{{ trans('ticketit::admin.category-create-email') }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
+                <h4 class="modal-title" id="email-edit-modal-Label">{{ trans('panichd::admin.category-create-email') }}</h4>
             </div>
             <div class="modal-body">
 				<form action="" class="form-horizontal">
 					<div class="form-group">
-						<div class="col-lg-12">{{ trans('ticketit::admin.category-email-from-info') }}
+						<div class="col-lg-12">{{ trans('panichd::admin.category-email-from-info') }}
 						</div>
 					</div>
 
 					<div class="form-group">						
-						{!! CollectiveForm::label('email_scope', trans('ticketit::admin.category-email-from') . trans('ticketit::admin.colon'), ['class' => 'col-lg-3 control-label']) !!}
+						{!! CollectiveForm::label('email_scope', trans('panichd::admin.category-email-from') . trans('panichd::admin.colon'), ['class' => 'col-lg-3 control-label']) !!}
 						
-						<div class="col-lg-9"><label id="email_scope_default">{!! CollectiveForm::radio('email_scope','default', !isset($category) || (isset($category) && $category->email == "") ? true : false) !!} {{ trans('ticketit::admin.category-email-default') . trans('ticketit::admin.colon') }}</label>
+						<div class="col-lg-9"><label id="email_scope_default">{!! CollectiveForm::radio('email_scope','default', !isset($category) || (isset($category) && $category->email == "") ? true : false) !!} {{ trans('panichd::admin.category-email-default') . trans('panichd::admin.colon') }}</label>
 						@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
-							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@else
-							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@endif
 						
 						</div>	
 					</div>
 					<div class="form-group">
 						<div class="col-lg-9 col-lg-offset-3">
-							<label id="email_scope_category">{!! CollectiveForm::radio('email_scope','category', isset($category) && $category->email != "" ? true : false) !!} {{ trans('ticketit::admin.category-email-this') . trans('ticketit::admin.colon') }}</label>
+							<label id="email_scope_category">{!! CollectiveForm::radio('email_scope','category', isset($category) && $category->email != "" ? true : false) !!} {{ trans('panichd::admin.category-email-this') . trans('panichd::admin.colon') }}</label>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						{!! CollectiveForm::label('email_name', trans('ticketit::admin.category-email-name') . trans('ticketit::admin.colon'), [
+						{!! CollectiveForm::label('email_name', trans('panichd::admin.category-email-name') . trans('panichd::admin.colon'), [
 							'class' => 'col-sm-2 col-sm-offset-1 col-lg-offset-3 control-label']) !!}
 						
 						<div class="col-sm-9 col-lg-7">{!! CollectiveForm::text('email_name', isset($category) && $category->email_name != "" ? $category->email_name : null, [
@@ -42,7 +42,7 @@
 					</div>
 					
 					<div class="form-group">
-						{!! CollectiveForm::label('email', trans('ticketit::admin.category-email') . trans('ticketit::admin.colon'), [
+						{!! CollectiveForm::label('email', trans('panichd::admin.category-email') . trans('panichd::admin.colon'), [
 							'class' => 'col-sm-2 col-sm-offset-1 col-lg-offset-3 control-label']) !!}
 						
 						<div class="col-sm-9 col-lg-7">{!! CollectiveForm::text('email', isset($category) && $category->email != "" ? $category->email : null, [
@@ -53,25 +53,25 @@
 					</div>
 					
 					<div class="form-group">
-						<div class="col-lg-12">{{ trans('ticketit::admin.category-email-reply-to-info') }}
+						<div class="col-lg-12">{{ trans('panichd::admin.category-email-reply-to-info') }}
 						</div>
 					</div>					
 					
 					<div class="form-group">						
-						{!! CollectiveForm::label('email_replies', trans('ticketit::admin.category-email-reply-to') . trans('ticketit::admin.colon'), ['class' => 'col-lg-3 control-label']) !!}
+						{!! CollectiveForm::label('email_replies', trans('panichd::admin.category-email-reply-to') . trans('panichd::admin.colon'), ['class' => 'col-lg-3 control-label']) !!}
 						
-						<div class="col-lg-9"><label id="email_replies_0">{!! CollectiveForm::radio('email_replies',0, !isset($category) || (isset($category) && $category->email_replies != 1)  ? true : false) !!} {{ trans('ticketit::admin.category-email-default') . trans('ticketit::admin.colon') }}</label>
+						<div class="col-lg-9"><label id="email_replies_0">{!! CollectiveForm::radio('email_replies',0, !isset($category) || (isset($category) && $category->email_replies != 1)  ? true : false) !!} {{ trans('panichd::admin.category-email-default') . trans('panichd::admin.colon') }}</label>
 						@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
-							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@else
-							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') . trans('ticketit::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
 						@endif
 						
 						</div>	
 					</div>
 					<div class="form-group">
 						<div class="col-lg-9 col-lg-offset-3">
-							<label id="email_replies_1">{!! CollectiveForm::radio('email_replies',1, isset($category) && $category->email_replies == 1 ? true : false) !!} {{ trans('ticketit::admin.category-email-this') }}</label> ({{ trans('ticketit::admin.category-email-reply-this-info') }})
+							<label id="email_replies_1">{!! CollectiveForm::radio('email_replies',1, isset($category) && $category->email_replies == 1 ? true : false) !!} {{ trans('panichd::admin.category-email-this') }}</label> ({{ trans('panichd::admin.category-email-reply-this-info') }})
 						</div>
 					</div>
 					
@@ -81,7 +81,7 @@
 				</form>			
 
 				<div class="modal-footer">					
-					{!! CollectiveForm::button(trans('ticketit::admin.btn-change'), ['id'=>'jquery_popup_email_submit', 'class' => 'btn btn-primary']) !!}
+					{!! CollectiveForm::button(trans('panichd::admin.btn-change'), ['id'=>'jquery_popup_email_submit', 'class' => 'btn btn-primary']) !!}
 				</div>
 				
 			</div>

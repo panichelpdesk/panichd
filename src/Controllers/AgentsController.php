@@ -29,7 +29,7 @@ class AgentsController extends Controller
     public function store(Request $request)
     {
         if ($request->input('agent_cats') == null){
-			return redirect()->back()->with('warning', trans('ticketit::admin.agent-store-error-no-category'));
+			return redirect()->back()->with('warning', trans('panichd::admin.agent-store-error-no-category'));
 		}
 		
 		DB::beginTransaction();
@@ -42,7 +42,7 @@ class AgentsController extends Controller
 		
 		DB::commit();
 
-        Session::flash('status', trans('ticketit::admin.agent-store-ok', ['name' => $user->name]));
+        Session::flash('status', trans('panichd::admin.agent-store-ok', ['name' => $user->name]));
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
     }
@@ -56,7 +56,7 @@ class AgentsController extends Controller
 			
 			$user = Agent::findOrFail($id);
 			
-			Session::flash('status', trans('ticketit::admin.agent-updated-ok', ['name' => $user->name]));
+			Session::flash('status', trans('panichd::admin.agent-updated-ok', ['name' => $user->name]));
 
 			return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
 		}
@@ -71,7 +71,7 @@ class AgentsController extends Controller
 		$agent->ticketit_agent = false;
         $agent->save();
 
-        Session::flash('status', trans('ticketit::admin.agent-excluded-ok', ['name' => $agent->name]));
+        Session::flash('status', trans('panichd::admin.agent-excluded-ok', ['name' => $agent->name]));
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
     }

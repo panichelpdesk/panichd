@@ -16,7 +16,7 @@
 					@endif
 					>
 				@else
-					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('ticketit::lang.btn-download') . " " . $attachment->new_filename }}" class="{{ $mime }}">
+					<a href="{{ URL::route($setting->grab('main_route').'.download-attachment', [$attachment->id]) }}" title="{{ trans('panichd::lang.btn-download') . " " . $attachment->new_filename }}" class="{{ $mime }}">
 				@endif				
 				
 				@if ($mime == 'image')
@@ -58,7 +58,7 @@
 					@if($mime == 'image')
 						data-image-url="{{ URL::route($setting->grab('main_route').'.view-attachment', [$attachment->id]) }}" data-image-sizes="{{ $attachment->image_sizes }}"
 					@endif
-					data-original_filename="{{ $attachment->original_filename }}" data-prefix="attachment_{{ $attachment->id }}_" style="margin: 0em 0em 0em 1em;">{{ trans('ticketit::lang.btn-edit') }}</button>					
+					data-original_filename="{{ $attachment->original_filename }}" data-prefix="attachment_{{ $attachment->id }}_" style="margin: 0em 0em 0em 1em;">{{ trans('panichd::lang.btn-edit') }}</button>					
 					<input type="hidden" id="attachment_{{ $attachment->id }}_new_filename" name="attachment_{{ $attachment->id }}_new_filename" value="{{ $attachment->new_filename }}">
 					<input type="hidden" id="attachment_{{ $attachment->id }}_description" name="attachment_{{ $attachment->id }}_description" value="{{ $attachment->description }}">
 					@if($mime == 'image')

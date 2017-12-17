@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::admin.category-index-title') }}
+    {{ trans('panichd::admin.category-index-title') }}
 @stop
 
 @include('panichd::shared.common')
@@ -9,31 +9,31 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2>{{ trans('ticketit::admin.category-index-title') }}
+            <h2>{{ trans('panichd::admin.category-index-title') }}
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.category.create',
-                                    trans('ticketit::admin.btn-create-new-category'), null,
+                                    trans('panichd::admin.btn-create-new-category'), null,
                                     ['class' => 'btn btn-primary pull-right'])
                 !!}
             </h2>
         </div>
 
         @if ($categories->isEmpty())
-            <h3 class="text-center">{{ trans('ticketit::admin.category-index-no-categories') }}
-                {!! link_to_route($setting->grab('admin_route').'.category.create', trans('ticketit::admin.category-index-create-new')) !!}
+            <h3 class="text-center">{{ trans('panichd::admin.category-index-no-categories') }}
+                {!! link_to_route($setting->grab('admin_route').'.category.create', trans('panichd::admin.category-index-create-new')) !!}
             </h3>
         @else
             <div id="message"></div>
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <td>{{ trans('ticketit::admin.table-id') }}</td>
-                        <td>{{ trans('ticketit::admin.table-name') }}</td>
-						<td>{{ trans('ticketit::admin.category-index-email') }}</td>
-                        <td>{{ trans('ticketit::admin.table-create-level') }}</td>
-                        <td>{{ trans('ticketit::admin.category-index-reasons') }}</td>
-						<td>{{ trans('ticketit::admin.category-index-tags') }}</td>
-						<td>{{ trans('ticketit::admin.table-action') }}</td>
+                        <td>{{ trans('panichd::admin.table-id') }}</td>
+                        <td>{{ trans('panichd::admin.table-name') }}</td>
+						<td>{{ trans('panichd::admin.category-index-email') }}</td>
+                        <td>{{ trans('panichd::admin.table-create-level') }}</td>
+                        <td>{{ trans('panichd::admin.category-index-reasons') }}</td>
+						<td>{{ trans('panichd::admin.category-index-tags') }}</td>
+						<td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,18 +47,18 @@
                             {{ $category->name }}
                         </td>
 						<td style="vertical-align: middle">
-                            <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('ticketit::admin.category-email-origin') . trans('ticketit::admin.colon') }}
+                            <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') }}
 							@if ($category->email != "")
-								{{ trans('ticketit::admin.category-email-origin-category') }}">{{ $category->email_name }} &lt;{{ $category->email }}>
+								{{ trans('panichd::admin.category-email-origin-category') }}">{{ $category->email_name }} &lt;{{ $category->email }}>
 							@elseif($setting->grab('email.account.name') != 'default' && $setting->grab('email.account.mailbox') != 'default')
-								{{ trans('ticketit::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.name') }} &lt;{{ $setting->grab('email.account.mailbox') }}>
+								{{ trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.name') }} &lt;{{ $setting->grab('email.account.mailbox') }}>
 							@else
-								{{ trans('ticketit::admin.category-email-origin-website') }}">{{ config('mail.from.name') }} &lt;{{ config('mail.from.address') }}>
+								{{ trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.name') }} &lt;{{ config('mail.from.address') }}>
 							@endif
 							 <span class="glyphicon glyphicon-question-sign"></span></span>
                         </td>
 						<td style="vertical-align: middle">
-						{{ trans('ticketit::admin.level-'.$category->create_level) }}
+						{{ trans('panichd::admin.level-'.$category->create_level) }}
 						</td>
                         <td>
 							@if ($category->has('closingReasons'))
@@ -78,12 +78,12 @@
 						</td>
 						<td>
                             {!! link_to_route(
-                                                    $setting->grab('admin_route').'.category.edit', trans('ticketit::admin.btn-edit'), $category->id,
+                                                    $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
                                                     ['class' => 'btn btn-info'] )
                                 !!}
 
                                 {!! link_to_route(
-                                                    $setting->grab('admin_route').'.category.destroy', trans('ticketit::admin.btn-delete'), $category->id,
+                                                    $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
                                                     [
                                                     'class' => 'btn btn-danger deleteit',
                                                     'form' => "delete-$category->id",
@@ -112,7 +112,7 @@
     <script>
         $( ".deleteit" ).click(function( event ) {
             event.preventDefault();
-            if (confirm("{!! trans('ticketit::admin.category-index-js-delete') !!}" + $(this).attr("node") + " ?"))
+            if (confirm("{!! trans('panichd::admin.category-index-js-delete') !!}" + $(this).attr("node") + " ?"))
             {
                 var form = $(this).attr("form");
                 $("#" + form).submit();

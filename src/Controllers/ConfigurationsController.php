@@ -119,16 +119,16 @@ class ConfigurationsController extends Controller
       if ($request->serialize) {
           //if(!Hash::check($request->password, Auth::user()->password)){
           if (!Auth::attempt($request->only('password'), false, false)) {
-              return back()->withErrors([trans('ticketit::admin.config-edit-auth-failed')]);
+              return back()->withErrors([trans('panichd::admin.config-edit-auth-failed')]);
           }
           if (false === eval('$value = serialize('.$value.');')) {
-              return back()->withErrors([trans('ticketit::admin.config-edit-eval-error')]);
+              return back()->withErrors([trans('panichd::admin.config-edit-eval-error')]);
           }
       }
 
       $configuration->update(['value' => $value, 'lang' => $request->lang]);
 
-      Session::flash('configuration', trans('ticketit::admin.config-update-confirm', ['name' => $request->name]));
+      Session::flash('configuration', trans('panichd::admin.config-update-confirm', ['name' => $request->name]));
       // refresh cached settings
       \Cache::forget('ticketit::settings');
       \Cache::forget('ticketit::settings.'.$configuration->slug);

@@ -155,7 +155,7 @@ class TicketsController extends Controller
 		
 		$collection->editColumn('content', function ($ticket) {
 			$field=$ticket->content;
-			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('ticketit::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 						
 			return $field;
 		});
@@ -167,7 +167,7 @@ class TicketsController extends Controller
 				$field.=$ticket->recent_comments_count;
 			}
 			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('ticketit::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('ticketit::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+				$field.=' <span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
 			
 			return $field;
@@ -202,7 +202,7 @@ class TicketsController extends Controller
 			foreach ($cat['agents'] as $agent){
 				$html.='<label><input type="radio" name="%1$s_agent" value="'.$agent['id'].'"> '.$agent['name'].'</label><br />';
 			}
-			$html.='<br /><button type="button" class="submit_agent_popover" data-ticket-id="%1$s">'.trans('ticketit::lang.btn-change').'</button></div>';
+			$html.='<br /><button type="button" class="submit_agent_popover" data-ticket-id="%1$s">'.trans('panichd::lang.btn-change').'</button></div>';
 			$a_cat[$cat['id']]['html']=$html;
 		}
 		
@@ -214,11 +214,11 @@ class TicketsController extends Controller
             $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_popover')).'" ';
 			
 			if($count>4){
-				$text.= ' title="'.trans('ticketit::lang.table-change-agent').'"';
+				$text.= ' title="'.trans('panichd::lang.table-change-agent').'"';
 			}elseif($count==1){
-				$text.= ' title="'.trans('ticketit::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+				$text.= ' title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
 			}else{
-				$text.= ' title="'.trans('ticketit::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
+				$text.= ' title="'.trans('panichd::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
 			}
 			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
 				
@@ -233,15 +233,15 @@ class TicketsController extends Controller
 			}
 			
 			$html = '<div>'.$html.'</div><br />'
-				.'<button type="button" class="submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('ticketit::lang.btn-change').'</button>';
+				.'<button type="button" class="submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
 
-            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'.trans('ticketit::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
+            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'.trans('panichd::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
         });
 		
 		$collection->editColumn('owner_name', function ($ticket) {
 			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
 			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('ticketit::lang.show-ticket-creator').trans('ticketit::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
 			}
 			
 			return $return;
@@ -791,10 +791,10 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-created', [
+        session()->flash('status', trans('panichd::lang.the-ticket-has-been-created', [
 			'name' => '#'.$ticket->id.' '.$ticket->subject,
 			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-			'title' => trans('ticketit::lang.ticket-status-link-title')
+			'title' => trans('panichd::lang.ticket-status-link-title')
 		]));
 
         return response()->json([
@@ -980,7 +980,7 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified', ['name' => '#'.$ticket->id.' "'.$ticket->subject.'"']));
+        session()->flash('status', trans('panichd::lang.the-ticket-has-been-modified', ['name' => '#'.$ticket->id.' "'.$ticket->subject.'"']));
 
         return response()->json([
 			'result' => 'ok',
@@ -1041,7 +1041,7 @@ class TicketsController extends Controller
 		
         $ticket->delete();
 
-        session()->flash('status', trans('ticketit::lang.the-ticket-has-been-deleted', ['name' => $subject]));
+        session()->flash('status', trans('panichd::lang.the-ticket-has-been-deleted', ['name' => $subject]));
 
         // Delete orphan tags (Without any related categories or tickets)
         Tag::doesntHave('categories')->doesntHave('tickets')->delete();
@@ -1062,17 +1062,17 @@ class TicketsController extends Controller
             $ticket = $this->tickets->findOrFail($id);
 			$user = $this->agent->find(auth()->user()->id);
 			
-			$reason_text = trans('ticketit::lang.complete-by-user', ['user' => $user->name]);
+			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
 			
 			if ($user->currentLevel()>1){
 				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
-					return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-blank-intervention-alert'));
+					return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-blank-intervention-alert'));
 				}else{
 					$status_id = $request->input('status_id');
 					try {
 						Models\Status::findOrFail($status_id);
 					}catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
-						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-bad-status'));
+						return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-bad-status'));
 					}
 				}
 
@@ -1081,16 +1081,16 @@ class TicketsController extends Controller
 				// Verify Closing Reason
 				if ($ticket->has('category.closingReasons')){
 					if (!$request->exists('reason_id')){
-						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-modal-complete-blank-reason-alert'));					
+						return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-modal-complete-blank-reason-alert'));					
 					}
 					
 					try {
 						$reason = Models\Closingreason::findOrFail($request->input('reason_id'));
 					}catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
-						return redirect()->back()->with('warning', trans('ticketit::lang.show-ticket-complete-bad-reason-id'));
+						return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-bad-reason-id'));
 					}
 					
-					$reason_text .= trans('ticketit::lang.colon') . $reason->text;
+					$reason_text .= trans('panichd::lang.colon') . $reason->text;
 					$ticket->status_id = $reason->status_id;
 				}else{					
 					$ticket->status_id = Setting::grab('default_close_status_id');
@@ -1098,7 +1098,7 @@ class TicketsController extends Controller
 			}
 			
 			// Add Closing Reason to intervention field
-			$date = date(trans('ticketit::lang.date-format'), time());
+			$date = date(trans('panichd::lang.date-format'), time());
 			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . $reason_text;
 			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . $reason_text;
 			
@@ -1106,8 +1106,8 @@ class TicketsController extends Controller
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
 				if ($a_clarification['content'] != ""){
-					$ticket->intervention = $ticket->intervention . ' ' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['content'];
-					$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['html'];
+					$ticket->intervention = $ticket->intervention . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
+					$ticket->intervention_html = $ticket->intervention_html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
 				}
 			}
 			
@@ -1120,13 +1120,13 @@ class TicketsController extends Controller
 			$comment->type = "complete";
 			
 			if ($user->currentLevel()>1){ 
-				$comment->content = $comment->html = trans('ticketit::lang.comment-complete-title');
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
 			}else{
-				$comment->content = $comment->html = trans('ticketit::lang.comment-complete-title') . ($reason ? trans('ticketit::lang.colon').$reason->text : '');
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($reason ? trans('panichd::lang.colon').$reason->text : '');
 							
 				if ($a_clarification['content'] != ""){
-					$comment->content = $comment->content . ' ' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['content'];
-					$comment->html = $comment->html . '<br />' . trans('ticketit::lang.closing-clarifications') . trans('ticketit::lang.colon') . $a_clarification['html'];
+					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
+					$comment->html = $comment->html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
 				}
 			}
 
@@ -1134,17 +1134,17 @@ class TicketsController extends Controller
 			$comment->user_id = $user->id;
 			$comment->save();
 			
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-completed', [
+            session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $id),
-				'title' => trans('ticketit::lang.ticket-status-link-title')
+				'title' => trans('panichd::lang.ticket-status-link-title')
 			]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }
 
         return redirect()->route(Setting::grab('main_route').'.index')
-            ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-do-this'));
+            ->with('warning', trans('panichd::lang.you-are-not-permitted-to-do-this'));
     }
 
     /**
@@ -1166,9 +1166,9 @@ class TicketsController extends Controller
                 $ticket->status_id = Setting::grab('default_reopen_status_id');
             }			
 			
-			$date = date(trans('ticketit::lang.date-format'), time());
-			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('ticketit::lang.reopened-by-user', ['user' => $user->name]);					
+			$date = date(trans('panichd::lang.date-format'), time());
+			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $user->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $user->name]);					
 			
 
             $ticket->save();
@@ -1176,23 +1176,23 @@ class TicketsController extends Controller
 			// Add reopen comment
 			$comment = new Models\Comment;
 			$comment->type = "reopen";
-			$comment->content = $comment->html = trans('ticketit::lang.comment-reopen-title');
+			$comment->content = $comment->html = trans('panichd::lang.comment-reopen-title');
 			$comment->ticket_id = $id;
 			$comment->user_id = $user->id;
 			$comment->save();
 			
 
-            session()->flash('status', trans('ticketit::lang.the-ticket-has-been-reopened', [
+            session()->flash('status', trans('panichd::lang.the-ticket-has-been-reopened', [
 				'name' => '#'.$id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $id),
-				'title' => trans('ticketit::lang.ticket-status-link-title')
+				'title' => trans('panichd::lang.ticket-status-link-title')
 			]));
 
             return redirect()->route(Setting::grab('main_route').'.index');
         }
 
         return redirect()->route(Setting::grab('main_route').'.index')
-            ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-do-this'));
+            ->with('warning', trans('panichd::lang.you-are-not-permitted-to-do-this'));
     }
 
 	/*
@@ -1235,10 +1235,10 @@ class TicketsController extends Controller
 		$new_agent = Agent::findOrFail($request->input('agent_id'));
 		
 		if ($ticket->agent_id==$request->input('agent_id')){
-			return redirect()->back()->with('warning', trans('ticketit::lang.update-agent-same', [
+			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-				'title' => trans('ticketit::lang.ticket-status-link-title')
+				'title' => trans('panichd::lang.ticket-status-link-title')
 			]));
 		}else{
 			$ticket->agent_id = $request->input('agent_id');
@@ -1249,10 +1249,10 @@ class TicketsController extends Controller
 			$ticket->save();
 			event(new TicketUpdated($original_ticket, $ticket));
 			
-			session()->flash('status', trans('ticketit::lang.update-agent-ok', [
+			session()->flash('status', trans('panichd::lang.update-agent-ok', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-				'title' => trans('ticketit::lang.ticket-status-link-title'),
+				'title' => trans('panichd::lang.ticket-status-link-title'),
 				'old_agent' => $old_agent->name,
 				'new_agent' => $new_agent->name
 			]));
@@ -1270,19 +1270,19 @@ class TicketsController extends Controller
 		$new_priority = Models\Priority::findOrFail($request->input('priority_id'));
 		
 		if ($ticket->priority_id==$request->input('priority_id')){
-			return redirect()->back()->with('warning', trans('ticketit::lang.update-priority-same', [
+			return redirect()->back()->with('warning', trans('panichd::lang.update-priority-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-				'title' => trans('ticketit::lang.ticket-status-link-title')
+				'title' => trans('panichd::lang.ticket-status-link-title')
 			]));
 		}else{
 			$ticket->priority_id = $request->input('priority_id');
 			$ticket->save();
 			
-			session()->flash('status', trans('ticketit::lang.update-priority-ok', [
+			session()->flash('status', trans('panichd::lang.update-priority-ok', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-				'title' => trans('ticketit::lang.ticket-status-link-title'),
+				'title' => trans('panichd::lang.ticket-status-link-title'),
 				'old' => $old_priority->name,
 				'new' => $new_priority->name
 			]));

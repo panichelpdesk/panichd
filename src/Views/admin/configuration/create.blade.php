@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::admin.config-create-subtitle') }}
+    {{ trans('panichd::admin.config-create-subtitle') }}
 @stop
 
 @include('panichd::shared.common')
@@ -9,11 +9,11 @@
 @section('content')
      <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>{{ trans('ticketit::admin.config-create-title') }}
+        <h3>{{ trans('panichd::admin.config-create-title') }}
           <div class="panel-nav pull-right" style="margin-top: -7px;">          
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.index',
-                  trans('ticketit::admin.btn-back'), null,
+                  trans('panichd::admin.btn-back'), null,
                   ['class' => 'btn btn-default'])
               !!}
           </div>
@@ -25,7 +25,7 @@
 
             <!-- Slug Field -->
             <div class="form-group">
-                {!! CollectiveForm::label('slug', trans('ticketit::admin.config-edit-slug') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                {!! CollectiveForm::label('slug', trans('panichd::admin.config-edit-slug') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('slug', null, ['class' => 'form-control']) !!}
                 </div>
@@ -33,7 +33,7 @@
 
             <!-- Default Field -->
             <div class="form-group">
-                {!! CollectiveForm::label('default', trans('ticketit::admin.config-edit-default') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                {!! CollectiveForm::label('default', trans('panichd::admin.config-edit-default') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('default', null, ['class' => 'form-control']) !!}
                 </div>
@@ -41,7 +41,7 @@
 
             <!-- Value Field -->
             <div class="form-group">
-                {!! CollectiveForm::label('value', trans('ticketit::admin.config-edit-value') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                {!! CollectiveForm::label('value', trans('panichd::admin.config-edit-value') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('value', null, ['class' => 'form-control']) !!}
                 </div>
@@ -49,7 +49,7 @@
 
             <!-- Lang Field -->
             <div class="form-group">
-                {!! CollectiveForm::label('lang', trans('ticketit::admin.config-edit-language') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                {!! CollectiveForm::label('lang', trans('panichd::admin.config-edit-language') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('lang', null, ['class' => 'form-control']) !!}
                     
@@ -59,7 +59,7 @@
             <!-- Submit Field -->
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-2">
-                  {!! CollectiveForm::submit(trans('ticketit::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
+                  {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
                 </div>
             </div>
             

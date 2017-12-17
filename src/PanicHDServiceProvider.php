@@ -206,12 +206,12 @@ class PanicHDServiceProvider extends ServiceProvider
                 return true;
             });
 
-            $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
+            $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
 
             $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
 
             $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/panichd')], 'panichd-views');
-            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/ticketit')], 'panichd-lang');
+            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/panichd')], 'panichd-lang');
             $this->publishes([__DIR__.'/Public' => public_path('vendor/panichd')], 'panichd-public');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 
@@ -233,7 +233,7 @@ class PanicHDServiceProvider extends ServiceProvider
                 || Request::path() == 'tickets'
                 || Request::path() == 'tickets-admin'
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
-            $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
+            $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
             $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 

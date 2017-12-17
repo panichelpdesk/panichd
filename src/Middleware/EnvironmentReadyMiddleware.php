@@ -24,6 +24,6 @@ class EnvironmentReadyMiddleware
 			
 			return $next($request);
 		}
-		return redirect()->back()->with('warning', trans('ticketit::lang.environment-not-ready'));
+		return redirect()->back()->with('warning', trans('panichd::lang.environment-not-ready'));
     }
 }

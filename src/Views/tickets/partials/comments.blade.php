@@ -1,20 +1,20 @@
 @if(!$comments->isEmpty())
     @foreach($comments as $comment)
         <?php
-			$comment_title = trans('ticketit::lang.comment-'.$comment->type.'-title');
+			$comment_title = trans('panichd::lang.comment-'.$comment->type.'-title');
 			
 			switch ($comment->type){
 				case 'note':
 					$glyphicon = "glyphicon-pencil text-info";
-					$comment_header = trans('ticketit::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
+					$comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
 					break;
 				case 'complete':
 					$glyphicon = "glyphicon-ok-circle text-success";
-					$comment_header = trans('ticketit::lang.comment-complete-by', ['owner' => $comment->owner->name]);
+					$comment_header = trans('panichd::lang.comment-complete-by', ['owner' => $comment->owner->name]);
 					break;
 				case 'reopen':
 					$glyphicon = "glyphicon-backward text-warning";
-					$comment_header = trans('ticketit::lang.comment-reopen-by', ['owner' => $comment->owner->name]);
+					$comment_header = trans('panichd::lang.comment-reopen-by', ['owner' => $comment->owner->name]);
 					break;
 				default:
 					$glyphicon = "glyphicon-envelope ";
@@ -24,9 +24,9 @@
 						$glyphicon .= "text-warning";
 					}
 					if ($ticket->owner->id == $comment->owner->id){
-						$comment_header = trans('ticketit::lang.comment-reply-from-owner', ['owner' => $comment->owner->name]);
+						$comment_header = trans('panichd::lang.comment-reply-from-owner', ['owner' => $comment->owner->name]);
 					}else{
-						$comment_header = trans('ticketit::lang.reply-from-owner-to-owner', [
+						$comment_header = trans('panichd::lang.reply-from-owner-to-owner', [
 							'owner1' => $comment->owner->name,
 							'owner2' => $ticket->owner->name
 						]);
@@ -44,8 +44,8 @@
 					@endif
 					{!! $comment->updated_at->diffForHumans() !!} 
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id) and $comment->type=='note')
-						<button type="button" class="btn btn-default btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('ticketit::lang.show-ticket-delete-comment') }}">
-						<span class="glyphicon glyphicon-remove" aria-label="{{ trans('ticketit::lang.btn-delete') }}" style="color: gray"></span></button>
+						<button type="button" class="btn btn-default btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
+						<span class="glyphicon glyphicon-remove" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
 					@endif
 					</span>
                 </h3>
@@ -67,9 +67,9 @@
                 </div>
 				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					@if ($comment->type=='note')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('ticketit::lang.show-ticket-edit-comment') }}</button>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.show-ticket-edit-comment') }}</button>
 					@elseif($comment->type=='reply')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('ticketit::lang.show-ticket-email-resend') }}</button>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
 					@endif
 				
 				@endif

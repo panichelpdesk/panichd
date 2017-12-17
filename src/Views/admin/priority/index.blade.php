@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::admin.priority-index-title') }}
+    {{ trans('panichd::admin.priority-index-title') }}
 @stop
 
 @include('panichd::shared.common')
@@ -9,27 +9,27 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2>{{ trans('ticketit::admin.priority-index-title') }}
+            <h2>{{ trans('panichd::admin.priority-index-title') }}
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.priority.create',
-                                    trans('ticketit::admin.btn-create-new-priority'), null,
+                                    trans('panichd::admin.btn-create-new-priority'), null,
                                     ['class' => 'btn btn-primary pull-right'])
                 !!}
             </h2>
         </div>
 
         @if ($priorities->isEmpty())
-            <h3 class="text-center">{{ trans('ticketit::admin.priority-index-no-priorities') }}
-                {!! link_to_route($setting->grab('admin_route').'.priority.create', trans('ticketit::admin.priority-index-create-new')) !!}
+            <h3 class="text-center">{{ trans('panichd::admin.priority-index-no-priorities') }}
+                {!! link_to_route($setting->grab('admin_route').'.priority.create', trans('panichd::admin.priority-index-create-new')) !!}
             </h3>
         @else
             <div id="message"></div>
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <td>{{ trans('ticketit::admin.table-id') }}</td>
-                        <td>{{ trans('ticketit::admin.table-name') }}</td>
-                        <td>{{ trans('ticketit::admin.table-action') }}</td>
+                        <td>{{ trans('panichd::admin.table-id') }}</td>
+                        <td>{{ trans('panichd::admin.table-name') }}</td>
+                        <td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,12 +43,12 @@
                         </td>
                         <td>
                             {!! link_to_route(
-                                                    $setting->grab('admin_route').'.priority.edit', trans('ticketit::admin.btn-edit'), $priority->id,
+                                                    $setting->grab('admin_route').'.priority.edit', trans('panichd::admin.btn-edit'), $priority->id,
                                                     ['class' => 'btn btn-info'] )
                                 !!}
 
                                 {!! link_to_route(
-                                                    $setting->grab('admin_route').'.priority.destroy', trans('ticketit::admin.btn-delete'), $priority->id,
+                                                    $setting->grab('admin_route').'.priority.destroy', trans('panichd::admin.btn-delete'), $priority->id,
                                                     [
                                                     'class' => 'btn btn-danger deleteit',
                                                     'form' => "delete-$priority->id",
@@ -77,7 +77,7 @@
     <script>
         $( ".deleteit" ).click(function( event ) {
             event.preventDefault();
-            if (confirm("{!! trans('ticketit::admin.priority-index-js-delete') !!}" + $(this).attr("node") + " ?"))
+            if (confirm("{!! trans('panichd::admin.priority-index-js-delete') !!}" + $(this).attr("node") + " ?"))
             {
                 $form = $(this).attr("form");
                 $("#" + $form).submit();

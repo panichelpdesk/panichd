@@ -1,6 +1,6 @@
 @extends($master)
 
-@section('page', trans('ticketit::lang.show-ticket-title') . trans('ticketit::lang.colon') . $ticket->subject)
+@section('page', trans('panichd::lang.show-ticket-title') . trans('panichd::lang.colon') . $ticket->subject)
 
 @include('panichd::shared.common')
 
@@ -10,9 +10,9 @@
 		
 		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->whereIN('type', ['reply','close','reopen'])->count() ) )
 			<div style="margin-top: 2em;">        	
-				<h2 style="margin-top: 0em;">{{ trans('ticketit::lang.comments') }}
+				<h2 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
 					@if ($u->canCommentTicket($ticket->id))
-						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('ticketit::lang.show-ticket-add-comment') }}</button>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('panichd::lang.show-ticket-add-comment') }}</button>
 					@endif
 				</h2>
 			</div>
@@ -42,7 +42,7 @@
 						w: {{ $sizes[0] }},
 						h: {{ $sizes[1] }},
 						pid: {{ $attachment->id }},
-						title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
+						title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('panichd::lang.colon').$attachment->description) }}'							
 					},
 				@endif
 			@endforeach
@@ -52,7 +52,7 @@
         $(document).ready(function() {
             $( ".deleteit" ).click(function( event ) {
                 event.preventDefault();
-                if (confirm("{!! trans('ticketit::lang.show-ticket-js-delete') !!}" + $(this).attr("node") + " ?"))
+                if (confirm("{!! trans('panichd::lang.show-ticket-js-delete') !!}" + $(this).attr("node") + " ?"))
                 {
                     var form = $(this).attr("form");
                     $("#" + form).submit();
@@ -96,14 +96,14 @@
 					// Agent / Admin
 					@if (!$ticket->intervention_html)
 						if (!$('#blank_intervention_check').prop('checked')){
-							alert('{{ trans('ticketit::lang.show-ticket-complete-blank-intervention-alert') }}');
+							alert('{{ trans('panichd::lang.show-ticket-complete-blank-intervention-alert') }}');
 							return false;
 						}
 					@endif
 				@else
 					// User Level
 					if (!$("#complete-ticket-form input[name='reason_id']:checked").val()) {
-						alert('{{ trans('ticketit::lang.show-ticket-modal-complete-blank-reason-alert') }}');
+						alert('{{ trans('panichd::lang.show-ticket-modal-complete-blank-reason-alert') }}');
 						return false;
 					}
 				@endif

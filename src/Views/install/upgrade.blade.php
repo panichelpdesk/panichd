@@ -24,36 +24,36 @@
 <body>
 
 <div class="container">
-    <h1 style="text-align: center">{{ trans('ticketit::install.upgrade') }}</h1>
+    <h1 style="text-align: center">{{ trans('panichd::install.upgrade') }}</h1>
     <br>
     <div class="well small" style="border: 1px solid #ccc">
         @if(!empty($inactive_migrations))
-            <b>{{ trans('ticketit::install.migrations-to-be-installed') }}</b>
+            <b>{{ trans('panichd::install.migrations-to-be-installed') }}</b>
             <ul>
                 @foreach($inactive_migrations as $mig)
                     <li>{{ $mig }}</li>
                 @endforeach
             </ul>
         @else
-            <b>{{ trans('ticketit::install.all-tables-migrated') }}</b>
+            <b>{{ trans('panichd::install.all-tables-migrated') }}</b>
         @endif
     </div>
     <br>
     <div class="well small" style="border: 1px solid #ccc">
         @if(!empty($inactive_settings))
-            <b>{{ trans('ticketit::install.settings-to-be-installed') }}</b>
+            <b>{{ trans('panichd::install.settings-to-be-installed') }}</b>
             <ul>
                 @foreach($inactive_settings as $slug => $value)
                     <li>{{ $slug }} => {!! is_array($value) ? print_r($value) : $value !!}</li>
                 @endforeach
             </ul>
         @else
-            <b>{{ trans('ticketit::install.all-settings-installed') }}</b>
+            <b>{{ trans('panichd::install.all-settings-installed') }}</b>
         @endif
     </div>
     <br>
     <a href="/tickets-upgrade" class="btn btn-lg btn-primary btn-block" type="submit">
-        {{ trans('ticketit::install.proceed') }}
+        {{ trans('panichd::install.proceed') }}
     </a>
 
 </div> <!-- /container -->

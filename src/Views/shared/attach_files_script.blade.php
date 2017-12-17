@@ -24,7 +24,7 @@ $(function(){
 			var html = '<div><div id="attachment_block_'+num+'" class="jquery_attachment_block panel panel-default text-warning check_parent unchecked check_related_bg"><div class="panel-body"><div class="media">'
 				
 				// Upload icon
-				+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" style="font-size: 30px" title="{{ trans('ticketit::lang.pending-attachment') }}" style="cursor: help"></span></div>'
+				+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" style="font-size: 30px" title="{{ trans('panichd::lang.pending-attachment') }}" style="cursor: help"></span></div>'
 				
 				// Filename
 				+'<div class="media-body check_related_text">'
@@ -39,7 +39,7 @@ $(function(){
 				html += ' data-edit-div="'+$('#'+$(this).data('attach-id')).data('new-attachment-edit-div')+'" data-back-div="'+$('#'+$(this).data('attach-id')).data('new-attachment-back-div')+'"';
 			}		
 				
-				html +=' data-original_filename="'+file.name+'" data-prefix="new_attachment_'+num+'_" style="margin: 0em 0em 0em 1em;">{{ trans('ticketit::lang.btn-edit') }}</button>'
+				html +=' data-original_filename="'+file.name+'" data-prefix="new_attachment_'+num+'_" style="margin: 0em 0em 0em 1em;">{{ trans('panichd::lang.btn-edit') }}</button>'
 				+'<input type="hidden" id="new_attachment_'+num+'_new_filename" name="attachment_new_filenames[]" value="'+file.name+'">'
 				+'<input type="hidden" id="new_attachment_'+num+'_description" name="attachment_descriptions[]" value="">'
 				+'</div>'
@@ -168,7 +168,7 @@ $(function(){
 			);
 			
 			if ($('#'+prefix+'image_crop').closest('.media').find('.glyphicon-scissors').length == 0){
-				$('#'+prefix+'image_crop').closest('.media').find('.jquery_scissors_previous').after('<span class="glyphicon glyphicon-scissors pull-center" style="margin-left: 0.5em; color: orange;" aria-hidden="true" title="{{ trans('ticketit::lang.crop-image') }}"></span>');
+				$('#'+prefix+'image_crop').closest('.media').find('.jquery_scissors_previous').after('<span class="glyphicon glyphicon-scissors pull-center" style="margin-left: 0.5em; color: orange;" aria-hidden="true" title="{{ trans('panichd::lang.crop-image') }}"></span>');
 			}
 		}else{
 			$('#'+prefix+'image_crop').val('');			

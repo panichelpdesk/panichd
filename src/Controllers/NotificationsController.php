@@ -19,7 +19,7 @@ class NotificationsController extends Controller
 	public function __construct(Category $category)
 	{
 		$this->category = $category;
-		$this->subject = '['.trans('ticketit::email/globals.notify-ticket-category', ['name' => $category->name]).'] #';
+		$this->subject = '['.trans('panichd::email/globals.notify-ticket-category', ['name' => $category->name]).'] #';
 	}
 	
 	public function newTicket(Ticket $ticket)
@@ -28,7 +28,7 @@ class NotificationsController extends Controller
         $template = 'ticketit::emails.new_ticket';
         
 		// Affects only agent notification.
-		$subject = $this->subject.$ticket->id.' '.trans('ticketit::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('ticketit::lang.colon').$ticket->subject;
+		$subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('panichd::lang.colon').$ticket->subject;
 		
 		$data = [
             'ticket'             => serialize($ticket),
@@ -44,10 +44,10 @@ class NotificationsController extends Controller
         $template = 'ticketit::emails.updated_ticket';
 		$subject = $this->subject.$ticket->id.' ';
 		if (!strtotime($original_ticket->completed_at) and strtotime($ticket->completed_at)) {
-			$subject .= trans('ticketit::email/globals.notify-closed-by', ['agent' => $notification_owner->name]).trans('ticketit::lang.colon').$ticket->subject;	
+			$subject .= trans('panichd::email/globals.notify-closed-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;	
 			$notification_type = 'close';
 		}else{
-			$subject .= trans('ticketit::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('ticketit::lang.colon').$ticket->subject;
+			$subject .= trans('panichd::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
 			$notification_type = 'status';
 		}
         
@@ -65,7 +65,7 @@ class NotificationsController extends Controller
     {
         $notification_owner = auth()->user();
         $template = 'ticketit::emails.updated_ticket';
-        $subject = $this->subject.$ticket->id.' '.trans('ticketit::email/globals.notify-assigned-to-you-by', ['agent' => $notification_owner->name]).trans('ticketit::lang.colon').$ticket->subject;
+        $subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-assigned-to-you-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
 		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
@@ -83,8 +83,8 @@ class NotificationsController extends Controller
 			$notification_owner = $comment->owner;
 			$template = 'ticketit::emails.new_comment';
 			$subject = $this->subject.$ticket->id.' '
-				.trans('ticketit::email/globals.'.($comment->type == 'reply' ? 'notify-new-reply-by' : 'notify-new-note-by'), ['name' => $comment->owner->name] )
-				.trans('ticketit::lang.colon').$ticket->subject;
+				.trans('panichd::email/globals.'.($comment->type == 'reply' ? 'notify-new-reply-by' : 'notify-new-note-by'), ['name' => $comment->owner->name] )
+				.trans('panichd::lang.colon').$ticket->subject;
 			$data = [
 				'comment' => serialize($comment),
 				'ticket' => serialize($ticket),
@@ -103,8 +103,8 @@ class NotificationsController extends Controller
 			$notification_owner = auth()->user();
 			$template = 'ticketit::emails.updated_comment';
 			$subject = $this->subject.$ticket->id.' '
-				.trans('ticketit::email/globals.notify-note-updated-by', ['name' => $notification_owner->name] )
-				.trans('ticketit::lang.colon').$ticket->subject;
+				.trans('panichd::email/globals.notify-note-updated-by', ['name' => $notification_owner->name] )
+				.trans('panichd::lang.colon').$ticket->subject;
 			$data = [
 				'comment' => serialize($comment),
 				'original_comment' => serialize($original_comment),
@@ -142,8 +142,8 @@ class NotificationsController extends Controller
 		$ticket=$comment->ticket;
 		$notification_owner = $comment->user;
 		$template = 'ticketit::emails.comment';
-		$subject = trans('ticketit::lang.email-resend-abbr') . trans('ticketit::lang.colon') . $this->subject.$ticket->id . ' ' . trans('ticketit::email/globals.notify-new-note-by', ['name' => $comment->user->name]) . trans('ticketit::lang.colon') . $ticket->subject;
-			// trans('ticketit::email/globals.notify-new-comment-from').$notification_owner->name.trans('ticketit::email/globals.notify-on').$ticket->subject;
+		$subject = trans('panichd::lang.email-resend-abbr') . trans('panichd::lang.colon') . $this->subject.$ticket->id . ' ' . trans('panichd::email/globals.notify-new-note-by', ['name' => $comment->user->name]) . trans('panichd::lang.colon') . $ticket->subject;
+			// trans('panichd::email/globals.notify-new-comment-from').$notification_owner->name.trans('panichd::email/globals.notify-on').$ticket->subject;
 		$data = [
 			'comment' => serialize($comment), 
 			'ticket' => serialize($ticket),
@@ -200,11 +200,11 @@ class NotificationsController extends Controller
 				if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" )){
 					$a_to[] = [
 						'recipient' => $ticket->owner,
-						'subject' => $this->subject.$ticket->id.trans('ticketit::lang.colon').$ticket->subject ,
+						'subject' => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject ,
 						'template' => Setting::grab('email.owner.newticket.template')
 					];
 					
-					$subject = $this->subject.$ticket->id.' '.trans('ticketit::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('ticketit::lang.colon').$ticket->subject;
+					$subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('panichd::lang.colon').$ticket->subject;
 				}
 			}
 		}		

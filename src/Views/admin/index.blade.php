@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::admin.index-title') }}
+    {{ trans('panichd::admin.index-title') }}
 @stop
 
 @include('panichd::shared.common')
@@ -18,7 +18,7 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $tickets_count }}</h1>
-                                <div>{{ trans('ticketit::admin.index-total-tickets') }}</div>
+                                <div>{{ trans('panichd::admin.index-total-tickets') }}</div>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $open_tickets_count }}</h1>
-                                <div>{{ trans('ticketit::admin.index-open-tickets') }}</div>
+                                <div>{{ trans('panichd::admin.index-open-tickets') }}</div>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $closed_tickets_count }}</h1>
-                                <span>{{ trans('ticketit::admin.index-closed-tickets') }}</span>
+                                <span>{{ trans('panichd::admin.index-closed-tickets') }}</span>
                             </div>
                         </div>
                     </div>
@@ -60,27 +60,27 @@
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('ticketit::admin.index-performance-indicator') }}
+                        <i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    {{ trans('ticketit::admin.index-periods') }}
+                                    {{ trans('panichd::admin.index-periods') }}
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li>
                                         <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 2) }}">
-                                            {{ trans('ticketit::admin.index-3-months') }}
+                                            {{ trans('panichd::admin.index-3-months') }}
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 5) }}">
-                                            {{ trans('ticketit::admin.index-6-months') }}
+                                            {{ trans('panichd::admin.index-6-months') }}
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 11) }}">
-                                            {{ trans('ticketit::admin.index-12-months') }}
+                                            {{ trans('panichd::admin.index-12-months') }}
                                         </a>
                                     </li>
                                 </ul>
@@ -95,7 +95,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ trans('ticketit::admin.index-tickets-share-per-category') }}
+                                {{ trans('panichd::admin.index-tickets-share-per-category') }}
                             </div>
                             <div class="panel-body">
                                 <div id="catpiechart" style="width: auto; height: 350;"></div>
@@ -105,7 +105,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ trans('ticketit::admin.index-tickets-share-per-agent') }}
+                                {{ trans('panichd::admin.index-tickets-share-per-agent') }}
                             </div>
                             <div class="panel-body">
                                 <div id="agentspiechart" style="width: auto; height: 350;"></div>
@@ -121,19 +121,19 @@
                     <li class="{{$active_tab == "cat" ? "active" : ""}}">
                         <a data-toggle="pill" href="#information-panel-categories">
                             <i class="glyphicon glyphicon-folder-close"></i>
-                            <small>{{ trans('ticketit::admin.index-categories') }}</small>
+                            <small>{{ trans('panichd::admin.index-categories') }}</small>
                         </a>
                     </li>
                     <li class="{{$active_tab == "agents" ? "active"  : ""}}">
                         <a data-toggle="pill" href="#information-panel-agents">
                             <i class="glyphicon glyphicon-user"></i>
-                            <small>{{ trans('ticketit::admin.index-agents') }}</small>
+                            <small>{{ trans('panichd::admin.index-agents') }}</small>
                         </a>
                     </li>
                     <li class="{{$active_tab == "users" ? "active" : ""}}">
                         <a data-toggle="pill" href="#information-panel-users">
                             <i class="glyphicon glyphicon-user"></i>
-                            <small>{{ trans('ticketit::admin.index-users') }}</small>
+                            <small>{{ trans('panichd::admin.index-users') }}</small>
                         </a>
                     </li>
                 </ul>
@@ -141,13 +141,13 @@
                 <div class="tab-content">
                     <div id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "in active" : ""}}">
                         <a href="#" class="list-group-item disabled">
-                            <span>{{ trans('ticketit::admin.index-category') }}
-                                <span class="badge">{{ trans('ticketit::admin.index-total') }}</span>
+                            <span>{{ trans('panichd::admin.index-category') }}
+                                <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
                                 <em>
-                                    {{ trans('ticketit::admin.index-open') }} /
-                                     {{ trans('ticketit::admin.index-closed') }}
+                                    {{ trans('panichd::admin.index-open') }} /
+                                     {{ trans('panichd::admin.index-closed') }}
                                 </em>
                             </span>
                         </a>
@@ -168,13 +168,13 @@
                     </div>
                     <div id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "in active" : ""}}">
                         <a href="#" class="list-group-item disabled">
-                            <span>{{ trans('ticketit::admin.index-agent') }}
-                                <span class="badge">{{ trans('ticketit::admin.index-total') }}</span>
+                            <span>{{ trans('panichd::admin.index-agent') }}
+                                <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
                                 <em>
-                                    {{ trans('ticketit::admin.index-open') }} /
-                                    {{ trans('ticketit::admin.index-closed') }}
+                                    {{ trans('panichd::admin.index-open') }} /
+                                    {{ trans('panichd::admin.index-closed') }}
                                 </em>
                             </span>
                         </a>
@@ -199,13 +199,13 @@
                     </div>
                     <div id="information-panel-users" class="list-group tab-pane fade {{$active_tab == "users" ? "in active" : ""}}">
                         <a href="#" class="list-group-item disabled">
-                            <span>{{ trans('ticketit::admin.index-user') }}
-                                <span class="badge">{{ trans('ticketit::admin.index-total') }}</span>
+                            <span>{{ trans('panichd::admin.index-user') }}
+                                <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
                                 <em>
-                                    {{ trans('ticketit::admin.index-open') }} /
-                                    {{ trans('ticketit::admin.index-closed') }}
+                                    {{ trans('panichd::admin.index-open') }} /
+                                    {{ trans('panichd::admin.index-closed') }}
                                 </em>
                             </span>
                         </a>
@@ -233,7 +233,7 @@
         </div>
     @else
         <div class="well text-center">
-            {{ trans('ticketit::admin.index-empty-records') }}
+            {{ trans('panichd::admin.index-empty-records') }}
         </div>
     @endif
 @stop
@@ -255,14 +255,14 @@
         // performance line chart
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ["{{ trans('ticketit::admin.index-month') }}", "{!! implode('", "', $monthly_performance['categories']) !!}"],
+                ["{{ trans('panichd::admin.index-month') }}", "{!! implode('", "', $monthly_performance['categories']) !!}"],
                 @foreach($monthly_performance['interval'] as $month => $records)
                     ["{{ $month }}", {!! implode(',', $records) !!}],
                 @endforeach
             ]);
 
             var options = {
-                title: '{!! addslashes(trans('ticketit::admin.index-performance-chart')) !!}',
+                title: '{!! addslashes(trans('panichd::admin.index-performance-chart')) !!}',
                 curveType: 'function',
                 legend: {position: 'right'},
                 vAxis: {
@@ -280,14 +280,14 @@
 
             // Categories Pie Chart
             var cat_data = google.visualization.arrayToDataTable([
-              ['{{ trans('ticketit::admin.index-category') }}', '{!! addslashes(trans('ticketit::admin.index-tickets')) !!}'],
+              ['{{ trans('panichd::admin.index-category') }}', '{!! addslashes(trans('panichd::admin.index-tickets')) !!}'],
               @foreach($categories_share as $cat_name => $cat_tickets)
                     ['{!! addslashes($cat_name) !!}', {{ $cat_tickets }}],
               @endforeach
             ]);
 
             var cat_options = {
-              title: '{!! addslashes(trans('ticketit::admin.index-categories-chart')) !!}',
+              title: '{!! addslashes(trans('panichd::admin.index-categories-chart')) !!}',
               legend: {position: 'bottom'}
             };
 
@@ -297,14 +297,14 @@
 
             // Agents Pie Chart
             var agent_data = google.visualization.arrayToDataTable([
-              ['{{ trans('ticketit::admin.index-agent') }}', '{!! addslashes(trans('ticketit::admin.index-tickets')) !!}'],
+              ['{{ trans('panichd::admin.index-agent') }}', '{!! addslashes(trans('panichd::admin.index-tickets')) !!}'],
               @foreach($agents_share as $agent_name => $agent_tickets)
                     ['{!! addslashes($agent_name) !!}', {{ $agent_tickets }}],
               @endforeach
             ]);
 
             var agent_options = {
-              title: '{!! addslashes(trans('ticketit::admin.index-agents-chart')) !!}',
+              title: '{!! addslashes(trans('panichd::admin.index-agents-chart')) !!}',
               legend: {position: 'bottom'}
             };
 

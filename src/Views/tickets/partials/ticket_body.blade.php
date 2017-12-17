@@ -12,18 +12,18 @@
 			</div>
 			<div class="col-md-4 text-right">
 				@if ($ticket->updated_at!=$ticket->created_at)
-					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('ticketit::lang.date-info-updated') }}" style="color: #aaa; cursor: help">
+					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-updated') }}" style="color: #aaa; cursor: help">
 						<span class="glyphicon glyphicon-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
 					</span>
 				@endif
-				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('ticketit::lang.date-info-created') }}" style="color: #aaa; cursor: help">
+				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-created') }}" style="color: #aaa; cursor: help">
 					<span class="glyphicon glyphicon-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
 				</span>&nbsp;
 								
 				@if($u->isAdmin())
 					@if($setting->grab('delete_modal_type') == 'builtin')
 						{!! link_to_route(
-										$setting->grab('main_route').'.destroy', trans('ticketit::lang.btn-delete'), $ticket->id,
+										$setting->grab('main_route').'.destroy', trans('panichd::lang.btn-delete'), $ticket->id,
 										[
 										'class' => 'btn btn-default deleteit',
 										'form' => "delete-ticket-$ticket->id",
@@ -42,10 +42,10 @@
 								class="btn btn-default"
 								data-toggle="modal"
 								data-target="#confirmDelete"
-								data-title="{!! trans('ticketit::lang.show-ticket-modal-delete-title', ['id' => $ticket->id]) !!}"
-								data-message="{!! trans('ticketit::lang.show-ticket-modal-delete-message', ['subject' => $ticket->subject]) !!}"
+								data-title="{!! trans('panichd::lang.show-ticket-modal-delete-title', ['id' => $ticket->id]) !!}"
+								data-message="{!! trans('panichd::lang.show-ticket-modal-delete-message', ['subject' => $ticket->subject]) !!}"
 						 >
-						  {{ trans('ticketit::lang.btn-delete') }}
+						  {{ trans('panichd::lang.btn-delete') }}
 						</button>
 					@endif
 						{!! CollectiveForm::close() !!}
@@ -57,24 +57,24 @@
 		<div class="row">
 			<div class="col-lg-2 col-sm-3">				
 				<p>
-				<strong>{{ trans('ticketit::lang.ticket') }}</strong>{{ trans('ticketit::lang.colon') . trans('ticketit::lang.table-id') . $ticket->id }}
+				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
 					@if ($ticket->user_id != $ticket->creator_id)
-						<br /><strong>{{ trans('ticketit::lang.show-ticket-creator') }}</strong>{{ trans('ticketit::lang.colon') . $ticket->creator->name }}<br />
+						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') . $ticket->creator->name }}<br />
 					@endif
 					
-					<br /><strong>{{ trans('ticketit::lang.owner') }}</strong>{{ trans('ticketit::lang.colon') }} <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{{ $ticket->owner->name }} <span class="glyphicon glyphicon-question-sign"></span></span>
+					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{{ $ticket->owner->name }} <span class="glyphicon glyphicon-question-sign"></span></span>
 					@if ($setting->grab('departments_feature'))
 						@if ($ticket->department)
-							<br /><strong>{{ trans('ticketit::lang.department') }}</strong>{{ trans('ticketit::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
+							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
 						@endif
 						@if ($ticket->sub1)
-							<br /><strong>{{ trans('ticketit::lang.dept_sub1') }}</strong>{{ trans('ticketit::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
+							<br /><strong>{{ trans('panichd::lang.dept_sub1') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
 						@endif
 					@endif
 				@endif
 				
-				<br /><strong>{{ trans('ticketit::lang.status') }}</strong>{{ trans('ticketit::lang.colon') }}
+				<br /><strong>{{ trans('panichd::lang.status') }}</strong>{{ trans('panichd::lang.colon') }}
 				@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
 					<span style="color: blue">Complete</span>
 				@else
@@ -82,30 +82,30 @@
 				@endif
 					
 				@if ($u->currentLevel() > 1)
-					<br /><strong>{{ trans('ticketit::lang.priority') }}</strong>{{ trans('ticketit::lang.colon') }}
+					<br /><strong>{{ trans('panichd::lang.priority') }}</strong>{{ trans('panichd::lang.colon') }}
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
 					</span>
 					@php
 						\Carbon\Carbon::setLocale(config('app.locale'));
 					@endphp					
-					<br /><strong>{{ trans('ticketit::lang.table-calendar') }}</strong>{{ trans('ticketit::lang.colon') }}{!! $ticket->getCalendarField(true) !!}
+					<br /><strong>{{ trans('panichd::lang.table-calendar') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getCalendarField(true) !!}
 					</p><p>					
 				@else
 					<br />
 				@endif
 				
-				<strong>{{ trans('ticketit::lang.category') }}</strong>{{ trans('ticketit::lang.colon') }}
+				<strong>{{ trans('panichd::lang.category') }}</strong>{{ trans('panichd::lang.colon') }}
 				<span style="color: {{ $ticket->category->color }}">
 					{{ $ticket->category->name }}
 				</span>
 				
 				@if ($u->currentLevel() > 1)
-					<br /><strong>{{ trans('ticketit::lang.responsible') }}</strong>{{ trans('ticketit::lang.colon') }}{{ $ticket->agent->name }}
+					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}{{ $ticket->agent->name }}
 				@endif
 								
 				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
-					<br /><strong>{{ trans('ticketit::lang.tags') }}</strong>{{ trans('ticketit::lang.colon') }}
+					<br /><strong>{{ trans('panichd::lang.tags') }}</strong>{{ trans('panichd::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-default btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
 					@endforeach					
@@ -116,14 +116,14 @@
 				<div class="row row-eq-height">
 					<div class="description-col {{ $ticket->intervention_html ? 'col-md-6' : 'col-md-12'}}">
 						<div>
-							<b>{{ trans('ticketit::lang.description') }}</b>
+							<b>{{ trans('panichd::lang.description') }}</b>
 						</div>
 						<div class="summernote-text-wrapper"> {!! $ticket->html !!} </div>
 					</div>
 					@if ($ticket->intervention_html)
 						<div class="intervention-col col-md-6">
 							<div>
-								<b>{{ trans('ticketit::lang.intervention') }}</b>
+								<b>{{ trans('panichd::lang.intervention') }}</b>
 							</div>
 							<div class="summernote-text-wrapper"> {!! $ticket->intervention_html !!} </div>
 						</div>
@@ -140,7 +140,7 @@
 					@if($images_count > 0)
 						<div class="{{ $ticket->attachments()->notImages()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
 							<div class="row">
-							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attached-images') }}</b></div>
+							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-images') }}</b></div>
 							<div class="col-xs-12">
 								<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 														
@@ -155,7 +155,7 @@
 					@if($notimages_count > 0)
 						<div class="{{ $ticket->attachments()->images()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
 							<div class="row">
-							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('ticketit::lang.attached-files') }}</b></div>
+							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-files') }}</b></div>
 							<div class="col-xs-12">
 								<div id="ticket_attached" class="row panel-group attached_list">
 														
@@ -175,13 +175,13 @@
 		</div>
 		
 		@if(! $ticket->completed_at && $close_perm == 'yes')			
-			<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('ticketit::lang.btn-mark-complete') }}</button>						
+			<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>						
 		@elseif($ticket->completed_at && $reopen_perm == 'yes')
-			{!! link_to_route($setting->grab('main_route').'.reopen', trans('ticketit::lang.reopen-ticket'), $ticket->id,
+			{!! link_to_route($setting->grab('main_route').'.reopen', trans('panichd::lang.reopen-ticket'), $ticket->id,
 									['class' => 'btn btn-default']) !!}
 		@endif
 		@if($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-			{!! link_to_route($setting->grab('main_route').'.edit', trans('ticketit::lang.btn-edit'), $ticket->id,
+			{!! link_to_route($setting->grab('main_route').'.edit', trans('panichd::lang.btn-edit'), $ticket->id,
 									['class' => 'btn btn-default']) !!}
 			<div class="visible-xs"><br /></div>
 		@endif

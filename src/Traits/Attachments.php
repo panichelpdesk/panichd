@@ -41,13 +41,13 @@ trait Attachments
             /** @var UploadedFile $uploadedFile */
             if (is_null($uploadedFile)) {
                 // No files attached
-                $a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-not-valid-file');
+                $a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-not-valid-file');
 				$index++;
 				continue;
             }
 
             if (!$uploadedFile instanceof UploadedFile) {
-				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-not-valid-object', ['name'=>print_r($uploadedFile, true)]);
+				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-not-valid-object', ['name'=>print_r($uploadedFile, true)]);
 				$index++;
 				continue;
             }
@@ -64,7 +64,7 @@ trait Attachments
 			
 			if ($new_bytes/1024/1024 > Setting::grab('attachments_ticket_max_size')){
 				
-				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-max-size-reached', [
+				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-max-size-reached', [
 					'name' => $original_filename,
 					'available_MB' => round(Setting::grab('attachments_ticket_max_size')-$bytes/1024/1024)
 				]);
@@ -74,7 +74,7 @@ trait Attachments
 			$bytes = $new_bytes;						
 			
 			if ($num + 1 > Setting::grab('attachments_ticket_max_files_num')){
-				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.ticket-error-max-attachments-count-reached', [
+				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-max-attachments-count-reached', [
 					'name' => $original_filename,
 					'max_count'=>Setting::grab('attachments_ticket_max_files_num')
 				]);
@@ -101,7 +101,7 @@ trait Attachments
 			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:'.Setting::grab('attachments_mimes') ]);
 
 			if($validator->fails()){
-				$a_errors['attachment_block_'.($block+$index)] = trans('ticketit::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
+				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
 				$index++;
 				continue;
 			}
@@ -245,7 +245,7 @@ trait Attachments
 			$validator = Validator::make([$new_filename['name'] => $filtered], [ $new_filename['name'] => 'required|min:3' ]);
 
 			if($validator->fails()){
-				$a_single_errors[]= trans('ticketit::lang.attachment-update-not-valid-name', ['file' => $att->original_filename]);
+				$a_single_errors[]= trans('panichd::lang.attachment-update-not-valid-name', ['file' => $att->original_filename]);
 			}elseif ($filtered != $att->new_filename) {
 				$att->new_filename = $filtered;
 				$save = true;
@@ -266,7 +266,7 @@ trait Attachments
 		if (isset($image_crop)){
 			$coords = explode(',', $image_crop);
 			if (count($coords) != 4 or ctype_digit(str_replace(",", "", str_replace(".", "", $coords)))){
-				$a_single_errors[] = trans('ticketit::lang.attachment-update-crop-error');
+				$a_single_errors[] = trans('panichd::lang.attachment-update-crop-error');
 			}else{
 				$img = Image::make($att->file_path);				
 								
@@ -345,7 +345,7 @@ trait Attachments
 		}
 		
 		if ($delete_errors){
-			return trans('ticketit::lang.ticket-error-delete-files').trans('ticketit::lang.colon').implode('. ', $delete_errors);
+			return trans('panichd::lang.ticket-error-delete-files').trans('panichd::lang.colon').implode('. ', $delete_errors);
 		}else{
 			return false;
 		}
@@ -379,12 +379,12 @@ trait Attachments
 	protected function deleteAttachmentFile($file_path, $filename)
 	{
 		if(!\File::exists($file_path)){
-			return trans('ticketit::lang.ticket-error-file-not-found', ['name'=>$filename]);
+			return trans('panichd::lang.ticket-error-file-not-found', ['name'=>$filename]);
 		}else{
 			\File::delete($file_path);
 			
 			if(\File::exists($file_path)){
-				return trans('ticketit::lang.ticket-error-file-not-deleted', ['name'=>$filename]);
+				return trans('panichd::lang.ticket-error-file-not-deleted', ['name'=>$filename]);
 			}else
 				return false;
 		}

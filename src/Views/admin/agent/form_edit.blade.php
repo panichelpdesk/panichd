@@ -3,7 +3,7 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title" id="myModalLabel">{{ trans('ticketit::admin.agent-edit-title',['agent'=>$agent->name]) }}</h4>
+		<h4 class="modal-title" id="myModalLabel">{{ trans('panichd::admin.agent-edit-title',['agent'=>$agent->name]) }}</h4>
 	  </div>
 	  <div class="modal-body">								  
 		{!! CollectiveForm::open([
@@ -14,9 +14,9 @@
 						],
 				]) !!}
 		<table class="table table-hover table-striped">
-			<thead><th>{{ trans('ticketit::admin.agent-edit-table-category') }}</th>
-			<th>{{ trans('ticketit::admin.agent-edit-table-agent') }}</th>
-			<th>{{ trans('ticketit::admin.agent-edit-table-autoassign') }}</th></thead>
+			<thead><th>{{ trans('panichd::admin.agent-edit-table-category') }}</th>
+			<th>{{ trans('panichd::admin.agent-edit-table-agent') }}</th>
+			<th>{{ trans('panichd::admin.agent-edit-table-autoassign') }}</th></thead>
 			<tbody>
 			@foreach($categories as $agent_cat)
 				<tr>
@@ -38,7 +38,7 @@
 		</table>
 	  </div>
 	  <div class="modal-footer">
-		{!! CollectiveForm::submit( trans('ticketit::admin.btn-update') , ['class' => 'btn btn-info']) !!}
+		{!! CollectiveForm::submit( trans('panichd::admin.btn-update') , ['class' => 'btn btn-info']) !!}
 	  </div>
 	  
 		{!! CollectiveForm::close() !!}
