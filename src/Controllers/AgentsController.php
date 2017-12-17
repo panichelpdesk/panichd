@@ -64,36 +64,16 @@ class AgentsController extends Controller
 
     public function destroy($id)
     {
-        $agent = $this->removeAgent($id);
+        $agent = Agent::findOrFail($id);
+		
+		$agent->categories()->detach();
+		
+		$agent->ticketit_agent = false;
+        $agent->save();
 
         Session::flash('status', trans('ticketit::admin.agent-excluded-ok', ['name' => $agent->name]));
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\AgentsController@index');
-    }
-
-    /**
-     * Remove user from the agents.
-     *
-     * @param $id
-     *
-     * @return mixed
-     */
-    public function removeAgent($id)
-    {
-        $agent = Agent::find($id);
-        $agent->ticketit_agent = false;
-        $agent->save();
-
-        // Remove him from tickets categories as well
-        if (version_compare(app()->version(), '5.2.0', '>=')) {
-            $agent_cats = $agent->categories->pluck('id')->toArray();
-        } else { // if Laravel 5.1
-            $agent_cats = $agent->categories->lists('id')->toArray();
-        }
-
-        $agent->categories()->detach($agent_cats);
-
-        return $agent;
     }
 
     /**
