@@ -7,7 +7,7 @@ use PanicHD\PanicHD\Models\Tag;
 
 class Category extends Model
 {
-    protected $table = 'ticketit_categories';
+    protected $table = 'panichd_categories';
 
     protected $fillable = ['name', 'color', 'create_level'];
 
@@ -58,7 +58,7 @@ class Category extends Model
      */
     public function agents()
     {
-        return $this->belongsToMany('\PanicHD\PanicHD\Models\Agent', 'ticketit_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
+        return $this->belongsToMany('\PanicHD\PanicHD\Models\Agent', 'panichd_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
     }
 
     /**
@@ -68,7 +68,7 @@ class Category extends Model
      */
     public function tags()
     {
-        return $this->morphToMany('PanicHD\PanicHD\Models\Tag', 'taggable', 'ticketit_taggables')->orderBy('name');
+        return $this->morphToMany('PanicHD\PanicHD\Models\Tag', 'taggable', 'panichd_taggables')->orderBy('name');
     }
 	
 	/**

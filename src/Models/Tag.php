@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $table = 'ticketit_tags';
+    protected $table = 'panichd_tags';
     protected $fillable = ['name'];
 
     /**
@@ -16,7 +16,7 @@ class Tag extends Model
      */
     public function categories()
     {
-        return $this->morphedByMany('PanicHD\PanicHD\Models\Category', 'taggable', 'ticketit_taggables')->orderBy('name');
+        return $this->morphedByMany('PanicHD\PanicHD\Models\Category', 'taggable', 'panichd_taggables')->orderBy('name');
     }
 
     /**
@@ -26,6 +26,6 @@ class Tag extends Model
      */
     public function tickets()
     {
-        return $this->morphedByMany('PanicHD\PanicHD\Models\Ticket', 'taggable', 'ticketit_taggables');
+        return $this->morphedByMany('PanicHD\PanicHD\Models\Ticket', 'taggable', 'panichd_taggables');
     }
 }

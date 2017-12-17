@@ -15,7 +15,7 @@ class Setting extends Model
     /**
      * @var string
      */
-    protected $table = 'ticketit_settings';
+    protected $table = 'panichd_settings';
 
     /**
      * Returns one of three columns by slug.
@@ -48,8 +48,8 @@ class Setting extends Model
          */
         //       Cache::flush();
 
-        $setting = Cache::remember('ticketit::settings.'.$slug, 60, function () use ($slug) {
-            $settings = Cache::remember('ticketit::settings', 60, function () {
+        $setting = Cache::remember('panichd::settings.'.$slug, 60, function () use ($slug) {
+            $settings = Cache::remember('panichd::settings', 60, function () {
                 return Table::all();
             });
 

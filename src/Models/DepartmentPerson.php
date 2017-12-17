@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DepartmentPerson extends Model
 {
-    protected $table = 'ticketit_departments_persons';
+    protected $table = 'panichd_departments_persons';
     protected $fillable = ['person_id', 'department_id'];
 
     public function department(){

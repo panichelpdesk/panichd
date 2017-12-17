@@ -58,7 +58,7 @@ class CommentsController extends Controller
 		$fields = [
             'content'     => 'required|min:6'
         ];
-		if ($new_comment) $fields['ticket_id'] = 'required|exists:ticketit,id';
+		if ($new_comment) $fields['ticket_id'] = 'required|exists:panichd_tickets,id';
 		
 		if ($request->exists('attachments')){
 			$fields['attachments'] = 'array';

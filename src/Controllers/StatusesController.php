@@ -16,7 +16,7 @@ class StatusesController extends Controller
      */
     public function index()
     {
-        $statuses = \Cache::remember('ticketit::statuses', 60, function () {
+        $statuses = \Cache::remember('panichd::statuses', 60, function () {
             return Status::all();
         });
 
@@ -52,7 +52,7 @@ class StatusesController extends Controller
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-created', ['name' => $request->name]));
 
-        \Cache::forget('ticketit::statuses');
+        \Cache::forget('panichd::statuses');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
@@ -103,7 +103,7 @@ class StatusesController extends Controller
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-modified', ['name' => $request->name]));
 
-        \Cache::forget('ticketit::statuses');
+        \Cache::forget('panichd::statuses');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
@@ -123,7 +123,7 @@ class StatusesController extends Controller
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-deleted', ['name' => $name]));
 
-        \Cache::forget('ticketit::statuses');
+        \Cache::forget('panichd::statuses');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }

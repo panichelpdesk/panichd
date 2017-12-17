@@ -33,7 +33,7 @@ class Attachment extends Model
 {
     use Attachments;
 	
-	protected $table = 'ticketit_attachments';
+	protected $table = 'panichd_attachments';
 
 	/**
      * All of the relationships to be touched.

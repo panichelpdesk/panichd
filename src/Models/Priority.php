@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Priority extends Model
 {
-    protected $table = 'ticketit_priorities';
+    protected $table = 'panichd_priorities';
 
     protected $fillable = ['name', 'color'];
 
