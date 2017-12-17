@@ -40,9 +40,9 @@
                  </a>
              </div>
 
-            @if(trans("ticketit::settings." . $configuration->slug) != ("ticketit::settings." . $configuration->slug) && trans("ticketit::settings." . $configuration->slug))
+            @if(trans("panichd::settings." . $configuration->slug) != ("panichd::settings." . $configuration->slug) && trans("panichd::settings." . $configuration->slug))
                 <div class="panel panel-info">
-                    <div class="panel-body">{!! trans("ticketit::settings." . $configuration->slug) !!}</div>
+                    <div class="panel-body">{!! trans("panichd::settings." . $configuration->slug) !!}</div>
                 </div>
             @endif
 
@@ -91,7 +91,7 @@
                 {!! CollectiveForm::label('serialize', trans('panichd::admin.config-edit-should-serialize') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::checkbox('serialize', 1, $should_serialize, ['class' => 'form-control', 'onchange' =>  'changeSerialize(this)',]) !!}
-                    <span class="help-block" style="color: red;">@lang('ticketit::admin.config-edit-eval-warning') <code>eval('$value = serialize(' . $value . ');')</code></span>
+                    <span class="help-block" style="color: red;">@lang('panichd::admin.config-edit-eval-warning') <code>eval('$value = serialize(' . $value . ');')</code></span>
                 </div>
             </div>
 
