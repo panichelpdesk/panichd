@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-{{ trans('ticketit::admin.config-index-title') }}
+{{ trans('panichd::admin.config-index-title') }}
 @stop
 
 @include('panichd::shared.common')
@@ -10,9 +10,9 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3>{{ trans('ticketit::admin.notice-index-title') }}
+        <h3>{{ trans('panichd::admin.notice-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('ticketit::admin.btn-create-new-notice') }}</button>
+                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
             </div>
         </h3>
     </div>
@@ -20,25 +20,25 @@
 		@if (!session()->exists('status'))
 			<div class="alert alert-info alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('ticketit::admin.notice-index-help') !!}
+				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.notice-index-help') !!}
 			</div>
 			<div class="alert alert-warning alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-warning-sign" style="color: orange;"></span> {!! trans('ticketit::admin.notice-index-owner-alert') !!}
+				<span class="glyphicon glyphicon-warning-sign" style="color: orange;"></span> {!! trans('panichd::admin.notice-index-owner-alert') !!}
 			</div>
 		@endif
 
 	@if(!$a_users)
-        <div class="well text-center">{{ trans('ticketit::admin.notice-index-empty') }}</div>
+        <div class="well text-center">{{ trans('panichd::admin.notice-index-empty') }}</div>
     @else
 		<div id="message"></div>
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>                        
-                        <td>{{ trans('ticketit::admin.notice-index-owner') }}</td>
-                        <td>{{ trans('ticketit::admin.notice-index-email') }}</td>
-						<td>{{ trans('ticketit::admin.notice-index-department') }}</td>
-						<td>{{ trans('ticketit::admin.table-action') }}</td>
+                        <td>{{ trans('panichd::admin.notice-index-owner') }}</td>
+                        <td>{{ trans('panichd::admin.notice-index-email') }}</td>
+						<td>{{ trans('panichd::admin.notice-index-department') }}</td>
+						<td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,14 +54,14 @@
                             @if ($d_user->userDepartment)
 								<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
 							@else
-								<span>{{ trans('ticketit::lang.all-depts') }}</span>
+								<span>{{ trans('panichd::lang.all-depts') }}</span>
 							@endif
 							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('ticketit::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							{!! link_to_route(
-							$setting->grab('admin_route').'.notice.destroy', trans('ticketit::admin.btn-delete'), $d_user->id,
+							$setting->grab('admin_route').'.notice.destroy', trans('panichd::admin.btn-delete'), $d_user->id,
 							[
 							'class' => 'btn btn-danger deleteit',
 							'form' => "delete-$d_user->id",
@@ -99,7 +99,7 @@
 					$("#modalDepartmentUser input[name='_method']").first().val('PATCH');
 					
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.notice-modal-title-update') }}");
+					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-update') }}");
 					
 					// Selects
 					$("#modalDepartmentUser #user_select2 option[value='"+$(this).data('user_id')+"']").prop('selected', true);
@@ -116,7 +116,7 @@
 					$("#modalDepartmentUser input[name='_method']").first().val('POST');
 					
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('ticketit::admin.notice-modal-title-create') }}");
+					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-create') }}");
 					
 					// Selects
 					$("#modalDepartmentUser #modal_user_name").text('').hide();					
@@ -135,7 +135,7 @@
 			
 			$( ".deleteit" ).click(function( event ) {
 				event.preventDefault();
-				if (confirm("{{ trans('ticketit::admin.notice-index-js-delete') }} "))
+				if (confirm("{{ trans('panichd::admin.notice-index-js-delete') }} "))
 				{
 					var form = $(this).attr("form");
 					$("#" + form).submit();

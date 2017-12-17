@@ -1,4 +1,4 @@
-<div class="title calendar">{{ trans('ticketit::lang.filter-calendar') }}</div>
+<div class="title calendar">{{ trans('panichd::lang.filter-calendar') }}</div>
 <?php $text_cld = "";
 $calendar_name = "All";
 $cld_class = "";
@@ -31,7 +31,7 @@ $cld_options = [
 @foreach ($counts['calendar'] as $cld=>$count)			
 	<?php $text_cld.='<li><a href="'.url($setting->grab('main_route').'/filter/calendar/'.$cld).'">';
 	
-	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('ticketit::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
+	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('panichd::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
 	?>
 	@if ($cld==session('ticketit_filter_calendar'))
 		<?php $calendar_name = $this_cld;
@@ -40,11 +40,11 @@ $cld_options = [
 	<?php $text_cld.= $this_cld . '</a></li>';?>		
 @endforeach
 <div class="dropdown" style="display: inline-block;">
-<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('ticketit::lang.filter-calendar-all') : $calendar_name !!}
+<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('panichd::lang.filter-calendar-all') : $calendar_name !!}
 <span class="caret {{ $cld_class }}"></span></button>
 <ul class="dropdown-menu">
 @if ($calendar_name!="All")
-<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('ticketit::lang.filter-calendar-all') }}</a></li>
+<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('panichd::lang.filter-calendar-all') }}</a></li>
 @endif
 {!! $text_cld !!}</ul>
 </div>
@@ -52,7 +52,7 @@ $cld_options = [
 
 
 
-<div class="title category">{{ trans('ticketit::lang.filter-category') }}</div> 
+<div class="title category">{{ trans('panichd::lang.filter-category') }}</div> 
 @if (count($filters['category'])==1)
 	<?php $cat_color = $filters['category']{0}->color;?>
 	<span class="btn-category" style="color: {{ $cat_color }}">{{$filters['category']{0}->name}}</span>
@@ -69,22 +69,22 @@ $cld_options = [
 		<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span></a></li>';?>		
 	@endforeach
 	<div class="dropdown" style="display: inline-block;">
-	<button class="btn btn-default btn-category dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;">{!! $category_name=="All" ? trans('ticketit::lang.filter-category-all') : $category_name !!}
+	<button class="btn btn-default btn-category dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;">{!! $category_name=="All" ? trans('panichd::lang.filter-category-all') : $category_name !!}
 	<span class="caret" style="color: {{ $cat_color }}"></span></button>
 	<ul class="dropdown-menu">
 	@if ($category_name!="All")
-	<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/category/remove">{{ trans('ticketit::lang.filter-category-all') }}</a></li>
+	<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/category/remove">{{ trans('panichd::lang.filter-category-all') }}</a></li>
 	@endif
 	{!! $text_cat !!}</ul>
 	</div>
 @endif
 
-<div class="title agent">{{ trans('ticketit::lang.filter-agent') }}</div> 
+<div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
 @if (count($filters['agent'])>4)
 	
 	<div id="select_agent_container" class="{{ session('ticketit_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">
-		<option value="/filter/agent/remove">{{ trans('ticketit::lang.filter-agent-all') }}</option>
+		<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
 		@foreach ($filters['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"
 			@if ($ag->id==session('ticketit_filter_agent'))
@@ -99,9 +99,9 @@ $cld_options = [
 		<button class="btn btn-default btn-sm agent-current" style="color: {{ $cat_color }}">{{$filters['agent']{0}->name}}</button>
 	@else
 		@if (session('ticketit_filter_agent')!="")
-			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('ticketit::lang.filter-agent-all') }}</a>
+			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('panichd::lang.filter-agent-all') }}</a>
 		@elseif(count($filters['agent'])>1)
-			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">{{ trans('ticketit::lang.filter-agent-all') }}</button>		
+			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">{{ trans('panichd::lang.filter-agent-all') }}</button>		
 		@endif
 	
 		@foreach ($filters['agent'] as $ag)

@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::admin.config-edit-subtitle') }}
+    {{ trans('panichd::admin.config-edit-subtitle') }}
 @stop
 
 @include('panichd::shared.common')
@@ -9,17 +9,17 @@
 @section('content')
      <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>{{ trans('ticketit::admin.config-edit-title') }}
+        <h3>{{ trans('panichd::admin.config-edit-title') }}
           <div class="panel-nav pull-right" style="margin-top: -7px;">          
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.index',
-                  trans('ticketit::admin.btn-back'), null,
+                  trans('panichd::admin.btn-back'), null,
                   ['class' => 'btn btn-default'])
               !!}
               {{--
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.create',
-                  trans('ticketit::admin.btn-create-new-config'), null,
+                  trans('panichd::admin.btn-create-new-config'), null,
                   ['class' => 'btn btn-primary'])
               !!}
               --}}
@@ -30,13 +30,13 @@
         <div class="form-horizontal">
 {!! CollectiveForm::model($configuration, ['route' => [$setting->grab('admin_route').'.configuration.update', $configuration->id], 'method' => 'patch']) !!}
              <div class="well">
-                 <b>{{ trans('ticketit::admin.config-edit-tools') }}</b><br>
+                 <b>{{ trans('panichd::admin.config-edit-tools') }}</b><br>
                  <a href="https://www.functions-online.com/unserialize.html" target="_blank">
-                     {{ trans('ticketit::admin.config-edit-unserialize') }}
+                     {{ trans('panichd::admin.config-edit-unserialize') }}
                  </a>
                  <br>
                  <a href="https://www.functions-online.com/serialize.html" target="_blank">
-                     {{ trans('ticketit::admin.config-edit-serialize') }}
+                     {{ trans('panichd::admin.config-edit-serialize') }}
                  </a>
              </div>
 
@@ -48,7 +48,7 @@
 
               <!-- ID Field -->
               <div class="form-group">
-                  {!! CollectiveForm::label('id', trans('ticketit::admin.config-edit-id') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                  {!! CollectiveForm::label('id', trans('panichd::admin.config-edit-id') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                   <div class="col-sm-9">
                       {!! CollectiveForm::text('id', null, ['class' => 'form-control', 'disabled']) !!}
                   </div>
@@ -56,14 +56,14 @@
 
               <!-- Slug Field -->
               <div class="form-group">
-                  {!! CollectiveForm::label('slug', trans('ticketit::admin.config-edit-slug') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                  {!! CollectiveForm::label('slug', trans('panichd::admin.config-edit-slug') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                   <div class="col-sm-9">
                       {!! CollectiveForm::text('slug', null, ['class' => 'form-control', 'disabled']) !!}
                   </div>
               </div>
 
               <div class="form-group">
-                  {!! CollectiveForm::label('default', trans('ticketit::admin.config-edit-default') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                  {!! CollectiveForm::label('default', trans('panichd::admin.config-edit-default') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                   <div class="col-sm-9">
                       @if(!$default_serialized)
                           {!! CollectiveForm::text('default', null, ['class' => 'form-control', 'disabled']) !!}
@@ -76,7 +76,7 @@
 
               <!-- Value Field -->
               <div class="form-group">
-                  {!! CollectiveForm::label('value', trans('ticketit::admin.config-edit-value') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                  {!! CollectiveForm::label('value', trans('panichd::admin.config-edit-value') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                   <div class="col-sm-9">
                       @if(!$should_serialize)
                             {!! CollectiveForm::text('value', null, ['class' => 'form-control']) !!}
@@ -88,7 +88,7 @@
 
             <!-- Serialize Field -->
             <div class="form-group">
-                {!! CollectiveForm::label('serialize', trans('ticketit::admin.config-edit-should-serialize') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                {!! CollectiveForm::label('serialize', trans('panichd::admin.config-edit-should-serialize') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::checkbox('serialize', 1, $should_serialize, ['class' => 'form-control', 'onchange' =>  'changeSerialize(this)',]) !!}
                     <span class="help-block" style="color: red;">@lang('ticketit::admin.config-edit-eval-warning') <code>eval('$value = serialize(' . $value . ');')</code></span>
@@ -97,7 +97,7 @@
 
             <!-- Password Field -->
             <div id="serialize-password" class="form-group">
-                {!! CollectiveForm::label('password', trans('ticketit::admin.config-edit-reenter-password') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                {!! CollectiveForm::label('password', trans('panichd::admin.config-edit-reenter-password') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::password('password', ['class' => 'form-control']) !!}
                 </div>
@@ -105,7 +105,7 @@
 
               <!-- Lang Field -->
               <div class="form-group">
-                  {!! CollectiveForm::label('lang', trans('ticketit::admin.config-edit-language') . trans('ticketit::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+                  {!! CollectiveForm::label('lang', trans('panichd::admin.config-edit-language') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
                   <div class="col-sm-9">
                       {!! CollectiveForm::text('lang', null, ['class' => 'form-control']) !!}
                   </div>
@@ -114,7 +114,7 @@
               <!-- Submit Field -->
               <div class="form-group">
                   <div class="col-sm-10 col-sm-offset-2">
-                    {!! CollectiveForm::submit(trans('ticketit::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
+                    {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
                   </div>
               </div>
 

@@ -52,7 +52,7 @@ class NoticesController extends Controller
 		$user->ticketit_department = $request->input('department_id');
 		$user->save();
 				
-        \Session::flash('status', trans('ticketit::admin.notice-saved-ok'));
+        \Session::flash('status', trans('panichd::admin.notice-saved-ok'));
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\NoticesController@index');
     }
@@ -67,7 +67,7 @@ class NoticesController extends Controller
 		$user->ticketit_department = null;
 		$user->save();
 		
-		\Session::flash('status', trans('ticketit::admin.notice-deleted-ok'));
+		\Session::flash('status', trans('panichd::admin.notice-deleted-ok'));
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\NoticesController@index');
 	}

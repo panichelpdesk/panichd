@@ -1,5 +1,5 @@
 @extends($master)
-@section('page', trans('ticketit::admin.category-edit-title', ['name' => ucwords($category->name)]))
+@section('page', trans('panichd::admin.category-edit-title', ['name' => ucwords($category->name)]))
 
 @include('panichd::shared.common')
 @include('panichd::shared.colorpicker')
@@ -24,7 +24,7 @@
 			'method' => 'PATCH',
 			'class' => 'form-horizontal'
 			]) !!}
-        <legend>{{ trans('ticketit::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
+        <legend>{{ trans('panichd::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
         @include('panichd::admin.category.form', ['update', true])
 		@include('panichd::admin.category.modal-email')
         {!! CollectiveForm::close() !!}

@@ -40,11 +40,11 @@
 </style>
 </head>
 <body class="body" style="padding:0; margin:0; display:block; background:#fff; -webkit-text-size-adjust:none" bgcolor="#fff">
-<p>{{ trans('ticketit::email/globals.salutation') }}</p>
+<p>{{ trans('panichd::email/globals.salutation') }}</p>
 
 @include('panichd::emails.partial.html_field', ['html_field' => $ticket->html])
 
-<p>{{ trans('ticketit::email/globals.complimentary_close') }}</p>  
+<p>{{ trans('panichd::email/globals.complimentary_close') }}</p>  
 <p><b>{{ $email_from->email_name }}</b></p>
 <p>{{ $setting->grab('email.footer') }}</p>
 </body>

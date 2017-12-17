@@ -58,6 +58,6 @@ class UserAccessMiddleware
 		} 
 		
         return redirect()->action('\PanicHD\PanicHD\Controllers\TicketsController@index')
-            ->with('warning', trans('ticketit::lang.you-are-not-permitted-to-access'));
+            ->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
     }
 }

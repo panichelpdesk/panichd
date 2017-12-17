@@ -272,18 +272,18 @@ class Ticket extends Model
 		$date_text = date('H:i', strtotime($date));
 		
 		if ($date_diff == -1){
-			$date_text = trans('ticketit::lang.yesterday') . ", " . $date_text;
+			$date_text = trans('panichd::lang.yesterday') . ", " . $date_text;
 		}elseif ($date_diff === 0){
-			$date_text = trans('ticketit::lang.today') . ", " . $date_text;
+			$date_text = trans('panichd::lang.today') . ", " . $date_text;
 		}elseif ($date_diff == 1){
-			$date_text = trans('ticketit::lang.tomorrow') . ", " . $date_text;
+			$date_text = trans('panichd::lang.tomorrow') . ", " . $date_text;
 		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->endOfWeek(), false) > 0){
-			$date_text = trans('ticketit::lang.day_'.$parsed->dayOfWeek) . ", " . $date_text;
+			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . ", " . $date_text;
 		}else{
 			if ($descriptive){
 				$date_text = Carbon::parse($date)->diffForHumans();
 			}else{
-				$date_text = date(trans('ticketit::lang.date-format'), strtotime($date));
+				$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
 			}
 		}
 			
@@ -312,7 +312,7 @@ class Ticket extends Model
 		if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
 			// Expired
 			$date = $this->limit_date;
-			$title = trans('ticketit::lang.calendar-expired', ['description' => $this->getDateForHumans($date, true)]);
+			$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date, true)]);
 			$icon = "glyphicon-exclamation-sign";
 			$color = "text-danger";
 		}elseif($limit_days_diff > 0 or $limit_days_diff === false){
@@ -321,38 +321,38 @@ class Ticket extends Model
 				$date = $this->start_date;
 				if ($limit_days_diff){
 					if ($start_days_diff == $limit_days_diff){
-						$title = trans('ticketit::lang.calendar-scheduled', ['description' => $this->getDateForHumans($date).'-'.date('H:i', strtotime($this->limit_date))]);
+						$title = trans('panichd::lang.calendar-scheduled', ['description' => $this->getDateForHumans($date).'-'.date('H:i', strtotime($this->limit_date))]);
 						if ($this->start_date != $this->limit_date){
 							$date_text = $this->getDateForHumans($date)."-".date('H:i', strtotime($this->limit_date));
 						}
 					}else{
-						$title = trans('ticketit::lang.calendar-scheduled-period', [
+						$title = trans('panichd::lang.calendar-scheduled-period', [
 							'date1' => $this->getDateForHumans($date),
 							'date2' => $this->getDateForHumans($this->limit_date)]);
 					}
 					$icon = $start_days_diff == 1 ? "glyphicon-time" : "glyphicon-calendar";
 					$color = "text-info";
 				}else{
-					$title = trans('ticketit::lang.calendar-active-future', ['description' => $this->getDateForHumans($date, true)]);
+					$title = trans('panichd::lang.calendar-active-future', ['description' => $this->getDateForHumans($date, true)]);
 					$icon = "glyphicon-file";
 				}										
 				
 			}elseif($limit_days_diff){
 				// Active with limit
 				$date = $this->limit_date;
-				$title = trans('ticketit::lang.calendar-expiration', ['description' => $this->getDateForHumans($date, true)]);
+				$title = trans('panichd::lang.calendar-expiration', ['description' => $this->getDateForHumans($date, true)]);
 				$icon = "glyphicon-time";
 				$color = "text-info";
 			}else{
 				// Active without limit
 				$date = $this->start_date;
-				$title = trans('ticketit::lang.calendar-active', ['description' => $this->getDateForHumans($date, true)]);
+				$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date, true)]);
 				$icon = "glyphicon-file";					
 			}				
 		}else{
 			// Due today
 			$date = $this->limit_date;
-			$title = trans('ticketit::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($date))]);
+			$title = trans('panichd::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($date))]);
 			$icon = "glyphicon-warning-sign";
 			$color = "text-warning";
 		}
@@ -373,17 +373,17 @@ class Ticket extends Model
 		$days = $this->updated_at->diffInDays();
 		
 		if ($seconds < 60){
-			return $seconds." ".trans('ticketit::lang.second-abbr');
+			return $seconds." ".trans('panichd::lang.second-abbr');
 		}elseif($seconds < 3600){
-			return $this->updated_at->diffInMinutes()." ".trans('ticketit::lang.minute-abbr');
+			return $this->updated_at->diffInMinutes()." ".trans('panichd::lang.minute-abbr');
 		}elseif($days < 1){
-			return $this->updated_at->diffInHours()." ".trans('ticketit::lang.hour-abbr');
+			return $this->updated_at->diffInHours()." ".trans('panichd::lang.hour-abbr');
 		}elseif($days < 15){
-			return $days." ".trans('ticketit::lang.day-abbr');
+			return $days." ".trans('panichd::lang.day-abbr');
 		}elseif($days < 32){
-			return $this->updated_at->diffInWeeks()." ".trans('ticketit::lang.week-abbr');
+			return $this->updated_at->diffInWeeks()." ".trans('panichd::lang.week-abbr');
 		}else{
-			return $this->updated_at->diffInMonths()." ".trans('ticketit::lang.month-abbr');
+			return $this->updated_at->diffInMonths()." ".trans('panichd::lang.month-abbr');
 		}
 	}
 

@@ -66,7 +66,7 @@ class Department extends Model
 	public function resume ($long = false)
 	{
 		if ($this->department_id){
-			return ($long ? ucwords(mb_strtolower($this->department)) : $this->shortening).trans('ticketit::lang.colon').ucwords(mb_strtolower($this->sub1));
+			return ($long ? ucwords(mb_strtolower($this->department)) : $this->shortening).trans('panichd::lang.colon').ucwords(mb_strtolower($this->sub1));
 		}else{
 			return ucwords(mb_strtolower($this->department));
 		}
@@ -89,6 +89,6 @@ class Department extends Model
 	*/
 	public function title ()
 	{
-		return trans('ticketit::lang.department-shortening').trans('ticketit::lang.colon').$this->deptName();
+		return trans('panichd::lang.department-shortening').trans('panichd::lang.colon').$this->deptName();
 	}
 }

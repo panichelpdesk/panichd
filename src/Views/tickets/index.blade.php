@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::lang.index-title') }}
+    {{ trans('panichd::lang.index-title') }}
 @stop
 
 @include('panichd::shared.common')
@@ -10,7 +10,7 @@
 	@section('content')
 		<div class="panel panel-default">
 			<div class="panel-body">
-				{{ trans('ticketit::lang.no-tickets-yet') }}
+				{{ trans('panichd::lang.no-tickets-yet') }}
 			</div>
 		</div>
 	@stop
@@ -40,27 +40,27 @@
 				lengthMenu: {{ json_encode($setting->grab('length_menu')) }},
 				ajax: '{!! route($setting->grab('main_route').'.data', $ticketList) !!}',
 				language: {
-					decimal:        "{{ trans('ticketit::lang.table-decimal') }}",
-					emptyTable:     "{{ trans('ticketit::lang.table-empty') }}",
-					info:           "{{ trans('ticketit::lang.table-info') }}",
-					infoEmpty:      "{{ trans('ticketit::lang.table-info-empty') }}",
-					infoFiltered:   "{{ trans('ticketit::lang.table-info-filtered') }}",
-					infoPostFix:    "{{ trans('ticketit::lang.table-info-postfix') }}",
-					thousands:      "{{ trans('ticketit::lang.table-thousands') }}",
-					lengthMenu:     "{{ trans('ticketit::lang.table-length-menu') }}",
-					loadingRecords: "{{ trans('ticketit::lang.table-loading-results') }}",
-					processing:     "{{ trans('ticketit::lang.table-processing') }}",
-					search:         "{{ trans('ticketit::lang.table-search') }}",
-					zeroRecords:    "{{ trans('ticketit::lang.table-zero-records') }}",
+					decimal:        "{{ trans('panichd::lang.table-decimal') }}",
+					emptyTable:     "{{ trans('panichd::lang.table-empty') }}",
+					info:           "{{ trans('panichd::lang.table-info') }}",
+					infoEmpty:      "{{ trans('panichd::lang.table-info-empty') }}",
+					infoFiltered:   "{{ trans('panichd::lang.table-info-filtered') }}",
+					infoPostFix:    "{{ trans('panichd::lang.table-info-postfix') }}",
+					thousands:      "{{ trans('panichd::lang.table-thousands') }}",
+					lengthMenu:     "{{ trans('panichd::lang.table-length-menu') }}",
+					loadingRecords: "{{ trans('panichd::lang.table-loading-results') }}",
+					processing:     "{{ trans('panichd::lang.table-processing') }}",
+					search:         "{{ trans('panichd::lang.table-search') }}",
+					zeroRecords:    "{{ trans('panichd::lang.table-zero-records') }}",
 					paginate: {
-						first:      "{{ trans('ticketit::lang.table-paginate-first') }}",
-						last:       "{{ trans('ticketit::lang.table-paginate-last') }}",
-						next:       "{{ trans('ticketit::lang.table-paginate-next') }}",
-						previous:   "{{ trans('ticketit::lang.table-paginate-prev') }}"
+						first:      "{{ trans('panichd::lang.table-paginate-first') }}",
+						last:       "{{ trans('panichd::lang.table-paginate-last') }}",
+						next:       "{{ trans('panichd::lang.table-paginate-next') }}",
+						previous:   "{{ trans('panichd::lang.table-paginate-prev') }}"
 					},
 					aria: {
-						sortAscending:  "{{ trans('ticketit::lang.table-aria-sort-asc') }}",
-						sortDescending: "{{ trans('ticketit::lang.table-aria-sort-desc') }}"
+						sortAscending:  "{{ trans('panichd::lang.table-aria-sort-asc') }}",
+						sortDescending: "{{ trans('panichd::lang.table-aria-sort-desc') }}"
 					},
 				},
 				columns: [

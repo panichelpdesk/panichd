@@ -242,12 +242,12 @@
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>{{ trans('ticketit::email/globals.salutation') }}</p>
+                        <p>{{ trans('panichd::email/globals.salutation') }}</p>
                         @yield('content')
                         <p>
-                        	<a href="{{ route($setting->grab('main_route').'.show', $ticket->id) }}"  style="font-weight: bold; color: #fa4f10" title="{{ trans('ticketit::email/globals.view-ticket-title') }}" target="_blank">{{ trans('ticketit::email/globals.view-ticket-text') }}</a>
+                        	<a href="{{ route($setting->grab('main_route').'.show', $ticket->id) }}"  style="font-weight: bold; color: #fa4f10" title="{{ trans('panichd::email/globals.view-ticket-title') }}" target="_blank">{{ trans('panichd::email/globals.view-ticket-text') }}</a>
                         </p>						 						 
-                        <p>{{ trans('ticketit::email/globals.complimentary_close') }}</p>  
+                        <p>{{ trans('panichd::email/globals.complimentary_close') }}</p>  
 						<p><b>{{ $email_from->email_name }}</b></p>
                       </td>
                     </tr>

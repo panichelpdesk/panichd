@@ -161,7 +161,7 @@ class CommentsController extends Controller
 		DB::commit();
 		event(new CommentCreated($comment));
 		
-		session()->flash('status', trans('ticketit::lang.comment-has-been-added-ok'));
+		session()->flash('status', trans('panichd::lang.comment-has-been-added-ok'));
 		
 		return response()->json([
 			'result' => 'ok',
@@ -251,7 +251,7 @@ class CommentsController extends Controller
 		DB::commit();
 		event(new CommentUpdated($original_comment, $comment));
 		
-		session()->flash('status', trans('ticketit::lang.comment-has-been-updated'));
+		session()->flash('status', trans('panichd::lang.comment-has-been-updated'));
 		
 		return response()->json([
 			'result' => 'ok',
@@ -279,6 +279,6 @@ class CommentsController extends Controller
 		
         $comment->delete();
 
-        return back()->with('status', trans('ticketit::lang.comment-has-been-deleted'));
+        return back()->with('status', trans('panichd::lang.comment-has-been-deleted'));
     }
 }

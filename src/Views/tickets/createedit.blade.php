@@ -1,5 +1,5 @@
 @extends($master)
-@section('page', trans('ticketit::lang.create-ticket-title'))
+@section('page', trans('panichd::lang.create-ticket-title'))
 
 @include('panichd::shared.common')
 
@@ -29,27 +29,27 @@
 			]) !!}
 		@endif		
 		
-            <legend>{!! isset($ticket) ? trans('ticketit::lang.edit-ticket') . ' #'.$ticket->id : trans('ticketit::lang.create-new-ticket') !!}</legend>
+            <legend>{!! isset($ticket) ? trans('panichd::lang.edit-ticket') . ' #'.$ticket->id : trans('panichd::lang.create-new-ticket') !!}</legend>
             
 			@if ($u->currentLevel() > 1)
 				<div class="jquery_level2_class row" data-class="row"><div class="jquery_level2_class col-md-4" data-class="col-md-4"><!--</div></div>-->
 			@endif
 			
 			<div class="form-group"><!-- SUBJECT -->
-                {!! CollectiveForm::label('subject', '*' . trans('ticketit::lang.subject') . trans('ticketit::lang.colon'), [
+                {!! CollectiveForm::label('subject', '*' . trans('panichd::lang.subject') . trans('panichd::lang.colon'), [
 					'class' => ($u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3').' control-label level_class',
 					'data-level-1-class' => 'col-lg-2',
 					'data-level-2-class' => 'col-lg-3'
 				]) !!}
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-                    {!! CollectiveForm::text('subject', isset($ticket) ? $ticket->subject : null , ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('ticketit::lang.create-ticket-brief-issue')]) !!}
+                    {!! CollectiveForm::text('subject', isset($ticket) ? $ticket->subject : null , ['class' => 'form-control', 'required' => 'required', 'placeholder' => trans('panichd::lang.create-ticket-brief-issue')]) !!}
 					<div class="jquery_error_text"></div>
                 </div>
             </div>
 			
 			<div class="form-group"><!-- OWNER -->
                 
-				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('ticketit::lang.create-ticket-owner-help') }}"> *{{trans('ticketit::lang.owner')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
 
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
                     <select name="owner_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
@@ -57,9 +57,9 @@
 						<option value="{{ $owner->id }}" {{ $owner->id == $ticket_owner_id ? 'selected="selected"' : '' }}>{{ $owner->name . (strpos($owner->email, '@tordera.cat') === false ? '' : ' - ' . $owner->email) }}
 						@if ($setting->grab('departments_notices_feature'))
 							@if ($owner->ticketit_department == '0')
-								{{ ' - ' . trans('ticketit::lang.create-ticket-notices') . ' ' . trans('ticketit::lang.all-depts')}}
+								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
 							@elseif ($owner->ticketit_department != "")						
-								{{ ' - ' . trans('ticketit::lang.create-ticket-notices') . ' ' . $owner->userDepartment->resume() }}
+								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->resume() }}
 							@endif
 						@endif						
 						</option>
@@ -71,18 +71,18 @@
 			@if ($u->currentLevel() > 1)
 			<div class="jquery_level2_show">
 				<div class="form-group" style="margin-bottom: 3em"><!-- TICKET LIST -->
-					{!! CollectiveForm::label('status_id', trans('ticketit::lang.list') . trans('ticketit::lang.colon'), [
+					{!! CollectiveForm::label('status_id', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
 						'class' => 'col-lg-3 control-label'
 					]) !!}
 					<div class="col-lg-9">
-						<button type="button" id="complete_no" class="btn btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('ticketit::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="glyphicon glyphicon-file"></span> {{ trans('ticketit::lang.active-tickets-adjective') }}</button>
-						<button type="button" id="complete_yes" class="btn btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('ticketit::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="glyphicon glyphicon-ok-circle"></span> {{ trans('ticketit::lang.complete-tickets-adjective') }}</button>					
+						<button type="button" id="complete_no" class="btn btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="glyphicon glyphicon-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
+						<button type="button" id="complete_yes" class="btn btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="glyphicon glyphicon-ok-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>					
 					</div>
 					{!! CollectiveForm::hidden('complete', 'no',['id' => 'value_complete']) !!}
 				</div>			
 			
 				<div class="form-group"><!-- STATUS -->
-					{!! CollectiveForm::label('status_id', trans('ticketit::lang.status') . trans('ticketit::lang.colon'), [
+					{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), [
 						'class' => 'col-lg-3 control-label'
 					]) !!}
 					<div class="col-lg-9">
@@ -90,14 +90,14 @@
 					</div>
 				</div>
 				<div class="form-group"><!-- PRIORITY -->
-					{!! CollectiveForm::label('priority', trans('ticketit::lang.priority') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+					{!! CollectiveForm::label('priority', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
 						{!! CollectiveForm::select('priority_id', $priorities, null, ['class' => 'form-control', 'required' => 'required']) !!}
 					</div>
 				</div>
 				
 				<div class="form-group">
-					{!! CollectiveForm::label('start_date', trans('ticketit::lang.start-date') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+					{!! CollectiveForm::label('start_date', trans('panichd::lang.start-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
 						<div class="input-group date" id="start_date">
 							<input type="text" class="form-control" name="start_date" value="{{ $a_current['start_date'] }}"/>
@@ -108,7 +108,7 @@
 					</div>
 				</div>
 				<div class="form-group" style="margin-bottom: 3em">
-					{!! CollectiveForm::label('limit_date', trans('ticketit::lang.limit-date') . trans('ticketit::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
+					{!! CollectiveForm::label('limit_date', trans('panichd::lang.limit-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
 						<div class="input-group date" id="limit_date">
 							<input type="text" class="form-control" name="limit_date"  value="{{ $a_current['limit_date'] }}"/>
@@ -122,7 +122,7 @@
 			@endif
 			
 			<div class="form-group"><!-- CATEGORY -->
-				{!! CollectiveForm::label('category_id', '*' . trans('ticketit::lang.category') . trans('ticketit::lang.colon'), [
+				{!! CollectiveForm::label('category_id', '*' . trans('panichd::lang.category') . trans('panichd::lang.colon'), [
 					'class' => ($u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3').' control-label  level_class',
 					'data-level-1-class' => 'col-lg-2',
 					'data-level-2-class' => 'col-lg-3'
@@ -135,7 +135,7 @@
 			@if ($u->currentLevel() > 1)				
 			<div class="jquery_level2_show">
 				<div class="form-group"><!-- AGENT -->
-					{!! CollectiveForm::label('agent_id', trans('ticketit::lang.agent') . trans('ticketit::lang.colon'), [
+					{!! CollectiveForm::label('agent_id', trans('panichd::lang.agent') . trans('panichd::lang.colon'), [
 						'class' => 'col-lg-3 control-label'
 					]) !!}
 					<div class="col-lg-9">
@@ -149,7 +149,7 @@
 			
 				@if ($tag_lists->count() > 0)
 					<div class="form-group"><!-- TAGS -->
-						<label class="control-label col-lg-3">{{ trans('ticketit::lang.tags') . trans('ticketit::lang.colon') }}</label>
+						<label class="control-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
 						<div id="jquery_select2_container" class="col-lg-9">
 						@include('panichd::tickets.partials.tags_menu')				
 						</div>					
@@ -166,7 +166,7 @@
 			@endif
 			
             <div class="form-group"><!-- DESCRIPTION -->
-                <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('ticketit::lang.create-ticket-describe-issue') }}"> *{{trans('ticketit::lang.description')}}{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+                <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-describe-issue') }}"> *{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
                 <div class="col-lg-10 summernote-text-wrapper">
                 <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>
 				<div class="jquery_error_text"></div>
@@ -176,7 +176,7 @@
 			@if ($u->currentLevel() > 1)
 				<div class="jquery_level2_show">
 					<div class="form-group"><!-- INTERVENTION -->
-						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="Accions realitzades per a la resolució del tiquet">Actuació{{trans('ticketit::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
+						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="Accions realitzades per a la resolució del tiquet">Actuació{{trans('panichd::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
 						<div class="col-lg-10 summernote-text-wrapper">
 						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
 						</div>
@@ -187,7 +187,7 @@
 			@if ($setting->grab('ticket_attachments_feature'))
 				<div class="jquery_level2_show">
 					<div class="form-group">
-						{!! CollectiveForm::label('attachments', trans('ticketit::lang.attachments') . trans('ticketit::lang.colon'), [
+						{!! CollectiveForm::label('attachments', trans('panichd::lang.attachments') . trans('panichd::lang.colon'), [
 							'class' => 'col-lg-2 control-label'
 						]) !!}
 						<div class="col-lg-10">							
@@ -213,7 +213,7 @@
 			
             <div class="form-group"><!-- SUBMIT BUTTON -->
                 <div class="col-lg-10 col-lg-offset-2">
-                    {!! CollectiveForm::submit(trans('ticketit::lang.btn-submit'), [
+                    {!! CollectiveForm::submit(trans('panichd::lang.btn-submit'), [
 						'class' => 'btn btn-primary ajax_form_submit',
 						'data-errors_div' => 'form_errors'
 					]) !!}
@@ -243,7 +243,7 @@
 					w: {{ $sizes[0] }},
 					h: {{ $sizes[1] }},
 					pid: {{ $attachment->id }},
-					title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('ticketit::lang.colon').$attachment->description) }}'							
+					title: '{{ $attachment->new_filename  . ($attachment->description == "" ? '' : trans('panichd::lang.colon').$attachment->description) }}'							
 				},
 			@endif
 		@endforeach

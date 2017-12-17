@@ -3,8 +3,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
 		<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('ticketit::admin.btn-create-new-notice') }}</h4>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
+		<h4 class="modal-title">{{ trans('panichd::admin.btn-create-new-notice') }}</h4>
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
@@ -15,7 +15,7 @@
 			]) !!}
 	
 		<div class="form-group">
-			{!! CollectiveForm::label('user_id', trans('ticketit::lang.owner') . trans('ticketit::lang.colon'), [
+			{!! CollectiveForm::label('user_id', trans('panichd::lang.owner') . trans('panichd::lang.colon'), [
 				'class' => 'control-label col-lg-3',
 			]) !!}
 			
@@ -30,13 +30,13 @@
 		</div>
 		
 		<div class="form-group">
-			{!! CollectiveForm::label('department_id', trans('ticketit::lang.department') . trans('ticketit::lang.colon'), [
+			{!! CollectiveForm::label('department_id', trans('panichd::lang.department') . trans('panichd::lang.colon'), [
 				'class' => 'control-label col-lg-3',
 			]) !!}
 		
 			<div class="col-lg-9">
 				<select name="department_id" id="department_select2" class="form_select2 form-control" style="display: none; width: 100%">
-				<option value="0">{{ trans('ticketit::lang.all-depts') }}</option>
+				<option value="0">{{ trans('panichd::lang.all-depts') }}</option>
 				<?php $department = $a_depts[0]->deptName(); ?>
 				<optgroup label="{{ $department }}">				
 				@foreach ($a_depts as $dept)
@@ -54,7 +54,7 @@
 		 
 		</div>
 		<div class="modal-footer">
-		<button type="submit" class="btn btn-danger">{{ trans('ticketit::lang.btn-submit') }}</button>
+		<button type="submit" class="btn btn-danger">{{ trans('panichd::lang.btn-submit') }}</button>
 		</div>
 		{!! CollectiveForm::close() !!}
     </div>

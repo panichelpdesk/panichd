@@ -69,7 +69,7 @@ class CategoriesController extends Controller
 		
         $this->sync_category_tags($request, $category, $a_tags_new, $a_tags_update);
 
-        Session::flash('status', trans('ticketit::lang.category-name-has-been-created', ['name' => $request->name]));
+        Session::flash('status', trans('panichd::lang.category-name-has-been-created', ['name' => $request->name]));
 
         \Cache::forget('ticketit::categories');
 
@@ -159,7 +159,7 @@ class CategoriesController extends Controller
 		
         $this->sync_category_tags($request, $category, $a_tags_new, $a_tags_update);
 
-        Session::flash('status', trans('ticketit::lang.category-name-has-been-modified', ['name' => $request->name]));
+        Session::flash('status', trans('panichd::lang.category-name-has-been-modified', ['name' => $request->name]));
 
         \Cache::forget('ticketit::categories');
 
@@ -176,7 +176,7 @@ class CategoriesController extends Controller
     protected function add_reasons_to($request)
     {        
         $rules = $a_new = $a_update = $a_delete = [];
-		$regex_text = trans('ticketit::lang.regex-text-inline');
+		$regex_text = trans('panichd::lang.regex-text-inline');
 		
 		if ($request->exists('reason_ordering')){			
 			foreach ($request->input('reason_ordering') as $ordering=>$i){
@@ -421,7 +421,7 @@ class CategoriesController extends Controller
         // Delete orphan tags (Without any related categories or tickets)
         Tag::doesntHave('categories')->doesntHave('tickets')->delete();
 
-        Session::flash('status', trans('ticketit::lang.category-name-has-been-deleted', ['name' => $name]));
+        Session::flash('status', trans('panichd::lang.category-name-has-been-deleted', ['name' => $name]));
 
         \Cache::forget('ticketit::categories');
 

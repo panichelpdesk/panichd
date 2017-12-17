@@ -1,5 +1,5 @@
 @extends($master)
-@section('page', trans('ticketit::admin.priority-edit-title', ['name' => ucwords($priority->name)]))
+@section('page', trans('panichd::admin.priority-edit-title', ['name' => ucwords($priority->name)]))
 
 @include('panichd::shared.common')
 
@@ -10,7 +10,7 @@
                                     'method' => 'PATCH',
                                     'class' => 'form-horizontal'
                                     ]) !!}
-        <legend>{{ trans('ticketit::admin.priority-edit-title', ['name' => ucwords($priority->name)]) }}</legend>
+        <legend>{{ trans('panichd::admin.priority-edit-title', ['name' => ucwords($priority->name)]) }}</legend>
         @include('panichd::admin.priority.form', ['update', true])
         {!! CollectiveForm::close() !!}
     </div>

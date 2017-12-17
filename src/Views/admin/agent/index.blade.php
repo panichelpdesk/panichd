@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('ticketit::admin.agent-index-title') }}
+    {{ trans('panichd::admin.agent-index-title') }}
 @stop
 
 @include('panichd::shared.common')
@@ -11,22 +11,22 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2>{{ trans('ticketit::admin.agent-index-title') }}
-                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('ticketit::admin.agent-index-create-new') }}</button>
+            <h2>{{ trans('panichd::admin.agent-index-title') }}
+                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
             </h2>
         </div>
 
         @if ($agents->isEmpty())
-            <h3 class="text-center">{{ trans('ticketit::admin.agent-index-no-agents') }}</h3>
+            <h3 class="text-center">{{ trans('panichd::admin.agent-index-no-agents') }}</h3>
         @else
             <div id="message"></div>
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <td>{{ trans('ticketit::admin.table-id') }}</td>
-                        <td>{{ trans('ticketit::admin.table-name') }}</td>
-                        <td>{{ trans('ticketit::admin.table-categories') }}</td>
-                        <td>{{ trans('ticketit::admin.table-remove-agent') }}</td>
+                        <td>{{ trans('panichd::admin.table-id') }}</td>
+                        <td>{{ trans('panichd::admin.table-name') }}</td>
+                        <td>{{ trans('panichd::admin.table-categories') }}</td>
+                        <td>{{ trans('panichd::admin.table-remove-agent') }}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                         <td>
                             @foreach($agent->categories as $category)
                                 @if ($category->pivot->autoassign==1)
-									<span class="tooltip-info" style="display: inline-block; border: 1px solid {{ $category->color }}; border-width: 0px 0px 1px 0px; color: {{ $category->color }};  margin: 0em 0.5em; padding: 0.1em" title="{{ trans('ticketit::admin.table-categories-autoasg-title')}}">
+									<span class="tooltip-info" style="display: inline-block; border: 1px solid {{ $category->color }}; border-width: 0px 0px 1px 0px; color: {{ $category->color }};  margin: 0em 0.5em; padding: 0.1em" title="{{ trans('panichd::admin.table-categories-autoasg-title')}}">
 									{{  $category->name }}
 									 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
 									</span>
@@ -53,7 +53,7 @@
 								
                             @endforeach
 							
-							 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('ticketit::admin.btn-edit')}}</button>
+							 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('panichd::admin.btn-edit')}}</button>
 							
 							@include('panichd::admin.agent.form_edit')
                         </td>						
@@ -66,7 +66,7 @@
                                         ],
                             'id' => "delete-$agent->id"
                             ]) !!}
-                            {!! CollectiveForm::submit(trans('ticketit::admin.btn-remove'), ['class' => 'btn btn-default btn-sm']) !!}
+                            {!! CollectiveForm::submit(trans('panichd::admin.btn-remove'), ['class' => 'btn btn-default btn-sm']) !!}
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>

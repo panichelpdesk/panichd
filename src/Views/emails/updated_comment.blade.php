@@ -10,19 +10,19 @@
 
 @section('content')
 	@if($comment->owner->id == $notification_owner->id)
-		<p>{!! trans('ticketit::email/globals.updated_agent_note', ['user' => $notification_owner->name]) !!}</p>
+		<p>{!! trans('panichd::email/globals.updated_agent_note', ['user' => $notification_owner->name]) !!}</p>
 	@elseif($recipient->id == $comment->owner->id)
-		<p>{!! trans('ticketit::email/globals.updated_your_note', ['user' => $notification_owner->name]) !!}</p>
+		<p>{!! trans('panichd::email/globals.updated_your_note', ['user' => $notification_owner->name]) !!}</p>
 	@else
-		<p>{!! trans('ticketit::email/globals.updated_other_note', ['user' => $notification_owner->name, 'other' => $comment->owner->name]) !!}</p>
+		<p>{!! trans('panichd::email/globals.updated_other_note', ['user' => $notification_owner->name, 'other' => $comment->owner->name]) !!}</p>
 	@endif
 
 	@include('panichd::emails.partial.common_fields')
-	<b>{{ trans('ticketit::email/globals.original_note_title') }}</b>
+	<b>{{ trans('panichd::email/globals.original_note_title') }}</b>
 	<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
 		<td>@include('panichd::emails.partial.html_field', ['html_field' => $original_comment->html])</td>
 	</tr></table><br /><br />
-	<b>{{ trans('ticketit::email/globals.updated_note_title') }}</b>
+	<b>{{ trans('panichd::email/globals.updated_note_title') }}</b>
 	<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
 		<td>@include('panichd::emails.partial.html_field', ['html_field' => $comment->html])</td>
 	</tr></table><br /><br />

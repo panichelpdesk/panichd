@@ -3,8 +3,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
 		<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('ticketit::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('ticketit::lang.table-change-agent') }}</h4>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
+		<h4 class="modal-title">{{ trans('panichd::lang.table-change-agent') }}</h4>
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
@@ -25,7 +25,7 @@
 		 
 		</div>
 		<div class="modal-footer">
-		<button type="submit" class="btn btn-danger">{{ trans('ticketit::lang.btn-change') }}</button>
+		<button type="submit" class="btn btn-danger">{{ trans('panichd::lang.btn-change') }}</button>
 		</div>
 		{!! CollectiveForm::close() !!}
     </div>
