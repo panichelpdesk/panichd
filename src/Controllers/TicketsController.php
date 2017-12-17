@@ -671,10 +671,10 @@ class TicketsController extends Controller
 
 		// Custom validation messages
 		$custom_messages = [
-			'subject.required' => 'ticketit::lang.validate-ticket-subject.required',
-			'subject.min' => 'ticketit::lang.validate-ticket-subject.min',
-			'content.required' => 'ticketit::lang.validate-ticket-content.required',
-			'content.min' => 'ticketit::lang.validate-ticket-content.min',
+			'subject.required' => 'panichd::lang.validate-ticket-subject.required',
+			'subject.min' => 'panichd::lang.validate-ticket-subject.min',
+			'content.required' => 'panichd::lang.validate-ticket-content.required',
+			'content.min' => 'panichd::lang.validate-ticket-content.min',
 		];
 		foreach ($custom_messages as $field => $lang_key){
 			$trans = trans ($lang_key);
