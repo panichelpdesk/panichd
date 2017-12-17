@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use Cache;
 use Carbon\Carbon;
 use DB;
+use Validator;
 use Illuminate\Http\Request;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
 use InvalidArgumentException;
+use PanicHD\PanicHD\Events\TicketCreated;
+use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Attachment;
@@ -615,28 +618,34 @@ class TicketsController extends Controller
 		
 		return compact('a_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
-
-    /**
-     * Store a newly created ticket and auto assign an agent for it.
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {	
-	    $user = $this->agent->find(auth()->user()->id);
+	
+	/**
+	 * Previous tasks for ticket validation
+	*/
+	protected function validation_common($request, $new_ticket = true)
+	{
+		$user = $this->agent->find(auth()->user()->id);
 		$category_level = $user->levelInCategory($request->category_id);
 		$permission_level = ($user->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 		
 		$a_content = $this->purifyHtml($request->get('content'));
+		$common_data = [
+			'a_content' => $a_content,
+			'permission_level' => $permission_level,
+		];
+		
         $request->merge([
             'subject'=> trim($request->get('subject')),
             'content'=> $a_content['content'],
 			'content_html'=> $a_content['html']
         ]);
 
-		$allowed_categories = implode(",", $user->getNewTicketCategories()->keys()->toArray());
+		if ($new_ticket){
+			$allowed_categories = implode(",", $user->getNewTicketCategories()->keys()->toArray());
+		}else{
+			$allowed_categories = implode(",", $user->getEditTicketCategories()->keys()->toArray());
+		}
+		
 		
 		$fields = [
             'subject'     => 'required|min:3',
@@ -649,14 +658,14 @@ class TicketsController extends Controller
 			$fields['status_id'] = 'required|exists:ticketit_statuses,id';
 			$fields['priority_id'] = 'required|exists:ticketit_priorities,id';
 			
-			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
+			$a_intervention = $common_data['a_intervention'] = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
 				'intervention'=> $a_intervention['intervention'],
 				'intervention_html'=> $a_intervention['intervention_html'],
 			]);
 			
 			if ($request->exists('attachments')){
-				$fields = ['attachments' => 'array'];
+				$fields['attachments'] = 'array';
 			}
         }
 
@@ -674,10 +683,42 @@ class TicketsController extends Controller
 			}else{
 				$custom_messages[$field] = $trans;
 			}
-		}		
+		}
 		
 		// Form validation
-        $this->validate($request, $fields, $custom_messages);
+        $validator = Validator::make($request->all(), $fields, $custom_messages);
+		$a_result_errors = [];
+		
+		if ($validator->fails()) {
+			$a_result_errors['messages'] = (array)$validator->errors()->all();
+			
+			$a_fields = (array)$validator->errors()->messages();
+			
+			foreach ($a_fields as $field=>$errors){
+				$a_fields[$field] = implode('. ', $errors);
+			}
+			
+			$a_result_errors['fields'] = $a_fields;
+		}
+		
+		$common_data = array_merge($common_data, [
+			'request' => $request,
+			'a_result_errors' => $a_result_errors
+		]);
+		return $common_data;
+	}
+
+    /**
+     * Store a newly created ticket and auto assign an agent for it.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+		$common_data = $this->validation_common($request);
+		extract($common_data);
 		
 		DB::beginTransaction();
         $ticket = new Ticket();
@@ -728,15 +769,25 @@ class TicketsController extends Controller
         $ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->saveAttachments($request, $ticket);
-			if ($attach_error){
-				return redirect()->back()->with('warning', $attach_error);
-			}
+			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 		}
 		
-        
+		// If errors present
+		if ($a_result_errors){
+			return response()->json(array_merge(
+				['result' => 'error'],
+				$a_result_errors
+			));
+		}
+		
+		return response()->json([
+			'result' => 'error',
+			'messages' => ['No messages']
+		]);
+		
 		// End transaction
 		DB::commit();
+		event(new TicketCreated($ticket));
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -746,7 +797,10 @@ class TicketsController extends Controller
 			'title' => trans('ticketit::lang.ticket-status-link-title')
 		]));
 
-        return redirect()->action('\PanicHD\PanicHD\Controllers\TicketsController@index');
+        return response()->json([
+			'result' => 'ok',
+			'url' => action('\PanicHD\PanicHD\Controllers\TicketsController@index')
+		]);
     }
 
     public function downloadAttachment($attachment_id)
@@ -846,59 +900,13 @@ class TicketsController extends Controller
      */
     public function update(Request $request, $id)
     {
-		$user = $this->agent->find(auth()->user()->id);
+		$common_data = $this->validation_common($request, false);
+		extract($common_data);
 		
-		$a_content = $this->purifyHtml($request->get('content'));
-        $request->merge([
-            'subject'=> trim($request->get('subject')),
-            'content'=> $a_content['content'],
-        ]);
-		
-		$allowed_categories = implode(",", $user->getEditTicketCategories()->keys()->toArray());
-		
-		$fields = [
-            'subject'     => 'required|min:3',
-			'owner_id'    => 'exists:users,id',
-            'priority_id' => 'required|exists:ticketit_priorities,id',
-            'category_id' => 'required|in:'.$allowed_categories,
-            'status_id'   => 'required|exists:ticketit_statuses,id',
-            'agent_id'    => 'required',
-			'content'     => 'required|min:6',
-        ];
-		
-		if ($request->has('attachments')){
-			$fields = ['attachments' => 'array'];
-		}
-
-        if ($user->isAgent() or $user->isAdmin()) {			
-			$a_intervention = $this->purifyInterventionHtml($request->get('intervention'));
-			$request->merge([
-				'intervention'=> $a_intervention['intervention']
-			]);
-        }
-
-		// Custom validation messages
-		$custom_messages = [
-			'subject.required' => 'ticketit::lang.validate-ticket-subject.required',
-			'subject.min' => 'ticketit::lang.validate-ticket-subject.min',
-			'content.required' => 'ticketit::lang.validate-ticket-content.required',
-			'content.min' => 'ticketit::lang.validate-ticket-content.min',
-		];
-		foreach ($custom_messages as $field => $lang_key){
-			$trans = trans ($lang_key);
-			if ($lang_key == $trans){
-				unset($custom_messages[$field]);
-			}else{
-				$custom_messages[$field] = $trans;
-			}
-		}
-		
-        $this->validate($request, $fields, $custom_messages);
-
+		$original_ticket = Ticket::findOrFail($id); // Requires a specific object instance
+		$ticket = Ticket::findOrFail($id);
 
 		DB::beginTransaction();
-			
-        $ticket = $this->tickets->findOrFail($id);
 
         $ticket->subject = $request->subject;
 		$ticket->user_id = $request->owner_id;
@@ -942,30 +950,42 @@ class TicketsController extends Controller
 		$ticket->save();
 
 		if (Setting::grab('ticket_attachments_feature')){
-			$attachment_errors = false;
+			$attach_error = false;
 			
 			// 1 - destroy checked attachments
-			if ($request->has('delete_files')) $attachment_errors = $this->destroyAttachmentIds($request->delete_files);
+			if ($request->has('delete_files')) $attach_error = $this->destroyAttachmentIds($request->delete_files);
 			
 			// 2 - update existing attachment fields
-			if (!$attachment_errors) $attachment_errors = $this->updateAttachments($request, $ticket->attachments()->get());
+			if (!$attach_error) $attach_error = $this->updateAttachments($request, $ticket->attachments()->get());
 			
 			// 3 - add new attachments
-			if (!$attachment_errors) $attachment_errors = $this->saveAttachments($request, $ticket);
+			if (!$attach_error) $a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 			
-			if ($attachment_errors){
-				return redirect()->back()->with('warning', $attachment_errors);
+			if ($attach_error){
+				$a_result_errors['messages'][] = $attach_error;
 			}
-		}		
+		}	
         
+		// If errors present
+		if ($a_result_errors){
+			return response()->json(array_merge(
+				['result' => 'error'],
+				$a_result_errors
+			));
+		}
+		
 		// End transaction
-		DB::commit();		
+		DB::commit();
+		event(new TicketUpdated($original_ticket, $ticket));
 
         $this->sync_ticket_tags($request, $ticket);
 
         session()->flash('status', trans('ticketit::lang.the-ticket-has-been-modified', ['name' => '#'.$ticket->id.' "'.$ticket->subject.'"']));
 
-        return redirect()->route(Setting::grab('main_route').'.show', $id);
+        return response()->json([
+			'result' => 'ok',
+			'url' => route(Setting::grab('main_route').'.show', $id)
+		]);
     }
 
     /**
@@ -1209,7 +1229,8 @@ class TicketsController extends Controller
 	 * Change agent in ticket list
 	*/
 	public function changeAgent(Request $request){
-		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
 		$new_agent = Agent::findOrFail($request->input('agent_id'));
 		
@@ -1226,6 +1247,7 @@ class TicketsController extends Controller
 				$ticket->status_id=Setting::grab('default_reopen_status_id');
 			}
 			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
 			
 			session()->flash('status', trans('ticketit::lang.update-agent-ok', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,

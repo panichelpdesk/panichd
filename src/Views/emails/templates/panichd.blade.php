@@ -47,16 +47,16 @@
         display: block;
         Margin: 0 auto !important;
         /* makes it centered */
-        max-width: 580px;
+        max-width: 700px;
         padding: 10px;
-        width: 580px; }
+        width: 700px; }
 
       /* This should also be a block element, so that it will fill 100% of the .container */
       .content {
         box-sizing: border-box;
         display: block;
         Margin: 0 auto;
-        max-width: 580px;
+        max-width: 700px;
         padding: 10px; }
 
       /* -------------------------------------

@@ -112,6 +112,7 @@
 			
 			// When opening a comment modal, 
 			$('.comment-modal').on('show.bs.modal', function (e) {
+				$('.comment-modal .alert-danger').hide();
                 $(this).find('.fieldset-for-comment').show();
 				$(this).find('.fieldset-for-attachment').hide();
 			});

@@ -38,7 +38,7 @@ class NotificationsController extends Controller
         $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'newTicket');
     }
 
-    public function ticketStatusUpdated(Ticket $ticket, Ticket $original_ticket)
+    public function ticketStatusUpdated(Ticket $original_ticket, Ticket $ticket)
     {
         $notification_owner = auth()->user();
         $template = 'ticketit::emails.updated_ticket';
@@ -61,7 +61,7 @@ class NotificationsController extends Controller
         $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, $notification_type);
     }
 
-    public function ticketAgentUpdated(Ticket $ticket, Ticket $original_ticket)
+    public function ticketAgentUpdated(Ticket $original_ticket, Ticket $ticket)
     {
         $notification_owner = auth()->user();
         $template = 'ticketit::emails.updated_ticket';
@@ -96,7 +96,7 @@ class NotificationsController extends Controller
 		}        
     }
 	
-	public function commentUpdate(Comment $comment, Comment $original_comment)
+	public function commentUpdate(Comment $original_comment, Comment $comment)
     {
         if ($comment->type == 'note'){
 			$ticket = $comment->ticket;
