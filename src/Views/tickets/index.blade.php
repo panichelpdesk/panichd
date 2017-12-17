@@ -4,7 +4,7 @@
     {{ trans('ticketit::lang.index-title') }}
 @stop
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @if (PanicHD\PanicHD\Models\Ticket::count() == 0)
 	@section('content')
@@ -16,15 +16,15 @@
 	@stop
 @else
 	@section('content')
-		@include('ticketit::tickets.partials.filter_panel')
+		@include('panichd::tickets.partials.filter_panel')
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div id="message"></div>
-				@include('ticketit::tickets.partials.datatable')
+				@include('panichd::tickets.partials.datatable')
 			</div>
 		</div>
-		@include('ticketit::tickets.partials.modal_agent')
-		@include('ticketit::tickets.partials.priority_popover_form')
+		@include('panichd::tickets.partials.modal_agent')
+		@include('panichd::tickets.partials.priority_popover_form')
 	@stop
 
 	@section('footer')

@@ -24,7 +24,7 @@ class CategoriesController extends Controller
             return Category::with('closingReasons')->with('tags')->get();
         });
 
-        return view('ticketit::admin.category.index', compact('categories'));
+        return view('panichd::admin.category.index', compact('categories'));
     }
 
     /**
@@ -36,7 +36,7 @@ class CategoriesController extends Controller
     {
         $status_lists = $this->Statuses();
 		
-		return view('ticketit::admin.category.create', compact('status_lists'));
+		return view('panichd::admin.category.create', compact('status_lists'));
     }
 
     /**
@@ -105,7 +105,7 @@ class CategoriesController extends Controller
 		
 		$status_lists = $this->Statuses();
 
-        return view('ticketit::admin.category.edit', compact('category', 'status_lists'));
+        return view('panichd::admin.category.edit', compact('category', 'status_lists'));
     }
 	
 	 /**

@@ -20,7 +20,7 @@ class PrioritiesController extends Controller
             return Priority::all();
         });
 
-        return view('ticketit::admin.priority.index', compact('priorities'));
+        return view('panichd::admin.priority.index', compact('priorities'));
     }
 
     /**
@@ -30,7 +30,7 @@ class PrioritiesController extends Controller
      */
     public function create()
     {
-        return view('ticketit::admin.priority.create');
+        return view('panichd::admin.priority.create');
     }
 
     /**
@@ -80,7 +80,7 @@ class PrioritiesController extends Controller
     {
         $priority = Priority::findOrFail($id);
 
-        return view('ticketit::admin.priority.edit', compact('priority'));
+        return view('panichd::admin.priority.edit', compact('priority'));
     }
 
     /**

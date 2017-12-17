@@ -1,7 +1,7 @@
 @extends($master)
 @section('page', trans('ticketit::admin.status-edit-title', ['name' => ucwords($status->name)]))
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
     <div class="well bs-component">
@@ -11,7 +11,7 @@
                                     'class' => 'form-horizontal'
                                     ]) !!}
         <legend>{{ trans('ticketit::admin.status-edit-title', ['name' => ucwords($status->name)]) }}</legend>
-        @include('ticketit::admin.status.form', ['update', true])
+        @include('panichd::admin.status.form', ['update', true])
         {!! CollectiveForm::close() !!}
     </div>
 @stop

@@ -4,7 +4,7 @@
     {{ trans('ticketit::admin.priority-index-title') }}
 @stop
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
     <div class="panel panel-default">

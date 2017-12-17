@@ -332,7 +332,7 @@ class TicketsController extends Controller
 		];
 		$data = array_merge ($data, $this->ticketCounts($request, $ticketList));
 		
-		return view('ticketit::tickets.index', $data);
+		return view('panichd::tickets.index', $data);
 	}
 
     /**
@@ -484,7 +484,7 @@ class TicketsController extends Controller
 
 		$data['categories'] = $this->agent->findOrFail(auth()->user()->id)->getNewTicketCategories();
 
-        return view('ticketit::tickets.createedit', $data);
+        return view('panichd::tickets.createedit', $data);
     }
 	
 	public function edit($id){
@@ -498,7 +498,7 @@ class TicketsController extends Controller
 		
 		$data['categories'] = $this->agent->findOrFail(auth()->user()->id)->getEditTicketCategories();
 		
-        return view('ticketit::tickets.createedit', $data);
+        return view('panichd::tickets.createedit', $data);
 	}
 	
 	public function create_edit_data($ticket = false)
@@ -885,7 +885,7 @@ class TicketsController extends Controller
 		}
         $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
-        return view('ticketit::tickets.show',
+        return view('panichd::tickets.show',
             compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }

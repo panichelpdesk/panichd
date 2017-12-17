@@ -42,7 +42,7 @@ class PanicHDServiceProvider extends ServiceProvider
             //cache $u
             $u = null;
 
-            view()->composer('ticketit::*', function ($view) use (&$u) {
+            view()->composer('panichd::*', function ($view) use (&$u) {
                 if (auth()->check()) {
                     if ($u === null) {
                         $u = Agent::find(auth()->user()->id);
@@ -61,7 +61,7 @@ class PanicHDServiceProvider extends ServiceProvider
             });
 
             // Passing to views the master view value from the setting file
-            view()->composer('ticketit::*', function ($view) {
+            view()->composer('panichd::*', function ($view) {
                 $tools = new ToolsController();
                 $master = Setting::grab('master_template');
                 $email = Setting::grab('email.template');
@@ -72,12 +72,12 @@ class PanicHDServiceProvider extends ServiceProvider
             });
 
             //inlude font awesome css or not
-            view()->composer('ticketit::shared.assets', function ($view) {
+            view()->composer('panichd::shared.assets', function ($view) {
                 $include_font_awesome = Setting::grab('include_font_awesome');
                 $view->with(compact('include_font_awesome'));
             });
 
-            view()->composer('ticketit::tickets.partials.summernote', function ($view) {
+            view()->composer('panichd::tickets.partials.summernote', function ($view) {
                 $editor_locale = Setting::grab('summernote_locale');
 
                 if ($editor_locale == 'laravel') {
@@ -208,9 +208,9 @@ class PanicHDServiceProvider extends ServiceProvider
 
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
 
-            $this->loadViewsFrom(__DIR__.'/Views', 'ticketit');
+            $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
 
-            $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/ticketit')], 'panichd-views');
+            $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/panichd')], 'panichd-views');
             $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/ticketit')], 'panichd-lang');
             $this->publishes([__DIR__.'/Public' => public_path('vendor/panichd')], 'panichd-public');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
@@ -234,7 +234,7 @@ class PanicHDServiceProvider extends ServiceProvider
                 || Request::path() == 'tickets-admin'
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
-            $this->loadViewsFrom(__DIR__.'/Views', 'ticketit');
+            $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
             $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();

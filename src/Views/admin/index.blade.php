@@ -4,7 +4,7 @@
     {{ trans('ticketit::admin.index-title') }}
 @stop
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
     @if($tickets_count)
@@ -239,7 +239,7 @@
 @stop
 @section('footer')
     @if($tickets_count)
-    {{--@include('ticketit::shared.footer')--}}
+    {{--@include('panichd::shared.footer')--}}
     <script type="text/javascript"
             src="https://www.google.com/jsapi?autoload={
             'modules':[{

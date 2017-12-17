@@ -199,5 +199,5 @@ $(function(){
 	});
 });
 </script>
-@include('ticketit::shared.grouped_check_list')
+@include('panichd::shared.grouped_check_list')
 @append

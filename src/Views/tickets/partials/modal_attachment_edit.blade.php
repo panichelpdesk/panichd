@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
 				<fieldset class="form-horizontal">					
-					@include('ticketit::tickets.partials.attachment_form_fields')
+					@include('panichd::tickets.partials.attachment_form_fields')
 					
 					{!! CollectiveForm::hidden(null, 'modal-attachment-edit', ['id'=>'hide_modal_id']) !!}
 					

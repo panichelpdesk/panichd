@@ -20,5 +20,5 @@
 	<li><b>{{ trans('ticketit::lang.category') . trans('ticketit::lang.colon') }}</b><span style="color: {{ $ticket->category->color }};">{{ $ticket->category->name }}</span></li>
 	<li><b>{{ trans('ticketit::lang.subject') . trans('ticketit::lang.colon') }}</b>{{ $ticket->subject }}</li>
 	</ul>
-	@include('ticketit::emails.partial.both_html_fields')
+	@include('panichd::emails.partial.both_html_fields')
 @stop

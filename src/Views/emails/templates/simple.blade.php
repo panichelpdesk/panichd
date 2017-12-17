@@ -42,7 +42,7 @@
 <body class="body" style="padding:0; margin:0; display:block; background:#fff; -webkit-text-size-adjust:none" bgcolor="#fff">
 <p>{{ trans('ticketit::email/globals.salutation') }}</p>
 
-@include ('ticketit::emails.partial.html_field', ['html_field' => $ticket->html])
+@include('panichd::emails.partial.html_field', ['html_field' => $ticket->html])
 
 <p>{{ trans('ticketit::email/globals.complimentary_close') }}</p>  
 <p><b>{{ $email_from->email_name }}</b></p>

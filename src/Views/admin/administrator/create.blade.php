@@ -1,7 +1,7 @@
 @extends($master)
 @section('page', trans('ticketit::admin.administrator-create-title'))
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')    
     <div class="panel panel-default">

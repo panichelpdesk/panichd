@@ -17,8 +17,8 @@
 	@endif
 	
 	@if ($recipient->levelInCategory($ticket->category->id) > 1)
-		@include('ticketit::emails.partial.common_fields')
-		@include('ticketit::emails.partial.both_html_fields')
+		@include('panichd::emails.partial.common_fields')
+		@include('panichd::emails.partial.both_html_fields')
 	@elseif ( $original_ticket->isComplete() != $ticket->isComplete() || $original_ticket->status->id != $ticket->status->id)
 		@if (is_object($original_ticket) && is_object($original_ticket->owner) && is_object($ticket) && is_object($ticket->owner))
 			<ul><li>

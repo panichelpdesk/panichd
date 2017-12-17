@@ -27,7 +27,7 @@ class NoticesController extends Controller
 		// All departments
 		$a_depts = Models\Department::orderBy('department')->orderBy('sub1')->get();
 		
-		return view('ticketit::admin.notice.index', compact('a_users', 'a_depts'));
+		return view('panichd::admin.notice.index', compact('a_users', 'a_depts'));
 	}
 	
 	/**

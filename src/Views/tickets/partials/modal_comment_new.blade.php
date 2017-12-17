@@ -43,7 +43,7 @@
 							]) !!}
 							<div class="col-lg-10">
 								<ul class="list-group">							
-									@include('ticketit::shared.attach_files_button', ['attach_id' => 'comment_attached'])			
+									@include('panichd::shared.attach_files_button', ['attach_id' => 'comment_attached'])			
 									<div id="comment_attached" class="panel-group grouped_check_list deletion_list attached_list"  data-new-attachment-edit-div="new_comment_modal_attachment" data-new-attachment-back-div="new_comment_modal_comment">
 									
 									</div>								
@@ -76,7 +76,7 @@
 				
 				<!-- Div edit attachment -->
 				<fieldset id="new_comment_modal_attachment"  class="fieldset-for-attachment form-horizontal" style="display: none">		
-					@include('ticketit::tickets.partials.attachment_form_fields')
+					@include('panichd::tickets.partials.attachment_form_fields')
 					<button class="btn btn-default div-discard-attachment-update" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('ticketit::lang.discard') }}</button>
 					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('ticketit::lang.update') }}</button>
 				</fieldset>

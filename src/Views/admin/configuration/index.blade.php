@@ -4,7 +4,7 @@
 {{ trans('ticketit::admin.config-index-title') }}
 @stop
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
         <!-- configuration -->
@@ -39,26 +39,26 @@
     <br />
         <div class="tab-content">
             <div id="init-configs" class="tab-pane fade in active">
-                @include('ticketit::admin.configuration.tables.init_table')
+                @include('panichd::admin.configuration.tables.init_table')
             </div>
             <div id="ticket-configs" class="tab-pane fade">
-                @include('ticketit::admin.configuration.tables.ticket_table')
+                @include('panichd::admin.configuration.tables.ticket_table')
             </div>
             <div id="email-configs" class="tab-pane fade">
-                @include('ticketit::admin.configuration.tables.email_table')
+                @include('panichd::admin.configuration.tables.email_table')
             </div>
             <div id="perms-configs" class="tab-pane fade">
-                @include('ticketit::admin.configuration.tables.perms_table')
+                @include('panichd::admin.configuration.tables.perms_table')
             </div>
             <div id="editor-configs" class="tab-pane fade">
-                @include('ticketit::admin.configuration.tables.editor_table')
+                @include('panichd::admin.configuration.tables.editor_table')
             </div>
             <div id="other-configs" class="tab-pane fade">
-                @include('ticketit::admin.configuration.tables.other_table')
+                @include('panichd::admin.configuration.tables.other_table')
             </div>
         </div>
     @endif
-    {{--@include('ticketit::admin.configuration.common.paginate', ['records' => $configurations])--}}
+    {{--@include('panichd::admin.configuration.common.paginate', ['records' => $configurations])--}}
 </div>
 <!-- // Configuration -->
 

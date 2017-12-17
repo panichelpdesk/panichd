@@ -145,7 +145,7 @@
 								<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 														
 								@foreach($ticket->attachments()->images()->get() as $attachment)							
-									@include('ticketit::tickets.partials.attachment_image')
+									@include('panichd::tickets.partials.attachment_image')
 								@endforeach
 								</div>
 							</div>
@@ -161,7 +161,7 @@
 														
 								@foreach($ticket->attachments()->notImages()->get() as $attachment)									
 									<div class="{{ $images_count > 0 ? 'col-xs-12' : 'col-lg-3 col-md-4 col-sm-6' }}" style="margin-bottom: {{ $images_count > 0 ? '10px' : '15px' }}">
-										@include('ticketit::tickets.partials.attachment', ['template'=>'view'])
+										@include('panichd::tickets.partials.attachment', ['template'=>'view'])
 									</div>
 								@endforeach
 								</div>
@@ -201,6 +201,6 @@
 
 {{-- // OR; Modal Window: 2/2 --}}
     @if($u->isAdmin())
-        @include('ticketit::tickets.partials.modal-delete-confirm')
+        @include('panichd::tickets.partials.modal-delete-confirm')
     @endif
 {{-- // END Modal Window: 2/2 --}}

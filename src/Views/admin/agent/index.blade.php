@@ -4,9 +4,9 @@
     {{ trans('ticketit::admin.agent-index-title') }}
 @stop
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
-@include ('ticketit::admin.agent.form_new')
+@include('panichd::admin.agent.form_new')
 
 @section('content')
     <div class="panel panel-default">
@@ -55,7 +55,7 @@
 							
 							 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('ticketit::admin.btn-edit')}}</button>
 							
-							@include ('ticketit::admin.agent.form_edit')
+							@include('panichd::admin.agent.form_edit')
                         </td>						
                         <td>
                             {!! CollectiveForm::open([

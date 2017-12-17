@@ -93,9 +93,9 @@ class SettingsTableSeeder extends Seeder
             'admin_route_path' => 'tickets-admin',
             /*
              * Template adherence: The master blade template to be extended
-             * Default: resources/views/master.blade.php
+             * Default: panichd::master
              */
-            'master_template' => 'ticketit::master',
+            'master_template' => 'panichd::master',
             /*
 			 * Tickets email account: The email address for all package notifications.
 			 * Overrides Laravel email and name but uses it's connection parameters
@@ -106,10 +106,10 @@ class SettingsTableSeeder extends Seeder
 			
 			/*
              * Template adherence: The email blade template to be extended
-             * Default: ticketit::emails.templates.ticketit
+             * Default: panichd::emails.templates.ticketit
              */
-            'email.template' => 'ticketit::emails.templates.ticketit',
-			'email.owner.newticket.template' => 'ticketit::emails.templates.simple',
+            'email.template' => 'panichd::emails.templates.ticketit',
+			'email.owner.newticket.template' => 'panichd::emails.templates.simple',
             // resources/views/emails/templates/ticketit.blade.php
             'email.header'           => 'Ticket Update',
             'email.signoff'          => 'Thank you for your patience!',
