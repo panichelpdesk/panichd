@@ -210,10 +210,10 @@ class PanicHDServiceProvider extends ServiceProvider
 
             $this->loadViewsFrom(__DIR__.'/Views', 'ticketit');
 
-            $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/ticketit')], 'views');
-            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/ticketit')], 'lang');
+            $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/ticketit')], 'panichd-views');
+            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/ticketit')], 'panichd-lang');
             $this->publishes([__DIR__.'/Public' => public_path('vendor/panichd')], 'panichd-public');
-            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
+            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 
             // Check public assets are present, publish them if not
 //            $installer->publicAssets();
@@ -235,7 +235,7 @@ class PanicHDServiceProvider extends ServiceProvider
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'ticketit');
             $this->loadViewsFrom(__DIR__.'/Views', 'ticketit');
-            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'db');
+            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();
 
