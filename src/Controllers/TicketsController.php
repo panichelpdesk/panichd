@@ -55,70 +55,70 @@ class TicketsController extends Controller
         $collection = Ticket::inList($ticketList)->visible()->filtered();
 
         $collection
-            ->join('users', 'users.id', '=', 'ticketit.user_id')
-			->join('ticketit_statuses', 'ticketit_statuses.id', '=', 'ticketit.status_id')
-            ->join('users as agent', 'agent.id', '=', 'ticketit.agent_id')
-			->join('ticketit_priorities', 'ticketit_priorities.id', '=', 'ticketit.priority_id')
-            ->join('ticketit_categories', 'ticketit_categories.id', '=', 'ticketit.category_id')			
+            ->join('users', 'users.id', '=', 'panichd_tickets.user_id')
+			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
+            ->join('users as agent', 'agent.id', '=', 'panichd_tickets.agent_id')
+			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
+            ->join('panichd_categories', 'panichd_categories.id', '=', 'panichd_tickets.category_id')			
 			
             
 			// Tags joins
-			->leftJoin('ticketit_taggables', function ($join) {
-                $join->on('ticketit.id', '=', 'ticketit_taggables.taggable_id')
-                    ->where('ticketit_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
+			->leftJoin('panichd_taggables', function ($join) {
+                $join->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
+                    ->where('panichd_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
-            ->leftJoin('ticketit_tags', 'ticketit_taggables.tag_id', '=', 'ticketit_tags.id');
+            ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
 		
 		if (config('database.default')=='sqlite'){
-			$select_dates = 'ticketit.limit_date || \'9999\' || ticketit.start_date as calendar_order';
+			$select_dates = 'panichd_tickets.limit_date || \'9999\' || panichd_tickets.start_date as calendar_order';
 		}else{
-			$select_dates = \DB::raw('concat(ticketit.limit_date, \'9999\', ticketit.start_date) as calendar_order');
+			$select_dates = \DB::raw('concat(panichd_tickets.limit_date, \'9999\', panichd_tickets.start_date) as calendar_order');
 		}
 		
 		$a_select = [
-			'ticketit.id',
-			'ticketit.subject AS subject',
-			'ticketit.content AS content',
-			'ticketit.intervention AS intervention',
-			'ticketit_statuses.name AS status',
-			'ticketit_statuses.color AS color_status',
-			'ticketit_priorities.color AS color_priority',
-			'ticketit_categories.color AS color_category',			
-			'ticketit.start_date',
-			'ticketit.limit_date',
+			'panichd_tickets.id',
+			'panichd_tickets.subject AS subject',
+			'panichd_tickets.content AS content',
+			'panichd_tickets.intervention AS intervention',
+			'panichd_statuses.name AS status',
+			'panichd_statuses.color AS color_status',
+			'panichd_priorities.color AS color_priority',
+			'panichd_categories.color AS color_category',			
+			'panichd_tickets.start_date',
+			'panichd_tickets.limit_date',
 			$select_dates,
-			'ticketit.updated_at AS updated_at',
-			'ticketit.agent_id',
+			'panichd_tickets.updated_at AS updated_at',
+			'panichd_tickets.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
-			'ticketit_priorities.name AS priority',
+			'panichd_priorities.name AS priority',
 			'users.name AS owner_name',
-			'ticketit.user_id',
-			'ticketit.creator_id',		
-			'ticketit_categories.name AS category',			
+			'panichd_tickets.user_id',
+			'panichd_tickets.creator_id',		
+			'panichd_categories.name AS category',			
 			
 			// Tag Columns
-			\DB::raw('group_concat(ticketit_tags.id) AS tags_id'),
-			\DB::raw('group_concat(ticketit_tags.name) AS tags'),
-			\DB::raw('group_concat(ticketit_tags.bg_color) AS tags_bg_color'),
-			\DB::raw('group_concat(ticketit_tags.text_color) AS tags_text_color'),
+			\DB::raw('group_concat(panichd_tags.id) AS tags_id'),
+			\DB::raw('group_concat(panichd_tags.name) AS tags'),
+			\DB::raw('group_concat(panichd_tags.bg_color) AS tags_bg_color'),
+			\DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
 		];
 		
 		if (Setting::grab('departments_feature')){			
 			// Department joins
 			$collection				
-				->leftJoin('ticketit_departments_persons', function ($join1) {
-					$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
+				->leftJoin('panichd_departments_persons', function ($join1) {
+					$join1->on('users.person_id','=','panichd_departments_persons.person_id');
 				})	
-				->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id');
+				->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id');
 			
 			// Department columns				
-			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.department)) AS dept_info');
-			$a_select[] = \DB::raw('group_concat(distinct(ticketit_departments.sub1)) AS dept_sub1');
-			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(ticketit_departments.department)), group_concat(distinct(ticketit_departments.sub1))) as dept_full');
+			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.department)) AS dept_info');
+			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.sub1)) AS dept_sub1');
+			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(panichd_departments.department)), group_concat(distinct(panichd_departments.sub1))) as dept_full');
 		}
 		
 		$collection
-            ->groupBy('ticketit.id')
+            ->groupBy('panichd_tickets.id')
             ->select($a_select)
 			->with('creator')
 			->with('owner.personDepts.department')
@@ -451,12 +451,12 @@ class TicketsController extends Controller
 		
 		switch ($list){
 			case 'priorities':
-				$instance = Cache::remember('ticketit::priorities', 60, function () {
+				$instance = Cache::remember('panichd::priorities', 60, function () {
 					return Models\Priority::all();
 				});
 				break;
 			case 'statuses':
-				$instance = Cache::remember('ticketit::statuses', 60, function () {
+				$instance = Cache::remember('panichd::statuses', 60, function () {
 					return Models\Status::all();
 				});
 				break;
@@ -655,8 +655,8 @@ class TicketsController extends Controller
         ];
 		
 		if ($permission_level > 1) {
-			$fields['status_id'] = 'required|exists:ticketit_statuses,id';
-			$fields['priority_id'] = 'required|exists:ticketit_priorities,id';
+			$fields['status_id'] = 'required|exists:panichd_statuses,id';
+			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
 			$a_intervention = $common_data['a_intervention'] = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
@@ -839,12 +839,12 @@ class TicketsController extends Controller
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
 			// Departments related
-			$ticket = $ticket->join('users', 'users.id', '=', 'ticketit.user_id')
-			->leftJoin('ticketit_departments_persons', function ($join1) {
-				$join1->on('users.person_id','=','ticketit_departments_persons.person_id');
+			$ticket = $ticket->join('users', 'users.id', '=', 'panichd_tickets.user_id')
+			->leftJoin('panichd_departments_persons', function ($join1) {
+				$join1->on('users.person_id','=','panichd_departments_persons.person_id');
 			})
-			->leftJoin('ticketit_departments','ticketit_departments_persons.department_id','=','ticketit_departments.id')
-			->select('ticketit.*', 'ticketit_departments.department', 'ticketit_departments.sub1');
+			->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id')
+			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
 		}
 		
 		$ticket = $ticket->findOrFail($id);

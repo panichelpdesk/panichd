@@ -134,7 +134,7 @@ class InstallController extends Controller
 
             $this->settingsSeeder($master);
         }
-        \Cache::forget('ticketit::settings');
+        \Cache::forget('panichd::settings');
     }
 
     /**
@@ -244,9 +244,9 @@ class InstallController extends Controller
         // Package Settings
         // if Laravel v5.2 or 5.3
         if (version_compare(app()->version(), '5.2.0', '>=')) {
-            $installed_settings = DB::table('ticketit_settings')->pluck('value', 'slug');
+            $installed_settings = DB::table('panichd_settings')->pluck('value', 'slug');
         } else { // if Laravel 5.1
-            $installed_settings = DB::table('ticketit_settings')->lists('value', 'slug');
+            $installed_settings = DB::table('panichd_settings')->lists('value', 'slug');
         }
 
         if (!is_array($installed_settings)) {

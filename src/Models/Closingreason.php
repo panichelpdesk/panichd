@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Closingreason extends Model
 {
-    protected $table = 'ticketit_closingreasons';
+    protected $table = 'panichd_closingreasons';
 
     /**
      * Get related category.

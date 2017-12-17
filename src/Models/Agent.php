@@ -341,7 +341,7 @@ class Agent extends User
      */
     public function categories()
     {
-        return $this->belongsToMany('PanicHD\PanicHD\Models\Category', 'ticketit_categories_users', 'user_id', 'category_id')->withPivot('autoassign')->orderBy('name');
+        return $this->belongsToMany('PanicHD\PanicHD\Models\Category', 'panichd_categories_users', 'user_id', 'category_id')->withPivot('autoassign')->orderBy('name');
     }
 	
 	/**

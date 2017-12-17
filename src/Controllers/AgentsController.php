@@ -97,7 +97,7 @@ class AgentsController extends Controller
             }
         }
 
-        // Update Agent Categories in ticketit_categories_users
+        // Update Agent Categories in panichd_categories_users
         $agent->categories()->sync($form_cats);
     }
 }

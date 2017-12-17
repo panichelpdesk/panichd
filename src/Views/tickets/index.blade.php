@@ -64,16 +64,16 @@
 					},
 				},
 				columns: [
-					{ data: 'id', name: 'ticketit.id' },
+					{ data: 'id', name: 'panichd_tickets.id' },
 					{ data: 'subject', name: 'subject' },
 					{ data: 'content', name: 'content' },
 					{ data: 'intervention', name: 'intervention' },
-					{ data: 'status', name: 'ticketit_statuses.name' },
+					{ data: 'status', name: 'panichd_statuses.name' },
 					@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
 						{ data: 'agent', name: 'agent.name' },
 					@endif				
 					@if( $u->currentLevel() > 1 )
-						{ data: 'priority', name: 'ticketit_priorities.name' },
+						{ data: 'priority', name: 'panichd_priorities.name' },
 						@if (session('ticketit_filter_owner')=="")
 							{ data: 'owner_name', name: 'users.name' },
 							@if ($setting::grab('departments_feature'))
@@ -82,12 +82,12 @@
 						@endif
 						{ data: 'calendar', name: 'calendar_order', searchable: false },
 					@endif
-					{ data: 'updated_at', name: 'ticketit.updated_at' },
+					{ data: 'updated_at', name: 'panichd_tickets.updated_at' },
 					@if( $u->currentLevel() > 1 )
 						@if (session('ticketit_filter_category')=="")
-							{ data: 'category', name: 'ticketit_categories.name' },
+							{ data: 'category', name: 'panichd_categories.name' },
 						@endif
-						{ data: 'tags', name: 'ticketit_tags.name' }
+						{ data: 'tags', name: 'panichd_tags.name' }
 					@endif				
 				],
 				order: [

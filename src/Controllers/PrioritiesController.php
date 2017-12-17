@@ -16,7 +16,7 @@ class PrioritiesController extends Controller
      */
     public function index()
     {
-        $priorities = \Cache::remember('ticketit::priorities', 60, function () {
+        $priorities = \Cache::remember('panichd::priorities', 60, function () {
             return Priority::all();
         });
 
@@ -52,7 +52,7 @@ class PrioritiesController extends Controller
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-created', ['name' => $request->name]));
 
-        \Cache::forget('ticketit::priorities');
+        \Cache::forget('panichd::priorities');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
@@ -103,7 +103,7 @@ class PrioritiesController extends Controller
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-modified', ['name' => $request->name]));
 
-        \Cache::forget('ticketit::priorities');
+        \Cache::forget('panichd::priorities');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
@@ -123,7 +123,7 @@ class PrioritiesController extends Controller
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-deleted', ['name' => $name]));
 
-        \Cache::forget('ticketit::priorities');
+        \Cache::forget('panichd::priorities');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }

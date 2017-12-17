@@ -9,7 +9,7 @@ class Configuration extends Model
 {
     use ContentEllipse;
 
-    public $table = 'ticketit_settings';
+    public $table = 'panichd_settings';
 
     public $fillable = [
     'lang',

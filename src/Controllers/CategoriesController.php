@@ -20,7 +20,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = \Cache::remember('ticketit::categories', 60, function() {
+        $categories = \Cache::remember('panichd::categories', 60, function() {
             return Category::with('closingReasons')->with('tags')->get();
         });
 
@@ -71,7 +71,7 @@ class CategoriesController extends Controller
 
         Session::flash('status', trans('panichd::lang.category-name-has-been-created', ['name' => $request->name]));
 
-        \Cache::forget('ticketit::categories');
+        \Cache::forget('panichd::categories');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\CategoriesController@index');
     }
@@ -117,7 +117,7 @@ class CategoriesController extends Controller
     protected function Statuses()
     {
 
-        $statuses = Cache::remember('ticketit::statuses', 60, function() {
+        $statuses = Cache::remember('panichd::statuses', 60, function() {
             return Models\Status::all();
         });
 
@@ -161,7 +161,7 @@ class CategoriesController extends Controller
 
         Session::flash('status', trans('panichd::lang.category-name-has-been-modified', ['name' => $request->name]));
 
-        \Cache::forget('ticketit::categories');
+        \Cache::forget('panichd::categories');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\CategoriesController@index');
     }
@@ -193,7 +193,7 @@ class CategoriesController extends Controller
 					}
 					if ($request->exists('jquery_reason_status_id_'.$i)){
 						$reason['status_id'] = $request->input('jquery_reason_status_id_'.$i);
-						$rules['jquery_reason_status_id_'.$i] = "required|exists:ticketit_statuses,id";
+						$rules['jquery_reason_status_id_'.$i] = "required|exists:panichd_statuses,id";
 					}				
 					
 					if ($request->input('jquery_reason_id_'.$i) == "new"){
@@ -423,7 +423,7 @@ class CategoriesController extends Controller
 
         Session::flash('status', trans('panichd::lang.category-name-has-been-deleted', ['name' => $name]));
 
-        \Cache::forget('ticketit::categories');
+        \Cache::forget('panichd::categories');
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\CategoriesController@index');
     }

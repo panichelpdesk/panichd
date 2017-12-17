@@ -82,7 +82,7 @@ class ConfigurationsController extends Controller
       $configuration->create($input);
 
       Session::flash('configuration', 'Setting saved successfully.');
-      \Cache::forget('ticketit::settings'); // refresh cached settings
+      \Cache::forget('panichd::settings'); // refresh cached settings
     return redirect()->action('PanicHD\PanicHD\Controllers\ConfigurationsController@index');
   }
 
@@ -130,9 +130,9 @@ class ConfigurationsController extends Controller
 
       Session::flash('configuration', trans('panichd::admin.config-update-confirm', ['name' => $request->name]));
       // refresh cached settings
-      \Cache::forget('ticketit::settings');
-      \Cache::forget('ticketit::settings.'.$configuration->slug);
-    //return redirect(route('ticketit::admin.configuration.index'));
+      \Cache::forget('panichd::settings');
+      \Cache::forget('panichd::settings.'.$configuration->slug);
+    
     return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
   }    
 }
