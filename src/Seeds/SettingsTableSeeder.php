@@ -106,9 +106,9 @@ class SettingsTableSeeder extends Seeder
 			
 			/*
              * Template adherence: The email blade template to be extended
-             * Default: panichd::emails.templates.ticketit
+             * Default: panichd::emails.templates.panichd
              */
-            'email.template' => 'panichd::emails.templates.ticketit',
+            'email.template' => 'panichd::emails.templates.panichd',
 			'email.owner.newticket.template' => 'panichd::emails.templates.simple',
             // resources/views/emails/templates/ticketit.blade.php
             'email.header'           => 'Ticket Update',
