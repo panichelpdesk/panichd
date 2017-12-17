@@ -1,8 +1,8 @@
 @extends($master)
 @section('page', trans('ticketit::admin.category-edit-title', ['name' => ucwords($category->name)]))
 
-@include('ticketit::shared.common')
-@include('ticketit::shared.colorpicker')
+@include('panichd::shared.common')
+@include('panichd::shared.colorpicker')
 
 @section('panichd_assets')
 	<style type="text/css">
@@ -25,15 +25,15 @@
 			'class' => 'form-horizontal'
 			]) !!}
         <legend>{{ trans('ticketit::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
-        @include('ticketit::admin.category.form', ['update', true])
-		@include('ticketit::admin.category.modal-email')
+        @include('panichd::admin.category.form', ['update', true])
+		@include('panichd::admin.category.modal-email')
         {!! CollectiveForm::close() !!}
     </div>
-	@include('ticketit::admin.category.modal-reason')
-	@include('ticketit::admin.category.modal-tag')
+	@include('panichd::admin.category.modal-reason')
+	@include('panichd::admin.category.modal-tag')
 @stop
 
 @section('footer')
-	@include('ticketit::admin.category.scripts-create-edit')
-	@include('ticketit::admin.category.scripts-edit')
+	@include('panichd::admin.category.scripts-create-edit')
+	@include('panichd::admin.category.scripts-edit')
 @append

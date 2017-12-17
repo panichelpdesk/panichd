@@ -8,7 +8,7 @@
 		@endif
 		
 		@if ($u->currentLevel() > 1)
-			@include('ticketit::tickets.partials.filter_blocks')
+			@include('panichd::tickets.partials.filter_blocks')
 			{!! $button_create !!}
 		@else			
 			<div class="text-center">

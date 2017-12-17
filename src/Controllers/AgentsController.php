@@ -18,7 +18,7 @@ class AgentsController extends Controller
 		$not_agents = Agent::where('ticketit_agent', '0')->get();
         $categories = Category::get();
 
-        return view('ticketit::admin.agent.index', compact('agents', 'not_agents', 'categories'));
+        return view('panichd::admin.agent.index', compact('agents', 'not_agents', 'categories'));
     }
 
     public function create()

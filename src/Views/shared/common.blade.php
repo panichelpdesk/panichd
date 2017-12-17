@@ -1,13 +1,13 @@
 @section('panichd_assets')
-	@include('ticketit::shared.assets')
+	@include('panichd::shared.assets')
 @append
 
 @section('panichd_nav')
-	@include('ticketit::shared.nav')
+	@include('panichd::shared.nav')
 @stop
 
 @section('panichd_errors')
-	@include('ticketit::shared.errors')
+	@include('panichd::shared.errors')
 @stop
 
 @section('footer')

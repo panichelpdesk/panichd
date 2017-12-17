@@ -1,12 +1,12 @@
 @extends($master)
 @section('page', trans('ticketit::lang.create-ticket-title'))
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
     
 	@if (!isset($ticket) && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)	
-		@include('ticketit::tickets.partials.notices')
+		@include('panichd::tickets.partials.notices')
 	@endif
 	
 	
@@ -151,7 +151,7 @@
 					<div class="form-group"><!-- TAGS -->
 						<label class="control-label col-lg-3">{{ trans('ticketit::lang.tags') . trans('ticketit::lang.colon') }}</label>
 						<div id="jquery_select2_container" class="col-lg-9">
-						@include('ticketit::tickets.partials.tags_menu')				
+						@include('panichd::tickets.partials.tags_menu')				
 						</div>					
 					</div>
 				@endif
@@ -191,12 +191,12 @@
 							'class' => 'col-lg-2 control-label'
 						]) !!}
 						<div class="col-lg-10">							
-							@include('ticketit::shared.attach_files_button', ['attach_id' => 'ticket_attached'])
-							@include('ticketit::shared.attach_files_script')							
+							@include('panichd::shared.attach_files_button', ['attach_id' => 'ticket_attached'])
+							@include('panichd::shared.attach_files_script')							
 							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list" data-new-attachment-modal-id="modal-attachment-edit">
 							@if (isset($ticket))									
 								@foreach($ticket->attachments as $attachment)
-									@include('ticketit::tickets.partials.attachment', ['template'=>'createedit'])
+									@include('panichd::tickets.partials.attachment', ['template'=>'createedit'])
 								@endforeach															
 							@endif
 							</div>							
@@ -223,10 +223,10 @@
     </div>
 @endsection
 
-@include('ticketit::tickets.partials.modal_attachment_edit')
-@include('ticketit::shared.photoswipe_files')
-@include('ticketit::shared.datetimepicker')
-@include('ticketit::shared.jcrop_files')
+@include('panichd::tickets.partials.modal_attachment_edit')
+@include('panichd::shared.photoswipe_files')
+@include('panichd::shared.datetimepicker')
+@include('panichd::shared.jcrop_files')
 
 @section('footer')
     <script type="text/javascript">
@@ -320,6 +320,6 @@
         });
 	});	
 	</script>	
-	@include('ticketit::tickets.partials.summernote')
-	@include('ticketit::tickets.partials.tags_footer_script')
+	@include('panichd::tickets.partials.summernote')
+	@include('panichd::tickets.partials.tags_footer_script')
 @append

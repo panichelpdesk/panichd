@@ -2,11 +2,11 @@
 
 @section('page', trans('ticketit::lang.show-ticket-title') . trans('ticketit::lang.colon') . $ticket->subject)
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
-        @include('ticketit::tickets.partials.ticket_body')
-		@include('ticketit::tickets.partials.modal_complete')
+        @include('panichd::tickets.partials.ticket_body')
+		@include('panichd::tickets.partials.modal_complete')
 		
 		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->whereIN('type', ['reply','close','reopen'])->count() ) )
 			<div style="margin-top: 2em;">        	
@@ -17,16 +17,16 @@
 				</h2>
 			</div>
 		@endif
-        @include('ticketit::tickets.partials.comments')
+        @include('panichd::tickets.partials.comments')
         {!! $comments->render() !!}
-        @include('ticketit::tickets.partials.modal_comment_new')
+        @include('panichd::tickets.partials.modal_comment_new')
 		@if ($setting->grab('ticket_attachments_feature'))
-			@include('ticketit::shared.attach_files_script')			
+			@include('panichd::shared.attach_files_script')			
 		@endif
 @endsection
 
-@include('ticketit::shared.photoswipe_files')
-@include('ticketit::shared.jcrop_files')
+@include('panichd::shared.photoswipe_files')
+@include('panichd::shared.jcrop_files')
 
 @section('footer')
     <script>
@@ -167,6 +167,6 @@
             });			
         });
     </script>
-    @include('ticketit::tickets.partials.summernote')
-	@include('ticketit::tickets.partials.tags_footer_script')
+    @include('panichd::tickets.partials.summernote')
+	@include('panichd::tickets.partials.tags_footer_script')
 @append

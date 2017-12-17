@@ -4,7 +4,7 @@
 {{ trans('ticketit::admin.config-index-title') }}
 @stop
 
-@include('ticketit::shared.common')
+@include('panichd::shared.common')
 
 @section('content')
 
@@ -86,7 +86,7 @@
         @endif
 	</div>
 </div>
-	@include('ticketit::admin.notice.modal_user')
+	@include('panichd::admin.notice.modal_user')
 @stop
 @section('footer')
     <script>

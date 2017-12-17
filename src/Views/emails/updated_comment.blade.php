@@ -17,14 +17,14 @@
 		<p>{!! trans('ticketit::email/globals.updated_other_note', ['user' => $notification_owner->name, 'other' => $comment->owner->name]) !!}</p>
 	@endif
 
-	@include('ticketit::emails.partial.common_fields')
+	@include('panichd::emails.partial.common_fields')
 	<b>{{ trans('ticketit::email/globals.original_note_title') }}</b>
 	<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
-		<td>@include ('ticketit::emails.partial.html_field', ['html_field' => $original_comment->html])</td>
+		<td>@include('panichd::emails.partial.html_field', ['html_field' => $original_comment->html])</td>
 	</tr></table><br /><br />
 	<b>{{ trans('ticketit::email/globals.updated_note_title') }}</b>
 	<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
-		<td>@include ('ticketit::emails.partial.html_field', ['html_field' => $comment->html])</td>
+		<td>@include('panichd::emails.partial.html_field', ['html_field' => $comment->html])</td>
 	</tr></table><br /><br />
 	
 @stop
