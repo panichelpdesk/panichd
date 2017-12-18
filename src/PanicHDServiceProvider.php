@@ -32,8 +32,14 @@ class PanicHDServiceProvider extends ServiceProvider
             // Database isn't installed yet.
             return;
         }
-        $installer = new InstallController();
-
+        
+		$this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/panichd')], 'panichd-lang');
+		$this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/panichd')], 'panichd-views');
+        $this->publishes([__DIR__.'/Public' => public_path('vendor/panichd')], 'panichd-public');
+        $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
+		
+		$installer = new InstallController();
+		
         // if a migration or new setting is missing scape to the installation
         if (empty($installer->inactiveMigrations()) && !$installer->inactiveSettings()) {
             // Send the Agent User model to the view under $u
@@ -207,13 +213,7 @@ class PanicHDServiceProvider extends ServiceProvider
             });
 
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
-
             $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
-
-            $this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/panichd')], 'panichd-views');
-            $this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/panichd')], 'panichd-lang');
-            $this->publishes([__DIR__.'/Public' => public_path('vendor/panichd')], 'panichd-public');
-            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 
             // Check public assets are present, publish them if not
 //            $installer->publicAssets();
@@ -235,7 +235,6 @@ class PanicHDServiceProvider extends ServiceProvider
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
             $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
-            $this->publishes([__DIR__.'/Migrations' => base_path('database/migrations')], 'panichd-db');
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();
 
