@@ -780,11 +780,6 @@ class TicketsController extends Controller
 			));
 		}
 		
-		return response()->json([
-			'result' => 'error',
-			'messages' => ['No messages']
-		]);
-		
 		// End transaction
 		DB::commit();
 		event(new TicketCreated($ticket));
