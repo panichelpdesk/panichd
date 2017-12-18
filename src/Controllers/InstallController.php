@@ -87,7 +87,7 @@ class InstallController extends Controller
         $this->initialSettings($master);
         $admin_id = $request->admin_id;
         $admin = User::find($admin_id);
-        $admin->ticketit_admin = true;
+        $admin->panichd_admin = true;
         $admin->save();
 
         return redirect('/'.Setting::grab('main_route'));

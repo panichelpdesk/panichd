@@ -439,9 +439,9 @@ class Ticket extends Model
      */
     public function scopeVisible($query)
     {
-        if (auth()->user()->ticketit_admin) {
+        if (auth()->user()->panichd_admin) {
             return $query;
-        } elseif (auth()->user()->ticketit_agent){
+        } elseif (auth()->user()->panichd_agent){
 			return $query->visibleForAgent(auth()->user()->id);
         } else {
             return $query->userTickets(auth()->user()->id);
