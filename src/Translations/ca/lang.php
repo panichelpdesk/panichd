@@ -265,6 +265,7 @@ return [
   'show-ticket-email-resend-user'    => 'A l\'usuari: ',
   'show-ticket-email-resend-agent'   => 'Al tècnic: ',
   
+  'validation-error'                 => 'Aquest formulari no s\'ha enviat',
   'validate-ticket-subject.required' => 'Cal indicar un tema. Si us plau, indica en poques paraules de què es tracta',
   'validate-ticket-subject.min'      => 'Cal que indiquis un tema més llarg',
   'validate-ticket-content.required' => 'Cal indicar una descripció. Si adjuntes alguna imatge és necessari que també afegeixis un text explicatiu',

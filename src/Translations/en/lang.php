@@ -267,6 +267,7 @@ return [
   'show-ticket-email-resend-user'    => 'To user: ',
   'show-ticket-email-resend-agent'   => 'To agent: ',
   
+  'validation-error'                 => 'This form has not been sent',
   /*
   'validate-ticket-subject.required' => '',
   'validate-ticket-subject.min'      => '',

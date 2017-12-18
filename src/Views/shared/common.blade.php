@@ -6,9 +6,7 @@
 	@include('panichd::shared.nav')
 @stop
 
-@section('panichd_errors')
-	@include('panichd::shared.errors')
-@stop
+@include('panichd::shared.errors')
 
 @section('footer')
 	<script type="text/javascript">
