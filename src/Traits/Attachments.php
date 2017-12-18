@@ -125,11 +125,16 @@ trait Attachments
 			$save = false;
 			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_single_errors, $save);			
 			
+			if ($a_single_errors){
+				$a_errors['attachment_block_'.($block+$index)] = implode('. ', $a_single_errors);
+				$index++;
+				continue;
+			}
+			
             $attachment->bytes = $uploadedFile->getSize();
             $attachment->mimetype = $uploadedFile->getMimeType() ?: '';
             $attachment->file_path = $file_directory.DIRECTORY_SEPARATOR.$file_name;
 			$attachment->original_attachment = $file_name;
-            
 
 			// Thumbnail for valid image types
 			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:jpeg,png,gif,wbmp,webp,xbm,xpm' ]);
@@ -253,7 +258,7 @@ trait Attachments
 		}
 		
 		// Description
-		if (isset($description)){
+		if (!$a_single_errors and isset($description)){
 			$filtered = trim(Purifier::clean($description['value'], ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");		
 
 			if ($filtered != "" and $filtered != $att->description){
@@ -263,7 +268,7 @@ trait Attachments
 		}
 		
 		// Image crop
-		if (isset($image_crop)){
+		if (!$a_single_errors and isset($image_crop)){
 			$coords = explode(',', $image_crop);
 			if (count($coords) != 4 or ctype_digit(str_replace(",", "", str_replace(".", "", $coords)))){
 				$a_single_errors[] = trans('panichd::lang.attachment-update-crop-error');
