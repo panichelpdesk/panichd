@@ -58,8 +58,14 @@ h1, h2, h3, h4, h5, h6 {
     color: #636363;
 }
 
+/* Filter panel */
+.btn-default .badge {
+	background-color: #bbb ;
+}
+
 #ticketit_filter_panel .title {
 	display: inline-block;
+	color: #aaa;
 	margin: 0em 0.2em 0em 1em;
 }
 
@@ -67,8 +73,9 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0em 0.2em 0em 0em;
 }
 
-#ticketit_filter_panel .btn-category {
-	font-size: 1.2em;
+#ticketit_filter_panel .dropdown-toggle {
+	color: #555;
+	font-weight: bold;
 }
 
 #ticketit_filter_panel .btn.pov-link, #ticketit_filter_panel .btn.agent-link, #ticketit_filter_panel .btn.agent-current {
@@ -79,17 +86,24 @@ h1, h2, h3, h4, h5, h6 {
 	border: none;
 }
 
+#ticketit_filter_panel .btn.agent-link {
+	color: #aaa;
+}
+
+#ticketit_filter_panel .btn.agent-link .badge {
+	background: #ccc;
+}
+
 #ticketit_filter_panel .btn.agent-current {
+	color: #666;
+	font-weight: bold;
 	background: white;
 	border: none;
 }
 
 #ticketit_filter_panel .btn.agent-current .badge {
 	color: white;
-}
-
-.btn-default .badge {
-	background-color: #bbb ;
+	background: #666;
 }
 
 /*
@@ -97,6 +111,7 @@ h1, h2, h3, h4, h5, h6 {
 */
 #select_agent_container {
 	display: inline-block;
+	font-size: 0.8em;
 }
 #select_agent {
 	display: none; /* don't show select until it is rendered */
@@ -108,25 +123,23 @@ h1, h2, h3, h4, h5, h6 {
 	outline: none;
 }
 #select_agent_container .select2-selection--single {
+	color: #666;
+	font-weight: bold;
 	border-color: transparent;
 }
-#select_agent_container .select2-selection--single:active, #select_agent_container .select2-selection--single:hover {
-	background-color: #eee;
+
+#select2-select_agent-results {
+	font-size: 0.9em;
 }
-#select_agent_container .select2-selection__rendered {
-	color: blue; /* selected option color */
+
+.select2-results__option[aria-selected=true] {
+    color: #555;
 	font-weight: bold;
+	background: white !important;
 }
-#select_agent_container.all .select2-selection__rendered {
-	
-}
-#select_agent_container .select2-selection__arrow b {
-	border-top-color: blue; /* arrow on closed dropdown */
-	border-bottom-color: blue; /* arrow on opened dropdown */
-}
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background: #84bef5;
-    color: #fff;
+.select2-results__option--highlighted {
+    color: black !important;
+	background: #eee !important;
 }
 
 /*

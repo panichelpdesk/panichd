@@ -80,7 +80,7 @@ $cld_options = [
 @endif
 
 <div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
-@if (count($filters['agent'])>4)
+@if (count($filters['agent'])>3)
 	
 	<div id="select_agent_container" class="{{ session('ticketit_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">
@@ -95,20 +95,21 @@ $cld_options = [
 		</select>
 	</div>
 @else	
+	<?php $agent_button_size='';?>
 	@if(count($filters['agent'])==1)
-		<button class="btn btn-default btn-sm agent-current" style="color: {{ $cat_color }}">{{$filters['agent']{0}->name}}</button>
+		<button class="btn btn-default {{ $agent_button_size }} agent-current">{{$filters['agent']{0}->name}}</button>
 	@else
 		@if (session('ticketit_filter_agent')!="")
-			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link btn-sm">{{ trans('panichd::lang.filter-agent-all') }}</a>
+			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link {{ $agent_button_size }}">{{ trans('panichd::lang.filter-agent-all') }}</a>
 		@elseif(count($filters['agent'])>1)
-			<button class="btn btn-info btn-sm agent-current" style="color: {{ $cat_color }}">{{ trans('panichd::lang.filter-agent-all') }}</button>		
+			<button class="btn btn-info {{ $agent_button_size }} agent-current">{{ trans('panichd::lang.filter-agent-all') }}</button>		
 		@endif
 	
 		@foreach ($filters['agent'] as $ag)
 			@if ($ag->id==session('ticketit_filter_agent'))
-				<button class="btn btn-default btn-sm agent-current"><span style="color: {{ $cat_color }}">{{$ag->name}}</span> <span class="badge" style="background: {{ $cat_color }}">{!!$ag->agent_total_tickets_count !!}</span></button>				
+				<button class="btn btn-default {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></button>				
 			@else
-				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link btn-sm">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
 			@endif			
 		@endforeach	
 	@endif
@@ -118,7 +119,7 @@ $cld_options = [
 <script type="text/javascript">
 @section('footer_jquery')
 	// Filter menu agent change
-	$('#select_agent').select2().on("change", function (e) {				
+	$('#select_agent').select2({"id": "prova_sel2"}).on("change", function (e) {				
 		window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
 	});
 	
