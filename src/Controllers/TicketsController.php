@@ -945,19 +945,19 @@ class TicketsController extends Controller
 		$ticket->save();
 
 		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = false;
+			// 1 - update existing attachment fields
+			$a_result_errors = $this->updateAttachments($request, $a_result_errors, $ticket->attachments()->get());
 			
-			// 1 - destroy checked attachments
-			if ($request->has('delete_files')) $attach_error = $this->destroyAttachmentIds($request->delete_files);
+			// 2 - add new attachments
+			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 			
-			// 2 - update existing attachment fields
-			if (!$attach_error) $attach_error = $this->updateAttachments($request, $ticket->attachments()->get());
-			
-			// 3 - add new attachments
-			if (!$attach_error) $a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
-			
-			if ($attach_error){
-				$a_result_errors['messages'][] = $attach_error;
+			if (!$a_result_errors){
+				// 3 - destroy checked attachments
+				if ($request->has('delete_files')){
+					$destroy_error = $this->destroyAttachmentIds($request->delete_files);
+					
+					if ($destroy_error) $a_result_errors['messages'][] = $destroy_error;
+				}
 			}
 		}	
         

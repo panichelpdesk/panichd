@@ -211,6 +211,7 @@ return [
   'attachment-edit-crop-info'        => 'Selecciona un requadre dins la imatge per a retallar-la. S\'aplicarà després d\'actualitzar els camps de l\'adjunt',
   
   'attachment-update-not-valid-name' => 'El nom nou per a ":file" ha de tenir almenys 3 caràcters. No es permet HTML',
+  'attachment-error-equal-name'      => 'El nom i la descripció per a ":file" no poden ser iguals',
   'attachment-update-not-valid-mime' => 'El fitxer ":file" no és de cap tipus vàlid',
   'attachment-update-crop-error'     => 'La imatge no s\'ha pogut retallar amb les mides indicades',
 

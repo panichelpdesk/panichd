@@ -2,6 +2,7 @@
 
 namespace PanicHD\PanicHD\Traits;
 
+use Log;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Setting;
 use Illuminate\Support\Str;
@@ -58,7 +59,7 @@ trait Attachments
 			if (is_array($request->block_file_names) and in_array($original_filename, $request->block_file_names)){
 				$index++;
 				continue;
-			}			
+			}
 			
 			$new_bytes = $bytes + $uploadedFile->getSize();
 			
@@ -122,8 +123,8 @@ trait Attachments
 					'value' => $request->input('attachment_descriptions')[$index]
 				];
 			}
-			$save = false;
-			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_single_errors, $save);			
+			
+			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_single_errors);			
 			
 			if ($a_single_errors){
 				$a_errors['attachment_block_'.($block+$index)] = implode('. ', $a_single_errors);
@@ -159,15 +160,20 @@ trait Attachments
 			$index++;
         }
 		
+		return $this->return_ajax_errors($a_result_errors, $a_errors);
+    }
+	
+	private function return_ajax_errors($a_result_errors, $a_errors)
+	{
 		if ($a_errors){
-			$a_error_messages = array_values($a_errors);
+			$a_messages = array_values($a_errors);
 			
-			$a_result_errors['messages'] = ($a_result_errors and isset($a_result_errors['messages'])) ? array_merge($a_result_errors['messages'], $a_error_messages) : $a_error_messages;
+			$a_result_errors['messages'] = ($a_result_errors and isset($a_result_errors['messages'])) ? array_merge($a_result_errors['messages'], $a_messages) : $a_messages;
 			$a_result_errors['fields'] = ($a_result_errors and isset($a_result_errors['fields'])) ? array_merge($a_result_errors['fields'], $a_errors) : $a_errors;
 		}
 		
 		return $a_result_errors;
-    }
+	}
 	
 	protected function makeFilename($base, $var, $optvar)
 	{
@@ -193,13 +199,20 @@ trait Attachments
 	/**
 	 * Updates new_filename and description. Applies to all existent files. Not the ones uploaded in current request
 	*/
-	protected function updateAttachments($request, $attachments)
+	protected function updateAttachments($request, $a_result_errors, $attachments)
 	{
-		$a_single_errors = [];
+		$a_errors = [];
 		
+		$index = 0;
 		foreach($attachments as $att){
+			// Don't update files marked for deletion
+			if (is_array($request->delete_files) and in_array($att->id, $request->delete_files)){
+				$index++;
+				continue;
+			}
+			
 			$new_filename = $description = $save = false;
-			$a_fields = [];
+			$a_fields = $a_single_errors = [];
 			
 			// New filename
 			$field = 'attachment_'.$att->id.'_new_filename';
@@ -225,21 +238,23 @@ trait Attachments
 				$a_fields['image_crop'] = $request->input($field);
 			}
 			
-			if ($a_fields) $this->updateSingleAttachment($att, $a_fields, $a_single_errors, $save);			
+			if ($a_fields) $this->updateSingleAttachment($att, $a_fields, $a_single_errors);			
 			
-			if ($save) $att->save();
+			if ($a_single_errors){
+				$a_errors['attachment_block_'.$index] = implode('. ', $a_single_errors);
+			}else{
+				$att->save();
+			}
+			$index++;
 		}
 		
-		if ($a_single_errors){
-			return implode('. ', $a_single_errors);
-		}else
-			return false;
+		return $this->return_ajax_errors($a_result_errors, $a_errors);
 	}
 	
 	/**
 	 * Updates new_filename and description for an Attachment instance
 	*/
-	protected function updateSingleAttachment(&$att, $a_fields, &$a_single_errors, &$save)
+	protected function updateSingleAttachment(&$att, $a_fields, &$a_single_errors)
 	{
 		extract($a_fields);
 		
@@ -253,17 +268,19 @@ trait Attachments
 				$a_single_errors[]= trans('panichd::lang.attachment-update-not-valid-name', ['file' => $att->original_filename]);
 			}elseif ($filtered != $att->new_filename) {
 				$att->new_filename = $filtered;
-				$save = true;
 			}
 		}
 		
 		// Description
-		if (!$a_single_errors and isset($description)){
+		if (isset($description)){
 			$filtered = trim(Purifier::clean($description['value'], ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");		
 
-			if ($filtered != "" and $filtered != $att->description){
-				$att->description = $filtered;
-				$save = true;
+			if($filtered != ""){
+				if($filtered == $att->new_filename){
+					$a_single_errors[]= trans('panichd::lang.attachment-error-equal-name', ['file' => $att->original_filename]);
+				}else{
+					$att->description = $filtered;
+				}
 			}
 		}
 		
@@ -298,8 +315,6 @@ trait Attachments
 				// Updated fields
 				$att->image_sizes = $img->width()."x".$img->height();
 				$att->file_path = $new_file_path;
-
-				$save = true;
 			}
 		}
 	}
@@ -344,9 +359,10 @@ trait Attachments
 	{
 		$delete_errors = [];
 				
-		foreach ($attachments as $attachment){			
-			$single = $this->destroyAttachedElement($attachment);
-			if ($single) $delete_errors[] = $single;
+		foreach ($attachments as $attachment){
+			$error = $attachment->delete();
+
+			if ($error and $error!= 1) $delete_errors[] = $error;
 		}
 		
 		if ($delete_errors){
@@ -359,7 +375,7 @@ trait Attachments
 	/**
 	 * Destroy a single attachment files and model instance
 	*/
-	protected function destroyAttachedElement($attachment, $delete_instance = true)
+	protected function destroyAttachedElement($attachment)
 	{
 		// Delete attachment file
 		$error = $this->deleteAttachmentFile($attachment->file_path, $attachment->original_filename);
@@ -374,25 +390,25 @@ trait Attachments
 		
 		// Delete thumbnail
 		$this->deleteThumbnail(basename($attachment->file_path));
-		
-		// Delete ticketit attachment instance				
-		if ($delete_instance) $attachment->delete();
 		return false;		
 	}
 	
 	// Delete attachment file
 	protected function deleteAttachmentFile($file_path, $filename)
 	{
+		$error = false;
+		
 		if(!\File::exists($file_path)){
-			return trans('panichd::lang.ticket-error-file-not-found', ['name'=>$filename]);
+			Log::info(trans('panichd::lang.ticket-error-file-not-found', ['name'=>$filename]));
 		}else{
 			\File::delete($file_path);
 			
 			if(\File::exists($file_path)){
-				return trans('panichd::lang.ticket-error-file-not-deleted', ['name'=>$filename]);
-			}else
-				return false;
+				$error = trans('panichd::lang.ticket-error-file-not-deleted', ['name'=>$filename]);
+			}
 		}
+		
+		return $error;
 	}
 	
 	

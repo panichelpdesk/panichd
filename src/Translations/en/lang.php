@@ -212,6 +212,7 @@ return [
   'attachment-edit-crop-info'        => 'Select an area inside the image to crop it. It will be applied after the attachment fields are updated',
   
   'attachment-update-not-valid-name' => 'The new filename for ":file" must be at least 3 character long. HTML is not allowed',
+  'attachment-error-equal-name'      => 'Name and description for file ":file" can\'t be the same',
   'attachment-update-not-valid-mime' => 'The file ":file" is not of any valid type',
   'attachment-update-crop-error'     => 'Image could not be cropped at specified sizes',
 
