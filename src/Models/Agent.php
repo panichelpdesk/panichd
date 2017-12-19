@@ -24,9 +24,9 @@ class Agent extends User
     public function scopeAgents($query, $paginate = false)
     {
         if ($paginate) {
-            return $query->where('ticketit_agent', '1')->paginate($paginate, ['*'], 'agents_page');
+            return $query->where('panichd_agent', '1')->paginate($paginate, ['*'], 'agents_page');
         } else {
-            return $query->where('ticketit_agent', '1');
+            return $query->where('panichd_agent', '1');
         }
     }
 
@@ -43,9 +43,9 @@ class Agent extends User
     public function scopeAdmins($query, $paginate = false)
     {
         if ($paginate) {
-            return $query->where('ticketit_admin', '1')->paginate($paginate, ['*'], 'admins_page');
+            return $query->where('panichd_admin', '1')->paginate($paginate, ['*'], 'admins_page');
         } else {
-            return $query->where('ticketit_admin', '1')->get();
+            return $query->where('panichd_admin', '1')->get();
         }
     }
 
@@ -62,9 +62,9 @@ class Agent extends User
     public function scopeUsers($query, $paginate = false)
     {
         if ($paginate) {
-            return $query->where('ticketit_agent', '0')->paginate($paginate, ['*'], 'users_page');
+            return $query->where('panichd_agent', '0')->paginate($paginate, ['*'], 'users_page');
         } else {
-            return $query->where('ticketit_agent', '0')->get();
+            return $query->where('panichd_agent', '0')->get();
         }
     }
 
@@ -80,9 +80,9 @@ class Agent extends User
     public function scopeAgentsLists($query)
     {
         if (version_compare(app()->version(), '5.2.0', '>=')) {
-            return $query->where('ticketit_agent', '1')->pluck('name', 'id')->toArray();
+            return $query->where('panichd_agent', '1')->pluck('name', 'id')->toArray();
         } else { // if Laravel 5.1
-            return $query->where('ticketit_agent', '1')->lists('name', 'id')->toArray();
+            return $query->where('panichd_agent', '1')->lists('name', 'id')->toArray();
         }
     }
 
@@ -95,14 +95,14 @@ class Agent extends User
     {
         if (isset($id)) {
             $user = User::find($id);
-            if ($user->ticketit_agent) {
+            if ($user->panichd_agent) {
                 return true;
             }
 
             return false;
         }
         if (auth()->check()) {
-            if (auth()->user()->ticketit_agent) {
+            if (auth()->user()->panichd_agent) {
                 return true;
             }
         }
@@ -115,7 +115,7 @@ class Agent extends User
      */
     public static function isAdmin()
     {
-        return auth()->check() && auth()->user()->ticketit_admin;
+        return auth()->check() && auth()->user()->panichd_admin;
     }
 
     /**
@@ -127,7 +127,7 @@ class Agent extends User
      */
     public static function isAssignedAgent($id)
     {
-        if (auth()->check() && Auth::user()->ticketit_agent) {
+        if (auth()->check() && Auth::user()->panichd_agent) {
             if (Auth::user()->id == Ticket::find($id)->agent->id) {
                 return true;
             }
@@ -201,9 +201,9 @@ class Agent extends User
      */
 	public function levelInCategory($id = false)
 	{
-		if ($this->ticketit_admin){ # avoiding ->isAdmin()
+		if ($this->panichd_admin){ # avoiding ->isAdmin()
 			return 3;
-		}elseif(!$this->ticketit_agent){ # avoiding ->isAgent()
+		}elseif(!$this->panichd_agent){ # avoiding ->isAgent()
 			return 1;
 		}else{
 			if ($id == false){
@@ -512,9 +512,9 @@ class Agent extends User
     {
         $query = $query->agents();
 
-        if (auth()->user()->ticketit_admin) {
+        if (auth()->user()->panichd_admin) {
             return $query->orderBy('name', 'ASC');
-        } elseif (auth()->user()->ticketit_agent) {
+        } elseif (auth()->user()->panichd_agent) {
             return $query->VisibleForAgent(auth()->user()->id);
         } else {
             return $query->where('1', '=', '0');

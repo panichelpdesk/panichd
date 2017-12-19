@@ -58,7 +58,7 @@ class TicketitTableSeeder extends Seeder
             $agent_info = new \App\User();
             $agent_info->name = $faker->name;
             $agent_info->email = 'agent'.$agents_counter.$this->email_domain;
-            $agent_info->ticketit_agent = 1;
+            $agent_info->panichd_agent = 1;
             $agent_info->password = Hash::make($this->default_agent_password);
             $agent_info->save();
             $agents[$agent_info->id] = $agent_info;
@@ -103,7 +103,7 @@ class TicketitTableSeeder extends Seeder
             $user_info = new \App\User();
             $user_info->name = $faker->name;
             $user_info->email = 'user'.$users_counter.$this->email_domain;
-            $user_info->ticketit_agent = 0;
+            $user_info->panichd_agent = 0;
             $user_info->password = Hash::make($this->default_user_password);
             $user_info->save();
             $users_counter++;

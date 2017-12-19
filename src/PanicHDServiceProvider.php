@@ -214,7 +214,6 @@ class PanicHDServiceProvider extends ServiceProvider
 
             $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
             $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
-            
 
             // Check public assets are present, publish them if not
 //            $installer->publicAssets();

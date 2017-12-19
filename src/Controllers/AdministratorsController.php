@@ -63,7 +63,7 @@ class AdministratorsController extends Controller
     {
         $users = Agent::find($user_ids);
         foreach ($users as $user) {
-            $user->ticketit_admin = true;
+            $user->panichd_admin = true;
             $user->save();
             $users_list[] = $user->name;
         }
@@ -81,7 +81,7 @@ class AdministratorsController extends Controller
     public function removeAdministrator($id)
     {
         $administrator = Agent::find($id);
-        $administrator->ticketit_admin = false;
+        $administrator->panichd_admin = false;
         $administrator->save();
 
         // Remove him from tickets categories as well

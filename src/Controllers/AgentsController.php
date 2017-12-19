@@ -15,7 +15,7 @@ class AgentsController extends Controller
     public function index()
     {
         $agents = Agent::agents()->with('categories')->get();
-		$not_agents = Agent::where('ticketit_agent', '0')->get();
+		$not_agents = Agent::where('panichd_agent', '0')->get();
         $categories = Category::get();
 
         return view('panichd::admin.agent.index', compact('agents', 'not_agents', 'categories'));
@@ -35,7 +35,7 @@ class AgentsController extends Controller
 		DB::beginTransaction();
 		
 		$user = Agent::findOrFail($request->agent_id);
-		$user->ticketit_agent = true;
+		$user->panichd_agent = true;
 		$user->save();
 		
 		$this->syncAgentCategories($request, $user->id, $user);
@@ -68,7 +68,7 @@ class AgentsController extends Controller
 		
 		$agent->categories()->detach();
 		
-		$agent->ticketit_agent = false;
+		$agent->panichd_agent = false;
         $agent->save();
 
         Session::flash('status', trans('panichd::admin.agent-excluded-ok', ['name' => $agent->name]));
