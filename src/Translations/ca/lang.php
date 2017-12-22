@@ -273,6 +273,7 @@ return [
   'validate-ticket-content.min'      => 'Cal indicar una descripció més llarga, encara que ja hi hagi imatges adjuntes',
   
   'ticket-destroy-error'             => 'El tiquet no s\'ha pogut eliminar: :error',
+  'comment-destroy-error'            => 'El comentari no s\'ha pogut eliminar: :error',
   
  // Comment form
   'validate-comment-required'        => 'Cal que escriguis el text del comentari',

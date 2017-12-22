@@ -24,7 +24,15 @@ class Comment extends Model
 	*/
 	public function delete()
 	{
-		$this->attachments()->delete();
+		$a_errors = [];
+		foreach($this->attachments()->get() as $att){
+			$error = $att->delete();
+			if($error) $a_errors[] = $error;
+		}
+		
+		$error = $a_errors ? implode('. ', $a_errors) : null;
+		if ($error != "") return $error;
+		
 		parent::delete();
 	}
 	

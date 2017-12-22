@@ -275,7 +275,8 @@ return [
   'validate-ticket-content.required' => '',
   'validate-ticket-content.min'      => '',
   */
-  'ticket-destroy-error'             => 'Ticket could not be deleted: :error',
+  'ticket-destroy-error'             => 'The ticket could not be deleted: :error',
+  'comment-destroy-error'            => 'The comment could not be deleted: :error',
   
   // Comment form
   /*'validate-comment-required'        => '',

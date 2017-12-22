@@ -270,8 +270,13 @@ class CommentsController extends Controller
     {
         $comment=Models\Comment::findOrFail($id);
 		
-        $comment->delete();
-
-        return back()->with('status', trans('panichd::lang.comment-has-been-deleted'));
+        $error = $comment->delete();
+		
+		if ($error){
+			return redirect()->back()->with('warning', trans('panichd::lang.comment-destroy-error', ['error' => $error]));
+		}else{
+			return back()->with('status', trans('panichd::lang.comment-has-been-deleted'));
+		}
+        
     }
 }
