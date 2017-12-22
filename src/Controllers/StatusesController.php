@@ -5,6 +5,7 @@ namespace PanicHD\PanicHD\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Status;
 
 class StatusesController extends Controller
@@ -17,10 +18,16 @@ class StatusesController extends Controller
     public function index()
     {
         $statuses = \Cache::remember('panichd::statuses', 60, function () {
-            return Status::all();
+            return Status::withCount('tickets')->get();
         });
+		
+		if (LaravelVersion::min('5.3.0')) {
+            $statuses_list = $statuses->pluck('name', 'id');
+        } else {
+            $statuses_list = $statuses->lists('name', 'id');
+        }
 
-        return view('panichd::admin.status.index', compact('statuses'));
+        return view('panichd::admin.status.index', compact('statuses', 'statuses_list'));
     }
 
     /**
@@ -115,11 +122,23 @@ class StatusesController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $status = Status::findOrFail($id);
         $name = $status->name;
-        $status->delete();
+		
+		if ($request->has('tickets_new_status_id')){
+			$this->validate($request, [
+				'tickets_new_status_id' => 'required|exists:panichd_statuses,id',
+			]);
+			$status->delete($request->tickets_new_status_id);
+		}else{
+			if ($status->tickets()->count() > 0){
+				return back()->with('warning', trans('panichd::admin.status-delete-error-no-status', ['name' => $name]));
+			}
+			
+			$status->delete();
+		}
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-deleted', ['name' => $name]));
 

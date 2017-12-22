@@ -23,6 +23,7 @@ return [
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'New tickets automatic assignment',
+  'table-num-tickets'             => 'Tickets count',
   'table-remove-agent'            => 'Remove from agents',
   'table-remove-administrator'    => 'Remove from administrators', // New
 
@@ -176,6 +177,8 @@ return [
   'status-create-name'            => 'Name',
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Edit Status: :name',
+  'status-delete-title'           => 'Delete status ":name"',
+  'status-delete-error-no-status' => 'You have to specify a new status for ":name" status related tickets',
   
 // tickets-admin/notice/____
   'notice-index-title'         => 'Notices to departments management',

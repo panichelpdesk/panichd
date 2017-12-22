@@ -29,6 +29,7 @@
                     <tr>
                         <td>{{ trans('panichd::admin.table-id') }}</td>
                         <td>{{ trans('panichd::admin.table-name') }}</td>
+                        <td>{{ trans('panichd::admin.table-num-tickets') }}</td>
                         <td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
@@ -41,29 +42,34 @@
                         <td style="color: {{ $status->color }}; vertical-align: middle">
                             {{ $status->name }}
                         </td>
-                        <td>
+                        <td>{{ $status->tickets_count }}</td>
+						<td>
                             {!! link_to_route(
-                                                    $setting->grab('admin_route').'.status.edit', trans('panichd::admin.btn-edit'), $status->id,
-                                                    ['class' => 'btn btn-info'] )
-                                !!}
+								$setting->grab('admin_route').'.status.edit', trans('panichd::admin.btn-edit'), $status->id,
+								['class' => 'btn btn-default'] )
+							!!}
 
-                                {!! link_to_route(
-                                                    $setting->grab('admin_route').'.status.destroy', trans('panichd::admin.btn-delete'), $status->id,
-                                                    [
-                                                    'class' => 'btn btn-danger deleteit',
-                                                    'form' => "delete-$status->id",
-                                                    "node" => $status->name
-                                                    ])
-                                !!}
+							{!! link_to_route(
+								$setting->grab('admin_route').'.status.destroy', trans('panichd::admin.btn-delete'), $status->id,
+								[
+								'class' => 'btn btn-default deleteit',
+								'data-id' => "$status->id",
+								"data-node" => $status->name,
+								"data-modal-title" => trans('panichd::admin.status-delete-title', ['name' => $status->name])
+								])
+							!!}
                             {!! CollectiveForm::open([
-                                            'method' => 'DELETE',
-                                            'route' => [
-                                                        $setting->grab('admin_route').'.status.destroy',
-                                                        $status->id
-                                                        ],
-                                            'id' => "delete-$status->id"
-                                            ])
-                            !!}
+								'method' => 'DELETE',
+								'route' => [
+											$setting->grab('admin_route').'.status.destroy',
+											$status->id
+											],
+								'id' => "delete-$status->id"
+								]) !!}
+							@if ($status->tickets_count > 0)
+								{!! CollectiveForm::hidden('tickets_new_status_id', null) !!}
+							@endif
+							
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>
@@ -73,15 +79,30 @@
         @endif
     </div>
 @stop
+
+@include('panichd::admin.status.partials.modal_delete')
+
 @section('footer')
     <script>
         $( ".deleteit" ).click(function( event ) {
             event.preventDefault();
-            if (confirm("{!! trans('panichd::admin.status-index-js-delete') !!}" + $(this).attr("node") + " ?"))
+			
+			var form = $.find('#delete-'+$(this).data("id"));
+			
+			if ($(form).find("input[name='tickets_new_status_id']").length >0){
+				
+				$('#modal-status-delete').find('.modal-title').text($(this).data('modal-title'));
+				$('#modal-status-delete').modal('show');
+
+				
+			}else{
+				alert('no');
+			}
+			
+            /*if (confirm("{!! trans('panichd::admin.status-index-js-delete') !!}" + $(this).data("node") + " ?"))
             {
-                $form = $(this).attr("form");
-                $("#" + $form).submit();
-            }
+                $("#delete-" + $(this).data("form")).submit();
+            }*/
 
         });
     </script>
