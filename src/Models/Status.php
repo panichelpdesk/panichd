@@ -3,6 +3,7 @@
 namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use PanicHD\PanicHD\Models\Setting;
 
 class Status extends Model
 {
@@ -17,6 +18,28 @@ class Status extends Model
      */
     public $timestamps = false;
 
+	public function delete($tickets_new_status_id = false)
+	{
+		if ($tickets_new_status_id){
+			foreach($this->tickets()->get() as $ticket){
+				$ticket->status_id = $tickets_new_status_id;
+				$ticket->save();
+			}
+		}else{
+			foreach($this->tickets()->get() as $ticket){
+				if ($ticket->isComplete()){
+					$ticket->status_id = Setting::grab('default_close_status_id');
+				}else{
+					$ticket->status_id = Setting::grab('default_close_status_id');
+				}
+				$ticket->save();
+			}
+		}
+		
+		parent::delete();
+	}
+	
+	
     /**
      * Get related tickets.
      *

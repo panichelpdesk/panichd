@@ -23,6 +23,7 @@ return [
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica de nous tiquets',
+  'table-num-tickets'             => 'Núm. tiquets',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
 
@@ -175,6 +176,8 @@ return [
   'status-create-name'            => 'Nom',
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Editar Estat: :name',
+  'status-delete-title'           => 'Eliminar l\'estat ":name"',
+  'status-delete-error-no-status' => 'Cal indicar un estat nou per als tiquets que utilitzen l\'estat ":name"',
 
 // tickets-admin/notice/____
   'notice-index-title'         => 'Gestió d\'avisos a departaments',
