@@ -185,24 +185,22 @@
 			@endif
 			
 			@if ($setting->grab('ticket_attachments_feature'))
-				<div class="jquery_level2_show">
 					<div class="form-group">
 						{!! CollectiveForm::label('attachments', trans('panichd::lang.attachments') . trans('panichd::lang.colon'), [
 							'class' => 'col-lg-2 control-label'
 						]) !!}
-						<div class="col-lg-10">							
+						<div class="col-lg-10">
 							@include('panichd::shared.attach_files_button', ['attach_id' => 'ticket_attached'])
 							@include('panichd::shared.attach_files_script')							
 							<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list" data-new-attachment-modal-id="modal-attachment-edit">
-							@if (isset($ticket))									
+							@if (isset($ticket))
 								@foreach($ticket->attachments as $attachment)
 									@include('panichd::tickets.partials.attachment', ['template'=>'createedit'])
-								@endforeach															
+								@endforeach
 							@endif
-							</div>							
+							</div>
 						</div>
 					</div>
-				</div>			
 			@endif
 			
 			@if ($u->currentLevel() > 1)
