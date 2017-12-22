@@ -272,6 +272,8 @@ return [
   'validate-ticket-content.required' => 'Cal indicar una descripció. Si adjuntes alguna imatge és necessari que també afegeixis un text explicatiu',
   'validate-ticket-content.min'      => 'Cal indicar una descripció més llarga, encara que ja hi hagi imatges adjuntes',
   
+  'ticket-destroy-error'             => 'El tiquet no s\'ha pogut eliminar: :error',
+  
  // Comment form
   'validate-comment-required'        => 'Cal que escriguis el text del comentari',
   'validate-comment-min'             => 'Cal posar un text més llarg al comentari',

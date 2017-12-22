@@ -1027,21 +1027,19 @@ class TicketsController extends Controller
         $ticket = $this->tickets->findOrFail($id);
         $subject = $ticket->subject;
 		
-		if (Setting::grab('ticket_attachments_feature')){
-			$attach_error = $this->destroyAttachmentsFrom($ticket);
-			if ($attach_error){
-				return redirect()->back()->with('warning', $attach_error);
-			}
-		}
+        $error = $ticket->delete();
 		
-        $ticket->delete();
+		if ($error){
+			return redirect()->back()->with('warning', trans('panichd::lang.ticket-destroy-error', ['error' => $error]));
+		}else{
+			// Delete orphan tags (Without any related categories or tickets)
+			Tag::doesntHave('categories')->doesntHave('tickets')->delete();
+			
+			session()->flash('status', trans('panichd::lang.the-ticket-has-been-deleted', ['name' => $subject]));
+			return redirect()->route(Setting::grab('main_route').'.index');
+		}
 
-        session()->flash('status', trans('panichd::lang.the-ticket-has-been-deleted', ['name' => $subject]));
-
-        // Delete orphan tags (Without any related categories or tickets)
-        Tag::doesntHave('categories')->doesntHave('tickets')->delete();
-
-        return redirect()->route(Setting::grab('main_route').'.index');
+        
     }
 
     /**

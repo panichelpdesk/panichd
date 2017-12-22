@@ -274,11 +274,13 @@ return [
   'validate-ticket-subject.min'      => '',
   'validate-ticket-content.required' => '',
   'validate-ticket-content.min'      => '',
+  */
+  'ticket-destroy-error'             => 'Ticket could not be deleted: :error',
   
   // Comment form
-  'validate-comment-required'        => '',
-  'validate-comment-min'             => '',
-  */
+  /*'validate-comment-required'        => '',
+  'validate-comment-min'             => '',*/
+  
 
  /*
   *  Controllers

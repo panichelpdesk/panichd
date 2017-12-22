@@ -26,8 +26,16 @@ class Ticket extends Model
 	*/
 	public function delete()
 	{
+		$a_errors = [];
+		foreach($this->allAttachments()->get() as $att){
+			$error = $att->delete();
+			if($error) $a_errors[] = $error;
+		}
+		
+		$error = $a_errors ? implode('. ', $a_errors) : null;
+		if ($error != "") return $error;
+		
 		$this->tags()->detach();
-		$this->allAttachments()->delete();
 		$this->comments()->delete();
 
 		parent::delete();

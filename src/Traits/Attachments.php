@@ -2,7 +2,6 @@
 
 namespace PanicHD\PanicHD\Traits;
 
-use Log;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Setting;
 use Illuminate\Support\Str;
@@ -319,27 +318,6 @@ trait Attachments
 		}
 	}
 	
-	/**
-     * Destroys related attachments of $ticket or $comment
-     *
-     * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
-	 * @param $comment instance of PanicHD\PanicHD\Models\Comment
-     *
-     * @return string
-	 * @return bool
-     */
-    protected function destroyAttachmentsFrom($ticket, $comment = false)
-    {
-		if ($comment){
-			$attachments = Attachment::where('comment_id',$comment->id)->get();
-		}else{
-			$attachments = Attachment::where('ticket_id',$ticket->id)->get();
-		}
-		
-		return $this->destroyAttachmentsLoop($attachments);
-	}
-	
-	
 	protected function destroyAttachmentIds($a_id)
 	{
 		$attachments = Attachment::whereIn('id', $a_id)->get();		
@@ -399,7 +377,7 @@ trait Attachments
 		$error = false;
 		
 		if(!\File::exists($file_path)){
-			Log::info(trans('panichd::lang.ticket-error-file-not-found', ['name'=>$filename]));
+			\Log::info(trans('panichd::lang.ticket-error-file-not-found', ['name'=>$filename]));
 		}else{
 			\File::delete($file_path);
 			

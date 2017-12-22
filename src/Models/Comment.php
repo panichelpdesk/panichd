@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use PanicHD\PanicHD\Traits\ContentEllipse;
 
-/**
- * @property Attachment[]|Collection attachments
- *
- * @see Comment::attachments()
- */
 class Comment extends Model
 {
     use ContentEllipse;

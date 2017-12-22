@@ -48,7 +48,11 @@ class Attachment extends Model
 	public function delete()
 	{
 		$error = $this->destroyAttachedElement($this);
-		return ($error ? $error : parent::delete());
+		if ($error){
+			return $error;
+		}else{
+			parent::delete();
+		}
 	}
 	
     public function ticket()
