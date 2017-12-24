@@ -17,14 +17,12 @@ class StatusesController extends Controller
      */
     public function index()
     {
-        $statuses = \Cache::remember('panichd::statuses', 60, function () {
-            return Status::withCount('tickets')->get();
-        });
+        $statuses = Status::withCount('tickets')->get();
 		
 		if (LaravelVersion::min('5.3.0')) {
-            $statuses_list = $statuses->pluck('name', 'id');
+            $statuses_list = $statuses->pluck('name', 'id')->toArray();
         } else {
-            $statuses_list = $statuses->lists('name', 'id');
+            $statuses_list = $statuses->lists('name', 'id')->toArray();
         }
 
         return view('panichd::admin.status.index', compact('statuses', 'statuses_list'));
@@ -58,9 +56,6 @@ class StatusesController extends Controller
         $status->create(['name' => $request->name, 'color' => $request->color]);
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-created', ['name' => $request->name]));
-
-        \Cache::forget('panichd::statuses');
-
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 
@@ -109,9 +104,6 @@ class StatusesController extends Controller
         $status->update(['name' => $request->name, 'color' => $request->color]);
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-modified', ['name' => $request->name]));
-
-        \Cache::forget('panichd::statuses');
-
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 
@@ -141,9 +133,6 @@ class StatusesController extends Controller
 		}
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-deleted', ['name' => $name]));
-
-        \Cache::forget('panichd::statuses');
-
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 }

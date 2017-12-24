@@ -177,6 +177,7 @@ return [
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Editar Estat: :name',
   'status-delete-title'           => 'Eliminar l\'estat ":name"',
+  'status-delete-warning'         => 'Hi ha <span class="modal-tickets-count"></span> tiquets que utilitzen aquest estat. Has d\'indicar-ne un de nou per a tots ells',
   'status-delete-error-no-status' => 'Cal indicar un estat nou per als tiquets que utilitzen l\'estat ":name"',
 
 // tickets-admin/notice/____

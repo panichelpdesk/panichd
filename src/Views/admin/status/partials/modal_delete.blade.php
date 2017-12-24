@@ -7,7 +7,10 @@
                 <h4 class="modal-title">Delete Status</h4>
             </div>
             <div class="modal-body">
-				<div class="col-lg-12">x tiquets requereixen un nou estat</div>
+				<div class="alert alert-warning">
+					<button type="button" class="close" data-dismiss="alert">{{ trans('panichd::lang.flash-x') }}</button>
+					{!! trans('panichd::admin.status-delete-warning') !!}
+				</div>
 				<fieldset class="form-horizontal">					
 					
 					<div class="form-group"><!-- SUBJECT -->
@@ -15,13 +18,22 @@
 						'class' => 'control-label col-lg-3',
 					]) !!}
 					<div class="col-lg-9">
-						{!! CollectiveForm::select('status_id', $statuses_list, null, ['id' => 'select_status', 'class' => 'form-control']) !!}
+						<?php 
+						foreach($statuses_list as $key=>$value){
+							$a_list = array_diff_key($statuses_list, [$key=>$value]);
+							
+							echo CollectiveForm::select('status_id', $a_list, null, [
+								'style' => 'display: none',
+								'id' => 'select_status_without_'.$key,
+								'class' => 'form-control modal-status-select'
+							]);
+						}
+						?>
 					</div>
 				</div>
 					
-					<div class="text-right col-md-12">						
-						{!! CollectiveForm::hidden('tickets_new_status_id', null) !!}
-						{!! CollectiveForm::hidden('status_id', null) !!}
+					<div class="text-right col-md-12">
+						{!! CollectiveForm::hidden('modal-status-id', null) !!}
 						{!! CollectiveForm::button( trans('panichd::admin.btn-delete'), [
 							'type' => 'button',
 							'id' => 'submit_status_delete_modal',

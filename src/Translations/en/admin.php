@@ -178,6 +178,7 @@ return [
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Edit Status: :name',
   'status-delete-title'           => 'Delete status ":name"',
+  'status-delete-warning'         => 'There are <span class="modal-tickets-count"></span> tickets that use this status. You must choose another one for all of them',
   'status-delete-error-no-status' => 'You have to specify a new status for ":name" status related tickets',
   
 // tickets-admin/notice/____
