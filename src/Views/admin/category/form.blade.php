@@ -9,10 +9,7 @@
 	<div class="form-group">
 		{!! CollectiveForm::label('color', trans('panichd::admin.category-create-color') . trans('panichd::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
 		<div class="col-lg-8 ">
-			<!---->
-			<button class="btn btn-default pull-left" id="category_color_picker" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: {{isset($category) ? $category->color : "#000000"}};"></span>&nbsp;<b class="caret"></b></button>
-			<input type="hidden" id="category_color" name="color" value="{{isset($category) ? $category->color : '#000000'}}">
-
+			@yield('colorpicker_snippet')
 		</div>
 	</div>
 	<div class="form-group">

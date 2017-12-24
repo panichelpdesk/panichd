@@ -2,7 +2,10 @@
 @section('page', trans('panichd::admin.category-edit-title', ['name' => ucwords($category->name)]))
 
 @include('panichd::shared.common')
-@include('panichd::shared.colorpicker')
+@include('panichd::shared.colorpicker', [
+	'include_colorpickerplus_script' => true,
+	'input_color' => $category->color
+])
 
 @section('panichd_assets')
 	<style type="text/css">
