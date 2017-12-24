@@ -129,7 +129,6 @@
 	@endif
 	</div>
 </div>
-{!! link_to_route($setting->grab('admin_route').'.category.index', trans('panichd::admin.btn-back'), null, ['class' => 'btn btn-default']) !!}
 @if(isset($category))
 	{!! CollectiveForm::submit(trans('panichd::admin.btn-update'), ['class' => 'btn btn-primary']) !!}
 @else

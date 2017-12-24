@@ -12,7 +12,6 @@
 </div>
 <div class="form-group">
     <div class="col-lg-10 col-lg-offset-2">
-        {!! link_to_route($setting->grab('admin_route').'.priority.index', trans('panichd::admin.btn-back'), null, ['class' => 'btn btn-default']) !!}
         @if(isset($priority))
             {!! CollectiveForm::submit(trans('panichd::admin.btn-update'), ['class' => 'btn btn-primary']) !!}
         @else
