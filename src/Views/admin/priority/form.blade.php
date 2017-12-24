@@ -7,7 +7,7 @@
 <div class="form-group">
     {!! CollectiveForm::label('color', trans('panichd::admin.priority-create-color') . trans('panichd::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
     <div class="col-lg-10">
-        {!! CollectiveForm::custom('color', 'color', isset($priority->color) ? $priority->color : "#000000", ['class' => 'form-control']) !!}
+        @yield('colorpicker_snippet')
     </div>
 </div>
 <div class="form-group">
