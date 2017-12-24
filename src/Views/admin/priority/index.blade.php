@@ -29,6 +29,7 @@
                     <tr>
                         <td>{{ trans('panichd::admin.table-id') }}</td>
                         <td>{{ trans('panichd::admin.table-name') }}</td>
+						<td>{{ trans('panichd::admin.table-num-tickets') }}</td>
                         <td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
@@ -41,30 +42,38 @@
                         <td style="color: {{ $priority->color }}; vertical-align: middle">
                             {{ $priority->name }}
                         </td>
-                        <td>
+                        <td>{{ $priority->tickets_count }}</td>
+						<td>
                             {!! link_to_route(
-                                                    $setting->grab('admin_route').'.priority.edit', trans('panichd::admin.btn-edit'), $priority->id,
-                                                    ['class' => 'btn btn-info'] )
-                                !!}
+								$setting->grab('admin_route').'.priority.edit', trans('panichd::admin.btn-edit'), $priority->id,
+								['class' => 'btn btn-default'] )
+							!!}
 
-                                {!! link_to_route(
-                                                    $setting->grab('admin_route').'.priority.destroy', trans('panichd::admin.btn-delete'), $priority->id,
-                                                    [
-                                                    'class' => 'btn btn-danger deleteit',
-                                                    'form' => "delete-$priority->id",
-                                                    "node" => $priority->name
-                                                    ])
-                                !!}
+							{!! link_to_route(
+								$setting->grab('admin_route').'.priority.destroy', trans('panichd::admin.btn-delete'), $priority->id,
+								[
+								'class' => 'btn btn-default deleteit',
+								'form' => "delete-$priority->id",
+								"node" => $priority->name,
+								'data-id' => "$priority->id",
+								"data-name" => $priority->name,
+								"data-tickets-count" => $priority->tickets_count,
+								"data-modal-title" => trans('panichd::admin.priority-delete-title', ['name' => $priority->name])
+								])
+							!!}
                             {!! CollectiveForm::open([
-                                            'method' => 'DELETE',
-                                            'route' => [
-                                                        $setting->grab('admin_route').'.priority.destroy',
-                                                        $priority->id
-                                                        ],
-                                            'id' => "delete-$priority->id"
-                                            ])
+								'method' => 'DELETE',
+								'route' => [
+											$setting->grab('admin_route').'.priority.destroy',
+											$priority->id
+											],
+								'id' => "delete-$priority->id"
+								])
                             !!}
-                            {!! CollectiveForm::close() !!}
+                            @if ($priority->tickets_count > 0)
+								{!! CollectiveForm::hidden('tickets_new_priority_id', null) !!}
+							@endif
+							{!! CollectiveForm::close() !!}
                         </td>
                     </tr>
                 @endforeach
@@ -73,16 +82,39 @@
         @endif
     </div>
 @stop
+
+@include('panichd::admin.priority.partials.modal_delete')
+
 @section('footer')
     <script>
-        $( ".deleteit" ).click(function( event ) {
+		$( ".deleteit" ).click(function( event ) {
             event.preventDefault();
-            if (confirm("{!! trans('panichd::admin.priority-index-js-delete') !!}" + $(this).attr("node") + " ?"))
-            {
-                $form = $(this).attr("form");
-                $("#" + $form).submit();
-            }
-
+			
+			var form = $.find('#delete-'+$(this).data("id"));
+			
+			if ($(form).find("input[name='tickets_new_priority_id']").length >0){
+				
+				$('#modal-priority-delete').find('.modal-title').text($(this).data('modal-title'));
+				$('#modal-priority-delete').find('.modal-tickets-count').text($(this).data('tickets-count'));
+				$('#modal-priority-delete').find('.modal-priority-select').hide();
+				$('#modal-priority-delete').find('#select_priority_without_'+$(this).data("id")).show();
+				$('#modal-priority-delete').find("input[name='modal-priority-id']").val($(this).data("id"));
+				$('#modal-priority-delete').modal('show');
+			}else{
+				if (confirm("{!! trans('panichd::admin.priority-index-js-delete') !!}" + $(this).data("name") + " ?"))
+				{
+					$("#delete-" + $(this).data("id")).submit();
+				}
+			}
         });
+		
+		$('#submit_priority_delete_modal').click(function(e){
+			e.preventDefault();
+			var modal = $(this).closest('#modal-priority-delete');
+			var priority_id = modal.find("input[name='modal-priority-id']").val();
+			
+			$('#delete-'+priority_id).find("input[name='tickets_new_priority_id']").val(modal.find('#select_priority_without_'+priority_id).val());
+			$('#delete-'+priority_id).submit();
+		});
     </script>
 @append

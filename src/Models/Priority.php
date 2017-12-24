@@ -17,6 +17,27 @@ class Priority extends Model
      */
     public $timestamps = false;
 
+	
+	public function delete($tickets_new_priority_id = false)
+	{
+		if ($tickets_new_priority_id){
+			foreach($this->tickets()->get() as $ticket){
+				$ticket->priority_id = $tickets_new_priority_id;
+				$ticket->save();
+			}
+		}else{
+			
+			$new_id = Self::whereNotIn('id',[$this->id])->first()->id;
+			foreach($this->tickets()->get() as $ticket){
+				$ticket->priority_id = $new_id;
+				
+				$ticket->save();
+			}
+		}
+		
+		parent::delete();
+	}
+	
     /**
      * Get related tickets.
      *

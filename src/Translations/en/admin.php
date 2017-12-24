@@ -165,7 +165,10 @@ return [
   'priority-create-title'         => 'Create New Priority',
   'priority-create-name'          => 'Name',
   'priority-create-color'         => 'Color',
-  'priority-edit-title'           => 'Edit Priority: :name',
+  'priority-edit-title'           => 'Edit priority: :name',
+  'priority-delete-title'         => 'Delete priority: :name',
+  'priority-delete-warning'         => 'There are <span class="modal-tickets-count"></span> tickets that use this priority. You must choose another one for all of them',
+  'priority-delete-error-no-priority' => 'You have to specify a new priority for ":name" priority related tickets',
 
 // tickets-admin/status/____
   'status-index-title'            => 'Statuses Management',
