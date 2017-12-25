@@ -23,11 +23,17 @@
                 {!! link_to_route($setting->grab('admin_route').'.priority.create', trans('panichd::admin.priority-index-create-new')) !!}
             </h3>
         @else
-            <div id="message"></div>
-            <table class="table table-hover">
+        <div class="panel-body">    
+			<div class="alert alert-info alert-dismissable fade in">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}
+			</div>
+		
+            <table id="priority_table" class="table table-hover">
                 <thead>
                     <tr>
-                        <td>{{ trans('panichd::admin.table-id') }}</td>
+                        <td style="width: 1em; vertical-align: bottom;"></td>
+						<td>{{ trans('panichd::admin.table-position') }}</td>
                         <td>{{ trans('panichd::admin.table-name') }}</td>
 						<td>{{ trans('panichd::admin.table-num-tickets') }}</td>
                         <td>{{ trans('panichd::admin.table-action') }}</td>
@@ -35,11 +41,12 @@
                 </thead>
                 <tbody>
                 @foreach($priorities as $priority)
-                    <tr>
-                        <td style="vertical-align: middle">
-                            {{ $priority->id }}
+                    <tr data-id="{{ $priority->id }}">
+                        <td style="vertical-align: center"><span class="glyphicon glyphicon-option-vertical" style="color: #aaa"></span></td>
+						<td class="position">
+							{{ $loop->iteration }}{{-- $priority->id --}}
                         </td>
-                        <td style="color: {{ $priority->color }}; vertical-align: middle">
+                        <td class="name" data-color="{{ $priority->color }}" style="color: {{ $priority->color }}; vertical-align: middle">
                             {{ $priority->name }}
                         </td>
                         <td>{{ $priority->tickets_count }}</td>
@@ -79,6 +86,7 @@
                 @endforeach
                 </tbody>
             </table>
+			</div>
         @endif
     </div>
 @stop
@@ -87,6 +95,46 @@
 
 @section('footer')
     <script>
+		$('#priority_table tbody').sortable({
+			cursor: 'n-resize',
+			helper: function(index, elem){
+				return '<div style="height: 3em; width: 30em; border: 1px solid #bbb; background: #fff; padding: 0.7em;">Priority: <span style="color: '+elem.find('.name').data('color')+'">'+elem.find('.name').text()+'</span></span>';
+			},
+			beforeStop: function( event, ui ) {
+				var a_order = [];
+				$.each($('#priority_table tbody tr'), function (index, value){
+					if ($(this).attr('data-id')) a_order.push($(this).data('id'));
+				});
+				
+				$('#priority_table .position').text('...');
+				
+				// Do AJAX POST when sorting priorities
+				$.ajax({
+					type: "POST",
+					url: '{{ route($setting->grab('admin_route').'.priority.reorder') }}',
+					data: {
+						_token: "{{ csrf_token() }}", // Si està dins un fitxer BLADE
+						priorities: a_order.join(', ')
+					},
+
+					success: function( response ) {
+						if (response.result == 'ok'){
+							$('#priority_table .position').each(function(index, row){
+								$(this).text(index+1);
+							});
+						}else{
+							
+						}
+					}
+				});
+				
+				
+				
+				
+				
+			}
+		});
+		
 		$( ".deleteit" ).click(function( event ) {
             event.preventDefault();
 			

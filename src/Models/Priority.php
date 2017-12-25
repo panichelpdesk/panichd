@@ -8,7 +8,7 @@ class Priority extends Model
 {
     protected $table = 'panichd_priorities';
 
-    protected $fillable = ['name', 'color'];
+    protected $fillable = ['name', 'color', 'position'];
 
     /**
      * Indicates that this model should not be timestamped.

@@ -24,6 +24,7 @@ return [
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'New tickets automatic assignment',
   'table-num-tickets'             => 'Tickets count',
+  'table-position'                => 'Position',
   'table-remove-agent'            => 'Remove from agents',
   'table-remove-administrator'    => 'Remove from administrators', // New
 
@@ -158,6 +159,7 @@ return [
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Priorities Management',
+  'priority-index-help'           => 'You may change priority order dragging this table rows. This order will be used also in ticket list when checking this field',
   'btn-create-new-priority'       => 'Create new priority',
   'priority-index-no-priorities'  => 'There are no priorities, ',
   'priority-index-create-new'     => 'create new priority',

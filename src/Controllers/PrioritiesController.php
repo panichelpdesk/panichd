@@ -17,7 +17,7 @@ class PrioritiesController extends Controller
      */
     public function index()
     {
-        $priorities = Priority::withCount('tickets')->get();
+        $priorities = Priority::withCount('tickets')->orderBy('position')->get();
 		
 		if (LaravelVersion::min('5.3.0')) {
             $priorities_list = $priorities->pluck('name', 'id')->toArray();
@@ -53,7 +53,12 @@ class PrioritiesController extends Controller
         ]);
 
         $priority = new Priority();
-        $priority->create(['name' => $request->name, 'color' => $request->color]);
+		
+        $priority->create([
+			'name' => $request->name,
+			'color' => $request->color,
+			'position' => (Priority::count() == 0 ? '1' : (Priority::max('position')+1))
+		]);
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-created', ['name' => $request->name]));
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
@@ -106,6 +111,29 @@ class PrioritiesController extends Controller
         Session::flash('status', trans('panichd::lang.priority-name-has-been-modified', ['name' => $request->name]));
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
+	
+	public function reorder(Request $request)
+	{
+		$result = "error";
+		if ($request->has('priorities')){
+			
+			$a_priorities = $a_priorities = explode(',', $request->priorities);
+			if (Priority::whereNotIn('id', $a_priorities)->count() == 0
+			and Priority::whereIn('id', $a_priorities)->count() == count($a_priorities)){
+				$index = 1;
+				foreach ($a_priorities as $id){
+					$priority = Priority::findOrFail($id);
+					$priority->position = $index;
+					$priority->save();
+					$index++;
+				}
+				
+				$result = "ok";
+			}
+		}
+		
+		return response()->json(['result' => $result]);
+	}
 
     /**
      * Remove the specified resource from storage.

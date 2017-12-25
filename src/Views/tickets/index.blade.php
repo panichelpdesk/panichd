@@ -63,17 +63,27 @@
 						sortDescending: "{{ trans('panichd::lang.table-aria-sort-desc') }}"
 					},
 				},
+				<?php
+					$agent_column = session('ticketit_filter_agent')=="" && $u->currentLevel() > 1 ? true : false;
+				?>				
 				columns: [
 					{ data: 'id', name: 'panichd_tickets.id' },
 					{ data: 'subject', name: 'subject' },
 					{ data: 'content', name: 'content' },
 					{ data: 'intervention', name: 'intervention' },
 					{ data: 'status', name: 'panichd_statuses.name' },
-					@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
+					@if ($agent_column)
 						{ data: 'agent', name: 'agent.name' },
 					@endif				
 					@if( $u->currentLevel() > 1 )
-						{ data: 'priority', name: 'panichd_priorities.name' },
+						{ data: 'priority', name: 'panichd_priorities.name', 
+						@if ($agent_column)
+							"orderData": 7,
+						@else
+							"orderData": 6,
+						@endif
+						},
+						{ data: 'priority_position', name: 'panichd_priorities.position', visible: false },
 						@if (session('ticketit_filter_owner')=="")
 							{ data: 'owner_name', name: 'users.name' },
 							@if ($setting::grab('departments_feature'))

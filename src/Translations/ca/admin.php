@@ -24,6 +24,7 @@ return [
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica de nous tiquets',
   'table-num-tickets'             => 'Núm. tiquets',
+  'table-position'                => 'Posició',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
 
@@ -157,6 +158,7 @@ return [
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
+  'priority-index-help'           => 'Pots canviar l\'ordre de les prioritats arrosegant les files d\'aquesta taula. Aquest ordre s\'utilitzarà també a la llista de tiquets quan es seleccioni',
   'btn-create-new-priority'       => 'Crear nova prioritat',
   'priority-index-no-priorities'  => 'No hu ha prioritats, ',
   'priority-index-create-new'     => 'crear nova prioritat',

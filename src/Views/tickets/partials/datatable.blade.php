@@ -11,6 +11,7 @@
 			@endif			
 			@if( $u->currentLevel() > 1 )
 				<td>{{ trans('panichd::lang.table-priority') }}</td>
+				<td>{{-- hidden: priority order --}}</td>
 				@if (session('ticketit_filter_owner')=="")
 					<td>{{ trans('panichd::lang.table-owner') }}</td>
 					@if ($setting::grab('departments_feature'))

@@ -128,6 +128,10 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
                 'edit'    => "$admin_route.priority.edit",
             ],
         ]);
+		
+		Route::post("$admin_route_path/priority/reorder", 'PanicHD\PanicHD\Controllers\PrioritiesController@reorder')
+			->name("$admin_route.priority.reorder");
+		
 
         //Agents management routes (ex. http://url/tickets-admin/agent)
         Route::resource("$admin_route_path/agent", 'PanicHD\PanicHD\Controllers\AgentsController', [
