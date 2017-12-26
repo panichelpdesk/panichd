@@ -1,4 +1,4 @@
-<!-- filter panel --><div id="ticketit_filter_panel" class="panel panel-default">	
+<!-- filter panel --><div id="filter_panel" class="panel panel-default">	
 	<div class="panel-body">
 		<?php $button_create = link_to_route($setting->grab('main_route').'.create', trans('panichd::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-default pull-right']);?>
 		
