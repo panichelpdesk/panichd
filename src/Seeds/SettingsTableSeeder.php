@@ -175,9 +175,10 @@ class SettingsTableSeeder extends Seeder
 			/*
              * Defines relative path under storage_path() where to store attached files
              *
-             * Default: <storage_path>/ticketit_attachments
+             * Default: <storage_path>/panichd_attachments
              */
-            'attachments_path' => 'ticketit_attachments',		
+            'attachments_path' => 'panichd_attachments',
+			'thumbnails_path' => 'panichd_thumbnails',
 					
 			
             /*

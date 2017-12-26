@@ -182,7 +182,7 @@ trait Attachments
 	protected function makeThumbnailFromImage($img, $file_name)
 	{
 		// Thumbnail
-		$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
+		$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('thumbnails_path').DIRECTORY_SEPARATOR);
 		
 		// Delete previous thumbnail if present
 		if(\File::exists($thumbnail_path.$file_name))			
@@ -393,7 +393,7 @@ trait Attachments
 	// Delete thumbnail file
 	protected function deleteThumbnail ($file_name)
 	{		
-		$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'ticketit_thumbnails'.DIRECTORY_SEPARATOR);
+		$thumbnail_path = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('thumbnails_path').DIRECTORY_SEPARATOR);
 		
 		if (\File::exists($thumbnail_path.$file_name)){
 			\File::delete($thumbnail_path.$file_name);
