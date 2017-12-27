@@ -1,4 +1,4 @@
-<table id="tickets-table" class="table table-condensed table-striped table-hover ddt-responsive" class="ticketit-table" style="width: 100%">
+<table id="tickets-table" class="table table-condensed table-striped table-hover ddt-responsive" style="width: 100%">
     <thead>
         <tr>
             <td>{{ trans('panichd::lang.table-id') }}</td>
