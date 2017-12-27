@@ -284,7 +284,7 @@ class NotificationsController extends Controller
 				$mail_subject = isset($to['subject']) ? $to['subject'] : $subject;
 				$mail_template = isset($to['template']) ? $to['template'] : $template;
 				
-				$mail = new \PanicHD\PanicHD\Mail\TicketitNotification($mail_template, $data, $email_from, $email_replyto, $subject);
+				$mail = new \PanicHD\PanicHD\Mail\PanicHDNotification($mail_template, $data, $email_from, $email_replyto, $subject);
 
 				if (Setting::grab('queue_emails') == 'yes') {
 					Mail::to($to['recipient'])->queue($mail);
