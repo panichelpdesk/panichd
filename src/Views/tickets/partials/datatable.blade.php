@@ -6,13 +6,13 @@
             <td>{{ trans('panichd::lang.table-description') }}</td>
 			<td>{{ trans('panichd::lang.table-intervention') }}</td>
 			<td>{{ trans('panichd::lang.table-status') }}</td>            
-			@if (session('ticketit_filter_agent')=="" && $u->currentLevel() > 1)
+			@if (session('panichd_filter_agent')=="" && $u->currentLevel() > 1)
 				<td>{{ trans('panichd::lang.table-agent') }}</td>	
 			@endif			
 			@if( $u->currentLevel() > 1 )
 				<td>{{ trans('panichd::lang.table-priority') }}</td>
 				<td>{{-- hidden: priority order --}}</td>
-				@if (session('ticketit_filter_owner')=="")
+				@if (session('panichd_filter_owner')=="")
 					<td>{{ trans('panichd::lang.table-owner') }}</td>
 					@if ($setting::grab('departments_feature'))
 						<td>{{ trans('panichd::lang.table-department') }}</td>
@@ -22,7 +22,7 @@
 			@endif
 			<td>{{ trans('panichd::lang.table-last-updated') }}</td>
 			@if( $u->currentLevel() > 1 )
-				@if (session('ticketit_filter_category')=="")
+				@if (session('panichd_filter_category')=="")
 					<td>{{ trans('panichd::lang.table-category') }}</td>
 				@endif
 				<td>Etiquetes</td>

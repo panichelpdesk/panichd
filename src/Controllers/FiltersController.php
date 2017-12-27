@@ -17,11 +17,11 @@ class FiltersController extends Controller
         if ($filter=="removeall"){
 			// Delete each filter from session
 			foreach ($a_filters as $single){
-				$request->session()->forget('ticketit_filter_'.$single);
+				$request->session()->forget('panichd_filter_'.$single);
 			}
 			
 			// General filter uncheck
-			$request->session()->forget('ticketit_filters');
+			$request->session()->forget('panichd_filters');
 			
 			// Redirect to specified list
 			return \Redirect::route(Models\Setting::grab('main_route').($value=="complete" ? '-complete' : '.index'));
@@ -30,18 +30,18 @@ class FiltersController extends Controller
 		if (in_array($filter, $a_filters) == true) {
             if ($value == 'remove') {
                 // Delete filter
-                $request->session()->forget('ticketit_filter_'.$filter);
+                $request->session()->forget('panichd_filter_'.$filter);
 				
 				// General filter uncheck if none
 				$current = false;
 				foreach ($a_filters as $single){
-					if ($request->session()->exists('ticketit_filter_'.$single)){
+					if ($request->session()->exists('panichd_filter_'.$single)){
 						$current = true;
 						break;
 					}
 				}
 				if (!$current){
-					$request->session()->forget('ticketit_filters');
+					$request->session()->forget('panichd_filters');
 				}
             } else {
                 $add = false;
@@ -69,10 +69,10 @@ class FiltersController extends Controller
 
                 // Add filter
                 if ($add) {
-                    $request->session()->put('ticketit_filter_'.$filter, $value);
+                    $request->session()->put('panichd_filter_'.$filter, $value);
 					
 					// General filter check
-					$request->session()->put('ticketit_filters','yes');
+					$request->session()->put('panichd_filters','yes');
                 }
             }
         }

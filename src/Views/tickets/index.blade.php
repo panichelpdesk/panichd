@@ -64,7 +64,7 @@
 					},
 				},
 				<?php
-					$agent_column = session('ticketit_filter_agent')=="" && $u->currentLevel() > 1 ? true : false;
+					$agent_column = session('panichd_filter_agent')=="" && $u->currentLevel() > 1 ? true : false;
 				?>				
 				columns: [
 					{ data: 'id', name: 'panichd_tickets.id' },
@@ -84,7 +84,7 @@
 						@endif
 						},
 						{ data: 'priority_position', name: 'panichd_priorities.position', visible: false },
-						@if (session('ticketit_filter_owner')=="")
+						@if (session('panichd_filter_owner')=="")
 							{ data: 'owner_name', name: 'users.name' },
 							@if ($setting::grab('departments_feature'))
 								{ data: 'dept_info', name: 'dept_full', searchable: false },
@@ -94,7 +94,7 @@
 					@endif
 					{ data: 'updated_at', name: 'panichd_tickets.updated_at' },
 					@if( $u->currentLevel() > 1 )
-						@if (session('ticketit_filter_category')=="")
+						@if (session('panichd_filter_category')=="")
 							{ data: 'category', name: 'panichd_categories.name' },
 						@endif
 						{ data: 'tags', name: 'panichd_tags.name' }

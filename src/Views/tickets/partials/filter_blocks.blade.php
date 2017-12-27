@@ -33,7 +33,7 @@ $cld_options = [
 	
 	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('panichd::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
 	?>
-	@if ($cld==session('ticketit_filter_calendar'))
+	@if ($cld==session('panichd_filter_calendar'))
 		<?php $calendar_name = $this_cld;
 		$cld_class = isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "";?>
 	@endif
@@ -62,7 +62,7 @@ $cld_options = [
 	$cat_color = "gray";?>
 	@foreach ($filters['category'] as $cat)			
 		<?php $text_cat.='<li><a href="'.url($setting->grab('main_route').'/filter/category/'.$cat->id).'">';?>
-		@if ($cat->id==session('ticketit_filter_category'))
+		@if ($cat->id==session('panichd_filter_category'))
 			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span>';
 			$cat_color=$cat->color;?>
 		@endif
@@ -82,12 +82,12 @@ $cld_options = [
 <div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
 @if (count($filters['agent'])>3)
 	
-	<div id="select_agent_container" class="{{ session('ticketit_filter_agent')=="" ? 'all' : 'single'}}">
+	<div id="select_agent_container" class="{{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">
 		<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
 		@foreach ($filters['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"
-			@if ($ag->id==session('ticketit_filter_agent'))
+			@if ($ag->id==session('panichd_filter_agent'))
 				selected="selected"
 			@endif
 			>{{$ag->name}} ({!!$ag->agent_total_tickets_count !!})</option>
@@ -99,14 +99,14 @@ $cld_options = [
 	@if(count($filters['agent'])==1)
 		<button class="btn btn-default {{ $agent_button_size }} agent-current">{{$filters['agent']{0}->name}}</button>
 	@else
-		@if (session('ticketit_filter_agent')!="")
+		@if (session('panichd_filter_agent')!="")
 			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-default agent-link {{ $agent_button_size }}">{{ trans('panichd::lang.filter-agent-all') }}</a>
 		@elseif(count($filters['agent'])>1)
 			<button class="btn btn-info {{ $agent_button_size }} agent-current">{{ trans('panichd::lang.filter-agent-all') }}</button>		
 		@endif
 	
 		@foreach ($filters['agent'] as $ag)
-			@if ($ag->id==session('ticketit_filter_agent'))
+			@if ($ag->id==session('panichd_filter_agent'))
 				<button class="btn btn-default {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></button>				
 			@else
 				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
