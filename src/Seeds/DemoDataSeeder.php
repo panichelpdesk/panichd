@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class TicketitTableSeeder extends Seeder
+class DemoDataSeeder extends Seeder
 {
     public $email_domain = '@example.com'; // the email domain name for demo accounts. Ex. user1@example.com
     public $agents_qty = 5; // number of demo agents accounts
