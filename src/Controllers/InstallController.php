@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\File;
 use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Seeds\SettingsTableSeeder;
-use PanicHD\PanicHD\Seeds\TicketitTableSeeder;
+use PanicHD\PanicHD\Seeds\DemoDataSeeder;
 
 class InstallController extends Controller
 {
@@ -272,7 +272,7 @@ class InstallController extends Controller
      */
     public function demoDataSeeder()
     {
-        $seeder = new TicketitTableSeeder();
+        $seeder = new DemoDataSeeder();
         $seeder->run();
         session()->flash('status', 'Demo tickets, users, and agents are seeded!');
 
