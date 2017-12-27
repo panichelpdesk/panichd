@@ -58,16 +58,12 @@ h1, h2, h3, h4, h5, h6 {
     color: #636363;
 }
 
-<<<<<<< HEAD
 /* Filter panel */
 .btn-default .badge {
 	background-color: #bbb ;
 }
 
-#ticketit_filter_panel .title {
-=======
 #filter_panel .title {
->>>>>>> updated #filter_panel entries
 	display: inline-block;
 	color: #aaa;
 	margin: 0em 0.2em 0em 1em;
@@ -77,14 +73,9 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0em 0.2em 0em 0em;
 }
 
-<<<<<<< HEAD
 #ticketit_filter_panel .dropdown-toggle {
 	color: #555;
 	font-weight: bold;
-=======
-#filter_panel .btn-category {
-	font-size: 1.2em;
->>>>>>> updated #filter_panel entries
 }
 
 #filter_panel .btn.pov-link, #filter_panel .btn.agent-link, #filter_panel .btn.agent-current {
