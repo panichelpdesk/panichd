@@ -12,7 +12,7 @@ return [
     'another-file'                    => 'فایل دیگر',
     'admin-select'                    => 'انتخاب مدیر', // New
     'admin-select-help-block'         => 'شما بعدا میتوانید مدیر های دیگری نیز اضافه نمایید', // New
-    'upgrade'                         => 'Ticketit version upgrade', // New v0.2.3
+    'upgrade'                         => 'Panic Help Desk version upgrade', // New v0.2.3
     'settings-to-be-installed'        => 'تنظیمات زیر به جدول تنظیمات اضافه شدند:', // New v0.2.3
     'all-settings-installed'          => 'تمامی تنظیمات مورد نیاز برنامه اعمال گردید', // New v0.2.3
 ];

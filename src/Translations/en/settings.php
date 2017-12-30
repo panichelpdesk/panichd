@@ -11,7 +11,7 @@ $summernoteVersion = PanicHD\PanicHD\Helpers\Cdn::Summernote;
 
 return [
 
-    'main_route' => '<p><b>Ticketit main route</b>: Where to load the ticket system (ex. <code>http://url/tickets</code>)</p>', 'admin_route' => '<p><b>Ticketit admin route</b>: Where to load the ticket administration dashboard (ex. <code>http://url/tickets-admin</code>)</p>', 'master_template' => '<p><b>Template adherence</b>: The master blade template to be extended</p>', 'email.template' => '<p><b>Template adherence</b>: The email blade template to be extended</p>', 'email.header' => '<p><img src="http://i.imgur.com/5aJjuZL.jpg"/></p>', 'email.signoff' => '<p><img src="http://i.imgur.com/jONMwgF.jpg"/></p>', 'email.signature' => '<p><img src="http://i.imgur.com/coi3R63.jpg"/></p>', 'email.dashboard' => '<p><img src="http://i.imgur.com/qzNzJD4.jpg"/></p>', 'email.google_plus_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/fzyxfSg.jpg"/></p>', 'email.facebook_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/FQQzr98.jpg"/></p>', 'email.twitter_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/5JmkrF1.jpg"/></p>', 'email.footer' => '', 'email.footer_link' => '', 'email.color_body_bg' => '<p><img src="http://i.imgur.com/KTF7rEJ.jpg"/></p>', 'email.color_header_bg' => '<p><img src="http://i.imgur.com/wenw5H5.jpg"/></p>', 'email.color_content_bg' => '<p><img src="http://i.imgur.com/7r8dAFj.jpg"/></p>', 'email.color_footer_bg' => '<p><img src="http://i.imgur.com/KTjkdSN.jpg"/></p>', 'email.color_button_bg' => '<p><img src="http://i.imgur.com/0TbGIyt.jpg"/></p>', 'default_status_id' => '<p>The default status for new created tickets</p>', 'default_close_status_id' => '<p>The default closing status</p>', 'default_reopen_status_id' => '<p>The default reopening status</p>', 'paginate_items' => '<p><b>Pagination length</b>: For standard pagination.</p>', 'length_menu' => '<p><b>Pagination length</b>: For tickets table</p>', 'status_notification' => <<<'ENDHTML'
+    'main_route' => '<p><b>Panic Help Desk main route</b>: Where to load the ticket system (ex. <code>http://url/tickets</code>)</p>', 'admin_route' => '<p><b>Panic Help Desk admin route</b>: Where to load the ticket administration dashboard (ex. <code>http://url/tickets-admin</code>)</p>', 'master_template' => '<p><b>Template adherence</b>: The master blade template to be extended</p>', 'email.template' => '<p><b>Template adherence</b>: The email blade template to be extended</p>', 'email.header' => '<p><img src="http://i.imgur.com/5aJjuZL.jpg"/></p>', 'email.signoff' => '<p><img src="http://i.imgur.com/jONMwgF.jpg"/></p>', 'email.signature' => '<p><img src="http://i.imgur.com/coi3R63.jpg"/></p>', 'email.dashboard' => '<p><img src="http://i.imgur.com/qzNzJD4.jpg"/></p>', 'email.google_plus_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/fzyxfSg.jpg"/></p>', 'email.facebook_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/FQQzr98.jpg"/></p>', 'email.twitter_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/5JmkrF1.jpg"/></p>', 'email.footer' => '', 'email.footer_link' => '', 'email.color_body_bg' => '<p><img src="http://i.imgur.com/KTF7rEJ.jpg"/></p>', 'email.color_header_bg' => '<p><img src="http://i.imgur.com/wenw5H5.jpg"/></p>', 'email.color_content_bg' => '<p><img src="http://i.imgur.com/7r8dAFj.jpg"/></p>', 'email.color_footer_bg' => '<p><img src="http://i.imgur.com/KTjkdSN.jpg"/></p>', 'email.color_button_bg' => '<p><img src="http://i.imgur.com/0TbGIyt.jpg"/></p>', 'default_status_id' => '<p>The default status for new created tickets</p>', 'default_close_status_id' => '<p>The default closing status</p>', 'default_reopen_status_id' => '<p>The default reopening status</p>', 'paginate_items' => '<p><b>Pagination length</b>: For standard pagination.</p>', 'length_menu' => '<p><b>Pagination length</b>: For tickets table</p>', 'status_notification' => <<<'ENDHTML'
 			<p>
 				<b>Status notification</b>: send email notification to ticket owner/agent when ticket status is changed
 			</p>
@@ -78,7 +78,7 @@ ENDHTML
 ENDHTML
 
     , 'include_font_awesome' => <<<'ENDHTML'
-			<p>If Font-awesome css is included outside ticketit, this should be set to <code>0</code></p>
+			<p>If Font-awesome css is included outside Panic Help Desk, this should be set to <code>0</code></p>
 
 			<p>
 				Don't include: <code>0</code><br>
@@ -136,7 +136,7 @@ ENDHTML
     , 'routes' => <<<'ENDHTML'
 			<p>Set custom routes file</p>
 			<p>
-				Useful if you want to replace any of the Ticketit components
+				Useful if you want to replace any of the Panic Help Desk components
 			</p>
 ENDHTML
 

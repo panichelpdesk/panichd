@@ -2,7 +2,7 @@
 
 return [
 
-    'initial-setup'                   => 'Configuració inicial Ticketit',
+    'initial-setup'                   => 'Configuració inicial Panic Help Desk',
     'master-template-file'            => 'fitxer de plantilla mestra',
     'master-template-other-path'      => 'Una altra ruta d\'accés al fitxer de plantilla mestra',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
@@ -12,7 +12,7 @@ return [
     'another-file'                    => 'un altre arxiu',
     'admin-select'                    => 'Tria un administrador',
     'admin-select-help-block'         => 'Més tard es pot seleccionar més usuaris per a l\'administració',
-    'upgrade'                         => 'Actualització de la versió de Ticketit',
+    'upgrade'                         => 'Actualització de la versió de Panic Help Desk',
     'settings-to-be-installed'        => 'S\'instal·laran aquests ajustos:',
     'all-settings-installed'          => 'Tots els ajustos necessaris estan instal·lats',
 ];

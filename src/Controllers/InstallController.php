@@ -67,9 +67,9 @@ class InstallController extends Controller
 
             return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
         }
-        \Log::emergency('Ticketit needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
+        \Log::emergency('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
 
-        throw new \Exception('Ticketit needs upgrade, admin should login and visit '.url('/panichd'));
+        throw new \Exception('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd'));
     }
 
     /*
@@ -104,9 +104,9 @@ class InstallController extends Controller
 
             return redirect('/'.Setting::grab('main_route'));
         }
-        \Log::emergency('Ticketit upgrade path access: Only admin is allowed to upgrade');
+        \Log::emergency('Panic Help Desk upgrade path access: Only admin is allowed to upgrade');
 
-        throw new \Exception('Ticketit upgrade path access: Only admin is allowed to upgrade');
+        throw new \Exception('Panic Help Desk upgrade path access: Only admin is allowed to upgrade');
     }
 
     /*
@@ -204,7 +204,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Get all Ticketit Package migrations that were not migrated.
+     * Get all Panic Help Desk Package migrations that were not migrated.
      *
      * @return array
      */
@@ -233,7 +233,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Check if all Ticketit Package settings that were not installed to setting table.
+     * Check if all Panic Help Desk Package settings that were not installed to setting table.
      *
      * @return bool
      */
