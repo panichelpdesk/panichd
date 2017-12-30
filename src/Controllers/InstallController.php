@@ -32,7 +32,7 @@ class InstallController extends Controller
         if ($public !== $assets) {
             Artisan::call('vendor:publish', [
                 '--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
-                '--tag'      => ['public'],
+                '--tag'      => ['panichd-public'],
             ]);
         }
     }
@@ -119,7 +119,7 @@ class InstallController extends Controller
         if ($inactive_migrations) { // If a migration is missing, do the migrate
             Artisan::call('vendor:publish', [
                 '--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
-                '--tag'      => ['db'],
+                '--tag'      => ['panichd-db'],
             ]);
             Artisan::call('migrate');
 
