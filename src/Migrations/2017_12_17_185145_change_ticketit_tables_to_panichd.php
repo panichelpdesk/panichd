@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use PanicHD\PanicHD\Models\Ticket;
 
 class ChangeTicketitTablesToPanichd extends Migration
 {
@@ -37,6 +38,8 @@ class ChangeTicketitTablesToPanichd extends Migration
 		foreach ($this->a_tables as $table){
 			Schema::rename('ticketit_'.$table,'panichd_'.$table);
 		}
+		
+		Ticket::whereNotNull('id')->update(['start_date'=>DB::raw('created_at')]);
     }
 
     /**
