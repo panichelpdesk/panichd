@@ -52,7 +52,7 @@
         @endif
     </div>
     <br>
-    <a href="/tickets-upgrade" class="btn btn-lg btn-primary btn-block" type="submit">
+    <a href="/panichd/upgrade" class="btn btn-lg btn-primary btn-block" type="submit">
         {{ trans('panichd::install.proceed') }}
     </a>
 
