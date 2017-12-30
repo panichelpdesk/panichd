@@ -27,7 +27,7 @@ class InstallController extends Controller
 
     public function publicAssets()
     {
-        $public = $this->allFilesList(public_path('vendor/ticketit'));
+        $public = $this->allFilesList(public_path('vendor/panichd'));
         $assets = $this->allFilesList(base_path('vendor/panichd/panichd/src/Public'));
         if ($public !== $assets) {
             Artisan::call('vendor:publish', [
@@ -67,9 +67,9 @@ class InstallController extends Controller
 
             return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
         }
-        \Log::emergency('Ticketit needs upgrade, admin should login and visit ticketit-install to activate the upgrade');
+        \Log::emergency('Ticketit needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
 
-        throw new \Exception('Ticketit needs upgrade, admin should login and visit ticketit install route');
+        throw new \Exception('Ticketit needs upgrade, admin should login and visit '.url('/panichd'));
     }
 
     /*

@@ -228,8 +228,8 @@ class PanicHDServiceProvider extends ServiceProvider
 				include __DIR__.'/routes.php';
 			}
 			
-        } elseif (Request::path() == 'tickets-install'
-                || Request::path() == 'tickets-upgrade'
+        } elseif (Request::path() == 'panichd/install'
+                || Request::path() == 'panichd/upgrade'
                 || Request::path() == 'tickets'
                 || Request::path() == 'tickets-admin'
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
@@ -238,26 +238,26 @@ class PanicHDServiceProvider extends ServiceProvider
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();
 
-            Route::get('/tickets-install', [
+            Route::get('/panichd/install', [
                 'middleware' => $authMiddleware,
-                'as'         => 'tickets.install.index',
+                'as'         => 'panichd.install.index',
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@index',
             ]);
-            Route::post('/tickets-install', [
+            Route::post('/panichd/install', [
                 'middleware' => $authMiddleware,
-                'as'         => 'tickets.install.setup',
+                'as'         => 'panichd.install.setup',
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@setup',
             ]);
-            Route::get('/tickets-upgrade', [
+            Route::get('/panichd/upgrade', [
                 'middleware' => $authMiddleware,
-                'as'         => 'tickets.install.upgrade',
+                'as'         => 'panichd.install.upgrade',
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@upgrade',
             ]);
             Route::get('/tickets', function () {
-                return redirect()->route('tickets.install.index');
+                return redirect()->route('panichd.install.index');
             });
             Route::get('/tickets-admin', function () {
-                return redirect()->route('tickets.install.index');
+                return redirect()->route('panichd.install.index');
             });
         }
     }
