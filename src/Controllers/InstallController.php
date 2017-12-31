@@ -42,12 +42,12 @@ class InstallController extends Controller
      */
 
     public function index()
-    {
-        // if all migrations are not yet installed or missing settings table,
-        // then start the initial install with admin and master template choices
+    {	
         if (count($this->migrations_tables) == count($this->inactiveMigrations())
             || in_array('2015_10_08_123457_create_settings_table', $this->inactiveMigrations())
         ) {
+			// Panic Help Desk is not installed yet
+			
             $views_files_list = $this->viewsFilesList('../resources/views/') + ['another' => trans('panichd::install.another-file')];
             $inactive_migrations = $this->inactiveMigrations();
             // if Laravel v5.2 or 5.3

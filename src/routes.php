@@ -2,7 +2,8 @@
 
 Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddleware()], function () use ($main_route, $main_route_path, $admin_route, $admin_route_path) {
 
-    //Route::group(['middleware' => '', function () use ($main_route) {
+	
+	//Route::group(['middleware' => '', function () use ($main_route) {
 
     //Ticket public route
     Route::get("$main_route_path/complete", 'PanicHD\PanicHD\Controllers\TicketsController@indexComplete')

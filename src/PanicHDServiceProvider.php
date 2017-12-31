@@ -33,6 +33,18 @@ class PanicHDServiceProvider extends ServiceProvider
             return;
         }
         
+		$this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
+        $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
+		
+		if (Request::path() == 'panichd'){
+			$authMiddleware = Helpers\LaravelVersion::authMiddleware();
+			
+			Route::get('panichd', 'PanicHD\PanicHD\Controllers\InstallController@index')
+				->middleware($authMiddleware)
+				->name("panichd.index");
+		}
+		
+		
 		$this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/panichd')], 'panichd-lang');
 		$this->publishes([__DIR__.'/Views' => base_path('resources/views/vendor/panichd')], 'panichd-views');
         $this->publishes([__DIR__.'/Public' => public_path('vendor/panichd')], 'panichd-public');
@@ -212,9 +224,6 @@ class PanicHDServiceProvider extends ServiceProvider
                 return true;
             });
 
-            $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
-            $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
-
             // Check public assets are present, publish them if not
 //            $installer->publicAssets();
 
@@ -233,16 +242,10 @@ class PanicHDServiceProvider extends ServiceProvider
                 || Request::path() == 'tickets'
                 || Request::path() == 'tickets-admin'
                 || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
-            $this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
-            $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
 
             $authMiddleware = Helpers\LaravelVersion::authMiddleware();
 
-            Route::get('/panichd/install', [
-                'middleware' => $authMiddleware,
-                'as'         => 'panichd.install.index',
-                'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@index',
-            ]);
+
             Route::post('/panichd/install', [
                 'middleware' => $authMiddleware,
                 'as'         => 'panichd.install.setup',
@@ -254,10 +257,10 @@ class PanicHDServiceProvider extends ServiceProvider
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@upgrade',
             ]);
             Route::get('/tickets', function () {
-                return redirect()->route('panichd.install.index');
+                return redirect()->route('panichd.index');
             });
             Route::get('/tickets-admin', function () {
-                return redirect()->route('panichd.install.index');
+                return redirect()->route('panichd.index');
             });
         }
     }
