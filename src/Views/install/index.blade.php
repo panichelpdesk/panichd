@@ -27,20 +27,6 @@
     <h1 style="text-align: center">{{ trans('panichd::install.initial-setup') }}</h1>
   <form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="max-width: 500px">
           <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-        <h3 class="form-signin-heading">{{ trans('panichd::install.master-template-file') }}</h3>
-        <select id="master" name="master" class="form-control" required autofocus>
-            @foreach($views_files_list as $name => $path)
-                <option value="{{ $name }}">{{ $path }}</option>
-            @endforeach
-        </select>
-        <br>
-        <div class="form-group" id="other-path-group" style="display: none">
-            <label for="other_path">{{ trans('panichd::install.master-template-other-path') }}</label>
-            <input type="text" id="other_path" name="other_path" class="form-control" />
-            <span id="helpBlock" class="help-block">
-                {{ trans('panichd::install.master-template-other-path-ex') }}
-            </span>
-        </div>
 
         <h3 class="form-signin-heading">{{ trans('panichd::install.admin-select') }}</h3>
         <select id="admin_id" name="admin_id" class="form-control" required autofocus>

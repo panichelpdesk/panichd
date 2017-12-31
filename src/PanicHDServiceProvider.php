@@ -36,7 +36,7 @@ class PanicHDServiceProvider extends ServiceProvider
 		$this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
         $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
 		
-		if (Request::path() == 'panichd'){
+		if (in_array(Request::path(), ['panichd', 'tickets', 'tickets-admin'])){
 			$authMiddleware = Helpers\LaravelVersion::authMiddleware();
 			
 			Route::get('panichd', 'PanicHD\PanicHD\Controllers\InstallController@index')

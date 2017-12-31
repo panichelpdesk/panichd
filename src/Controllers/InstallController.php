@@ -48,7 +48,6 @@ class InstallController extends Controller
         ) {
 			// Panic Help Desk is not installed yet
 			
-            $views_files_list = $this->viewsFilesList('../resources/views/') + ['another' => trans('panichd::install.another-file')];
             $inactive_migrations = $this->inactiveMigrations();
             // if Laravel v5.2 or 5.3
             if (version_compare(app()->version(), '5.2.0', '>=')) {
@@ -57,7 +56,7 @@ class InstallController extends Controller
                 $users_list = User::lists('name', 'id')->toArray();
             }
 
-            return view('panichd::install.index', compact('views_files_list', 'inactive_migrations', 'users_list'));
+            return view('panichd::install.index', compact('inactive_migrations', 'users_list'));
         }
 
         // other than that, Upgrade to a new version, installing new migrations and new settings slugs
@@ -78,13 +77,7 @@ class InstallController extends Controller
 
     public function setup(Request $request)
     {
-        $master = $request->master;
-        if ($master == 'another') {
-            $another_file = $request->other_path;
-            $views_content = strstr(substr(strstr($another_file, 'views/'), 6), '.blade.php', true);
-            $master = str_replace('/', '.', $views_content);
-        }
-        $this->initialSettings($master);
+        $this->initialSettings();
         $admin_id = $request->admin_id;
         $admin = User::find($admin_id);
         $admin->panichd_admin = true;
@@ -113,7 +106,7 @@ class InstallController extends Controller
      * Initial installer to install migrations, seed default settings, and configure the master_template
      */
 
-    public function initialSettings($master = false)
+    public function initialSettings()
     {
         $inactive_migrations = $this->inactiveMigrations();
         if ($inactive_migrations) { // If a migration is missing, do the migrate
@@ -123,7 +116,7 @@ class InstallController extends Controller
             ]);
             Artisan::call('migrate');
 
-            $this->settingsSeeder($master);
+            $this->settingsSeeder();
 
             // if this is the first install of the html editor, seed old posts text to the new html column
             if (in_array('2016_01_15_002617_add_htmlcontent_to_ticketit_and_comments', $inactive_migrations) &&
@@ -132,17 +125,15 @@ class InstallController extends Controller
             }
         } elseif ($this->inactiveSettings()) { // new settings to be installed
 
-            $this->settingsSeeder($master);
+            $this->settingsSeeder();
         }
         \Cache::forget('panichd::settings');
     }
 
     /**
      * Run the settings table seeder.
-     *
-     * @param string $master
      */
-    public function settingsSeeder($master = false)
+    public function settingsSeeder()
     {
         $cli_path = 'config/ticketit.php'; // if seeder run from cli, use the cli path
         $provider_path = '../config/ticketit.php'; // if seeder run from provider, use the provider path
@@ -158,9 +149,6 @@ class InstallController extends Controller
             File::move($settings_file_path, $settings_file_path.'.backup');
         }
         $seeder = new SettingsTableSeeder();
-        if ($master) {
-            $config_settings['master_template'] = $master;
-        }
         $seeder->config = $config_settings;
         $seeder->run();
     }
