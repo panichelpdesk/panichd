@@ -50,13 +50,8 @@ class InstallController extends Controller
 			
             $inactive_migrations = $this->inactiveMigrations();
             // if Laravel v5.2 or 5.3
-            if (version_compare(app()->version(), '5.2.0', '>=')) {
-                $users_list = User::pluck('name', 'id')->toArray();
-            } else { // if Laravel v5.1
-                $users_list = User::lists('name', 'id')->toArray();
-            }
 
-            return view('panichd::install.index', compact('inactive_migrations', 'users_list'));
+            return view('panichd::install.index', compact('inactive_migrations'));
         }
 
         // other than that, Upgrade to a new version, installing new migrations and new settings slugs

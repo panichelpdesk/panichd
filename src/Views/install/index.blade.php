@@ -25,41 +25,30 @@
 	<div class="page-header">
 		<h1>{{ trans('panichd::install.main-title') }}</h1>
 	</div>
-	<div class="alert alert-warning">{!! trans('panichd::install.not-yet-installed') !!}</div>
-	<p>{{ trans('panichd::install.installation-description') }}</p>
-	<ol><li></li>
-  <form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="max-width: 500px">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-        <h3 class="form-signin-heading">{{ trans('panichd::install.admin-select') }}</h3>
-        <select id="admin_id" name="admin_id" class="form-control" required autofocus>
-            @foreach($users_list as $id => $name)
-                <option value="{{ $id }}">{{ $name }}</option>
-            @endforeach
-        </select>
-        <span id="helpBlock" class="help-block">
-            {{ trans('panichd::install.admin-select-help-block') }}
-        </span>
-        <br>
-
-        <div class="well small" style="border: 1px solid #ccc">
-            @if(!empty($inactive_migrations))
-                <b>{{ trans('panichd::install.migrations-to-be-installed') }}</b>
-                <ul>
-                    @foreach($inactive_migrations as $mig)
-                        <li>{{ $mig }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <b>{{ trans('panichd::install.all-tables-migrated') }}</b>
-            @endif
-        </div>
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
-            {{ trans('panichd::install.proceed') }}
-        </button>
-    </form>
-
+	<div class="text-warning" style="padding: 1em 0em 2em 0em;"><span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.not-yet-installed') !!}</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3>{{ trans('panichd::install.initial-setup') }}</h3>
+			<p>{!! trans('panichd::install.installation-description') !!}</p>
+			<ol>
+			<li>{!! trans('panichd::install.setup-list-migrations', ['num' =>count($inactive_migrations)]) !!} <a href="#" id="show_migrations">{{ trans('panichd::install.setup-migrations-more-info') }}</a><a href="#" id="hide_migrations" style="display: none">{{ trans('panichd::install.setup-migrations-less-info') }}</a></li>
+			<ul id="migrations_list" style="display: none; margin: 0em 0em 1em 0em;">
+				@foreach($inactive_migrations as $mig)
+					<li>{{ $mig }}</li>
+				@endforeach
+			</ul>
+			<li>{{ trans('panichd::install.setup-list-settings') }}</li>
+			<li>{!! trans('panichd::install.setup-list-admin', ['name' => auth()->user()->name, 'email' => auth()->user()->email]) !!}</li>
+			</ol>
+			<form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="margin-top: 2em;">
+				<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+			<button class="btn btn-lg btn-primary" type="submit">
+					{{ trans('panichd::install.install-now') }}
+				</button>
+			</form>
+		</div>
+	</div>
 </div> <!-- /container -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -70,14 +59,23 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
-    $('#master').change(function() {
-        opt = $(this).val();
-        if (opt=="another") {
-            $('#other-path-group').show();
-        } else {
-            $('#other-path-group').hide();
-        }
-    });
+$(function(){
+	$('#show_migrations').click(function(e){
+		e.preventDefault();
+		$('#migrations_list').slideDown();
+		$(this).hide();
+		$('#hide_migrations').show();
+	});
+	$('#hide_migrations').click(function(e){
+		e.preventDefault();
+		$('#migrations_list').slideUp();
+		$(this).hide();
+		$('#show_migrations').show();
+	});
+	
+	
+	
+});
 </script>
 </body>
 </html>

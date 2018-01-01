@@ -7,6 +7,5 @@ return [
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
     'migrations-to-be-installed'      => 'Esta Migração será Instalada:',
     'all-tables-migrated'             => 'Todas as Tabelas serão Migradas',
-    'proceed'                         => 'Continuar',
     'another-file'                    => 'Outro Arquivo',
 ];
