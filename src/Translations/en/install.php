@@ -1,8 +1,10 @@
 <?php
 
 return [
-
-    'initial-setup'                   => 'Panic Help Desk Initial Setup',
+	'main-title'                      => 'Panic Help Desk',
+	'not-yet-installed'               => '<b>Current status:</b> The package installation hasn\'t finished yet.',
+	'installation-description'        => 'Welcome to the Panic Help Desk installation menu! Once you click on "install" button, the following tasks will be done:',
+    'initial-setup'                   => 'Initial Setup',
     'master-template-file'            => 'Master template file',
     'master-template-other-path'      => 'Other path to the master template file',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',

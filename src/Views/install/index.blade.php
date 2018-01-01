@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Panic Help Desk installation</title>
+    <title>PanicHD</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -20,8 +20,14 @@
 
 <body>
 
-<div class="container">
-    <h1 style="text-align: center">{{ trans('panichd::install.initial-setup') }}</h1>
+<div class="container-fluid">
+    
+	<div class="page-header">
+		<h1>{{ trans('panichd::install.main-title') }}</h1>
+	</div>
+	<div class="alert alert-warning">{!! trans('panichd::install.not-yet-installed') !!}</div>
+	<p>{{ trans('panichd::install.installation-description') }}</p>
+	<ol><li></li>
   <form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="max-width: 500px">
           <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 
