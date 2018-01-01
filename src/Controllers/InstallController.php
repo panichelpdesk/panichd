@@ -75,11 +75,10 @@ class InstallController extends Controller
      * Do all pre-requested setup
      */
 
-    public function setup(Request $request)
+    public function setup()
     {
         $this->initialSettings();
-        $admin_id = $request->admin_id;
-        $admin = User::find($admin_id);
+        $admin = User::find(auth()->user()->id);
         $admin->panichd_admin = true;
         $admin->save();
 
