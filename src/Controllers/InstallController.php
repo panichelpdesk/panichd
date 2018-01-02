@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Seeds\SettingsTableSeeder;
 use PanicHD\PanicHD\Seeds\DemoDataSeeder;
@@ -58,19 +59,29 @@ class InstallController extends Controller
      * Do all pre-requested setup
      */
 
-    public function setup()
+    public function setup(Request $request)
     {
         $this->initialSettings();
-        $admin = User::find(auth()->user()->id);
-        $admin->panichd_admin = true;
-        $admin->save();
-		
 		
 		// Publish asset files
 		Artisan::call('vendor:publish', [
 			'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
 			'--tag'      => ['panichd-public'],
 		]);
+		
+		$admin = Agent::find(auth()->user()->id);
+        $admin->panichd_admin = true;
+		
+		if ($request->has('quickstart')){
+			Artisan::call('db:seed', [
+				'--class' => 'PanicHD\\PanicHD\\Seeds\\Basic',
+			]);
+			
+			$admin->panichd_agent = true;
+			$admin->categories()->sync([Category::first()->id]);
+		}
+		
+		$admin->save();
 
         return redirect('/'.Setting::grab('main_route'));
     }

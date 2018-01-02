@@ -43,10 +43,12 @@
 			<li>{!! trans('panichd::install.setup-list-public-assets') !!}
 			</ol>
 			<form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="margin-top: 2em;">
-				<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-			<button class="btn btn-lg btn-primary" type="submit">
-					{{ trans('panichd::install.install-now') }}
-				</button>
+			{{ csrf_field() }}
+			<h3>{{ trans('panichd::install.optional-config') }}</h3>
+			<label style="font-weight: normal;"><input type="checkbox" name="quickstart"> {!! trans('panichd::install.optional-quickstart-data') !!}</label>
+			<p><button class="btn btn-lg btn-primary" type="submit">
+				{{ trans('panichd::install.install-now') }}
+			</button></p>
 			</form>
 		</div>
 	</div>
