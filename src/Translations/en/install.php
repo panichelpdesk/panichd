@@ -11,6 +11,8 @@ return [
 	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'ts default values stored in SettingsTableSeeder.php',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
     'setup-list-public-assets'        => 'All the imperative css, js... package files will be copied to  "public\vendor\panichd" Laravel folder.',
+	'optional-config'                 => 'Optional configuration',
+	'optional-quickstart-data'        => 'Insert basic parameters for a quick start: Includes some essential priorities, statuses and a new category. All of them are editable after installation.',
 	'install-now'                     => 'Install now!',
 	
 	'master-template-file'            => 'Master template file',
