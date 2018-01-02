@@ -25,18 +25,6 @@ class InstallController extends Controller
         }
     }
 
-    public function publicAssets()
-    {
-        $public = $this->allFilesList(public_path('vendor/panichd'));
-        $assets = $this->allFilesList(base_path('vendor/panichd/panichd/src/Public'));
-        if ($public !== $assets) {
-            Artisan::call('vendor:publish', [
-                '--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
-                '--tag'      => ['panichd-public'],
-            ]);
-        }
-    }
-
     /*
      * Initial install form
      */
@@ -76,6 +64,13 @@ class InstallController extends Controller
         $admin = User::find(auth()->user()->id);
         $admin->panichd_admin = true;
         $admin->save();
+		
+		
+		// Publish asset files
+		Artisan::call('vendor:publish', [
+			'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
+			'--tag'      => ['panichd-public'],
+		]);
 
         return redirect('/'.Setting::grab('main_route'));
     }

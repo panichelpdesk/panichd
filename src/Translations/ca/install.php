@@ -10,7 +10,8 @@ return [
 	'setup-migrations-less-info'      => 'Ocultar detall de les migracions',
 	'setup-list-settings'             => 'La taula settings de PanicHD s\'omplirà amb els valors per defecte del fitxer SettingsTableSeeder.php',
 	'setup-list-admin'                => 'El teu compte d\'usuari s\'afegirà com a administrador de Panic Help Desk. Després de la instal·lació podràs afegir-ne altres.',
-    'install-now'                     => 'Instal·lar ara!',
+    'setup-list-public-assets'        => 'Es copiarà al directori de Laravel "public\vendor\panichd" tots els fitxers css, js... necessaris de la llibreria.',
+	'install-now'                     => 'Instal·lar ara!',
 	
 	'master-template-file'            => 'fitxer de plantilla mestra',
     'master-template-other-path'      => 'Una altra ruta d\'accés al fitxer de plantilla mestra',

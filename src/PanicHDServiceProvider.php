@@ -224,9 +224,6 @@ class PanicHDServiceProvider extends ServiceProvider
                 return true;
             });
 
-            // Check public assets are present, publish them if not
-//            $installer->publicAssets();
-
             $main_route = Setting::grab('main_route');
             $main_route_path = Setting::grab('main_route_path');
             $admin_route = Setting::grab('admin_route');

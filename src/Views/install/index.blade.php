@@ -40,6 +40,7 @@
 			</ul>
 			<li>{{ trans('panichd::install.setup-list-settings') }}</li>
 			<li>{!! trans('panichd::install.setup-list-admin', ['name' => auth()->user()->name, 'email' => auth()->user()->email]) !!}</li>
+			<li>{!! trans('panichd::install.setup-list-public-assets') !!}
 			</ol>
 			<form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="margin-top: 2em;">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}" />

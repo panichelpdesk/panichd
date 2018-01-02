@@ -10,7 +10,8 @@ return [
 	'setup-migrations-less-info'      => 'Hide migrations detail',
 	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'ts default values stored in SettingsTableSeeder.php',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
-    'install-now'                     => 'Install now!',
+    'setup-list-public-assets'        => 'All the imperative css, js... package files will be copied to  "public\vendor\panichd" Laravel folder.',
+	'install-now'                     => 'Install now!',
 	
 	'master-template-file'            => 'Master template file',
     'master-template-other-path'      => 'Other path to the master template file',
