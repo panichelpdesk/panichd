@@ -257,6 +257,7 @@ return [
   'show-ticket-add-comment-reply'          => 'Resposta a usuari', 
   'show-ticket-add-com-check-intervention' => 'Afegir aquesta resposta al camp actuació',
   'show-ticket-add-com-check-resolve'      => 'Resoldre el tiquet amb estat',
+  'add-comment-confirm-blank-intervention' => 'El camp "actuació" està en blanc. Vols tancar el tiquet igualment?',
   
   'show-ticket-edit-comment'         => 'Editar comentari',
   'show-ticket-edit-com-check-int'   => 'Afegir el text al camp actuació',

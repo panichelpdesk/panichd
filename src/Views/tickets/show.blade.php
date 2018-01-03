@@ -144,6 +144,18 @@
                 $('div.panel').removeClass('panel-highlight');
 			});
 			
+			$('#new_comment_submit').click(function(e){
+				e.preventDefault();
+				
+				@if($u->currentLevel() > 1 && !$ticket->intervention_html != "")
+					if ($(this).closest('form').find('input[name="complete_ticket"]').is(':checked')){
+						if(!confirm('{!! trans('panichd::lang.add-comment-confirm-blank-intervention') !!}')) return false;
+					} 
+				@endif
+				
+				ajax_form_submit($(this));
+			});
+			
 			// Click "X" to delete comment
 			$('#modal-comment-delete').on('show.bs.modal', function (e) {
 				if ($('#delete-comment-form').attr('data-default-action') == ''){

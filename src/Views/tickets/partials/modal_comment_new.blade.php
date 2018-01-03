@@ -67,7 +67,8 @@
 					@endif
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('panichd::lang.btn-submit'), [
-							'class' => 'btn btn-primary ajax_form_submit',
+							'id' => 'new_comment_submit',
+							'class' => 'btn btn-primary',
 							'data-errors_div' => 'new_comment_errors'
 						]) !!}
 					</div>
