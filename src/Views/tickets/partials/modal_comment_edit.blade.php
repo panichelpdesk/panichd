@@ -3,7 +3,7 @@
         <div class="modal-content">			
 			<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
-                <h4 class="modal-title">{{ trans('panichd::lang.show-ticket-edit-comment') }}</h4>
+                <h4 class="modal-title">{{ trans('panichd::lang.edit-internal-note-title') }}</h4>
             </div>
             <div class="modal-body">
 				<div id="edit_comment_errors" class="alert alert-danger" style="display: none;">
@@ -45,11 +45,7 @@
 							</div>
 						</div>						
 					@endif
-					<div class="form-group">
-						<div class="col-lg-12">
-						<label><input type="checkbox" name="add_to_intervention" value="yes"> {{ trans('panichd::lang.show-ticket-edit-com-check-int') }}</label>
-						</div>
-					</div>
+
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( 'Desar', [
 							'class' => 'btn btn-primary ajax_form_submit',

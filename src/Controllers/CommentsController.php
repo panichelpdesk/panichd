@@ -216,12 +216,7 @@ class CommentsController extends Controller
 		
 		$comment->save();
 		$ticket = Models\Ticket::findOrFail($comment->ticket_id);
-		
-		if ($request->has('add_to_intervention')){			
-			$ticket->intervention = $ticket->intervention.$a_content['content'];
-			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
-			$ticket->save();			
-		}
+		$ticket->touch();
 		
 		if (Setting::grab('ticket_attachments_feature')){
 			// 1 - update existing attachment fields

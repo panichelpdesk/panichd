@@ -259,9 +259,8 @@ return [
   'show-ticket-add-com-check-intervention' => 'Append this text in intervention field',
   'show-ticket-add-com-check-resolve'      => 'Resolve this ticket and apply the status',
   'add-comment-confirm-blank-intervention' => 'The "intervention" field is empty. Would you want to close ticket anyway?',
-  
    
-  'show-ticket-edit-comment'         => 'Edit comment',
+  'edit-internal-note-title'         => 'Edit internal note',
   'show-ticket-edit-com-check-int'   => 'Add text to the intervention field',
   'show-ticket-delete-comment'       => 'Delete comment',
   'show-ticket-delete-comment-msg'   => 'Are you sure you want to delete this comment?',

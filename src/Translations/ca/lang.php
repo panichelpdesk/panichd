@@ -259,7 +259,7 @@ return [
   'show-ticket-add-com-check-resolve'      => 'Resoldre el tiquet amb estat',
   'add-comment-confirm-blank-intervention' => 'El camp "actuació" està en blanc. Vols tancar el tiquet igualment?',
   
-  'show-ticket-edit-comment'         => 'Editar comentari',
+  'edit-internal-note-title'         => 'Editar nota interna',
   'show-ticket-edit-com-check-int'   => 'Afegir el text al camp actuació',
   'show-ticket-delete-comment'       => 'Eliminar comentari',
   'show-ticket-delete-comment-msg'   => 'Estàs segur que vols eliminar aquest comentari?',
