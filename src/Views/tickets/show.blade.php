@@ -117,15 +117,22 @@
 				$(this).find('.fieldset-for-attachment').hide();
 			});
 			
-			// Comment form: Response type (reply or note)
+			// Comment form: Click on response type buttons (reply or note)
 			$('.response_type').click(function(){
 				var type = $(this).attr('data-type');				
 				$('#modal-comment-new #response_type').val(type);
 				$(this).addClass($(this).attr('data-active-class'));
 				
+				if (type == 'reply'){
+					$('#add_to_intervention').prop('disabled', false);
+					$('#add_to_intervention').closest('div').show();
+				}else{
+					$('#add_to_intervention').prop('disabled', true);
+					$('#add_to_intervention').closest('div').hide();
+				}
+				
 				var alt = type == 'note' ? 'reply' : 'note';
 				$('#popup_comment_btn_'+alt).removeClass($('#popup_comment_btn_'+alt).attr('data-active-class'));
-				
 			});
 
 			// Highlight related comment when showing related modal

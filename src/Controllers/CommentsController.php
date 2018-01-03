@@ -139,7 +139,7 @@ class CommentsController extends Controller
 		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
         
-		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id')) and $request->has('add_to_intervention')){
+		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->has('add_to_intervention')){
 			$ticket->intervention = $ticket->intervention.$a_content['content'];
 			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
 		}
