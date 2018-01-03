@@ -2,6 +2,10 @@
 @section('page', trans('panichd::admin.priority-edit-title', ['name' => ucwords($priority->name)]))
 
 @include('panichd::shared.common')
+@include('panichd::shared.colorpicker', [
+	'include_colorpickerplus_script' => true,
+	'input_color' => $priority->color
+])
 
 @section('content')
     <div class="well bs-component">

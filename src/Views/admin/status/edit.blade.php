@@ -2,6 +2,10 @@
 @section('page', trans('panichd::admin.status-edit-title', ['name' => ucwords($status->name)]))
 
 @include('panichd::shared.common')
+@include('panichd::shared.colorpicker', [
+	'include_colorpickerplus_script' => true,
+	'input_color' => $status->color
+])
 
 @section('content')
     <div class="well bs-component">

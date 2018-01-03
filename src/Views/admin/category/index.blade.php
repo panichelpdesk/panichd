@@ -79,13 +79,13 @@
 						<td>
                             {!! link_to_route(
                                                     $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
-                                                    ['class' => 'btn btn-info'] )
+                                                    ['class' => 'btn btn-default'] )
                                 !!}
 
                                 {!! link_to_route(
                                                     $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
                                                     [
-                                                    'class' => 'btn btn-danger deleteit',
+                                                    'class' => 'btn btn-default deleteit',
                                                     'form' => "delete-$category->id",
                                                     "node" => $category->name
                                                     ])

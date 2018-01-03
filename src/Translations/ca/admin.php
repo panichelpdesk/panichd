@@ -24,6 +24,7 @@ return [
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica de nous tiquets',
   'table-num-tickets'             => 'Núm. tiquets',
+  'table-position'                => 'Posició',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
 
@@ -157,14 +158,18 @@ return [
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
+  'priority-index-help'           => 'Pots canviar l\'ordre de les prioritats arrosegant les files d\'aquesta taula. Aquest ordre s\'utilitzarà també a la llista de tiquets quan es seleccioni',
   'btn-create-new-priority'       => 'Crear nova prioritat',
   'priority-index-no-priorities'  => 'No hu ha prioritats, ',
   'priority-index-create-new'     => 'crear nova prioritat',
-  'priority-index-js-delete'      => 'Segur que vols eliminar la prioritat?: ',
-  'priority-create-title'         => 'Create New Priority',
+  'priority-index-js-delete'      => 'Esteu segur que voleu eliminar la prioritat?: ',
+  'priority-create-title'         => 'Crear prioritat nova',
   'priority-create-name'          => 'Nom',
   'priority-create-color'         => 'Color',
-  'priority-edit-title'           => 'Editar Prioritat: :name',
+  'priority-edit-title'           => 'Editar prioritat: :name',
+  'priority-delete-title'         => 'Eliminar prioritat: :name',
+  'priority-delete-warning'           => 'Hi ha <span class="modal-tickets-count"></span> tiquets que utilitzen aquesta prioritat. Has d\'indicar-ne una de nova per a tots ells',
+  'priority-delete-error-no-priority' => 'Cal indicar una prioritat nova per als tiquets que utilitzen la prioritat ":name"',
 
 // tickets-admin/status/____
   'status-index-title'            => 'Gestió d\'estats',
@@ -177,6 +182,7 @@ return [
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Editar Estat: :name',
   'status-delete-title'           => 'Eliminar l\'estat ":name"',
+  'status-delete-warning'         => 'Hi ha <span class="modal-tickets-count"></span> tiquets que utilitzen aquest estat. Has d\'indicar-ne un de nou per a tots ells',
   'status-delete-error-no-status' => 'Cal indicar un estat nou per als tiquets que utilitzen l\'estat ":name"',
 
 // tickets-admin/notice/____

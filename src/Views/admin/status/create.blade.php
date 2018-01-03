@@ -2,6 +2,7 @@
 @section('page', trans('panichd::admin.status-create-title'))
 
 @include('panichd::shared.common')
+@include('panichd::shared.colorpicker', ['include_colorpickerplus_script' => true])
 
 @section('content')
     <div class="well bs-component">

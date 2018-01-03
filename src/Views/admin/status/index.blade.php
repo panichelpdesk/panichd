@@ -54,7 +54,9 @@
 								[
 								'class' => 'btn btn-default deleteit',
 								'data-id' => "$status->id",
-								"data-node" => $status->name,
+
+								"data-name" => $status->name,
+								"data-tickets-count" => $status->tickets_count,
 								"data-modal-title" => trans('panichd::admin.status-delete-title', ['name' => $status->name])
 								])
 							!!}
@@ -92,18 +94,27 @@
 			if ($(form).find("input[name='tickets_new_status_id']").length >0){
 				
 				$('#modal-status-delete').find('.modal-title').text($(this).data('modal-title'));
+
+				$('#modal-status-delete').find('.modal-tickets-count').text($(this).data('tickets-count'));
+				$('#modal-status-delete').find('.modal-status-select').hide();
+				$('#modal-status-delete').find('#select_status_without_'+$(this).data("id")).show();
+				$('#modal-status-delete').find("input[name='modal-status-id']").val($(this).data("id"));
 				$('#modal-status-delete').modal('show');
-
-				
 			}else{
-				alert('no');
+				if (confirm("{!! trans('panichd::admin.status-index-js-delete') !!}" + $(this).data("name") + " ?"))
+				{
+					$("#delete-" + $(this).data("id")).submit();
+				}
 			}
-			
-            /*if (confirm("{!! trans('panichd::admin.status-index-js-delete') !!}" + $(this).data("node") + " ?"))
-            {
-                $("#delete-" + $(this).data("form")).submit();
-            }*/
-
         });
+		
+		$('#submit_status_delete_modal').click(function(e){
+			e.preventDefault();
+			var modal = $(this).closest('#modal-status-delete');
+			var status_id = modal.find("input[name='modal-status-id']").val();
+			
+			$('#delete-'+status_id).find("input[name='tickets_new_status_id']").val(modal.find('#select_status_without_'+status_id).val());
+			$('#delete-'+status_id).submit();
+		});
     </script>
 @append

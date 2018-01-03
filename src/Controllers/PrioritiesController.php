@@ -5,6 +5,7 @@ namespace PanicHD\PanicHD\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Priority;
 
 class PrioritiesController extends Controller
@@ -16,11 +17,15 @@ class PrioritiesController extends Controller
      */
     public function index()
     {
-        $priorities = \Cache::remember('panichd::priorities', 60, function () {
-            return Priority::all();
-        });
+        $priorities = Priority::withCount('tickets')->orderBy('position')->get();
+		
+		if (LaravelVersion::min('5.3.0')) {
+            $priorities_list = $priorities->pluck('name', 'id')->toArray();
+        } else {
+            $priorities_list = $priorities->lists('name', 'id')->toArray();
+        }
 
-        return view('panichd::admin.priority.index', compact('priorities'));
+        return view('panichd::admin.priority.index', compact('priorities', 'priorities_list'));
     }
 
     /**
@@ -48,12 +53,14 @@ class PrioritiesController extends Controller
         ]);
 
         $priority = new Priority();
-        $priority->create(['name' => $request->name, 'color' => $request->color]);
+		
+        $priority->create([
+			'name' => $request->name,
+			'color' => $request->color,
+			'position' => (Priority::count() == 0 ? '1' : (Priority::max('position')+1))
+		]);
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-created', ['name' => $request->name]));
-
-        \Cache::forget('panichd::priorities');
-
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 
@@ -102,11 +109,31 @@ class PrioritiesController extends Controller
         $priority->update(['name' => $request->name, 'color' => $request->color]);
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-modified', ['name' => $request->name]));
-
-        \Cache::forget('panichd::priorities');
-
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
+	
+	public function reorder(Request $request)
+	{
+		$result = "error";
+		if ($request->has('priorities')){
+			
+			$a_priorities = $a_priorities = explode(',', $request->priorities);
+			if (Priority::whereNotIn('id', $a_priorities)->count() == 0
+			and Priority::whereIn('id', $a_priorities)->count() == count($a_priorities)){
+				$index = 1;
+				foreach ($a_priorities as $id){
+					$priority = Priority::findOrFail($id);
+					$priority->position = $index;
+					$priority->save();
+					$index++;
+				}
+				
+				$result = "ok";
+			}
+		}
+		
+		return response()->json(['result' => $result]);
+	}
 
     /**
      * Remove the specified resource from storage.
@@ -115,16 +142,25 @@ class PrioritiesController extends Controller
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $priority = Priority::findOrFail($id);
         $name = $priority->name;
-        $priority->delete();
+		
+		if ($request->has('tickets_new_priority_id')){
+			$this->validate($request, [
+				'tickets_new_priority_id' => 'required|exists:panichd_priorities,id',
+			]);
+			$priority->delete($request->tickets_new_priority_id);
+		}else{
+			if ($priority->tickets()->count() > 0){
+				return back()->with('warning', trans('panichd::admin.priority-delete-error-no-priority', ['name' => $name]));
+			}
+			
+			$priority->delete();
+		}
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-deleted', ['name' => $name]));
-
-        \Cache::forget('panichd::priorities');
-
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 }

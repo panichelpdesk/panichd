@@ -24,6 +24,7 @@ return [
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'New tickets automatic assignment',
   'table-num-tickets'             => 'Tickets count',
+  'table-position'                => 'Position',
   'table-remove-agent'            => 'Remove from agents',
   'table-remove-administrator'    => 'Remove from administrators', // New
 
@@ -158,6 +159,7 @@ return [
 
 // tickets-admin/priority/____
   'priority-index-title'          => 'Priorities Management',
+  'priority-index-help'           => 'You may change priority order dragging this table rows. This order will be used also in ticket list when checking this field',
   'btn-create-new-priority'       => 'Create new priority',
   'priority-index-no-priorities'  => 'There are no priorities, ',
   'priority-index-create-new'     => 'create new priority',
@@ -165,7 +167,10 @@ return [
   'priority-create-title'         => 'Create New Priority',
   'priority-create-name'          => 'Name',
   'priority-create-color'         => 'Color',
-  'priority-edit-title'           => 'Edit Priority: :name',
+  'priority-edit-title'           => 'Edit priority: :name',
+  'priority-delete-title'         => 'Delete priority: :name',
+  'priority-delete-warning'         => 'There are <span class="modal-tickets-count"></span> tickets that use this priority. You must choose another one for all of them',
+  'priority-delete-error-no-priority' => 'You have to specify a new priority for ":name" priority related tickets',
 
 // tickets-admin/status/____
   'status-index-title'            => 'Statuses Management',
@@ -178,6 +183,7 @@ return [
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Edit Status: :name',
   'status-delete-title'           => 'Delete status ":name"',
+  'status-delete-warning'         => 'There are <span class="modal-tickets-count"></span> tickets that use this status. You must choose another one for all of them',
   'status-delete-error-no-status' => 'You have to specify a new status for ":name" status related tickets',
   
 // tickets-admin/notice/____
