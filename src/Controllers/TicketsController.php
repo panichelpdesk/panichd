@@ -1052,7 +1052,8 @@ class TicketsController extends Controller
     public function complete(Request $request, $id)
     {
         if ($this->permToClose($id) == 'yes') {
-            $ticket = $this->tickets->findOrFail($id);
+            $original_ticket = $this->tickets->findOrFail($id);
+			$ticket = clone $original_ticket;
 			$user = $this->agent->find(auth()->user()->id);
 			
 			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
@@ -1126,6 +1127,8 @@ class TicketsController extends Controller
 			$comment->ticket_id = $id;
 			$comment->user_id = $user->id;
 			$comment->save();
+			
+			event(new TicketUpdated($original_ticket, $ticket));
 			
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,

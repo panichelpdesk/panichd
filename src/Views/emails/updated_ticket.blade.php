@@ -19,7 +19,7 @@
 	@if ($recipient->levelInCategory($ticket->category->id) > 1)
 		@include('panichd::emails.partial.common_fields')
 		@include('panichd::emails.partial.both_html_fields')
-	@elseif ( $original_ticket->isComplete() != $ticket->isComplete() || $original_ticket->status->id != $ticket->status->id)
+	@elseif ( !$ticket->isComplete() && $original_ticket->status->id != $ticket->status->id)
 		@include('panichd::emails.partial.user_fields')
 	@endif
 @stop
