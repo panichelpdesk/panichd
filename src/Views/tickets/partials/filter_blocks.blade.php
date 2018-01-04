@@ -80,7 +80,7 @@ $cld_options = [
 @endif
 
 <div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
-@if (count($filters['agent'])>3)
+@if (count($filters['agent'])>$setting->grab('max_agent_buttons'))
 	
 	<div id="select_agent_container" class="{{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">

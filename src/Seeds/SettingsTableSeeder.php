@@ -338,6 +338,11 @@ class SettingsTableSeeder extends Seeder
 			*/
 			'nav_icons_user_sizes' => 'sm',
 			'nav_icons_admin_sizes' => 'sm,md',
+			
+			/*
+			 * Max number of agent specific buttons in filter panel. If agent count is bigger, select2 will be shown
+			*/
+			'max_agent_buttons' => '4',
         ];
     }
 }
