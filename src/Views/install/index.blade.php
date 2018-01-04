@@ -6,13 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Ticketit Installation</title>
+    <title>PanicHD</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-    <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,72 +20,65 @@
 
 <body>
 
-<div class="container">
-    <h1 style="text-align: center">{{ trans('panichd::install.initial-setup') }}</h1>
-  <form class="form-signin" action="{{url('/tickets-install') }}" method="post" style="max-width: 500px">
-          <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-        <h3 class="form-signin-heading">{{ trans('panichd::install.master-template-file') }}</h3>
-        <select id="master" name="master" class="form-control" required autofocus>
-            @foreach($views_files_list as $name => $path)
-                <option value="{{ $name }}">{{ $path }}</option>
-            @endforeach
-        </select>
-        <br>
-        <div class="form-group" id="other-path-group" style="display: none">
-            <label for="other_path">{{ trans('panichd::install.master-template-other-path') }}</label>
-            <input type="text" id="other_path" name="other_path" class="form-control" />
-            <span id="helpBlock" class="help-block">
-                {{ trans('panichd::install.master-template-other-path-ex') }}
-            </span>
-        </div>
-
-        <h3 class="form-signin-heading">{{ trans('panichd::install.admin-select') }}</h3>
-        <select id="admin_id" name="admin_id" class="form-control" required autofocus>
-            @foreach($users_list as $id => $name)
-                <option value="{{ $id }}">{{ $name }}</option>
-            @endforeach
-        </select>
-        <span id="helpBlock" class="help-block">
-            {{ trans('panichd::install.admin-select-help-block') }}
-        </span>
-        <br>
-
-        <div class="well small" style="border: 1px solid #ccc">
-            @if(!empty($inactive_migrations))
-                <b>{{ trans('panichd::install.migrations-to-be-installed') }}</b>
-                <ul>
-                    @foreach($inactive_migrations as $mig)
-                        <li>{{ $mig }}</li>
-                    @endforeach
-                </ul>
-            @else
-                <b>{{ trans('panichd::install.all-tables-migrated') }}</b>
-            @endif
-        </div>
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
-            {{ trans('panichd::install.proceed') }}
-        </button>
-    </form>
-
+<div class="container-fluid">
+    
+	<div class="page-header">
+		<h1>{{ trans('panichd::install.main-title') }}</h1>
+	</div>
+	<div class="text-warning" style="padding: 1em 0em 2em 0em;"><span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.not-yet-installed') !!}</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h3>{{ trans('panichd::install.initial-setup') }}</h3>
+			<p>{!! trans('panichd::install.installation-description') !!}</p>
+			<ol>
+			<li>{!! trans('panichd::install.setup-list-migrations', ['num' =>count($inactive_migrations)]) !!} <a href="#" id="show_migrations">{{ trans('panichd::install.setup-migrations-more-info') }}</a><a href="#" id="hide_migrations" style="display: none">{{ trans('panichd::install.setup-migrations-less-info') }}</a></li>
+			<ul id="migrations_list" style="display: none; margin: 0em 0em 1em 0em;">
+				@foreach($inactive_migrations as $mig)
+					<li>{{ $mig }}</li>
+				@endforeach
+			</ul>
+			<li>{{ trans('panichd::install.setup-list-settings') }}</li>
+			<li>{!! trans('panichd::install.setup-list-admin', ['name' => auth()->user()->name, 'email' => auth()->user()->email]) !!}</li>
+			<li>{!! trans('panichd::install.setup-list-public-assets') !!}
+			</ol>
+			<form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="margin-top: 2em;">
+			{{ csrf_field() }}
+			<h3>{{ trans('panichd::install.optional-config') }}</h3>
+			<label style="font-weight: normal;"><input type="checkbox" name="quickstart"> {!! trans('panichd::install.optional-quickstart-data') !!}</label>
+			<p><button class="btn btn-lg btn-primary" type="submit">
+				{{ trans('panichd::install.install-now') }}
+			</button></p>
+			</form>
+		</div>
+	</div>
 </div> <!-- /container -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
-    $('#master').change(function() {
-        opt = $(this).val();
-        if (opt=="another") {
-            $('#other-path-group').show();
-        } else {
-            $('#other-path-group').hide();
-        }
-    });
+$(function(){
+	$('#show_migrations').click(function(e){
+		e.preventDefault();
+		$('#migrations_list').slideDown();
+		$(this).hide();
+		$('#hide_migrations').show();
+	});
+	$('#hide_migrations').click(function(e){
+		e.preventDefault();
+		$('#migrations_list').slideUp();
+		$(this).hide();
+		$('#show_migrations').show();
+	});
+	
+	
+	
+});
 </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <ul class="nav nav-pills">
 	<?php 
-		$title = trans('panichd::lang.filter-'.((session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters'))) ? 'on' : 'off').'-total');
+		$title = trans('panichd::lang.filter-'.((session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters'))) ? 'on' : 'off').'-total');
 		$nav_hidden_sizes = $setting->grab('nav_icons_user_sizes');
 		$nav_text = $nav_icon = "";
 		if ($nav_hidden_sizes != ""){
@@ -22,7 +22,7 @@
 				<span class="{{ $nav_icon }} glyphicon glyphicon-certificate"></span>
 
 				<span class="badge" title="{{ $title }}" style="cursor: help">
-				@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
+				@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
 					<span class="glyphicon glyphicon-filter"></span>
 				@endif
 				@if (isset($ticket))
@@ -32,7 +32,7 @@
 				@endif
 				
 				</span>
-				@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
+				@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
 					<span class="glyphicon glyphicon-filter"></span>
 				@endif
 				 <span class="caret"></span>
@@ -61,7 +61,7 @@
 			<span class="{{ $nav_icon }} glyphicon glyphicon-file"></span>			
 			
 			<span class="badge" title="{{ $title }}" style="cursor: help">
-			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
+			@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
@@ -71,7 +71,7 @@
 			@endif
 			
 			</span>
-			@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
+			@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 		</a>
@@ -82,7 +82,7 @@
 			<span class="{{ $nav_icon }} glyphicon glyphicon-ok-circle"></span>
 			
 			<span class="badge" title="{{ $title }}" style="cursor: help">
-			@if (session()->has('ticketit_filter_currentLevel') or (isset($ticket) and session()->has('ticketit_filters')))
+			@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
@@ -92,7 +92,7 @@
 			@endif
 			
 			</span>
-			@if (!isset($ticket) and session()->has('ticketit_filters') and !session()->has('ticketit_filter_currentLevel'))
+			@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 		</a>

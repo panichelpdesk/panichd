@@ -183,7 +183,7 @@ class Agent extends User
 		if ($agent->isAdmin()){
 			return 3;
 		}elseif($agent->isAgent()){
-			if (session()->exists('ticketit_filter_currentLevel') and session('ticketit_filter_currentLevel')==1){
+			if (session()->exists('panichd_filter_currentLevel') and session('panichd_filter_currentLevel')==1){
 				return 1;
 			}else{
 				return 2;

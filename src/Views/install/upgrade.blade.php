@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Ticketit Upgrade</title>
+    <title>Panic Help Desk upgrade</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -52,7 +52,7 @@
         @endif
     </div>
     <br>
-    <a href="/tickets-upgrade" class="btn btn-lg btn-primary btn-block" type="submit">
+    <a href="/panichd/upgrade" class="btn btn-lg btn-primary btn-block" type="submit">
         {{ trans('panichd::install.proceed') }}
     </a>
 

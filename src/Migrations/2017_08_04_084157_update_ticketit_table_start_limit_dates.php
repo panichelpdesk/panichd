@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use PanicHD\PanicHD\Models\Ticket;
 
 class UpdateTicketitTableStartLimitDates extends Migration
 {
@@ -18,8 +17,6 @@ class UpdateTicketitTableStartLimitDates extends Migration
             $table->timestamp('start_date')->nullable();
 			$table->timestamp('limit_date')->nullable();
         });
-		
-		Ticket::whereNotNull('id')->update(['start_date'=>DB::raw('created_at')]);
     }
 
     /**

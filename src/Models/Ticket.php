@@ -506,13 +506,13 @@ class Ticket extends Model
 		$agent = Agent::find(auth()->user()->id);
 		
 		if ($agent->currentLevel() == 1){
-			// If session()->has('ticketit_filter_currentLevel')
+			// If session()->has('panichd_filter_currentLevel')
 			return $query->userTickets(auth()->user()->id);
 		}else{
-			if (session()->has('ticketit_filters')){
+			if (session()->has('panichd_filters')){
 				// Calendar filter
-				if (session()->has('ticketit_filter_calendar')){
-					$cld = session('ticketit_filter_calendar');
+				if (session()->has('panichd_filter_calendar')){
+					$cld = session('panichd_filter_calendar');
 					
 					if ($cld == "expired"){
 						$query = $query->where('limit_date', '<', Carbon::now());
@@ -542,19 +542,19 @@ class Ticket extends Model
 				
 				
 				// Category filter
-				if (session()->has('ticketit_filter_category')){
-					$category = session('ticketit_filter_category');
-					$query = $query->where('category_id', session('ticketit_filter_category'));
+				if (session()->has('panichd_filter_category')){
+					$category = session('panichd_filter_category');
+					$query = $query->where('category_id', session('panichd_filter_category'));
 				}
 				
 				// Agent filter
-				if (session()->has('ticketit_filter_agent')){
-					$agent = session('ticketit_filter_agent');
-					$query = $query->agentTickets(session('ticketit_filter_agent'));
+				if (session()->has('panichd_filter_agent')){
+					$agent = session('panichd_filter_agent');
+					$query = $query->agentTickets(session('panichd_filter_agent'));
 				}
 
 				// Owner filter
-				if (session()->has('ticketit_filter_owner') and session('ticketit_filter_owner')=="me"){
+				if (session()->has('panichd_filter_owner') and session('panichd_filter_owner')=="me"){
 					$query = $query->userTickets(auth()->user()->id);
 				}			
 			}

@@ -80,13 +80,13 @@ class SettingsTableSeeder extends Seeder
         return [
 
             /*
-             * Ticketit main route: Where to load the ticket system (ex. http://url/tickets)
+             * Panic Help Desk main route: Where to load the ticket system (ex. http://url/tickets)
              * Default: /ticket
              */
             'main_route'      => 'tickets',
             'main_route_path' => 'tickets',
             /*
-             * Ticketit admin route: Where to load the ticket administration dashboard (ex. http://url/tickets-admin)
+             * Panic Help Desk admin route: Where to load the ticket administration dashboard (ex. http://url/tickets-admin)
              * Default: /ticket
              */
             'admin_route'      => 'tickets-admin',
@@ -175,9 +175,10 @@ class SettingsTableSeeder extends Seeder
 			/*
              * Defines relative path under storage_path() where to store attached files
              *
-             * Default: <storage_path>/ticketit_attachments
+             * Default: <storage_path>/panichd_attachments
              */
-            'attachments_path' => 'ticketit_attachments',		
+            'attachments_path' => 'panichd_attachments',
+			'thumbnails_path' => 'panichd_thumbnails',
 					
 			
             /*
@@ -242,7 +243,7 @@ class SettingsTableSeeder extends Seeder
             'editor_enabled' => 'yes',
 
             /*
-             * If Font-awesome css is included outside ticketit, this should be set to 'no'
+             * If Font-awesome css is included outside Panic Help Desk, this should be set to 'no'
              * Default: 'yes'
              */
             'include_font_awesome' => 'yes',
@@ -305,14 +306,14 @@ class SettingsTableSeeder extends Seeder
             /*
              * Set custom routes file
              *
-             * Useful if you want to replace any of the Ticketit components
+             * Useful if you want to replace any of the Panic Help Desk components
              *
              * Default: __DIR__.'/routes.php'
              */
             'routes' => 'default',
 			
 			/*
-			 * Ticketit optional features
+			 * Panic Help Desk optional features
 			*/
 			
 			/*

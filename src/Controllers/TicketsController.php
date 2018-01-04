@@ -345,7 +345,7 @@ class TicketsController extends Controller
     {
         $counts = $filters = [];
 		$tickets;
-        $category = session('ticketit_filter_category') == '' ? null : session('ticketit_filter_category');
+        $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
 		
 		if ($this->agent->isAdmin() or $this->agent->isAgent()){
 			// Get all forth tickets
@@ -388,8 +388,8 @@ class TicketsController extends Controller
 			}
 			
 			// Calendar filter to tickets collection
-			if (session('ticketit_filter_calendar') != '') {
-				$tickets = $a_cal[session('ticketit_filter_calendar')];
+			if (session('panichd_filter_calendar') != '') {
+				$tickets = $a_cal[session('panichd_filter_calendar')];
 			}else{
 				// Tickets collection
 				$tickets = Ticket::inList($ticketList)->visible();
@@ -416,7 +416,7 @@ class TicketsController extends Controller
             }
 
             // Ticket filter for each visible Agent
-            if (session('ticketit_filter_category') != '') {
+            if (session('panichd_filter_category') != '') {
                 $filters['agent'] = Agent::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 });
@@ -430,11 +430,11 @@ class TicketsController extends Controller
         }
 
         // Forget agent if it doesn't exist in current category
-        $agent = session('ticketit_filter_agent');
+        $agent = session('panichd_filter_agent');
         if (isset($filters['agent']) and $filters['agent']->filter(function ($q) use ($agent) {
             return $q->id == $agent;
         })->count() == 0) {
-            $request->session()->forget('ticketit_filter_agent');
+            $request->session()->forget('panichd_filter_agent');
         }
 
         return ['counts' => $counts, 'filters' => $filters];

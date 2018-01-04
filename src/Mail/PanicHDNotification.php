@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TicketitNotification extends Mailable
+class PanicHDNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
