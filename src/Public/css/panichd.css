@@ -132,6 +132,26 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: 0.9em;
 }
 
+/*
+ * General Select2 styles
+*/
+.select2-selection--single {
+	height: 34px !important;
+	border-color: #ccc !important;
+	padding: 2px 6px;
+}
+.select2-selection__arrow {
+	top: 3px !important;
+}
+
+.select2-container *:focus {
+	outline: none;
+}
+
+.select2-selection--single .select2-search input {
+	border: 1px solid #ccc !important;
+}
+
 .select2-results__option[aria-selected=true] {
     color: #555;
 	font-weight: bold;
@@ -269,8 +289,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-
 /* Common elements */
+.form-control {
+	font-size: 16px;
+}
 .text-info {
 	color: #549ee8;
 }
