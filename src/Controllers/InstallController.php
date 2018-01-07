@@ -33,7 +33,7 @@ class InstallController extends Controller
     public function index()
     {	
         if (count($this->migrations_tables) == count($this->inactiveMigrations())
-            || in_array('2015_10_08_123457_create_settings_table', $this->inactiveMigrations())
+            || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations())
         ) {
 			// Panic Help Desk is not installed yet
 			

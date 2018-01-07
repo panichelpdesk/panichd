@@ -3,7 +3,8 @@
 return [
 	'main-title'                      => 'Panic Help Desk',
 	'not-yet-installed'               => '<b>Current status:</b> The package installation <b>hasn\'t finished yet</b>.',
-	'installation-description'        => 'Welcome to the <b>Panic Help Desk installation menu!</b> Once you click on "Install now!" button, the following tasks will be done:',
+	'welcome'                         => 'Welcome to the <b>Panic Help Desk installation menu!</b>',
+	'setup-list'                      => 'Once you click on "Install now!" button, the following tasks will be done:',
     'initial-setup'                   => 'Initial Setup',
 	'setup-list-migrations'           => '<b>:num</b> migration files will be published to Laravel app and installed',
 	'setup-migrations-more-info'      => 'View migrations detail',

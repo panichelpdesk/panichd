@@ -3,7 +3,8 @@
 return [
 	'main-title'                      => 'Panic Help Desk',
 	'not-yet-installed'               => '<b>Estat actual:</b> La instal·lació de la llibreria encara <b>no s\'ha acabat</b>.',
-	'installation-description'        => 'Benvingut al menú d\'<b>instal·lació de Panic Help Desk!</b> Quan premis el botó "Instal·lar ara!" es farà les següents accions:',
+	'welcome'                         => 'Benvingut al menú d\'<b>instal·lació de Panic Help Desk!</b>',
+	'setup-list'                      => 'Quan premis el botó "Instal·lar ara!" es farà les següents accions:',
     'initial-setup'                   => 'Configuració inicial',
 	'setup-list-migrations'           => '<b>:num</b> migracions de la base de dades es publicarà i s\'instal·larà a l\'aplicació Laravel',
 	'setup-migrations-more-info'      => 'Veure detall de les migracions',

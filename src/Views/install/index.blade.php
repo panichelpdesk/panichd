@@ -22,15 +22,20 @@
 
 <div class="container-fluid">
     
-	<div class="page-header">
-		<h1>{{ trans('panichd::install.main-title') }}</h1>
+	<div class="page-header" style="margin: 20px 0px 10px 0px;">
+		<div class="row">
+			<div class="col-md-6 col-sm-5"><h1>{{ trans('panichd::install.main-title') }}</h1></div>
+			<div class="col-md-6 col-sm-7"><div class="text-warning pull-right" style="margin: 2em 0em 0em 0em;"><span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.not-yet-installed') !!}</div></div>
+		</div>
+		
 	</div>
-	<div class="text-warning" style="padding: 1em 0em 2em 0em;"><span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.not-yet-installed') !!}</div>
+	
 	
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<h3>{{ trans('panichd::install.initial-setup') }}</h3>
-			<p>{!! trans('panichd::install.installation-description') !!}</p>
+			<!--<h3>{{ trans('panichd::install.initial-setup') }}</h3>-->
+			<h3 style="margin: 0.8em 1em 0.8em 0em;">{!! trans('panichd::install.welcome') !!}</h3>
+			<p>{!! trans('panichd::install.setup-list') !!}</p>
 			<ol>
 			<li>{!! trans('panichd::install.setup-list-migrations', ['num' =>count($inactive_migrations)]) !!} <a href="#" id="show_migrations">{{ trans('panichd::install.setup-migrations-more-info') }}</a><a href="#" id="hide_migrations" style="display: none">{{ trans('panichd::install.setup-migrations-less-info') }}</a></li>
 			<ul id="migrations_list" style="display: none; margin: 0em 0em 1em 0em;">
@@ -44,9 +49,9 @@
 			</ol>
 			<form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="margin-top: 2em;">
 			{{ csrf_field() }}
-			<h3>{{ trans('panichd::install.optional-config') }}</h3>
+			<h4>{{ trans('panichd::install.optional-config') }}</h4>
 			<label style="font-weight: normal;"><input type="checkbox" name="quickstart"> {!! trans('panichd::install.optional-quickstart-data') !!}</label>
-			<p><button class="btn btn-lg btn-primary" type="submit">
+			<p><button id="install_now" class="btn btn-lg btn-primary" type="submit">
 				{{ trans('panichd::install.install-now') }}
 			</button></p>
 			</form>
@@ -76,7 +81,9 @@ $(function(){
 		$('#show_migrations').show();
 	});
 	
-	
+	$('#install_now').click(function(){
+		$(this).prop('disabled', true);
+	});
 	
 });
 </script>
