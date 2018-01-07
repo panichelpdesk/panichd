@@ -36,7 +36,8 @@ class PanicHDServiceProvider extends ServiceProvider
 		$this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
         $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
 		
-		if (Request::is('panichd') || Request::is('panichd/*')){
+		if (Request::is('panichd') || Request::is('panichd/*')
+			|| in_array(Request::path(), ['tickets', 'tickets-admin'])){
 			$authMiddleware = Helpers\LaravelVersion::authMiddleware();
 			
 			Route::get('panichd', 'PanicHD\PanicHD\Controllers\InstallController@index')
@@ -239,26 +240,14 @@ class PanicHDServiceProvider extends ServiceProvider
 				include __DIR__.'/routes.php';
 			}
 			
-        } elseif (Request::path() == 'panichd/upgrade'
-                || Request::path() == 'tickets'
-                || Request::path() == 'tickets-admin'
-                || (isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
-
-            $authMiddleware = Helpers\LaravelVersion::authMiddleware();
-
-
-            Route::get('/panichd/upgrade', [
-                'middleware' => $authMiddleware,
-                'as'         => 'panichd.install.upgrade',
-                'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@upgrade',
-            ]);
-            Route::get('/tickets', function () {
-                return redirect()->route('panichd.index');
+        } else{
+			Route::get('/tickets', function () {
+                return redirect()->route('panichd.install.index');
             });
             Route::get('/tickets-admin', function () {
-                return redirect()->route('panichd.index');
+                return redirect()->route('panichd.install.index');
             });
-        }
+		}
     }
 
     /**
