@@ -32,27 +32,41 @@ class InstallController extends Controller
 
     public function index()
     {	
-        if (count($this->migrations_tables) == count($this->inactiveMigrations())
+        if (session()->has('current_status') and in_array(session('current_status'), ['installed', 'updated'])){
+			if (session('current_status') == 'installed'){
+				return view('panichd::install.status', [
+					'title' => trans('panichd::install.just-installed'),
+					'description' => trans('panichd::install.installed-package-options'),
+					'options' => [
+						'<a href="'.route(Setting::grab('admin_route').'.category.index').'">'.trans('panichd::install.package-link-categories').'</a>',
+						'<a href="'.route(Setting::grab('main_route').'.index').'">'.trans('panichd::install.package-link-new-ticket').'</a>',
+						
+					]
+				]);
+			}
+		}else{
+			if (count($this->migrations_tables) == count($this->inactiveMigrations())
             || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations())
-        ) {
-			// Panic Help Desk is not installed yet
-			
-            $inactive_migrations = $this->inactiveMigrations();
-            // if Laravel v5.2 or 5.3
+			) {
+				// Panic Help Desk is not installed yet
+				
+				$inactive_migrations = $this->inactiveMigrations();
+				// if Laravel v5.2 or 5.3
 
-            return view('panichd::install.index', compact('inactive_migrations'));
-        }
+				return view('panichd::install.index', compact('inactive_migrations'));
+			}
 
-        // other than that, Upgrade to a new version, installing new migrations and new settings slugs
-        if (Agent::isAdmin()) {
-            $inactive_migrations = $this->inactiveMigrations();
-            $inactive_settings = $this->inactiveSettings();
+			// other than that, Upgrade to a new version, installing new migrations and new settings slugs
+			if (Agent::isAdmin()) {
+				$inactive_migrations = $this->inactiveMigrations();
+				$inactive_settings = $this->inactiveSettings();
 
-            return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
-        }
-        \Log::emergency('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
+				return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
+			}
+			\Log::emergency('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
 
-        throw new \Exception('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd'));
+			throw new \Exception('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd'));
+		}
     }
 
     /*
@@ -83,8 +97,9 @@ class InstallController extends Controller
 		
 		$admin->save();
 
-        return redirect('/'.Setting::grab('main_route'));
+        return redirect()->route('panichd.install.index')->with('current_status', 'installed');
     }
+	
 
     /*
      * Do version upgrade

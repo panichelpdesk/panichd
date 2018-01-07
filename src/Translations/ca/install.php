@@ -16,6 +16,11 @@ return [
 	'optional-quickstart-data'        => 'Afegir paràmetres d\'inici ràpid:<ul><li>Inclou prioritats i estats bàsics i una categoria de tiquets.</li><li>El teu compte d\'usuari s\'afegirà com a agent a la categoria creada.</li><li>Tots son modificables després de la instal·lació.</li></ul>',
 	'install-now'                     => 'Instal·lar ara!',
 	
+	'just-installed'                  => 'Felicitats! Ja tens <b>instal·lat i configurat</b> Panic Help Desk.',
+	'installed-package-options'       => 'A partir d\'ara pots accedir quan vulguis a :panichd per controlar l\'estat de la llibreria. Altres accions que pots fer ara:',
+	'package-link-categories'         => 'Administrar les categories de tiquets',
+	'package-link-new-ticket'         => 'Crear un nou tiquet',
+	
 	'master-template-file'            => 'fitxer de plantilla mestra',
     'master-template-other-path'      => 'Una altra ruta d\'accés al fitxer de plantilla mestra',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',

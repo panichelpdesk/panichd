@@ -63,6 +63,8 @@ $(function(){
 	
 	$('#install_now').click(function(){
 		$(this).prop('disabled', true);
+		
+		$(this).closest('form').submit();
 	});
 	
 });

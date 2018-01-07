@@ -16,6 +16,11 @@ return [
 	'optional-quickstart-data'        => 'Add quickstart configuration:<ul><li>Add essential priorities, statuses and a new category.</li><li>Current user will be added as an agent on that category.</li><li>All of them are editable after installation.</li></ul>',
 	'install-now'                     => 'Install now!',
 	
+	'just-installed'                  => 'Congratulations! You have Panic Help Desk <b>installed and configured</b>.',
+	'installed-package-options'       => 'From now you may access whenever you want to :panichd to control package status. Some actions you may do now are:',
+	'package-link-categories'         => 'Manage ticket categories',
+	'package-link-new-ticket'         => 'Create a new ticket',
+	
 	'master-template-file'            => 'Master template file',
     'master-template-other-path'      => 'Other path to the master template file',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
