@@ -6,9 +6,11 @@ return [
 	'welcome'                         => 'Welcome to the <b>Panic Help Desk installation menu!</b>',
 	'setup-list'                      => 'Once you click on "Install now!" button, the following tasks will be done:',
     'initial-setup'                   => 'Initial Setup',
+	
 	'setup-list-migrations'           => '<b>:num</b> migration files will be published to Laravel app and installed',
 	'setup-migrations-more-info'      => 'View migrations detail',
 	'setup-migrations-less-info'      => 'Hide migrations detail',
+	
 	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'ts default values stored in SettingsTableSeeder.php',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
     'setup-list-public-assets'        => 'All the imperative css, js... package files will be copied to  "public\vendor\panichd" Laravel folder.',
@@ -24,13 +26,20 @@ return [
 	'package-requires-update'         => 'Panic Help Desk requires to <b>configure an upgrade</b>',
 	'package-requires-update-info'    => 'The administrator has installed a Panic Help Desk upgrade but has not finished configuring it. Please wait until the process has ended',
 	
+	'status-out-of-date'              => '<b>Current status: Offline</b> until the the upgrade is configured',
+	'about-to-update'                 => 'This is the Panic Help Desk <b>upgrade menu</b>',
+	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
+	'all-tables-migrated'             => 'There are no pending database updates, so no migration will be executed',
+	'upgrade-now'                     => 'Upgrade now!',
+	
+	
 	'package-status-ok'               => 'The package is correctly configured',
 	
 	'master-template-file'            => 'Master template file',
     'master-template-other-path'      => 'Other path to the master template file',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
     'migrations-to-be-installed'      => 'These migrations will be installed:',
-    'all-tables-migrated'             => 'All needed tables are migrated',
+    
     'another-file'                    => 'another File',
     'upgrade'                         => 'Panic Help Desk version upgrade', // New v0.2.3
     'settings-to-be-installed'        => 'These settings will be installed:', // New v0.2.3

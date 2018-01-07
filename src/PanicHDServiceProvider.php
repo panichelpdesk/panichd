@@ -49,6 +49,12 @@ class PanicHDServiceProvider extends ServiceProvider
                 'as'         => 'panichd.install.setup',
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@setup',
             ]);
+			
+			Route::post('/panichd/upgrade', [
+                'middleware' => $authMiddleware,
+                'as'         => 'panichd.install.upgrade',
+                'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@upgrade',
+            ]);
 		}
 		
 		$this->publishes([__DIR__.'/Translations' => base_path('resources/lang/vendor/panichd')], 'panichd-lang');

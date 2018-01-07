@@ -32,18 +32,16 @@ class InstallController extends Controller
 
     public function index()
     {	
-        if (session()->has('current_status') and in_array(session('current_status'), ['installed', 'updated'])){
-			if (session('current_status') == 'installed'){
-				return view('panichd::install.status', [
-					'title' => trans('panichd::install.just-installed'),
-					'description' => trans('panichd::install.installed-package-options'),
-					'options' => [
-						'<a href="'.route(Setting::grab('admin_route').'.category.index').'">'.trans('panichd::install.package-link-categories').'</a>',
-						'<a href="'.route(Setting::grab('main_route').'.index').'">'.trans('panichd::install.package-link-new-ticket').'</a>',
-						
-					]
-				]);
-			}
+        if (session()->has('current_status') and session('current_status') == 'installed'){
+			return view('panichd::install.status', [
+				'title' => trans('panichd::install.just-installed'),
+				'description' => trans('panichd::install.installed-package-options'),
+				'options' => [
+					'<a href="'.route(Setting::grab('admin_route').'.category.index').'">'.trans('panichd::install.package-link-categories').'</a>',
+					'<a href="'.route(Setting::grab('main_route').'.index').'">'.trans('panichd::install.package-link-new-ticket').'</a>',
+					
+				]
+			]);
 		}else{
 			$inactive_migrations = $this->inactiveMigrations();
 			$inactive_settings = $this->inactiveSettings();
@@ -78,12 +76,13 @@ class InstallController extends Controller
     }
 
     /*
-     * Do all pre-requested setup
+     * Installation setup
      */
 
     public function setup(Request $request)
     {
-        $this->initialSettings();
+        // Migrations and Settings
+		$this->initialSettings();
 		
 		// Publish asset files
 		Artisan::call('vendor:publish', [
@@ -107,6 +106,21 @@ class InstallController extends Controller
 
         return redirect()->route('panichd.install.index')->with('current_status', 'installed');
     }
+	
+	/*
+     * Upgrade setup
+     */
+	public function upgrade()
+	{
+		if (Agent::isAdmin()){
+			// Migrations and Settings
+			$this->initialSettings();
+			
+			 return redirect()->route('panichd.install.index')->with('current_status', 'upgraded');
+		}else{
+			return redirect()->route('panichd.install.index');
+		}
+	}
 
     /*
      * Initial installer to install migrations, seed default settings, and configure the master_template

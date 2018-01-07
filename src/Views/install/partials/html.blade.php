@@ -61,7 +61,7 @@ $(function(){
 		$('#show_migrations').show();
 	});
 	
-	$('#install_now').click(function(){
+	$('.btn-primary').click(function(){
 		$(this).prop('disabled', true);
 		
 		$(this).closest('form').submit();

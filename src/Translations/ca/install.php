@@ -6,9 +6,11 @@ return [
 	'welcome'                         => 'Benvingut al menú d\'<b>instal·lació de Panic Help Desk!</b>',
 	'setup-list'                      => 'Quan premis el botó "Instal·lar ara!" es farà les següents accions:',
     'initial-setup'                   => 'Configuració inicial',
+	
 	'setup-list-migrations'           => '<b>:num</b> migracions de la base de dades es publicarà i s\'instal·larà a l\'aplicació Laravel',
 	'setup-migrations-more-info'      => 'Veure detall de les migracions',
 	'setup-migrations-less-info'      => 'Ocultar detall de les migracions',
+	
 	'setup-list-settings'             => 'La taula settings de PanicHD s\'omplirà amb els valors per defecte del fitxer SettingsTableSeeder.php',
 	'setup-list-admin'                => 'El teu compte d\'usuari s\'afegirà com a administrador de Panic Help Desk. Després de la instal·lació podràs afegir-ne altres.',
     'setup-list-public-assets'        => 'Es copiarà al directori de Laravel "public\vendor\panichd" tots els fitxers css, js... necessaris de la llibreria.',
@@ -24,13 +26,20 @@ return [
 	'package-requires-update'         => 'Panic Help Desk requereix <b>configurar una actualització</b>',
 	'package-requires-update-info'    => 'L\'Administrador ha instal·lat una actualització de Panic Help Desk però no ha acabat de configurar-la. Si us plau espera que el procés hagi acabat',
 	
+	'status-out-of-date'              => '<b>Estat actual: Fora de línia</b> fins que s\'instal·li la darrera actualització',
+	'about-to-update'                 => 'Aquest és el <b>menú d\'actualització</b> de Panic Help Desk',
+	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
+	'all-tables-migrated'             => 'No hi ha actualitzacions pendents de la base de dades així que no s\'executarà cap migració.',
+	'upgrade-now'                     => 'Upgrade now!',
+	
+	
 	'package-status-ok'               => 'La llibreria està correctament configurada',
 	
 	'master-template-file'            => 'fitxer de plantilla mestra',
     'master-template-other-path'      => 'Una altra ruta d\'accés al fitxer de plantilla mestra',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
     'migrations-to-be-installed'      => 'S\'instal·laran aquestes migracions:',
-    'all-tables-migrated'             => 'Es migraran totes les taules necessàries',
+
     'another-file'                    => 'un altre arxiu',
     'upgrade'                         => 'Actualització de la versió de Panic Help Desk',
     'settings-to-be-installed'        => 'S\'instal·laran aquests ajustos:',
