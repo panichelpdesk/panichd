@@ -45,27 +45,35 @@ class InstallController extends Controller
 				]);
 			}
 		}else{
-			if (count($this->migrations_tables) == count($this->inactiveMigrations())
+			$inactive_migrations = $this->inactiveMigrations();
+			$inactive_settings = $this->inactiveSettings();
+			
+			if (count($this->migrations_tables) == count($inactive_migrations)
             || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations())
 			) {
 				// Panic Help Desk is not installed yet
 				
 				$inactive_migrations = $this->inactiveMigrations();
-				// if Laravel v5.2 or 5.3
-
 				return view('panichd::install.index', compact('inactive_migrations'));
+			}elseif($inactive_settings and count($inactive_settings) > 0){
+				
+				// Panic Help Desk requires an upgrade
+				if (Agent::isAdmin()){
+					return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
+				}else{
+					return view('panichd::install.status', [
+						'title' => trans('panichd::install.package-requires-update'),
+						'description' => trans('panichd::install.package-requires-update-info'),
+					]);
+				}
+				
+			}else{
+				// Panic Help Desk status is OK: Show package status info
+				return view('panichd::install.status', [
+					'title' => trans('panichd::install.package-status-ok'),
+					'description' => '',
+				]);
 			}
-
-			// other than that, Upgrade to a new version, installing new migrations and new settings slugs
-			if (Agent::isAdmin()) {
-				$inactive_migrations = $this->inactiveMigrations();
-				$inactive_settings = $this->inactiveSettings();
-
-				return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
-			}
-			\Log::emergency('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
-
-			throw new \Exception('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd'));
 		}
     }
 
@@ -98,23 +106,6 @@ class InstallController extends Controller
 		$admin->save();
 
         return redirect()->route('panichd.install.index')->with('current_status', 'installed');
-    }
-	
-
-    /*
-     * Do version upgrade
-     */
-
-    public function upgrade()
-    {
-        if (Agent::isAdmin()) {
-            $this->initialSettings();
-
-            return redirect('/'.Setting::grab('main_route'));
-        }
-        \Log::emergency('Panic Help Desk upgrade path access: Only admin is allowed to upgrade');
-
-        throw new \Exception('Panic Help Desk upgrade path access: Only admin is allowed to upgrade');
     }
 
     /*
@@ -264,7 +255,6 @@ class InstallController extends Controller
         }
 
         $inactive_settings = array_diff_key($default_Settings, $installed_settings);
-
         return $inactive_settings;
     }
 

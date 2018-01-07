@@ -21,6 +21,11 @@ return [
 	'package-link-categories'         => 'Administrar les categories de tiquets',
 	'package-link-new-ticket'         => 'Crear un nou tiquet',
 	
+	'package-requires-update'         => 'Panic Help Desk requereix <b>configurar una actualització</b>',
+	'package-requires-update-info'    => 'L\'Administrador ha instal·lat una actualització de Panic Help Desk però no ha acabat de configurar-la. Si us plau espera que el procés hagi acabat',
+	
+	'package-status-ok'               => 'La llibreria està correctament configurada',
+	
 	'master-template-file'            => 'fitxer de plantilla mestra',
     'master-template-other-path'      => 'Una altra ruta d\'accés al fitxer de plantilla mestra',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',

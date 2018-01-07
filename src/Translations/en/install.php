@@ -21,6 +21,11 @@ return [
 	'package-link-categories'         => 'Manage ticket categories',
 	'package-link-new-ticket'         => 'Create a new ticket',
 	
+	'package-requires-update'         => 'Panic Help Desk requires to <b>configure an upgrade</b>',
+	'package-requires-update-info'    => 'The administrator has installed a Panic Help Desk upgrade but has not finished configuring it. Please wait until the process has ended',
+	
+	'package-status-ok'               => 'The package is correctly configured',
+	
 	'master-template-file'            => 'Master template file',
     'master-template-other-path'      => 'Other path to the master template file',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
