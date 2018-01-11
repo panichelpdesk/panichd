@@ -30,6 +30,11 @@ return [
 	'about-to-update'                 => 'Aquest és el <b>menú d\'actualització</b> de Panic Help Desk',
 	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
 	'all-tables-migrated'             => 'No hi ha actualitzacions pendents de la base de dades així que no s\'executarà cap migració.',
+	
+	'choose-public-folder-action'     => 'Has fet modificacions als fitxers del directori "public/vendor/panichd"? Vols fer-ne una còpia de seguretat?',
+	'public-folder-destroy'           => 'No (Opció recomanada)',
+	'public-folder-backup'            => 'Si. Fer còpia de seguretat del directori abans de copiar els fitxers nous',
+	
 	'upgrade-now'                     => 'Upgrade now!',
 	
 	

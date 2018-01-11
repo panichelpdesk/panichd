@@ -34,6 +34,16 @@
     
 	<form class="form-horizontal" action="{{url('/panichd/upgrade') }}" method="post">
 	{{ csrf_field() }}
+	<h4>{{ trans('panichd::install.optional-config') }}</h4>
+	<ul>
+	<li>{{ trans('panichd::install.choose-public-folder-action') }}</li>
+	<div style="margin: 0em 0em 0em 2em;">
+	<label style="display: block; font-weight: normal"><input type="radio" name="folder-action" value="destroy" checked> {{ trans('panichd::install.public-folder-destroy') }}</label>
+	<label style="display: block; font-weight: normal"><input type="radio" name="folder-action" value="backup"> {{ trans('panichd::install.public-folder-backup') }}</label>
+	</div>
+	</ul>
+	
+	
     <p><button class="btn btn-lg btn-primary" type="submit">
         {{ trans('panichd::install.upgrade-now') }}
     </button></p>

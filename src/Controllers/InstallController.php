@@ -110,13 +110,30 @@ class InstallController extends Controller
 	/*
      * Upgrade setup
      */
-	public function upgrade()
+	public function upgrade(Request $request)
 	{
 		if (Agent::isAdmin()){
 			// Migrations and Settings
 			$this->initialSettings();
 			
-			 return redirect()->route('panichd.install.index')->with('current_status', 'upgraded');
+			$path = public_path().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'panichd';
+			
+			if($request->input('folder-action')=='backup'){
+				// Backup assets
+				File::move($path, $path.'_backup_'.date('Y-m-d_H_i', time()));
+			}else{
+				// Delete published assets
+				File::deleteDirectory(public_path().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'panichd');
+			}
+			
+			// Publish asset files
+			Artisan::call('vendor:publish', [
+				'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
+				'--tag'      => ['panichd-public'],
+				'--force'    => true
+			]);
+			
+			return redirect()->route('panichd.install.index')->with('current_status', 'upgraded');
 		}else{
 			return redirect()->route('panichd.install.index');
 		}

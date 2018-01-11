@@ -30,6 +30,12 @@ return [
 	'about-to-update'                 => 'This is the Panic Help Desk <b>upgrade menu</b>',
 	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
 	'all-tables-migrated'             => 'There are no pending database updates, so no migration will be executed',
+	
+	'choose-public-folder-action'     => 'Have you done any modifications to the files at Laravel\'s "public/vendor/panichd" folder? Do you want to backup it?',
+	'public-folder-destroy'           => 'No (Recommended option)',
+	'public-folder-backup'            => 'Yes. Make a directory backup before copying the new files',
+	
+	
 	'upgrade-now'                     => 'Upgrade now!',
 	
 	
