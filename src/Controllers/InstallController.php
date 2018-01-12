@@ -39,7 +39,6 @@ class InstallController extends Controller
 				'options' => [
 					'<a href="'.route(Setting::grab('admin_route').'.category.index').'">'.trans('panichd::install.package-link-categories').'</a>',
 					'<a href="'.route(Setting::grab('main_route').'.index').'">'.trans('panichd::install.package-link-new-ticket').'</a>',
-					
 				]
 			]);
 		}else{
