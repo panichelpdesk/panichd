@@ -18,33 +18,33 @@ return [
 	'optional-quickstart-data'        => 'Afegir paràmetres d\'inici ràpid:<ul><li>Inclou prioritats i estats bàsics i una categoria de tiquets.</li><li>El teu compte d\'usuari s\'afegirà com a agent a la categoria creada.</li><li>Tots son modificables després de la instal·lació.</li></ul>',
 	'install-now'                     => 'Instal·lar ara!',
 	
-	'just-installed'                  => 'Felicitats! Ja tens <b>instal·lat i configurat</b> Panic Help Desk.',
-	'installed-package-options'       => 'A partir d\'ara pots accedir quan vulguis a :panichd per controlar l\'estat de la llibreria. Altres accions que pots fer ara:',
-	'package-link-categories'         => 'Administrar les categories de tiquets',
-	'package-link-new-ticket'         => 'Crear un nou tiquet',
+	'just-installed'                  => 'Felicitats! Ja tens Panic Help Desk <b>instal·lat i configurat</b>.',
+	'installed-package-description'   => 'A partir d\'ara pots accedir quan vulguis a <a href=":panichd">:panichd</a> per controlar l\'estat de la llibreria.',
+	'continue-to-main-menu'           => 'Continuar al menú principal',
 	
 	'package-requires-update'         => 'Panic Help Desk requereix <b>configurar una actualització</b>',
 	'package-requires-update-info'    => 'L\'Administrador ha instal·lat una actualització de Panic Help Desk però no ha acabat de configurar-la. Si us plau espera que el procés hagi acabat',
 	
 	'status-out-of-date'              => '<b>Estat actual: Fora de línia</b> fins que s\'instal·li la darrera actualització',
 	'about-to-update'                 => 'Aquest és el <b>menú d\'actualització</b> de Panic Help Desk',
-	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
+	'about-to-update-description'     => 'Un cop facis clic al botó "Actualitzar ara", es farà els següents canvis:',
 	'all-tables-migrated'             => 'No hi ha actualitzacions pendents de la base de dades així que no s\'executarà cap migració.',
 	
 	'choose-public-folder-action'     => 'Has fet modificacions als fitxers del directori "public/vendor/panichd"? Vols fer-ne una còpia de seguretat?',
 	'public-folder-destroy'           => 'No (Opció recomanada)',
 	'public-folder-backup'            => 'Si. Fer còpia de seguretat del directori abans de copiar els fitxers nous',
 	
-	'upgrade-now'                     => 'Upgrade now!',
+	'upgrade-now'                     => 'Actualitzar ara!',
 	
+	'upgrade-done'                    => 'L\'actualització ha acabat correctament.',
 	
-	'package-status-ok'               => 'La llibreria està correctament configurada',
+	'pending-settings'                => 'Encara hi ha alguna <b>configuració pendent</b>',
+	'pending-settings-description'    => 'Abans de poder afegir nous tiquets, t\'has d\'assegurar que tens almenys un estat, prioritat, categoria i un agent que hi estigui assignat.',
 	
 	'master-template-file'            => 'fitxer de plantilla mestra',
     'master-template-other-path'      => 'Una altra ruta d\'accés al fitxer de plantilla mestra',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
     'migrations-to-be-installed'      => 'S\'instal·laran aquestes migracions:',
-
     'another-file'                    => 'un altre arxiu',
     'upgrade'                         => 'Actualització de la versió de Panic Help Desk',
     'settings-to-be-installed'        => 'S\'instal·laran aquests ajustos:',

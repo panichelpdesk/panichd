@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Setting;
@@ -32,18 +33,22 @@ class InstallController extends Controller
 
     public function index()
     {	
-        if (session()->has('current_status') and session('current_status') == 'installed'){
-			return view('panichd::install.status', [
-				'title' => trans('panichd::install.just-installed'),
-				'description' => trans('panichd::install.installed-package-options'),
-				'options' => [
-					'<a href="'.route(Setting::grab('admin_route').'.category.index').'">'.trans('panichd::install.package-link-categories').'</a>',
-					'<a href="'.route(Setting::grab('main_route').'.index').'">'.trans('panichd::install.package-link-new-ticket').'</a>',
-				]
-			]);
+		if (session()->has('current_status')){
+			switch (session('current_status')){
+				case 'installed':
+					return view('panichd::install.status', [
+						'title' => trans('panichd::install.just-installed'),
+						'description' => trans('panichd::install.installed-package-description', ['panichd' => url('panichd/')])
+					]);
+					break;
+				case 'upgraded':
+					return view('panichd::install.status', [
+						'title' => trans('panichd::install.upgrade-done')
+					]);
+					break;
+			}
 		}else{
 			$inactive_migrations = $this->inactiveMigrations();
-			$inactive_settings = $this->inactiveSettings();
 			
 			if (count($this->migrations_tables) == count($inactive_migrations)
             || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations())
@@ -52,24 +57,33 @@ class InstallController extends Controller
 				
 				$inactive_migrations = $this->inactiveMigrations();
 				return view('panichd::install.index', compact('inactive_migrations'));
-			}elseif($inactive_settings and count($inactive_settings) > 0){
+			}else{
+				$inactive_settings = $this->inactiveSettings();
 				
-				// Panic Help Desk requires an upgrade
-				if (Agent::isAdmin()){
-					return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
+				if($inactive_settings and count($inactive_settings) > 0){
+					// Panic Help Desk requires an upgrade
+					if (Agent::isAdmin()){
+						return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
+					}else{
+						return view('panichd::install.status', [
+							'title' => trans('panichd::install.package-requires-update'),
+							'description' => trans('panichd::install.package-requires-update-info'),
+						]);
+					}
+					
+				}elseif(Models\Agent::count() != 0
+					and Models\Category::count() != 0
+					and Models\Priority::count() != 0
+					and Models\Status::count() != 0){
+					// Panic Help Desk is OK: Redirect to dashboard
+					return redirect()->route('dashboard');
 				}else{
-					return view('panichd::install.status', [
-						'title' => trans('panichd::install.package-requires-update'),
-						'description' => trans('panichd::install.package-requires-update-info'),
+					// Panic Help Desk requires some configuration to allow ticket creation
+					return view('panichd::install.configurations_pending', [
+						'title' => trans('panichd::install.pending-settings'),
+						'description' => trans('panichd::install.pending-settings-description'),
 					]);
 				}
-				
-			}else{
-				// Panic Help Desk status is OK: Show package status info
-				return view('panichd::install.status', [
-					'title' => trans('panichd::install.package-status-ok'),
-					'description' => '',
-				]);
 			}
 		}
     }

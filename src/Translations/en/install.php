@@ -18,10 +18,9 @@ return [
 	'optional-quickstart-data'        => 'Add quickstart configuration:<ul><li>Add essential priorities, statuses and a new category.</li><li>Current user will be added as an agent on that category.</li><li>All of them are editable after installation.</li></ul>',
 	'install-now'                     => 'Install now!',
 	
-	'just-installed'                  => 'Congratulations! You have Panic Help Desk <b>installed and configured</b>.',
-	'installed-package-options'       => 'From now you may access whenever you want to :panichd to control package status. Some actions you may do now are:',
-	'package-link-categories'         => 'Manage ticket categories',
-	'package-link-new-ticket'         => 'Create a new ticket',
+	'just-installed'                  => 'Congratulations! You have <b>installed and configured</b> Panic Help Desk.',
+	'installed-package-description'   => 'From now you may access whenever you want to <a href=":panichd">:panichd</a> to control package status.',
+	'continue-to-main-menu'           => 'Continue to main menu',
 	
 	'package-requires-update'         => 'Panic Help Desk requires to <b>configure an upgrade</b>',
 	'package-requires-update-info'    => 'The administrator has installed a Panic Help Desk upgrade but has not finished configuring it. Please wait until the process has ended',
@@ -35,17 +34,17 @@ return [
 	'public-folder-destroy'           => 'No (Recommended option)',
 	'public-folder-backup'            => 'Yes. Make a directory backup before copying the new files',
 	
-	
 	'upgrade-now'                     => 'Upgrade now!',
 	
+	'upgrade-done'                    => 'The upgrade has finished correctly',
 	
-	'package-status-ok'               => 'The package is correctly configured',
+		'pending-settings'                => 'There are still some <b>configurations pending</b>',
+	'pending-settings-description'    => 'Before you can add new tickets, you must ensure that you have at least one status, priority, category and an agent assigned to it.',
 	
 	'master-template-file'            => 'Master template file',
     'master-template-other-path'      => 'Other path to the master template file',
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
     'migrations-to-be-installed'      => 'These migrations will be installed:',
-    
     'another-file'                    => 'another File',
     'upgrade'                         => 'Panic Help Desk version upgrade', // New v0.2.3
     'settings-to-be-installed'        => 'These settings will be installed:', // New v0.2.3
