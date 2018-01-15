@@ -105,6 +105,7 @@
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
 						</div>
+						<div class="jquery_error_text"></div>
 					</div>
 				</div>
 				<div class="form-group" style="margin-bottom: 3em">
@@ -300,11 +301,11 @@
 		
 		$('#start_date').datetimepicker({
 			locale: '{{App::getLocale()}}',
-			format: 'YYYY-MM-DD HH:mm'
+			format: '{{ trans('panichd::lang.datetimepicker-format') }}'
 		});
 		$('#limit_date').datetimepicker({			
 			locale: '{{App::getLocale()}}',
-			format: 'YYYY-MM-DD HH:mm',
+			format: '{{ trans('panichd::lang.datetimepicker-format') }}',
 			useCurrent: false
 			@if ($a_current['start_date'] != "")
 				, minDate: '{{ $a_current['start_date'] }}'

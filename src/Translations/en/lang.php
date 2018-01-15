@@ -119,6 +119,8 @@ return [
   'created'                          => 'Created',
   'crop-image'                       => 'Image crop',
   'date-format'                      => 'Y-m-d',
+  'datetimepicker-format'            => 'YYYY-MM-DD HH:mm',
+  'datetimepicker-validation'        => 'Y-m-d H:i',
   'date-info-created'                => 'Creation date',
   'date-info-updated'                => 'Last update date',
   'department'                       => 'Department',

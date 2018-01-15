@@ -659,6 +659,21 @@ class TicketsController extends Controller
 			$fields['status_id'] = 'required|exists:panichd_statuses,id';
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
+			if ($request->has('start_date')){
+				$start_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('start_date'));
+				$plus_10_y = date('Y', time())+10;
+				
+				
+				$request->merge([
+					// Avoid PDOException for example with year 1
+					'start_date' => ($start_date->year < 2017 or $start_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $start_date->toDateTimeString(),
+					'start_date_year' => $start_date->year
+				]);
+				
+				$fields['start_date'] = 'date';
+				$fields['start_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+			}
+			
 			$a_intervention = $common_data['a_intervention'] = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
 				'intervention'=> $a_intervention['intervention'],
@@ -672,10 +687,11 @@ class TicketsController extends Controller
 
 		// Custom validation messages
 		$custom_messages = [
-			'subject.required' => 'panichd::lang.validate-ticket-subject.required',
-			'subject.min' => 'panichd::lang.validate-ticket-subject.min',
-			'content.required' => 'panichd::lang.validate-ticket-content.required',
-			'content.min' => 'panichd::lang.validate-ticket-content.min',
+			'subject.required'        => 'panichd::lang.validate-ticket-subject.required',
+			'subject.min'             => 'panichd::lang.validate-ticket-subject.min',
+			'content.required'        => 'panichd::lang.validate-ticket-content.required',
+			'content.min'             => 'panichd::lang.validate-ticket-content.min',
+			'start_date_year.in'      => 'panichd::lang.validate-ticket-start_date'
 		];
 		foreach ($custom_messages as $field => $lang_key){
 			$trans = trans ($lang_key);
@@ -694,6 +710,11 @@ class TicketsController extends Controller
 			$a_result_errors['messages'] = (array)$validator->errors()->all();
 			
 			$a_fields = (array)$validator->errors()->messages();
+			
+			if (isset($a_fields['start_date_year']) and !isset($a_fields['start_date'])){
+				$a_fields['start_date'] = $a_fields['start_date_year'];
+				unset ($a_fields['start_date_year']);
+			}
 			
 			foreach ($a_fields as $field=>$errors){
 				$a_fields[$field] = implode('. ', $errors);
