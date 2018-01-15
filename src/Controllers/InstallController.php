@@ -71,18 +71,8 @@ class InstallController extends Controller
 						]);
 					}
 					
-				}elseif(Models\Agent::count() != 0
-					and Models\Category::count() != 0
-					and Models\Priority::count() != 0
-					and Models\Status::count() != 0){
-					// Panic Help Desk is OK: Redirect to dashboard
-					return redirect()->route('dashboard');
 				}else{
-					// Panic Help Desk requires some configuration to allow ticket creation
-					return view('panichd::install.configurations_pending', [
-						'title' => trans('panichd::install.pending-settings'),
-						'description' => trans('panichd::install.pending-settings-description'),
-					]);
+					return redirect()->route('dashboard');
 				}
 			}
 		}

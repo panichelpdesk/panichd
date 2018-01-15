@@ -19,11 +19,10 @@ class DashboardController extends Controller
 			or Models\Status::count() == 0){
 			
 			// Show pending configurations message
-			return redirect()->route('panichd.install.index');
+			return view('panichd::install.configurations_pending');
 		}
 		
 		// Load Dashboard info
-		
 		$tickets_count = Ticket::count();
         $open_tickets_count = Ticket::whereNull('completed_at')->count();
         $closed_tickets_count = $tickets_count - $open_tickets_count;
