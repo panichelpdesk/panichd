@@ -301,11 +301,13 @@
 		
 		$('#start_date').datetimepicker({
 			locale: '{{App::getLocale()}}',
-			format: '{{ trans('panichd::lang.datetimepicker-format') }}'
+			format: '{{ trans('panichd::lang.datetimepicker-format') }}',
+			keyBinds: { 'delete':null, 'left':null, 'right':null }
 		});
 		$('#limit_date').datetimepicker({			
 			locale: '{{App::getLocale()}}',
 			format: '{{ trans('panichd::lang.datetimepicker-format') }}',
+			keyBinds: { 'delete':null, 'left':null, 'right':null },
 			useCurrent: false
 			@if ($a_current['start_date'] != "")
 				, minDate: '{{ $a_current['start_date'] }}'
