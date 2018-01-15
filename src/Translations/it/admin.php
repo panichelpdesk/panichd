@@ -44,7 +44,7 @@ return [
   *  Page specific
   */
 
-// tickets-admin/____
+// $admin_route_path/dashboard
   'index-title'                         => 'Scrivania Sistema Richiesta Assistenza',
   'index-empty-records'                 => 'Nessun tickets ancora',
   'index-total-tickets'                 => 'Tickets totali',
@@ -74,7 +74,7 @@ return [
   'index-categories-chart'              => 'Tickets distrituiti per categoria',
   'index-agents-chart'                  => 'Tickets distribuiti per agente',
 
-// tickets-admin/agent/____
+// $admin_route_path/agent/____
   'agent-index-title'             => 'Gestione Agente',
   'btn-create-new-agent'          => 'Crea nuovo Agente',
   'agent-index-no-agents'         => 'Non ci sono agenti, ',
@@ -84,7 +84,7 @@ return [
   'agent-create-no-users'         => 'Non ci sono account utente, crea prima un account utente.',
   'agent-create-select-user'      => 'Seleziona un account utente da aggiungere agli agenti',
 
-// tickets-admin/administrators/____
+// $admin_route_path/administrators/____
   'administrator-index-title'                   => 'Gestione Amministratori',  //new
   'btn-create-new-administrator'                => 'Crea Nuovo Amministratore',  //new
   'administrator-index-no-administrators'       => 'Non ci sono Amministratori, ',  //new
@@ -94,7 +94,7 @@ return [
   'administrator-create-no-users'               => 'Non ci sono account Amministratori, crea un account prima.',  //new
   'administrator-create-select-user'            => 'Seleziona un account da aggiungere agli amministratori',  //new
 
-// tickets-admin/category/____
+// $admin_route_path/category/____
   'category-index-title'          => 'Gestione Categorie',
   'btn-create-new-category'       => 'Crea nuova Categoria',
   'category-index-no-categories'  => 'Non ci sono Categorie, ',
@@ -105,7 +105,7 @@ return [
   'category-create-color'         => 'Colore',
   'category-edit-title'           => 'Modifica Categoria: :name',
 
-// tickets-admin/priority/____
+// $admin_route_path/priority/____
   'priority-index-title'          => 'Gestione Priorità',
   'btn-create-new-priority'       => 'Crea nuova Priorita',
   'priority-index-no-priorities'  => 'non ci sono Priorità, ',
@@ -116,7 +116,7 @@ return [
   'priority-create-color'         => 'Colore',
   'priority-edit-title'           => 'Modifica Priorità: :name',
 
-// tickets-admin/status/____
+// $admin_route_path/status/____
   'status-index-title'            => 'Gestione Stati',
   'btn-create-new-status'         => 'Crea Nuovo Stato',
   'status-index-no-statuses'      => 'There are no statues,',
@@ -127,7 +127,7 @@ return [
   'status-create-color'           => 'Colore',
   'status-edit-title'             => 'Modifica Stato: :name',
 
-// tickets-admin/configuration/____
+// $admin_route_path/configuration/____
   'config-index-title'            => 'Gestione delle Impostazioni',
   'config-index-subtitle'         => 'Impostazioni',
   'btn-create-new-config'         => 'Aggiungi nuova impostazione',

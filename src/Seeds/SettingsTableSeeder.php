@@ -80,17 +80,17 @@ class SettingsTableSeeder extends Seeder
         return [
 
             /*
-             * Panic Help Desk main route: Where to load the ticket system (ex. http://url/tickets)
-             * Default: /ticket
+             * Panic Help Desk tickets route: Where to load the ticket list (ex. http://url/tickets)
+             * Default: /tickets
              */
             'main_route'      => 'tickets',
             'main_route_path' => 'tickets',
             /*
-             * Panic Help Desk admin route: Where to load the ticket administration dashboard (ex. http://url/tickets-admin)
-             * Default: /ticket
+             * Panic Help Desk admin route: Where to load all the administration menusd (ex. http://url/panichd/category)
+             * Default: /panichd
              */
-            'admin_route'      => 'tickets-admin',
-            'admin_route_path' => 'tickets-admin',
+            'admin_route'      => 'panichd',
+            'admin_route_path' => 'panichd',
             /*
              * Template adherence: The master blade template to be extended
              * Default: panichd::master

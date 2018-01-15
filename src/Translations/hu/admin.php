@@ -38,7 +38,7 @@ return [
  /*
   *  Page specific
   */
-// tickets-admin/____
+// $admin_route_path/dashboard
   'index-title'                         => 'Supportrendszer Irányítópult',
   'index-empty-records'                 => 'Még nincsenek kérelmek',
   'index-total-tickets'                 => 'Összes kérelem',
@@ -67,7 +67,7 @@ return [
   'index-performance-chart'             => 'Átlagosan hány napig tart egy kérelem megoldása?',
   'index-categories-chart'              => 'Kérelem-eloszlás kategóriánként',
   'index-agents-chart'                  => 'Kérelem-eloszlás ügynökönként',
-// tickets-admin/agent/____
+// $admin_route_path/agent/____
   'agent-index-title'             => 'Ügynökök kezelése',
   'btn-create-new-agent'          => 'Új ügynök létrehozása',
   'agent-index-no-agents'         => 'Nincsenek ügynökök, ',
@@ -76,7 +76,7 @@ return [
   'agent-create-add-agents'       => 'Ügynökök hozzáadása',
   'agent-create-no-users'         => 'Nincsenek felhasználói fiókok, hozzon előbb létre egyet.',
   'agent-create-select-user'      => 'Válasszon felhasználókat, akiket ügynöknek akar tenni.',
-// tickets-admin/administrators/____
+// $admin_route_path/administrators/____
   'administrator-index-title'                   => 'Administratorok kezelése',
   'btn-create-new-administrator'                => 'Új administrator létrehozása',
   'administrator-index-no-administrators'       => 'Nincsenek administratorok, ',
@@ -85,7 +85,7 @@ return [
   'administrator-create-add-administrators'     => 'Administratorok hozzáadása',
   'administrator-create-no-users'               => 'Nincsenek felhasználói fiókok, előbb hozzon létre egyet.',
   'administrator-create-select-user'            => 'Válassza ki a felhasználókat, akiket administratorrá szeretne megtenni.',
-// tickets-admin/category/____
+// $admin_route_path/category/____
   'category-index-title'          => 'Kategóriák kezelése',
   'btn-create-new-category'       => 'Kategória létrehozása',
   'category-index-no-categories'  => 'Nincsenek kategóriák, ',
@@ -95,7 +95,7 @@ return [
   'category-create-name'          => 'Név',
   'category-create-color'         => 'Szín',
   'category-edit-title'           => 'Kategória szerkesztése: :name',
-// tickets-admin/priority/____
+// $admin_route_path/priority/____
   'priority-index-title'          => 'Prioritások kezelése',
   'btn-create-new-priority'       => 'Prioritás létrehozása',
   'priority-index-no-priorities'  => 'Nincsenek prioritások, ',
@@ -105,7 +105,7 @@ return [
   'priority-create-name'          => 'Név',
   'priority-create-color'         => 'Szín',
   'priority-edit-title'           => 'Prioritás szerkesztése: :name',
-// tickets-admin/status/____
+// $admin_route_path/status/____
   'status-index-title'            => 'Státuszok kezelése',
   'btn-create-new-status'         => 'Státusz létrehozása',
   'status-index-no-statuses'      => 'Nincsenek státuszok,',
@@ -116,7 +116,7 @@ return [
   'status-create-color'           => 'Szín',
   'status-edit-title'             => 'Státusz szerkesztése: :name',
 
-// tickets-admin/configuration/____
+// $admin_route_path/configuration/____
   'config-index-title'            => 'Konfigurációs beállítások',
   'config-index-subtitle'         => 'Beállítások',
   'btn-create-new-config'         => 'Beállítás hozzáadása',

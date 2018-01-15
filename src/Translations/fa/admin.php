@@ -44,7 +44,7 @@ return [
   *  Page specific
   */
 
-// tickets-admin/____
+// $admin_route_path/dashboard
   'index-title'                         => 'داشبورد سیستم تیکتینگ',
   'index-empty-records'                 => 'هیچ تیکتی وجود ندارد',
   'index-total-tickets'                 => 'مجموع کل تیکت ها',
@@ -74,7 +74,7 @@ return [
   'index-categories-chart'              => 'تیکت های عرضه شده برحست دسته ها',
   'index-agents-chart'                  => 'تیکتها نمایندگان',
 
-// tickets-admin/agent/____
+// $admin_route_path/agent/____
   'agent-index-title'             => 'مدیریت نماینده',
   'btn-create-new-agent'          => 'ایجاد نماینده جدید',
   'agent-index-no-agents'         => 'هیچ نماینده ای وجود ندارد, ',
@@ -84,7 +84,7 @@ return [
   'agent-create-no-users'         => 'هیچ حساب کاربری موجود نمی باشد , ابتدا حساب های کاربری را ایجاد نمایید.',
   'agent-create-select-user'      => 'یک کاربر برای اضافه شدن به لیست نماینده گان انتخاب کنید',
 
-// tickets-admin/administrators/____
+// $admin_route_path/administrators/____
   'administrator-index-title'                   => 'میدیرت مدیران',  //new
   'btn-create-new-administrator'                => 'ایجاد مدیر جدید',  //new
   'administrator-index-no-administrators'       => 'هیچ مدیری یافت نشد, ',  //new
@@ -94,7 +94,7 @@ return [
   'administrator-create-no-users'               => 'هیچ حساب کاربری موجود نمی باشد , ابتدا حساب های کاربری را ایجاد نمایید.',  //new
   'administrator-create-select-user'            => 'یک کاربر برای اضافه شدن به لیست مدیران انتخاب کنید',  //new
 
-// tickets-admin/category/____
+// $admin_route_path/category/____
   'category-index-title'          => 'مدیریت دسته ها',
   'btn-create-new-category'       => 'دسته جدید',
   'category-index-no-categories'  => 'هیچ دسته ای یافت نشد, ',
@@ -105,7 +105,7 @@ return [
   'category-create-color'         => 'رنگ',
   'category-edit-title'           => 'ویرایش دسته: :name',
 
-// tickets-admin/priority/____
+// $admin_route_path/priority/____
   'priority-index-title'          => 'مدیریت اولویت ها',
   'btn-create-new-priority'       => 'ایجاد اولویت',
   'priority-index-no-priorities'  => 'هیچ موردی یافت نشد, ',
@@ -116,7 +116,7 @@ return [
   'priority-create-color'         => 'رنگ',
   'priority-edit-title'           => 'ویرایش اولویت: :name',
 
-// tickets-admin/status/____
+// $admin_route_path/status/____
   'status-index-title'            => 'مدیرت وضعیت ها',
   'btn-create-new-status'         => 'ایجاد وضعیت جدید',
   'status-index-no-statuses'      => 'هیچ موردی یافت نشد,',
@@ -127,7 +127,7 @@ return [
   'status-create-color'           => 'رنگ',
   'status-edit-title'             => 'ویرایش وضعیت: :name',
 
-// tickets-admin/configuration/____
+// $admin_route_path/configuration/____
   'config-index-title'            => 'تنظیمات بخش تیکت',
   'config-index-subtitle'         => 'تنظیمات',
   'btn-create-new-config'         => 'ایجاد رکورد تنظیمات جدید',

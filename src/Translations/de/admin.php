@@ -42,10 +42,10 @@ return [
   *  Page specific
   */
 
-// tickets-admin/____
+// $admin_route_path/dashboard
   'index-title'                   => 'Tickets System Dashboard',
 
-// tickets-admin/agent/____
+// $admin_route_path/agent/____
   'agent-index-title'             => 'Agent Management',
   'btn-create-new-agent'          => 'Create new agent',
   'agent-index-no-agents'         => 'There are no agents, ',
@@ -55,7 +55,7 @@ return [
   'agent-create-no-users'         => 'There are no user accounts, create user accounts first.',
   'agent-create-select-user'      => 'Select user accounts to be added as agents',
 
-// tickets-admin/category/____
+// $admin_route_path/category/____
   'category-index-title'          => 'Categories Management',
   'btn-create-new-category'       => 'Create new category',
   'category-index-no-categories'  => 'There are no categories, ',
@@ -66,7 +66,7 @@ return [
   'category-create-color'         => 'Color',
   'category-edit-title'           => 'Edit Category: :name',
 
-// tickets-admin/priority/____
+// $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',
   'btn-create-new-priority'       => 'Create new priority',
   'priority-index-no-priorities'  => 'There are no priorities, ',
@@ -77,7 +77,7 @@ return [
   'priority-create-color'         => 'Color',
   'priority-edit-title'           => 'Edit Priority: :name',
 
-// tickets-admin/status/____
+// $admin_route_path/status/____
   'status-index-title'            => 'Statuses Management',
   'btn-create-new-status'         => 'Create new status',
   'status-index-no-statuses'      => 'There are no statues,',
@@ -88,7 +88,7 @@ return [
   'status-create-color'           => 'Color',
   'status-edit-title'             => 'Edit Status: :name',
 
-// tickets-admin/configuration/____
+// $admin_route_path/configuration/____
   'config-index-title'            => 'Configuration Settings', // New
   'config-index-subtitle'         => 'Settings', // New
   'btn-create-new-config'         => 'Add new setting', // New

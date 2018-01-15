@@ -20,9 +20,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = \Cache::remember('panichd::categories', 60, function() {
-            return Category::with('closingReasons')->with('tags')->get();
-        });
+        $categories = Category::with('closingReasons')->with('tags')->get();
 
         return view('panichd::admin.category.index', compact('categories'));
     }

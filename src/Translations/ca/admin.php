@@ -56,7 +56,7 @@ return [
   *  Page specific
   */
 
-// tickets-admin/____
+// $admin_route_path/dashboard
   'index-title'                         => 'Panell d\'Administració de Tiquets',
   'index-empty-records'                 => 'Encara no hi ha tiquets',
   'index-total-tickets'                 => 'Tiquets totals',
@@ -86,7 +86,7 @@ return [
   'index-categories-chart'              => 'Distribució de tickets per Categoria',
   'index-agents-chart'                  => 'Distribució de tickets per Agent',
 
-// tickets-admin/agent/____
+// $admin_route_path/agent/____
   'agent-index-title'             => 'Gestió d\'Agents',
   'agent-index-no-agents'         => 'No hi ha agents',
   'agent-index-create-new'        => 'Afegir agent',
@@ -99,13 +99,13 @@ return [
   
   'agent-store-error-no-category' => 'Per afegir un agent cal marcar com a mínim una categoria',
 
-  // tickets-admin/agent/edit
+  // $admin_route_path/agent/edit
   'agent-edit-title'                 => 'Permisos d\'usuari per a :agent',
   'agent-edit-table-category'        => 'Categoria',
   'agent-edit-table-agent'           => 'Permisos d\'agent',
   'agent-edit-table-autoassign'      => 'Tiquets nous auto.',
   
-// tickets-admin/administrators/____
+// $admin_route_path/administrators/____
   'administrator-index-title'                   => 'Gestió d\'Administradors',
   'btn-create-new-administrator'                => 'Crear nou administrador',
   'administrator-index-no-administrators'       => 'No hi ha administradors, ',
@@ -115,7 +115,7 @@ return [
   'administrator-create-no-users'               => 'No hi ha cap compte d\'usuari, primer cal crear-ne un.',
   'administrator-create-select-user'            => 'Tria comptes d\'usuari per a utilitzar-se com administradors',
 
-// tickets-admin/category/____
+// $admin_route_path/category/____
   'category-index-title'          => 'Gestió de Categories',
   'btn-create-new-category'       => 'Crear nova categoria',
   'category-index-no-categories'  => 'No hi ha categories, ',
@@ -156,7 +156,7 @@ return [
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',
 
-// tickets-admin/priority/____
+// $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
   'priority-index-help'           => 'Pots canviar l\'ordre de les prioritats arrosegant les files d\'aquesta taula. Aquest ordre s\'utilitzarà també a la llista de tiquets quan es seleccioni',
   'btn-create-new-priority'       => 'Crear nova prioritat',
@@ -171,7 +171,7 @@ return [
   'priority-delete-warning'           => 'Hi ha <span class="modal-tickets-count"></span> tiquets que utilitzen aquesta prioritat. Has d\'indicar-ne una de nova per a tots ells',
   'priority-delete-error-no-priority' => 'Cal indicar una prioritat nova per als tiquets que utilitzen la prioritat ":name"',
 
-// tickets-admin/status/____
+// $admin_route_path/status/____
   'status-index-title'            => 'Gestió d\'estats',
   'btn-create-new-status'         => 'Crear nou estat',
   'status-index-no-statuses'      => 'No hi ha estats,',
@@ -185,7 +185,7 @@ return [
   'status-delete-warning'         => 'Hi ha <span class="modal-tickets-count"></span> tiquets que utilitzen aquest estat. Has d\'indicar-ne un de nou per a tots ells',
   'status-delete-error-no-status' => 'Cal indicar un estat nou per als tiquets que utilitzen l\'estat ":name"',
 
-// tickets-admin/notice/____
+// $admin_route_path/notice/____
   'notice-index-title'         => 'Gestió d\'avisos a departaments',
   'btn-create-new-notice'      => 'Afegir avís',
   'notice-index-empty'         => 'No hi ha avisos configurats.',
@@ -201,7 +201,7 @@ return [
   	<ol><li>S\'enviarà un correu electrònic al <b>propietari</b>, amb una plantilla de correu específica.</li><li>Mentre el tiquet estigui <b>obert</b>, els usuaris del mateix departament veuran el tiquet com un <b>avís</b> quan vagin al menú de crear tiquet.</li></ol></p>',
   'notice-index-owner-alert'    => 'Un usuari normal, quan crei un nou tiquet, no podrà veure cap usuari llistat aquí', 
   
-// tickets-admin/configuration/____
+// $admin_route_path/configuration/____
   'config-index-title'            => 'Paràmetres de configuració',
   'config-index-subtitle'         => 'configuració',
   'btn-create-new-config'         => 'Afegir nova configuració',

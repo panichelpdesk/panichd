@@ -56,7 +56,7 @@ return [
   *  Page specific
   */
 
-// tickets-admin/____
+// $admin_route_path/dashboard
   'index-title'                         => 'Tickets System Dashboard',
   'index-empty-records'                 => 'No tickets yet',
   'index-total-tickets'                 => 'Total tickets',
@@ -86,7 +86,7 @@ return [
   'index-categories-chart'              => 'Tickets distribution per category',
   'index-agents-chart'                  => 'Tickets distribution per Agent',
 
-// tickets-admin/agent/____
+// $admin_route_path/agent/____
   'agent-index-title'             => 'Agent Management',
   'agent-index-no-agents'         => 'There are no agents',
   'agent-index-create-new'        => 'Add agent',
@@ -99,14 +99,14 @@ return [
   
   'agent-store-error-no-category' => 'To add an agent you must check at least one category',
 
-// tickets-admin/agent/edit
+// $admin_route_path/agent/edit
   'agent-edit-title'                 => 'User permissions :agent',
   'agent-edit-table-category'        => 'Category',
   'agent-edit-table-agent'           => 'Agent permission',
   'agent-edit-table-autoassign'      => 'New tickets auto.',
   
 
-// tickets-admin/administrators/____
+// $admin_route_path/administrators/____
   'administrator-index-title'                   => 'Administrator Management',  //new
   'btn-create-new-administrator'                => 'Create new administrator',  //new
   'administrator-index-no-administrators'       => 'There are no administrators, ',  //new
@@ -116,7 +116,7 @@ return [
   'administrator-create-no-users'               => 'There are no user accounts, create user accounts first.',  //new
   'administrator-create-select-user'            => 'Select user accounts to be added as administrators',  //new
 
-// tickets-admin/category/____
+// $admin_route_path/category/____
   'category-index-title'          => 'Categories Management',
   'btn-create-new-category'       => 'Create new category',
   'category-index-no-categories'  => 'There are no categories, ',
@@ -157,7 +157,7 @@ return [
   'category-edit-tag-background'  => 'Background',
   'category-edit-tag-text'        => 'Text',
 
-// tickets-admin/priority/____
+// $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',
   'priority-index-help'           => 'You may change priority order dragging this table rows. This order will be used also in ticket list when checking this field',
   'btn-create-new-priority'       => 'Create new priority',
@@ -172,7 +172,7 @@ return [
   'priority-delete-warning'         => 'There are <span class="modal-tickets-count"></span> tickets that use this priority. You must choose another one for all of them',
   'priority-delete-error-no-priority' => 'You have to specify a new priority for ":name" priority related tickets',
 
-// tickets-admin/status/____
+// $admin_route_path/status/____
   'status-index-title'            => 'Statuses Management',
   'btn-create-new-status'         => 'Create new status',
   'status-index-no-statuses'      => 'There are no statues,',
@@ -186,7 +186,7 @@ return [
   'status-delete-warning'         => 'There are <span class="modal-tickets-count"></span> tickets that use this status. You must choose another one for all of them',
   'status-delete-error-no-status' => 'You have to specify a new status for ":name" status related tickets',
   
-// tickets-admin/notice/____
+// $admin_route_path/notice/____
   'notice-index-title'         => 'Notices to departments management',
   'btn-create-new-notice'      => 'Add notice',
   'notice-index-empty'         => 'There are no notices configured.',
@@ -201,7 +201,7 @@ return [
   'notice-index-help'          => 'When a ticket set with one of the following owners is created, there will happen two things:<br /><br /><ol><li>An e-mail will be sent to ticket <b>owner</b>, with a specific e-mail template.</li><li>As long as the ticket is <b>open</b>, users in the same department will see the ticket as a <b>notice</b> in the create ticket menu.',
   'notice-index-owner-alert'    => 'A normal user, when creating a new ticket, will not be able to see any user listed here',
   
-// tickets-admin/configuration/____
+// $admin_route_path/configuration/____
   'config-index-title'            => 'Configuration Settings',
   'config-index-subtitle'         => 'Settings',
   'btn-create-new-config'         => 'Add new setting',

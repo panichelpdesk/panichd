@@ -252,10 +252,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			Route::get('/tickets/{menu}', function () {
                 return redirect()->route('panichd.install.index');
             });
-            Route::get('/tickets-admin', function () {
-                return redirect()->route('panichd.install.index');
-            });
-			Route::get('/tickets-admin/{menu}', function () {
+			Route::get('/panichd/{menu}', function () {
                 return redirect()->route('panichd.install.index');
             });
 		}
