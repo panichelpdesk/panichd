@@ -703,21 +703,13 @@ class TicketsController extends Controller
 
 		// Custom validation messages
 		$custom_messages = [
-			'subject.required'        => 'panichd::lang.validate-ticket-subject.required',
-			'subject.min'             => 'panichd::lang.validate-ticket-subject.min',
-			'content.required'        => 'panichd::lang.validate-ticket-content.required',
-			'content.min'             => 'panichd::lang.validate-ticket-content.min',
-			'start_date_year.in'      => 'panichd::lang.validate-ticket-start_date',
-			'limit_date_year.in'      => 'panichd::lang.validate-ticket-limit_date',
+			'subject.required'        => trans ('panichd::lang.validate-ticket-subject.required'),
+			'subject.min'             => trans ('panichd::lang.validate-ticket-subject.min'),
+			'content.required'        => trans ('panichd::lang.validate-ticket-content.required'),
+			'content.min'             => trans ('panichd::lang.validate-ticket-content.min'),
+			'start_date_year.in'      => trans ('panichd::lang.validate-ticket-start_date'),
+			'limit_date_year.in'      => trans ('panichd::lang.validate-ticket-limit_date'),
 		];
-		foreach ($custom_messages as $field => $lang_key){
-			$trans = trans ($lang_key);
-			if ($lang_key == $trans){
-				unset($custom_messages[$field]);
-			}else{
-				$custom_messages[$field] = $trans;
-			}
-		}
 		
 		// Form validation
         $validator = Validator::make($request->all(), $fields, $custom_messages);

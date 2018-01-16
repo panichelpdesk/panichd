@@ -271,18 +271,20 @@ return [
   'show-ticket-email-resend-agent'   => 'To agent: ',
   
   'validation-error'                 => 'This form has not been sent',
-  /*
-  'validate-ticket-subject.required' => '',
-  'validate-ticket-subject.min'      => '',
-  'validate-ticket-content.required' => '',
-  'validate-ticket-content.min'      => '',
-  */
+  'validate-ticket-subject.required' => 'A subject must be set. Please, point out in a few words what is it about',
+  'validate-ticket-subject.min'      => 'The subject must be longer',
+  'validate-ticket-content.required' => 'The description must be set. If you attach any image you\'d need to add a description text anyway',
+  'validate-ticket-content.min'      => 'The description must be longer, although there is any attached image',
+  'validate-ticket-start_date'       => 'Start date year is not valid',
+  'validate-ticket-limit_date'       => 'Limit date year is not valid',
+  'validate-ticket-limit_date-lower' => 'Limit date cannot be lower than start date',
+  
   'ticket-destroy-error'             => 'The ticket could not be deleted: :error',
   'comment-destroy-error'            => 'The comment could not be deleted: :error',
   
-  // Comment form
-  /*'validate-comment-required'        => '',
-  'validate-comment-min'             => '',*/
+ // Comment form
+  'validate-comment-required'        => 'You must type the comment text',
+  'validate-comment-min'             => 'You must type a longer text for the comment',
   
 
  /*
