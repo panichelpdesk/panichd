@@ -127,7 +127,7 @@ class InstallController extends Controller
 				File::move($path, $path.'_backup_'.date('Y-m-d_H_i', time()));
 			}else{
 				// Delete published assets
-				File::deleteDirectory(public_path().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'panichd');
+				File::deleteDirectory($path);
 			}
 			
 			// Publish asset files
