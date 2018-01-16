@@ -5,10 +5,5 @@
 	@if(isset($description))
 		<p>{!! $description !!}</p>
 	@endif
-	{!! link_to_route(
-		'dashboard',
-		isset($button_text) ? $button_text : trans('panichd::install.continue-to-main-menu'), null,
-		['class' => 'btn btn-lg btn-primary',
-		'style' => 'margin: 2em 0em 0em 0em;'])
-	!!}
+	<a href="{{ url($setting->grab('admin_route_path').'/dashboard') }}" class="btn btn-lg btn-primary" style="margin: 2em 0em 0em 0em;">{{ trans('panichd::install.continue-to-main-menu') }}</a>
 @stop

@@ -32,8 +32,12 @@ class InstallController extends Controller
      */
 
     public function index()
-    {	
+    {
 		if (session()->has('current_status')){
+			// Clear stored settings
+			Artisan::call('cache:clear');
+			
+			// Load maintenance result page
 			switch (session('current_status')){
 				case 'installed':
 					return view('panichd::install.status', [
@@ -85,7 +89,7 @@ class InstallController extends Controller
 
     public function setup(Request $request)
     {
-        // Migrations and Settings
+		// Migrations and Settings
 		$this->initialSettings();
 		
 		// Publish asset files
