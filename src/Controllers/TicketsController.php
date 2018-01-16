@@ -674,6 +674,22 @@ class TicketsController extends Controller
 				$fields['start_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
 			}
 			
+			if ($request->has('limit_date')){
+				$limit_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
+				$plus_10_y = date('Y', time())+10;
+				
+				
+				$request->merge([
+					// Avoid PDOException for example with year 1
+					'limit_date' => ($limit_date->year < 2017 or $limit_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $limit_date->toDateTimeString(),
+					'limit_date_year' => $limit_date->year
+				]);
+				
+				$fields['limit_date'] = 'date';
+				$fields['limit_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+			}
+
+			
 			$a_intervention = $common_data['a_intervention'] = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
 				'intervention'=> $a_intervention['intervention'],
@@ -691,7 +707,8 @@ class TicketsController extends Controller
 			'subject.min'             => 'panichd::lang.validate-ticket-subject.min',
 			'content.required'        => 'panichd::lang.validate-ticket-content.required',
 			'content.min'             => 'panichd::lang.validate-ticket-content.min',
-			'start_date_year.in'      => 'panichd::lang.validate-ticket-start_date'
+			'start_date_year.in'      => 'panichd::lang.validate-ticket-start_date',
+			'limit_date_year.in'      => 'panichd::lang.validate-ticket-limit_date',
 		];
 		foreach ($custom_messages as $field => $lang_key){
 			$trans = trans ($lang_key);
@@ -716,11 +733,30 @@ class TicketsController extends Controller
 				unset ($a_fields['start_date_year']);
 			}
 			
+			if (isset($a_fields['limit_date_year']) and !isset($a_fields['limit_date'])){
+				$a_fields['limit_date'] = $a_fields['limit_date_year'];
+				unset ($a_fields['limit_date_year']);
+			}
+			
 			foreach ($a_fields as $field=>$errors){
 				$a_fields[$field] = implode('. ', $errors);
 			}
 			
 			$a_result_errors['fields'] = $a_fields;
+		}
+		
+		
+		// Date diff validation
+		if ($request->has('start_date') and $request->has('limit_date')
+			and (!$a_result_errors or ($a_result_errors and !isset($a_result_errors['fields']['limit_date'])))){
+			
+			if ($start_date->diffInSeconds($limit_date, false) < 0){
+				$lower_limit_date = trans('panichd::lang.validate-ticket-limit_date-lower');
+				$a_result_errors = array_merge_recursive($a_result_errors, [
+					'messages' => [$lower_limit_date],
+					'fields' => ['limit_date' => $lower_limit_date]
+				]);
+			}
 		}
 		
 		$common_data = array_merge($common_data, [

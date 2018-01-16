@@ -275,6 +275,8 @@ return [
   'validate-ticket-content.required' => 'Cal indicar una descripció. Si adjuntes alguna imatge és necessari que també afegeixis un text explicatiu',
   'validate-ticket-content.min'      => 'Cal indicar una descripció més llarga, encara que ja hi hagi imatges adjuntes',
   'validate-ticket-start_date'       => 'L\'any de la data d\'inici no és vàlid',
+  'validate-ticket-limit_date'       => 'L\'any de la data límit no és vàlid',
+  'validate-ticket-limit_date-lower' => 'La data límit no pot ser inferior a la d\'inici',
   
   'ticket-destroy-error'             => 'El tiquet no s\'ha pogut eliminar: :error',
   'comment-destroy-error'            => 'El comentari no s\'ha pogut eliminar: :error',

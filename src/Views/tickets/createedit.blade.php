@@ -117,6 +117,7 @@
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
 						</div>
+						<div class="jquery_error_text"></div>
 					</div>
 				</div>
 			</div>
