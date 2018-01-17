@@ -274,7 +274,9 @@ return [
   'validate-ticket-subject.min'      => 'Cal que indiquis un tema més llarg',
   'validate-ticket-content.required' => 'Cal indicar una descripció. Si adjuntes alguna imatge és necessari que també afegeixis un text explicatiu',
   'validate-ticket-content.min'      => 'Cal indicar una descripció més llarga, encara que ja hi hagi imatges adjuntes',
+  'validate-ticket-start_date-format'=> 'La data d\'inici té un format incorrecte. El correcte és: ":format"',
   'validate-ticket-start_date'       => 'L\'any de la data d\'inici no és vàlid',
+  'validate-ticket-limit_date-format'=> 'La data límit té un format incorrecte. El correcte és: ":format"',
   'validate-ticket-limit_date'       => 'L\'any de la data límit no és vàlid',
   'validate-ticket-limit_date-lower' => 'La data límit no pot ser inferior a la d\'inici',
   

@@ -275,7 +275,9 @@ return [
   'validate-ticket-subject.min'      => 'The subject must be longer',
   'validate-ticket-content.required' => 'The description must be set. If you attach any image you\'d need to add a description text anyway',
   'validate-ticket-content.min'      => 'The description must be longer, although there is any attached image',
+  'validate-ticket-start_date-format'=> 'The start date format is not valid. Correct is: ":format"',
   'validate-ticket-start_date'       => 'Start date year is not valid',
+  'validate-ticket-limit_date-format'=> 'The limit date format is not valid. Correct is: ":format"',
   'validate-ticket-limit_date'       => 'Limit date year is not valid',
   'validate-ticket-limit_date-lower' => 'Limit date cannot be lower than start date',
   

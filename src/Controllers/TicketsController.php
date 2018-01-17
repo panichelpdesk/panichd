@@ -10,7 +10,6 @@ use Validator;
 use Illuminate\Http\Request;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
-use InvalidArgumentException;
 use PanicHD\PanicHD\Events\TicketCreated;
 use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
@@ -654,39 +653,61 @@ class TicketsController extends Controller
 			'category_id' => 'required|in:'.$allowed_categories,
             'content'     => 'required|min:6',            
         ];
+		$a_result_errors = [];
 		
 		if ($permission_level > 1) {
 			$fields['status_id'] = 'required|exists:panichd_statuses,id';
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
 			if ($request->has('start_date')){
-				$start_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('start_date'));
-				$plus_10_y = date('Y', time())+10;
+				\Datetime::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('start_date'));
+				$errors = \DateTime::getLastErrors();
+				if (isset($errors['warnings']) and isset($errors['errors']) and ($errors['warnings'] or $errors['errors'])){
+					$date_error = trans('panichd::lang.validate-ticket-start_date-format', ['format' => trans('panichd::lang.datetimepicker-format')]);
+					$a_result_errors = array_merge_recursive($a_result_errors, [
+						'messages' => [$date_error],
+						'fields' => ['start_date' => $date_error]
+					]);
+				}else{
+					$start_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('start_date'));
+					
+					$plus_10_y = date('Y', time())+10;
 				
-				
-				$request->merge([
-					// Avoid PDOException for example with year 1
-					'start_date' => ($start_date->year < 2017 or $start_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $start_date->toDateTimeString(),
-					'start_date_year' => $start_date->year
-				]);
-				
-				$fields['start_date'] = 'date';
-				$fields['start_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+					$request->merge([
+						// Avoid PDOException for example with year 1
+						'start_date' => ($start_date->year < 2017 or $start_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $start_date->toDateTimeString(),
+						'start_date_year' => $start_date->year
+					]);
+					
+					$fields['start_date'] = 'date';
+					$fields['start_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+				}
 			}
 			
 			if ($request->has('limit_date')){
-				$limit_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
-				$plus_10_y = date('Y', time())+10;
-				
-				
-				$request->merge([
-					// Avoid PDOException for example with year 1
-					'limit_date' => ($limit_date->year < 2017 or $limit_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $limit_date->toDateTimeString(),
-					'limit_date_year' => $limit_date->year
-				]);
-				
-				$fields['limit_date'] = 'date';
-				$fields['limit_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+				\Datetime::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
+				$errors = \DateTime::getLastErrors();
+				\Log::info($errors);
+				if (isset($errors['warnings']) and isset($errors['errors']) and ($errors['warnings'] or $errors['errors'])){
+					$date_error = trans('panichd::lang.validate-ticket-limit_date-format', ['format' => trans('panichd::lang.datetimepicker-format')]);
+					$a_result_errors = array_merge_recursive($a_result_errors, [
+						'messages' => [$date_error],
+						'fields' => ['limit_date' => $date_error]
+					]);
+				}else{
+					$limit_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
+					$plus_10_y = date('Y', time())+10;
+					
+					
+					$request->merge([
+						// Avoid PDOException for example with year 1
+						'limit_date' => ($limit_date->year < 2017 or $limit_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $limit_date->toDateTimeString(),
+						'limit_date_year' => $limit_date->year
+					]);
+					
+					$fields['limit_date'] = 'date';
+					$fields['limit_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+				}
 			}
 
 			
@@ -713,19 +734,18 @@ class TicketsController extends Controller
 		
 		// Form validation
         $validator = Validator::make($request->all(), $fields, $custom_messages);
-		$a_result_errors = [];
 		
 		if ($validator->fails()) {
-			$a_result_errors['messages'] = (array)$validator->errors()->all();
+			$a_messages = (array)$validator->errors()->all();
 			
 			$a_fields = (array)$validator->errors()->messages();
 			
-			if (isset($a_fields['start_date_year']) and !isset($a_fields['start_date'])){
+			if (isset($a_fields['start_date_year']) and !isset($a_fields['start_date']) and !isset($a_resolt_errors['fields']['start_date'])){
 				$a_fields['start_date'] = $a_fields['start_date_year'];
 				unset ($a_fields['start_date_year']);
 			}
 			
-			if (isset($a_fields['limit_date_year']) and !isset($a_fields['limit_date'])){
+			if (isset($a_fields['limit_date_year']) and !isset($a_fields['limit_date']) and !isset($a_resolt_errors['fields']['limit_date'])){
 				$a_fields['limit_date'] = $a_fields['limit_date_year'];
 				unset ($a_fields['limit_date_year']);
 			}
@@ -734,12 +754,15 @@ class TicketsController extends Controller
 				$a_fields[$field] = implode('. ', $errors);
 			}
 			
-			$a_result_errors['fields'] = $a_fields;
+			$a_result_errors = array_merge_recursive($a_result_errors, [
+				'messages' => $a_messages,
+				'fields' => $a_fields
+			]);
 		}
 		
 		
 		// Date diff validation
-		if ($request->has('start_date') and $request->has('limit_date')
+		if ($request->has('start_date') and isset($start_date) and $request->has('limit_date') and isset($limit_date)
 			and (!$a_result_errors or ($a_result_errors and !isset($a_result_errors['fields']['limit_date'])))){
 			
 			if ($start_date->diffInSeconds($limit_date, false) < 0){
