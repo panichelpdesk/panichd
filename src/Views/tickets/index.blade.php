@@ -65,26 +65,23 @@
 				},
 				<?php
 					$agent_column = session('panichd_filter_agent')=="" && $u->currentLevel() > 1 ? true : false;
+					$priority_column_addition = 0;
 				?>				
 				columns: [
 					{ data: 'id', name: 'panichd_tickets.id' },
 					{ data: 'subject', name: 'subject' },
 					@if ($setting->grab('subject_content_column') == 'no')
+						<?php $priority_column_addition++; ?>
 						{ data: 'content', name: 'content' },
 					@endif
 					{ data: 'intervention', name: 'intervention' },
 					{ data: 'status', name: 'panichd_statuses.name' },
 					@if ($agent_column)
+						<?php $priority_column_addition++; ?>
 						{ data: 'agent', name: 'agent.name' },
 					@endif				
 					@if( $u->currentLevel() > 1 )
-						{ data: 'priority', name: 'panichd_priorities.name', 
-						@if ($agent_column)
-							"orderData": 7,
-						@else
-							"orderData": 6,
-						@endif
-						},
+						{ data: 'priority', name: 'panichd_priorities.name', "orderData": <?php echo 5+$priority_column_addition; ?>},
 						{ data: 'priority_position', name: 'panichd_priorities.position', visible: false },
 						@if (session('panichd_filter_owner')=="")
 							{ data: 'owner_name', name: 'users.name' },
