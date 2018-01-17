@@ -687,7 +687,7 @@ class TicketsController extends Controller
 			if ($request->has('limit_date')){
 				\Datetime::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
 				$errors = \DateTime::getLastErrors();
-				\Log::info($errors);
+				
 				if (isset($errors['warnings']) and isset($errors['errors']) and ($errors['warnings'] or $errors['errors'])){
 					$date_error = trans('panichd::lang.validate-ticket-limit_date-format', ['format' => trans('panichd::lang.datetimepicker-format')]);
 					$a_result_errors = array_merge_recursive($a_result_errors, [
@@ -815,7 +815,7 @@ class TicketsController extends Controller
 		if ($request->start_date != ""){
 			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
 		}else{
-			$ticket->start_date = date('Y-m-d H:i:s');
+			$ticket->start_date = $ticket->created_at;
 		}
 		if ($request->limit_date == ""){
 			$ticket->limit_date = null;
@@ -1000,7 +1000,7 @@ class TicketsController extends Controller
 		if ($request->start_date != ""){
 			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
 		}else{
-			$ticket->start_date = date('Y-m-d H:i:s');
+			$ticket->start_date = $ticket->created_at;
 		}
 		if ($request->limit_date == ""){
 			$ticket->limit_date = null;
