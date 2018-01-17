@@ -181,7 +181,7 @@ class TicketsController extends Controller
         });
 		
 		$collection->editColumn('updated_at', function ($ticket){
-			return '<span class="tooltip-info" data-toggle="tooltip" title="'.Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans().'">'.$ticket->getUpdatedAbbr().'</span>';
+			return '<div class="tooltip-info" data-toggle="tooltip" title="'.Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans().'" style="width: 3em;">'.$ticket->getUpdatedAbbr().'</div>';
 		});
 
 		// Agents for each category
@@ -261,7 +261,7 @@ class TicketsController extends Controller
 		}
 		
 		$collection->editColumn('calendar', function ($ticket) {
-			return $ticket->getCalendarField();
+			return '<div style="width: 8em;">'.$ticket->getCalendarField().'</div>';
         });
 
         $collection->editColumn('category', function ($ticket) {
