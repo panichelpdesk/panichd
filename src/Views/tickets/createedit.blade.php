@@ -300,14 +300,23 @@
 			$('#select_status').val($(this).attr('data-click-status'));
 		});
 		
+		$('#start_date input[name="start_date"]').val('');
 		$('#start_date').datetimepicker({
 			locale: '{{App::getLocale()}}',
 			format: '{{ trans('panichd::lang.datetimepicker-format') }}',
+			@if (isset($ticket) && $a_current['start_date'] != "")
+				defaultDate: "{{ $a_current['start_date'] }}",
+			@endif
 			keyBinds: { 'delete':null, 'left':null, 'right':null }
 		});
+		
+		$('#limit_date input[name="limit_date"]').val('');
 		$('#limit_date').datetimepicker({			
 			locale: '{{App::getLocale()}}',
 			format: '{{ trans('panichd::lang.datetimepicker-format') }}',
+			@if (isset($ticket) && $a_current['limit_date'] != "")
+				defaultDate: "{{ $a_current['limit_date'] }}",
+			@endif
 			keyBinds: { 'delete':null, 'left':null, 'right':null },
 			useCurrent: false
 			@if ($a_current['start_date'] != "")
