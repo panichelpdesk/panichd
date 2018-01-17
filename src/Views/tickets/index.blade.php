@@ -69,7 +69,9 @@
 				columns: [
 					{ data: 'id', name: 'panichd_tickets.id' },
 					{ data: 'subject', name: 'subject' },
-					{ data: 'content', name: 'content' },
+					@if ($setting->grab('subject_content_column') == 'no')
+						{ data: 'content', name: 'content' },
+					@endif
 					{ data: 'intervention', name: 'intervention' },
 					{ data: 'status', name: 'panichd_statuses.name' },
 					@if ($agent_column)

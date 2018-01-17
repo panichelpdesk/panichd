@@ -3,7 +3,9 @@
         <tr>
             <td>{{ trans('panichd::lang.table-id') }}</td>
             <td>{{ trans('panichd::lang.table-subject') }}</td>
-            <td>{{ trans('panichd::lang.table-description') }}</td>
+            @if ($setting->grab('subject_content_column') == 'no')
+				<td>{{ trans('panichd::lang.table-description') }}</td>
+			@endif
 			<td>{{ trans('panichd::lang.table-intervention') }}</td>
 			<td>{{ trans('panichd::lang.table-status') }}</td>            
 			@if (session('panichd_filter_agent')=="" && $u->currentLevel() > 1)

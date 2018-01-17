@@ -144,21 +144,32 @@ class TicketsController extends Controller
     public function renderTicketTable($collection)
     {
 
-		// Column edits		
+		// Column edits
         $collection->editColumn('subject', function ($ticket) {
-            return (string) link_to_route(
-                Setting::grab('main_route').'.show',
-                $ticket->subject,
-                $ticket->id
-            );
+            $field=(string) link_to_route(
+					Setting::grab('main_route').'.show',
+					$ticket->subject,
+					$ticket->id
+				);
+			
+			if (Setting::grab('subject_content_column') == 'no'){
+				return $field;
+			}else{
+				$field = '<div style="margin: 0em 0em 1em 0em;">'.$field.'</div>' . $ticket->content;
+				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+
+				return $field;
+			}
         });
 		
-		$collection->editColumn('content', function ($ticket) {
-			$field=$ticket->content;
-			if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
-						
-			return $field;
-		});
+		if (Setting::grab('subject_content_column') == 'no'){
+			$collection->editColumn('content', function ($ticket) {
+				$field = $ticket->content;
+				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+
+				return $field;
+			});
+		}
 		
 		$collection->editColumn('intervention', function ($ticket) {
 			$field=$ticket->intervention;

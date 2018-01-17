@@ -152,6 +152,12 @@ class SettingsTableSeeder extends Seeder
              */
             'paginate_items' => 10,
 			
+			/*
+			 * Ticket list: View combined column for subject and content?
+			 * Default: 'no'
+			*/
+			'subject_content_column' => 'no',
+			
 			
 			/*
 			 * Max total size for attached files (ticket + comments)
