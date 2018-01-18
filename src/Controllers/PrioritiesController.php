@@ -53,7 +53,7 @@ class PrioritiesController extends Controller
         ]);
 		
 		// Update magnitude for all existent priorities
-		$this->update_magnitudes();
+		$this->update_magnitudes(1);
 		
         $priority = new Priority();
 		
@@ -70,11 +70,11 @@ class PrioritiesController extends Controller
 	/*
 	 * Update all existent priorities magnitude with specified $addition
 	*/
-	public function update_magnitudes()
+	public function update_magnitudes($addition = 0)
 	{
 		$a_magnitude = Priority::orderBy('magnitude', 'desc')->get();
 		
-		$new_max_magnitude = count($a_magnitude)+1;
+		$new_max_magnitude = count($a_magnitude)+$addition;
 		
 		$loop = 0;
 		foreach ($a_magnitude as $p){
@@ -182,6 +182,9 @@ class PrioritiesController extends Controller
 			
 			$priority->delete();
 		}
+		
+		// Update magnitude for all existent priorities
+		$this->update_magnitudes();
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-deleted', ['name' => $name]));
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
