@@ -92,7 +92,7 @@
 								{ data: 'dept_info', name: 'dept_full', searchable: false },
 							@endif
 						@endif
-						{ data: 'calendar', name: 'calendar_order', searchable: false },
+						{ data: 'calendar', name: 'calendar_order', searchable: false, "orderSequence": [ "desc", "asc"] },
 					@endif
 					{ data: 'updated_at', name: 'panichd_tickets.updated_at' },
 					@if( $u->currentLevel() > 1 )
@@ -103,7 +103,8 @@
 					@endif				
 				],
 				order: [
-					[0,'desc']				
+					[<?php echo 5+$priority_column_addition; ?>, 'asc'],
+					[<?php echo 6+$priority_column_addition+$calendar_column_addition; ?>, 'desc'],
 				]
 				
 			});		
