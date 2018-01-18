@@ -90,7 +90,7 @@ class TicketsController extends Controller
 			'panichd_tickets.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
 			'panichd_priorities.name AS priority',
-			'panichd_priorities.position AS priority_position',
+			'panichd_priorities.magnitude AS priority_magnitude',
 			'users.name AS owner_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		

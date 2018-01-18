@@ -23,8 +23,8 @@ return [
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica de nous tiquets',
+  'table-magnitude'               => 'Magnitud',
   'table-num-tickets'             => 'Núm. tiquets',
-  'table-position'                => 'Posició',
   'table-remove-agent'            => 'Excloure d\'agents',
   'table-remove-administrator'    => 'Excloure d\'administrators',
 

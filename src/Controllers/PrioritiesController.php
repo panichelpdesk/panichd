@@ -17,7 +17,7 @@ class PrioritiesController extends Controller
      */
     public function index()
     {
-        $priorities = Priority::withCount('tickets')->orderBy('position')->get();
+        $priorities = Priority::withCount('tickets')->orderBy('magnitude', 'desc')->get();
 		
 		if (LaravelVersion::min('5.3.0')) {
             $priorities_list = $priorities->pluck('name', 'id')->toArray();
@@ -51,18 +51,40 @@ class PrioritiesController extends Controller
             'name'      => 'required',
             'color'     => 'required',
         ]);
-
+		
+		// Update magnitude for all existent priorities
+		$this->update_magnitudes();
+		
         $priority = new Priority();
 		
         $priority->create([
 			'name' => $request->name,
 			'color' => $request->color,
-			'position' => (Priority::count() == 0 ? '1' : (Priority::max('position')+1))
+			'magnitude' => 1
 		]);
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-created', ['name' => $request->name]));
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
+	
+	/*
+	 * Update all existent priorities magnitude with specified $addition
+	*/
+	public function update_magnitudes()
+	{
+		$a_magnitude = Priority::orderBy('magnitude', 'desc')->get();
+		
+		$new_max_magnitude = count($a_magnitude)+1;
+		
+		$loop = 0;
+		foreach ($a_magnitude as $p){
+			$p->update([
+				'magnitude' => $new_max_magnitude-$loop
+			]);
+			
+			$loop++;
+		}
+	}
 
     /**
      * Display the specified resource.
@@ -120,10 +142,11 @@ class PrioritiesController extends Controller
 			$a_priorities = $a_priorities = explode(',', $request->priorities);
 			if (Priority::whereNotIn('id', $a_priorities)->count() == 0
 			and Priority::whereIn('id', $a_priorities)->count() == count($a_priorities)){
-				$index = 1;
+				$max_magnitude = count($a_priorities);
+				$index = 0;
 				foreach ($a_priorities as $id){
 					$priority = Priority::findOrFail($id);
-					$priority->position = $index;
+					$priority->magnitude = $max_magnitude-$index;
 					$priority->save();
 					$index++;
 				}

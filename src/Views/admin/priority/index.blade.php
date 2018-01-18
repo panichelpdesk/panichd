@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                         <td style="width: 1em; vertical-align: bottom;"></td>
-						<td>{{ trans('panichd::admin.table-position') }}</td>
+						<td>{{ trans('panichd::admin.table-magnitude') }}</td>
                         <td>{{ trans('panichd::admin.table-name') }}</td>
 						<td>{{ trans('panichd::admin.table-num-tickets') }}</td>
                         <td>{{ trans('panichd::admin.table-action') }}</td>
@@ -43,9 +43,7 @@
                 @foreach($priorities as $priority)
                     <tr data-id="{{ $priority->id }}">
                         <td style="vertical-align: center"><span class="glyphicon glyphicon-option-vertical" style="color: #aaa"></span></td>
-						<td class="position">
-							{{ $loop->iteration }}{{-- $priority->id --}}
-                        </td>
+						<td class="magnitude">{{ $priority->magnitude }}</td>
                         <td class="name" data-color="{{ $priority->color }}" style="color: {{ $priority->color }}; vertical-align: middle">
                             {{ $priority->name }}
                         </td>
@@ -106,7 +104,9 @@
 					if ($(this).attr('data-id')) a_order.push($(this).data('id'));
 				});
 				
-				$('#priority_table .position').text('...');
+				var max_magnitude = a_order.length;
+				
+				$('#priority_table .magnitude').text('...');
 				
 				// Do AJAX POST when sorting priorities
 				$.ajax({
@@ -119,19 +119,14 @@
 
 					success: function( response ) {
 						if (response.result == 'ok'){
-							$('#priority_table .position').each(function(index, row){
-								$(this).text(index+1);
+							$('#priority_table .magnitude').each(function(index, row){
+								$(this).text(max_magnitude-index);
 							});
 						}else{
 							
 						}
 					}
 				});
-				
-				
-				
-				
-				
 			}
 		});
 		

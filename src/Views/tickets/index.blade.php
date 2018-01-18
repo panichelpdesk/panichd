@@ -66,7 +66,7 @@
 				<?php
 					$agent_column = session('panichd_filter_agent')=="" && $u->currentLevel() > 1 ? true : false;
 					$priority_column_addition = $calendar_column_addition = 0;
-					1; // Counts priority_position column
+					1; // Counts priority_magnitude column
 					if (session('panichd_filter_owner')=="") $calendar_column_addition++;
 					if($setting::grab('departments_feature')) $calendar_column_addition++;
 				?>				
@@ -84,8 +84,10 @@
 						{ data: 'agent', name: 'agent.name' },
 					@endif				
 					@if( $u->currentLevel() > 1 )
-						{ data: 'priority', name: 'panichd_priorities.name', "orderData": [<?php echo 5+$priority_column_addition; ?>, <?php echo 6+$priority_column_addition+$calendar_column_addition; ?>]},
-						{ data: 'priority_position', name: 'panichd_priorities.position', visible: false },
+						{ data: 'priority', name: 'panichd_priorities.name',
+							"orderData": [<?php echo 5+$priority_column_addition; ?>, <?php echo 6+$priority_column_addition+$calendar_column_addition; ?>],
+							"orderSequence": ['desc', 'asc']},
+						{ data: 'priority_magnitude', name: 'panichd_priorities.magnitude', visible: false },
 						@if (session('panichd_filter_owner')=="")
 							{ data: 'owner_name', name: 'users.name' },
 							@if ($setting::grab('departments_feature'))
@@ -103,7 +105,7 @@
 					@endif				
 				],
 				order: [
-					[<?php echo 5+$priority_column_addition; ?>, 'asc'],
+					[<?php echo 5+$priority_column_addition; ?>, 'desc'],
 					[<?php echo 6+$priority_column_addition+$calendar_column_addition; ?>, 'desc'],
 				]
 				

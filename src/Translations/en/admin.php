@@ -23,8 +23,8 @@ return [
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'New tickets automatic assignment',
+  'table-magnitude'               => 'Magnitude',
   'table-num-tickets'             => 'Tickets count',
-  'table-position'                => 'Position',
   'table-remove-agent'            => 'Remove from agents',
   'table-remove-administrator'    => 'Remove from administrators', // New
 
