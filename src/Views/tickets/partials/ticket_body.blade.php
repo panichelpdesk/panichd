@@ -89,7 +89,7 @@
 					@php
 						\Carbon\Carbon::setLocale(config('app.locale'));
 					@endphp					
-					<br /><strong>{{ trans('panichd::lang.table-calendar') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getCalendarField(true) !!}
+					<br /><strong>{{ trans('panichd::lang.table-calendar') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getCalendarInfo(true) !!}
 					</p><p>					
 				@else
 					<br />

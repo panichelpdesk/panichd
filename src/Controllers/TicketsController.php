@@ -274,7 +274,7 @@ class TicketsController extends Controller
 		}
 		
 		$collection->editColumn('calendar', function ($ticket) {
-			return '<div style="width: 8em;">'.$ticket->getCalendarField().'</div>';
+			return '<div style="width: 8em;">'.$ticket->getCalendarInfo().'</div>';
         });
 
         $collection->editColumn('category', function ($ticket) {
@@ -517,16 +517,9 @@ class TicketsController extends Controller
 	public function create_edit_data($ticket = false)
 	{
 		$user = $this->agent->find(auth()->user()->id);
-		
-		if (Setting::grab('departments_notices_feature')){
-			// Get notices from related users
-			$a_notices = Ticket::active()->whereIn('user_id', $user->getMyNoticesUsers())
-				->with('owner.personDepts.department')
-				->with('status')->with('tags')->get();
-		}else{
-			// Don't show notices
-			$a_notices = [];
-		}
+
+		// Get notices count
+		$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->whereIn('user_id', $user->getMyNoticesUsers())->count() : 0;
 		
 		if ($user->currentLevel() > 1){
 			$a_owners = Agent::with('userDepartment')->orderBy('name')->get();
@@ -629,7 +622,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 		
-		return compact('a_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('n_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 	
 	/**

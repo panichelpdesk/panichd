@@ -5,10 +5,10 @@
 
 @section('content')
 	
-	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)
+	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $n_notices > 0)
 		<div class="row">
 		<div class="col-lg-5 col-lg-push-7 col-md-6 col-md-push-6">
-			@include('panichd::notices.list')
+			@include('panichd::notices.widget')
 		</div>
 		<div class="col-lg-7 col-lg-pull-5 col-md-6 col-md-pull-6">
 	@endif
@@ -225,7 +225,7 @@
         {!! CollectiveForm::close() !!}
     </div>
 	
-	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)
+	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $n_notices > 0)
 		</div>
 		</div>
 	@endif

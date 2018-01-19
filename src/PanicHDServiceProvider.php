@@ -173,6 +173,22 @@ class PanicHDServiceProvider extends ServiceProvider
                 $view->with(compact('editor_locale', 'editor_options'));
             });
 			
+			// Notices widget
+			view()->composer('panichd::notices.widget', function ($view) {
+				if (Setting::grab('departments_notices_feature')){
+					// Get notices from related users
+					$a_notices = Ticket::active()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())
+						->with('owner.personDepts.department')
+						->with('status')->with('tags')
+						->get();
+				}else{
+					// Don't show notices
+					$a_notices = [];
+				}
+                $view->with(compact('a_notices'));
+            });
+
+			
 			// Send notification when comment is modified
 			Event::listen('PanicHD\PanicHD\Events\CommentUpdated', function ($event) {
 				$original = $event->original;
