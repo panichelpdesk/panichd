@@ -303,7 +303,7 @@ class Ticket extends Model
 	 *
 	 * @return string
 	*/
-	public function getCalendarField($question_sign = false)
+	public function getCalendarInfo($question_sign = false, $show = 'field')
 	{
 		$date = $title = $icon = "";
 		$color = "text-muted";
@@ -329,9 +329,9 @@ class Ticket extends Model
 				$date = $this->start_date;
 				if ($limit_days_diff){
 					if ($start_days_diff == $limit_days_diff){
-						$title = trans('panichd::lang.calendar-scheduled', ['description' => $this->getDateForHumans($date).'-'.date('H:i', strtotime($this->limit_date))]);
+						$title = trans('panichd::lang.calendar-scheduled', ['description' => $this->getDateForHumans($date).' '.date('H:i', strtotime($this->limit_date))]);
 						if ($this->start_date != $this->limit_date){
-							$date_text = $this->getDateForHumans($date)."-".date('H:i', strtotime($this->limit_date));
+							$date_text = $this->getDateForHumans($date)." ".date('H:i', strtotime($this->limit_date));
 						}
 					}else{
 						$title = trans('panichd::lang.calendar-scheduled-period', [
@@ -367,7 +367,13 @@ class Ticket extends Model
 		
 		if (!isset($date_text)) $date_text = $this->getDateForHumans($date);
 		
-		return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> $date_text ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
+		if ($show == 'description') {
+			// Date description only
+			return $title;
+		}else{
+			// Full field
+			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> $date_text ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
+		}
 	}
 	
 	/**
