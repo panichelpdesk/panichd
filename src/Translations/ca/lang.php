@@ -43,10 +43,12 @@ return [
   'calendar-active'            => 'Va començar :description',
   'calendar-active-future'     => 'Comença :description',
   'calendar-expired'           => 'Caducat des de :description',
+  'calendar-expired-today'     => 'Caducat avui a les :time',
   'calendar-expiration'        => 'Caduca :description',
-  'calendar-expires-today'     => 'Caduca avui a les :hour',
-  'calendar-scheduled'         => 'Programat per  :description',
-  'calendar-scheduled-period'  => 'Programat de :date1 a :date2',
+  'calendar-expires-today'     => 'Caducarà avui a les :hour',
+  'calendar-scheduled'         => 'Programat el :date de :time1 a :time2H',
+  'calendar-scheduled-today'   => 'Programat avui de :time1 a :time2H',
+  'calendar-scheduled-period'  => 'Programat del :date1 al :date2',
   
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',

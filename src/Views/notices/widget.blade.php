@@ -1,3 +1,6 @@
+@php
+	\Carbon\Carbon::setLocale(config('app.locale'));
+@endphp
 <div class="panel panel-default">
 	<div class="panel-heading" style="font-weight: bold; font-size: 1.2em;">{{ trans('panichd::lang.ticket-notices-title') . ($a_notices->count() > 0 ? ' (' . $a_notices->count() . ')' : '') }}</div>
 	<div class="panel-body">

@@ -42,9 +42,11 @@ return [
   'calendar-active'            => 'Started :description',
   'calendar-active-future'     => 'Starts :description',
   'calendar-expired'           => 'Expired since :description',
+  'calendar-expired-today'     => 'Expired today at :time',
   'calendar-expiration'        => 'Expires :description',
-  'calendar-expires-today'     => 'Expires today at :hour',
-  'calendar-scheduled'         => 'Scheduled for :description',
+  'calendar-expires-today'     => 'Will expires today at :hour',
+  'calendar-scheduled'         => 'Scheduled on :date from :time1 to :time2H',
+  'calendar-scheduled-today'   => 'Scheduled today from :time1 to :time2H',
   'calendar-scheduled-period'  => 'Scheduled from :date1 to :date2',
   
   // Agent related

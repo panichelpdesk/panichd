@@ -275,23 +275,31 @@ class Ticket extends Model
 	public function getDateForHumans($date, $descriptive = false)
 	{		
 		$parsed = Carbon::parse($date);
-		
 		$date_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
-		$date_text = date('H:i', strtotime($date));
+		$date_text = "";
+		$time = date('H:i', strtotime($date));
+		if (Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
+			$time = date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
+		}
 		
 		if ($date_diff == -1){
-			$date_text = trans('panichd::lang.yesterday') . ", " . $date_text;
+			$date_text = trans('panichd::lang.yesterday') . ", " . $time;
 		}elseif ($date_diff === 0){
-			$date_text = trans('panichd::lang.today') . ", " . $date_text;
+			$date_text = trans('panichd::lang.today') . ", " . $time;
 		}elseif ($date_diff == 1){
-			$date_text = trans('panichd::lang.tomorrow') . ", " . $date_text;
-		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->endOfWeek(), false) > 0){
-			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . ", " . $date_text;
+			$date_text = trans('panichd::lang.tomorrow') . ", " . $time;
+		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) > 0){
+			// This week
+			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . ", " . $time;
 		}else{
+			// Older than yesterday or after this week
 			if ($descriptive){
 				$date_text = Carbon::parse($date)->diffForHumans();
 			}else{
 				$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
+				
+				// Future only
+				if($date_diff > 1) $date_text.=", " . $time;
 			}
 		}
 			
@@ -320,7 +328,12 @@ class Ticket extends Model
 		if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
 			// Expired
 			$date = $this->limit_date;
-			$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date, true)]);
+			if ($limit_days_diff == 0){
+				$title = trans('panichd::lang.calendar-expired-today', ['time' => date('H:i', strtotime($date))]);
+			}else{
+				$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date, true)]);
+			}
+			
 			$icon = "glyphicon-exclamation-sign";
 			$color = "text-danger";
 		}elseif($limit_days_diff > 0 or $limit_days_diff === false){
@@ -329,10 +342,11 @@ class Ticket extends Model
 				$date = $this->start_date;
 				if ($limit_days_diff){
 					if ($start_days_diff == $limit_days_diff){
-						$title = trans('panichd::lang.calendar-scheduled', ['description' => $this->getDateForHumans($date).' '.date('H:i', strtotime($this->limit_date))]);
-						if ($this->start_date != $this->limit_date){
-							$date_text = $this->getDateForHumans($date)." ".date('H:i', strtotime($this->limit_date));
-						}
+						$title = trans('panichd::lang.calendar-scheduled', [
+							'date' => date(trans('panichd::lang.date-format'), strtotime($this->start_date)),
+							'time1' =>date('H:i', strtotime($this->start_date)),
+							'time2' =>date('H:i', strtotime($this->limit_date))
+						]);
 					}else{
 						$title = trans('panichd::lang.calendar-scheduled-period', [
 							'date1' => $this->getDateForHumans($date),
@@ -360,12 +374,22 @@ class Ticket extends Model
 		}else{
 			// Due today
 			$date = $this->limit_date;
-			$title = trans('panichd::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($date))]);
+			if(Carbon::now()->diffInSeconds(Carbon::parse($this->start_date), false) < 0){
+				// Already started
+				$title = trans('panichd::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($date))]);
+			}else{
+				// Scheduled for today but not yet started
+				$title = trans('panichd::lang.calendar-scheduled-today', [
+					'time1' =>date('H:i', strtotime($this->start_date)),
+					'time2' =>date('H:i', strtotime($this->limit_date))
+				]);
+			}
+			
 			$icon = "glyphicon-warning-sign";
 			$color = "text-warning";
 		}
 		
-		if (!isset($date_text)) $date_text = $this->getDateForHumans($date);
+		$date_text = $this->getDateForHumans($date);
 		
 		if ($show == 'description') {
 			// Date description only
