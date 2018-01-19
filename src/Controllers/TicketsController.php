@@ -94,6 +94,7 @@ class TicketsController extends Controller
 			'users.name AS owner_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
+			'panichd_tickets.category_id',
 			'panichd_categories.name AS category',			
 			
 			// Tag Columns
@@ -121,6 +122,7 @@ class TicketsController extends Controller
             ->groupBy('panichd_tickets.id')
             ->select($a_select)
 			->with('creator')
+			->with('agent')
 			->with('owner.personDepts.department')
 			->withCount('allAttachments')
 			->withCount('comments')
@@ -219,7 +221,6 @@ class TicketsController extends Controller
 		
 		// Agent column with $a_cat[]
 		$collection->editColumn('agent', function ($ticket) use($a_cat) {
-            $ticket = $this->tickets->find($ticket->id);
 			$count = $a_cat[$ticket->category_id]['agents_count'];			
 			
             $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_popover')).'" ';
@@ -236,8 +237,9 @@ class TicketsController extends Controller
 			return $text;
         });		
 		
-        $collection->editColumn('priority', function ($ticket) {
-            $a_priorities = Models\Priority::all();
+		$a_priorities = Models\Priority::orderBy('magnitude', 'desc')->get();
+		
+        $collection->editColumn('priority', function ($ticket) use($a_priorities) {
 			$html = "";
 			foreach ($a_priorities as $priority){
 				$html.= '<label style="color: '.$priority->color.'"><input type="radio" name="'.$ticket->id.'_priority" value="'.$priority->id.'"> '.$priority->name.'</label><br />';
@@ -463,7 +465,7 @@ class TicketsController extends Controller
 		switch ($list){
 			case 'priorities':
 				$instance = Cache::remember('panichd::priorities', 60, function () {
-					return Models\Priority::all();
+					return Models\Priority::orderBy('magnitude', 'desc')->get();
 				});
 				break;
 			case 'statuses':
