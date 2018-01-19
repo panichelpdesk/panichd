@@ -104,10 +104,12 @@
 						{ data: 'tags', name: 'panichd_tags.name' }
 					@endif				
 				],
-				order: [
-					[<?php echo 5+$priority_column_addition; ?>, 'desc'],
-					[<?php echo 6+$priority_column_addition+$calendar_column_addition; ?>, 'desc'],
-				]
+				@if( $u->currentLevel() > 1 )
+					order: [
+						[<?php echo 5+$priority_column_addition; ?>, 'desc'],
+						[<?php echo 6+$priority_column_addition+$calendar_column_addition; ?>, 'desc'],
+					]
+				@endif
 				
 			});		
 			
