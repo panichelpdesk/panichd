@@ -1,6 +1,7 @@
 <div class="panel panel-default">
-	<div class="panel-heading" style="font-weight: bold; font-size: 1.2em;">{{ trans('panichd::lang.ticket-notices-title') . ' (' . $a_notices->count() . ')' }}</div>
+	<div class="panel-heading" style="font-weight: bold; font-size: 1.2em;">{{ trans('panichd::lang.ticket-notices-title') . ($a_notices->count() > 0 ? ' (' . $a_notices->count() . ')' : '') }}</div>
 	<div class="panel-body">
+		@if ($a_notices->count() > 0)
 		<table class="table table-hover table-striped">
 			<tbody>
 			@foreach ($a_notices as $notice)
@@ -19,5 +20,8 @@
 			@endforeach
 			</tbody>
 		</table>
+		@else
+		{{ trans('panichd::lang.ticket-notices-empty') }}
+		@endif
 	</div>
 </div>

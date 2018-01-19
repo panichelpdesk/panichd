@@ -184,7 +184,8 @@ return [
   'index-active-none'                => 'No hi ha tiquets oberts,',
   'index-create-new-ticket'          => 'crear nou tiquet',
   'index-complete-check'             => 'Assegureu-vos de revisar els tiquets tancats si no pot trobar el seu tiquet.',
-  'ticket-notices-title'             => 'Avisos actius', 
+  'ticket-notices-title'             => 'Avisos',
+  'ticket-notices-empty'             => 'No hi ha cap avís actiu',
 
 // Ticket forms messages
   'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',

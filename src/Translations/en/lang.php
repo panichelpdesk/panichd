@@ -185,7 +185,8 @@ return [
   'index-active-none'                => 'There are no active tickets,',
   'index-create-new-ticket'          => 'create new ticket',
   'index-complete-check'             => 'Be sure to check Complete Tickets if you cannot find your ticket.',
-  'ticket-notices-title'             => 'Active notices',  
+  'ticket-notices-title'             => 'Notices',
+  'ticket-notices-empty'             => 'There are no active notices',
 
 // Ticket forms messages
   'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
