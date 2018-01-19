@@ -178,8 +178,14 @@ class PanicHDServiceProvider extends ServiceProvider
 				if (Setting::grab('departments_notices_feature')){
 					// Get notices from related users
 					$a_notices = Ticket::active()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())
+						->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
+						->select('panichd_tickets.*')
 						->with('owner.personDepts.department')
 						->with('status')->with('tags')
+						->orderByRaw('CASE when status_id="'.Setting::grab('default_close_status_id').'" then 2 else 1 end')
+						->orderByRaw('date(start_date)')
+						->orderBy('panichd_priorities.magnitude', 'desc')
+						->orderBy('start_date', 'asc')
 						->get();
 				}else{
 					// Don't show notices
