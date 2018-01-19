@@ -4,11 +4,14 @@
 @include('panichd::shared.common')
 
 @section('content')
-    
-	@if (!isset($ticket) && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)	
-		@include('panichd::tickets.partials.notices')
-	@endif
 	
+	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)
+		<div class="row">
+		<div class="col-lg-5 col-lg-push-7 col-md-6 col-md-push-6">
+			@include('panichd::notices.list')
+		</div>
+		<div class="col-lg-7 col-lg-pull-5 col-md-6 col-md-pull-6">
+	@endif
 	
 	<div class="well bs-component">
         @if (isset($ticket))
@@ -221,6 +224,11 @@
             </div>
         {!! CollectiveForm::close() !!}
     </div>
+	
+	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $a_notices->count() > 0)
+		</div>
+		</div>
+	@endif
 @endsection
 
 @include('panichd::tickets.partials.modal_attachment_edit')
