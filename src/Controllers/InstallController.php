@@ -97,7 +97,18 @@ class InstallController extends Controller
 		
 		// Install migrations and Settings
 		$this->initialSettings();
-
+		
+		// Make attachments directory
+		$att_dir = storage_path(Setting::grab('attachments_path'));
+		if (!File::exists($att_dir)) File::makeDirectory($att_dir);
+		
+		// Make storage link for thumbnail public access
+		Artisan::call('storage:link');
+		
+		// Make thumbnails directory
+		$thb_dir = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('attachments_path'));
+		if (!File::exists($thb_dir)) File::makeDirectory($thb_dir);
+		
 		// Publish asset files
 		Artisan::call('vendor:publish', [
 			'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',

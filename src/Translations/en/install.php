@@ -12,6 +12,7 @@ return [
 	'setup-migrations-less-info'      => 'Hide migrations detail',
 	
 	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'ts default values stored in SettingsTableSeeder.php',
+	'setup-list-folders'              => 'The necessary folders to store tickets attachment files will be created',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
     'setup-list-public-assets'        => 'All the imperative css, js... package files will be copied to  "public\vendor\panichd" Laravel folder.',
 	'optional-config'                 => 'Optional configuration',

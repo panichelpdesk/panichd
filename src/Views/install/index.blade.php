@@ -15,6 +15,7 @@
 		@endforeach
 	</ul>
 	<li>{{ trans('panichd::install.setup-list-settings') }}</li>
+	<li>{{ trans('panichd::install.setup-list-folders') }}</li>
 	<li>{!! trans('panichd::install.setup-list-admin', ['name' => auth()->user()->name, 'email' => auth()->user()->email]) !!}</li>
 	<li>{!! trans('panichd::install.setup-list-public-assets') !!}
 	</ol>
