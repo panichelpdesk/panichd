@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
@@ -89,9 +90,14 @@ class InstallController extends Controller
 
     public function setup(Request $request)
     {
-		// Migrations and Settings
-		$this->initialSettings();
+		// If this is an upgrade from Kordy\Ticketit, delete necessary old settings
+		if (Schema::hasTable('ticketit_settings')){
+			Setting::whereIn('slug', ['master_template'])->delete();
+		}
 		
+		// Install migrations and Settings
+		$this->initialSettings();
+
 		// Publish asset files
 		Artisan::call('vendor:publish', [
 			'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
