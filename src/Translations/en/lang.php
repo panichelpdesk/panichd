@@ -12,6 +12,7 @@ return [
   'nav-new-dd-create'                => 'Create',
   'nav-create-ticket'                => 'Create new',
   'nav-create-ticket-title'          => 'Create new ticket',
+  'nav-notices-number-title'         => 'There are :num notices',
   'nav-active-tickets-title'         => 'Active tickets',
   'nav-completed-tickets-title'      => 'Completed tickets',
   

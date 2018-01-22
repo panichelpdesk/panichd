@@ -518,9 +518,6 @@ class TicketsController extends Controller
 	{
 		$user = $this->agent->find(auth()->user()->id);
 
-		// Get notices count
-		$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->whereIn('user_id', $user->getMyNoticesUsers())->count() : 0;
-		
 		if ($user->currentLevel() > 1){
 			$a_owners = Agent::with('userDepartment')->orderBy('name')->get();
 		}else{
@@ -622,7 +619,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 		
-		return compact('n_notices', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 	
 	/**

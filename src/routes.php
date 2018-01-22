@@ -17,6 +17,11 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     Route::get("$main_route_path/data/{id?}", 'PanicHD\PanicHD\Controllers\TicketsController@data')
             ->name("$main_route.data");
 
+	// Notice list
+	Route::get("$main_route_path/notices", function(){
+		return view('panichd::notices.index');
+	})->name("$main_route.notices");
+			
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
             'names' => [
@@ -32,11 +37,12 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
                 $field_name => 'ticket',
             ],
         ]);
-
+	
+	// Attachment routes
     Route::get("$main_route_path/download-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@downloadAttachment')
         ->name("$main_route.download-attachment");
 		
-	 Route::get("$main_route_path/view-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@viewAttachment')
+	Route::get("$main_route_path/view-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@viewAttachment')
         ->name("$main_route.view-attachment");
 
         //Ticket Comments public route

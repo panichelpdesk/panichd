@@ -54,6 +54,14 @@
 			</a>
 		</li>
 	@endif
+	<li role="presentation" class="{!! $tools->fullUrlIs(route($setting->grab('main_route').'.notices')) ? "active" : "" !!}" >
+	@if($n_notices == 0)
+		<a href="#" title="{{ trans('panichd::lang.ticket-notices-empty') }}" style="color: #ccc; cursor: help"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span><span aria-label="{{ trans('panichd::lang.ticket-notices-title') }}"></span></a>
+	@else
+		<a href="{{ route($setting->grab('main_route').'.notices') }}" title="{{ trans('panichd::lang.nav-notices-number-title', ['num' => $n_notices]) }}"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span><span aria-label="{{ trans('panichd::lang.ticket-notices-title') }}"></span> <span class="badge">{{ $n_notices }}</span></a>
+	@endif
+	</li>
+	
 	
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@index')) ? "active" : "" !!}">
 		<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}" title="{{ trans('panichd::lang.nav-active-tickets-title') }}">

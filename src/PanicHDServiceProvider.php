@@ -89,11 +89,17 @@ class PanicHDServiceProvider extends ServiceProvider
                 $view->with(compact('master', 'email', 'tools', 'editor_enabled', 'codemirror_enabled', 'codemirror_theme'));
             });
 
-            //inlude font awesome css or not
+            // Include font awesome css or not
             view()->composer('panichd::shared.assets', function ($view) {
                 $include_font_awesome = Setting::grab('include_font_awesome');
                 $view->with(compact('include_font_awesome'));
             });
+			
+			// Include $n_notices in shared.nav and tickets.createedit templates
+			view()->composer(['panichd::shared.nav', 'panichd::tickets.createedit'], function ($view) {
+				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())->count() : 0;
+				$view->with(compact('n_notices'));
+			});
 
             view()->composer('panichd::tickets.partials.summernote', function ($view) {
                 $editor_locale = Setting::grab('summernote_locale');
@@ -174,7 +180,7 @@ class PanicHDServiceProvider extends ServiceProvider
             });
 			
 			// Notices widget
-			view()->composer('panichd::notices.widget', function ($view) {
+			view()->composer(['panichd::notices.widget', 'panichd::notices.index'], function ($view) {
 				if (Setting::grab('departments_notices_feature')){
 					// Get notices from related users
 					$a_notices = Ticket::active()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())
@@ -191,7 +197,10 @@ class PanicHDServiceProvider extends ServiceProvider
 					// Don't show notices
 					$a_notices = [];
 				}
-                $view->with(compact('a_notices'));
+				
+				$n_notices = $a_notices ? $a_notices->count() : 0;
+				
+                $view->with(compact('a_notices', 'n_notices'));
             });
 
 			

@@ -13,6 +13,7 @@ return [
   'nav-new-dd-create'                => 'Crear',
   'nav-create-ticket'                => 'Crear nou',
   'nav-create-ticket-title'          => 'Crear nou tiquet',
+  'nav-notices-number-title'         => 'Hi ha :num avisos',
   'nav-active-tickets-title'         => 'Tiquets oberts',  
   'nav-completed-tickets-title'      => 'Tiquets tancats',
   
