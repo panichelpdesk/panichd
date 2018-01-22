@@ -24,6 +24,9 @@
 						<td>{{ trans('panichd::lang.table-subject') }}</td>
 						<td>{{ trans('panichd::lang.table-description') }}</td>
 						<td>{{ trans('panichd::lang.table-intervention') }}</td>
+						@if($u->currentLevel() > 1)
+							<td>{{ trans('panichd::lang.table-department') }}</td>
+						@endif
 						<td>{{ trans('panichd::lang.table-tags') }}</td>
 					</tr>
 				</thead>
@@ -39,7 +42,9 @@
 					<td>{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}</td>
 					<td>{{ $notice->content }}</td>
 					<td>{{ $notice->intervention }}</td>
-
+					@if($u->currentLevel() > 1)
+						<td><span title="{{ $u->currentLevel() > 2 ? trans('panichd::lang.show-ticket-creator') . trans('panichd::lang.colon') . $notice->owner->name : '' }}">{{ $notice->owner->ticketit_department == 0 ? trans('panichd::lang.all-depts') : $notice->owner->userDepartment->resume(true) }}</span></td>
+					@endif
 					<td>
 					@foreach ($notice->tags as $tag)
 						<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; background-color: {{ $tag->bg_color }}; color: {{ $tag->text_color }}">{{ $tag->name }}</button>
