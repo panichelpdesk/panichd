@@ -6,6 +6,10 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 * [Description](#description)
   + [Ticketit features](#ticketit-heritage-features)
   + [Panic Help Desk features](#panic-help-desk-features)
+* [Installing](#installing)
+  + [Requirements](#requirements)
+  + [If thekordy/ticketit is installed](#if-thekordy/ticketit-is-installed)
+  + 
 * [Contributing](#contributing)
 * Credits (to do)
 
@@ -47,13 +51,15 @@ Panic Help Desk keeps all Ticketit functionality, plus some additional features 
 ### Requirements
 * Laravel 5.1 or higher including:
   + Laravel auth with at least one user registered
+  + Model App\User.php that uses users table. It is added with Laravel auth by default and PanicHD requires it to be there. It seems that some admin panels change it to App\Models\User.php or maybe other routes. 
   + Valid email configuration (Needed for PanicHD notification emails)
+  
  * Composer (the PHP dependency manager)
 
-### 1- If thekordy/ticketit is installed in the same Laravel project
-Panic Help Desk will replace thekordy/ticketit in the project, using it's database tables and keeping registered tickets.
+### If thekordy/ticketit is installed
+If it is installed in the same Laravel project, Panic Help Desk will replace it, reusing it's database tables and keeping registered tickets.
 
-You will have to uninstall Kordy/Ticketit firstly doing these steps:
+In this case, you will have to uninstall Kordy/Ticketit firstly doing these steps:
 
  1. Open composer.json file at laravel root folder. Remove the line that reffers to kordy/ticketit in the "require" section
  2. Open config/app.php. Remove the line that contains "TicketitServiceProvider"
@@ -61,13 +67,20 @@ You will have to uninstall Kordy/Ticketit firstly doing these steps:
      `composer update kordy/ticketit`
  4. Delete all possible remaining refferences and files that you may have in your Laravel project (Published files? Refferences in Laravel files?)
 
+### Installation steps
+1. Open a command line in the Laravel folder and type:
+    `composer require panichd/panichd`
+2. Open config/app.php and in the "Providers" section, add:
+    `PanicHD\PanicHD\PanicHDServiceProvider::class,`
 
+### Complete installation via web installer
+At this point, if you had enough with typing commands, the web installer comes to rescue you ;) Just do the following:
 
-### 2- Common installation steps
+1. Log in the Laravel app via web browser
+2. access URL http://yourlaravelURL/panichd
+3. Read and follow the installation steps
 
-### 3.a - Web installer
-
-### 3.b - Console manual installation
+### Complete installation via command line (advanced users)
 
 ## Contributing
 
