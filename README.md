@@ -9,7 +9,8 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 * [Installing](#installing)
   + [Requirements](#requirements)
   + [If thekordy/ticketit is installed](#if-thekordy/ticketit-is-installed)
-  + 
+  + [Installation steps](#installation-steps)
+  + [Complete installation via web installer](#complete-installation-via-command-line-advanced-users)
 * [Contributing](#contributing)
 * Credits (to do)
 
