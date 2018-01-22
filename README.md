@@ -1,35 +1,74 @@
 # Panic Help Desk
-This package is a ticketing system for [Laravel 5](https://laravel.com/) based on [Ticketit](https://github.com/thekordy/ticketit). It has of course [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, tags, calendar fields and a new filters panel. It may be installed in any Laravel 5 based project as it has it's own routes and should not affect other packages.
+This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [thekordy/ticketit](https://github.com/thekordy/ticketit) ticketing system. It of course has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any Laravel 5.1 and later based project as it has it's own routes, so it shouldn't affect other packages.
 
 ## Table of contents
 
 * [Description](#description)
-  + [Ticketit features](#ticketit-features)
-  + [PanicHD features](#panichd-features)
+  + [Ticketit features](#ticketit-heritage-features)
+  + [Panic Help Desk features](#panic-help-desk-features)
 * [Contributing](#contributing)
 * Credits (to do)
 
 ## Description
-### Ticketit features
-Ticketit is a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. It has three user roles: Users (from Laravel integrated auth), agents and admins. Admins can create categories for tickets and assign agents to them. You can create tickets via form and attach screenshots to them. Users can list and view their open tickets and communicate with agent through a comment form. It also has many statistics, a very flexible configuration system and many translations including German, Spanish, Russian, Arabic...
+### Ticketit heritage features
+TheKordy/Ticketit is a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. It has three user roles: Users, agents and admins:
+ - Users may be registered in the Laravel app through it's default auth system. They may create and view their own tickets. They may attach screenshots in them. They see only a ticket fields basic set. They can also communicate with the ticket managers via the comments section in the ticket page.
+ - Agents can edit and manage tickets in the categories they are allowed to. They manage all ticket fields.
+ - Admins are the administrators of the ticketing system. They have to configure and maintain all the ticketing system functionality. They may assign the "agent" role to the users at the categories they determine.
 
-Ticketit developers currently have stopped major changes in current release and, from many moths ago, they're planning a new version of the package with more focus on developers. If you want to read more about ticketit features, please follow [this link to their features and screenshots specific wiki page](https://github.com/thekordy/ticketit/wiki/v0.2-Features).
+It also has many statistics, a very flexible configuration system and many translations including German, Spanish, Russian, Arabic...
 
-### PanicHD features
-We've created the following additional features to the ticketit package:
-* Ticket tags: Agents and admins can manage and search them. Each category has an independent tag list from each other. Tags can be colored.
-* File attachments: For ticket or comment. List images separately and view them in a javascript gallery. Images can also be cropped. All attached files can be renamed and have a description.
-* Intervention field: It may hold taken actions resume for a ticket. It can get additional information from new comments.
+If you want to read more about the original kordy/ticketit features, please go to their github project page [https://github.com/thekordy/ticketit/wiki/v0.2-Features](https://github.com/thekordy/ticketit/wiki/v0.2-Features)
+
+### Panic Help Desk features
+Panic Help Desk keeps all Ticketit functionality, plus some additional features including:
+
+* Ticket creation visible fields change deppending on the category specific user role: For a configuration with some categories, a specific agent may have this role only in some of these, and in some others he'd be a normal user. In this scenario, when this user account is in the ticket creation form and does many changes in the category field, he will see that the visible fields change deppending on his role on the selected category.
+
+* File attachments for tickets and comments: List images separately and view them in a javascript gallery. Images can also be cropped. All attached files can be renamed and have a description.
+
+* New "Intervention" field: It's designed to contain a taken actions resume for a ticket. It may be filled up automatically with information related on some ticket changes
+
 * Description and intervention fields are also visible and searchable in ticket list.
-* Interactive ticket creation form: Admin, of course, always sees all fields in ticket form, but for user and agent roles, any user sees user or agent fields depending on chosen category in the form. 
-* Ticket calendar: You can specify a start date and a limit date for a ticket. With a combination of this fields, you bring tickets in many different situations deppending on their calendar status, that you can filter and control, like:
+
+* Ticket tags: Each category has an independent tag list from each other. Agents and admins may assign them to tickets, and view and search them in the ticket list.  Tags can be colored.
+
+* Ticket calendar: A ticket agent or an admin may specify a start date and a limit date for a ticket. With a combination of this fields, you bring tickets to many different statuses. The following statuses may be filtered in ticket list:
   + Tickets that are scheduled to some day in the future (this thurdsay? this month?)
   + Tickets that end today or tomorrow
   + Tickets that already expired
   + Tickets that were just added and started some weeks ago
-* Ticket filters: You can filter the ticket list by many different criteria in a specific filters panel: Calendar, category and agent. Of course you still can make an even more specific filter within the ticket list thanks to Datatables engine.
-* Agent as a user: Agent may have user level on some categories and agent on others, so we added a button to let them switch their point of view, from agent to user and vice-versa.
+* Ticket filters: You can filter the ticket list by many different criteria in a specific filters panel: Calendar, category and agent.
+* Agent as a user: Any agent is able to switch his point of view, from agent to user and vice-versa:
+  + As a agent: He will see all tickets in categories where he has agent permissions
+  + As a user: He will see the tickets he created in categories where he has no agent permissions
+
+## Installing
+### Requirements
+* Laravel 5.1 or higher including:
+  + Laravel auth with at least one user registered
+  + Valid email configuration (Needed for PanicHD notification emails)
+ * Composer (the PHP dependency manager)
+
+### 1- If thekordy/ticketit is installed in the same Laravel project
+Panic Help Desk will replace thekordy/ticketit in the project, using it's database tables and keeping registered tickets.
+
+You will have to uninstall Kordy/Ticketit firstly doing these steps:
+
+ 1. Open composer.json file at laravel root folder. Remove the line that reffers to kordy/ticketit in the "require" section
+ 2. Open config/app.php. Remove the line that contains "TicketitServiceProvider"
+ 3. Via command line in laravel root, execute:
+     `composer update kordy/ticketit`
+ 4. Delete all possible remaining refferences and files that you may have in your Laravel project (Published files? Refferences in Laravel files?)
+
+
+
+### 2- Common installation steps
+
+### 3.a - Web installer
+
+### 3.b - Console manual installation
 
 ## Contributing
 
-We're still working hard on the package main functionality development to get a good starting point before we publish it's source code. Once we have a development version that is suitable to install by others we'll publish the installation process and enable package issues menu. Anyway, we've already made a short [contributing reference](CONTRIBUTING.md). If you're already interested in collaborating with our project you can read it ;)
+Please read our [contributing reference](CONTRIBUTING.md).
