@@ -29,7 +29,7 @@ body {
 	font-family: "LatoWeb", Helvetica, sans-serif;
 	font-weight: 300;
 	font-size: 16px;
-	color: #555;
+	color: black;
 	padding-top: 3.5em;
 	-webkit-font-smoothing: antialiased;
 	-webkit-overflow-scrolling: touch;
@@ -169,6 +169,7 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 22px;
 	margin-bottom: 15px;
 }
+
 
 /*
  * Datatable styles
