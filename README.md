@@ -8,7 +8,7 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
   + [Panic Help Desk features](#panic-help-desk-features)
 * [Installing](#installing)
   + [Requirements](#requirements)
-  + [If thekordy/ticketit is installed](#if-thekordy/ticketit-is-installed)
+  + [If thekordy/ticketit is installed](#if-thekordyticketit-is-installed)
   + [Installation steps](#installation-steps)
   + [Complete installation](#complete-installation)
     + [With the web installer](#with-the-web-installer)
@@ -87,6 +87,39 @@ To access the web installer you just have to:
 3. Read and follow the installation steps
 
 #### With command line (for advanced users)
+Create the attachments folders:
+1. Access "storage" folder inside Laravel root and create the subfolder:
+`panichd_attachments`
+2. Access storage\app\public and create the subfolder:
+`panichd_thumbnails`
+
+Execute these commands:
+1. Publish and install migrations
+
+   1.1 Publish migrations:
+   `php artisan vendor:publish --tag=panichd-db`
+
+   1.2 Execute migrations:
+   `php artisan migrate`
+
+2. Fill up "panichd_settings" table with the required defaults seeder:
+
+   `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\SettingsTableSeeder`
+3. Enable "panichd_thumbnails" folder access:
+
+   `php artisan storage:link`
+4. Publish included assets:
+
+   `php artisan vendor:publish --tag=panichd-public`
+
+
+If you want to include the included priorities, statuses and category:
+
+   `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
+
+Now, you will have to enable your user account as an admin in Panic Help Desk. In the "users" table, just find your account and set "panichd_admin" value to 1.
+
+If you're all done, access http://your-laravel-app-URL/panichd in your browser.
 
 ## Contributing
 
