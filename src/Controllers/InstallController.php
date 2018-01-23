@@ -106,7 +106,7 @@ class InstallController extends Controller
 		Artisan::call('storage:link');
 		
 		// Make thumbnails directory
-		$thb_dir = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('attachments_path'));
+		$thb_dir = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('thumbnails_path'));
 		if (!File::exists($thb_dir)) File::makeDirectory($thb_dir);
 		
 		// Publish asset files
