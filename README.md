@@ -1,5 +1,5 @@
 # Panic Help Desk
-This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [thekordy/ticketit](https://github.com/thekordy/ticketit) ticketing system. It of course has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any Laravel 5.1 and later based project as it has it's own routes, so it shouldn't affect other packages.
+This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [thekordy/ticketit](https://github.com/thekordy/ticketit) ticketing system. It of course has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any project based on Laravel 5.1 or later. It has it's own routes, so it shouldn't affect other packages.
 
 ## Table of contents
 
@@ -10,9 +10,11 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
   + [Requirements](#requirements)
   + [If thekordy/ticketit is installed](#if-thekordy/ticketit-is-installed)
   + [Installation steps](#installation-steps)
-  + [Complete installation via web installer](#complete-installation-via-command-line-advanced-users)
+  + [Complete installation](#complete-installation)
+    + [With the web installer](#with-the-web-installer)
+    + [With command line](#with-command-line-for-advanced-users)
+  + 
 * [Contributing](#contributing)
-* Credits (to do)
 
 ## Description
 ### Ticketit heritage features
@@ -74,14 +76,17 @@ In this case, you will have to uninstall Kordy/Ticketit firstly doing these step
 2. Open config/app.php and in the "Providers" section, add:
     `PanicHD\PanicHD\PanicHDServiceProvider::class,`
 
-### Complete installation via web installer
-At this point, if you had enough with typing commands, the web installer comes to rescue you ;) Just do the following:
+### Complete installation
+At this point, if you had enough with typing commands, the [web installer](#with-the-web-installer) comes to rescue you ;) But if you're a rough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#with-command-line-for-advanced-users) section.
+
+#### With the web installer
+To access the web installer you just have to:
 
 1. Log in the Laravel app via web browser
-2. access URL http://yourlaravelURL/panichd
+2. access URL http://your-laravel-app-URL/panichd
 3. Read and follow the installation steps
 
-### Complete installation via command line (advanced users)
+#### With command line (for advanced users)
 
 ## Contributing
 
