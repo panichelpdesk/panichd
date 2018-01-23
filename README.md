@@ -52,12 +52,12 @@ Panic Help Desk keeps all Ticketit functionality, plus some additional features 
 
 ## Installing
 ### Requirements
-* Laravel 5.1 or higher including:
-  + Laravel auth with at least one user registered
+* [Laravel](https://laravel.com/) 5.1 or higher including:
+  + [Laravel auth](https://laravel.com/docs/5.3/authentication#introduction) with at least one user registered
   + Model App\User.php that uses users table. It is added with Laravel auth by default and PanicHD requires it to be there. It seems that some admin panels change it to App\Models\User.php or maybe other routes. 
   + Valid email configuration (Needed for PanicHD notification emails)
   
- * Composer (the PHP dependency manager)
+ * [Composer](https://getcomposer.org/) (the PHP dependency manager)
 
 ### If thekordy/ticketit is installed
 If it is installed in the same Laravel project, Panic Help Desk will replace it, reusing it's database tables and keeping registered tickets.
