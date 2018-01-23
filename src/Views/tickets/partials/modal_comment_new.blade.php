@@ -21,7 +21,7 @@
 					{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-						<div class="form-group">
+						<div id="comment-type-buttons" class="form-group">
 							{!! CollectiveForm::label('type', trans('panichd::lang.show-ticket-add-comment-type') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 							<div class="col-lg-10">
 								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="glyphicons glyphicon glyphicon-pencil"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;

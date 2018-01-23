@@ -270,6 +270,7 @@ return [
   'comment-reopen-by'          => 'Reopened by <b>:owner</b>',
    
   'show-ticket-add-comment'                => 'Add comment',
+  'show-ticket-add-note'                   => 'Add internal note',
   'show-ticket-add-comment-type'           => 'Type',
   'show-ticket-add-comment-note'           => 'Internal note',
   'show-ticket-add-comment-reply'          => 'Reply to user',

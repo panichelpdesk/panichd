@@ -269,6 +269,7 @@ return [
   'comment-reopen-by'          => 'Reobert per <b>:owner</b>',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
+  'show-ticket-add-note'                   => 'Afegir nota interna',
   'show-ticket-add-comment-type'           => 'Tipus',
   'show-ticket-add-comment-note'           => 'Nota interna',
   'show-ticket-add-comment-reply'          => 'Resposta a usuari', 
