@@ -435,7 +435,7 @@ class Ticket extends Model
      */
     public function scopeUserTickets($query, $id)
     {
-        return $query->where('user_id', $id);
+        return $query->where('user_id', $id)->where('hidden', '0');
     }
 
     /**

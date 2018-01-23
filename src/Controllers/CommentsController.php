@@ -116,8 +116,16 @@ class CommentsController extends Controller
 		$comment->type = 'reply';
 		
 		$ticket = Models\Ticket::findOrFail($request->get('ticket_id'));
-		
 		$agent = Agent::findOrFail(\Auth::user()->id);
+		
+		if ($ticket->hidden and $agent->currentLevel() == 1){
+			session()->flash('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+			
+			return response()->json(array_merge(
+				['result' => 'error'],
+				['redirect'=>[route(Setting::grab('main_route').'.index')]]
+			));
+		}
 		
 		// Response: reply or note
 		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id'))){

@@ -922,7 +922,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets->with('category.closingReasons')->with('tags');
+		$ticket = $this->tickets->with('category.closingReasons')->with('tags');
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
@@ -936,6 +936,10 @@ class TicketsController extends Controller
 		}
 		
 		$ticket = $ticket->findOrFail($id);
+		
+		if ($ticket->hidden and $user->currentLevel() == 1){
+			return redirect()->back()->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+		}
 		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
@@ -1145,6 +1149,10 @@ class TicketsController extends Controller
             $original_ticket = $this->tickets->findOrFail($id);
 			$ticket = clone $original_ticket;
 			$user = $this->agent->find(auth()->user()->id);
+			
+			if ($ticket->hidden and $user->currentLevel() == 1){
+				return redirect()->back()->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+			}
 			
 			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
 			
