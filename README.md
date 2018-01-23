@@ -113,7 +113,8 @@ Execute these commands:
    `php artisan vendor:publish --tag=panichd-public`
 
 
-If you want to include the included priorities, statuses and category:
+
+If you want to add the included default priorities, statuses and category:
 
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
 
