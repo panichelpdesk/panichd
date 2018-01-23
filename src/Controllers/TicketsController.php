@@ -33,7 +33,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'hide']]);
         $this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -77,6 +77,7 @@ class TicketsController extends Controller
 		$a_select = [
 			'panichd_tickets.id',
 			'panichd_tickets.subject AS subject',
+			'panichd_tickets.hidden as hidden',
 			'panichd_tickets.content AS content',
 			'panichd_tickets.intervention AS intervention',
 			'panichd_statuses.name AS status',
@@ -175,12 +176,15 @@ class TicketsController extends Controller
 		
 		$collection->editColumn('intervention', function ($ticket) {
 			$field=$ticket->intervention;
-			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
+			if ($ticket->intervention!="" and ($ticket->comments_count>0 or $ticket->hidden)) $field.="<br />";
+			
+			if($ticket->hidden) $field.= '<span class="glyphicon glyphicon-eye-close tooltip-info" data-toggle="tooltip" title="'.trans('panichd::lang.ticket-hidden').'" style="margin: 0em 0.5em 0em 0em;"></span>';
+			
 			if ($ticket->recent_comments_count>0){
-				$field.=$ticket->recent_comments_count;
+				$field.=$ticket->recent_comments_count.' ';
 			}
 			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+				$field.='<span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
 			
 			return $field;
@@ -659,6 +663,12 @@ class TicketsController extends Controller
 		$a_result_errors = [];
 		
 		if ($permission_level > 1) {
+			if (in_array($request->input('hidden'), ['true', 'false'])){
+				$request->merge(['hidden' => $request->input('hidden') == 'true' ? 1 : 0]);
+			}else{
+				$request->merge(['hidden' => 0]);
+			}
+			
 			$fields['status_id'] = 'required|exists:panichd_statuses,id';
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
@@ -804,6 +814,8 @@ class TicketsController extends Controller
 		$ticket->user_id = $request->owner_id;
 		
 		if ($permission_level > 1) {
+			$ticket->hidden = $request->hidden;
+			
 			if ($request->complete=='yes'){
 				$ticket->completed_at = Carbon::now();
 			}
@@ -981,6 +993,8 @@ class TicketsController extends Controller
 
         $ticket->subject = $request->subject;
 		$ticket->user_id = $request->owner_id;
+		$ticket->hidden = $request->hidden;
+		
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
@@ -1361,6 +1375,23 @@ class TicketsController extends Controller
 			
 			return redirect()->route(Setting::grab('main_route').'.index');
 		}		
+	}
+	
+	/**
+	 * Hide or make visible a ticket for a user
+	*/
+	public function hide($value, $id)
+	{
+		$ticket = Ticket::findOrFail($id);
+		if (!in_array($value, ['true', 'false'])){
+			return redirect()->back()->with('warning', trans('panichd::lang.validation-error'));
+		}
+		
+		$ticket->hidden = $value=='true' ? 1 : 0;
+		$ticket->save();
+		
+		session()->flash('status', trans('panichd::lang.ticket-visibility-changed'));
+		return redirect()->back();
 	}
 
 	/**

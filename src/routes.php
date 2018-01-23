@@ -21,6 +21,9 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 	Route::get("$main_route_path/notices", function(){
 		return view('panichd::notices.index');
 	})->name("$main_route.notices");
+	
+	// Hide or show ticket to user
+	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
 			
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
