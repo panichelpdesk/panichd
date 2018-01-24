@@ -228,10 +228,17 @@ class PanicHDServiceProvider extends ServiceProvider
 				
 				// Send notification when ticket status is modified or ticket is closed
 				if (Setting::grab('status_notification')) {
-                    if ($original->status_id != $modified->status_id || $original->completed_at != $modified->completed_at) {
-                        $notification = new NotificationsController($modified->category);
+                    if(!strtotime($original->completed_at) and strtotime($modified->completed_at)) {
+						
+						// Notificate closed ticket
+						$notification = new NotificationsController($modified->category);
+                        $notification->ticketClosed($original, $modified);
+                    }elseif ($original->status_id != $modified->status_id){
+						
+						// Notificate updated status
+						$notification = new NotificationsController($modified->category);
                         $notification->ticketStatusUpdated($original, $modified);
-                    }
+					}
                 }
 				
 				// Send notification when agent is modified

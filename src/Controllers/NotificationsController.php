@@ -50,25 +50,45 @@ class NotificationsController extends Controller
 		// Send notifications
 		$this->sendNotification_exec($a_to, $template, $data, $subject);
     }
-
+	
+	public function ticketClosed(Ticket $original_ticket, Ticket $ticket)
+	{
+		$notification_owner = auth()->user();
+		$subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-closed-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
+		$template = 'panichd::emails.closed_ticket';
+		$data = [
+            'ticket'             => serialize($ticket),
+            'notification_owner' => serialize($notification_owner),
+            'original_ticket'    => serialize($original_ticket)
+        ];
+		
+		// Notificate assigned agent
+		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+		
+		// Notificate ticket owner
+		$a_to[] = [
+			'recipient' => $ticket->owner,
+			'subject' => $subject,
+			'template' => $template
+		];
+		
+		// Send notifications
+		$this->sendNotification_exec($a_to, $template, $data, $subject);
+	}
+	
     public function ticketStatusUpdated(Ticket $original_ticket, Ticket $ticket)
     {
         $notification_owner = auth()->user();
         $template = 'panichd::emails.updated_ticket';
 		$subject = $this->subject.$ticket->id.' ';
-		if (!strtotime($original_ticket->completed_at) and strtotime($ticket->completed_at)) {
-			$subject .= trans('panichd::email/globals.notify-closed-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;	
-			$notification_type = 'close';
-		}else{
-			$subject .= trans('panichd::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
-			$notification_type = 'status';
-		}
+		$subject .= trans('panichd::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
+		$notification_type = 'status';
         
 		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
             'original_ticket'    => serialize($original_ticket),
-			'notification_type'             => $notification_type
+			'notification_type'  => $notification_type
         ];
         
         $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, $notification_type);
@@ -83,7 +103,7 @@ class NotificationsController extends Controller
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
             'original_ticket'    => serialize($original_ticket),
-			'notification_type'             => 'agent'
+			'notification_type'  => 'agent'
         ];
 
         $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'agent');
@@ -237,7 +257,7 @@ class NotificationsController extends Controller
 		
 		// Email to ticket->owner
 		if (!in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
-			if (in_array($notification_type,['close','status'])){
+			if (in_array($notification_type,['status'])){
 				$a_to[] = [
 					'recipient' => $ticket->owner
 				];
