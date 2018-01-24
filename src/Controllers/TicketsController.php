@@ -965,12 +965,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 		
-		if ($user->levelInCategory($ticket->category_id) > 1){
-			$comments = $ticket->comments();
-		}else{
-			$comments = $ticket->comments()->where('type','!=','note');
-		}
-        $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('panichd::tickets.show',
             compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
@@ -1390,6 +1385,7 @@ class TicketsController extends Controller
 	*/
 	public function hide($value, $id)
 	{
+		$user = $this->agent->find(auth()->user()->id);
 		$ticket = Ticket::findOrFail($id);
 		if (!in_array($value, ['true', 'false'])){
 			return redirect()->back()->with('warning', trans('panichd::lang.validation-error'));
@@ -1397,6 +1393,14 @@ class TicketsController extends Controller
 		
 		$ticket->hidden = $value=='true' ? 1 : 0;
 		$ticket->save();
+		
+		// Add hide/notHide comment
+		$comment = new Models\Comment;
+		$comment->type = "hide_".$ticket->hidden;
+		$comment->content = $comment->html = trans('panichd::lang.ticket-hidden-'.$ticket->hidden.'-comment');
+		$comment->ticket_id = $id;
+		$comment->user_id = $user->id;
+		$comment->save();
 		
 		session()->flash('status', trans('panichd::lang.ticket-visibility-changed'));
 		return redirect()->back();

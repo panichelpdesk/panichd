@@ -16,7 +16,16 @@
 					$glyphicon = "glyphicon-backward text-warning";
 					$comment_header = trans('panichd::lang.comment-reopen-by', ['owner' => $comment->owner->name]);
 					break;
+				case 'hide_0':
+					$glyphicon = "glyphicon-eye-open text-success";
+					$comment_header = trans('panichd::lang.ticket-hidden-0-comment-title', ['agent' => $comment->owner->name]);
+					break;
+				case 'hide_1':
+					$glyphicon = "glyphicon-eye-close text-warning";
+					$comment_header = trans('panichd::lang.ticket-hidden-1-comment-title', ['agent' => $comment->owner->name]);
+					break;
 				default:
+					// Reply
 					$glyphicon = "glyphicon-envelope ";
 					if ($comment->owner->levelInCategory($comment->ticket->category->id) >= 2){
 						$glyphicon .= "text-info";						

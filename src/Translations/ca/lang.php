@@ -253,6 +253,10 @@ return [
   'ticket-hidden'              => 'Tiquet ocult',
   'ticket-hidden-button-title' => 'Canviar visibilitat per a l\'usuari',
   'ticket-visibility-changed'  => 'S\'ha canviat la visibilitat del tiquet',
+  'ticket-hidden-0-comment-title' => 'Canviat a visible per <b>:agent</b>',
+  'ticket-hidden-0-comment'       => 'El tiquet s\'ha fet <b>visible</b> per a l\'usuari',
+  'ticket-hidden-1-comment-title' => 'Ocultat per <b>:agent</b>',
+  'ticket-hidden-1-comment'       => 'El tiquet s\'ha <b>ocultat</b> per a l\'usuari',
   
   // Comentaris
   'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',

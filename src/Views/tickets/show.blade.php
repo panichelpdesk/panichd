@@ -8,7 +8,7 @@
         @include('panichd::tickets.partials.ticket_body')
 		@include('panichd::tickets.partials.modal_complete')
 		
-		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->whereIN('type', ['reply','close','reopen'])->count() ) )
+		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->forLevel(1)->count() ) )
 			<div style="margin-top: 2em;">        	
 				<h2 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
 					@if ($u->canCommentTicket($ticket->id))

@@ -153,7 +153,7 @@ return [
   'tomorrow'                         => 'Tomorrow',
   'update'                           => 'Update',
   'user'                             => 'User',
-  'yes'                              => 'Yes'
+  'yes'                              => 'Yes',
   'yesterday'                        => 'Yesterday',
   
   // Days of week
@@ -254,6 +254,10 @@ return [
   'ticket-hidden'              => 'Hidden ticket',
   'ticket-hidden-button-title' => 'Switch user visibility',
   'ticket-visibility-changed'  => 'Ticket visibility has changed',
+  'ticket-hidden-0-comment-title' => 'Changed to visible by <b>:agent</b>',
+  'ticket-hidden-0-comment'    => 'Ticket is now <b>visible</b> for owner',
+  'ticket-hidden-1-comment-title' => 'Hided by <b>:agent</b>',
+  'ticket-hidden-1-comment'    => 'Ticket is now <b>hidden</b> for owner',
   
   // Comments
   'comment-reply-title'        => 'Messages between owner and agents',
