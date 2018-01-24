@@ -39,7 +39,7 @@ class NotificationsController extends Controller
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 				
 		// Notices only: Notificate Department email with specific template
-		if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" )){
+		if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject' => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject ,
@@ -129,7 +129,7 @@ class NotificationsController extends Controller
 			$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 			
 			// Notificate ticket owner
-			if ($comment->type == 'reply'){
+			if ($comment->type == 'reply' and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 				$a_to[] = [
 					'recipient' => $ticket->owner,
 					'subject' => $subject,
