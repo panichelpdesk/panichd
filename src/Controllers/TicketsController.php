@@ -1146,7 +1146,7 @@ class TicketsController extends Controller
 			$user = $this->agent->find(auth()->user()->id);
 			
 			if ($ticket->hidden and $user->currentLevel() == 1){
-				return redirect()->back()->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+				return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 			}
 			
 			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
