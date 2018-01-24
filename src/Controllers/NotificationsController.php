@@ -194,7 +194,7 @@ class NotificationsController extends Controller
     }
 
 	/**
-     * Send new email notification.
+     * Send again the new email notification to checked recipients in form
      *
 	 */
 	public function notificationResend(Request $request)
@@ -202,9 +202,8 @@ class NotificationsController extends Controller
 		$comment=Comment::findOrFail($request->input('comment_id'));
 		$ticket=$comment->ticket;
 		$notification_owner = $comment->user;
-		$template = 'panichd::emails.comment';
+		$template = 'panichd::emails.new_comment';
 		$subject = trans('panichd::lang.email-resend-abbr') . trans('panichd::lang.colon') . $this->subject.$ticket->id . ' ' . trans('panichd::email/globals.notify-new-note-by', ['name' => $comment->user->name]) . trans('panichd::lang.colon') . $ticket->subject;
-			// trans('panichd::email/globals.notify-new-comment-from').$notification_owner->name.trans('panichd::email/globals.notify-on').$ticket->subject;
 		$data = [
 			'comment' => serialize($comment), 
 			'ticket' => serialize($ticket),
@@ -216,15 +215,21 @@ class NotificationsController extends Controller
 		
 		if ($request->has('to_agent')){
 			$a_to[] = [
-				'recipient' => $ticket->agent
+				'recipient' => $ticket->agent,
+				'subject'   => $subject,
+				'template'  => $template
 			];
 		}
 		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->owner->email!=$ticket->agent->email))){
 			$a_to[] = [
-				'recipient' => $ticket->owner
+				'recipient' => $ticket->owner,
+				'subject'   => $subject,
+				'template'  => $template
 			];
 		}
 		
+		// Load $this->category for sendNotification
+		$this->category = $ticket->category;
 		$this->sendNotification_exec($a_to, $template, $data, $subject);
 		
 		return back()->with('status','Notificacions reenviades correctament');
