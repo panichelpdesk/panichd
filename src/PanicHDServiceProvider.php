@@ -97,7 +97,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			
 			// Include $n_notices in shared.nav and tickets.createedit templates
 			view()->composer(['panichd::shared.nav', 'panichd::tickets.createedit'], function ($view) {
-				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())->count() : 0;
+				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->notHidden()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())->count() : 0;
 				$view->with(compact('n_notices'));
 			});
 
@@ -183,7 +183,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			view()->composer(['panichd::notices.widget', 'panichd::notices.index'], function ($view) {
 				if (Setting::grab('departments_notices_feature')){
 					// Get notices from related users
-					$a_notices = Ticket::active()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())
+					$a_notices = Ticket::active()->notHidden()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())
 						->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
 						->select('panichd_tickets.*')
 						->with('owner.personDepts.department')
@@ -228,10 +228,17 @@ class PanicHDServiceProvider extends ServiceProvider
 				
 				// Send notification when ticket status is modified or ticket is closed
 				if (Setting::grab('status_notification')) {
-                    if ($original->status_id != $modified->status_id || $original->completed_at != $modified->completed_at) {
-                        $notification = new NotificationsController($modified->category);
+                    if(!strtotime($original->completed_at) and strtotime($modified->completed_at)) {
+						
+						// Notificate closed ticket
+						$notification = new NotificationsController($modified->category);
+                        $notification->ticketClosed($original, $modified);
+                    }elseif ($original->status_id != $modified->status_id){
+						
+						// Notificate updated status
+						$notification = new NotificationsController($modified->category);
                         $notification->ticketStatusUpdated($original, $modified);
-                    }
+					}
                 }
 				
 				// Send notification when agent is modified

@@ -178,6 +178,12 @@ h1, h2, h3, h4, h5, h6 {
 	background-color: #ddd; /*lightorange: #FFE2B3*/
 }
 
+/*
+ * Tickets table
+*/
+#tickets-table .glyphicon {
+	color: #555;
+}
 
 /*
  * Ticket show

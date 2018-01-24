@@ -45,6 +45,11 @@
 				form.find('.jquery_error').removeClass('jquery_error');
 				
 				if (response.result != 'ok'){
+					if (response.redirect != ""){
+						window.location.href=response.redirect;
+						return false;
+					}
+					
 					// Add error panel messages
 					$.each(response.messages,function(index, value){
 						$('#'+errors_div).find('ul').append('<li>'+value+'</li>');

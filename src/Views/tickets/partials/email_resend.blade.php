@@ -14,11 +14,13 @@
 						<label><input type="checkbox" name="to_agent" value="yes"> {{ trans('panichd::lang.show-ticket-email-resend-agent') . $ticket->agent->name}}</label>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-lg-12">
-						<label><input type="checkbox" name="to_owner" value="yes" checked="checked"> {{ trans('panichd::lang.show-ticket-email-resend-user') }}<span id="owner"></span></label>
+					@if(!$ticket->hidden)
+						<div class="form-group">
+							<div class="col-lg-12">
+							<label><input type="checkbox" name="to_owner" value="yes" checked="checked"> {{ trans('panichd::lang.show-ticket-email-resend-user') }}<span id="owner"></span></label>
+							</div>
 						</div>
-					</div>
+					@endif
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('panichd::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
 					</div>

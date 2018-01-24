@@ -137,6 +137,7 @@ return [
   'last-update'                      => 'Última actualització',
   'limit-date'                       => 'Data límit',
   'list'                             => 'Llista',
+  'no'                               => 'No',
   'no-replies'                       => 'Sense respostes.',
   'owner'                            => 'Propietari',
   'priority'                         => 'Prioritat',
@@ -152,6 +153,7 @@ return [
   'tomorrow'                         => 'Demà',
   'update'                           => 'Actualitzar',
   'user'                             => 'Usuari',
+  'yes'                              => 'Sí',
   'yesterday'                        => 'Ahir',
   
   // Days of week
@@ -202,6 +204,8 @@ return [
   'create-ticket-brief-issue'        => 'Tema del tiquet',
   'create-ticket-notices'            => 'Avís per',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
+  'create-ticket-visible'            => 'Visible',
+  'create-ticket-visible-help'       => 'Escull la visibilitat del tiquet per al propietari',
   'create-ticket-change-list'        => 'Canviar de llista',
   'create-ticket-info-start-date'    => 'Predeterminat: Ara',
   'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
@@ -244,6 +248,17 @@ return [
   'ticket-error-file-not-found'      => 'No s\'ha localitzat el fitxer ":name"',
   'ticket-error-file-not-deleted'    => 'El fitxer ":name" no s\'ha pogut eliminar',
   
+  // Tiquet visible / no visible
+  'ticket-visible'             => 'Tiquet visible',
+  'ticket-hidden'              => 'Tiquet ocult',
+  'ticket-hidden-button-title' => 'Canviar visibilitat per a l\'usuari',
+  'ticket-visibility-changed'  => 'S\'ha canviat la visibilitat del tiquet',
+  'ticket-hidden-0-comment-title' => 'Canviat a visible per <b>:agent</b>',
+  'ticket-hidden-0-comment'       => 'El tiquet s\'ha fet <b>visible</b> per a l\'usuari',
+  'ticket-hidden-1-comment-title' => 'Ocultat per <b>:agent</b>',
+  'ticket-hidden-1-comment'       => 'El tiquet s\'ha <b>ocultat</b> per a l\'usuari',
+  
+  // Comentaris
   'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',
   'comment-reply-from-owner'   => 'Resposta de <b>:owner</b>',
   'reply-from-owner-to-owner'  => 'Resposta de <b>:owner1</b> a <b>:owner2</b>',
@@ -258,6 +273,7 @@ return [
   'comment-reopen-by'          => 'Reobert per <b>:owner</b>',
   
   'show-ticket-add-comment'                => 'Afegir comentari',
+  'show-ticket-add-note'                   => 'Afegir nota interna',
   'show-ticket-add-comment-type'           => 'Tipus',
   'show-ticket-add-comment-note'           => 'Nota interna',
   'show-ticket-add-comment-reply'          => 'Resposta a usuari', 
@@ -273,6 +289,7 @@ return [
   'show-ticket-email-resend-user'    => 'A l\'usuari: ',
   'show-ticket-email-resend-agent'   => 'Al tècnic: ',
   
+  // Validacions
   'validation-error'                 => 'Aquest formulari no s\'ha enviat',
   'validate-ticket-subject.required' => 'Cal indicar un tema. Si us plau, indica en poques paraules de què es tracta',
   'validate-ticket-subject.min'      => 'Cal que indiquis un tema més llarg',

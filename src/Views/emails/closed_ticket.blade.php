@@ -8,16 +8,10 @@
 @extends($email)
 
 @section('content')
-	@if($notification_type == 'status')
-		<p>{!! trans('panichd::email/globals.updated_status', ['user' => $notification_owner->name]) !!}</p>
-	@elseif ($notification_type == 'agent')
-		<p>{!! trans('panichd::email/globals.updated_agent', ['user' => $notification_owner->name]) !!}</p>
-	@endif
+	<p>{!! trans('panichd::email/globals.closed_ticket', ['user' => $notification_owner->name]) !!}</p>
 	
 	@if ($recipient->levelInCategory($ticket->category->id) > 1)
 		@include('panichd::emails.partial.common_fields')
 		@include('panichd::emails.partial.both_html_fields')
-	@else
-		@include('panichd::emails.partial.user_fields')
 	@endif
 @stop

@@ -71,4 +71,13 @@ class Comment extends Model
     {
         return $this->hasMany(Attachment::class, 'comment_id')->orderByRaw('CASE when mimetype LIKE "image/%" then 1 else 2 end');
     }
+	
+	public function scopeForLevel($query, $level)
+	{
+		// User level
+		if ($level < 2) return $query->whereIN('type', ['reply','close','reopen']);
+		
+		// For agent or admin
+		return $query;
+	}
 }

@@ -33,7 +33,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'hide']]);
         $this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -77,6 +77,7 @@ class TicketsController extends Controller
 		$a_select = [
 			'panichd_tickets.id',
 			'panichd_tickets.subject AS subject',
+			'panichd_tickets.hidden as hidden',
 			'panichd_tickets.content AS content',
 			'panichd_tickets.intervention AS intervention',
 			'panichd_statuses.name AS status',
@@ -175,12 +176,15 @@ class TicketsController extends Controller
 		
 		$collection->editColumn('intervention', function ($ticket) {
 			$field=$ticket->intervention;
-			if ($ticket->intervention!="" and $ticket->comments_count>0) $field.="<br />";
+			if ($ticket->intervention!="" and ($ticket->comments_count>0 or $ticket->hidden)) $field.="<br />";
+			
+			if($ticket->hidden) $field.= '<span class="glyphicon glyphicon-eye-close tooltip-info" data-toggle="tooltip" title="'.trans('panichd::lang.ticket-hidden').'" style="margin: 0em 0.5em 0em 0em;"></span>';
+			
 			if ($ticket->recent_comments_count>0){
-				$field.=$ticket->recent_comments_count;
+				$field.=$ticket->recent_comments_count.' ';
 			}
 			if ($ticket->comments_count>0){
-				$field.=' <span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+				$field.='<span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
 			
 			return $field;
@@ -659,6 +663,12 @@ class TicketsController extends Controller
 		$a_result_errors = [];
 		
 		if ($permission_level > 1) {
+			if (in_array($request->input('hidden'), ['true', 'false'])){
+				$request->merge(['hidden' => $request->input('hidden') == 'true' ? 1 : 0]);
+			}else{
+				$request->merge(['hidden' => 0]);
+			}
+			
 			$fields['status_id'] = 'required|exists:panichd_statuses,id';
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
@@ -804,6 +814,8 @@ class TicketsController extends Controller
 		$ticket->user_id = $request->owner_id;
 		
 		if ($permission_level > 1) {
+			$ticket->hidden = $request->hidden;
+			
 			if ($request->complete=='yes'){
 				$ticket->completed_at = Carbon::now();
 			}
@@ -910,7 +922,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets->with('category.closingReasons')->with('tags');
+		$ticket = $this->tickets->with('category.closingReasons')->with('tags');
 		$user = $this->agent->find(auth()->user()->id);
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
@@ -924,6 +936,10 @@ class TicketsController extends Controller
 		}
 		
 		$ticket = $ticket->findOrFail($id);
+		
+		if ($ticket->hidden and $user->currentLevel() == 1){
+			return redirect()->back()->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+		}
 		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
@@ -949,12 +965,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 		
-		if ($user->levelInCategory($ticket->category_id) > 1){
-			$comments = $ticket->comments();
-		}else{
-			$comments = $ticket->comments()->where('type','!=','note');
-		}
-        $comments = $comments->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('panichd::tickets.show',
             compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
@@ -981,6 +992,8 @@ class TicketsController extends Controller
 
         $ticket->subject = $request->subject;
 		$ticket->user_id = $request->owner_id;
+		$ticket->hidden = $request->hidden;
+		
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
@@ -1131,6 +1144,10 @@ class TicketsController extends Controller
             $original_ticket = $this->tickets->findOrFail($id);
 			$ticket = clone $original_ticket;
 			$user = $this->agent->find(auth()->user()->id);
+			
+			if ($ticket->hidden and $user->currentLevel() == 1){
+				return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+			}
 			
 			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
 			
@@ -1361,6 +1378,32 @@ class TicketsController extends Controller
 			
 			return redirect()->route(Setting::grab('main_route').'.index');
 		}		
+	}
+	
+	/**
+	 * Hide or make visible a ticket for a user
+	*/
+	public function hide($value, $id)
+	{
+		$user = $this->agent->find(auth()->user()->id);
+		$ticket = Ticket::findOrFail($id);
+		if (!in_array($value, ['true', 'false'])){
+			return redirect()->back()->with('warning', trans('panichd::lang.validation-error'));
+		}
+		
+		$ticket->hidden = $value=='true' ? 1 : 0;
+		$ticket->save();
+		
+		// Add hide/notHide comment
+		$comment = new Models\Comment;
+		$comment->type = "hide_".$ticket->hidden;
+		$comment->content = $comment->html = trans('panichd::lang.ticket-hidden-'.$ticket->hidden.'-comment');
+		$comment->ticket_id = $id;
+		$comment->user_id = $user->id;
+		$comment->save();
+		
+		session()->flash('status', trans('panichd::lang.ticket-visibility-changed'));
+		return redirect()->back();
 	}
 
 	/**

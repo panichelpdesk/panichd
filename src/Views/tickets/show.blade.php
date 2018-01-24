@@ -8,11 +8,11 @@
         @include('panichd::tickets.partials.ticket_body')
 		@include('panichd::tickets.partials.modal_complete')
 		
-		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->whereIN('type', ['reply','close','reopen'])->count() ) )
+		@if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->forLevel(1)->count() ) )
 			<div style="margin-top: 2em;">        	
 				<h2 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
 					@if ($u->canCommentTicket($ticket->id))
-						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new">{{ trans('panichd::lang.show-ticket-add-comment') }}</button>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-comment-new" data-add-comment="{{ $ticket->hidden ? 'no' : 'yes' }}">{{ $ticket->hidden ? trans('panichd::lang.show-ticket-add-note') : trans('panichd::lang.show-ticket-add-comment') }}</button>
 					@endif
 				</h2>
 			</div>
@@ -115,6 +115,11 @@
 				$('.comment-modal .alert-danger').hide();
                 $(this).find('.fieldset-for-comment').show();
 				$(this).find('.fieldset-for-attachment').hide();
+			});
+			
+			$('#modal-comment-new').on('show.bs.modal', function (e) {
+				$(this).find('.modal-title').text($(e.relatedTarget).text());
+				if ($(e.relatedTarget).data('add-comment') == 'no') $(this).find('#comment-type-buttons').hide();
 			});
 			
 			// Comment form: Click on response type buttons (reply or note)

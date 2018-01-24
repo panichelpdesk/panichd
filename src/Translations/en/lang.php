@@ -137,6 +137,7 @@ return [
   'last-update'                      => 'Last Update',
   'limit-date'                       => 'Limit date',
   'list'                             => 'List',
+  'no'                               => 'No',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',
   'priority'                         => 'Priority',
@@ -152,7 +153,8 @@ return [
   'tomorrow'                         => 'Tomorrow',
   'update'                           => 'Update',
   'user'                             => 'User',
-  'yesterday'                        => 'Ahir',
+  'yes'                              => 'Yes',
+  'yesterday'                        => 'Yesterday',
   
   // Days of week
   'day_1'                            => 'Monday',
@@ -203,6 +205,8 @@ return [
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-notices'            => 'Notices',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
+  'create-ticket-visible'            => 'Visible',
+  'create-ticket-visible-help'       => 'Choose ticket visibility for the assigned owner',
   'create-ticket-change-list'        => 'List change',
   'create-ticket-info-start-date'    => 'Default: Now',
   'create-ticket-info-limit-date'    => 'Default: No limit',
@@ -245,6 +249,17 @@ return [
   'ticket-error-file-not-found'      => 'The file ":name" could not be found',
   'ticket-error-file-not-deleted'    => 'The file ":name" could not be deleted',
   
+   // Tiquet visible / no visible
+  'ticket-visible'             => 'Visible ticket',
+  'ticket-hidden'              => 'Hidden ticket',
+  'ticket-hidden-button-title' => 'Switch user visibility',
+  'ticket-visibility-changed'  => 'Ticket visibility has changed',
+  'ticket-hidden-0-comment-title' => 'Changed to visible by <b>:agent</b>',
+  'ticket-hidden-0-comment'    => 'Ticket is now <b>visible</b> for owner',
+  'ticket-hidden-1-comment-title' => 'Hided by <b>:agent</b>',
+  'ticket-hidden-1-comment'    => 'Ticket is now <b>hidden</b> for owner',
+  
+  // Comments
   'comment-reply-title'        => 'Messages between owner and agents',
   'comment-reply-from-owner'   => 'Reply from <b>:owner</b>',
   'reply-from-owner-to-owner'  => 'Reply from <b>:owner1</b> to <b>:owner2</b>',
@@ -259,6 +274,7 @@ return [
   'comment-reopen-by'          => 'Reopened by <b>:owner</b>',
    
   'show-ticket-add-comment'                => 'Add comment',
+  'show-ticket-add-note'                   => 'Add internal note',
   'show-ticket-add-comment-type'           => 'Type',
   'show-ticket-add-comment-note'           => 'Internal note',
   'show-ticket-add-comment-reply'          => 'Reply to user',
@@ -274,6 +290,7 @@ return [
   'show-ticket-email-resend-user'    => 'To user: ',
   'show-ticket-email-resend-agent'   => 'To agent: ',
   
+  // Validations
   'validation-error'                 => 'This form has not been sent',
   'validate-ticket-subject.required' => 'A subject must be set. Please, point out in a few words what is it about',
   'validate-ticket-subject.min'      => 'The subject must be longer',
