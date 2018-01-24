@@ -82,16 +82,27 @@ class NotificationsController extends Controller
         $template = 'panichd::emails.updated_ticket';
 		$subject = $this->subject.$ticket->id.' ';
 		$subject .= trans('panichd::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
-		$notification_type = 'status';
-        
 		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
             'original_ticket'    => serialize($original_ticket),
-			'notification_type'  => $notification_type
+			'notification_type'  => 'status'
         ];
         
-        $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, $notification_type);
+		// Notificate assigned agent
+		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+		
+		// Notificate ticket owner
+		if(!in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+			$a_to[] = [
+				'recipient' => $ticket->owner,
+				'subject' => $subject,
+				'template' => $template
+			];
+		}
+		
+        // Send notifications
+		$this->sendNotification_exec($a_to, $template, $data, $subject);
     }
 
     public function ticketAgentUpdated(Ticket $original_ticket, Ticket $ticket)
