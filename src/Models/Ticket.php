@@ -435,7 +435,7 @@ class Ticket extends Model
      */
     public function scopeUserTickets($query, $id)
     {
-        return $query->where('user_id', $id)->where('hidden', '0');
+        return $query->where('user_id', $id)->notHidden();
     }
 
     /**
@@ -610,6 +610,19 @@ class Ticket extends Model
         }
     }
 
+	/**
+     * Get tickets that are not hidden for users
+     *
+     * @param $query
+     *
+     * @return mixed
+     */
+	public function scopeNotHidden($query)
+	{
+		return $query->where('hidden', '0');
+	}
+	
+	
     /**
      * Sets the agent with the lowest tickets assigned in specific category.
      *
