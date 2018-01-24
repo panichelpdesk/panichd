@@ -116,8 +116,12 @@ class NotificationsController extends Controller
             'original_ticket'    => serialize($original_ticket),
 			'notification_type'  => 'agent'
         ];
-
-        $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'agent');
+		
+		// Notificate assigned agent
+		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+		
+        // Send notifications
+		$this->sendNotification_exec($a_to, $template, $data, $subject);
     }
 
 	public function newComment(Comment $comment)
@@ -245,39 +249,6 @@ class NotificationsController extends Controller
 		
 		return $a_to;
 	}
-	
-    /**
-     * Prepare notification recipients and call sendNotification_exec() to send messages.
-     *
-     * @param string $template
-     * @param array  $data
-     * @param object $ticket
-     * @param object $notification_owner
-     */
-    public function sendNotification($template, $data, $ticket, $notification_owner, $subject, $notification_type)
-    {
-        // Email recipients
-		$a_to=[];
-
-		// Email to ticket->agent
-		if ($ticket->agent->email != $notification_owner->email){
-			$a_to[] = [
-				'recipient' => $ticket->agent,
-			];
-		}
-		
-		// Email to ticket->owner
-		if (!in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
-			if (in_array($notification_type,['status'])){
-				$a_to[] = [
-					'recipient' => $ticket->owner
-				];
-			}
-		}		
-
-		$this->sendNotification_exec($a_to, $template, $data, $subject);
-        
-    }
 	
 	/**
      * Send email notifications from specified mailbox to to other involved users.
