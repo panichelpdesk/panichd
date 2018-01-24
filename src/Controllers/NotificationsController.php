@@ -104,8 +104,21 @@ class NotificationsController extends Controller
 				'notification_owner' => serialize($notification_owner),
 				'notification_type' => $comment->type
 			];
-		
-			$this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'comment_'.$comment->type);
+			
+			// Notificate assigned agent
+			$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+			
+			// Notificate ticket owner
+			if ($comment->type == 'reply'){
+				$a_to[] = [
+					'recipient' => $ticket->owner,
+					'subject' => $subject,
+					'template' => $template
+				];
+			}
+			
+			// Send notifications
+			$this->sendNotification_exec($a_to, $template, $data, $subject);
 		}        
     }
 	
@@ -224,7 +237,7 @@ class NotificationsController extends Controller
 		
 		// Email to ticket->owner
 		if (!in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
-			if (in_array($notification_type,['comment_reply','close','status'])){
+			if (in_array($notification_type,['close','status'])){
 				$a_to[] = [
 					'recipient' => $ticket->owner
 				];
