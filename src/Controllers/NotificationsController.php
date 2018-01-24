@@ -34,8 +34,21 @@ class NotificationsController extends Controller
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
         ];
-
-        $this->sendNotification($template, $data, $ticket, $notification_owner, $subject, 'newTicket');
+		
+		// Notificate assigned agent
+		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+				
+		// Notices only: Notificate Department email with specific template
+		if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" )){
+			$a_to[] = [
+				'recipient' => $ticket->owner,
+				'subject' => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject ,
+				'template' => Setting::grab('email.owner.newticket.template')
+			];
+		}
+		
+		// Send notifications
+		$this->sendNotification_exec($a_to, $template, $data, $subject);
     }
 
     public function ticketStatusUpdated(Ticket $original_ticket, Ticket $ticket)
@@ -170,6 +183,25 @@ class NotificationsController extends Controller
 	}
 	
 	
+	/**
+	 * Create array with default notification recipients
+	*/
+	public function defaultRecipients($ticket, $notification_owner, $subject, $template)
+	{
+		$a_to = [];
+		
+		// Email to ticket->agent
+		if ($ticket->agent->email != $notification_owner->email){
+			$a_to[] = [
+				'recipient' => $ticket->agent,
+				'subject' => $subject,
+				'template' => $template
+			];
+		}
+		
+		return $a_to;
+	}
+	
     /**
      * Prepare notification recipients and call sendNotification_exec() to send messages.
      *
@@ -191,21 +223,11 @@ class NotificationsController extends Controller
 		}
 		
 		// Email to ticket->owner
-		if ($ticket->owner->email != $notification_owner->email and $ticket->agent->email != $ticket->owner->email){
+		if (!in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			if (in_array($notification_type,['comment_reply','close','status'])){
 				$a_to[] = [
 					'recipient' => $ticket->owner
 				];
-			}elseif($notification_type=="newTicket"){
-				if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" )){
-					$a_to[] = [
-						'recipient' => $ticket->owner,
-						'subject' => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject ,
-						'template' => Setting::grab('email.owner.newticket.template')
-					];
-					
-					$subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('panichd::lang.colon').$ticket->subject;
-				}
 			}
 		}		
 
