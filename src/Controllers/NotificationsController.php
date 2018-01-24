@@ -38,8 +38,8 @@ class NotificationsController extends Controller
 		// Notificate assigned agent
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 				
-		// Notices only: Notificate Department email with specific template
-		if (Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+		// Not hidden notices only: Notificate Department email with specific template
+		if (!$ticket->hidden and Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject'   => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject ,
@@ -66,11 +66,13 @@ class NotificationsController extends Controller
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 		
 		// Notificate ticket owner
-		$a_to[] = [
-			'recipient' => $ticket->owner,
-			'subject'   => $subject,
-			'template'  => $template
-		];
+		if(!$ticket->hidden){
+			$a_to[] = [
+				'recipient' => $ticket->owner,
+				'subject'   => $subject,
+				'template'  => $template
+			];
+		}
 		
 		// Send notifications
 		$this->sendNotification($a_to, $data);
@@ -93,7 +95,7 @@ class NotificationsController extends Controller
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 		
 		// Notificate ticket owner
-		if(!in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+		if(!$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject'   => $subject,
@@ -144,7 +146,7 @@ class NotificationsController extends Controller
 			$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 			
 			// Notificate ticket owner
-			if ($comment->type == 'reply' and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+			if ($comment->type == 'reply' and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 				$a_to[] = [
 					'recipient' => $ticket->owner,
 					'subject'   => $subject,
@@ -185,7 +187,7 @@ class NotificationsController extends Controller
 			}
 			
 			// Email to comment->owner
-			if ($comment->owner->email != $notification_owner->email and $comment->owner->email != $ticket->agent->email){
+			if (!$ticket->hidden and !in_array($comment->owner->email, [$notification_owner->email, $ticket->agent->email])){
 				$a_to[] = [
 					'recipient' => $comment->owner,
 					'subject'   => $subject,
@@ -224,7 +226,7 @@ class NotificationsController extends Controller
 				'template'  => $template
 			];
 		}
-		if ($request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->owner->email!=$ticket->agent->email))){
+		if (!$ticket->hidden and $request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->owner->email!=$ticket->agent->email))){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject'   => $subject,
