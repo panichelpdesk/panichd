@@ -11,8 +11,8 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
   + [If Kordy/Ticketit is installed](#if-kordyticketit-is-installed)
   + [Installation steps](#installation-steps)
   + [Complete installation](#complete-installation)
-    + [With the web installer](#with-the-web-installer)
-    + [With command line](#with-command-line-for-advanced-users)
+    + [With the web installer](#option-1-web-installer)
+    + [With command line](#option-2-command-line-for-advanced-users)
   + 
 * [Contributing](#contributing)
 
@@ -75,16 +75,16 @@ If it's installed in the same Laravel project you want to install Panic Help Des
     `PanicHD\PanicHD\PanicHDServiceProvider::class,`
 
 ### Complete installation
-At this point, if you think you typed enough commands, the [web installer](#with-the-web-installer) comes to rescue you ;) But if you're a rough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#with-command-line-for-advanced-users) section.
+At this point, if you think you typed enough commands, the [web installer](#option-1-web-installer) comes to rescue you ;) But if you're a tough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#option-2-command-line-for-advanced-users) section.
 
-#### With the web installer
+#### Option 1: Web installer
 To access the web installer you just have to:
 
 1. Log in the Laravel app via web browser
 2. access URL http://your-laravel-app-URL/panichd
 3. Read and follow the installation steps
 
-#### With command line (for advanced users)
+#### Option 2: Command line (for advanced users)
 Create the attachments folders:
 1. Access "storage" folder inside Laravel root and create the subfolder:
 `panichd_attachments`
