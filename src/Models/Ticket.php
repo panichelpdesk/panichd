@@ -278,7 +278,7 @@ class Ticket extends Model
 		$date_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
 		$date_text = "";
 		$time = date('H:i', strtotime($date));
-		if (Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
+		if ($this->limit_date and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
 			$time = date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
 		}
 		
@@ -368,7 +368,12 @@ class Ticket extends Model
 			}else{
 				// Active without limit
 				$date = $this->start_date;
-				$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date, true)]);
+				if ($start_days_diff == 0){
+					$title = trans('panichd::lang.calendar-active-today', ['description' => $this->getDateForHumans($date, true)]);
+				}else{
+					$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date, true)]);
+				}
+				
 				$icon = "glyphicon-file";					
 			}				
 		}else{

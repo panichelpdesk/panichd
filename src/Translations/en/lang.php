@@ -41,6 +41,7 @@ return [
   'table-comments-recent'            => ':num recent ones.',
 
   'calendar-active'            => 'Started :description',
+  'calendar-active-today'      => 'Started :description',
   'calendar-active-future'     => 'Starts :description',
   'calendar-expired'           => 'Expired since :description',
   'calendar-expired-today'     => 'Expired today at :time',

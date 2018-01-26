@@ -836,7 +836,7 @@ class TicketsController extends Controller
 		if ($request->start_date != ""){
 			$ticket->start_date = date('Y-m-d H:i:s', strtotime($request->start_date));
 		}else{
-			$ticket->start_date = $ticket->created_at;
+			$ticket->start_date = Carbon::now();
 		}
 		if ($request->limit_date == ""){
 			$ticket->limit_date = null;

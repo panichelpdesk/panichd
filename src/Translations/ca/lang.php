@@ -42,6 +42,7 @@ return [
   'table-info-comments-recent'       => ':num recents.',
   
   'calendar-active'            => 'Va començar :description',
+  'calendar-active-today'      => 'Ha començat :description',
   'calendar-active-future'     => 'Comença :description',
   'calendar-expired'           => 'Caducat des de :description',
   'calendar-expired-today'     => 'Caducat avui a les :time',
