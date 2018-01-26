@@ -170,7 +170,6 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 15px;
 }
 
-
 /*
  * Datatable styles
 */
@@ -181,7 +180,7 @@ h1, h2, h3, h4, h5, h6 {
 /*
  * Tickets table
 */
-#tickets-table .glyphicon {
+#tickets-table .glyphicon.attachment, #tickets-table .glyphicon.comment, #tickets-table .glyphicon.tickethidden {
 	color: #555;
 }
 

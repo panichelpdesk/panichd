@@ -165,7 +165,7 @@ class TicketsController extends Controller
 				return $field;
 			}else{
 				$field = '<div style="margin: 0em 0em 1em 0em;">'.$field.'</div>' . $ticket->content;
-				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 
 				return $field;
 			}
@@ -174,7 +174,7 @@ class TicketsController extends Controller
 		if (Setting::grab('subject_content_column') == 'no'){
 			$collection->editColumn('content', function ($ticket) {
 				$field = $ticket->content;
-				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 
 				return $field;
 			});
@@ -184,13 +184,13 @@ class TicketsController extends Controller
 			$field=$ticket->intervention;
 			if ($ticket->intervention!="" and ($ticket->comments_count>0 or $ticket->hidden)) $field.="<br />";
 			
-			if($ticket->hidden) $field.= '<span class="glyphicon glyphicon-eye-close tooltip-info" data-toggle="tooltip" title="'.trans('panichd::lang.ticket-hidden').'" style="margin: 0em 0.5em 0em 0em;"></span>';
+			if($ticket->hidden) $field.= '<span class="glyphicon glyphicon-eye-close tooltip-info tickethidden" data-toggle="tooltip" title="'.trans('panichd::lang.ticket-hidden').'" style="margin: 0em 0.5em 0em 0em;"></span>';
 			
 			if ($ticket->recent_comments_count>0){
 				$field.=$ticket->recent_comments_count.' ';
 			}
 			if ($ticket->comments_count>0){
-				$field.='<span class="glyphicons glyphicon glyphicon-comment tooltip-info" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+				$field.='<span class="glyphicons glyphicon glyphicon-comment tooltip-info comment" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
 			
 			return $field;
