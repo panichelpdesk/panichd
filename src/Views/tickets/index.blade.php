@@ -66,15 +66,18 @@
 				<?php
 					$agent_column = session('panichd_filter_agent')=="" && $u->currentLevel() > 1 ? true : false;
 					$priority_column_addition = $calendar_column_addition = 0;
+					$user_updated_at_addition = 0;
 					1; // Counts priority_magnitude column
 					if (session('panichd_filter_owner')=="") $calendar_column_addition++;
 					if($setting::grab('departments_feature')) $calendar_column_addition++;
 				?>				
 				columns: [
-					{ data: 'id', name: 'panichd_tickets.id' },
+					{ data: 'id', name: 'panichd_tickets.id' }, // order == 0
 					{ data: 'subject', name: 'subject' },
 					@if ($setting->grab('subject_content_column') == 'no')
-						<?php $priority_column_addition++; ?>
+						<?php $priority_column_addition++;
+							$user_updated_at_addition++;
+						?>
 						{ data: 'content', name: 'content' },
 					@endif
 					{ data: 'intervention', name: 'intervention' },
@@ -104,11 +107,19 @@
 						{ data: 'tags', name: 'panichd_tags.name' }
 					@endif				
 				],
-				@if( $u->currentLevel() > 1 )
-					order: [
-						[<?php echo 5+$priority_column_addition; ?>, 'desc'],
-						[<?php echo 6+$priority_column_addition+$calendar_column_addition; ?>, 'desc'],
-					]
+				@if($ticketList!='newest')
+					@if( $u->currentLevel() > 1)
+						@if ($ticketList=='active')
+							order: [
+								[<?php echo 5+$priority_column_addition; ?>, 'desc'],
+								[<?php echo 6+$priority_column_addition+$calendar_column_addition; ?>, 'desc'],
+							]
+						@else
+							order: [<?php echo 7+$priority_column_addition+$calendar_column_addition; ?>, 'desc']
+						@endif
+					@else
+						order: [<?php echo 4+$user_updated_at_addition; ?>, 'desc']
+					@endif
 				@endif
 				
 			});		
