@@ -11,6 +11,9 @@ return [
 	'setup-more-info'                 => 'Veure detalls',
 	'setup-less-info'                 => 'Ocultar detalls',
 	
+	'setup-list-ticketit-settings'    => 'Es reiniciarà varis paràmetres incompatibles de Kordy/Ticketit',
+	'setup-list-ticketit-admin_route' => 'Paràmetres referents a la ruta d\'administració: "admin_route" i "admin_route_path"',
+	'setup-list-ticketit-template'     => 'Fitxer de plantilla principal, paràmetre "master_template"',
 	'setup-list-settings'             => 'La taula settings de PanicHD s\'omplirà amb els valors per defecte del fitxer SettingsTableSeeder.php',
 	'setup-list-folders'              => 'Es crearà els directoris necessaris per a desar els fitxers adjunts dels tiquets',
 	'setup-list-admin'                => 'El teu compte d\'usuari s\'afegirà com a administrador de Panic Help Desk. Després de la instal·lació podràs afegir-ne altres.',

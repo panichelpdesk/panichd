@@ -11,7 +11,10 @@ return [
 	'setup-more-info'                 => 'View details',
 	'setup-less-info'                 => 'Hide details',
 	
-	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'ts default values stored in SettingsTableSeeder.php',
+	'setup-list-ticketit-settings'    => 'There will be reseted some incompatible Kordy/Ticketit parameters',
+	'setup-list-ticketit-admin_route' => 'Administration route related parameters: "admin_route" and "admin_route_path"',
+	'setup-list-ticketit-template'    => 'Main template file, "master_template" setting',
+	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'s default values stored in SettingsTableSeeder.php',
 	'setup-list-folders'              => 'The necessary folders to store tickets attachment files will be created',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
     'setup-list-public-assets'        => 'All the imperative css, js... package files will be copied to  "public\vendor\panichd" Laravel folder.',

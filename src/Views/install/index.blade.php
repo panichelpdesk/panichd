@@ -14,6 +14,13 @@
 			<li>{{ $mig }}</li>
 		@endforeach
 	</ul>
+	@if ($previous_ticketit)
+		<li>{{ trans('panichd::install.setup-list-ticketit-settings') }} <a href="#" class="slide_button" data-slide="updated_settings_list" data-on-text="{{ trans('panichd::install.setup-less-info') }}" data-off-text="{{ trans('panichd::install.setup-more-info') }}">{{ trans('panichd::install.setup-more-info') }}</a></li>
+		<ul id="updated_settings_list" style="display: none; margin: 0em 0em 1em 0em;">
+			<li>{{ trans('panichd::install.setup-list-ticketit-admin_route') }}</li>
+			<li>{{ trans('panichd::install.setup-list-ticketit-template') }}</li>
+		</ul>
+	@endif
 	<li>{{ trans('panichd::install.setup-list-settings') }}</li>
 	<li>{{ trans('panichd::install.setup-list-folders') }}</li>
 	<li>{!! trans('panichd::install.setup-list-admin', ['name' => auth()->user()->name, 'email' => auth()->user()->email]) !!}</li>
