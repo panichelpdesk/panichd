@@ -45,7 +45,7 @@
 				form.find('.jquery_error').removeClass('jquery_error');
 				
 				if (response.result != 'ok'){
-					if (response.redirect != ""){
+					if (response.hasOwnProperty('redirect') && response.redirect != ""){
 						window.location.href=response.redirect;
 						return false;
 					}
