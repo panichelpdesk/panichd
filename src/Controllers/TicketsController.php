@@ -49,7 +49,7 @@ class TicketsController extends Controller
             $datatables = app(\Yajra\Datatables\Datatables::class);
         }
 
-        $user = $this->agent->find(auth()->user()->id);
+        $agent = $this->agent->find(auth()->user()->id);
 
         $collection = Ticket::inList($ticketList)->visible()->filtered();
 
@@ -119,6 +119,8 @@ class TicketsController extends Controller
 			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(panichd_departments.department)), group_concat(distinct(panichd_departments.sub1))) as dept_full');
 		}
 		
+		$currentLevel = $agent->currentLevel();
+		
 		$collection
             ->groupBy('panichd_tickets.id')
             ->select($a_select)
@@ -126,8 +128,12 @@ class TicketsController extends Controller
 			->with('agent')
 			->with('owner.personDepts.department')
 			->withCount('allAttachments')
-			->withCount('comments')
-			->withCount('recentComments');
+			->withCount(['comments' => function($query) use($currentLevel){
+				$query->forLevel($currentLevel);
+			}])
+			->withCount(['recentComments' => function($query) use($currentLevel){
+				$query->forLevel($currentLevel);
+			}]);
 
         $collection = $datatables->of($collection);
 
