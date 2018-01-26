@@ -91,20 +91,26 @@ class InstallController extends Controller
      */
 
     public function setup(Request $request)
-    {
-		// If this is an upgrade from Kordy\Ticketit, delete necessary old settings
-		if (Schema::hasTable('ticketit_settings')){
+    {	
+		$previous_ticketit = Schema::hasTable('ticketit_settings');
+		
+		// Install migrations and Settings
+		$this->initialSettings();
+		
+		// If this is an upgrade from Kordy\Ticketit, reset necessary old settings
+		if ($previous_ticketit){
 			$a_reset = [
 				'admin_route',
 				'admin_route_path',
 				'master_template',
-				
 			];
-			Setting::whereIn('slug', $a_reset)->delete();
+			
+			foreach ($a_reset as $setting){
+				$row = Setting::where('slug', $setting)->first();
+				$row->value = $row->default;
+				$row->save();
+			}
 		}
-		
-		// Install migrations and Settings
-		$this->initialSettings();
 		
 		// Make attachments directory
 		$att_dir = storage_path(Setting::grab('attachments_path'));
