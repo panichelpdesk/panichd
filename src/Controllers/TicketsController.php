@@ -938,7 +938,7 @@ class TicketsController extends Controller
 		$ticket = $ticket->findOrFail($id);
 		
 		if ($ticket->hidden and $user->currentLevel() == 1){
-			return redirect()->back()->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
+			return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 		}
 		
         if (version_compare(app()->version(), '5.3.0', '>=')) {
