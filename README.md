@@ -1,24 +1,24 @@
 # Panic Help Desk
-This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [thekordy/ticketit](https://github.com/thekordy/ticketit) ticketing system. It of course has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any project based on Laravel 5.1 or later. It has it's own routes, so it shouldn't affect other packages.
+This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit) ticketing system. It of course has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any project based on Laravel 5.1 or later. It has it's own routes, so it shouldn't affect other packages.
 
 ## Table of contents
 
 * [Description](#description)
-  + [Ticketit features](#ticketit-heritage-features)
+  + [Ticketit features](#kordyticketit-heritage-features)
   + [Panic Help Desk features](#panic-help-desk-features)
 * [Installing](#installing)
   + [Requirements](#requirements)
-  + [If thekordy/ticketit is installed](#if-thekordyticketit-is-installed)
+  + [If Kordy/Ticketit is installed](#if-kordyticketit-is-installed)
   + [Installation steps](#installation-steps)
   + [Complete installation](#complete-installation)
-    + [With the web installer](#with-the-web-installer)
-    + [With command line](#with-command-line-for-advanced-users)
+    + [With the web installer](#option-1-web-installer)
+    + [With command line](#option-2-command-line-for-advanced-users)
   + 
 * [Contributing](#contributing)
 
 ## Description
-### Ticketit heritage features
-TheKordy/Ticketit is a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. It has three user roles: Users, agents and admins:
+### Kordy/Ticketit heritage features
+Ticketit is a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. It has three user roles: Users, agents and admins:
  - Users may be registered in the Laravel app through it's default auth system. They may create and view their own tickets. They may attach screenshots in them. They see only a ticket fields basic set. They can also communicate with the ticket managers via the comments section in the ticket page.
  - Agents can edit and manage tickets in the categories they are allowed to. They manage all ticket fields.
  - Admins are the administrators of the ticketing system. They have to configure and maintain all the ticketing system functionality. They may assign the "agent" role to the users at the categories they determine.
@@ -59,10 +59,8 @@ Panic Help Desk keeps all Ticketit functionality, plus some additional features 
   
  * [Composer](https://getcomposer.org/) (the PHP dependency manager)
 
-### If thekordy/ticketit is installed
-If it is installed in the same Laravel project, Panic Help Desk will replace it, reusing it's database tables and keeping registered tickets.
-
-In this case, you will have to uninstall Kordy/Ticketit firstly doing these steps:
+### If Kordy/Ticketit is installed
+If it's installed in the same Laravel project you want to install Panic Help Desk, Panic Help Desk will replace it, reusing it's database tables and keeping registered tickets. Before installing PanicHD, you will have to uninstall Kordy/Ticketit following these steps:
 
  1. Open composer.json file at laravel root folder. Remove the line that reffers to kordy/ticketit in the "require" section
  2. Open config/app.php. Remove the line that contains "TicketitServiceProvider"
@@ -77,16 +75,16 @@ In this case, you will have to uninstall Kordy/Ticketit firstly doing these step
     `PanicHD\PanicHD\PanicHDServiceProvider::class,`
 
 ### Complete installation
-At this point, if you had enough with typing commands, the [web installer](#with-the-web-installer) comes to rescue you ;) But if you're a rough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#with-command-line-for-advanced-users) section.
+At this point, if you think you typed enough commands, the [web installer](#option-1-web-installer) comes to rescue you ;) But if you're a tough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#option-2-command-line-for-advanced-users) section.
 
-#### With the web installer
+#### Option 1: Web installer
 To access the web installer you just have to:
 
 1. Log in the Laravel app via web browser
 2. access URL http://your-laravel-app-URL/panichd
 3. Read and follow the installation steps
 
-#### With command line (for advanced users)
+#### Option 2: Command line (for advanced users)
 Create the attachments folders:
 1. Access "storage" folder inside Laravel root and create the subfolder:
 `panichd_attachments`
