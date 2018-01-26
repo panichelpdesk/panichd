@@ -1064,6 +1064,11 @@ class TicketsController extends Controller
 			));
 		}
 		
+		// If ticket hidden changes, execute related actions
+		if ($original_ticket->hidden != $ticket->hidden){
+			$this->hide_actions($ticket);
+		}
+		
 		// End transaction
 		DB::commit();
 		event(new TicketUpdated($original_ticket, $ticket));
@@ -1391,7 +1396,6 @@ class TicketsController extends Controller
 	*/
 	public function hide($value, $id)
 	{
-		$user = $this->agent->find(auth()->user()->id);
 		$ticket = Ticket::findOrFail($id);
 		if (!in_array($value, ['true', 'false'])){
 			return redirect()->back()->with('warning', trans('panichd::lang.validation-error'));
@@ -1400,16 +1404,26 @@ class TicketsController extends Controller
 		$ticket->hidden = $value=='true' ? 1 : 0;
 		$ticket->save();
 		
+		$this->hide_actions($ticket);
+		
+		session()->flash('status', trans('panichd::lang.ticket-visibility-changed'));
+		return redirect()->back();
+	}
+	
+	/**
+	 * Actions to take when a ticket hidden value changes
+	*/
+	public function hide_actions($ticket)
+	{
+		$user = $this->agent->find(auth()->user()->id);
+		
 		// Add hide/notHide comment
 		$comment = new Models\Comment;
 		$comment->type = "hide_".$ticket->hidden;
 		$comment->content = $comment->html = trans('panichd::lang.ticket-hidden-'.$ticket->hidden.'-comment');
-		$comment->ticket_id = $id;
+		$comment->ticket_id = $ticket->id;
 		$comment->user_id = $user->id;
 		$comment->save();
-		
-		session()->flash('status', trans('panichd::lang.ticket-visibility-changed'));
-		return redirect()->back();
 	}
 
 	/**
