@@ -103,6 +103,7 @@ class InstallController extends Controller
 				'admin_route',
 				'admin_route_path',
 				'master_template',
+				'routes',
 			];
 			
 			foreach ($a_reset as $setting){

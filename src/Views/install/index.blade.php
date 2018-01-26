@@ -19,6 +19,7 @@
 		<ul id="updated_settings_list" style="display: none; margin: 0em 0em 1em 0em;">
 			<li>{{ trans('panichd::install.setup-list-ticketit-admin_route') }}</li>
 			<li>{{ trans('panichd::install.setup-list-ticketit-template') }}</li>
+			<li>{{ trans('panichd::install.setup-list-ticketit-routes') }}</li>
 		</ul>
 	@endif
 	<li>{{ trans('panichd::install.setup-list-settings') }}</li>
