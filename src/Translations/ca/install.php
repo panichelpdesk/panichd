@@ -8,8 +8,8 @@ return [
     'initial-setup'                   => 'Configuració inicial',
 	
 	'setup-list-migrations'           => '<b>:num</b> migracions de la base de dades es publicarà i s\'instal·larà a l\'aplicació Laravel',
-	'setup-migrations-more-info'      => 'Veure detall de les migracions',
-	'setup-migrations-less-info'      => 'Ocultar detall de les migracions',
+	'setup-more-info'                 => 'Veure detalls',
+	'setup-less-info'                 => 'Ocultar detalls',
 	
 	'setup-list-settings'             => 'La taula settings de PanicHD s\'omplirà amb els valors per defecte del fitxer SettingsTableSeeder.php',
 	'setup-list-folders'              => 'Es crearà els directoris necessaris per a desar els fitxers adjunts dels tiquets',

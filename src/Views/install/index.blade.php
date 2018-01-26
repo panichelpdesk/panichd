@@ -8,7 +8,7 @@
 	<h3 style="margin: 0.8em 1em 0.8em 0em;">{!! trans('panichd::install.welcome') !!}</h3>
 	<p>{!! trans('panichd::install.setup-list') !!}</p>
 	<ol>
-	<li>{!! trans('panichd::install.setup-list-migrations', ['num' =>count($inactive_migrations)]) !!} <a href="#" id="show_migrations">{{ trans('panichd::install.setup-migrations-more-info') }}</a><a href="#" id="hide_migrations" style="display: none">{{ trans('panichd::install.setup-migrations-less-info') }}</a></li>
+	<li>{!! trans('panichd::install.setup-list-migrations', ['num' =>count($inactive_migrations)]) !!} <a href="#" class="slide_button" data-slide="migrations_list" data-on-text="{{ trans('panichd::install.setup-less-info') }}" data-off-text="{{ trans('panichd::install.setup-more-info') }}">{{ trans('panichd::install.setup-more-info') }}</a></li>
 	<ul id="migrations_list" style="display: none; margin: 0em 0em 1em 0em;">
 		@foreach($inactive_migrations as $mig)
 			<li>{{ $mig }}</li>

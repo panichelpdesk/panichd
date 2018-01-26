@@ -61,7 +61,9 @@ class InstallController extends Controller
 				// Panic Help Desk is not installed yet
 				
 				$inactive_migrations = $this->inactiveMigrations();
-				return view('panichd::install.index', compact('inactive_migrations'));
+				$previous_ticketit = Schema::hasTable('ticketit_settings');
+				
+				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit'));
 			}else{
 				$inactive_settings = $this->inactiveSettings();
 				
@@ -92,7 +94,13 @@ class InstallController extends Controller
     {
 		// If this is an upgrade from Kordy\Ticketit, delete necessary old settings
 		if (Schema::hasTable('ticketit_settings')){
-			Setting::whereIn('slug', ['master_template'])->delete();
+			$a_reset = [
+				'admin_route',
+				'admin_route_path',
+				'master_template',
+				
+			];
+			Setting::whereIn('slug', $a_reset)->delete();
 		}
 		
 		// Install migrations and Settings

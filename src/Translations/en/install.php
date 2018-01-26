@@ -8,8 +8,8 @@ return [
     'initial-setup'                   => 'Initial Setup',
 	
 	'setup-list-migrations'           => '<b>:num</b> migration files will be published to Laravel app and installed',
-	'setup-migrations-more-info'      => 'View migrations detail',
-	'setup-migrations-less-info'      => 'Hide migrations detail',
+	'setup-more-info'                 => 'View details',
+	'setup-less-info'                 => 'Hide details',
 	
 	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'ts default values stored in SettingsTableSeeder.php',
 	'setup-list-folders'              => 'The necessary folders to store tickets attachment files will be created',

@@ -48,17 +48,16 @@
 <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 <script>
 $(function(){
-	$('#show_migrations').click(function(e){
+	$('.slide_button').click(function(e){
 		e.preventDefault();
-		$('#migrations_list').slideDown();
-		$(this).hide();
-		$('#hide_migrations').show();
-	});
-	$('#hide_migrations').click(function(e){
-		e.preventDefault();
-		$('#migrations_list').slideUp();
-		$(this).hide();
-		$('#show_migrations').show();
+		var list = $('#'+$(this).data('slide'));
+		if (list.is(':visible')){
+			list.slideUp();
+			$(this).text($(this).data('off-text'));
+		}else{
+			list.slideDown();
+			$(this).text($(this).data('on-text'));
+		}
 	});
 	
 	$('.btn-primary').click(function(){
