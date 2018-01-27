@@ -19,7 +19,8 @@ return [
 	'setup-list-folders'              => 'Es crearà els directoris necessaris per a desar els fitxers adjunts dels tiquets',
 	'setup-list-admin'                => 'El teu compte d\'usuari s\'afegirà com a administrador de Panic Help Desk. Després de la instal·lació podràs afegir-ne altres.',
     'setup-list-public-assets'        => 'Es copiarà al directori de Laravel "public\vendor\panichd" tots els fitxers css, js... necessaris de la llibreria.',
-	'optional-config'                 => 'Configuració opcional',
+	'configurable-parameters'         => 'Paràmetres configurables',
+	'existent-parameters'             => 'Ja existeixen paràmetres configurats de Kordy/Ticketit, així que aquí no es mostrarà opcions d\'inici ràpid.<br />Per a editar-los, si us plau accedeix als menús d\'administració després d\'instal·lar Panic Help Desk.',
 	'optional-quickstart-data'        => 'Afegir paràmetres d\'inici ràpid:<ul><li>Inclou prioritats i estats bàsics i una categoria de tiquets.</li><li>El teu compte d\'usuari s\'afegirà com a agent a la categoria creada.</li><li>Tots son modificables després de la instal·lació.</li></ul>',
 	'install-now'                     => 'Instal·lar ara!',
 	

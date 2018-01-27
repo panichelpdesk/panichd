@@ -63,7 +63,12 @@ class InstallController extends Controller
 				$inactive_migrations = $this->inactiveMigrations();
 				$previous_ticketit = Schema::hasTable('ticketit_settings');
 				
-				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit'));
+				$quickstart = true;
+				if ($previous_ticketit and (\DB::table('ticketit_statuses')->count() > 0 or \DB::table('ticketit_priorities')->count() > 0 or \DB::table('ticketit_categories')->count() > 0)){
+					$quickstart = false;
+				}
+				
+				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit', 'quickstart'));
 			}else{
 				$inactive_settings = $this->inactiveSettings();
 				
@@ -130,14 +135,17 @@ class InstallController extends Controller
 			'--tag'      => ['panichd-public'],
 		]);
 		
+		// Add current user to panichd_admin
 		$admin = Agent::find(auth()->user()->id);
         $admin->panichd_admin = true;
 		
 		if ($request->has('quickstart')){
+			// Insert quickstart seed data
 			Artisan::call('db:seed', [
 				'--class' => 'PanicHD\\PanicHD\\Seeds\\Basic',
 			]);
 			
+			// Add current user as an agent in the last added category
 			$admin->panichd_agent = true;
 			$admin->categories()->sync([Category::first()->id]);
 		}

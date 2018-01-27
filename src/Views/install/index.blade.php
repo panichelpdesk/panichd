@@ -29,8 +29,12 @@
 	</ol>
 	<form class="form-signin" action="{{url('/panichd/install') }}" method="post" style="margin-top: 2em;">
 	{{ csrf_field() }}
-	<h4>{{ trans('panichd::install.optional-config') }}</h4>
-	<label style="font-weight: normal;"><input type="checkbox" name="quickstart"> {!! trans('panichd::install.optional-quickstart-data') !!}</label>
+	<h4>{{ trans('panichd::install.configurable-parameters') }}</h4>
+	@if($quickstart)
+		<label style="font-weight: normal;"><input type="checkbox" name="quickstart"> {!! trans('panichd::install.optional-quickstart-data') !!}</label>
+	@else
+		<p>{!! trans('panichd::install.existent-parameters') !!}</p>
+	@endif
 	<p><button id="install_now" class="btn btn-lg btn-primary" type="submit">
 		{{ trans('panichd::install.install-now') }}
 	</button></p>

@@ -19,7 +19,8 @@ return [
 	'setup-list-folders'              => 'The necessary folders to store tickets attachment files will be created',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
     'setup-list-public-assets'        => 'All the imperative css, js... package files will be copied to  "public\vendor\panichd" Laravel folder.',
-	'optional-config'                 => 'Optional configuration',
+	'configurable-parameters'         => 'Configurable parameters',
+	'existent-parameters'             => 'There are already configured parameters from Kordy/Ticketit, so no quickstart options will be shown here.<br />To edit them, please access administration menues after Panic Help Desk installation.',
 	'optional-quickstart-data'        => 'Add quickstart configuration:<ul><li>Add essential priorities, statuses and a new category.</li><li>Current user will be added as an agent on that category.</li><li>All of them are editable after installation.</li></ul>',
 	'install-now'                     => 'Install now!',
 	
