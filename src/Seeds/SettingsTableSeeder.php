@@ -302,15 +302,6 @@ class SettingsTableSeeder extends Seeder
                 'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',
                 'URI.AllowedSchemes'   => ['data' => true, 'http' => true, 'https' => true, 'mailto' => true, 'ftp' => true],
             ],
-
-            /*
-             * Set custom routes file
-             *
-             * Useful if you want to replace any of the Panic Help Desk components
-             *
-             * Default: __DIR__.'/routes.php'
-             */
-            'routes' => 'default',
 			
 			/*
 			 * Panic Help Desk optional features

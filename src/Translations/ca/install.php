@@ -11,10 +11,10 @@ return [
 	'setup-more-info'                 => 'Veure detalls',
 	'setup-less-info'                 => 'Ocultar detalls',
 	
-	'setup-list-ticketit-settings'    => 'Es reiniciarà varis paràmetres incompatibles de Kordy/Ticketit',
-	'setup-list-ticketit-admin_route' => 'Paràmetres referents a la ruta d\'administració: "admin_route" i "admin_route_path"',
-	'setup-list-ticketit-template'    => 'Fitxer de plantilla principal, paràmetre "master_template"',
-	'setup-list-ticketit-routes'      => 'Ruta local del servidor del fitxer routes.php, paràmetre "routes"',
+	'setup-list-ticketit-settings'    => 'Es farà canvis a varis paràmetres incompatibles de Kordy/Ticketit',
+	'setup-list-ticketit-admin_route' => 'Es reiniciarà els paràmetres referents a la ruta d\'administració: "admin_route" i "admin_route_path"',
+	'setup-list-ticketit-template'    => 'Es reiniciarà el paràmetre de la plantilla principal "master_template"',
+	'setup-list-ticketit-routes'      => 'S\'eliminarà el paràmetre "routes"',
 	'setup-list-settings'             => 'La taula settings de PanicHD s\'omplirà amb els valors per defecte del fitxer SettingsTableSeeder.php',
 	'setup-list-folders'              => 'Es crearà els directoris necessaris per a desar els fitxers adjunts dels tiquets',
 	'setup-list-admin'                => 'El teu compte d\'usuari s\'afegirà com a administrador de Panic Help Desk. Després de la instal·lació podràs afegir-ne altres.',
@@ -36,6 +36,7 @@ return [
 	'about-to-update-description'     => 'Un cop facis clic al botó "Actualitzar ara", es farà els següents canvis:',
 	'all-tables-migrated'             => 'No hi ha actualitzacions pendents de la base de dades així que no s\'executarà cap migració.',
 	
+	'optional-config'                 => 'Configuració opcional',
 	'choose-public-folder-action'     => 'Has fet modificacions als fitxers del directori "public/vendor/panichd"? Vols fer-ne una còpia de seguretat?',
 	'public-folder-destroy'           => 'No (Opció recomanada)',
 	'public-folder-backup'            => 'Si. Fer còpia de seguretat del directori abans de copiar els fitxers nous',

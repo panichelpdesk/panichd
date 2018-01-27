@@ -239,11 +239,8 @@ class PanicHDServiceProvider extends ServiceProvider
             $main_route_path = Setting::grab('main_route_path');
             $admin_route = Setting::grab('admin_route');
             $admin_route_path = Setting::grab('admin_route_path');
-			if (Setting::grab('routes') != 'default' and file_exists(Setting::grab('routes'))){
-				include Setting::grab('routes');
-			}else{
-				include __DIR__.'/routes.php';
-			}
+
+			include __DIR__.'/routes.php';
 			
         } else{
 			Route::get('/tickets', function () {

@@ -11,10 +11,10 @@ return [
 	'setup-more-info'                 => 'View details',
 	'setup-less-info'                 => 'Hide details',
 	
-	'setup-list-ticketit-settings'    => 'There will be reseted some incompatible Kordy/Ticketit parameters',
-	'setup-list-ticketit-admin_route' => 'Administration route related parameters: "admin_route" and "admin_route_path"',
-	'setup-list-ticketit-template'    => 'Main template file, "master_template" setting',
-	'setup-list-ticketit-routes'      => 'Server local route for routes.php file, "routes" setting',
+	'setup-list-ticketit-settings'    => 'There will changes on some incompatible Kordy/Ticketit parameters',
+	'setup-list-ticketit-admin_route' => 'Administration route related parameters will be set to default: "admin_route" and "admin_route_path" ',
+	'setup-list-ticketit-template'    => 'Main template file will be set to default: "master_template"',
+	'setup-list-ticketit-routes'      => '"routes" setting will be deleted',
 	'setup-list-settings'             => 'PanicHD settings table will be filled up with it\'s default values stored in SettingsTableSeeder.php',
 	'setup-list-folders'              => 'The necessary folders to store tickets attachment files will be created',
 	'setup-list-admin'                => 'Your user account (:name &lt;:email>) will be added as Panic Help Desk administrator. You may add other administrators later.',
@@ -36,6 +36,7 @@ return [
 	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
 	'all-tables-migrated'             => 'There are no pending database updates, so no migration will be executed',
 	
+	'optional-config'                 => 'Optional configuration',
 	'choose-public-folder-action'     => 'Have you done any modifications to the files at Laravel\'s "public/vendor/panichd" folder? Do you want to backup it?',
 	'public-folder-destroy'           => 'No (Recommended option)',
 	'public-folder-backup'            => 'Yes. Make a directory backup before copying the new files',
