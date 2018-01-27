@@ -53,6 +53,16 @@ class InstallController extends Controller
 					break;
 			}
 		}else{
+			if (class_exists('Kordy\Ticketit\TicketitServiceProvider')){
+				// Kordy/Ticketit is still installed
+				return view('panichd::install.status', [
+					'title' => trans('panichd::install.not-ready-to-install'),
+					'description' => trans('panichd::install.ticketit-still-installed', ['link' => 'https://github.com/panichelpdesk/panichd/tree/dev-package#if-kordyticketit-is-installed']),
+					'button' => 'hidden'
+				]);
+				
+			}
+			
 			$inactive_migrations = $this->inactiveMigrations();
 			
 			if (count($this->migrations_tables) == count($inactive_migrations)

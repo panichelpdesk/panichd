@@ -2,6 +2,10 @@
 
 return [
 	'main-title'                      => 'Panic Help Desk',
+	
+	'not-ready-to-install'            => 'Encara no es pot instal·lar la llibreria!',
+	'ticketit-still-installed'        => 'La llibreria Kordy/Ticketit encara està instal·lada. Per a continuar, si us plau segueix els passos per a desinstalar-la indicats a <a href=":link">:link</a>',
+	
 	'not-yet-installed'               => '<b>Estat actual:</b> La instal·lació de la llibreria encara <b>no s\'ha acabat</b>.',
 	'welcome'                         => 'Benvingut al menú d\'<b>instal·lació de Panic Help Desk!</b>',
 	'setup-list'                      => 'Quan premis el botó "Instal·lar ara!" es farà les següents accions:',
