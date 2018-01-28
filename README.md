@@ -1,5 +1,5 @@
 # Panic Help Desk
-This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit) ticketing system. It of course has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any project based on Laravel 5.1 or later. It has it's own routes, so it shouldn't affect other packages.
+This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). It, of course, has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any project based on Laravel 5.1 or later. It has it's own routes, so it shouldn't affect other packages.
 
 ## Table of contents
 
@@ -142,8 +142,8 @@ Please read our [contributing reference](CONTRIBUTING.md).
 
 ## Credits
 
-Thanks to [Kordy](https://github.com/thekordy) and his collaborators for building up that great project [Kordy/Ticketit](https://github.com/thekordy/ticketit) and shared it in GitHub. Without it, Panic Help Desk simply won't exist.
+Thanks to [Kordy](https://github.com/thekordy) and his collaborators for building up [Kordy/Ticketit](https://github.com/thekordy/ticketit) and sharing it on GitHub. Without it, Panic Help Desk simply won't exist.
 
-I'm sure that without the [StackOverflow](https://stackoverflow.com) community that solves our everyday coding headaches, our development would be much more slower and many times stopped. Google knows that.
+It also couldn't be done I'm sure that without the [StackOverflow](https://stackoverflow.com) community that solves our everyday coding headaches, our development would be much more slower and many times stopped. Google knows that.
 
-Also a big thank you to all the people that are sharing their works as Open Source and let other people like us include their packages in our code. If some day this one is as useful to someone as other packages have been to us, our debt will for sure still be enormous, but also we'll be very happy!
+Finally, a big Thank You to all the people that are sharing their works as Open Source and let other people like us include their packages in our code. If some day this one is as useful to someone as other packages have been to us, our debt will for sure still be enormous, but also we'd be very happy!
