@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 
 class AgentsController extends Controller
 {
     public function index()
     {
-        $agents = Agent::agents()->with('categories')->get();
-		$not_agents = Agent::where('panichd_agent', '0')->get();
+        $agents = Member::agents()->with('categories')->get();
+		$not_agents = Member::where('panichd_agent', '0')->get();
         $categories = Category::get();
 
         return view('panichd::admin.agent.index', compact('agents', 'not_agents', 'categories'));
@@ -34,7 +34,7 @@ class AgentsController extends Controller
 		
 		DB::beginTransaction();
 		
-		$user = Agent::findOrFail($request->agent_id);
+		$user = Member::findOrFail($request->agent_id);
 		$user->panichd_agent = true;
 		$user->save();
 		
@@ -54,7 +54,7 @@ class AgentsController extends Controller
 		}else{
 			$this->syncAgentCategories($request, $id);
 			
-			$user = Agent::findOrFail($id);
+			$user = Member::findOrFail($id);
 			
 			Session::flash('status', trans('panichd::admin.agent-updated-ok', ['name' => $user->name]));
 
@@ -64,7 +64,7 @@ class AgentsController extends Controller
 
     public function destroy($id)
     {
-        $agent = Agent::findOrFail($id);
+        $agent = Member::findOrFail($id);
 		
 		$agent->categories()->detach();
 		
@@ -84,7 +84,7 @@ class AgentsController extends Controller
      */
     public function syncAgentCategories(Request $request, $id, $agent = false)
     {
-        if (!$agent) $agent = Agent::findOrFail($id);
+        if (!$agent) $agent = Member::findOrFail($id);
 		
 		$form_cats = $fc = ($request->input('agent_cats') == null) ? [] : $request->input('agent_cats');
         $form_auto = ($request->input('agent_cats_autoassign') == null) ? [] : $request->input('agent_cats_autoassign');

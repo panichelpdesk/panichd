@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use PanicHD\PanicHD\Models;
-use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Seeds\SettingsTableSeeder;
 use PanicHD\PanicHD\Seeds\DemoDataSeeder;
@@ -84,7 +84,7 @@ class InstallController extends Controller
 				
 				if($inactive_settings and count($inactive_settings) > 0){
 					// Panic Help Desk requires an upgrade
-					if (Agent::isAdmin()){
+					if (Member::isAdmin()){
 						return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
 					}else{
 						return view('panichd::install.status', [
@@ -137,7 +137,7 @@ class InstallController extends Controller
 		]);
 		
 		// Add current user to panichd_admin
-		$admin = Agent::find(auth()->user()->id);
+		$admin = Member::find(auth()->user()->id);
         $admin->panichd_admin = true;
 		
 		if ($request->has('quickstart')){
@@ -161,7 +161,7 @@ class InstallController extends Controller
      */
 	public function upgrade(Request $request)
 	{
-		if (Agent::isAdmin()){
+		if (Member::isAdmin()){
 			// Migrations and Settings
 			$this->initialSettings();
 			

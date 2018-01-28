@@ -16,7 +16,7 @@ class Department extends Model
      */
     public function users()
     {
-        return $this->hasMany('PanicHD\PanicHD\Models\Agent', 'ticketit_department')->orderBy('name');
+        return $this->hasMany('PanicHD\PanicHD\Models\Member', 'ticketit_department')->orderBy('name');
     }
 	
 	/*

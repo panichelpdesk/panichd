@@ -13,9 +13,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 use PanicHD\PanicHD\Events\TicketCreated;
 use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
-use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -29,7 +29,7 @@ class TicketsController extends Controller
     protected $tickets;
     protected $agent;
 
-    public function __construct(Ticket $tickets, Agent $agent)
+    public function __construct(Ticket $tickets, Member $agent)
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
@@ -432,18 +432,18 @@ class TicketsController extends Controller
 					$q->whereIn('id',$a_tickets_id);
                 }])->get();
             } else {
-                $filters['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+                $filters['category'] = Member::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
 					$q->whereIn('id',$a_tickets_id);					
                 }])->get();
             }
 
             // Ticket filter for each visible Agent
             if (session('panichd_filter_category') != '') {
-                $filters['agent'] = Agent::visible()->whereHas('categories', function ($q1) use ($category) {
+                $filters['agent'] = Member::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 });
             } else {
-                $filters['agent'] = Agent::visible();
+                $filters['agent'] = Member::visible();
             }
 
             $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
@@ -529,9 +529,9 @@ class TicketsController extends Controller
 		$user = $this->agent->find(auth()->user()->id);
 
 		if ($user->currentLevel() > 1){
-			$a_owners = Agent::with('userDepartment')->orderBy('name')->get();
+			$a_owners = Member::with('userDepartment')->orderBy('name')->get();
 		}else{
-			$a_owners = Agent::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
+			$a_owners = Member::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -1332,7 +1332,7 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-		$new_agent = Agent::findOrFail($request->input('agent_id'));
+		$new_agent = Member::findOrFail($request->input('agent_id'));
 		
 		if ($ticket->agent_id==$request->input('agent_id')){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [

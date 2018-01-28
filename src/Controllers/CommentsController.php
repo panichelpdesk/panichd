@@ -11,7 +11,7 @@ use InvalidArgumentException;
 use PanicHD\PanicHD\Events\CommentCreated;
 use PanicHD\PanicHD\Events\CommentUpdated;
 use PanicHD\PanicHD\Models;
-use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Status;
 use PanicHD\PanicHD\Traits\Attachments;
@@ -116,9 +116,9 @@ class CommentsController extends Controller
 		$comment->type = 'reply';
 		
 		$ticket = Models\Ticket::findOrFail($request->get('ticket_id'));
-		$agent = Agent::findOrFail(\Auth::user()->id);
+		$member = Member::findOrFail(\Auth::user()->id);
 		
-		if ($ticket->hidden and $agent->currentLevel() == 1){
+		if ($ticket->hidden and $member->currentLevel() == 1){
 			session()->flash('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 			
 			return response()->json(array_merge(
@@ -128,18 +128,18 @@ class CommentsController extends Controller
 		}
 		
 		// Response: reply or note
-		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id'))){
+		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id'))){
 			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 		}
 		
 		// Close ticket + new status
-		if ($agent->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
+		if ($member->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
 			$ticket->completed_at = Carbon::now();				
 			$ticket->status_id = Status::where('id',$request->get('status_id'))->count()==1 ? $request->get('status_id') : Setting::grab('default_close_status_id');				
 		}
 		
         $comment->ticket_id = $request->get('ticket_id');
-        $comment->user_id = $agent->id;
+        $comment->user_id = $member->id;
 		$comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 		$comment->save();
@@ -147,7 +147,7 @@ class CommentsController extends Controller
 		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
         
-		if ($agent->currentLevel() > 1 and $agent->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->has('add_to_intervention')){
+		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->has('add_to_intervention')){
 			$ticket->intervention = $ticket->intervention.$a_content['content'];
 			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
 		}

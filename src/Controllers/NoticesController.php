@@ -22,7 +22,7 @@ class NoticesController extends Controller
 	public function index()
 	{
 		// All users
-		$a_users = Models\Agent::whereNotNull('ticketit_department')->orderBy('name')->get();
+		$a_users = Models\Member::whereNotNull('ticketit_department')->orderBy('name')->get();
 		
 		// All departments
 		$a_depts = Models\Department::orderBy('department')->orderBy('sub1')->get();
