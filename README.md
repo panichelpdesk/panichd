@@ -4,8 +4,8 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 ## Table of contents
 
 * [Description](#description)
-  + [Ticketit features](#kordyticketit-heritage-features)
-  + [Panic Help Desk features](#panic-help-desk-features)
+  + [Features inherited from Ticketit](#features-inherited-from-kordyticketit)
+  + [Original Panic Help Desk features](#original-panic-help-desk-features)
 * [Installing](#installing)
   + [Requirements](#requirements)
   + [If Kordy/Ticketit is installed](#if-kordyticketit-is-installed)
@@ -17,17 +17,29 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 * [Contributing](#contributing)
 
 ## Description
-### Kordy/Ticketit heritage features
-Ticketit is a very polish written ticketing system package that we fell in love with, so we used it as a base of our project. It has three user roles: Users, agents and admins:
- - Users may be registered in the Laravel app through it's default auth system. They may create and view their own tickets. They may attach screenshots in them. They see only a ticket fields basic set. They can also communicate with the ticket managers via the comments section in the ticket page.
+Panic Help Desk is a ticketing system. It consists in these basic functionalities:
+- Three user roles: Common Laravel User, Agent and Admin
+ - Users may be registered in the Laravel app through it's default auth system. They may create and view their own tickets, wich can be set to any of the existent categories in the system. They may attach screenshots in them. They see only a ticket fields basic set. They can also communicate with the ticket managers via the comments section in the ticket page.
  - Agents can edit and manage tickets in the categories they are allowed to. They manage all ticket fields.
- - Admins are the administrators of the ticketing system. They have to configure and maintain all the ticketing system functionality. They may assign the "agent" role to the users at the categories they determine.
+ - Admins are the administrators of the ticketing system. They have to configure and maintain all the ticketing system functionality. They may assign the "agent" role to the users at the categories they want.
+- Each category may be managed by an idependent support team. Maybe for different departments in a company or for different usages that you want to be listable independently.
+- Any support "agent" may have assigned several tickets and may comunicate with every ticket owner within the system to resolve the issue.
 
-It also has many statistics, a very flexible configuration system and many translations including German, Spanish, Russian, Arabic...
+ We have kept the most of Ticketit's functionality and we've improved what we considered necessary. We've also added other features that we need for own usage and thought to be useful for others, so they were included in the package.
+
+### Features inherited from Kordy/Ticketit
+Panic Help Desk is just a customized and expanded version of Kordy/Ticketit.
+Ticketit includes most of the functionality you will see in Panic Help Desk, including:
+- The three user roles: Users, agents and admins
+- Interaction between them through tickets, comments and ticket statuses / completion
+- Installation and upgrade menu
+- Ticket and users stats
+- A very complete and customizable configuration settings management
+- Many translations including German, Spanish, Russian, Arabic...
 
 If you want to read more about the original kordy/ticketit features, please go to their github project page [https://github.com/thekordy/ticketit/wiki/v0.2-Features](https://github.com/thekordy/ticketit/wiki/v0.2-Features)
 
-### Panic Help Desk features
+### Original Panic Help Desk features
 Panic Help Desk keeps all Ticketit functionality, plus some additional features including:
 
 * Ticket creation visible fields change deppending on the category specific user role: For a configuration with some categories, a specific agent may have this role only in some of these, and in some others he'd be a normal user. In this scenario, when this user account is in the ticket creation form and does many changes in the category field, he will see that the visible fields change deppending on his role on the selected category.
