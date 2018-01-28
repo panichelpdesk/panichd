@@ -17,16 +17,16 @@ class Basic extends Seeder
     public $priorities = [
         'Critical' => [
 			'color' => '#cc0000',
-			'position' => '1'],
+			'magnitude' => '4'],
 		'High' => [
 			'color' => '#ffbc1b',
-			'position' => '2'],
+			'magnitude' => '3'],
 		'Normal' => [
 			'color' => '#aaa',
-			'position' => '3'],
+			'magnitude' => '2'],
 		'Low' => [
 			'color' => '#4bcd54',
-			'position' => '4'],
+			'magnitude' => '1'],
     ];
 	
 	public $statuses = [		
@@ -58,7 +58,7 @@ class Basic extends Seeder
         foreach ($this->priorities as $name => $data) {
             $priority = Models\Priority::firstOrNew(['name'  => $name]);
 			$priority->color = $data['color'];
-			$priority->position = $data['position'];
+			$priority->magnitude = $data['magnitude'];
 			$priority->save();
         }
 		
