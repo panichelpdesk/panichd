@@ -109,28 +109,14 @@ class InstallController extends Controller
     {	
 		$previous_ticketit = Schema::hasTable('ticketit_settings');
 		
-		// Delete Kordy\Ticketit 
-		
 		// Install migrations and Settings
 		$this->initialSettings();
 		
 		// If this is an upgrade from Kordy\Ticketit
 		if ($previous_ticketit){
-			// Delete not used parameters
-			Setting::where('slug', 'routes')->delete();
-			
-			// reset necessary old settings
-			$a_reset = [
-				'admin_route',
-				'admin_route_path',
-				'master_template',
-			];
-			
-			foreach ($a_reset as $setting){
-				$row = Setting::where('slug', $setting)->first();
-				$row->value = $row->default;
-				$row->save();
-			}
+			Artisan::call('db:seed', [
+				'--class' => 'PanicHD\\PanicHD\\Seeds\\SettingsPatch',
+			]);
 		}
 		
 		// Make attachments directory
