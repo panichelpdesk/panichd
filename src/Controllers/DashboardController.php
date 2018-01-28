@@ -3,20 +3,27 @@
 namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
+use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Ticket;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-	{
-		$this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware');
-	}
 	
 	public function index($indicator_period = 2)
     {
-        $tickets_count = Ticket::count();
+		if(Models\Agent::count() == 0
+			or Models\Category::count() == 0
+			or Models\Priority::count() == 0
+			or Models\Status::count() == 0){
+			
+			// Show pending configurations message
+			return view('panichd::install.configurations_pending');
+		}
+		
+		// Load Dashboard info
+		$tickets_count = Ticket::count();
         $open_tickets_count = Ticket::whereNull('completed_at')->count();
         $closed_tickets_count = $tickets_count - $open_tickets_count;
 

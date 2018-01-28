@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
+use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Setting;
@@ -31,37 +33,102 @@ class InstallController extends Controller
      */
 
     public function index()
-    {	
-        if (count($this->migrations_tables) == count($this->inactiveMigrations())
-            || in_array('2015_10_08_123457_create_settings_table', $this->inactiveMigrations())
-        ) {
-			// Panic Help Desk is not installed yet
+    {
+		if (session()->has('current_status')){
+			// Clear stored settings
+			Artisan::call('cache:clear');
 			
-            $inactive_migrations = $this->inactiveMigrations();
-            // if Laravel v5.2 or 5.3
-
-            return view('panichd::install.index', compact('inactive_migrations'));
-        }
-
-        // other than that, Upgrade to a new version, installing new migrations and new settings slugs
-        if (Agent::isAdmin()) {
-            $inactive_migrations = $this->inactiveMigrations();
-            $inactive_settings = $this->inactiveSettings();
-
-            return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
-        }
-        \Log::emergency('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd').' to activate the upgrade');
-
-        throw new \Exception('Panic Help Desk needs upgrade, admin should login and visit '.url('/panichd'));
+			// Load maintenance result page
+			switch (session('current_status')){
+				case 'installed':
+					return view('panichd::install.status', [
+						'title' => trans('panichd::install.just-installed'),
+						'description' => trans('panichd::install.installed-package-description', ['panichd' => url('panichd/')])
+					]);
+					break;
+				case 'upgraded':
+					return view('panichd::install.status', [
+						'title' => trans('panichd::install.upgrade-done')
+					]);
+					break;
+			}
+		}else{
+			if (class_exists('Kordy\Ticketit\TicketitServiceProvider')){
+				// Kordy/Ticketit is still installed
+				return view('panichd::install.status', [
+					'title' => trans('panichd::install.not-ready-to-install'),
+					'description' => trans('panichd::install.ticketit-still-installed', ['link' => 'https://github.com/panichelpdesk/panichd/tree/dev-package#if-kordyticketit-is-installed']),
+					'button' => 'hidden'
+				]);
+				
+			}
+			
+			$inactive_migrations = $this->inactiveMigrations();
+			
+			if (count($this->migrations_tables) == count($inactive_migrations)
+            || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations())
+			) {
+				// Panic Help Desk is not installed yet
+				
+				$inactive_migrations = $this->inactiveMigrations();
+				$previous_ticketit = Schema::hasTable('ticketit_settings');
+				
+				$quickstart = true;
+				if ($previous_ticketit and (\DB::table('ticketit_statuses')->count() > 0 or \DB::table('ticketit_priorities')->count() > 0 or \DB::table('ticketit_categories')->count() > 0)){
+					$quickstart = false;
+				}
+				
+				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit', 'quickstart'));
+			}else{
+				$inactive_settings = $this->inactiveSettings();
+				
+				if($inactive_settings and count($inactive_settings) > 0){
+					// Panic Help Desk requires an upgrade
+					if (Agent::isAdmin()){
+						return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
+					}else{
+						return view('panichd::install.status', [
+							'title' => trans('panichd::install.package-requires-update'),
+							'description' => trans('panichd::install.package-requires-update-info'),
+						]);
+					}
+					
+				}else{
+					// Panic Help Desk installed and configured. Go to stats page
+					return redirect()->route('dashboard');
+				}
+			}
+		}
     }
 
     /*
-     * Do all pre-requested setup
+     * Installation setup
      */
 
     public function setup(Request $request)
-    {
-        $this->initialSettings();
+    {	
+		$previous_ticketit = Schema::hasTable('ticketit_settings');
+		
+		// Install migrations and Settings
+		$this->initialSettings();
+		
+		// If this is an upgrade from Kordy\Ticketit
+		if ($previous_ticketit){
+			Artisan::call('db:seed', [
+				'--class' => 'PanicHD\\PanicHD\\Seeds\\SettingsPatch',
+			]);
+		}
+		
+		// Make attachments directory
+		$att_dir = storage_path(Setting::grab('attachments_path'));
+		if (!File::exists($att_dir)) File::makeDirectory($att_dir, 0775);
+		
+		// Make storage link for thumbnail public access
+		Artisan::call('storage:link');
+		
+		// Make thumbnails directory
+		$thb_dir = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('thumbnails_path'));
+		if (!File::exists($thb_dir)) File::makeDirectory($thb_dir, 0775);
 		
 		// Publish asset files
 		Artisan::call('vendor:publish', [
@@ -69,38 +136,57 @@ class InstallController extends Controller
 			'--tag'      => ['panichd-public'],
 		]);
 		
+		// Add current user to panichd_admin
 		$admin = Agent::find(auth()->user()->id);
         $admin->panichd_admin = true;
 		
 		if ($request->has('quickstart')){
+			// Insert quickstart seed data
 			Artisan::call('db:seed', [
 				'--class' => 'PanicHD\\PanicHD\\Seeds\\Basic',
 			]);
 			
+			// Add current user as an agent in the last added category
 			$admin->panichd_agent = true;
 			$admin->categories()->sync([Category::first()->id]);
 		}
 		
 		$admin->save();
 
-        return redirect('/'.Setting::grab('main_route'));
+        return redirect()->route('panichd.install.index')->with('current_status', 'installed');
     }
-
-    /*
-     * Do version upgrade
+	
+	/*
+     * Upgrade setup
      */
-
-    public function upgrade()
-    {
-        if (Agent::isAdmin()) {
-            $this->initialSettings();
-
-            return redirect('/'.Setting::grab('main_route'));
-        }
-        \Log::emergency('Panic Help Desk upgrade path access: Only admin is allowed to upgrade');
-
-        throw new \Exception('Panic Help Desk upgrade path access: Only admin is allowed to upgrade');
-    }
+	public function upgrade(Request $request)
+	{
+		if (Agent::isAdmin()){
+			// Migrations and Settings
+			$this->initialSettings();
+			
+			$path = public_path().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'panichd';
+			
+			if($request->input('folder-action')=='backup'){
+				// Backup assets
+				File::move($path, $path.'_backup_'.date('Y-m-d_H_i', time()));
+			}else{
+				// Delete published assets
+				File::deleteDirectory($path);
+			}
+			
+			// Publish asset files
+			Artisan::call('vendor:publish', [
+				'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
+				'--tag'      => ['panichd-public'],
+				'--force'    => true
+			]);
+			
+			return redirect()->route('panichd.install.index')->with('current_status', 'upgraded');
+		}else{
+			return redirect()->route('panichd.install.index');
+		}
+	}
 
     /*
      * Initial installer to install migrations, seed default settings, and configure the master_template
@@ -119,8 +205,7 @@ class InstallController extends Controller
             $this->settingsSeeder();
 
             // if this is the first install of the html editor, seed old posts text to the new html column
-            if (in_array('2016_01_15_002617_add_htmlcontent_to_ticketit_and_comments', $inactive_migrations) &&
-                !(isset($_SERVER['ARTISAN_TICKETIT_INSTALLING']) && $_SERVER['ARTISAN_TICKETIT_INSTALLING'])) {
+            if (in_array('2016_01_15_002617_add_htmlcontent_to_ticketit_and_comments', $inactive_migrations)) {
                 Artisan::call('panichd:htmlify');
             }
         } elseif ($this->inactiveSettings()) { // new settings to be installed
@@ -249,7 +334,6 @@ class InstallController extends Controller
         }
 
         $inactive_settings = array_diff_key($default_Settings, $installed_settings);
-
         return $inactive_settings;
     }
 

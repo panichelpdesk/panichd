@@ -41,7 +41,7 @@ return [
     *  Page specific
     */
 
-    // tickets-admin/____
+    // $admin_route_path/dashboard
     'index-title'                         => 'Sistema de Chamados - Dashboard',
     'index-empty-records'                 => 'Sem Chamados ainda',
     'index-total-tickets'                 => 'Total de Chamados',
@@ -69,7 +69,7 @@ return [
     'index-categories-chart'              => 'Chamados distribuidos por Categoria',
     'index-agents-chart'                  => 'Chamados distribuidos por Agente',
 
-    // tickets-admin/agent/____
+    // $admin_route_path/agent/____
     'agent-index-title'             => 'Gerenciar Agentes',
     'btn-create-new-agent'          => 'Criar Novo Agente',
     'agent-index-no-agents'         => 'Nenhum Agente cadastrado, ',
@@ -79,7 +79,7 @@ return [
     'agent-create-no-users'         => 'Nenhum Usuário cadastrado, Crie uma conta de Usuário Primeiro.',
     'agent-create-select-user'      => 'Selecione uma conta de Usuário para criar um Agente',
 
-    // tickets-admin/category/____
+    // $admin_route_path/category/____
     'category-index-title'          => 'Gerenciar Categorias',
     'btn-create-new-category'       => 'Criar Nova Categoria',
     'category-index-no-categories'  => 'Nenhuma Categoria cadastrada, ',
@@ -90,7 +90,7 @@ return [
     'category-create-color'         => 'Cor',
     'category-edit-title'           => 'Editar Categoria: :name',
 
-    // tickets-admin/priority/____
+    // $admin_route_path/priority/____
     'priority-index-title'          => 'Gerenciar Prioridades',
     'btn-create-new-priority'       => 'Criar Nova Prioridade',
     'priority-index-no-priorities'  => 'Nenhuma Prioridade cadastrada, ',
@@ -101,7 +101,7 @@ return [
     'priority-create-color'         => 'Cor',
     'priority-edit-title'           => 'Editar Prioridade: :name',
 
-    // tickets-admin/status/____
+    // $admin_route_path/status/____
     'status-index-title'            => 'Gerenciar Status',
     'btn-create-new-status'         => 'Criar Novo status',
     'status-index-no-statuses'      => 'Nenhum Status cadastrado,',
@@ -112,7 +112,7 @@ return [
     'status-create-color'           => 'Cor',
     'status-edit-title'             => 'Editar Status: :name',
 
-    // tickets-admin/configuration/____
+    // $admin_route_path/configuration/____
     'config-index-title'            => 'Gerenciar Configurações', // New
     'config-index-subtitle'         => 'Configurações', // New
     'btn-create-new-config'         => 'Adicionar Nova Configuração', // New

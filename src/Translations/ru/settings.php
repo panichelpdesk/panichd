@@ -12,7 +12,7 @@ $summernoteVersion = PanicHD\PanicHD\Helpers\Cdn::Summernote;
 return [
 
     'main_route'               => '<p><b>Panic Help Desk основной route</b>: Базовый URL тикет-системы (например <code>http://&laquo;APP_URL&raquo;/tickets</code>)</p>',
-    'admin_route'              => '<p><b>Panic Help Desk административный route</b>: URL по которому будет находиться административная панель (например <code>http://&laquo;APP_URL&raquo;/tickets-admin</code>)</p>',
+    'admin_route'              => '<p><b>Panic Help Desk административный route</b>: URL по которому будет находиться административная панель (например <code>http://&laquo;APP_URL&raquo;/panichd</code>)</p>',
     'master_template'          => '<p><b>Базовые шаблоны</b>: Базовый шаблон (layout) веб-интерфейса</p>',
     'email.template'           => '<p><b>Базовый шаблоны</b>: Базовый шаблон (layout) для email</p>',
     'email.header'             => '<p><img src="http://i.imgur.com/5aJjuZL.jpg"/></p>',

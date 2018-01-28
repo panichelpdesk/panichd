@@ -106,14 +106,15 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAdminMiddleware'], function () use ($admin_route, $admin_route_path) {
-        //Ticket admin index route (ex. http://url/tickets-admin/)
+        //Ticket admin index route (ex. http://url/panichd/)
         Route::get("$admin_route_path/indicator/{indicator_period?}", [
                 'as'   => $admin_route.'.dashboard.indicator',
                 'uses' => 'PanicHD\PanicHD\Controllers\DashboardController@index',
         ]);
-        Route::get($admin_route_path, 'PanicHD\PanicHD\Controllers\DashboardController@index');
+        Route::get("$admin_route_path/dashboard", 'PanicHD\PanicHD\Controllers\DashboardController@index')
+			->name('dashboard');
 
-        //Ticket statuses admin routes (ex. http://url/tickets-admin/status)
+        //Ticket statuses admin routes (ex. http://url/panichd/status)
         Route::resource("$admin_route_path/status", 'PanicHD\PanicHD\Controllers\StatusesController', [
             'names' => [
                 'index'   => "$admin_route.status.index",
@@ -126,7 +127,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-        //Ticket priorities admin routes (ex. http://url/tickets-admin/priority)
+        //Ticket priorities admin routes (ex. http://url/panichd/priority)
         Route::resource("$admin_route_path/priority", 'PanicHD\PanicHD\Controllers\PrioritiesController', [
             'names' => [
                 'index'   => "$admin_route.priority.index",
@@ -143,7 +144,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 			->name("$admin_route.priority.reorder");
 		
 
-        //Agents management routes (ex. http://url/tickets-admin/agent)
+        //Agents management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/agent", 'PanicHD\PanicHD\Controllers\AgentsController', [
             'names' => [
                 'index'   => "$admin_route.agent.index",
@@ -156,7 +157,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-        //Agents management routes (ex. http://url/tickets-admin/agent)
+        //Agents management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/category", 'PanicHD\PanicHD\Controllers\CategoriesController', [
             'names' => [
                 'index'   => "$admin_route.category.index",
@@ -169,7 +170,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 		
-		//Departments management routes (ex. http://url/tickets-admin/agent)
+		//Departments management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/notice", 'PanicHD\PanicHD\Controllers\NoticesController', [
             'names' => [
                 'index'   => "$admin_route.notice.index",
@@ -179,7 +180,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-        //Settings configuration routes (ex. http://url/tickets-admin/configuration)
+        //Settings configuration routes (ex. http://url/panichd/configuration)
         Route::resource("$admin_route_path/configuration", 'PanicHD\PanicHD\Controllers\ConfigurationsController', [
             'names' => [
                 'index'   => "$admin_route.configuration.index",
@@ -192,7 +193,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-        //Administrators configuration routes (ex. http://url/tickets-admin/administrators)
+        //Administrators configuration routes (ex. http://url/panichd/administrators)
         Route::resource("$admin_route_path/administrator", 'PanicHD\PanicHD\Controllers\AdministratorsController', [
             'names' => [
                 'index'   => "$admin_route.administrator.index",
@@ -205,7 +206,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-        //Tickets demo data route (ex. http://url/tickets-admin/demo-seeds/)
+        //Tickets demo data route (ex. http://url/panichd/demo-seeds/)
         // Route::get("$admin_route/demo-seeds", 'PanicHD\PanicHD\Controllers\InstallController@demoDataSeeder');
     });
 });
