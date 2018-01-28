@@ -115,22 +115,26 @@ Execute these commands:
 2. Fill up "panichd_settings" table with the required defaults seeder:
 
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\SettingsTableSeeder`
-3. Enable "panichd_thumbnails" folder access:
+
+3. If Kordy/Ticketit was installed, Patch settings table with:
+
+  `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\SettingsPatch`
+
+4. Enable "panichd_thumbnails" folder access:
 
    `php artisan storage:link`
-4. Publish included assets:
+5. Publish included assets:
 
    `php artisan vendor:publish --tag=panichd-public`
+   
+6. If you didn't have Kordy/Ticketit, you will have to enable your user account (or any other) as an admin in Panic Help Desk. In the "users" table, just find your account and set "panichd_admin" value to 1.
 
-
-
-If you want to add the included default priorities, statuses and category:
+7. Optional steps:
+* If you want to add the included default priorities, statuses and category:
 
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
 
-Now, you will have to enable your user account as an admin in Panic Help Desk. In the "users" table, just find your account and set "panichd_admin" value to 1.
-
-If you're all done, access http://your-laravel-app-URL/panichd in your browser.
+8. If you have followed all these steps, you may access now http://your-laravel-app-URL/panichd in your browser.
 
 ## Contributing
 
