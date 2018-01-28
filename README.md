@@ -13,7 +13,6 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
   + [Complete installation](#complete-installation)
     + [With the web installer](#option-1-web-installer)
     + [With command line](#option-2-command-line-for-advanced-users)
-  + 
 * [Contributing](#contributing)
 * [Credits](#credits)
 
