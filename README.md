@@ -144,6 +144,6 @@ Please read our [contributing reference](CONTRIBUTING.md).
 
 Thanks to [Kordy](https://github.com/thekordy) and his collaborators for building up [Kordy/Ticketit](https://github.com/thekordy/ticketit) and sharing it on GitHub. Without it, Panic Help Desk simply won't exist.
 
-It also couldn't be done I'm sure that without the [StackOverflow](https://stackoverflow.com) community that solves our everyday coding headaches, our development would be much more slower and many times stopped. Google knows that.
+It also couldn't be done without the [StackOverflow](https://stackoverflow.com) community. They've solved (and sure will solve) our daily coding headaches. As I got deeper in Laravel, the Github community itself has become another helper hand for this project progress.
 
-Finally, a big Thank You to all the people that are sharing their works as Open Source and let other people like us include their packages in our code. If some day this one is as useful to someone as other packages have been to us, our debt will for sure still be enormous, but also we'd be very happy!
+Finally, a big Thank You to all the people that are sharing their projects as Open Source and let other people like us take advantage of their work. If some day this package is as useful to someone as other ones have been to us, our debt will for sure still be enormous, but also we'd be very happy!
