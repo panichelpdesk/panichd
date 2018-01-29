@@ -28,6 +28,9 @@
 	
 	function ajax_form_submit(_this)
 	{
+		// Disable submit button until AJAX response has come
+		_this.prop('disabled', true);
+		
 		var form = _this.closest('form');
 		var formData = new FormData(form[0]);
 		var errors_div = _this.data('errors_div');
@@ -72,8 +75,12 @@
 					$('#'+errors_div).hide();
 					if (response.url != ""){
 						window.location.href=response.url;
+						return false;
 					}			
 				}
+				
+				// Enable submit button
+				_this.prop('disabled', false);
 			}
 		});
 	}
