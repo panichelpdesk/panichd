@@ -1,3 +1,11 @@
+<div class="title calendar">{{ trans('panichd::lang.year') }}</div>
+<div class="select2_filter">
+	<select id="select_year" style="width: 100px">
+	<option value="/filter/year/remove">{{ trans('panichd::lang.filter-year-all') }}</option>
+	<option value="/filter/year/<?=date('Y')?>"><?=date('Y')?></option>
+	</select>
+</div>
+	
 <div class="title calendar">{{ trans('panichd::lang.filter-calendar') }}</div>
 <?php $text_cld = "";
 $calendar_name = "All";
@@ -118,7 +126,12 @@ $cld_options = [
 
 <script type="text/javascript">
 @section('footer_jquery')
-	// Filter menu agent change
+	// Filter menu year change
+	$('#select_year').select2({"id": "prova_sel2"}).on("change", function (e) {				
+		window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
+	});
+	
+	// Filter menu Agent change
 	$('#select_agent').select2({"id": "prova_sel2"}).on("change", function (e) {				
 		window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
 	});

@@ -79,6 +79,7 @@ return [
   'table-aria-sort-desc'             => ': activate to sort column descending',
   
   'filter-pov'                       => 'View as',
+  'filter-year-all'                  => 'All',
   'filter-calendar'                  => 'Calendar',
   'filter-calendar-all'              => 'All',
   'filter-calendar-expired'          => 'Expired',
@@ -154,6 +155,7 @@ return [
   'tomorrow'                         => 'Tomorrow',
   'update'                           => 'Update',
   'user'                             => 'User',
+  'year'                             => 'Year',
   'yes'                              => 'Yes',
   'yesterday'                        => 'Yesterday',
   
