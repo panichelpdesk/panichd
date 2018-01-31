@@ -32,8 +32,9 @@ class Ticket extends Model
 			if($error) $a_errors[] = $error;
 		}
 		
-		$error = $a_errors ? implode('. ', $a_errors) : null;
-		if ($error != "") return $error;
+		if($a_errors){
+			return implode('. ', $a_errors);
+		}
 		
 		$this->tags()->detach();
 		$this->comments()->delete();
