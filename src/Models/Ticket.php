@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
-use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Traits\ContentEllipse;
 
 /**
@@ -159,13 +159,13 @@ class Ticket extends Model
     }
 	
 	/**
-     * Get Ticket owner as PanicHD\PanicHD\Models\Agent model
+     * Get Ticket owner as PanicHD\PanicHD\Models\Member model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Agent', 'user_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Member', 'user_id');
     }
 
     /**
@@ -175,7 +175,7 @@ class Ticket extends Model
      */
     public function agent()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Agent', 'agent_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Member', 'agent_id');
     }
 
     /**
@@ -503,7 +503,7 @@ class Ticket extends Model
     public function scopeVisibleForAgent($query, $id = false)
     {
         if (!$id) $id = auth()->user()->id;
-		$agent = Agent::findOrFail($id);		
+		$agent = Member::findOrFail($id);		
 		
 		if ($agent->currentLevel() == 2) {
 			// Depends on agent_restrict
@@ -539,9 +539,9 @@ class Ticket extends Model
      */
 	public function scopeFiltered($query)
 	{
-		$agent = Agent::find(auth()->user()->id);
+		$member = Member::find(auth()->user()->id);
 		
-		if ($agent->currentLevel() == 1){
+		if ($member->currentLevel() == 1){
 			// If session()->has('panichd_filter_currentLevel')
 			return $query->userTickets(auth()->user()->id);
 		}else{
@@ -585,7 +585,6 @@ class Ticket extends Model
 				
 				// Agent filter
 				if (session()->has('panichd_filter_agent')){
-					$agent = session('panichd_filter_agent');
 					$query = $query->agentTickets(session('panichd_filter_agent'));
 				}
 
@@ -643,7 +642,7 @@ class Ticket extends Model
         $count = 0;
         $lowest_tickets = 1000000;
         // If no agent selected, select the admin
-        $first_admin = Agent::admins()->first();
+        $first_admin = Member::admins()->first();
         $selected_agent_id = $first_admin->id;
         foreach ($agents as $agent) {
             if ($count == 0) {

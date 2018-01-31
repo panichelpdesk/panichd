@@ -63,7 +63,7 @@ class FiltersController extends Controller
                     $add = true;
                 }
 				
-				if ($filter == 'agent' and Models\Agent::where('id', $value)->count() == 1) {
+				if ($filter == 'agent' and Models\Member::where('id', $value)->count() == 1) {
                     $add = true;
                 }  
 

@@ -4,8 +4,8 @@ namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
 use PanicHD\PanicHD\Models;
-use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Ticket;
 
 class DashboardController extends Controller
@@ -13,8 +13,8 @@ class DashboardController extends Controller
 	
 	public function index($indicator_period = 2)
     {
-		if(Models\Agent::count() == 0
-			or Models\Category::count() == 0
+		if(Member::count() == 0
+			or Category::count() == 0
 			or Models\Priority::count() == 0
 			or Models\Status::count() == 0){
 			
@@ -38,7 +38,7 @@ class DashboardController extends Controller
         }
 
         // Total tickets counter per agent for google pie chart
-        $agents_share_obj = Agent::agents()->with(['agentTotalTickets' => function ($query) {
+        $agents_share_obj = Member::agents()->with(['agentTotalTickets' => function ($query) {
             $query->addSelect(['id', 'agent_id']);
         }])->get();
 
@@ -48,13 +48,13 @@ class DashboardController extends Controller
         }
 
         // Per Agent
-        $agents = Agent::agents(10);
+        $agents = Member::agents(10);
 
         // Per User
-        $users = Agent::users(10);
+        $users = Member::users(10);
 
         // Per Category performance data
-        $ticketController = new TicketsController(new Ticket(), new Agent());
+        $ticketController = new TicketsController(new Ticket(), new Member());
         $monthly_performance = $ticketController->monthlyPerfomance($indicator_period);
 
         if (request()->has('cat_page')) {

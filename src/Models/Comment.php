@@ -58,13 +58,13 @@ class Comment extends Model
     }
 	
 	/**
-     * Get Comment owner as PanicHD\PanicHD\Models\Agent model
+     * Get Comment owner as PanicHD\PanicHD\Models\Member model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Agent', 'user_id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Member', 'user_id');
     }
 
     public function attachments()

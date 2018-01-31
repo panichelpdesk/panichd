@@ -7,7 +7,7 @@ use Auth;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 
-class Agent extends User
+class Member extends User
 {
     protected $table = 'users';
 
@@ -160,10 +160,10 @@ class Agent extends User
 	public static function maxLevel()
 	{
 		if (!auth()->check()) return 0;
-		$agent = Agent::find(auth()->user()->id);
-		if ($agent->isAdmin()){
+		$member = Member::find(auth()->user()->id);
+		if ($member->isAdmin()){
 			return 3;
-		}elseif($agent->isAgent()){
+		}elseif($member->isAgent()){
 			return 2;
 		}else
 			return 1;
@@ -179,10 +179,10 @@ class Agent extends User
 	public static function currentLevel()
 	{
 		if (!auth()->check()) return 0;
-		$agent = Agent::find(auth()->user()->id);
-		if ($agent->isAdmin()){
+		$member = Member::find(auth()->user()->id);
+		if ($member->isAdmin()){
 			return 3;
-		}elseif($agent->isAgent()){
+		}elseif($member->isAgent()){
 			if (session()->exists('panichd_filter_currentLevel') and session('panichd_filter_currentLevel')==1){
 				return 1;
 			}else{
@@ -228,20 +228,20 @@ class Agent extends User
 	public static function canCloseTicket($id)
 	{
 		if (!auth()->check()) return false;
-		$agent = Agent::find(auth()->user()->id);
+		$member = Member::find(auth()->user()->id);
 		
 		$a_perm = Setting::grab('close_ticket_perm');
 
-        if ($agent->isAdmin() && $a_perm['admin'] == 'yes') {
+        if ($member->isAdmin() && $a_perm['admin'] == 'yes') {
             return true;
         }
         if ($ticket = Ticket::find($id)){
-			if ($agent->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $agent->categories()->where('id',$ticket->category_id)->count() == 1)) {
+			if ($member->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $member->categories()->where('id',$ticket->category_id)->count() == 1)) {
 				return true;
 			}
 		}
 		
-        if ($agent->isTicketOwner($id) && $a_perm['owner'] == 'yes') {
+        if ($member->isTicketOwner($id) && $a_perm['owner'] == 'yes') {
             return true;
         }
 		
@@ -259,10 +259,10 @@ class Agent extends User
 	{
 		if (!auth()->check()) return false;
 		
-		if (Agent::canManageTicket($id)){
+		if (Member::canManageTicket($id)){
 			return true;
 		}else{
-			return Agent::isTicketOwner($id);
+			return Member::isTicketOwner($id);
 		}
 	}
 	
@@ -276,12 +276,12 @@ class Agent extends User
 	public static function canManageTicket($id)
 	{
 		if (!auth()->check()) return false;
-		$agent = Agent::find(auth()->user()->id);
+		$member = Member::find(auth()->user()->id);
 		
-		if ($agent->isAdmin()){
+		if ($member->isAdmin()){
 			return true;
 		}elseif ($ticket = Ticket::find($id) ){
-			if ($agent->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $agent->categories()->where('id',$ticket->category_id)->count() == 1)) {
+			if ($member->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $member->categories()->where('id',$ticket->category_id)->count() == 1)) {
 				return true;
 			}
 		}
@@ -299,13 +299,13 @@ class Agent extends User
 	public static function canViewNewTickets()
 	{
 		if (!auth()->check()) return false;
-		$agent = Agent::find(auth()->user()->id);
+		$member = Member::find(auth()->user()->id);
 		
-		if ($agent->isAdmin()){
+		if ($member->isAdmin()){
 			return true;
-		}elseif($agent->isAgent() and $agent->currentLevel() == 2){		
+		}elseif($member->isAgent() and $member->currentLevel() == 2){		
 			if(Setting::grab('agent_restrict')==1){
-				return $agent->categories()->wherePivot('autoassign','1')->count()==0 ? false : true;			
+				return $member->categories()->wherePivot('autoassign','1')->count()==0 ? false : true;			
 			}else{
 				return true;
 			}
@@ -531,9 +531,9 @@ class Agent extends User
      */
     public function scopeVisibleForAgent($query, $id)
     {
-        $agent = Agent::findOrFail($id);
+        $member = Member::findOrFail($id);
 		
-		if ($agent->currentLevel() == 2) {
+		if ($member->currentLevel() == 2) {
 			// Depends on agent_restrict
 			if (Setting::grab('agent_restrict') == 0) {
 				return $query->whereHas('categories', function ($q1) use ($id) {
@@ -573,11 +573,11 @@ class Agent extends User
 		 *    - agent ticketit_department in related_departments
 		 *    - agent person in related_departments
 		*/
-		$related_users = Agent::where('id','!=',$user->id)
+		$related_users = Member::where('id','!=',$user->id)
 			->whereIn('ticketit_department', $related_departments);		
 		
 		// Get users that are visible by all departments
-		$all_dept_users = Agent::where('ticketit_department','0');
+		$all_dept_users = Member::where('ticketit_department','0');
 		
 		if (version_compare(app()->version(), '5.3.0', '>=')) {
 			$related_users = $related_users->pluck('id')->toArray();

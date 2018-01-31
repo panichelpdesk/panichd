@@ -17,7 +17,7 @@ class EnvironmentReadyMiddleware
      */
     public function handle($request, Closure $next)
     {
-		if (Models\Agent::count() != 0
+		if (Models\Member::count() != 0
 			and Models\Category::count() != 0
 			and Models\Priority::count() != 0
 			and Models\Status::count() != 0){

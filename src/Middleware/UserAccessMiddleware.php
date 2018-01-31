@@ -3,7 +3,7 @@
 namespace PanicHD\PanicHD\Middleware;
 
 use Closure;
-use PanicHD\PanicHD\Models\Agent;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Traits\TicketRoutes;
 
@@ -20,10 +20,10 @@ class UserAccessMiddleware
      */
     public function handle($request, Closure $next)
     {
-		$agent = Agent::findOrFail(auth()->user()->id);
+		$member = Member::findOrFail(auth()->user()->id);
 		
 		// Granted to all Admins		
-		if ($agent->isAdmin()) {
+		if ($member->isAdmin()) {
             return $next($request);
         }
 		
@@ -31,19 +31,19 @@ class UserAccessMiddleware
 		$ticket = $this->getRouteTicket($request);
 		
 		// Ticket Owner has access
-		if ($agent->isTicketOwner($ticket->id)) {
+		if ($member->isTicketOwner($ticket->id)) {
 			return $next($request);
 		}
 
-		if ($agent->isAgent()) {
+		if ($member->isAgent()) {
 			// Assigned Agent has access always
-			if ($agent->isAssignedAgent($ticket->id)){
+			if ($member->isAssignedAgent($ticket->id)){
 				return $next($request);
 			}
 			
-			if ($agent->currentLevel() > 1 and Setting::grab('agent_restrict') == 0){
+			if ($member->currentLevel() > 1 and Setting::grab('agent_restrict') == 0){
 				// Check if element is a visible item for this agent
-				if ($agent->categories()->where('id',$ticket->category_id)->count() == 1){
+				if ($member->categories()->where('id',$ticket->category_id)->count() == 1){
 					return $next($request);
 				}
 			}
@@ -52,7 +52,7 @@ class UserAccessMiddleware
 		// Disable comment store for foreign user
 		if ($this->mod_route_prefix != 'comment') {
 			// Tickets from users in a visible ticketit_department value for current user
-			if (in_array($ticket->user_id, $agent->getMyNoticesUsers())){
+			if (in_array($ticket->user_id, $member->getMyNoticesUsers())){
 				return $next($request);
 			}
 		} 

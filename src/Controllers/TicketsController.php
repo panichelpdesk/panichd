@@ -13,9 +13,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 use PanicHD\PanicHD\Events\TicketCreated;
 use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
-use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -27,9 +27,9 @@ class TicketsController extends Controller
     use Attachments, Purifiable;
 
     protected $tickets;
-    protected $agent;
+    protected $member;
 
-    public function __construct(Ticket $tickets, Agent $agent)
+    public function __construct(Ticket $tickets, Member $member)
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
@@ -37,7 +37,7 @@ class TicketsController extends Controller
         $this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
-        $this->agent = $agent;
+        $this->member = $member;
     }
 
 	// This is loaded via AJAX at file Views\index.blade.php
@@ -49,7 +49,7 @@ class TicketsController extends Controller
             $datatables = app(\Yajra\Datatables\Datatables::class);
         }
 
-        $agent = $this->agent->find(auth()->user()->id);
+        $agent = $this->member->find(auth()->user()->id);
 
         $collection = Ticket::inList($ticketList)->visible()->filtered();
 
@@ -369,7 +369,7 @@ class TicketsController extends Controller
 		$tickets;
         $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
 		
-		if ($this->agent->isAdmin() or $this->agent->isAgent()){
+		if ($this->member->isAdmin() or $this->member->isAgent()){
 			// Get all forth tickets
 			$forth_tickets = Ticket::whereBetween('limit_date', [
 				Carbon::now()->today(),
@@ -425,25 +425,25 @@ class TicketsController extends Controller
 			}
 		}		
 		
-        if ($this->agent->isAdmin() or ($this->agent->isAgent() and Setting::grab('agent_restrict') == 0)) {
+        if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
             // Ticket filter for each Category
-            if ($this->agent->isAdmin()) {
+            if ($this->member->isAdmin()) {
                 $filters['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
 					$q->whereIn('id',$a_tickets_id);
                 }])->get();
             } else {
-                $filters['category'] = Agent::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+                $filters['category'] = Member::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
 					$q->whereIn('id',$a_tickets_id);					
                 }])->get();
             }
 
             // Ticket filter for each visible Agent
             if (session('panichd_filter_category') != '') {
-                $filters['agent'] = Agent::visible()->whereHas('categories', function ($q1) use ($category) {
+                $filters['agent'] = Member::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 });
             } else {
-                $filters['agent'] = Agent::visible();
+                $filters['agent'] = Member::visible();
             }
 
             $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
@@ -505,7 +505,7 @@ class TicketsController extends Controller
 		
 		$data['ticket_owner_id'] = auth()->user()->id;
 
-		$data['categories'] = $this->agent->findOrFail(auth()->user()->id)->getNewTicketCategories();
+		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
 
         return view('panichd::tickets.createedit', $data);
     }
@@ -519,19 +519,19 @@ class TicketsController extends Controller
 		
 		$data['ticket_owner_id'] = $data['ticket']->user_id;
 		
-		$data['categories'] = $this->agent->findOrFail(auth()->user()->id)->getEditTicketCategories();
+		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 		
         return view('panichd::tickets.createedit', $data);
 	}
 	
 	public function create_edit_data($ticket = false)
 	{
-		$user = $this->agent->find(auth()->user()->id);
+		$user = $this->member->find(auth()->user()->id);
 
 		if ($user->currentLevel() > 1){
-			$a_owners = Agent::with('userDepartment')->orderBy('name')->get();
+			$a_owners = Member::with('userDepartment')->orderBy('name')->get();
 		}else{
-			$a_owners = Agent::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
+			$a_owners = Member::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -637,7 +637,7 @@ class TicketsController extends Controller
 	*/
 	protected function validation_common($request, $new_ticket = true)
 	{
-		$user = $this->agent->find(auth()->user()->id);
+		$user = $this->member->find(auth()->user()->id);
 		$category_level = $user->levelInCategory($request->category_id);
 		$permission_level = ($user->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 		
@@ -929,7 +929,7 @@ class TicketsController extends Controller
     public function show($id)
     {
 		$ticket = $this->tickets->with('category.closingReasons')->with('tags');
-		$user = $this->agent->find(auth()->user()->id);
+		$user = $this->member->find(auth()->user()->id);
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
 			// Departments related
@@ -1003,7 +1003,7 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-		$user = $this->agent->find(auth()->user()->id);
+		$user = $this->member->find(auth()->user()->id);
         if ($user->isAgent() or $user->isAdmin()) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
@@ -1154,7 +1154,7 @@ class TicketsController extends Controller
         if ($this->permToClose($id) == 'yes') {
             $original_ticket = $this->tickets->findOrFail($id);
 			$ticket = clone $original_ticket;
-			$user = $this->agent->find(auth()->user()->id);
+			$user = $this->member->find(auth()->user()->id);
 			
 			if ($ticket->hidden and $user->currentLevel() == 1){
 				return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
@@ -1258,7 +1258,7 @@ class TicketsController extends Controller
     {
         if ($this->permToReopen($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
-			$user = $this->agent->find(auth()->user()->id);
+			$user = $this->member->find(auth()->user()->id);
 			
             $ticket->completed_at = null;
 
@@ -1332,7 +1332,7 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-		$new_agent = Agent::findOrFail($request->input('agent_id'));
+		$new_agent = Member::findOrFail($request->input('agent_id'));
 		
 		if ($ticket->agent_id==$request->input('agent_id')){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
@@ -1415,7 +1415,7 @@ class TicketsController extends Controller
 	*/
 	public function hide_actions($ticket)
 	{
-		$user = $this->agent->find(auth()->user()->id);
+		$user = $this->member->find(auth()->user()->id);
 		
 		// Add hide/notHide comment
 		$comment = new Models\Comment;
@@ -1431,7 +1431,7 @@ class TicketsController extends Controller
 	*/
 	public function permissionLevel ($category_id)
 	{
-		$user = $this->agent->find(auth()->user()->id);
+		$user = $this->member->find(auth()->user()->id);
 		
 		return $user->levelInCategory($category_id);
 	}
@@ -1444,7 +1444,7 @@ class TicketsController extends Controller
      */
     public function permToClose($id)
     {
-        $user = $this->agent->find(auth()->user()->id);
+        $user = $this->member->find(auth()->user()->id);
 		
 		return $user->canCloseTicket($id) ? "yes" : "no";
     }
@@ -1457,11 +1457,11 @@ class TicketsController extends Controller
     public function permToReopen($id)
     {
         $reopen_ticket_perm = Setting::grab('reopen_ticket_perm');
-        if ($this->agent->isAdmin() && $reopen_ticket_perm['admin'] == 'yes') {
+        if ($this->member->isAdmin() && $reopen_ticket_perm['admin'] == 'yes') {
             return 'yes';
-        } elseif ($this->agent->isAgent() && $reopen_ticket_perm['agent'] == 'yes') {
+        } elseif ($this->member->isAgent() && $reopen_ticket_perm['agent'] == 'yes') {
             return 'yes';
-        } elseif ($this->agent->isTicketOwner($id) && $reopen_ticket_perm['owner'] == 'yes') {
+        } elseif ($this->member->isTicketOwner($id) && $reopen_ticket_perm['owner'] == 'yes') {
             return 'yes';
         }
 

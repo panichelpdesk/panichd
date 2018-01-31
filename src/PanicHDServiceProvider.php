@@ -14,8 +14,8 @@ use PanicHD\PanicHD\Controllers\InstallController;
 use PanicHD\PanicHD\Controllers\NotificationsController;
 use PanicHD\PanicHD\Controllers\ToolsController;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
-use PanicHD\PanicHD\Models\Agent;
 use PanicHD\PanicHD\Models\Comment;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
 
@@ -74,7 +74,7 @@ class PanicHDServiceProvider extends ServiceProvider
             view()->composer('panichd::*', function ($view) use (&$u) {
                 if (auth()->check()) {
                     if ($u === null) {
-                        $u = Agent::find(auth()->user()->id);
+                        $u = Member::find(auth()->user()->id);
                     }
                     $view->with('u', $u);
                 }
@@ -108,7 +108,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			
 			// Include $n_notices in shared.nav and tickets.createedit templates
 			view()->composer(['panichd::shared.nav', 'panichd::tickets.createedit'], function ($view) {
-				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->notHidden()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())->count() : 0;
+				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->notHidden()->whereIn('user_id', Member::find(auth()->user()->id)->getMyNoticesUsers())->count() : 0;
 				$view->with(compact('n_notices'));
 			});
 
@@ -174,7 +174,7 @@ class PanicHDServiceProvider extends ServiceProvider
                 }
 				
 				// User level uses it's own summernote options if specified
-				$user_editor = Agent::find(auth()->user()->id)->currentLevel() < 2 ? Setting::grab('summernote_options_user') : 0;
+				$user_editor = Member::find(auth()->user()->id)->currentLevel() < 2 ? Setting::grab('summernote_options_user') : 0;
 
 
 				// Load summernote options
@@ -194,7 +194,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			view()->composer(['panichd::notices.widget', 'panichd::notices.index'], function ($view) {
 				if (Setting::grab('departments_notices_feature')){
 					// Get notices from related users
-					$a_notices = Ticket::active()->notHidden()->whereIn('user_id', Agent::find(auth()->user()->id)->getMyNoticesUsers())
+					$a_notices = Ticket::active()->notHidden()->whereIn('user_id', Member::find(auth()->user()->id)->getMyNoticesUsers())
 						->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
 						->select('panichd_tickets.*')
 						->with('owner.personDepts.department')
