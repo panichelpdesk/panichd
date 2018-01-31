@@ -82,7 +82,7 @@ $cld_options = [
 <div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
 @if (count($filters['agent'])>$setting->grab('max_agent_buttons'))
 	
-	<div id="select_agent_container" class="{{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
+	<div id="select_agent_container" class="select2_filter {{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
 		<select id="select_agent" style="width: 200px">
 		<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
 		@foreach ($filters['agent'] as $ag)			
