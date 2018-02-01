@@ -26,7 +26,7 @@
 					<span class="glyphicon glyphicon-filter"></span>
 				@endif
 				@if (isset($ticket))
-					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->filtered()->count() }}
+					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->filtered('new')->count() }}
 				@else
 					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
 				@endif
@@ -73,7 +73,7 @@
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
-				{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->filtered()->count() }}
+				{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->filtered('active')->count() }}
 			@else
 				{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
 			@endif
@@ -94,7 +94,7 @@
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
 			@if (isset($ticket))
-				{{ PanicHD\PanicHD\Models\Ticket::complete()->visible()->filtered()->count() }}
+				{{ PanicHD\PanicHD\Models\Ticket::complete()->visible()->filtered('complete')->count() }}
 			@else
 				{{ PanicHD\PanicHD\Models\Ticket::complete()->visible()->count() }}
 			@endif

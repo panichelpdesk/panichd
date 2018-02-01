@@ -537,7 +537,7 @@ class Ticket extends Model
      *
      * @return mixed
      */
-	public function scopeFiltered($query)
+	public function scopeFiltered($query, $ticketList)
 	{
 		$member = Member::find(auth()->user()->id);
 		
@@ -547,7 +547,7 @@ class Ticket extends Model
 		}else{
 			if (session()->has('panichd_filters')){
 				// Calendar filter
-				if (session()->has('panichd_filter_calendar')){
+				if ($ticketList != 'complete' and session()->has('panichd_filter_calendar')){
 					$cld = session('panichd_filter_calendar');
 					
 					if ($cld == "expired"){

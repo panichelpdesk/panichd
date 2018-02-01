@@ -1,64 +1,14 @@
-<div class="title calendar">{{ trans('panichd::lang.year') }}</div>
-<div class="select2_filter">
-	<select id="select_year" style="width: 100px">
-	<option value="/filter/year/remove">{{ trans('panichd::lang.filter-year-all') }}</option>
-	<option value="/filter/year/<?=date('Y')?>"><?=date('Y')?></option>
-	</select>
-</div>
-	
-<div class="title calendar">{{ trans('panichd::lang.filter-calendar') }}</div>
-<?php $text_cld = "";
-$calendar_name = "All";
-$cld_class = "";
-
-$cld_options = [
-	'expired' => [
-		'class' => 'text-danger',
-		'icon' => 'glyphicon-exclamation-sign',
-	],
-	'today' => [
-		'class' => 'text-warning',
-		'icon' => 'glyphicon-warning-sign',
-	],
-	'tomorrow' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-time',
-	],
-	'week' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-	'month' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-
-];
-
-?>
-@foreach ($counts['calendar'] as $cld=>$count)			
-	<?php $text_cld.='<li><a href="'.url($setting->grab('main_route').'/filter/calendar/'.$cld).'">';
-	
-	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('panichd::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
-	?>
-	@if ($cld==session('panichd_filter_calendar'))
-		<?php $calendar_name = $this_cld;
-		$cld_class = isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "";?>
-	@endif
-	<?php $text_cld.= $this_cld . '</a></li>';?>		
-@endforeach
-<div class="dropdown" style="display: inline-block;">
-<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('panichd::lang.filter-calendar-all') : $calendar_name !!}
-<span class="caret {{ $cld_class }}"></span></button>
-<ul class="dropdown-menu">
-@if ($calendar_name!="All")
-<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('panichd::lang.filter-calendar-all') }}</a></li>
+@if($ticketList == 'complete')
+	<div class="title year">{{ trans('panichd::lang.year') }}</div>
+	<div class="select2_filter">
+		<select id="select_year" style="width: 100px">
+		<option value="/filter/year/remove">{{ trans('panichd::lang.filter-year-all') }}</option>
+		<option value="/filter/year/<?=date('Y')?>"><?=date('Y')?></option>
+		</select>
+	</div>
+@else
+	@include('panichd::tickets.partials.filter_calendar')
 @endif
-{!! $text_cld !!}</ul>
-</div>
-
-
-
 
 <div class="title category">{{ trans('panichd::lang.filter-category') }}</div> 
 @if (count($filters['category'])==1)

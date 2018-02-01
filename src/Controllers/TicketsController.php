@@ -51,7 +51,7 @@ class TicketsController extends Controller
 
         $agent = $this->member->find(auth()->user()->id);
 
-        $collection = Ticket::inList($ticketList)->visible()->filtered();
+        $collection = Ticket::inList($ticketList)->visible()->filtered($ticketList);
 
         $collection
             ->join('users', 'users.id', '=', 'panichd_tickets.user_id')
@@ -374,56 +374,61 @@ class TicketsController extends Controller
         $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
 		
 		if ($this->member->isAdmin() or $this->member->isAgent()){
-			// Get all forth tickets
-			$forth_tickets = Ticket::whereBetween('limit_date', [
-				Carbon::now()->today(),
-				Carbon::now()->endOfWeek()
-			])
-			->orWhereBetween('limit_date', [
-				Carbon::now()->today(),
-				Carbon::now()->endOfMonth()
-			]);			
-			$forth_tickets = $forth_tickets->inList($ticketList)->visible()->get();			
-			
-			// Calendar expired filter
-			$a_cal['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now());
-			
-			// Calendar forth filters
-			$a_cal['today'] = $forth_tickets->filter(function($q){
-				return $q->limit_date < Carbon::now()->tomorrow(); 
-			});
-			
-			$a_cal['tomorrow'] = $forth_tickets->filter(function($q){
-				return $q->limit_date >= Carbon::now()->tomorrow(); 
-			})
-			->filter(function($q2){
-				return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
-			});
-			
-			$a_cal['week'] = $forth_tickets->filter(function($q){
-				return $q->limit_date < Carbon::now()->endOfWeek();
-			});
-			
-			$a_cal['month'] = $forth_tickets->filter(function($q){
-				return $q->limit_date < Carbon::now()->endOfMonth();
-			});
-			
-			\Log::info('cal singles');
-			
-			// Calendar counts
-			foreach ($a_cal as $cal=>$cal_tickets){
-				$counts['calendar'][$cal] = $cal_tickets->count();
-			}
-			
-			\log::info('cal foreach');
-			
-			// Calendar filter to tickets collection
-			if (session('panichd_filter_calendar') != '') {
-				$tickets = $a_cal[session('panichd_filter_calendar')];
+			if ($ticketList != 'complete'){
+				// Get all forth tickets
+				$forth_tickets = Ticket::whereBetween('limit_date', [
+					Carbon::now()->today(),
+					Carbon::now()->endOfWeek()
+				])
+				->orWhereBetween('limit_date', [
+					Carbon::now()->today(),
+					Carbon::now()->endOfMonth()
+				]);			
+				$forth_tickets = $forth_tickets->inList($ticketList)->visible()->get();			
+				
+				// Calendar expired filter
+				$a_cal['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now());
+				
+				// Calendar forth filters
+				$a_cal['today'] = $forth_tickets->filter(function($q){
+					return $q->limit_date < Carbon::now()->tomorrow(); 
+				});
+				
+				$a_cal['tomorrow'] = $forth_tickets->filter(function($q){
+					return $q->limit_date >= Carbon::now()->tomorrow(); 
+				})
+				->filter(function($q2){
+					return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
+				});
+				
+				$a_cal['week'] = $forth_tickets->filter(function($q){
+					return $q->limit_date < Carbon::now()->endOfWeek();
+				});
+				
+				$a_cal['month'] = $forth_tickets->filter(function($q){
+					return $q->limit_date < Carbon::now()->endOfMonth();
+				});
+				
+				\Log::info('cal singles');
+				
+				// Calendar counts
+				foreach ($a_cal as $cal=>$cal_tickets){
+					$counts['calendar'][$cal] = $cal_tickets->count();
+				}
+				
+				\log::info('cal foreach');
+				
+				// Calendar filter to tickets collection
+				if (session('panichd_filter_calendar') != '') {
+					$tickets = $a_cal[session('panichd_filter_calendar')];
+				}else{
+					// Tickets collection
+					$tickets = Ticket::inList($ticketList)->visible();
+				}
 			}else{
-				// Tickets collection
 				$tickets = Ticket::inList($ticketList)->visible();
 			}
+			
 			
 			\Log::info('tickets full');
 			
