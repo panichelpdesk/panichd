@@ -347,6 +347,8 @@ class TicketsController extends Controller
 	*/
 	public function indexProcess($request, $ticketList)
 	{
+		\Log::info('PAGE LOAD');
+		
 		$a_cat_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
 		
 		$data = [
@@ -365,7 +367,9 @@ class TicketsController extends Controller
      */
     public function ticketCounts($request, $ticketList)
     {
-        $counts = $filters = [];
+        \Log::info('Counts start');
+		
+		$counts = $filters = [];
 		$tickets;
         $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
 		
@@ -404,10 +408,14 @@ class TicketsController extends Controller
 				return $q->limit_date < Carbon::now()->endOfMonth();
 			});
 			
+			\Log::info('cal singles');
+			
 			// Calendar counts
 			foreach ($a_cal as $cal=>$cal_tickets){
 				$counts['calendar'][$cal] = $cal_tickets->count();
 			}
+			
+			\log::info('cal foreach');
 			
 			// Calendar filter to tickets collection
 			if (session('panichd_filter_calendar') != '') {
@@ -417,12 +425,16 @@ class TicketsController extends Controller
 				$tickets = Ticket::inList($ticketList)->visible();
 			}
 			
+			\Log::info('tickets full');
+			
 			// Get ticket ids array
 			if (version_compare(app()->version(), '5.3.0', '>=')) {				
 				$a_tickets_id = $tickets->pluck('id')->toArray();
 			} else { // if Laravel 5.1				
 				$a_tickets_id = $tickets->lists('id')->toArray();
 			}
+			
+			\Log::info('tickets array');
 		}		
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
@@ -436,6 +448,8 @@ class TicketsController extends Controller
 					$q->whereIn('id',$a_tickets_id);					
                 }])->get();
             }
+			
+			\Log::info('category tickets');
 
             // Ticket filter for each visible Agent
             if (session('panichd_filter_category') != '') {
@@ -445,10 +459,14 @@ class TicketsController extends Controller
             } else {
                 $filters['agent'] = Member::visible();
             }
+			
+			\Log::info('agent list');
 
             $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
                 $q2->whereIn('id',$a_tickets_id)->inCategory($category);
             }])->get();
+			
+			\Log::info('agent tickets');
         }
 
         // Forget agent if it doesn't exist in current category
@@ -458,7 +476,9 @@ class TicketsController extends Controller
         })->count() == 0) {
             $request->session()->forget('panichd_filter_agent');
         }
-
+		
+		\Log::info('end');
+		
         return ['counts' => $counts, 'filters' => $filters];
     }
 
