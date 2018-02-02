@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use PanicHD\PanicHD\Console\Htmlify;
+use PanicHD\PanicHD\Console\WipeOffTickets;
 use PanicHD\PanicHD\Controllers\InstallController;
 use PanicHD\PanicHD\Controllers\NotificationsController;
 use PanicHD\PanicHD\Controllers\ToolsController;
@@ -279,6 +280,12 @@ class PanicHDServiceProvider extends ServiceProvider
             $admin_route_path = Setting::grab('admin_route_path');
 
 			include __DIR__.'/routes.php';
+			
+			if ($this->app->runningInConsole()) {
+				$this->commands([
+					WipeOffTickets::class,
+				]);
+			}
 			
         } else{
 			Route::get('/tickets', function () {
