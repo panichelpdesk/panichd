@@ -29,16 +29,6 @@ class DemoDataSeeder extends Seeder
         'Billing'           => '#2b9900',
         'Customer Services' => '#7e0099',
     ];
-    public $statuses = [
-        'Pending' => '#e69900',
-        'Solved'  => '#15a000',
-        'Bug'     => '#f40700',
-    ];
-    public $priorities = [
-        'Low'      => '#069900',
-        'Normal'   => '#e1d200',
-        'Critical' => '#e10000',
-    ];
 
     /**
      * Run the database seeds.
@@ -65,16 +55,8 @@ class DemoDataSeeder extends Seeder
             $agents_counter++;
         }
 
-        // create tickets statuses
-        foreach ($this->statuses as $name => $color) {
-            $status = \PanicHD\PanicHD\Models\Status::create([
-                'name'  => $name,
-                'color' => $color,
-            ]);
-        }
-
         $counter = 0;
-        // create tickets statuses
+        // Create ticket categories
         foreach ($this->categories as $name => $color) {
             $category = \PanicHD\PanicHD\Models\Category::create([
                 'name'  => $name,
@@ -85,18 +67,18 @@ class DemoDataSeeder extends Seeder
             $counter++;
         }
 
-        // create tickets statuses
-        foreach ($this->priorities as $name => $color) {
-            $priority = \PanicHD\PanicHD\Models\Priority::create([
-                'name'  => $name,
-                'color' => $color,
-            ]);
-        }
+        // Create ticket priorities
+        $this->call(BasicPriorities::class);
+		
+		// Create ticket statuses
+		$this->call(BasicStatuses::class);
+		
+		// Counters
         $categories_qty = \PanicHD\PanicHD\Models\Category::count();
         $priorities_qty = \PanicHD\PanicHD\Models\Priority::count();
         $statuses_qty = \PanicHD\PanicHD\Models\Status::count();
 
-        // create users
+        // Create users
         $users_counter = 1;
 
         for ($u = 1; $u <= $this->users_qty; $u++) {
