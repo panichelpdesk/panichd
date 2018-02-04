@@ -38,22 +38,36 @@ class WipeOffTickets extends Command
      */
     public function handle()
     {
-        $this->info('');
+        $tickets = Models\Ticket::all();
+		
+		if ($tickets->count() == 0){
+			$this->info(trans('panichd::console.wipe-off-no-tickets-message'));
+			return false;
+		}
+		
+		$this->info('');
         $this->info('*');
 		$this->info('* '.trans('panichd::console.wipe-off-tickets'));
 		$this->info('*');
 		$this->info('');
-		$this->info(trans('panichd::console.wipe-off-tickets-description'));
-		$answer = $this->choice(trans('panichd::console.continue-question'), [trans('panichd::console.continue-question-yes'), trans('panichd::console.continue-question-no')], 1);
 		
-		if ($answer != 'Y'){
+		$this->info(trans('panichd::console.wipe-off-tickets-description'));
+		
+		$options = [
+			trans('panichd::console.continue-question-yes'),
+			trans('panichd::console.continue-question-no')
+		];
+		
+		$answer = $this->choice(trans('panichd::console.continue-question'), $options, 1);
+		
+		if ($answer != trans('panichd::console.continue-question-yes')){
 			$this->info(trans('panichd::console.command-aborted'));
 			return false;
 		}
 		
 		$this->info(trans('panichd::console.wipe-off-tickets-start'));
 
-        foreach (Models\Ticket::all() as $ticket) {
+        foreach ($tickets as $ticket) {
 			$ticket->tags()->detach();
 			$ticket->delete();
 		}
