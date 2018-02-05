@@ -96,7 +96,7 @@
 			@if (isset($ticket))
 				{{ PanicHD\PanicHD\Models\Ticket::complete()->visible()->filtered('complete')->count() }}
 			@else
-				{{ PanicHD\PanicHD\Models\Ticket::complete()->visible()->count() }}
+				{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear(date('Y'))->count() }}
 			@endif
 			
 			</span>

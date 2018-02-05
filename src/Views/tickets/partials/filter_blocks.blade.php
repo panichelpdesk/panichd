@@ -1,9 +1,22 @@
 @if($ticketList == 'complete')
 	<div class="title year">{{ trans('panichd::lang.year') }}</div>
-	<div class="select2_filter">
-		<select id="select_year" style="width: 100px">
-		<option value="/filter/year/remove">{{ trans('panichd::lang.filter-year-all') }}</option>
-		<option value="/filter/year/<?=date('Y')?>"><?=date('Y')?></option>
+	<div class="select2_filter" style="width: 150px;">
+		<select id="select_year" style="width: 150px; display: none;">
+		@php
+			$current_year = date('Y');
+			
+			if (session()->has('panichd_filter_year')){
+				$selected_year = session('panichd_filter_year');
+			}else{
+				$selected_year = date('Y');
+			}
+		@endphp
+		<option value="/filter/year/all" {!! $selected_year == 'all' ? 'selected="selected"' : '' !!}>{{ trans('panichd::lang.filter-year-all') }}</option>
+
+		@foreach ($counts['years'] as $year=>$count)
+			<option value="/filter/year/{{ $year == $current_year ? 'remove' : $year }}" {{ $year==$selected_year ? 'selected="selected"' : '' }}>{{ $year }} ({{ $count }})</option>
+		@endforeach
+		
 		</select>
 	</div>
 @else
@@ -41,7 +54,7 @@
 @if (count($filters['agent'])>$setting->grab('max_agent_buttons'))
 	
 	<div id="select_agent_container" class="select2_filter {{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
-		<select id="select_agent" style="width: 200px">
+		<select id="select_agent" style="width: 200px; display: none;">
 		<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
 		@foreach ($filters['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"

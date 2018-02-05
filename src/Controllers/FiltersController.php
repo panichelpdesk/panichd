@@ -5,13 +5,16 @@ namespace PanicHD\PanicHD\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PanicHD\PanicHD\Models;
+use PanicHD\PanicHD\Traits\CacheVars;
 
 
 class FiltersController extends Controller
 {
-    public function manage(Request $request, $filter, $value)
+    use CacheVars;
+	
+	public function manage(Request $request, $filter, $value)
     {
-		$a_filters = ['currentLevel', 'owner', 'calendar', 'category', 'agent'];
+		$a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
         //### PENDING: User permissions check or redirect back
 
         if ($filter=="removeall"){
@@ -56,6 +59,10 @@ class FiltersController extends Controller
                 }
 				
 				if ($filter == 'calendar' and in_array($value, ['expired', 'today', 'tomorrow', 'week', 'month'])){
+					$add = true;
+				}
+				
+				if ($filter == 'year' and ($value == 'all' or in_array($value, range($this->getFirstTicketCompleteYear(), date('Y'))))){
 					$add = true;
 				}
 				

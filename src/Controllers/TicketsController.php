@@ -20,11 +20,12 @@ use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
 use PanicHD\PanicHD\Traits\Attachments;
+use PanicHD\PanicHD\Traits\CacheVars;
 use PanicHD\PanicHD\Traits\Purifiable;
 
 class TicketsController extends Controller
 {
-    use Attachments, Purifiable;
+    use Attachments, CacheVars, Purifiable;
 
     protected $tickets;
     protected $member;
@@ -426,7 +427,16 @@ class TicketsController extends Controller
 					$tickets = Ticket::inList($ticketList)->visible();
 				}
 			}else{
-				$tickets = Ticket::inList($ticketList)->visible();
+				$counts['years'] = $this->getCompleteTicketYearCounts();
+				
+				\Log::info('after years');
+				
+				// Year filter to tickets collection
+				if (session('panichd_filter_year') != '') {
+					$tickets = Ticket::visible()->completedOnYear(session('panichd_filter_year'));
+				}else{
+					$tickets = Ticket::visible()->inList($ticketList);
+				}
 			}
 			
 			
