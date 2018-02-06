@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class DemoDataSeeder extends Seeder
 {
-    public $email_domain = '@example.com'; // the email domain name for demo accounts. Ex. user1@example.com
+    public $email_domain = '@demodataseeder.com'; // the email domain name for demo accounts. Ex. user1@example.com
     public $agents_qty = 5; // number of demo agents accounts
     public $agents_per_category = 2; // number of demo agents per category (must be lower than $agents_qty)
     public $users_qty = 30; // number of demo users accounts
@@ -20,10 +20,8 @@ class DemoDataSeeder extends Seeder
     public $default_agent_password = 'demo'; // default demo agents accounts paasword
     public $default_user_password = 'demo'; // default demo users accounts paasword
     public $tickets_date_period = 270; // to go to past (in days) and start creating tickets since
-    public $tickets_open = 20; // To-do number of remaining open tickets
-    public $tickets_min_close_period = 3; // minimum days to close tickets
-    public $tickets_max_close_period = 5; // maximum days to close tickets
-    public $default_closed_status_id = 2; // default status id for closed tickets
+    public $a_active_status_ids = [1,2,3,4]; // default status ids array for closed tickets
+    public $a_closed_status_ids = [5, 6]; // default status ids array for closed tickets
     public $categories = [
         'Technical'         => '#0014f4',
         'Billing'           => '#2b9900',
@@ -76,13 +74,13 @@ class DemoDataSeeder extends Seeder
 		// Counters
         $categories_qty = \PanicHD\PanicHD\Models\Category::count();
         $priorities_qty = \PanicHD\PanicHD\Models\Priority::count();
-        $statuses_qty = \PanicHD\PanicHD\Models\Status::count();
 
-        // Create users
         $users_counter = 1;
 
         for ($u = 1; $u <= $this->users_qty; $u++) {
-            $user_info = new \App\User();
+            
+			// Create users
+			$user_info = new \App\User();
             $user_info->name = $faker->name;
             $user_info->email = 'user'.$users_counter.$this->email_domain;
             $user_info->panichd_agent = 0;
@@ -91,13 +89,11 @@ class DemoDataSeeder extends Seeder
             $users_counter++;
 
             $tickets_qty = rand($this->tickets_per_user_min, $this->tickets_per_user_max);
-
+			
+			// Create ticket
             for ($t = 1; $t <= $tickets_qty; $t++) {
                 $rand_category = rand(1, $categories_qty);
                 $priority_id = rand(1, $priorities_qty);
-                do {
-                    $rand_status = rand(1, $statuses_qty);
-                } while ($rand_status == $this->default_closed_status_id);
 
                 $category = \PanicHD\PanicHD\Models\Category::find($rand_category);
 
@@ -110,29 +106,39 @@ class DemoDataSeeder extends Seeder
                 $agent_id = array_rand($agents);
                 $random_create = rand(1, $this->tickets_date_period);
 
-                $random_complete = rand($this->tickets_min_close_period,
-                                        $this->tickets_max_close_period);
-
                 $ticket = new \PanicHD\PanicHD\Models\Ticket();
                 $ticket->subject = $faker->text(50);
                 $ticket->content = $faker->paragraphs(3, true);
                 $ticket->html = nl2br($ticket->content);
-                $ticket->status_id = $rand_status;
                 $ticket->priority_id = $priority_id;
                 $ticket->creator_id = $user_info->id;
 				$ticket->user_id = $user_info->id;
                 $ticket->agent_id = $agent_id;
                 $ticket->category_id = $rand_category;
                 $ticket->created_at = \Carbon\Carbon::now()->subDays($random_create);
-                $ticket->updated_at = \Carbon\Carbon::now()->subDays($random_create);
+                $ticket->updated_at = $ticket->created_at;
+				
+				if (mt_rand(0,2)){
+					// 66% of complete tickets
+					$ticket->intervention = $faker->paragraphs(2, true);
+					$ticket->intervention_html = nl2br($ticket->intervention);
+					
+					$minutes_random_complete = rand(1, $random_create*24*60);
+					$random_complete = floor($minutes_random_complete/(60*24))+1;
+					$completed_at = \Carbon\Carbon::now()->subMinutes();
+					$ticket->completed_at = $completed_at;
+					$ticket->updated_at = $completed_at;
+					$ticket->status_id = array_rand($this->a_closed_status_ids);
+				}else{
+					// 33% of active tickets
+					if (rand(0,1)){
+						$ticket->intervention = $faker->paragraphs(1, true);
+						$ticket->intervention_html = nl2br($ticket->intervention);
+					}
+					
+					$ticket->status_id = array_rand($this->a_active_status_ids);
+				}
 
-                $completed_at = new Carbon($ticket->created_at);
-
-                if (!$completed_at->addDays($random_complete)->gt(\Carbon\Carbon::now())) {
-                    $ticket->completed_at = $completed_at;
-                    $ticket->updated_at = $completed_at;
-                    $ticket->status_id = $this->default_closed_status_id;
-                }
                 $ticket->save();
 
                 $comments_qty = rand($this->comments_per_ticket_min,
