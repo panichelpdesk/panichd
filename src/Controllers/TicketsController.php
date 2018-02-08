@@ -432,13 +432,13 @@ class TicketsController extends Controller
 				\Log::info('after years');
 				
 				// Year filter to tickets collection
-				if (session('panichd_filter_year') != '') {
-					$tickets = Ticket::visible()->completedOnYear(session('panichd_filter_year'));
+				if ($ticketList == 'complete'){
+					$year = session('panichd_filter_year') != '' ? session('panichd_filter_year') : '';
+					$tickets = Ticket::visible()->completedOnYear($year);
 				}else{
 					$tickets = Ticket::visible()->inList($ticketList);
 				}
 			}
-			
 			
 			\Log::info('tickets full');
 			
