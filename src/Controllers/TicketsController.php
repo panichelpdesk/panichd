@@ -454,15 +454,9 @@ class TicketsController extends Controller
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
             // Ticket filter for each Category
-            if ($this->member->isAdmin()) {
-                $filters['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
-					$q->whereIn('id',$a_tickets_id);
-                }])->get();
-            } else {
-                $filters['category'] = Member::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
-					$q->whereIn('id',$a_tickets_id);					
-                }])->get();
-            }
+            $filters['category'] = Category::visible()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
+				$q->whereIn('id',$a_tickets_id);
+			}])->get();
 			
 			\Log::info('category tickets');
 

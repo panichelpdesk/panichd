@@ -80,4 +80,22 @@ class Category extends Model
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Closingreason', 'category_id')->orderBy('ordering');
     }
+	
+	/**
+     * Get all visible categories for current user.
+	 *
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeVisible($query)
+    {
+        if (auth()->user()->panichd_admin) {
+            return $query;
+        }else{
+			return $query->whereHas('agents', function($query){
+				$query->where('id', auth()->user()->id);
+			});
+		}
+	}
 }
