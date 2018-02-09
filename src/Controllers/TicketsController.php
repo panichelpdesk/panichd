@@ -371,44 +371,63 @@ class TicketsController extends Controller
         \Log::info('Counts start');
 		
 		$counts = $filters = [];
-		$tickets;
+		$tickets = Ticket::inList($ticketList)->visible();
         $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
 		
 		if ($this->member->isAdmin() or $this->member->isAgent()){
 			if ($ticketList != 'complete'){
-				// Get all forth tickets
-				$forth_tickets = Ticket::whereBetween('limit_date', [
+				// Calendar expired filter
+				$expired = clone $tickets;
+				$a_cal['expired'] = $expired->where('limit_date','<', Carbon::now());
+				if (session('panichd_filter_calendar') == 'expired') {
+					$tickets = $a_cal['expired'];
+				}
+				
+				// Calendar all forth filters
+				$month_builder = clone $tickets;
+				$month_builder->whereBetween('limit_date', [
 					Carbon::now()->today(),
 					Carbon::now()->endOfWeek()
 				])
 				->orWhereBetween('limit_date', [
 					Carbon::now()->today(),
 					Carbon::now()->endOfMonth()
-				]);			
-				$forth_tickets = $forth_tickets->inList($ticketList)->visible()->get();			
-				
-				// Calendar expired filter
-				$a_cal['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now());
-				
-				// Calendar forth filters
-				$a_cal['today'] = $forth_tickets->filter(function($q){
+				]);
+				$month_collection = $month_builder->get();
+
+				$a_cal['today'] = $month_collection->filter(function($q){
 					return $q->limit_date < Carbon::now()->tomorrow(); 
 				});
+				if (session('panichd_filter_calendar') == 'today') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->tomorrow());
+				}
 				
-				$a_cal['tomorrow'] = $forth_tickets->filter(function($q){
+				$a_cal['tomorrow'] = $month_collection->filter(function($q){
 					return $q->limit_date >= Carbon::now()->tomorrow(); 
 				})
 				->filter(function($q2){
 					return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
 				});
+				if (session('panichd_filter_calendar') == 'tomorrow') {
+					$tickets = $month_builder->where([
+						['limit_date', '>=', Carbon::now()->tomorrow()],
+						['limit_date', '<', Carbon::now()->addDays(2)->startOfDay()],
+					]);
+				}
 				
-				$a_cal['week'] = $forth_tickets->filter(function($q){
+				$a_cal['week'] = $month_collection->filter(function($q){
 					return $q->limit_date < Carbon::now()->endOfWeek();
 				});
+				if (session('panichd_filter_calendar') == 'week') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfWeek());
+				}
 				
-				$a_cal['month'] = $forth_tickets->filter(function($q){
+				$a_cal['month'] = $month_collection->filter(function($q){
 					return $q->limit_date < Carbon::now()->endOfMonth();
 				});
+				if (session('panichd_filter_calendar') == 'month') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfMonth());
+				}
 				
 				\Log::info('cal singles');
 				
@@ -418,14 +437,6 @@ class TicketsController extends Controller
 				}
 				
 				\log::info('cal foreach');
-				
-				// Calendar filter to tickets collection
-				if (session('panichd_filter_calendar') != '') {
-					$tickets = $a_cal[session('panichd_filter_calendar')];
-				}else{
-					// Tickets collection
-					$tickets = Ticket::inList($ticketList)->visible();
-				}
 			}else{
 				$counts['years'] = $this->getCompleteTicketYearCounts();
 				
@@ -434,13 +445,11 @@ class TicketsController extends Controller
 				// Year filter to tickets collection
 				if ($ticketList == 'complete'){
 					$year = session('panichd_filter_year') != '' ? session('panichd_filter_year') : '';
-					$tickets = Ticket::visible()->completedOnYear($year);
-				}else{
-					$tickets = Ticket::visible()->inList($ticketList);
+					$tickets = $tickets->completedOnYear($year);
 				}
 			}
 			
-			\Log::info('tickets full');
+			\Log::info('tickets full. Count: '.$tickets->count());
 			
 			// Get ticket ids array
 			if (version_compare(app()->version(), '5.3.0', '>=')) {				
@@ -453,7 +462,8 @@ class TicketsController extends Controller
 		}		
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
-            // Visible categories
+			
+			// Visible categories
             $filters['category'] = Category::visible()->orderBy('name')->get();
 			
 			// Ticket counts for each Category
