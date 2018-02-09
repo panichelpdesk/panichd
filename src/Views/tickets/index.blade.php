@@ -97,7 +97,11 @@
 								{ data: 'dept_info', name: 'dept_full', searchable: false },
 							@endif
 						@endif
-						{ data: 'calendar', name: 'calendar_order', searchable: false, "orderSequence": [ "desc", "asc"] },
+						@if ($ticketList == 'complete')
+							{ data: 'complete_date', name: 'completed_at', searchable: false, "orderSequence": [ "desc", "asc"] },
+						@else
+							{ data: 'calendar', name: 'calendar_order', searchable: false, "orderSequence": [ "desc", "asc"] },
+						@endif
 					@endif
 					{ data: 'updated_at', name: 'panichd_tickets.updated_at' },
 					@if( $u->currentLevel() > 1 )

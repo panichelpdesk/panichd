@@ -32,6 +32,7 @@ return [
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
   'table-calendar'                   => 'Agenda',
+  'table-completed_at'               => 'Tancament',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
   

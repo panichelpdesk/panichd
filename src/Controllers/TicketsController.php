@@ -89,6 +89,7 @@ class TicketsController extends Controller
 			'panichd_tickets.limit_date',
 			$select_dates,
 			'panichd_tickets.updated_at AS updated_at',
+			'panichd_tickets.completed_at AS completed_at',
 			'panichd_tickets.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
 			'panichd_priorities.name AS priority',
@@ -288,6 +289,10 @@ class TicketsController extends Controller
 			return '<div style="width: 8em;">'.$ticket->getCalendarInfo().'</div>';
         });
 
+		$collection->editColumn('complete_date', function ($ticket) {
+			return '<div style="width: 8em;">'.$ticket->getDateForHumans($ticket->completed_at).'</div>';
+        });
+		
         $collection->editColumn('category', function ($ticket) {
             $color = $ticket->color_category;
             $category = e($ticket->category);

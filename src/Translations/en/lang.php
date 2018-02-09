@@ -31,6 +31,7 @@ return [
   'table-priority'                   => 'Priority',
   'table-agent'                      => 'Agent',
   'table-calendar'                   => 'Calendar',
+  'table-completed_at'               => 'Completed at',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
   
