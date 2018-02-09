@@ -34,10 +34,10 @@
 	@foreach ($filters['category'] as $cat)			
 		<?php $text_cat.='<li><a href="'.url($setting->grab('main_route').'/filter/category/'.$cat->id).'">';?>
 		@if ($cat->id==session('panichd_filter_category'))
-			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span>';
+			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span>';
 			$cat_color=$cat->color;?>
 		@endif
-		<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span></a></li>';?>		
+		<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span></a></li>';?>		
 	@endforeach
 	<div class="dropdown" style="display: inline-block;">
 	<button class="btn btn-default btn-category dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;">{!! $category_name=="All" ? trans('panichd::lang.filter-category-all') : $category_name !!}

@@ -453,10 +453,20 @@ class TicketsController extends Controller
 		}		
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
-            // Ticket filter for each Category
-            $filters['category'] = Category::visible()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
-				$q->whereIn('id',$a_tickets_id);
-			}])->get();
+            // Visible categories
+            $filters['category'] = Category::visible()->orderBy('name')->get();
+			
+			// Ticket counts for each Category
+			$category_counts = $tickets->groupBy('category_id')->select('category_id', DB::raw('count(*) as num'))->get();
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$a_category_counts = $category_counts->pluck('num','category_id')->toArray();
+			} else { // if Laravel 5.1				
+				$a_category_counts = $category_counts->lists('num','category_id')->toArray();
+			}
+			
+			foreach ($filters['category'] as $cat){
+				$counts['category'][$cat->id] = isset($a_category_counts[$cat->id]) ? $a_category_counts[$cat->id] : 0;
+			}
 			
 			\Log::info('category tickets');
 
