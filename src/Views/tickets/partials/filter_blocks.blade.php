@@ -61,7 +61,7 @@
 			@if ($ag->id==session('panichd_filter_agent'))
 				selected="selected"
 			@endif
-			>{{$ag->name}} ({!!$ag->agent_total_tickets_count !!})</option>
+			>{{$ag->name}} ({!! $counts['agent'][$ag->id] !!})</option>
 		@endforeach
 		</select>
 	</div>
@@ -78,9 +78,9 @@
 	
 		@foreach ($filters['agent'] as $ag)
 			@if ($ag->id==session('panichd_filter_agent'))
-				<button class="btn btn-default {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></button>				
+				<button class="btn btn-default {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></button>				
 			@else
-				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></a>
 			@endif			
 		@endforeach	
 	@endif

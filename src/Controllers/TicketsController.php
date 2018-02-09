@@ -450,15 +450,6 @@ class TicketsController extends Controller
 			}
 			
 			\Log::info('tickets full. Count: '.$tickets->count());
-			
-			// Get ticket ids array
-			if (version_compare(app()->version(), '5.3.0', '>=')) {				
-				$a_tickets_id = $tickets->pluck('id')->toArray();
-			} else { // if Laravel 5.1				
-				$a_tickets_id = $tickets->lists('id')->toArray();
-			}
-			
-			\Log::info('tickets array');
 		}		
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
@@ -467,7 +458,8 @@ class TicketsController extends Controller
             $filters['category'] = Category::visible()->orderBy('name')->get();
 			
 			// Ticket counts for each Category
-			$category_counts = $tickets->groupBy('category_id')->select('category_id', DB::raw('count(*) as num'))->get();
+			$cat_tickets = clone $tickets;
+			$category_counts = $cat_tickets->groupBy('category_id')->select('category_id', DB::raw('count(*) as num'))->get();
 			if (version_compare(app()->version(), '5.3.0', '>=')) {				
 				$a_category_counts = $category_counts->pluck('num','category_id')->toArray();
 			} else { // if Laravel 5.1				
@@ -478,22 +470,37 @@ class TicketsController extends Controller
 				$counts['category'][$cat->id] = isset($a_category_counts[$cat->id]) ? $a_category_counts[$cat->id] : 0;
 			}
 			
+			// Add Category filter to ticket builder
+			if (session('panichd_filter_category') != '') {
+				$tickets->where('category_id', session('panichd_filter_category'));
+			}
+			
 			\Log::info('category tickets');
 
-            // Ticket filter for each visible Agent
-            if (session('panichd_filter_category') != '') {
-                $filters['agent'] = Member::visible()->whereHas('categories', function ($q1) use ($category) {
+            // Visible Agents
+            if (session('panichd_filter_category') == '') {
+				$filters['agent'] = Member::visible()->get();
+			}else{
+                $filters['agent']= Member::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
-                });
-            } else {
-                $filters['agent'] = Member::visible();
+                })
+				->get();
             }
 			
 			\Log::info('agent list');
-
-            $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
-                $q2->whereIn('id',$a_tickets_id)->inCategory($category);
-            }])->get();
+			
+			// Ticket counts for each Agent
+			$ag_tickets = clone $tickets;
+			$ag_counts = $ag_tickets->groupBy('agent_id')->select('agent_id', DB::raw('count(*) as num'))->get();
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$ag_counts = $ag_counts->pluck('num','agent_id')->toArray();
+			} else { // if Laravel 5.1				
+				$ag_counts = $ag_counts->lists('num','agent_id')->toArray();
+			}
+			
+			foreach ($filters['agent'] as $ag){
+				$counts['agent'][$ag->id] = isset($ag_counts[$ag->id]) ? $ag_counts[$ag->id] : 0;
+			}
 			
 			\Log::info('agent tickets');
         }
