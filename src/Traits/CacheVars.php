@@ -28,7 +28,6 @@ trait CacheVars
 	protected function getCompleteTicketYearCounts()
 	{
 		return Cache::remember('panichd::a_complete_ticket_year_counts', 60, function(){
-			\Log::info('array year counts');
 			$a_years = range($this->getFirstTicketCompleteYear(), date('Y'));
 			rsort($a_years);
 			$a_year_counts = [];

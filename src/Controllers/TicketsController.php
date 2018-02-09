@@ -348,8 +348,6 @@ class TicketsController extends Controller
 	*/
 	public function indexProcess($request, $ticketList)
 	{
-		\Log::info('PAGE LOAD');
-		
 		$a_cat_agents = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
 		
 		$data = [
@@ -368,8 +366,6 @@ class TicketsController extends Controller
      */
     public function ticketCounts($request, $ticketList)
     {
-        \Log::info('Counts start');
-		
 		$counts = $filters = [];
 		$tickets = Ticket::inList($ticketList)->visible();
         $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
@@ -429,18 +425,12 @@ class TicketsController extends Controller
 					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfMonth());
 				}
 				
-				\Log::info('cal singles');
-				
 				// Calendar counts
 				foreach ($a_cal as $cal=>$cal_tickets){
 					$counts['calendar'][$cal] = $cal_tickets->count();
 				}
-				
-				\log::info('cal foreach');
 			}else{
 				$counts['years'] = $this->getCompleteTicketYearCounts();
-				
-				\Log::info('after years');
 				
 				// Year filter to tickets collection
 				if ($ticketList == 'complete'){
@@ -448,8 +438,6 @@ class TicketsController extends Controller
 					$tickets = $tickets->completedOnYear($year);
 				}
 			}
-			
-			\Log::info('tickets full. Count: '.$tickets->count());
 		}		
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
@@ -474,8 +462,6 @@ class TicketsController extends Controller
 			if (session('panichd_filter_category') != '') {
 				$tickets->where('category_id', session('panichd_filter_category'));
 			}
-			
-			\Log::info('category tickets');
 
             // Visible Agents
             if (session('panichd_filter_category') == '') {
@@ -486,8 +472,6 @@ class TicketsController extends Controller
                 })
 				->get();
             }
-			
-			\Log::info('agent list');
 			
 			// Ticket counts for each Agent
 			$ag_tickets = clone $tickets;
@@ -501,8 +485,6 @@ class TicketsController extends Controller
 			foreach ($filters['agent'] as $ag){
 				$counts['agent'][$ag->id] = isset($ag_counts[$ag->id]) ? $ag_counts[$ag->id] : 0;
 			}
-			
-			\Log::info('agent tickets');
         }
 
         // Forget agent if it doesn't exist in current category
@@ -512,8 +494,6 @@ class TicketsController extends Controller
         })->count() == 0) {
             $request->session()->forget('panichd_filter_agent');
         }
-		
-		\Log::info('end');
 		
         return ['counts' => $counts, 'filters' => $filters];
     }
