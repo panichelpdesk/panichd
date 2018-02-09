@@ -1044,8 +1044,8 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-		$user = $this->member->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
+		$member = $this->member->find(auth()->user()->id);
+        if ($member->isAgent() or $member->isAdmin()) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
@@ -1113,6 +1113,11 @@ class TicketsController extends Controller
 		// End transaction
 		DB::commit();
 		event(new TicketUpdated($original_ticket, $ticket));
+		
+		// Add complete/reopen comment
+		if ($original_ticket->completed_at != $ticket->completed_at and ($original_ticket->completed_at == '' or $ticket->completed_at == '') ){
+			$this->complete_change_actions($ticket, $member);
+		}
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -1195,15 +1200,15 @@ class TicketsController extends Controller
         if ($this->permToClose($id) == 'yes') {
             $original_ticket = $this->tickets->findOrFail($id);
 			$ticket = clone $original_ticket;
-			$user = $this->member->find(auth()->user()->id);
+			$member = $this->member->find(auth()->user()->id);
 			
-			if ($ticket->hidden and $user->currentLevel() == 1){
+			if ($ticket->hidden and $member->currentLevel() == 1){
 				return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 			}
 			
-			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
+			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $member->name]);
 			
-			if ($user->currentLevel()>1){
+			if ($member->currentLevel()>1){
 				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
 					return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-blank-intervention-alert'));
 				}else{
@@ -1241,7 +1246,7 @@ class TicketsController extends Controller
 			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . $reason_text;
 			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . $reason_text;
 			
-			if ($user->currentLevel()<2){
+			if ($member->currentLevel()<2){
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
 				if ($a_clarification['content'] != ""){
@@ -1251,29 +1256,12 @@ class TicketsController extends Controller
 			}
 			
 			$ticket->completed_at = Carbon::now();
-
             $ticket->save();
 			
-			// Add closing comment			
-			$comment = new Models\Comment;
-			$comment->type = "complete";
-			
-			if ($user->currentLevel()>1){ 
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
-			}else{
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($reason ? trans('panichd::lang.colon').$reason->text : '');
-							
-				if ($a_clarification['content'] != ""){
-					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
-					$comment->html = $comment->html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
-				}
-			}
-
-			$comment->ticket_id = $id;
-			$comment->user_id = $user->id;
-			$comment->save();
-			
 			event(new TicketUpdated($original_ticket, $ticket));
+			
+			// Add complete comment
+			$this->complete_change_actions($ticket, $member);
 			
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -1287,6 +1275,38 @@ class TicketsController extends Controller
         return redirect()->route(Setting::grab('main_route').'.index')
             ->with('warning', trans('panichd::lang.you-are-not-permitted-to-do-this'));
     }
+	
+	/**
+	 * Actions to take when a ticket completion status changes
+	*/
+	public function complete_change_actions($ticket, $member)
+	{
+		$comment = new Models\Comment;
+		
+		if ($ticket->completed_at != ''){
+			// Complete comment
+			$comment->type = "complete";
+		
+			if ($member->currentLevel()>1){ 
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
+			}else{
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($reason ? trans('panichd::lang.colon').$reason->text : '');
+							
+				if ($a_clarification['content'] != ""){
+					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
+					$comment->html = $comment->html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
+				}
+			}
+		}else{
+			// Reopen comment
+			$comment->type = "reopen";
+			$comment->content = $comment->html = trans('panichd::lang.comment-reopen-title');
+		}
+
+		$comment->ticket_id = $ticket->id;
+		$comment->user_id = $member->id;
+		$comment->save();
+	}
 
     /**
      * Reopen ticket from complete status.
@@ -1299,7 +1319,7 @@ class TicketsController extends Controller
     {
         if ($this->permToReopen($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
-			$user = $this->member->find(auth()->user()->id);
+			$member = $this->member->find(auth()->user()->id);
 			
             $ticket->completed_at = null;
 
@@ -1308,19 +1328,13 @@ class TicketsController extends Controller
             }			
 			
 			$date = date(trans('panichd::lang.date-format'), time());
-			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $user->name]);
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $user->name]);					
-			
+			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $member->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $member->name]);
 
             $ticket->save();
 			
 			// Add reopen comment
-			$comment = new Models\Comment;
-			$comment->type = "reopen";
-			$comment->content = $comment->html = trans('panichd::lang.comment-reopen-title');
-			$comment->ticket_id = $id;
-			$comment->user_id = $user->id;
-			$comment->save();
+			$this->complete_change_actions($ticket, $member);
 			
 
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-reopened', [
