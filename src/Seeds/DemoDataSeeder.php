@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use PanicHD\PanicHD\Models;
 
 class DemoDataSeeder extends Seeder
 {
@@ -22,10 +23,10 @@ class DemoDataSeeder extends Seeder
     public $tickets_date_period = 270; // to go to past (in days) and start creating tickets since
     public $a_active_status_ids = [1,2,3,4]; // default status ids array for closed tickets
     public $a_closed_status_ids = [5, 6]; // default status ids array for closed tickets
-    public $categories = [
-        'Technical'         => '#0014f4',
-        'Billing'           => '#2b9900',
-        'Customer Services' => '#7e0099',
+    public $a_demo_categories = [
+        '_Demo_Corporate_support',
+        '_Demo_Human_Resources',
+        '_Demo_Office_Supplies',
     ];
 
     /**
@@ -39,83 +40,81 @@ class DemoDataSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
 
-        // create agents
-        $agents_counter = 1;
+        // Create demo agents
+		$a_agents = [];
 
         for ($a = 1; $a <= $this->agents_qty; $a++) {
-            $agent_info = new \App\User();
-            $agent_info->name = $faker->name;
-            $agent_info->email = 'agent'.$agents_counter.$this->email_domain;
-            $agent_info->panichd_agent = 1;
-            $agent_info->password = Hash::make($this->default_agent_password);
-            $agent_info->save();
-            $agents[$agent_info->id] = $agent_info;
-            $agents_counter++;
+            $email = 'agent'.$a.$this->email_domain;
+			
+			$agent_info = Models\Member::firstOrNew(['email' => $email]);
+			$agent_info->name = $faker->name;
+			$agent_info->panichd_agent = 1;
+			$agent_info->password = Hash::make($this->default_agent_password);
+			$agent_info->save();
+			$a_agents[$agent_info->id] = $agent_info;
         }
-
-        $counter = 0;
-        // Create ticket categories
-        foreach ($this->categories as $name => $color) {
-            $category = \PanicHD\PanicHD\Models\Category::create([
-                'name'  => $name,
-                'color' => $color,
-            ]);
-            $agent = array_rand($agents, $this->agents_per_category);
-            $category->agents()->attach($agent);
-            $counter++;
+		
+        // Create demo categories
+		$a_categories = $a_cat_id_agents_id = [];
+        foreach ($this->a_demo_categories as $name) {
+            $category = Models\Category::firstOrNew(['name'  => $name]);
+			$category->color = $faker->hexcolor;
+			$category->save();
+			$a_categories[] = $category->id;
+			
+			$a_assigned_agents = [];
+			for ($i=1; $i<=$this->agents_per_category; $i++){
+				// Random assigned agents to the category
+				$a_assigned_agents[] = array_rand($a_agents);
+			}
+            
+            $category->agents()->attach($a_assigned_agents);
+			
+			$a_cat_id_agents_id[$category->id] = $a_assigned_agents;
         }
-
+		
         // Create ticket priorities
         $this->call(BasicPriorities::class);
 		
-		// Create ticket statuses
-		$this->call(BasicStatuses::class);
+		// Generate Priorities array
+		$a_priorities = [];
+        foreach (Models\Priority::all() as $priority){
+			$a_priorities[] = $priority->id;
+		}
 		
-		// Counters
-        $categories_qty = \PanicHD\PanicHD\Models\Category::count();
-        $priorities_qty = \PanicHD\PanicHD\Models\Priority::count();
-
-        $users_counter = 1;
+		// Create ticket statuses (we use them from public arrays with current BasicStatuses, divided on two arrays one for active tickets and another for complete ones)
+		$this->call(BasicStatuses::class);
 
         for ($u = 1; $u <= $this->users_qty; $u++) {
             
 			// Create users
-			$user_info = new \App\User();
+			$email = 'user'.$u.$this->email_domain;
+			
+			$user_info = Models\Member::firstOrNew(['email' => $email]);
             $user_info->name = $faker->name;
-            $user_info->email = 'user'.$users_counter.$this->email_domain;
             $user_info->panichd_agent = 0;
             $user_info->password = Hash::make($this->default_user_password);
             $user_info->save();
-            $users_counter++;
 
             $tickets_qty = rand($this->tickets_per_user_min, $this->tickets_per_user_max);
 			
 			// Create ticket
             for ($t = 1; $t <= $tickets_qty; $t++) {
-                $rand_category = rand(1, $categories_qty);
-                $priority_id = rand(1, $priorities_qty);
-
-                $category = \PanicHD\PanicHD\Models\Category::find($rand_category);
-
-                if (version_compare(app()->version(), '5.2.0', '>=')) {
-                    $agents = $category->agents()->pluck('name', 'id')->toArray();
-                } else { // if Laravel 5.1
-                    $agents = $category->agents()->lists('name', 'id')->toArray();
-                }
-
-                $agent_id = array_rand($agents);
+				
+				
                 $random_create = rand(1, $this->tickets_date_period);
 
-                $ticket = new \PanicHD\PanicHD\Models\Ticket();
+                $ticket = new Models\Ticket();
                 $ticket->subject = $faker->text(50);
                 $ticket->content = $faker->paragraphs(3, true);
                 $ticket->html = nl2br($ticket->content);
-                $ticket->priority_id = $priority_id;
+                $ticket->priority_id = $a_priorities[array_rand($a_priorities)];
                 $ticket->creator_id = $user_info->id;
 				$ticket->user_id = $user_info->id;
-                $ticket->agent_id = $agent_id;
-                $ticket->category_id = $rand_category;
-                $ticket->created_at = \Carbon\Carbon::now()->subDays($random_create);
+				$category_id = $a_categories[array_rand($a_categories)];
+                $ticket->category_id = $category_id;
+				$ticket->agent_id = $a_cat_id_agents_id[$category_id][array_rand($a_cat_id_agents_id[$category_id])];
+				$ticket->created_at = Carbon::now()->subDays($random_create);
                 $ticket->updated_at = $ticket->created_at;
 				
 				if (mt_rand(0,2)){
@@ -124,11 +123,10 @@ class DemoDataSeeder extends Seeder
 					$ticket->intervention_html = nl2br($ticket->intervention);
 					
 					$minutes_random_complete = rand(1, $random_create*24*60);
-					$random_complete = floor($minutes_random_complete/(60*24))+1;
-					$completed_at = \Carbon\Carbon::now()->subMinutes();
+					$completed_at = \Carbon\Carbon::now()->subMinutes($minutes_random_complete);
 					$ticket->completed_at = $completed_at;
 					$ticket->updated_at = $completed_at;
-					$ticket->status_id = array_rand($this->a_closed_status_ids);
+					$ticket->status_id = $this->a_closed_status_ids[array_rand($this->a_closed_status_ids)];
 				}else{
 					// 33% of active tickets
 					if (rand(0,1)){
@@ -136,9 +134,9 @@ class DemoDataSeeder extends Seeder
 						$ticket->intervention_html = nl2br($ticket->intervention);
 					}
 					
-					$ticket->status_id = array_rand($this->a_active_status_ids);
+					$ticket->status_id = $this->a_active_status_ids[array_rand($this->a_active_status_ids)];
 				}
-
+				
                 $ticket->save();
 
                 $comments_qty = rand($this->comments_per_ticket_min,
@@ -150,10 +148,10 @@ class DemoDataSeeder extends Seeder
                         '-'.$random_create.' days', 'now');
                     } else {
                         $random_comment_date = $faker->dateTimeBetween(
-                        '-'.$random_create.' days', '-'.($random_create - $random_complete).' days');
+                        '-'.$random_create.' days', '-'.($random_create - floor($minutes_random_complete/60/24)).' days');
                     }
 
-                    $comment = new \PanicHD\PanicHD\Models\Comment();
+                    $comment = new Models\Comment();
                     $comment->ticket_id = $ticket->id;
                     $comment->content = $faker->paragraphs(3, true);
                     $comment->html = nl2br($comment->content);
