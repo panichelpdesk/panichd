@@ -71,6 +71,8 @@ class WipeOffLists extends Command
 					$category->delete();
 				}
 				Models\Category::truncate();
+				Models\Closingreason::truncate();
+				Models\Tag::truncate();
 				
 				// Active agents deletion
 				foreach (Models\Member::agents()->get() as $member){

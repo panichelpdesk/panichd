@@ -283,6 +283,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			
 			if ($this->app->runningInConsole()) {
 				$this->commands([
+					Console\DemoRollback::class,
 					Console\WipeOffLists::class,
 					Console\WipeOffTickets::class,
 				]);
