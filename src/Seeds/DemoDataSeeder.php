@@ -84,6 +84,10 @@ class DemoDataSeeder extends Seeder
 		
 		// Create ticket statuses (we use them from public arrays with current BasicStatuses, divided on two arrays one for active tickets and another for complete ones)
 		$this->call(BasicStatuses::class);
+		
+		// For usage in tickets loop
+		$minutes_to_day_end = Carbon::now()->diffInMinutes(Carbon::now()->endOfDay());
+		$minutes_per_day = 60*24;
 
         for ($u = 1; $u <= $this->users_qty; $u++) {
             
@@ -100,8 +104,6 @@ class DemoDataSeeder extends Seeder
 			
 			// Create ticket
             for ($t = 1; $t <= $tickets_qty; $t++) {
-				
-				
                 $random_create = rand(1, $this->tickets_date_period);
 
                 $ticket = new Models\Ticket();
@@ -115,10 +117,42 @@ class DemoDataSeeder extends Seeder
                 $ticket->category_id = $category_id;
 				$ticket->agent_id = $a_cat_id_agents_id[$category_id][array_rand($a_cat_id_agents_id[$category_id])];
 				$ticket->created_at = Carbon::now()->subDays($random_create);
-                $ticket->updated_at = $ticket->created_at;
+                $ticket->start_date = $ticket->created_at;
 				
 				if (mt_rand(0,2)){
-					// 66% of complete tickets
+					// 2/3 of the tickets have limit date
+					$calendar = mt_rand(0,3);
+					$random_limit_seconds = rand (0, 86390);
+					
+					// Distribution of each calendar status
+					switch ($calendar){
+						case 0:
+							// Expired
+							$random_limit_days = rand(0, 8);
+							$ticket->limit_date = Carbon::now()->subDays($random_limit_days)->subSeconds($random_limit_seconds);
+							break;
+						case 1:
+							// Expires today or tomorrow
+							$random_limit_minutes = rand(0, $minutes_to_day_end+$minutes_per_day-5);
+							$ticket->limit_date = Carbon::now()->addMinutes($random_limit_minutes);
+							break;
+						case 2:
+							// Expires this week
+							$random_limit_days = rand(0, 6);
+							$ticket->limit_date = Carbon::now()->addDays($random_limit_days);
+							break;
+						case 3:
+							// Expires this month
+							$random_limit_days = rand(7, 28);
+							$ticket->limit_date = Carbon::now()->addDays($random_limit_days);
+							break;
+					}	
+				}else{
+					// One third of the tickets that doesn't have limit date
+				}
+				
+				if (mt_rand(0,1)){
+					// 50% of complete tickets
 					$ticket->intervention = $faker->paragraphs(2, true);
 					$ticket->intervention_html = nl2br($ticket->intervention);
 					
@@ -128,11 +162,13 @@ class DemoDataSeeder extends Seeder
 					$ticket->updated_at = $completed_at;
 					$ticket->status_id = $this->a_closed_status_ids[array_rand($this->a_closed_status_ids)];
 				}else{
-					// 33% of active tickets
+					// 50% of active tickets
 					if (rand(0,1)){
 						$ticket->intervention = $faker->paragraphs(1, true);
 						$ticket->intervention_html = nl2br($ticket->intervention);
 					}
+					
+					$ticket->updated_at = $ticket->created_at;
 					
 					$ticket->status_id = $this->a_active_status_ids[array_rand($this->a_active_status_ids)];
 				}
