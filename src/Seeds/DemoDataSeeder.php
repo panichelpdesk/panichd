@@ -16,6 +16,7 @@ class DemoDataSeeder extends Seeder
     public $users_qty = 30; // number of demo users accounts
     public $tickets_per_user_min = 1; // Minimum number of generated tickets per user
     public $tickets_per_user_max = 5; // Maximum number of generated tickets per user
+	public $tags_per_ticket = 1;
     public $comments_per_ticket_min = 0; // Minimum number of generated comments per ticket
     public $comments_per_ticket_max = 3; // Maximum number of generated comments per ticket
     public $default_agent_password = 'demo'; // default demo agents accounts paasword
@@ -24,11 +25,12 @@ class DemoDataSeeder extends Seeder
     public $a_active_status_ids = [1,2,3,4]; // default status ids array for closed tickets
     public $a_closed_status_ids = [5, 6]; // default status ids array for closed tickets
     public $a_demo_categories = [
-        '_Demo_Corporate_support',
-        '_Demo_Human_Resources',
-        '_Demo_Office_Supplies',
+        '_Demo_Corporate_support' => ['Hardware', 'Software', 'User training', 'e-mail', 'Internet'],
+        '_Demo_Human_Resources' => ['Timeoff', 'Certificate of discharge', 'Salary', 'Hiring', 'Dismissal'],
+        '_Demo_Office_Supplies' => ['New supply', 'Replacement', 'At technical service', 'Ready to deliver'],
     ];
-
+	public $a_bg_color = ['#e6b8af','#f4cccc','#fce5cd','#fff2cc','#d9ead3','#d0e0e3','#c9daf8','#cfe2f3','#d9d2e9','#ead1dc'];
+	
     /**
      * Run the database seeds.
      *
@@ -56,12 +58,13 @@ class DemoDataSeeder extends Seeder
 		
         // Create demo categories
 		$a_categories = $a_cat_id_agents_id = [];
-        foreach ($this->a_demo_categories as $name) {
+        foreach ($this->a_demo_categories as $name => $tags) {
             $category = Models\Category::firstOrNew(['name'  => $name]);
 			$category->color = $faker->hexcolor;
 			$category->save();
 			$a_categories[] = $category->id;
 			
+			// Category agents
 			$a_assigned_agents = [];
 			for ($i=1; $i<=$this->agents_per_category; $i++){
 				// Random assigned agents to the category
@@ -71,6 +74,17 @@ class DemoDataSeeder extends Seeder
             $category->agents()->attach($a_assigned_agents);
 			
 			$a_cat_id_agents_id[$category->id] = $a_assigned_agents;
+			
+			// Category tags
+			foreach ($tags as $tag){
+				$tag = $category->tags()->create([
+					'name' => $tag,
+					'bg_color' => $this->a_bg_color[array_rand($this->a_bg_color)],
+					'text_color' => '#0c343d',
+				]);
+				
+				$a_cat_id_tags_id[$category->id][] = $tag->id;
+			}
         }
 		
         // Create ticket priorities
@@ -88,7 +102,7 @@ class DemoDataSeeder extends Seeder
 		// For usage in tickets loop
 		$minutes_to_day_end = Carbon::now()->diffInMinutes(Carbon::now()->endOfDay());
 		$minutes_per_day = 60*24;
-
+		
         for ($u = 1; $u <= $this->users_qty; $u++) {
             
 			// Create users
@@ -174,6 +188,11 @@ class DemoDataSeeder extends Seeder
 				}
 				
                 $ticket->save();
+				
+				// Tags
+				for ($i=1; $i<=$this->tags_per_ticket; $i++){
+					$ticket->tags()->attach($a_cat_id_tags_id[$category_id][array_rand($a_cat_id_tags_id[$category_id])]);
+				}
 
                 $comments_qty = rand($this->comments_per_ticket_min,
                                     $this->comments_per_ticket_max);
@@ -207,4 +226,16 @@ class DemoDataSeeder extends Seeder
             }
         }
     }
+	
+	protected function color_inverse($color){
+		$color = str_replace('#', '', $color);
+		if (strlen($color) != 6){ return '000000'; }
+		$rgb = '';
+		for ($x=0;$x<3;$x++){
+			$c = 255 - hexdec(substr($color,(2*$x),2));
+			$c = ($c < 0) ? 0 : dechex($c);
+			$rgb .= (strlen($c) < 2) ? '0'.$c : $c;
+		}
+		return '#'.$rgb;
+	}
 }
