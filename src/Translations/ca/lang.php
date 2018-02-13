@@ -168,6 +168,7 @@ return [
   'day_5'                            => 'Divendres',
   'day_6'                            => 'Dissabte',
   'day_7'                            => 'Diumenge',
+  'day_0'                            => 'Diumenge',
   
   // Time units abbreviations
   'second-abbr'                      => 's.',

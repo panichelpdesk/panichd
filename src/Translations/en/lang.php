@@ -38,8 +38,8 @@ return [
   'no-tickets-yet'                   => 'No tickets yet', # Pending to move old admin.index-empty-records in other languages
   'list-no-tickets'                  => 'There are no tickets in this list',
   'table-info-attachments-total'     => ':num attached files',
-  'table-comments-total'             => ':num Total comments.',
-  'table-comments-recent'            => ':num recent ones.',
+  'table-info-comments-total'        => ':num Total comments.',
+  'table-info-comments-recent'       => ':num recent ones.',
 
   'calendar-active'            => 'Started :description',
   'calendar-active-today'      => 'Started :description',
@@ -168,6 +168,7 @@ return [
   'day_5'                            => 'Friday',
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
+  'day_0'                            => 'Sunday',
   
     // Time units abbreviations
   'second-abbr'                      => 's.',
