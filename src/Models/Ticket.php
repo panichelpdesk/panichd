@@ -32,8 +32,9 @@ class Ticket extends Model
 			if($error) $a_errors[] = $error;
 		}
 		
-		$error = $a_errors ? implode('. ', $a_errors) : null;
-		if ($error != "") return $error;
+		if($a_errors){
+			return implode('. ', $a_errors);
+		}
 		
 		$this->tags()->detach();
 		$this->comments()->delete();
@@ -536,7 +537,7 @@ class Ticket extends Model
      *
      * @return mixed
      */
-	public function scopeFiltered($query)
+	public function scopeFiltered($query, $ticketList)
 	{
 		$member = Member::find(auth()->user()->id);
 		
@@ -545,36 +546,38 @@ class Ticket extends Model
 			return $query->userTickets(auth()->user()->id);
 		}else{
 			if (session()->has('panichd_filters')){
-				// Calendar filter
-				if (session()->has('panichd_filter_calendar')){
-					$cld = session('panichd_filter_calendar');
+				
+				if ($ticketList != 'complete'){
+					// Calendar filter
+					if (session()->has('panichd_filter_calendar')){
+						$cld = session('panichd_filter_calendar');
 					
-					if ($cld == "expired"){
-						$query = $query->where('limit_date', '<', Carbon::now());
-					}else{										
-						$query = $query->where('limit_date', '>=', Carbon::now()->today());
-					}
-					
-					switch ($cld){
-						case 'today':
-							$query = $query->where('limit_date', '<', Carbon::now()->tomorrow());
-							break;
-							
-						case 'tomorrow':
-							$query = $query->where('limit_date', '>=', Carbon::now()->tomorrow());
-							$query = $query->where('limit_date', '<', Carbon::now()->addDays(2)->startOfDay());
-							break;
-							
-						case 'week':
-							$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
-							break;
+						if ($cld == "expired"){
+							$query = $query->where('limit_date', '<', Carbon::now());
+						}else{										
+							$query = $query->where('limit_date', '>=', Carbon::now()->today());
+						}
 						
-						case 'month':
-							$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
-							break;
+						switch ($cld){
+							case 'today':
+								$query = $query->where('limit_date', '<', Carbon::now()->tomorrow());
+								break;
+								
+							case 'tomorrow':
+								$query = $query->where('limit_date', '>=', Carbon::now()->tomorrow());
+								$query = $query->where('limit_date', '<', Carbon::now()->addDays(2)->startOfDay());
+								break;
+								
+							case 'week':
+								$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
+								break;
+							
+							case 'month':
+								$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
+								break;
+						}
 					}
 				}
-				
 				
 				// Category filter
 				if (session()->has('panichd_filter_category')){
@@ -591,6 +594,11 @@ class Ticket extends Model
 				if (session()->has('panichd_filter_owner') and session('panichd_filter_owner')=="me"){
 					$query = $query->userTickets(auth()->user()->id);
 				}			
+			}
+			
+			if ($ticketList == 'complete'){
+				// Year filter
+				$query = $query->completedOnYear();
 			}
 			
 			return $query;
@@ -625,6 +633,39 @@ class Ticket extends Model
 	{
 		return $query->where('hidden', '0');
 	}
+	
+	/**
+	 * Get tickets completed in selected year
+	 *
+	 * default is current year
+	 *
+	 * @param $query
+	 *
+     * @return mixed
+	*/
+	public function scopeCompletedOnYear($query, $year = false)
+	{
+		$query = $query->complete();
+		
+		if ($year){
+			// All years
+			if ($year == 'all') return $query;
+		}elseif(session()->has('panichd_filter_year')){
+			if (session('panichd_filter_year') == 'all'){
+				// All years
+				return $query;
+			}else{
+				// Filtered year
+				$year = session('panichd_filter_year');
+			}
+		}else{
+			// Current year
+			$year = date('Y');
+		}
+		
+		return $query->whereYear('completed_at', $year);
+	}
+	
 	
 	
     /**

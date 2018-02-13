@@ -1,56 +1,27 @@
-<div class="title calendar">{{ trans('panichd::lang.filter-calendar') }}</div>
-<?php $text_cld = "";
-$calendar_name = "All";
-$cld_class = "";
+@if($ticketList == 'complete')
+	<div class="title year">{{ trans('panichd::lang.year') }}</div>
+	<div class="select2_filter" style="width: 150px;">
+		<select id="select_year" style="width: 150px; display: none;">
+		@php
+			$current_year = date('Y');
+			
+			if (session()->has('panichd_filter_year')){
+				$selected_year = session('panichd_filter_year');
+			}else{
+				$selected_year = date('Y');
+			}
+		@endphp
+		<option value="/filter/year/all" {!! $selected_year == 'all' ? 'selected="selected"' : '' !!}>{{ trans('panichd::lang.filter-year-all') }}</option>
 
-$cld_options = [
-	'expired' => [
-		'class' => 'text-danger',
-		'icon' => 'glyphicon-exclamation-sign',
-	],
-	'today' => [
-		'class' => 'text-warning',
-		'icon' => 'glyphicon-warning-sign',
-	],
-	'tomorrow' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-time',
-	],
-	'week' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-	'month' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-
-];
-
-?>
-@foreach ($counts['calendar'] as $cld=>$count)			
-	<?php $text_cld.='<li><a href="'.url($setting->grab('main_route').'/filter/calendar/'.$cld).'">';
-	
-	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('panichd::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
-	?>
-	@if ($cld==session('panichd_filter_calendar'))
-		<?php $calendar_name = $this_cld;
-		$cld_class = isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "";?>
-	@endif
-	<?php $text_cld.= $this_cld . '</a></li>';?>		
-@endforeach
-<div class="dropdown" style="display: inline-block;">
-<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('panichd::lang.filter-calendar-all') : $calendar_name !!}
-<span class="caret {{ $cld_class }}"></span></button>
-<ul class="dropdown-menu">
-@if ($calendar_name!="All")
-<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/calendar/remove">{{ trans('panichd::lang.filter-calendar-all') }}</a></li>
+		@foreach ($counts['years'] as $year=>$count)
+			<option value="/filter/year/{{ $year == $current_year ? 'remove' : $year }}" {{ $year==$selected_year ? 'selected="selected"' : '' }}>{{ $year }} ({{ $count }})</option>
+		@endforeach
+		
+		</select>
+	</div>
+@else
+	@include('panichd::tickets.partials.filter_calendar')
 @endif
-{!! $text_cld !!}</ul>
-</div>
-
-
-
 
 <div class="title category">{{ trans('panichd::lang.filter-category') }}</div> 
 @if (count($filters['category'])==1)
@@ -63,10 +34,10 @@ $cld_options = [
 	@foreach ($filters['category'] as $cat)			
 		<?php $text_cat.='<li><a href="'.url($setting->grab('main_route').'/filter/category/'.$cat->id).'">';?>
 		@if ($cat->id==session('panichd_filter_category'))
-			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span>';
+			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span>';
 			$cat_color=$cat->color;?>
 		@endif
-		<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$cat->tickets_count.'</span></a></li>';?>		
+		<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span></a></li>';?>		
 	@endforeach
 	<div class="dropdown" style="display: inline-block;">
 	<button class="btn btn-default btn-category dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;">{!! $category_name=="All" ? trans('panichd::lang.filter-category-all') : $category_name !!}
@@ -82,15 +53,15 @@ $cld_options = [
 <div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
 @if (count($filters['agent'])>$setting->grab('max_agent_buttons'))
 	
-	<div id="select_agent_container" class="{{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
-		<select id="select_agent" style="width: 200px">
+	<div id="select_agent_container" class="select2_filter {{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
+		<select id="select_agent" style="width: 200px; display: none;">
 		<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
 		@foreach ($filters['agent'] as $ag)			
 			<option value="/filter/agent/{{$ag->id}}"
 			@if ($ag->id==session('panichd_filter_agent'))
 				selected="selected"
 			@endif
-			>{{$ag->name}} ({!!$ag->agent_total_tickets_count !!})</option>
+			>{{$ag->name}} ({!! $counts['agent'][$ag->id] !!})</option>
 		@endforeach
 		</select>
 	</div>
@@ -107,9 +78,9 @@ $cld_options = [
 	
 		@foreach ($filters['agent'] as $ag)
 			@if ($ag->id==session('panichd_filter_agent'))
-				<button class="btn btn-default {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></button>				
+				<button class="btn btn-default {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></button>				
 			@else
-				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!!$ag->agent_total_tickets_count !!}</span></a>
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-default agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></a>
 			@endif			
 		@endforeach	
 	@endif
@@ -118,7 +89,12 @@ $cld_options = [
 
 <script type="text/javascript">
 @section('footer_jquery')
-	// Filter menu agent change
+	// Filter menu year change
+	$('#select_year').select2({"id": "prova_sel2"}).on("change", function (e) {				
+		window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
+	});
+	
+	// Filter menu Agent change
 	$('#select_agent').select2({"id": "prova_sel2"}).on("change", function (e) {				
 		window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
 	});

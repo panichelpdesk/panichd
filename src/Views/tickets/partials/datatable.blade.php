@@ -20,7 +20,11 @@
 						<td>{{ trans('panichd::lang.table-department') }}</td>
 					@endif					
 				@endif
-				<td>{{ trans('panichd::lang.table-calendar') }}</td>
+				@if ($ticketList == 'complete')
+					<td>{{ trans('panichd::lang.table-completed_at') }}</td>
+				@else
+					<td>{{ trans('panichd::lang.table-calendar') }}</td>
+				@endif
 			@endif
 			<td>{{ trans('panichd::lang.table-last-updated') }}</td>
 			@if( $u->currentLevel() > 1 )

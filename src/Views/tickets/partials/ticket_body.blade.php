@@ -92,7 +92,20 @@
 					@php
 						\Carbon\Carbon::setLocale(config('app.locale'));
 					@endphp
-					<br /><strong>{{ trans('panichd::lang.table-calendar') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getCalendarInfo(true) !!}
+					<br />
+					@if ($ticket->isComplete())
+						<strong>{{ trans('panichd::lang.start-date') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getDateForHumans($ticket->start_date) !!}
+						<br /><strong>{{ trans('panichd::lang.limit-date') }}</strong>{{ trans('panichd::lang.colon') }}
+						@if ($ticket->limit_date == "")
+							{{ trans('panichd::lang.no') }}
+						@else
+							{!! $ticket->getDateForHumans($ticket->limit_date) !!}
+						@endif
+						<br /><strong>{{ trans('panichd::lang.table-completed_at') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getDateForHumans($ticket->completed_at) !!}
+					@else
+						<strong>{{ trans('panichd::lang.table-calendar') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getCalendarInfo(true) !!}
+					@endif
+					
 					</p><p>					
 				@else
 					<br />

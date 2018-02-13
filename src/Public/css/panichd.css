@@ -107,32 +107,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*
- * Agent filter menu with select2 script
-*/
-#select_agent_container {
-	display: inline-block;
-	font-size: 0.8em;
-}
-#select_agent {
-	display: none; /* don't show select until it is rendered */
-}
-#select_agent_container #select2-select_agent-container {
-	border-radius: 4px;
-}
-#select_agent_container * {
-	outline: none;
-}
-#select_agent_container .select2-selection--single {
-	color: #666;
-	font-weight: bold;
-	border-color: transparent;
-}
-
-#select2-select_agent-results {
-	font-size: 0.9em;
-}
-
-/*
  * General Select2 styles
 */
 .select2-selection--single {
@@ -160,6 +134,37 @@ h1, h2, h3, h4, h5, h6 {
 .select2-results__option--highlighted {
     color: black !important;
 	background: #eee !important;
+}
+
+
+/*
+ * Agent filter menu with select2 script
+*/
+.select2_filter {
+	display: inline-block;
+	font-size: 0.8em;
+}
+#select_agent {
+	display: none; /* don't show select until it is rendered */
+}
+.select2_filter #select2-select_agent-container {
+	border-radius: 4px;
+}
+.select2_filter * {
+	outline: none;
+}
+.select2_filter .select2-selection--single {
+	color: #666;
+	font-weight: bold;
+	border-color: transparent !important;
+}
+
+.select2_filter .select2-selection--single:hover {
+	background-color: #e6e6e6;
+}
+
+#select2-select_agent-results {
+	font-size: 0.9em;
 }
 
 /*

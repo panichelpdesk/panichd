@@ -20,11 +20,12 @@ use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
 use PanicHD\PanicHD\Traits\Attachments;
+use PanicHD\PanicHD\Traits\CacheVars;
 use PanicHD\PanicHD\Traits\Purifiable;
 
 class TicketsController extends Controller
 {
-    use Attachments, Purifiable;
+    use Attachments, CacheVars, Purifiable;
 
     protected $tickets;
     protected $member;
@@ -51,7 +52,7 @@ class TicketsController extends Controller
 
         $agent = $this->member->find(auth()->user()->id);
 
-        $collection = Ticket::inList($ticketList)->visible()->filtered();
+        $collection = Ticket::inList($ticketList)->visible()->filtered($ticketList);
 
         $collection
             ->join('users', 'users.id', '=', 'panichd_tickets.user_id')
@@ -88,6 +89,7 @@ class TicketsController extends Controller
 			'panichd_tickets.limit_date',
 			$select_dates,
 			'panichd_tickets.updated_at AS updated_at',
+			'panichd_tickets.completed_at AS completed_at',
 			'panichd_tickets.agent_id',
 			\DB::raw('group_concat(agent.name) AS agent_name'),
 			'panichd_priorities.name AS priority',
@@ -274,7 +276,7 @@ class TicketsController extends Controller
 			$collection->editColumn('dept_info', function ($ticket) {
 				$dept_info = $title = "";
 				
-				if ($ticket->owner->person_id and $ticket->owner->personDepts[0]){
+				if ($ticket->owner and count($ticket->owner->personDepts) != 0 and $ticket->owner->personDepts[0]){
 					$dept_info = $ticket->owner->personDepts[0]->department->resume();
 					$title = $ticket->owner->personDepts[0]->department->title();
 				}
@@ -287,6 +289,10 @@ class TicketsController extends Controller
 			return '<div style="width: 8em;">'.$ticket->getCalendarInfo().'</div>';
         });
 
+		$collection->editColumn('complete_date', function ($ticket) {
+			return '<div style="width: 8em;">'.$ticket->getDateForHumans($ticket->completed_at).'</div>';
+        });
+		
         $collection->editColumn('category', function ($ticket) {
             $color = $ticket->color_category;
             $category = e($ticket->category);
@@ -365,90 +371,125 @@ class TicketsController extends Controller
      */
     public function ticketCounts($request, $ticketList)
     {
-        $counts = $filters = [];
-		$tickets;
+		$counts = $filters = [];
+		$tickets = Ticket::inList($ticketList)->visible();
         $category = session('panichd_filter_category') == '' ? null : session('panichd_filter_category');
 		
 		if ($this->member->isAdmin() or $this->member->isAgent()){
-			// Get all forth tickets
-			$forth_tickets = Ticket::whereBetween('limit_date', [
-				Carbon::now()->today(),
-				Carbon::now()->endOfWeek()
-			])
-			->orWhereBetween('limit_date', [
-				Carbon::now()->today(),
-				Carbon::now()->endOfMonth()
-			]);			
-			$forth_tickets = $forth_tickets->inList($ticketList)->visible()->get();			
-			
-			// Calendar expired filter
-			$a_cal['expired'] = Ticket::inList($ticketList)->visible()->where('limit_date','<', Carbon::now());
-			
-			// Calendar forth filters
-			$a_cal['today'] = $forth_tickets->filter(function($q){
-				return $q->limit_date < Carbon::now()->tomorrow(); 
-			});
-			
-			$a_cal['tomorrow'] = $forth_tickets->filter(function($q){
-				return $q->limit_date >= Carbon::now()->tomorrow(); 
-			})
-			->filter(function($q2){
-				return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
-			});
-			
-			$a_cal['week'] = $forth_tickets->filter(function($q){
-				return $q->limit_date < Carbon::now()->endOfWeek();
-			});
-			
-			$a_cal['month'] = $forth_tickets->filter(function($q){
-				return $q->limit_date < Carbon::now()->endOfMonth();
-			});
-			
-			// Calendar counts
-			foreach ($a_cal as $cal=>$cal_tickets){
-				$counts['calendar'][$cal] = $cal_tickets->count();
-			}
-			
-			// Calendar filter to tickets collection
-			if (session('panichd_filter_calendar') != '') {
-				$tickets = $a_cal[session('panichd_filter_calendar')];
+			if ($ticketList != 'complete'){
+				// Calendar expired filter
+				$expired = clone $tickets;
+				$a_cal['expired'] = $expired->where('limit_date','<', Carbon::now());
+				if (session('panichd_filter_calendar') == 'expired') {
+					$tickets = $a_cal['expired'];
+				}
+				
+				// Calendar all forth filters
+				$month_builder = clone $tickets;
+				$month_builder->whereBetween('limit_date', [
+					Carbon::now()->today(),
+					Carbon::now()->endOfWeek()
+				])
+				->orWhereBetween('limit_date', [
+					Carbon::now()->today(),
+					Carbon::now()->endOfMonth()
+				]);
+				$month_collection = $month_builder->get();
+
+				$a_cal['today'] = $month_collection->filter(function($q){
+					return $q->limit_date < Carbon::now()->tomorrow(); 
+				});
+				if (session('panichd_filter_calendar') == 'today') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->tomorrow());
+				}
+				
+				$a_cal['tomorrow'] = $month_collection->filter(function($q){
+					return $q->limit_date >= Carbon::now()->tomorrow(); 
+				})
+				->filter(function($q2){
+					return $q2->limit_date < Carbon::now()->addDays(2)->startOfDay(); 
+				});
+				if (session('panichd_filter_calendar') == 'tomorrow') {
+					$tickets = $month_builder->where([
+						['limit_date', '>=', Carbon::now()->tomorrow()],
+						['limit_date', '<', Carbon::now()->addDays(2)->startOfDay()],
+					]);
+				}
+				
+				$a_cal['week'] = $month_collection->filter(function($q){
+					return $q->limit_date < Carbon::now()->endOfWeek();
+				});
+				if (session('panichd_filter_calendar') == 'week') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfWeek());
+				}
+				
+				$a_cal['month'] = $month_collection->filter(function($q){
+					return $q->limit_date < Carbon::now()->endOfMonth();
+				});
+				if (session('panichd_filter_calendar') == 'month') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfMonth());
+				}
+				
+				// Calendar counts
+				foreach ($a_cal as $cal=>$cal_tickets){
+					$counts['calendar'][$cal] = $cal_tickets->count();
+				}
 			}else{
-				// Tickets collection
-				$tickets = Ticket::inList($ticketList)->visible();
-			}
-			
-			// Get ticket ids array
-			if (version_compare(app()->version(), '5.3.0', '>=')) {				
-				$a_tickets_id = $tickets->pluck('id')->toArray();
-			} else { // if Laravel 5.1				
-				$a_tickets_id = $tickets->lists('id')->toArray();
+				$counts['years'] = $this->getCompleteTicketYearCounts();
+				
+				// Year filter to tickets collection
+				if ($ticketList == 'complete'){
+					$year = session('panichd_filter_year') != '' ? session('panichd_filter_year') : '';
+					$tickets = $tickets->completedOnYear($year);
+				}
 			}
 		}		
 		
         if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
-            // Ticket filter for each Category
-            if ($this->member->isAdmin()) {
-                $filters['category'] = Category::orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
-					$q->whereIn('id',$a_tickets_id);
-                }])->get();
-            } else {
-                $filters['category'] = Member::where('id', auth()->user()->id)->firstOrFail()->categories()->orderBy('name')->withCount(['tickets'=> function ($q) use ($a_tickets_id) {
-					$q->whereIn('id',$a_tickets_id);					
-                }])->get();
-            }
+			
+			// Visible categories
+            $filters['category'] = Category::visible()->orderBy('name')->get();
+			
+			// Ticket counts for each Category
+			$cat_tickets = clone $tickets;
+			$category_counts = $cat_tickets->groupBy('category_id')->select('category_id', DB::raw('count(*) as num'))->get();
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$a_category_counts = $category_counts->pluck('num','category_id')->toArray();
+			} else { // if Laravel 5.1				
+				$a_category_counts = $category_counts->lists('num','category_id')->toArray();
+			}
+			
+			foreach ($filters['category'] as $cat){
+				$counts['category'][$cat->id] = isset($a_category_counts[$cat->id]) ? $a_category_counts[$cat->id] : 0;
+			}
+			
+			// Add Category filter to ticket builder
+			if (session('panichd_filter_category') != '') {
+				$tickets->where('category_id', session('panichd_filter_category'));
+			}
 
-            // Ticket filter for each visible Agent
-            if (session('panichd_filter_category') != '') {
-                $filters['agent'] = Member::visible()->whereHas('categories', function ($q1) use ($category) {
+            // Visible Agents
+            if (session('panichd_filter_category') == '') {
+				$filters['agent'] = Member::visible()->get();
+			}else{
+                $filters['agent']= Member::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
-                });
-            } else {
-                $filters['agent'] = Member::visible();
+                })
+				->get();
             }
-
-            $filters['agent'] = $filters['agent']->withCount(['agentTotalTickets'=> function ($q2) use ($a_tickets_id, $category) {
-                $q2->whereIn('id',$a_tickets_id)->inCategory($category);
-            }])->get();
+			
+			// Ticket counts for each Agent
+			$ag_tickets = clone $tickets;
+			$ag_counts = $ag_tickets->groupBy('agent_id')->select('agent_id', DB::raw('count(*) as num'))->get();
+			if (version_compare(app()->version(), '5.3.0', '>=')) {				
+				$ag_counts = $ag_counts->pluck('num','agent_id')->toArray();
+			} else { // if Laravel 5.1				
+				$ag_counts = $ag_counts->lists('num','agent_id')->toArray();
+			}
+			
+			foreach ($filters['agent'] as $ag){
+				$counts['agent'][$ag->id] = isset($ag_counts[$ag->id]) ? $ag_counts[$ag->id] : 0;
+			}
         }
 
         // Forget agent if it doesn't exist in current category
@@ -458,7 +499,7 @@ class TicketsController extends Controller
         })->count() == 0) {
             $request->session()->forget('panichd_filter_agent');
         }
-
+		
         return ['counts' => $counts, 'filters' => $filters];
     }
 
@@ -1003,8 +1044,8 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-		$user = $this->member->find(auth()->user()->id);
-        if ($user->isAgent() or $user->isAdmin()) {
+		$member = $this->member->find(auth()->user()->id);
+        if ($member->isAgent() or $member->isAdmin()) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
@@ -1072,6 +1113,11 @@ class TicketsController extends Controller
 		// End transaction
 		DB::commit();
 		event(new TicketUpdated($original_ticket, $ticket));
+		
+		// Add complete/reopen comment
+		if ($original_ticket->completed_at != $ticket->completed_at and ($original_ticket->completed_at == '' or $ticket->completed_at == '') ){
+			$this->complete_change_actions($ticket, $member);
+		}
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -1154,15 +1200,15 @@ class TicketsController extends Controller
         if ($this->permToClose($id) == 'yes') {
             $original_ticket = $this->tickets->findOrFail($id);
 			$ticket = clone $original_ticket;
-			$user = $this->member->find(auth()->user()->id);
+			$member = $this->member->find(auth()->user()->id);
 			
-			if ($ticket->hidden and $user->currentLevel() == 1){
+			if ($ticket->hidden and $member->currentLevel() == 1){
 				return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 			}
 			
-			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $user->name]);
+			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $member->name]);
 			
-			if ($user->currentLevel()>1){
+			if ($member->currentLevel()>1){
 				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
 					return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-blank-intervention-alert'));
 				}else{
@@ -1200,7 +1246,7 @@ class TicketsController extends Controller
 			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . $reason_text;
 			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . $reason_text;
 			
-			if ($user->currentLevel()<2){
+			if ($member->currentLevel()<2){
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
 				if ($a_clarification['content'] != ""){
@@ -1210,29 +1256,12 @@ class TicketsController extends Controller
 			}
 			
 			$ticket->completed_at = Carbon::now();
-
             $ticket->save();
 			
-			// Add closing comment			
-			$comment = new Models\Comment;
-			$comment->type = "complete";
-			
-			if ($user->currentLevel()>1){ 
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
-			}else{
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($reason ? trans('panichd::lang.colon').$reason->text : '');
-							
-				if ($a_clarification['content'] != ""){
-					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
-					$comment->html = $comment->html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
-				}
-			}
-
-			$comment->ticket_id = $id;
-			$comment->user_id = $user->id;
-			$comment->save();
-			
 			event(new TicketUpdated($original_ticket, $ticket));
+			
+			// Add complete comment
+			$this->complete_change_actions($ticket, $member);
 			
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -1246,6 +1275,38 @@ class TicketsController extends Controller
         return redirect()->route(Setting::grab('main_route').'.index')
             ->with('warning', trans('panichd::lang.you-are-not-permitted-to-do-this'));
     }
+	
+	/**
+	 * Actions to take when a ticket completion status changes
+	*/
+	public function complete_change_actions($ticket, $member)
+	{
+		$comment = new Models\Comment;
+		
+		if ($ticket->completed_at != ''){
+			// Complete comment
+			$comment->type = "complete";
+		
+			if ($member->currentLevel()>1){ 
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
+			}else{
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($reason ? trans('panichd::lang.colon').$reason->text : '');
+							
+				if ($a_clarification['content'] != ""){
+					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
+					$comment->html = $comment->html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
+				}
+			}
+		}else{
+			// Reopen comment
+			$comment->type = "reopen";
+			$comment->content = $comment->html = trans('panichd::lang.comment-reopen-title');
+		}
+
+		$comment->ticket_id = $ticket->id;
+		$comment->user_id = $member->id;
+		$comment->save();
+	}
 
     /**
      * Reopen ticket from complete status.
@@ -1258,7 +1319,7 @@ class TicketsController extends Controller
     {
         if ($this->permToReopen($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
-			$user = $this->member->find(auth()->user()->id);
+			$member = $this->member->find(auth()->user()->id);
 			
             $ticket->completed_at = null;
 
@@ -1267,19 +1328,13 @@ class TicketsController extends Controller
             }			
 			
 			$date = date(trans('panichd::lang.date-format'), time());
-			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $user->name]);
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $user->name]);					
-			
+			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $member->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $member->name]);
 
             $ticket->save();
 			
 			// Add reopen comment
-			$comment = new Models\Comment;
-			$comment->type = "reopen";
-			$comment->content = $comment->html = trans('panichd::lang.comment-reopen-title');
-			$comment->ticket_id = $id;
-			$comment->user_id = $user->id;
-			$comment->save();
+			$this->complete_change_actions($ticket, $member);
 			
 
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-reopened', [

@@ -32,6 +32,7 @@ return [
   'table-priority'                   => 'Prioritat',
   'table-agent'                      => 'Tècnic',
   'table-calendar'                   => 'Agenda',
+  'table-completed_at'               => 'Tancament',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
   
@@ -80,6 +81,7 @@ return [
   'table-aria-sort-desc'             => ': activar per ordenar ordre descendent',
   
   'filter-pov'                       => 'Vista',
+  'filter-year-all'                  => 'Tots',
   'filter-calendar'                  => 'Agenda',
   'filter-calendar-all'              => 'Tot',
   'filter-calendar-expired'          => 'Caducats',
@@ -154,6 +156,7 @@ return [
   'tomorrow'                         => 'Demà',
   'update'                           => 'Actualitzar',
   'user'                             => 'Usuari',
+  'year'                             => 'Any',
   'yes'                              => 'Sí',
   'yesterday'                        => 'Ahir',
   

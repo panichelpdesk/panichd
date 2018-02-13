@@ -2,6 +2,7 @@
 
 namespace PanicHD\PanicHD;
 
+use Cache;
 use Collective\Html\FormFacade as CollectiveForm;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -214,7 +215,6 @@ class PanicHDServiceProvider extends ServiceProvider
 				
                 $view->with(compact('a_notices', 'n_notices'));
             });
-
 			
 			// Send notification when comment is modified
 			Event::listen('PanicHD\PanicHD\Events\CommentUpdated', function ($event) {
@@ -233,7 +233,14 @@ class PanicHDServiceProvider extends ServiceProvider
                     $notification->newComment($comment);
                 }
             });
-
+			
+			Ticket::saved(function($ticket){
+				Cache::forget('panichd::a_complete_ticket_year_counts');
+			});
+			Ticket::deleted(function($ticket){
+				Cache::forget('panichd::a_complete_ticket_year_counts');
+			});
+			
             Event::listen('PanicHD\PanicHD\Events\TicketUpdated', function ($event) {
                 $original = $event->original;
 				$modified = $event->modified;

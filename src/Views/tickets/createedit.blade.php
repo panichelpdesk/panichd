@@ -90,7 +90,7 @@
 						<button type="button" id="complete_no" class="btn btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="glyphicon glyphicon-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
 						<button type="button" id="complete_yes" class="btn btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="glyphicon glyphicon-ok-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>					
 					</div>
-					{!! CollectiveForm::hidden('complete', 'no',['id' => 'value_complete']) !!}
+					{!! CollectiveForm::hidden('complete', isset($ticket) ? ($ticket->completed_at == '' ? 'no' : 'yes') : 'no',['id' => 'value_complete']) !!}
 				</div>			
 			
 				<div class="form-group"><!-- STATUS -->
