@@ -276,7 +276,7 @@ class TicketsController extends Controller
 			$collection->editColumn('dept_info', function ($ticket) {
 				$dept_info = $title = "";
 				
-				if ($ticket->owner->person_id and $ticket->owner->personDepts[0]){
+				if ($ticket->owner and count($ticket->owner->personDepts) != 0 and $ticket->owner->personDepts[0]){
 					$dept_info = $ticket->owner->personDepts[0]->department->resume();
 					$title = $ticket->owner->personDepts[0]->department->title();
 				}
