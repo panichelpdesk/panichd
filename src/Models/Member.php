@@ -9,9 +9,9 @@ use PanicHD\PanicHD\Models\Category;
 
 class Member extends User
 {
-    protected $table = 'users';
-
-    /**
+    protected $table = 'panichd_members';
+	
+	/**
      * list of all agents and returning collection.
      *
      * @param $query
