@@ -550,15 +550,15 @@ class Ticket extends Model
 				if ($ticketList != 'complete'){
 					// Calendar filter
 					if (session()->has('panichd_filter_calendar')){
-						$cld = session('panichd_filter_calendar');
+						$calendar_filter = session('panichd_filter_calendar');
 					
-						if ($cld == "expired"){
+						if ($calendar_filter == "expired"){
 							$query = $query->where('limit_date', '<', Carbon::now());
 						}else{										
 							$query = $query->where('limit_date', '>=', Carbon::now()->today());
 						}
 						
-						switch ($cld){
+						switch ($calendar_filter){
 							case 'today':
 								$query = $query->where('limit_date', '<', Carbon::now()->tomorrow());
 								break;
@@ -574,6 +574,14 @@ class Ticket extends Model
 							
 							case 'month':
 								$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
+								break;
+								
+							case 'within-7-days':
+								$query = $query->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
+								break;
+							
+							case 'within-14-days':
+								$query = $query->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
 								break;
 						}
 					}

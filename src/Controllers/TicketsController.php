@@ -377,6 +377,10 @@ class TicketsController extends Controller
 		
 		if ($this->member->isAdmin() or $this->member->isAgent()){
 			if ($ticketList != 'complete'){
+				/*
+				 * These filters must be set also in Ticket model scopeFiltered() method
+				*/
+				
 				// Calendar expired filter
 				$expired = clone $tickets;
 				$a_cal['expired'] = $expired->where('limit_date','<', Carbon::now());
@@ -388,11 +392,7 @@ class TicketsController extends Controller
 				$month_builder = clone $tickets;
 				$month_builder->whereBetween('limit_date', [
 					Carbon::now()->today(),
-					Carbon::now()->endOfWeek()
-				])
-				->orWhereBetween('limit_date', [
-					Carbon::now()->today(),
-					Carbon::now()->endOfMonth()
+					Carbon::now()->addDays(32)
 				]);
 				$month_collection = $month_builder->get();
 
@@ -428,6 +428,20 @@ class TicketsController extends Controller
 				});
 				if (session('panichd_filter_calendar') == 'month') {
 					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfMonth());
+				}
+				
+				$a_cal['within-7-days'] = $month_collection->filter(function($q){
+					return $q->limit_date < Carbon::now()->addDays(7)->endOfDay();
+				});
+				if (session('panichd_filter_calendar') == 'within-7-days') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
+				}
+				
+				$a_cal['within-14-days'] = $month_collection->filter(function($q){
+					return $q->limit_date < Carbon::now()->addDays(14)->endOfDay();
+				});
+				if (session('panichd_filter_calendar') == 'within-14-days') {
+					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
 				}
 				
 				// Calendar counts

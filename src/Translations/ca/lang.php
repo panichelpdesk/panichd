@@ -89,6 +89,8 @@ return [
   'filter-calendar-tomorrow'         => 'Per demà',
   'filter-calendar-week'             => 'Aquesta setmana',
   'filter-calendar-month'            => 'Aquest mes',
+  'filter-calendar-within-7-days'    => 'Fins 7 dies',
+  'filter-calendar-within-14-days'   => 'Fins 14 dies',
   'filter-category'                  => 'Categoria',
   'filter-category-all'              => 'Totes',
   'filter-agent'                     => 'Agent',

@@ -24,6 +24,14 @@ $cld_options = [
 		'class' => 'text-info',
 		'icon' => 'glyphicon-calendar',
 	],
+	'within-7-days' => [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	],
+	'within-14-days' => [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	],
 
 ];
 

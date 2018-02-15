@@ -58,7 +58,7 @@ class FiltersController extends Controller
 					$add = true;
                 }
 				
-				if ($filter == 'calendar' and in_array($value, ['expired', 'today', 'tomorrow', 'week', 'month'])){
+				if ($filter == 'calendar' and in_array($value, ['expired', 'today', 'tomorrow', 'week', 'month', 'within-7-days', 'within-14-days'])){
 					$add = true;
 				}
 				
