@@ -416,32 +416,38 @@ class TicketsController extends Controller
 					]);
 				}
 				
-				$a_cal['week'] = $month_collection->filter(function($q){
-					return $q->limit_date < Carbon::now()->endOfWeek();
-				});
-				if (session('panichd_filter_calendar') == 'week') {
-					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfWeek());
-				}
-				
-				$a_cal['month'] = $month_collection->filter(function($q){
-					return $q->limit_date < Carbon::now()->endOfMonth();
-				});
-				if (session('panichd_filter_calendar') == 'month') {
-					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfMonth());
-				}
-				
-				$a_cal['within-7-days'] = $month_collection->filter(function($q){
-					return $q->limit_date < Carbon::now()->addDays(7)->endOfDay();
-				});
-				if (session('panichd_filter_calendar') == 'within-7-days') {
-					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
-				}
-				
-				$a_cal['within-14-days'] = $month_collection->filter(function($q){
-					return $q->limit_date < Carbon::now()->addDays(14)->endOfDay();
-				});
-				if (session('panichd_filter_calendar') == 'within-14-days') {
-					$tickets = $month_builder->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
+				if (Setting::grab('calendar_month_filter')){
+					// Calendar week
+					$a_cal['week'] = $month_collection->filter(function($q){
+						return $q->limit_date < Carbon::now()->endOfWeek();
+					});
+					if (session('panichd_filter_calendar') == 'week') {
+						$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfWeek());
+					}
+					
+					// Calendar month
+					$a_cal['month'] = $month_collection->filter(function($q){
+						return $q->limit_date < Carbon::now()->endOfMonth();
+					});
+					if (session('panichd_filter_calendar') == 'month') {
+						$tickets = $month_builder->where('limit_date', '<', Carbon::now()->endOfMonth());
+					}
+				}else{
+					// From today to forth 7 days
+					$a_cal['within-7-days'] = $month_collection->filter(function($q){
+						return $q->limit_date < Carbon::now()->addDays(7)->endOfDay();
+					});
+					if (session('panichd_filter_calendar') == 'within-7-days') {
+						$tickets = $month_builder->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
+					}
+					
+					// From today to forth 14 days
+					$a_cal['within-14-days'] = $month_collection->filter(function($q){
+						return $q->limit_date < Carbon::now()->addDays(14)->endOfDay();
+					});
+					if (session('panichd_filter_calendar') == 'within-14-days') {
+						$tickets = $month_builder->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
+					}
 				}
 				
 				// Calendar counts

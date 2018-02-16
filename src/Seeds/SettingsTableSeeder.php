@@ -337,6 +337,11 @@ class SettingsTableSeeder extends Seeder
 			'nav_icons_admin_sizes' => 'sm,md',
 			
 			/*
+			 * Calendar filter options switch between week and month or 7 and 14 days
+			*/
+			'calendar_month_filter' => 'no',
+			
+			/*
 			 * Max number of agent specific buttons in filter panel. If agent count is bigger, select2 will be shown
 			*/
 			'max_agent_buttons' => '4',

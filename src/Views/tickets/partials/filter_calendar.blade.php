@@ -15,25 +15,28 @@ $cld_options = [
 	'tomorrow' => [
 		'class' => 'text-info',
 		'icon' => 'glyphicon-time',
-	],
-	'week' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-	'month' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-	'within-7-days' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-	'within-14-days' => [
-		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
-	],
-
+	]
 ];
+
+if ($setting->grab('calendar_month_filter')){
+	$cld_options['week'] = [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	];
+	$cld_options['month'] = [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	];
+}else{
+	$cld_options['within-7-days'] = [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	];
+	$cld_options['within-14-days'] = [
+		'class' => 'text-info',
+		'icon' => 'glyphicon-calendar',
+	];
+}
 
 ?>
 @foreach ($counts['calendar'] as $cld=>$count)			
