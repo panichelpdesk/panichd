@@ -1,6 +1,5 @@
 # Thank you for coming here! Any help will be much appreciated!
 
-## Contributions needed
 We will be very grateful to get help in the form of new issues or Pull Requests at the following topics:
 * Bug fixes
 * Translations completion
