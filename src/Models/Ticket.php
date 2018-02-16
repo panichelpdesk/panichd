@@ -537,7 +537,7 @@ class Ticket extends Model
      *
      * @return mixed
      */
-	public function scopeFiltered($query, $ticketList)
+	public function scopeFiltered($query, $ticketList, $filter = false)
 	{
 		$member = Member::find(auth()->user()->id);
 		
@@ -549,12 +549,14 @@ class Ticket extends Model
 				
 				if ($ticketList != 'complete'){
 					// Calendar filter
-					if (session()->has('panichd_filter_calendar')){
+					if ((!$filter or $filter == 'calendar') and session()->has('panichd_filter_calendar')){
 						$calendar_filter = session('panichd_filter_calendar');
 					
 						if ($calendar_filter == "expired"){
+							// Expired tickets
 							$query = $query->where('limit_date', '<', Carbon::now());
 						}else{										
+							// All non expired tickets
 							$query = $query->where('limit_date', '>=', Carbon::now()->today());
 						}
 						
@@ -569,42 +571,50 @@ class Ticket extends Model
 								break;
 								
 							case 'week':
-								$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
+								if (Setting::grab('calendar_month_filter')){
+									$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
+								}
 								break;
 							
 							case 'month':
-								$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
+								if (Setting::grab('calendar_month_filter')){
+									$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
+								}
 								break;
 								
 							case 'within-7-days':
-								$query = $query->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
+								if (!Setting::grab('calendar_month_filter')){
+									$query = $query->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
+								}
 								break;
 							
 							case 'within-14-days':
-								$query = $query->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
+								if (Setting::grab('calendar_month_filter')){
+									$query = $query->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
+								}
 								break;
 						}
 					}
 				}
 				
 				// Category filter
-				if (session()->has('panichd_filter_category')){
+				if ((!$filter or $filter == 'category') and session()->has('panichd_filter_category')){
 					$category = session('panichd_filter_category');
 					$query = $query->where('category_id', session('panichd_filter_category'));
 				}
 				
 				// Agent filter
-				if (session()->has('panichd_filter_agent')){
+				if ((!$filter or $filter == 'agent') and session()->has('panichd_filter_agent')){
 					$query = $query->agentTickets(session('panichd_filter_agent'));
 				}
 
 				// Owner filter
-				if (session()->has('panichd_filter_owner') and session('panichd_filter_owner')=="me"){
+				if ((!$filter or $filter == 'owner') and session()->has('panichd_filter_owner') and session('panichd_filter_owner')=="me"){
 					$query = $query->userTickets(auth()->user()->id);
 				}			
 			}
 			
-			if ($ticketList == 'complete'){
+			if ($ticketList == 'complete' and (!$filter or $filter == 'year')){
 				// Year filter
 				$query = $query->completedOnYear();
 			}
