@@ -209,6 +209,8 @@ return [
   'create-new-ticket'                => 'Crear Nou Tiquet',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
   'create-ticket-notices'            => 'Avís per',
+  'ticket-owner-no-email'            => '(No té e-mail)',
+  'ticket-owner-no-email-warning'    => 'L\'usuari no rebrà cap notificació per correu electrònic',
   'create-ticket-owner-help'         => 'Aquí cal indicar de qui és el tiquet o a qui afecta',
   'create-ticket-visible'            => 'Visible',
   'create-ticket-visible-help'       => 'Escull la visibilitat del tiquet per al propietari',

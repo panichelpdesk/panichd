@@ -304,40 +304,42 @@ class NotificationsController extends Controller
 		// Send emails
 		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
-				// Pass recipient user object to every generated notification email
-				$data = array_merge ($data, ['recipient' => $to['recipient']]);
-				
-				$mail_callback = function ($m) use ($to, $email_from, $email_replyto) {
-					$m->to($to['recipient']->email, $to['recipient']->name);
+				if ($to['recipient']->email != ""){
+					// Pass recipient user object to every generated notification email
+					$data = array_merge ($data, ['recipient' => $to['recipient']]);
 					
-					$m->from($email_from->email, $email_from->email_name);
-					$m->replyTo($email_replyto->email, $email_replyto->email_name);
+					$mail_callback = function ($m) use ($to, $email_from, $email_replyto) {
+						$m->to($to['recipient']->email, $to['recipient']->name);
+						
+						$m->from($email_from->email, $email_from->email_name);
+						$m->replyTo($email_replyto->email, $email_replyto->email_name);
 
-					$m->subject($to['subject']);
-				};
+						$m->subject($to['subject']);
+					};
 
-				if (Setting::grab('queue_emails') == 'yes') {
-					Mail::queue($to['template'], $data, $mail_callback);
-				} else {
-					Mail::send($to['template'], $data, $mail_callback);
+					if (Setting::grab('queue_emails') == 'yes') {
+						Mail::queue($to['template'], $data, $mail_callback);
+					} else {
+						Mail::send($to['template'], $data, $mail_callback);
+					}
 				}
 			}
 			
         } elseif (LaravelVersion::min('5.4')) {
             foreach ($a_to as $to){
-				// Pass recipient user object to every generated notification email
-				$data = array_merge ($data, ['recipient' => $to['recipient']]);
-				
-				$mail = new \PanicHD\PanicHD\Mail\PanicHDNotification($to['template'], $data, $email_from, $email_replyto, $to['subject']);
+				if ($to['recipient']->email != ""){
+					// Pass recipient user object to every generated notification email
+					$data = array_merge ($data, ['recipient' => $to['recipient']]);
+					
+					$mail = new \PanicHD\PanicHD\Mail\PanicHDNotification($to['template'], $data, $email_from, $email_replyto, $to['subject']);
 
-				if (Setting::grab('queue_emails') == 'yes') {
-					Mail::to($to['recipient'])->queue($mail);
-				} else {
-					Mail::to($to['recipient'])->send($mail);
+					if (Setting::grab('queue_emails') == 'yes') {
+						Mail::to($to['recipient'])->queue($mail);
+					} else {
+						Mail::to($to['recipient'])->send($mail);
+					}
 				}
 			}
-			
-			
         }
 	}
 }

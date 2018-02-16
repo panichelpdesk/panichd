@@ -210,6 +210,8 @@ return [
   'create-new-ticket'                => 'Create New Ticket',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-notices'            => 'Notices',
+  'ticket-owner-no-email'            => '(Has not e-mail)',
+  'ticket-owner-no-email-warning'    => 'User will not receive any e-mail notification',
   'create-ticket-owner-help'         => 'You may choose from whom is the ticket or who does it affect',
   'create-ticket-visible'            => 'Visible',
   'create-ticket-visible-help'       => 'Choose ticket visibility for the assigned owner',

@@ -17,7 +17,7 @@
 		<div class="col-sm-10">
 			<select class="generate_default_select2" style="width: 100%" name="agent_id">
 				@foreach ($not_agents as $newagent)
-					<option value="{{ $newagent->id }}">{!! $newagent->name !!}</option>
+					<option value="{{ $newagent->id }}">{!! $newagent->name . ($newagent->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $newagent->email) !!}</option>
 				@endforeach
 			</select>
 		</div>

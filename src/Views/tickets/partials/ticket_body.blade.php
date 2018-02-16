@@ -66,7 +66,14 @@
 						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') . $ticket->creator->name }}<br />
 					@endif
 					
-					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{{ $ticket->owner->name }} <span class="glyphicon glyphicon-question-sign"></span></span>
+					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} 
+					@if ($ticket->owner->email == "")
+						<span class="text-warning">{{ $ticket->owner->name . ' ' . trans('panichd::lang.ticket-owner-no-email')}}
+						<br /><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
+					@else
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{{ $ticket->owner->name }} <span class="glyphicon glyphicon-question-sign"></span></span>
+					@endif
+					
 					@if ($setting->grab('departments_feature'))
 						@if ($ticket->department)
 							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
