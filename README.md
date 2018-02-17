@@ -16,7 +16,7 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
     + [With the web installer](#option-1-web-installer)
     + [With command line](#option-2-command-line-for-advanced-users)
 * [Contributing](#contributing)
-* [Built with](#built with)
+* [Built with](#built-with)
 * [Acknowledgements](#acknowledgements)
 
 ## Description
@@ -61,6 +61,7 @@ This is a synopsis of the main PanicHD features. For detailed descriptions and g
 * User / Managers communication
   - By comments added from both of them within a ticket card
   - By e-mail notifications: All of them will receive notifications relative to relevant changes in the ticket made by any of them
+  - Manager may add user hidden messages called "internal notes". If the ticket is assigned to another agent, he will receive a related e-mail notification also
   
 * List filtering
   - The ticket list includes a filter panel that may help managers to filter the ticket list by the most relevant criteria
@@ -173,6 +174,9 @@ Please read our [contributing reference](CONTRIBUTING.md).
   * [Summernote editor](https://summernote.org/)
 * [Photoswipe](http://photoswipe.com/): The best free javascript image gallery we found outside there
 * [Bootstrap Colorpicker Plus](https://github.com/zzzhan/bootstrap-colorpicker-plus): The javascript color picker for every customizable color in PanicHD
+* Used Google fonts:
+  - [Lato Light](https://fonts.google.com/specimen/Lato)
+  - [Raleway](https://fonts.google.com/specimen/Raleway)
 * [jCrop](http://deepliquid.com/content/Jcrop.html): An oldie but useful image cropping javascript library
 
 If some day this package is as useful to someone as other ones like these have been to us, our debt will for sure still be enormous, but also we'd be very happy!
