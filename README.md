@@ -73,7 +73,7 @@ This is a synopsis of the main PanicHD features. For detailed descriptions and g
   
 * For developers
   - There is a configuration settings menu that directly comes from Ticketit. It is so useful and flexible to configure the package at your own desire even without altering the package files
-  - We have added some useful Artisan commands to help you make your own local tests. Just type in the console the following command:
+  - We have added [some useful Artisan commands](https://github.com/panichelpdesk/panichd/wiki/Command-line-toolbox#artisan-commands) to help you make your own local tests. Click the link or type in the Laravel console the following command:
     
     `php artisan panichd`
 
