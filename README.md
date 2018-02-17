@@ -4,8 +4,10 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 ## Table of contents
 
 * [Description](#description)
-  + [Features inherited from Ticketit](#features-inherited-from-kordyticketit)
-  + [Original Panic Help Desk features](#original-panic-help-desk-features)
+  + [Overview](#overview)
+  + [A ticket lifecycle](#a-ticket-lifecycle)
+  + [Feature synopsis](#features)
+  + [Features in detail (link to the Wiki)](https://github.com/panichelpdesk/panichd/wiki/Current-features)
 * [Installing](#installing)
   + [Requirements](#requirements)
   + [If Kordy/Ticketit is installed](#if-kordyticketit-is-installed)
@@ -17,50 +19,58 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 * [Credits](#credits)
 
 ## Description
-Panic Help Desk is a ticketing system. It consists in these basic functionalities:
-- Three user roles: Common Laravel User, Agent and Admin
- - Users may be registered in the Laravel app through it's default auth system. They may create and view their own tickets, wich can be set to any of the existent categories in the system. They may attach screenshots in them. They see only a ticket fields basic set. They can also communicate with the ticket managers via the comments section in the ticket page.
- - Agents can edit and manage tickets in the categories they are allowed to. They manage all ticket fields.
- - Admins are the administrators of the ticketing system. They have to configure and maintain all the ticketing system functionality. They may assign the "agent" role to the users at the categories they want.
-- Each category may be managed by an idependent support team. Maybe for different departments in a company or for different usages that you want to be listable independently.
-- Any support "agent" may have assigned several tickets and may comunicate with every ticket owner within the system to resolve the issue.
+#### Overview
+Panic Help Desk is a ticketing system that may be integrated on any Laravel app. A "ticket" can be any specific issue, thread, bug or whatever you need. It includes some general fields that may be useful to classify it and has some interaction possibilities between the user that creates it and the ticket managers.
 
- We have kept the most of Ticketit's functionality and we've improved what we considered necessary. We've also added other features that we need for own usage and thought to be useful for others, so they were included in the package.
+This ticketing system is actually mean to be used in a corporate support environment, by these reasons:
+* Only registered users or ticket managers are able to add tickets. For any manager, a ticket can only be assigned to an owner which is registered.
+* We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
 
-### Features inherited from Kordy/Ticketit
-Panic Help Desk is just a customized and expanded version of Kordy/Ticketit.
-Ticketit includes most of the functionality you will see in Panic Help Desk, including:
-- The three user roles: Users, agents and admins
-- Interaction between them through tickets, comments and ticket statuses / completion
-- Installation and upgrade menu
-- Ticket and users stats
-- A very complete and customizable configuration settings management
-- Many translations including German, Spanish, Russian, Arabic...
+#### A ticket lifecycle
+ A common ticket lifecycle consists in:
+1. A user registers a new ticket for a specific issue
+2. The ticket gets automatically assigned to an agent, which is another user that can manage the ticket and give support to the user
+3. The agent may ask for extra information to the user within the ticket
+4. The user may aswer the agent or add extra information
+5. Once the ticket goal is achieved (The user had an error in a supported app? He just asked for information?), the agent moves the ticket to the complete list
 
-If you want to read more about the original kordy/ticketit features, please go to their github project page [https://github.com/thekordy/ticketit/wiki/v0.2-Features](https://github.com/thekordy/ticketit/wiki/v0.2-Features)
+### Features
 
-### Original Panic Help Desk features
-Panic Help Desk keeps all Ticketit functionality, plus some additional features including:
+This is a synopsis for the main PanicHD features. For detailed descriptions and general help, please read our [Current features page in the wiki](https://github.com/panichelpdesk/panichd/wiki/Current-features) 
 
-* Ticket creation visible fields change deppending on the category specific user role: For a configuration with some categories, a specific agent may have this role only in some of these, and in some others he'd be a normal user. In this scenario, when this user account is in the ticket creation form and does many changes in the category field, he will see that the visible fields change deppending on his role on the selected category.
-
-* File attachments for tickets and comments: List images separately and view them in a javascript gallery. Images can also be cropped. All attached files can be renamed and have a description.
-
-* New "Intervention" field: It's designed to contain a taken actions resume for a ticket. It may be filled up automatically with information related on some ticket changes
-
-* Description and intervention fields are also visible and searchable in ticket list.
-
-* Ticket tags: Each category has an independent tag list from each other. Agents and admins may assign them to tickets, and view and search them in the ticket list.  Tags can be colored.
-
-* Ticket calendar: A ticket agent or an admin may specify a start date and a limit date for a ticket. With a combination of this fields, you bring tickets to many different statuses. The following statuses may be filtered in ticket list:
-  + Tickets that are scheduled to some day in the future (this thurdsay? this month?)
-  + Tickets that end today or tomorrow
-  + Tickets that already expired
-  + Tickets that were just added and started some weeks ago
-* Ticket filters: You can filter the ticket list by many different criteria in a specific filters panel: Calendar, category and agent.
-* Agent as a user: Any agent is able to switch his point of view, from agent to user and vice-versa:
-  + As a agent: He will see all tickets in categories where he has agent permissions
-  + As a user: He will see the tickets he created in categories where he has no agent permissions
+* Three user roles: Member, Agent and Admin
+* PanicHD ticket fields
+  - Basic set that any member can fill up when registering a new ticket:
+    - Subject
+    - Description: It may contain text, html or even directly pasted screenshots
+    - Category
+    - Attached files
+  - classification fields, like: Priority, status, tags
+  - Time related fields:
+    - Start date: When the ticket activity may start. By default it is the creation date
+    - Limit date: When the ticket expires. It is used for schedule ticket filtering
+    
+  - Any of the ticket managers may view / edit all the ticket fields
+  - A manager may add a ticket assigning it to any owner (any registered user)
+  - A manager may add a user hidden ticket (or switch a visible ticket to hidden):
+    - It may be also assigned to any owner
+    - The owner (if it's not also an agent on the ticket category) won't be able to view the ticket
+    - This kind of owner will not receive any e-mail notification
+* User / Managers communication
+  - By comments added from both of them within a ticket card
+  - By e-mail notifications: All of them will receive notifications relative to relevant changes in the ticket made by any of them
+  
+* List filtering
+  - The ticket list includes a filter panel that may help managers to filter the ticket list by the most relevant criteria
+  - The ticket table is powered by Datatables, so it can be reordered and filtered by search input
+  
+* For Admins
+  - Any classification element may be edited
+  - They can easily manage categories and assigned Agents
+  
+* For developers
+  - There is a configuration settings menu that directly comes from Ticketit. It is so useful and flexible to configure the package at your own desire even without altering the package files
+  - We have added some useful Artisan commands to make your own local tests. Just type in the console the command "php artisan panichd"
 
 ## Installing
 ### Requirements
@@ -133,6 +143,14 @@ Execute these commands:
 * If you want to add the included default priorities, statuses and category:
 
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
+   
+* If you want to use a demo configuration to test the package, use the DemoDataSeeder:
+
+   `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\DemoDataSeeder`
+   
+   If you want to rollback it after using it, you can use the following command:
+   
+   `php artisan panichd:demo-rollback`
 
 8. If you have followed all these steps, you may access now http://your-laravel-app-URL/panichd in your browser.
 
