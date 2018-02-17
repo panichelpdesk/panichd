@@ -5,7 +5,7 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 
 * [Description](#description)
   + [Overview](#overview)
-  + [A ticket lifecycle](#a-ticket-lifecycle)
+  + [A ticket step by step example](#a-ticket-step-by-step-example)
   + [Feature synopsis](#features)
   + [Features in detail (link to the Wiki)](https://github.com/panichelpdesk/panichd/wiki/Current-features)
 * [Installing](#installing)
@@ -16,7 +16,8 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
     + [With the web installer](#option-1-web-installer)
     + [With command line](#option-2-command-line-for-advanced-users)
 * [Contributing](#contributing)
-* [Credits](#credits)
+* [Built with](#built with)
+* [Acknowledgements](#acknowledgements)
 
 ## Description
 #### Overview
@@ -26,17 +27,18 @@ This ticketing system is actually mean to be used in a corporate support environ
 * Only registered users or ticket managers are able to add tickets. For any manager, a ticket can only be assigned to an owner which is registered.
 * We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
 
-#### A ticket lifecycle
- A common ticket lifecycle consists in:
+#### A ticket step by step example
 1. A user registers a new ticket for a specific issue
-2. The ticket gets automatically assigned to an agent, which is another user that can manage the ticket and give support to the user
-3. The agent may ask for extra information to the user within the ticket
-4. The user may aswer the agent or add extra information
-5. Once the ticket goal is achieved (The user had an error in a supported app? He just asked for information?), the agent moves the ticket to the complete list
+2. The ticket gets automatically assigned to an agent (a ticket manager) that receives an e-mail notification. 
+3. The agent contacts the user to give support. After the support tasks, leaves the ticket opened in "User pending" status because a confirmation that the issue is solved is needed
+4. The user confirms within the ticket that it is solved. He can do it by directly completing the ticket or making a new comment
+5. In any case, the agent will receive an e-mail notification with the user update
+5. If the ticket was left active, the agent completes it
+6. Both the agent and the user will see the ticket in the Complete list for future reference.
 
 ### Features
 
-This is a synopsis for the main PanicHD features. For detailed descriptions and general help, please read our [Current features page in the wiki](https://github.com/panichelpdesk/panichd/wiki/Current-features) 
+This is a synopsis of the main PanicHD features. For detailed descriptions and general reference, please read our [Current features page in the wiki](https://github.com/panichelpdesk/panichd/wiki/Current-features) 
 
 * Three user roles: Member, Agent and Admin
 * PanicHD ticket fields
@@ -70,7 +72,9 @@ This is a synopsis for the main PanicHD features. For detailed descriptions and 
   
 * For developers
   - There is a configuration settings menu that directly comes from Ticketit. It is so useful and flexible to configure the package at your own desire even without altering the package files
-  - We have added some useful Artisan commands to make your own local tests. Just type in the console the command "php artisan panichd"
+  - We have added some useful Artisan commands to help you make your own local tests. Just type in the console the following command:
+    
+    `php artisan panichd`
 
 ## Installing
 ### Requirements
@@ -158,10 +162,23 @@ Execute these commands:
 
 Please read our [contributing reference](CONTRIBUTING.md).
 
-## Credits
+
+## Built with
+* [Laravel](https://laravel.com/): This is our basis PHP framework
+* [jQuery](https://jquery.com/): The javascript framework. Please dont tell me you don't know
+* [Bootstrap](https://getbootstrap.com/): The CSS framework
+* [TheKordy/Ticketit](https://github.com/thekordy/ticketit): The ticketing Laravel package that PanicHD is built on. It includes also:
+  * [Yajra Datatables](https://github.com/yajra/laravel-datatables). A Laravel package to use [Datatables](https://datatables.net/)
+  * [Codemirror](https://codemirror.net/)
+  * [Summernote editor](https://summernote.org/)
+* [Photoswipe](http://photoswipe.com/): The best free javascript image gallery we found outside there
+* [Bootstrap Colorpicker Plus](https://github.com/zzzhan/bootstrap-colorpicker-plus): The javascript color picker for every customizable color in PanicHD
+* [jCrop](http://deepliquid.com/content/Jcrop.html): An oldie but useful image cropping javascript library
+
+If some day this package is as useful to someone as other ones like these have been to us, our debt will for sure still be enormous, but also we'd be very happy!
+
+## Acknowledgements
 
 Thanks to [Kordy](https://github.com/thekordy) and his collaborators for building up [Kordy/Ticketit](https://github.com/thekordy/ticketit) and sharing it on GitHub. Without it, Panic Help Desk simply won't exist.
 
-It also couldn't be done without the [StackOverflow](https://stackoverflow.com) community. They've solved (and sure will solve) our daily coding headaches. As I got deeper in Laravel, the Github community itself has become another helper hand for this project progress.
-
-Finally, a big Thank You to all the people that are sharing their projects as Open Source and let other people like us take advantage of their work. If some day this package is as useful to someone as other ones have been to us, our debt will for sure still be enormous, but also we'd be very happy!
+A big Thank You also to all the guys at online communities like [StackOverflow](https://stackoverflow.com) that do their best everyday to help others like me on their daily coding headaches.
