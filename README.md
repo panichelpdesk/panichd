@@ -27,6 +27,8 @@ This ticketing system is actually mean to be used in a corporate support environ
 * Only registered users or ticket managers are able to add tickets. For any manager, a ticket can only be assigned to an owner which is registered.
 * We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
 
+[[[https://raw.githubusercontent.com/panichelpdesk/panichd-wiki/master/screenshots/full_page/ticket_index_small.png]]](https://raw.githubusercontent.com/panichelpdesk/panichd-wiki/master/screenshots/full_page/ticket_index.png)
+
 #### A ticket step by step example
 1. A user registers a new ticket for a specific issue
 2. The ticket gets automatically assigned to an agent (a ticket manager) that receives an e-mail notification. 
@@ -38,7 +40,7 @@ This ticketing system is actually mean to be used in a corporate support environ
 
 ### Features
 
-This is a synopsis of the main PanicHD features. For detailed descriptions and general reference, please read our [Current features page in the wiki](https://github.com/panichelpdesk/panichd/wiki/Current-features) 
+This is a synopsis of the main PanicHD features. For detailed descriptions, example screenshots and general reference, please read our [Current features page in the wiki](https://github.com/panichelpdesk/panichd/wiki/Current-features) 
 
 * Three user roles: Member, Agent and Admin
 * PanicHD ticket fields
