@@ -23,6 +23,8 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 #### Overview
 Panic Help Desk is a ticketing system that may be integrated on any Laravel app. A "ticket" can be any specific issue, thread, bug or whatever you need. It includes some general fields that may be useful to classify it and has some interaction possibilities between the user that creates it and the ticket managers.
 
+[![General view](https://raw.githubusercontent.com/panichelpdesk/panichd-wiki/master/screenshots/full_page/ticket_index_small.png)](https://raw.githubusercontent.com/panichelpdesk/panichd-wiki/master/screenshots/full_page/ticket_index.png)
+
 This ticketing system is actually mean to be used in a corporate support environment, by these reasons:
 * Only registered users or ticket managers are able to add tickets. For any manager, a ticket can only be assigned to an owner which is registered.
 * We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
@@ -172,8 +174,10 @@ Please read our [contributing reference](CONTRIBUTING.md).
   * [Yajra Datatables](https://github.com/yajra/laravel-datatables). A Laravel package to use [Datatables](https://datatables.net/)
   * [Codemirror](https://codemirror.net/)
   * [Summernote editor](https://summernote.org/)
+* [Select2](https://select2.org/): jQuery script that replaces HTML select elements for much more functional ones
 * [Photoswipe](http://photoswipe.com/): The best free javascript image gallery we found outside there
 * [Bootstrap Colorpicker Plus](https://github.com/zzzhan/bootstrap-colorpicker-plus): The javascript color picker for every customizable color in PanicHD
+* [Bootstrap Datetimepicker](http://eonasdan.github.io/bootstrap-datetimepicker/): A great javascript calendar selector
 * Used Google fonts:
   - [Lato Light](https://fonts.google.com/specimen/Lato)
   - [Raleway](https://fonts.google.com/specimen/Raleway)
