@@ -1201,6 +1201,7 @@ class TicketsController extends Controller
 			}
 			
 			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $member->name]);
+			$member_reason = $a_clarification = false;
 			
 			if ($member->currentLevel()>1){
 				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
@@ -1224,11 +1225,12 @@ class TicketsController extends Controller
 					
 					try {
 						$reason = Models\Closingreason::findOrFail($request->input('reason_id'));
+						$member_reason = $reason->text;
 					}catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e){
 						return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-bad-reason-id'));
 					}
 					
-					$reason_text .= trans('panichd::lang.colon') . $reason->text;
+					$reason_text .= trans('panichd::lang.colon') . $member_reason;
 					$ticket->status_id = $reason->status_id;
 				}else{					
 					$ticket->status_id = Setting::grab('default_close_status_id');
@@ -1255,7 +1257,7 @@ class TicketsController extends Controller
 			event(new TicketUpdated($original_ticket, $ticket));
 			
 			// Add complete comment
-			$this->complete_change_actions($ticket, $member);
+			$this->complete_change_actions($ticket, $member, $member_reason, $a_clarification);
 			
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -1273,7 +1275,7 @@ class TicketsController extends Controller
 	/**
 	 * Actions to take when a ticket completion status changes
 	*/
-	public function complete_change_actions($ticket, $member)
+	public function complete_change_actions($ticket, $member, $member_reason = false, $a_clarification = false)
 	{
 		$comment = new Models\Comment;
 		
@@ -1284,9 +1286,9 @@ class TicketsController extends Controller
 			if ($member->currentLevel()>1){ 
 				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
 			}else{
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($reason ? trans('panichd::lang.colon').$reason->text : '');
+				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($member_reason ? trans('panichd::lang.colon').$member_reason : '');
 							
-				if ($a_clarification['content'] != ""){
+				if ($a_clarification and $a_clarification['content'] != ""){
 					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
 					$comment->html = $comment->html . '<br />' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['html'];
 				}
