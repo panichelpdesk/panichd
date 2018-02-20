@@ -131,10 +131,10 @@ class TicketsController extends Controller
 			->with('owner.personDepts.department')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
-				$query->forLevel($currentLevel);
+				$query->countable()->forLevel($currentLevel);
 			}])
 			->withCount(['recentComments' => function($query) use($currentLevel){
-				$query->forLevel($currentLevel);
+				$query->countable()->forLevel($currentLevel);
 			}]);
 
         $collection = $datatables->of($collection);
@@ -1239,8 +1239,9 @@ class TicketsController extends Controller
 			
 			// Add Closing Reason to intervention field
 			$date = date(trans('panichd::lang.date-format'), time());
-			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . $reason_text;
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . $reason_text;
+			$had_intervention = $ticket->intervention == "" ? false : true;
+			$ticket->intervention = ($had_intervention ? $ticket->intervention . ' ' : '') . $date . ' ' . $reason_text;
+			$ticket->intervention_html = ($had_intervention ? $ticket->intervention_html . '<br />' : '') . $date . ' ' . $reason_text;
 			
 			if ($member->currentLevel()<2){
 				// Check clarification text

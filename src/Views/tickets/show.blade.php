@@ -153,7 +153,7 @@
 				e.preventDefault();
 				
 				@if($u->currentLevel() > 1 && !$ticket->intervention_html != "")
-					if ($(this).closest('form').find('input[name="complete_ticket"]').is(':checked')){
+					if ($(this).closest('form').find('input[name="add_to_intervention"]').is(':checked') == false && $(this).closest('form').find('input[name="complete_ticket"]').is(':checked')){
 						if(!confirm('{!! trans('panichd::lang.add-comment-confirm-blank-intervention') !!}')) return false;
 					} 
 				@endif

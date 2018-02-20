@@ -246,8 +246,8 @@ return [
   'show-ticket-complete-bad-status'                     => 'Tiquet no completat: L\'estat indicat no és vàlid',
   'show-ticket-complete-bad-reason-id'                  => 'Tiquet no completat: La raó indicada no és vàlida',
   
-  'complete-by-user'                 => 'Tiquet tancat per :user',
-  'reopened-by-user'                 => 'Tiquet reobert per :user',
+  'complete-by-user'                 => 'Tiquet tancat per :user.',
+  'reopened-by-user'                 => 'Tiquet reobert per :user.',
   
   'ticket-error-not-valid-file'      => 'S\'ha adjuntat un fitxer no vàlid',
   'ticket-error-not-valid-object'    => 'Aquest fitxer no es pot processar: :name',
@@ -287,7 +287,7 @@ return [
   'show-ticket-add-comment-note'           => 'Nota interna',
   'show-ticket-add-comment-reply'          => 'Resposta a usuari', 
   'show-ticket-add-com-check-intervention' => 'Afegir aquesta resposta al camp actuació',
-  'show-ticket-add-com-check-resolve'      => 'Resoldre el tiquet amb estat',
+  'show-ticket-add-com-check-resolve'      => 'Tancar el tiquet amb estat',
   'add-comment-confirm-blank-intervention' => 'El camp "actuació" està en blanc. Vols tancar el tiquet igualment?',
   
   'edit-internal-note-title'         => 'Editar nota interna',

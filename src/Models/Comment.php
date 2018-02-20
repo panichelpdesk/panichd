@@ -72,12 +72,23 @@ class Comment extends Model
         return $this->hasMany(Attachment::class, 'comment_id')->orderByRaw('CASE when mimetype LIKE "image/%" then 1 else 2 end');
     }
 	
+	/**
+	 * Filter visible comments depending on member level
+	*/
 	public function scopeForLevel($query, $level)
 	{
 		// User level
-		if ($level < 2) return $query->whereIN('type', ['reply','close','reopen']);
+		if ($level < 2) return $query->whereIN('type', ['reply','complete','reopen']);
 		
 		// For agent or admin
 		return $query;
+	}
+	
+	/**
+	 * Filter comment entries that are countable as real comments (complete and reopen comments are excluded)
+	*/
+	public function scopeCountable($query)
+	{
+		return $query->whereIN('type', ['reply', 'note']);
 	}
 }

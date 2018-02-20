@@ -247,8 +247,8 @@ return [
   'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',
   'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
   
-  'complete-by-user'                 => 'Ticket complete by :user',  
-  'reopened-by-user'                 => 'Ticket reopened by :user',
+  'complete-by-user'                 => 'Ticket completed by :user.',  
+  'reopened-by-user'                 => 'Ticket reopened by :user.',
   
   'ticket-error-not-valid-file'      => 'A no valid file was attached',
   'ticket-error-not-valid-object'    => 'This file can\'t be processed: :name',
@@ -288,7 +288,7 @@ return [
   'show-ticket-add-comment-note'           => 'Internal note',
   'show-ticket-add-comment-reply'          => 'Reply to user',
   'show-ticket-add-com-check-intervention' => 'Append this text in intervention field',
-  'show-ticket-add-com-check-resolve'      => 'Resolve this ticket and apply the status',
+  'show-ticket-add-com-check-resolve'      => 'Complete this ticket and apply the status',
   'add-comment-confirm-blank-intervention' => 'The "intervention" field is empty. Would you want to close ticket anyway?',
    
   'edit-internal-note-title'         => 'Edit internal note',
