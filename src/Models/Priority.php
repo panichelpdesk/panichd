@@ -20,17 +20,19 @@ class Priority extends Model
 	
 	public function delete($tickets_new_priority_id = false)
 	{
-		if ($tickets_new_priority_id){
-			foreach($this->tickets()->get() as $ticket){
-				$ticket->priority_id = $tickets_new_priority_id;
-				$ticket->save();
-			}
-		}else{
+		$tickets = $this->tickets()->get();
+		
+		if (!$tickets_new_priority_id){
+			$new_priority = Self::whereNotIn('id',[$this->id])->first();
 			
-			$new_id = Self::whereNotIn('id',[$this->id])->first()->id;
-			foreach($this->tickets()->get() as $ticket){
-				$ticket->priority_id = $new_id;
-				
+			if ($new_priority and $tickets->count() > 0){
+				$tickets_new_priority_id = $new_priority->id;
+			}
+		}
+		
+		if ($tickets_new_priority_id and $tickets->count() > 0){
+			foreach($tickets as $ticket){
+				$ticket->priority_id = $tickets_new_priority_id;
 				$ticket->save();
 			}
 		}

@@ -38,16 +38,16 @@ return [
   'no-tickets-yet'                   => 'No tickets yet', # Pending to move old admin.index-empty-records in other languages
   'list-no-tickets'                  => 'There are no tickets in this list',
   'table-info-attachments-total'     => ':num attached files',
-  'table-comments-total'             => ':num Total comments.',
-  'table-comments-recent'            => ':num recent ones.',
+  'table-info-comments-total'        => ':num Total comments.',
+  'table-info-comments-recent'       => ':num recent ones.',
 
   'calendar-active'            => 'Started :description',
   'calendar-active-today'      => 'Started :description',
   'calendar-active-future'     => 'Starts :description',
-  'calendar-expired'           => 'Expired since :description',
+  'calendar-expired'           => 'Expired :description',
   'calendar-expired-today'     => 'Expired today at :time',
   'calendar-expiration'        => 'Expires :description',
-  'calendar-expires-today'     => 'Will expires today at :hour',
+  'calendar-expires-today'     => 'Will expire today at :hour',
   'calendar-scheduled'         => 'Scheduled on :date from :time1 to :time2H',
   'calendar-scheduled-today'   => 'Scheduled today from :time1 to :time2H',
   'calendar-scheduled-period'  => 'Scheduled from :date1 to :date2',
@@ -170,6 +170,7 @@ return [
   'day_5'                            => 'Friday',
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
+  'day_0'                            => 'Sunday',
   
     // Time units abbreviations
   'second-abbr'                      => 's.',

@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use PanicHD\PanicHD\Console;
 use PanicHD\PanicHD\Console\Htmlify;
-use PanicHD\PanicHD\Console\WipeOffTickets;
 use PanicHD\PanicHD\Controllers\InstallController;
 use PanicHD\PanicHD\Controllers\NotificationsController;
 use PanicHD\PanicHD\Controllers\ToolsController;
@@ -290,7 +290,9 @@ class PanicHDServiceProvider extends ServiceProvider
 			
 			if ($this->app->runningInConsole()) {
 				$this->commands([
-					WipeOffTickets::class,
+					Console\DemoRollback::class,
+					Console\WipeOffLists::class,
+					Console\WipeOffTickets::class,
 				]);
 			}
 			

@@ -31,7 +31,7 @@
 				@if (session('panichd_filter_category')=="")
 					<td>{{ trans('panichd::lang.table-category') }}</td>
 				@endif
-				<td>Etiquetes</td>
+				<td>{{ trans('panichd::lang.tags') }}</td>
 			@endif
         </tr>
     </thead>
