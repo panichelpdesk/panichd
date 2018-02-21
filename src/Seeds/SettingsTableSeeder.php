@@ -126,6 +126,45 @@ class SettingsTableSeeder extends Seeder
             'email.color_footer_bg'  => '#414141',
             'email.color_button_bg'  => '#AC4D2F',
 			
+			
+			/**
+			 * Configurable notifications.
+			*/
+			
+			/*
+             * Agent notify: To notify assigned agent (either auto or manual assignment) of new assigned or transferred tickets
+             * Default: 'yes'
+             * not to notify agent: 'no'
+             */
+            'assigned_notification' => 'yes',
+			
+			/*
+             * Comment notification: Send notification when new comment is posted
+             * Default is send notification: 'yes'
+             * Do not send notification: 'no'
+             */
+            'comment_notification' => 'yes',
+			
+			/*
+             * Status notification: Send email notification to ticket owner/Agent when ticket status is changed
+             * Default: 'yes'
+             */
+            'status_notification' => 'yes',
+			
+			/*
+			* Notify owner when ticket list changes (between active and complete only)
+			* Default: 'yes'
+            */			
+			'list_owner_notification' => 'yes',
+
+			/*
+			* Notify owner when ticket status changes
+			* Default: 'yes'
+            */
+			'status_owner_notification' => 'yes',
+			
+			
+			
             /*
              * The default status for new created tickets
              * Default: 1
@@ -185,25 +224,15 @@ class SettingsTableSeeder extends Seeder
              */
             'attachments_path' => 'panichd_attachments',
 			'thumbnails_path' => 'panichd_thumbnails',
-					
+			
 			
             /*
              * Pagination length: For tickets table.
              * Default: 1
              */
             'length_menu' => [[10, 50, 100], [10, 50, 100]],
-            /*
-             * Status notification: send email notification to ticket owner/Agent when ticket status is changed
-             * Default is send notification: 'yes'
-             * Do not send notification: 'no'
-             */
-            'status_notification' => 'yes',
-            /*
-             * Comment notification: Send notification when new comment is posted
-             * Default is send notification: 'yes'
-             * Do not send notification: 'no'
-             */
-            'comment_notification' => 'yes',
+            
+			
             /*
              * Use Queue method when sending emails (Mail::queue instead of Mail::send). Note that Mail::queue needs to be
              * configured first http://laravel.com/docs/5.1/queues
@@ -211,12 +240,7 @@ class SettingsTableSeeder extends Seeder
              * use queue: 'yes'
              */
             'queue_emails' => 'no',
-            /*
-             * Agent notify: To notify assigned agent (either auto or manual assignment) of new assigned or transferred tickets
-             * Default: 'yes'
-             * not to notify agent: 'no'
-             */
-            'assigned_notification' => 'yes',
+            
             /*
              * Agent restrict: Restrict agents access to only their assigned tickets
              * Default: 'no'

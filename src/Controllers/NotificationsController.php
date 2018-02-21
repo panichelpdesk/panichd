@@ -66,7 +66,7 @@ class NotificationsController extends Controller
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 		
 		// Notificate ticket owner
-		if(!$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+		if(Setting::grab('list_owner_notification') and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject'   => $subject,
@@ -95,7 +95,7 @@ class NotificationsController extends Controller
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 		
 		// Notificate ticket owner
-		if(!$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+		if(Setting::grab('status_owner_notification') and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject'   => $subject,
