@@ -40,8 +40,8 @@
 			{ data: 'priority_magnitude', name: 'panichd_priorities.magnitude', visible: false },
 			{ data: 'updated_at', name: 'panichd_tickets.updated_at', visible: false },
 			{ data: 'has_limit', name: 'has_limit', visible: false },
-			{ data: 'limit_date', name: 'panichd_tickets.limit_date', visible: false },
-			{ data: 'start_date', name: 'panichd_tickets.start_date', visible: false },
+			{ data: 'inverse_limit_date', name: 'inverse_limit_date', visible: false },
+			{ data: 'inverse_start_date', name: 'inverse_start_date', visible: false },
 			
 			{ data: 'subject', name: 'subject' },
 			@if ($setting->grab('subject_content_column') == 'no')
@@ -80,8 +80,8 @@
 					order: [
 						[1, 'desc'],
 						[3, 'desc'],
-						[4, 'asc'],
-						[5, 'asc'],
+						[4, 'desc'],
+						[5, 'desc'],
 					]
 				@else
 					order: [2, 'desc']

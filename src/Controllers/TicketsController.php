@@ -70,9 +70,11 @@ class TicketsController extends Controller
             ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
 		
 		if (config('database.default')=='sqlite'){
-			$select_dates = 'panichd_tickets.limit_date || \'9999\' || panichd_tickets.start_date as calendar_order';
+			$int_start_date = 'cast(julianday(panichd_tickets.start_date) as real)';
+			$int_limit_date = 'cast(julianday(panichd_tickets.limit_date) as real)';
 		}else{
-			$select_dates = \DB::raw('concat(panichd_tickets.limit_date, \'9999\', panichd_tickets.start_date) as calendar_order');
+			$int_start_date = "CONVERT(date_format(panichd_tickets.start_date, '%Y%m%d%h%i%s'), SIGNED INTEGER)";
+			$int_limit_date = "CONVERT(date_format(panichd_tickets.limit_date, '%Y%m%d%h%i%s'), SIGNED INTEGER)";
 		}
 		
 		$a_select = [
@@ -87,10 +89,11 @@ class TicketsController extends Controller
 			'panichd_priorities.color AS color_priority',
 			'panichd_categories.color AS color_category',
 			'panichd_tickets.start_date as start_date',
-			'panichd_tickets.limit_date as limit_date',
-			'panichd_tickets.limit_date as calendar',
+			\DB::raw(' 0-'.$int_start_date.' as inverse_start_date'),
 			\DB::raw('if (panichd_tickets.limit_date is NULL, 0, 1) as has_limit'),
-			$select_dates,
+			'panichd_tickets.limit_date as limit_date',
+			\DB::raw(' 0-'.$int_limit_date.' as inverse_limit_date'),
+			'panichd_tickets.limit_date as calendar',
 			'panichd_tickets.updated_at AS updated_at',
 			'panichd_tickets.completed_at AS completed_at',
 			'panichd_tickets.agent_id',

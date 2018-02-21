@@ -6,8 +6,8 @@
 			<td>{{-- hidden: priority order --}}</td>
 			<td>{{-- hidden: updated at order --}}</td>
 			<td>{{-- hidden: has limit --}}</td>
-			<td>{{-- hidden: limit date --}}</td>
-			<td>{{-- hidden: start date --}}</td>
+			<td>{{-- hidden: inverse limit date --}}</td>
+			<td>{{-- hidden: inverse start date --}}</td>
 			
             <td>{{ trans('panichd::lang.table-subject') }}</td>
             @if ($setting->grab('subject_content_column') == 'no')
