@@ -90,7 +90,7 @@ class TicketsController extends Controller
 			'panichd_categories.color AS color_category',
 			'panichd_tickets.start_date as start_date',
 			\DB::raw(' 0-'.$int_start_date.' as inverse_start_date'),
-			\DB::raw('if (panichd_tickets.limit_date is NULL, 0, 1) as has_limit'),
+			\DB::raw('CASE panichd_tickets.limit_date WHEN NULL THEN 0 ELSE 1 END as has_limit'),
 			'panichd_tickets.limit_date as limit_date',
 			\DB::raw(' 0-'.$int_limit_date.' as inverse_limit_date'),
 			'panichd_tickets.limit_date as calendar',
