@@ -63,10 +63,10 @@
 				@if ($ticketList == 'complete')
 					{ data: 'complete_date', name: 'completed_at', searchable: false, "orderSequence": [ "desc", "asc"] },
 				@else
-					{ data: 'calendar', name: 'calendar', searchable: false },
+					{ data: 'calendar', name: 'calendar', searchable: false, "orderData": [4, 5], "orderSequence": ['desc', 'asc'] },
 				@endif
 			@endif
-			{ data: 'updated_at', name: 'panichd_tickets.updated_at' },
+			{ data: 'updated_at', name: 'panichd_tickets.updated_at', "orderSequence": [ "desc", "asc"] },
 			@if( $u->currentLevel() > 1 )
 				@if (session('panichd_filter_category')=="")
 					{ data: 'category', name: 'panichd_categories.name' },
