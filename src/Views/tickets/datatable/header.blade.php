@@ -2,6 +2,13 @@
     <thead>
         <tr>
             <td>{{ trans('panichd::lang.table-id') }}</td>
+			
+			<td>{{-- hidden: priority order --}}</td>
+			<td>{{-- hidden: updated at order --}}</td>
+			<td>{{-- hidden: has limit --}}</td>
+			<td>{{-- hidden: limit date --}}</td>
+			<td>{{-- hidden: start date --}}</td>
+			
             <td>{{ trans('panichd::lang.table-subject') }}</td>
             @if ($setting->grab('subject_content_column') == 'no')
 				<td>{{ trans('panichd::lang.table-description') }}</td>
@@ -13,7 +20,7 @@
 			@endif			
 			@if( $u->currentLevel() > 1 )
 				<td>{{ trans('panichd::lang.table-priority') }}</td>
-				<td>{{-- hidden: priority order --}}</td>
+				
 				@if (session('panichd_filter_owner')=="")
 					<td>{{ trans('panichd::lang.table-owner') }}</td>
 					@if ($setting::grab('departments_feature'))
