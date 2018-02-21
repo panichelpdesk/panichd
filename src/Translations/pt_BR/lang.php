@@ -169,7 +169,7 @@ return [
 
     'date-format' => 'Y-m-d',
 
-    'datetimepicker-format' => 'AAAA-MM-DD HH: mm',
+    'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
 
     'datetimepicker-validation' => 'Y-m-d H: i',
 

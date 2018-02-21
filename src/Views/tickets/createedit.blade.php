@@ -190,7 +190,7 @@
 			@if ($u->currentLevel() > 1)
 				<div class="jquery_level2_show">
 					<div class="form-group"><!-- INTERVENTION -->
-						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="Accions realitzades per a la resolució del tiquet">Actuació{{trans('panichd::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
+						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-intervention-help') }}">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
 						<div class="col-lg-10 summernote-text-wrapper">
 						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
 						</div>

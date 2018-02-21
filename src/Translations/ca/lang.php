@@ -219,6 +219,7 @@ return [
   'create-ticket-info-start-date'    => 'Predeterminat: Ara',
   'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
+  'create-ticket-intervention-help'  => 'Accions realitzades per a la resolució del tiquet',
   'attach-files'                     => 'Adjuntar fitxers',
   'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
   'attachment-new-name'              => 'Nom nou',
