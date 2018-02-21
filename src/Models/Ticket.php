@@ -65,7 +65,7 @@ class Ticket extends Model
      */
     public function scopeActive($query)
     {
-        return $query->whereNull('completed_at');
+        return $query->whereNull('completed_at')->where('status_id', '!=', Setting::grab('default_status_id'));
     }
 	
     /**
