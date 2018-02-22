@@ -113,7 +113,6 @@ class CommentsController extends Controller
 		// Create comment
 		DB::beginTransaction();
         $comment = new Models\Comment();
-		$comment->type = 'reply';
 		
 		$ticket = Models\Ticket::findOrFail($request->get('ticket_id'));
 		$member = Member::findOrFail(\Auth::user()->id);
@@ -127,10 +126,15 @@ class CommentsController extends Controller
 			));
 		}
 		
-		// Response: reply or note
 		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id'))){
-			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
-		}
+			// Agent response types
+			if ($request->get('response_type') == 'reply' and $member->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
+				$comment->type = 'completetx';
+			}else{
+				$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+			}
+		}else
+			$comment->type = 'reply';
 		
 		// Close ticket + new status
 		if ($member->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){

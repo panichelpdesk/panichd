@@ -1290,12 +1290,11 @@ class TicketsController extends Controller
 		$comment = new Models\Comment;
 		
 		if ($ticket->completed_at != ''){
-			// Complete comment
-			$comment->type = "complete";
-		
 			if ($member->currentLevel()>1){ 
+				$comment->type = "complete";
 				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
 			}else{
+				$comment->type = "completetx";
 				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($member_reason ? trans('panichd::lang.colon').$member_reason : '');
 							
 				if ($a_clarification and $a_clarification['content'] != ""){

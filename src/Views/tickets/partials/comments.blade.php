@@ -8,7 +8,8 @@
 					$glyphicon = "glyphicon-pencil text-info";
 					$comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
 					break;
-				case 'complete':
+				case 'complete': // Simple complete box
+				case 'completetx': // Complete with comment text
 					$glyphicon = "glyphicon-ok-circle text-success";
 					$comment_header = trans('panichd::lang.comment-complete-by', ['owner' => $comment->owner->name]);
 					break;
