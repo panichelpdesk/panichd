@@ -1484,14 +1484,22 @@ class TicketsController extends Controller
 	*/
 	public function hide_actions($ticket)
 	{
-		$user = $this->member->find(auth()->user()->id);
+		$member = $this->member->find(auth()->user()->id);
+		
+		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $member->id)->orderBy('id', 'desc')->first();
+		
+		if (in_array($latest->type, ['hide_0', 'hide_1'])){
+			// Delete last comment for consecutive ticket hide and show for user
+			$latest->delete();
+			return false;
+		}
 		
 		// Add hide/notHide comment
 		$comment = new Models\Comment;
 		$comment->type = "hide_".$ticket->hidden;
 		$comment->content = $comment->html = trans('panichd::lang.ticket-hidden-'.$ticket->hidden.'-comment');
 		$comment->ticket_id = $ticket->id;
-		$comment->user_id = $user->id;
+		$comment->user_id = $member->id;
 		$comment->save();
 	}
 
