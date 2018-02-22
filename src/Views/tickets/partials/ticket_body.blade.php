@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div id="ticket-body" class="panel-body">        
 		<div class="row" style="margin-bottom: 0.2em;">
-			<div class="col-md-8">				
+			<div class="col-sm-8 col-lg-7">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">
 				@if ($ticket->completed_at)
 					<span class="text-success"><span class="glyphicon glyphicon-ok-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
@@ -10,16 +10,16 @@
 				@endif
 				</h2>
 			</div>
-			<div class="col-md-4 text-right">
+			<div class="col-sm-4 col-lg-5 text-right">
 				@if ($u->currentLevel() > 1)
 					<a href="{{ route($setting->grab('main_route').'.hide', ['value' => $ticket->hidden ? 'false' : 'true', 'ticket'=>$ticket->id]) }}" class="btn btn-default tooltip-info" style="border: none; color: #aaa;" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.ticket-hidden-button-title') }}">{!! $ticket->hidden ? '<span class="glyphicon glyphicon-eye-close"></span> '.trans('panichd::lang.ticket-hidden') : '<span class="glyphicon glyphicon-eye-open"></span> '.trans('panichd::lang.ticket-visible') !!}</a>
 				@endif
 				@if ($ticket->updated_at!=$ticket->created_at)
-					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-updated') }}" style="color: #aaa; cursor: help">
+					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-updated') }}" style="display: inline-block; color: #aaa; cursor: help">
 						<span class="glyphicon glyphicon-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
 					</span>
 				@endif
-				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-created') }}" style="color: #aaa; cursor: help">
+				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-created') }}" style="display: inline-block; color: #aaa; cursor: help">
 					<span class="glyphicon glyphicon-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
 				</span>&nbsp;
 								
@@ -58,7 +58,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-lg-2 col-sm-3">				
+			<div class="col-lg-3 col-sm-4">				
 				<p>
 				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
@@ -130,21 +130,21 @@
 				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
 					<br /><strong>{{ trans('panichd::lang.tags') }}</strong>{{ trans('panichd::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
-						<button class="btn btn-default btn-sm" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
+						<button class="btn btn-default btn-xs" style="pointer-events: none; border: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
 					@endforeach					
 				@endif
 				</p>				
 			</div>
-			<div class="col-lg-10 col-sm-9">
+			<div class="col-lg-9 col-sm-8">
 				<div class="row row-eq-height">
-					<div class="description-col {{ $ticket->intervention_html ? 'col-md-6' : 'col-md-12'}}">
+					<div class="description-col {{ $ticket->intervention_html ? 'col-lg-6' : 'col-md-12'}}">
 						<div>
 							<b>{{ trans('panichd::lang.description') }}</b>
 						</div>
 						<div class="summernote-text-wrapper"> {!! $ticket->html !!} </div>
 					</div>
 					@if ($ticket->intervention_html)
-						<div class="intervention-col col-md-6">
+						<div class="intervention-col col-lg-6">
 							<div>
 								<b>{{ trans('panichd::lang.intervention') }}</b>
 							</div>
@@ -197,17 +197,21 @@
 			</div>
 		</div>
 		
-		@if(! $ticket->completed_at && $close_perm == 'yes')			
-			<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>						
-		@elseif($ticket->completed_at && $reopen_perm == 'yes')
-			{!! link_to_route($setting->grab('main_route').'.reopen', trans('panichd::lang.reopen-ticket'), $ticket->id,
-									['class' => 'btn btn-default']) !!}
-		@endif
-		@if($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-			{!! link_to_route($setting->grab('main_route').'.edit', trans('panichd::lang.btn-edit'), $ticket->id,
-									['class' => 'btn btn-default']) !!}
-			<div class="visible-xs"><br /></div>
-		@endif
+		<div style="margin: 1em 0em 0em 0em;">
+			@if(! $ticket->completed_at && $close_perm == 'yes')			
+				<button type="submit" class="btn btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>						
+			@elseif($ticket->completed_at && $reopen_perm == 'yes')
+				{!! link_to_route($setting->grab('main_route').'.reopen', trans('panichd::lang.reopen-ticket'), $ticket->id,
+										['class' => 'btn btn-default']) !!}
+			@endif
+			@if($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
+				{!! link_to_route($setting->grab('main_route').'.edit', trans('panichd::lang.btn-edit'), $ticket->id,[
+					'class' => 'btn btn-default',
+					'style' => 'margin: 0em 0em 0em 0.5em'
+				]) !!}
+				<div class="visible-xs"><br /></div>
+			@endif
+		</div>
         
         {!! CollectiveForm::open([
                         'method' => 'DELETE',

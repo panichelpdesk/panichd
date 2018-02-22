@@ -193,7 +193,7 @@ h1, h2, h3, h4, h5, h6 {
  * Ticket show
 */
 /* sm and up */
-@media screen and (min-width: 992px){
+@media screen and (min-width: 1200px){
 	#ticket-body .row.row-eq-height {
 		display: -webkit-box;
 		display: -webkit-flex;
@@ -214,7 +214,7 @@ h1, h2, h3, h4, h5, h6 {
 	border-radius: 5px;
 }
 
-@media screen and (max-width: 991px){
+@media screen and (max-width: 1999px){
 	#ticket-body .description-col, #ticket-body .intervention-col {
 		margin: 15px;
 	}
