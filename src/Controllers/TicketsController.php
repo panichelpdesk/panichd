@@ -567,12 +567,12 @@ class TicketsController extends Controller
 	
 	public function create_edit_data($ticket = false)
 	{
-		$user = $this->member->find(auth()->user()->id);
+		$member = $this->member->find(auth()->user()->id);
 
-		if ($user->currentLevel() > 1){
+		if ($member->currentLevel() > 1){
 			$a_owners = Member::with('userDepartment')->orderBy('name')->get();
 		}else{
-			$a_owners = Member::whereNull('ticketit_department')->orWhere('id','=',$user->id)->with('userDepartment')->orderBy('name')->get();
+			$a_owners = Member::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -609,21 +609,24 @@ class TicketsController extends Controller
 			$a_current['start_date'] = $a_current['limit_date'] = "";
 			
 			// Default category		
-			$a_current['cat_id'] = @$user->tickets()->latest()->first()->category_id;
-
-			if ($a_current['cat_id'] == null){
-				$a_current['cat_id'] = $user->getNewTicketCategories()->keys()->first();
+			if ($member->currentLevel() > 1){
+				$a_current['cat_id'] = @$member->categories()->get()->first()->id;
+				if ($a_current['cat_id'] == null){
+					$a_current['cat_id'] = $member->getNewTicketCategories()->keys()->first();
+				}
+			}else{
+				$a_current['cat_id'] = Category::orderBy('name')->first()->id;
 			}
-			
+
 			// Default agent
-			$a_current['agent_id'] = $user->id;			
+			$a_current['agent_id'] = $member->id;			
 		}
 		
 		// Agent list
 		$agent_lists = $this->agentList($a_current['cat_id']);
 				
 		// Permission level for category
-		$permission_level = $user->levelInCategory($a_current['cat_id']);
+		$permission_level = $member->levelInCategory($a_current['cat_id']);
 		
 		// Current default status
 		if (!$ticket){

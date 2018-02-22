@@ -72,16 +72,16 @@
             </div>
 			
 			@if ($u->currentLevel() > 1)
-			<div class="form-group">
-				<label class="col-lg-3 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
-				
-				<div class="col-lg-9" style="padding-top: 7px;">
-					<label><input type="radio" name="hidden" value="false" {{ (!isset($ticket) || (isset($ticket) && !$ticket->hidden)) ? 'checked' : '' }}> {{ trans('panichd::lang.yes') }}</label><label style="margin: 0em 0em 0em 1em;"><input type="radio" name="hidden" value="true" {{ (isset($ticket) && $ticket->hidden) ? 'checked' : ''}}> {{ trans('panichd::lang.no') }}</label>
-				</div>
-		
-			</div>
-		
 			<div class="jquery_level2_show">
+				<div class="form-group">
+					<label class="col-lg-3 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+					
+					<div class="col-lg-9" style="padding-top: 7px;">
+						<label><input type="radio" name="hidden" value="false" {{ (!isset($ticket) || (isset($ticket) && !$ticket->hidden)) ? 'checked' : '' }}> {{ trans('panichd::lang.yes') }}</label><label style="margin: 0em 0em 0em 1em;"><input type="radio" name="hidden" value="true" {{ (isset($ticket) && $ticket->hidden) ? 'checked' : ''}}> {{ trans('panichd::lang.no') }}</label>
+					</div>
+			
+				</div>
+				
 				<div class="form-group" style="margin-bottom: 3em"><!-- TICKET LIST -->
 					{!! CollectiveForm::label('status_id', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
 						'class' => 'col-lg-3 control-label'
