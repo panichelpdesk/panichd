@@ -44,7 +44,16 @@
 					break;
 			}		
 		?>	
-		<div class="panel {!! $comment->user->tickets_role ? "panel-info" : "panel-default" !!}">
+		@if (in_array($comment->type, ['complete', 'reopen', 'hide_0', 'hide_1']))
+			<div class="row"><div class="col-xs-12"><div style="margin: 0em 0em 1em 0em; padding: 0px 15px;">
+				<span class="glyphicons glyphicon {{ $glyphicon }}" aria-hidden="true" style="margin: 0em 0.5em 0em 0em;"></span>{!! $comment_header !!}
+				@if ($comment->created_at!=$comment->updated_at)
+					<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>
+				@endif
+				{!! $comment->updated_at->diffForHumans() !!}
+			</div></div></div>
+		@else
+		<div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $comment_title }}"><span class="glyphicons glyphicon {{ $glyphicon }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
@@ -86,6 +95,7 @@
             </div>
             
         </div>
+		@endif
     @endforeach
 	
 	{!! CollectiveForm::open([
