@@ -78,7 +78,7 @@ class Comment extends Model
 	public function scopeForLevel($query, $level)
 	{
 		// User level
-		if ($level < 2) return $query->whereIN('type', ['reply','complete','reopen']);
+		if ($level < 2) return $query->whereIN('type', ['reply', 'complete', 'completetx', 'reopen']);
 		
 		// For agent or admin
 		return $query;
@@ -89,6 +89,6 @@ class Comment extends Model
 	*/
 	public function scopeCountable($query)
 	{
-		return $query->whereIN('type', ['reply', 'note']);
+		return $query->whereIN('type', ['reply', 'note', 'completetx']);
 	}
 }
