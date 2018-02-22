@@ -1287,6 +1287,15 @@ class TicketsController extends Controller
 	*/
 	public function complete_change_actions($ticket, $member, $member_reason = false, $a_clarification = false)
 	{
+		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $member->id)->orderBy('id', 'desc')->first();
+		
+		if (in_array($latest->type, ['complete', 'reopen'])){
+			// Delete last comment for consecutive complete-reopen
+			$latest->delete();
+			return false;
+		}
+		
+		// Create the comment
 		$comment = new Models\Comment;
 		
 		if ($ticket->completed_at != ''){
