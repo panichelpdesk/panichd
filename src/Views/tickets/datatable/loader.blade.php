@@ -37,11 +37,11 @@
 		columns: [
 			{ data: 'id', name: 'panichd_tickets.id' },
 			
-			{ data: 'priority_magnitude', name: 'panichd_priorities.magnitude', visible: false },
+			{ data: 'priority_magnitude', name: 'panichd_priorities.magnitude', visible: false, searchable: false },
 			{ data: 'updated_at', name: 'panichd_tickets.updated_at', visible: false },
-			{ data: 'has_limit', name: 'has_limit', visible: false },
-			{ data: 'inverse_limit_date', name: 'inverse_limit_date', visible: false },
-			{ data: 'inverse_start_date', name: 'inverse_start_date', visible: false },
+			{ data: 'has_limit', name: 'has_limit', visible: false, searchable: false },
+			{ data: 'inverse_limit_date', name: 'inverse_limit_date', visible: false, searchable: false },
+			{ data: 'inverse_start_date', name: 'inverse_start_date', visible: false, searchable: false },
 			
 			{ data: 'subject', name: 'subject' },
 			@if ($setting->grab('subject_content_column') == 'no')
