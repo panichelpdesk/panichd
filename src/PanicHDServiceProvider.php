@@ -230,7 +230,7 @@ class PanicHDServiceProvider extends ServiceProvider
                 if (Setting::grab('comment_notification')) {
 					$comment = $event->comment;
                     $notification = new NotificationsController($comment->ticket->category);
-                    $notification->newComment($comment);
+                    $notification->newComment($comment, $event->request);
                 }
             });
 			

@@ -171,7 +171,7 @@ class CommentsController extends Controller
 		}
 		
 		DB::commit();
-		event(new CommentCreated($comment));
+		event(new CommentCreated($comment, $request));
 		
 		session()->flash('status', trans('panichd::lang.comment-has-been-added-ok'));
 		

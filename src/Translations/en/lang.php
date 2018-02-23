@@ -289,7 +289,8 @@ return [
   'show-ticket-add-comment-type'           => 'Type',
   'show-ticket-add-comment-note'           => 'Internal note',
   'show-ticket-add-comment-reply'          => 'Reply to user',
-  'show-ticket-add-com-check-intervention' => 'Append this text in intervention field',
+  'show-ticket-add-com-check-email-text'   => 'Add text in the user notification',
+  'show-ticket-add-com-check-intervention' => 'Append this text in intervention field (visible by user)',
   'show-ticket-add-com-check-resolve'      => 'Complete this ticket and apply the status',
   'add-comment-confirm-blank-intervention' => 'The "intervention" field is empty. Would you want to close ticket anyway?',
    

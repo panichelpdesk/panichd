@@ -51,20 +51,26 @@
 							</div>
 						</div>						
 					@endif
-					
-					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
+					@if ($u->currentLevel() > 1)
 						<div class="form-group">
 							<div class="col-lg-12" style="display: none;">
-							<label><input type="checkbox" id="add_to_intervention" name="add_to_intervention" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-intervention') }}</label>
+							<label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
 							</div>
-							@if ($u->canCloseTicket($ticket->id))
-								<div class="col-lg-12">
-								<label><input type="checkbox" name="complete_ticket" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-resolve') . trans('panichd::lang.colon')}}</label>
-								&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
+							
+							@if ($u->canManageTicket($ticket->id))
+								<div class="col-lg-12" style="display: none;">
+								<label><input type="checkbox" id="add_to_intervention" name="add_to_intervention" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-intervention') }}</label>
 								</div>
-							@endif
+								@if ($u->canCloseTicket($ticket->id))
+									<div class="col-lg-12">
+									<label><input type="checkbox" name="complete_ticket" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-resolve') . trans('panichd::lang.colon')}}</label>
+									&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
+									</div>
+								@endif
+						@endif
 						</div>
 					@endif
+					
 					<div class="text-right col-md-12">
 						{!! CollectiveForm::submit( trans('panichd::lang.btn-submit'), [
 							'id' => 'new_comment_submit',

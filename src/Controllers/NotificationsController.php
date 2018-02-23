@@ -126,7 +126,7 @@ class NotificationsController extends Controller
 		$this->sendNotification($a_to, $data);
     }
 
-	public function newComment(Comment $comment)
+	public function newComment(Comment $comment, $request)
     {
         if (in_array($comment->type, ['reply', 'note'])){
 			$ticket = $comment->ticket;
@@ -147,6 +147,10 @@ class NotificationsController extends Controller
 			
 			// Notificate ticket owner
 			if ($comment->type == 'reply' and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+				if ($request->has('add_in_user_notification_text')){
+					$data['add_in_user_notification_text'] = true;
+				}
+				
 				$a_to[] = [
 					'recipient' => $ticket->owner,
 					'subject'   => $subject,

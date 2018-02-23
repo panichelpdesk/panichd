@@ -98,11 +98,11 @@
 			$(this).addClass($(this).attr('data-active-class'));
 			
 			if (type == 'reply'){
-				$('#add_to_intervention').prop('disabled', false);
-				$('#add_to_intervention').closest('div').show();
+				$('#add_in_user_notification_text, #add_to_intervention').prop('disabled', false);
+				$('#add_in_user_notification_text, #add_to_intervention').closest('div').show();
 			}else{
-				$('#add_to_intervention').prop('disabled', true);
-				$('#add_to_intervention').closest('div').hide();
+				$('#add_in_user_notification_text, #add_to_intervention').prop('disabled', true);
+				$('#add_in_user_notification_text, #add_to_intervention').closest('div').hide();
 			}
 			
 			var alt = type == 'note' ? 'reply' : 'note';

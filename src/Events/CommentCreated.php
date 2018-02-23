@@ -3,6 +3,7 @@
 namespace PanicHD\PanicHD\Events;
 
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -20,9 +21,10 @@ class CommentCreated
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct(Comment $comment, Request $request)
     {
         $this->comment = $comment;
+		$this->request = $request;
     }
 
     /**
