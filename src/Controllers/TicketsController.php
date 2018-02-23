@@ -1289,7 +1289,7 @@ class TicketsController extends Controller
 	{
 		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $member->id)->orderBy('id', 'desc')->first();
 		
-		if (in_array($latest->type, ['complete', 'reopen'])){
+		if ($latest and in_array($latest->type, ['complete', 'reopen'])){
 			// Delete last comment for consecutive complete-reopen
 			$latest->delete();
 			return false;
@@ -1488,7 +1488,7 @@ class TicketsController extends Controller
 		
 		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $member->id)->orderBy('id', 'desc')->first();
 		
-		if (in_array($latest->type, ['hide_0', 'hide_1'])){
+		if ($latest and in_array($latest->type, ['hide_0', 'hide_1'])){
 			// Delete last comment for consecutive ticket hide and show for user
 			$latest->delete();
 			return false;
