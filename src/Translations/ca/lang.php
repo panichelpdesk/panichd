@@ -276,7 +276,7 @@ return [
   'comment-note-title'         => 'Nota oculta per a l\'usuari',
   'comment-note-from-agent'    => 'Nota de <b>:agent</b>',
   
-  'comment-complete-title'     => 'Tiquet tancat',
+  'comment-completetx-title'   => 'Tiquet tancat',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
   
   'comment-reopen-title'       => 'Tiquet reobert',

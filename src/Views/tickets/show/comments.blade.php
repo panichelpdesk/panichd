@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><div id="jquery_comment_edit_{{$comment->id}}" class="summernote-text-wrapper"> {!! $comment->html !!} </div>
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-						@include('panichd::tickets.partials.modal_comment_edit')
+						@include('panichd::tickets.show.modal_comment_edit')
 					@endif
 					</div>
 					@if($setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0)
@@ -109,6 +109,6 @@
 		])
 	!!}
 	{!! CollectiveForm::close() !!}
-	@include('panichd::tickets.partials.email_resend')
-	@include('panichd::tickets.partials.modal_comment_delete')
+	@include('panichd::tickets.show.modal_resend_emails')
+	@include('panichd::tickets.show.modal_comment_delete')
 @endif

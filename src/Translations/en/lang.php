@@ -278,7 +278,7 @@ return [
   'comment-note-title'         => 'User hidden note',
   'comment-note-from-agent'    => 'Note from <b>:agent</b>',
   
-  'comment-complete-title'     => 'Ticket complete',
+  'comment-completetx-title'   => 'Ticket complete',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
   
   'comment-reopen-title'       => 'Ticket reopened',

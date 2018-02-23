@@ -225,9 +225,3 @@
         {!! CollectiveForm::close() !!}
     </div>
 </div>
-
-{{-- // OR; Modal Window: 2/2 --}}
-    @if($u->isAdmin())
-        @include('panichd::tickets.partials.modal-delete-confirm')
-    @endif
-{{-- // END Modal Window: 2/2 --}}
