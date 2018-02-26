@@ -395,14 +395,12 @@ class Ticket extends Model
 			$color = "text-warning";
 		}
 		
-		$date_text = $this->getDateForHumans($date);
-		
 		if ($show == 'description') {
-			// Date description only
-			return '<span class="glyphicon '.$icon.'"></span> '.$title;
+			// Date description
+			return $title;
 		}else{
 			// Full field
-			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> $date_text ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
+			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> ".$this->getDateForHumans($date)." ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
 		}
 	}
 	

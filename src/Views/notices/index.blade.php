@@ -38,9 +38,13 @@
 					<tr>
 					<td>{{ $notice->id }}</td>
 					<td style="color: {{ $notice->status->color }}">{{ $notice->status->name }}</td>
-					<td style="width: 14em;">{!! $notice->getCalendarInfo(false, 'description') !!}</td>
+					<td style="width: 14em;">{!! $notice->getDateForHumans($notice->limit_date) !!}</td>
 					<td>{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}</td>
-					<td>{{ $notice->content }}</td>
+					<td>{{ $notice->content }}
+					@if ($notice->all_attachments_count>0)
+						<br />{{ $notice->all_attachments_count }} <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info attachment" title="{{ trans('panichd::lang.table-info-attachments-total', ['num' => $notice->all_attachments_count]) }}"></span>
+					@endif
+					</td>
 					<td>{{ $notice->intervention }}</td>
 					@if($u->currentLevel() > 1)
 						<td><span title="{{ $u->currentLevel() > 2 ? trans('panichd::lang.show-ticket-creator') . trans('panichd::lang.colon') . $notice->owner->name : '' }}">{{ $notice->owner->ticketit_department == 0 ? trans('panichd::lang.all-depts') : $notice->owner->userDepartment->resume(true) }}</span></td>

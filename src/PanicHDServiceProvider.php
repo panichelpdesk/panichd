@@ -201,6 +201,7 @@ class PanicHDServiceProvider extends ServiceProvider
 						->select('panichd_tickets.*')
 						->with('owner.personDepts.department')
 						->with('status')->with('tags')
+						->withCount('allAttachments')
 						->orderByRaw('CASE when status_id="'.Setting::grab('default_close_status_id').'" then 2 else 1 end')
 						->orderByRaw('date(start_date)')
 						->orderBy('panichd_priorities.magnitude', 'desc')
