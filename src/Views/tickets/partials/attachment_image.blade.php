@@ -6,7 +6,7 @@
 <div class="panel panel-default" style="display: inline-block; width: 70px; height: 70px; margin: 5px">
 	<div class="panel-body">
 		@if (\File::exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.$setting->grab('thumbnails_path').DIRECTORY_SEPARATOR).basename($attachment->file_path)))
-			<img src="{{ URL::to('/').'/storage/'.$setting->grab('thumbnails_path').'/'.basename($attachment->file_path) }}" class="ximg-responsive">
+			<img src="{{ URL::to('/').'/storage/'.$setting->grab('thumbnails_path').'/'.basename($attachment->file_path) }}">
 		@else
 			<i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
 		@endif

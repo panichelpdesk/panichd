@@ -907,6 +907,10 @@ class TicketsController extends Controller
         $ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
+			// Create attachments from embedded images
+			$this->embedded_images_to_attachments($permission_level, $ticket);
+			
+			// Attached files
 			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 		}
 		
@@ -1084,6 +1088,9 @@ class TicketsController extends Controller
 		$ticket->save();
 
 		if (Setting::grab('ticket_attachments_feature')){
+			// Create attachments from embedded images
+			$this->embedded_images_to_attachments($permission_level, $ticket);
+			
 			// 1 - update existing attachment fields
 			$a_result_errors = $this->updateAttachments($request, $a_result_errors, $ticket->attachments()->get());
 			

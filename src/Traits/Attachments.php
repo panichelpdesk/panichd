@@ -13,6 +13,127 @@ use Validator;
 trait Attachments
 {
 	/**
+	 * Generate attachment from any embbeded image within $html that exceeds any of the max dimensions (hardcoded 380 x 300 max)
+	 *
+	 * @Param $html string
+	 *
+	 * @return string
+	*/
+	protected function createAttachmentsFrom($html, $ticket, $comment = false, $count = 0)
+	{
+		$dom = new \DomDocument();
+
+        $dom->loadHtml( mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);    
+
+        $images = $dom->getElementsByTagName('img');
+		
+		$i = 0;
+        foreach($images as $k => $node){
+			$i++;
+
+			if (in_array($node->getAttribute('class'), ['summernote_embedded_image', 'summernote_thumbnail_image'])){
+				// Image has been processed before. Don't need to do anything with it
+				
+			}else{
+				// Read image dimensions
+				$data = $node->getAttribute('src');
+				list($type, $data) = explode(';', $data);
+				list(, $data)      = explode(',', $data);
+				$img = Image::make($data);
+				
+				if ($img->width() < 380 and $img->height() < 300){
+					// Image is small and will not be processed again
+					$node->setAttribute('class', 'summernote_embedded_image');
+				}else{
+					// Create filename
+					$original_filename = 'embedded_image_'.($i+$count).'.png';
+					
+					$file_name = $this->makeFilename($original_filename.date('YmdHis', time()), 'embedded', '' );
+					
+					// Attach real file to storage folder
+					$file_path = storage_path(Setting::grab('attachments_path')) .DIRECTORY_SEPARATOR . $file_name;
+					file_put_contents($file_path, base64_decode($data));
+					
+					// Create new Attachment
+					$attachment = new Attachment();
+					$attachment->ticket_id = $ticket->id;
+					if ($comment){
+						$attachment->comment_id = $comment->id;
+						$attachment->uploaded_by_id = $comment->user_id;
+					}else{
+						$attachment->uploaded_by_id = $ticket->user_id;
+					}            
+					$attachment->original_filename = $attachment->new_filename = $original_filename;
+					
+					$attachment->bytes = filesize($file_path);
+					$attachment->mimetype = 'image/png';
+					$attachment->image_sizes = $img->width()."x".$img->height();
+					$attachment->file_path = $file_path;
+					$attachment->original_attachment = $file_name;
+					
+					// Make thumbnail
+					$this->makeThumbnailFromImage($img, $file_name);
+					
+					// Save attachment instance
+					$attachment->save();
+					
+					// Insert image thumbnail
+					$child_img = $dom->createElement('img');
+					$child_img->setAttribute('src', \URL::to('/').'/storage/'.Setting::grab('thumbnails_path').'/'.basename($attachment->file_path));
+					$child_img->setAttribute('class', 'summernote_thumbnail_image');
+					
+					// Create link
+					$link = $dom->createElement('a');
+					$link->setAttribute('href', \URL::route(Setting::grab('main_route').'.view-attachment', [$attachment->id]));
+					
+					// Append thumbnail in link
+					$link->appendChild($child_img);
+					
+					// replace original image with thumbnail link
+					$node->parentNode->replaceChild($link, $node);
+				}
+			}
+        }
+
+        return [
+			'html' => $dom->saveHTML(),
+			'count' => $i
+		];
+	}
+	
+	/**
+	 * Filter ticket or comment fields and create attachments from big embedded images
+	 *
+	 * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
+	 * @param $comment instance of PanicHD\PanicHD\Models\Comment
+	*/
+	protected function embedded_images_to_attachments($permission_level, $ticket, $comment = false)
+	{
+		$field = $comment ? $comment->html : $ticket->html;
+		
+		// Move emmbedded images in description to attachments
+		$output = $this->createAttachmentsFrom($field, $ticket, $comment);
+		if ($output['count'] > 0)
+			$field = $output['html'];
+		
+		// Move emmbedded images in intervention to attachments
+		if (!$comment and $permission_level > 1 and $ticket->intervention_html != "") {
+			$output = $this->createAttachmentsFrom($ticket->intervention_html, $ticket, $comment, $output['count']);
+			if ($output['count'] > 0)
+				$ticket->intervention_html = $output['html'];
+		}
+		
+		if ($comment){
+			$comment->html = $field;
+			$comment->save();
+		}else{
+			$ticket->html = $field;
+			$ticket->save();
+		}
+	}
+	
+	
+	/**
      * Saves form attached files in name="attachments[]"
      *
      * @param Request $request
