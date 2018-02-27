@@ -75,7 +75,7 @@
 	<script>
 	$(function(){
 		// Modify link for each image in ticket to launch PhotoSwipe
-		$('.pwsp_gallery_link').click(function(e){
+		$('.pwsp_gallery_link, .summernote_thumbnail_link').click(function(e){
 			var openpid = $(this).data('pwsp-pid');
 			var openindex = 0;
 			

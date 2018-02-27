@@ -85,6 +85,10 @@ trait Attachments
 					// Create link
 					$link = $dom->createElement('a');
 					$link->setAttribute('href', \URL::route(Setting::grab('main_route').'.view-attachment', [$attachment->id]));
+					$link->setAttribute('class', 'summernote_thumbnail_link tooltip-show');
+					$link->setAttribute('title', $original_filename);
+					$link->setAttribute('data-pwsp-pid', $attachment->id);
+					
 					
 					// Append thumbnail in link
 					$link->appendChild($child_img);
