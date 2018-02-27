@@ -358,6 +358,7 @@ trait Attachments
 			$field = 'attachment_'.$att->id.'_image_crop';
 			if ($request->has($field)){
 				$a_fields['image_crop'] = $request->input($field);
+				$original_filename = basename($att->file_path);
 			}
 			
 			if ($a_fields) $this->updateSingleAttachment($att, $a_fields, $a_single_errors);			
@@ -365,7 +366,15 @@ trait Attachments
 			if ($a_single_errors){
 				$a_errors['attachment_block_'.$index] = implode('. ', $a_single_errors);
 			}else{
+				// Save attachment
 				$att->save();
+				
+				if ($a_fields and isset($a_fields['image_crop'])){
+					// Update related Ticket or comment Html field
+					$model = $att->comment_id == "" ? $att->ticket : $att->comment;
+					$model->html = str_replace($original_filename, basename($att->file_path), $model->html);
+					$model->save();
+				}
 			}
 			$index++;
 		}
