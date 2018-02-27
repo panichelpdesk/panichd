@@ -107,7 +107,7 @@ trait Attachments
 	 * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
 	 * @param $comment instance of PanicHD\PanicHD\Models\Comment
 	*/
-	protected function embedded_images_to_attachments($permission_level, $ticket, $comment = false)
+	protected function embedded_images_to_attachments($permission_level, &$ticket, &$comment = false)
 	{
 		$field = $comment ? $comment->html : $ticket->html;
 		

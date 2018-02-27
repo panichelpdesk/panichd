@@ -91,6 +91,7 @@ class CommentsController extends Controller
 		
 		$common_data = [
 			'request' => $request,
+			'member' => Member::findOrFail(\Auth::user()->id),
 			'a_content' => $a_content,
 			'a_result_errors' => $a_result_errors
 		];
@@ -113,9 +114,10 @@ class CommentsController extends Controller
 		// Create comment
 		DB::beginTransaction();
         $comment = new Models\Comment();
-		
 		$ticket = Models\Ticket::findOrFail($request->get('ticket_id'));
-		$member = Member::findOrFail(\Auth::user()->id);
+		
+		$category_level = $member->levelInCategory($ticket->category_id);
+		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 		
 		if ($ticket->hidden and $member->currentLevel() == 1){
 			session()->flash('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
@@ -148,17 +150,21 @@ class CommentsController extends Controller
         $comment->html = $a_content['html'];
 		$comment->save();
 		
+		// Create attachments from embedded images
+		$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
+		
 		// Update parent ticket        
         $ticket->updated_at = $comment->created_at;
-        
+		
 		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->has('add_to_intervention')){
-			$ticket->intervention = $ticket->intervention.$a_content['content'];
-			$ticket->intervention_html = $ticket->intervention_html.$a_content['html'];
+			$ticket->intervention = $ticket->intervention.$comment->content;
+			$ticket->intervention_html = $ticket->intervention_html.$comment->html;
 		}
 		
 		$ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
+			// Attached files
 			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket, $comment);
 		}
 		
@@ -228,6 +234,9 @@ class CommentsController extends Controller
 		
 		$comment->save();
 		$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+		$category_level = $member->levelInCategory($ticket->category_id);
+		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
+		
 		$ticket->touch();
 		
 		if (Setting::grab('ticket_attachments_feature')){
