@@ -75,8 +75,13 @@
 	<script>
 	$(function(){
 		// Modify link for each image in ticket to launch PhotoSwipe
-		$('.pwsp_gallery_link').click(function(e){
+		$('.pwsp_gallery_link, .summernote_thumbnail_link').click(function(e){
 			var openpid = $(this).data('pwsp-pid');
+			if (typeof openpid === 'undefined' || openpid == ""){
+				var parts = $(this).prop('href').split('/');
+				openpid = Number(parts[parts.length -1]);
+			}
+			
 			var openindex = 0;
 			
 			for (var i = 0, len = pswpItems.length; i < len; i++) {

@@ -175,6 +175,15 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 15px;
 }
 
+.summernote-text-wrapper .summernote_thumbnail_link {
+	display: inline-block;
+	border: 1px solid #eee;
+	padding: 4px;
+	border-radius: 5px;
+	width: 60px;
+	height: 60px;
+}
+
 /*
  * Datatable styles
 */

@@ -681,9 +681,9 @@ class TicketsController extends Controller
 	*/
 	protected function validation_common($request, $new_ticket = true)
 	{
-		$user = $this->member->find(auth()->user()->id);
-		$category_level = $user->levelInCategory($request->category_id);
-		$permission_level = ($user->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
+		$member = $this->member->find(auth()->user()->id);
+		$category_level = $member->levelInCategory($request->category_id);
+		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 		
 		$a_content = $this->purifyHtml($request->get('content'));
 		$common_data = [
@@ -698,9 +698,9 @@ class TicketsController extends Controller
         ]);
 
 		if ($new_ticket){
-			$allowed_categories = implode(",", $user->getNewTicketCategories()->keys()->toArray());
+			$allowed_categories = implode(",", $member->getNewTicketCategories()->keys()->toArray());
 		}else{
-			$allowed_categories = implode(",", $user->getEditTicketCategories()->keys()->toArray());
+			$allowed_categories = implode(",", $member->getEditTicketCategories()->keys()->toArray());
 		}
 		
 		
@@ -907,6 +907,10 @@ class TicketsController extends Controller
         $ticket->save();
 		
 		if (Setting::grab('ticket_attachments_feature')){
+			// Create attachments from embedded images
+			$this->embedded_images_to_attachments($permission_level, $ticket);
+			
+			// Attached files
 			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 		}
 		
@@ -1084,6 +1088,9 @@ class TicketsController extends Controller
 		$ticket->save();
 
 		if (Setting::grab('ticket_attachments_feature')){
+			// Create attachments from embedded images
+			$this->embedded_images_to_attachments($permission_level, $ticket);
+			
 			// 1 - update existing attachment fields
 			$a_result_errors = $this->updateAttachments($request, $a_result_errors, $ticket->attachments()->get());
 			
