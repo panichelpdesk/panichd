@@ -48,7 +48,7 @@ trait Attachments
 					// Create filename
 					$original_filename = 'embedded_image_'.($i+$count).'.png';
 					
-					$file_name = $this->makeFilename($original_filename.date('YmdHis', time()), 'embedded', '' );
+					$file_name = $this->makeFilename($original_filename.date('YmdHis', time()), $ticket->id.'_embedded', '' );
 					
 					// Attach real file to storage folder
 					$file_path = storage_path(Setting::grab('attachments_path')) .DIRECTORY_SEPARATOR . $file_name;
@@ -373,6 +373,9 @@ trait Attachments
 					// Update related Ticket or comment Html field
 					$model = $att->comment_id == "" ? $att->ticket : $att->comment;
 					$model->html = str_replace($original_filename, basename($att->file_path), $model->html);
+					if ($att->comment_id == ""){
+						$model->intervention_html = str_replace($original_filename, basename($att->file_path), $model->intervention_html);
+					}
 					$model->save();
 				}
 			}
@@ -485,21 +488,31 @@ trait Attachments
 	/**
 	 * Destroy a single attachment files and model instance
 	*/
-	protected function destroyAttachedElement($attachment)
+	protected function destroyAttachedElement($att)
 	{
 		// Delete attachment file
-		$error = $this->deleteAttachmentFile($attachment->file_path, $attachment->original_filename);
+		$error = $this->deleteAttachmentFile($att->file_path, $att->original_filename);
 		if ($error)	return $error;
 		
 		// Delete original file (if exists)
-		if ($attachment->original_attachment != basename($attachment->file_path)){
-			$original_path = pathinfo($attachment->file_path, PATHINFO_DIRNAME).DIRECTORY_SEPARATOR.$attachment->original_attachment;
-			$error = $this->deleteAttachmentFile($original_path, $attachment->original_filename);
+		if ($att->original_attachment != basename($att->file_path)){
+			$original_path = pathinfo($att->file_path, PATHINFO_DIRNAME).DIRECTORY_SEPARATOR.$att->original_attachment;
+			$error = $this->deleteAttachmentFile($original_path, $att->original_filename);
 			if ($error)	return $error;
 		}		
 		
 		// Delete thumbnail
-		$this->deleteThumbnail(basename($attachment->file_path));
+		$this->deleteThumbnail(basename($att->file_path));
+		
+		// Remove thumbnail link from any html field
+		$model = $att->comment_id == "" ? $att->ticket : $att->comment;
+		$model->html = preg_replace('/<a[^>]*summernote_thumbnail_link[^>]*?><img[^>]*'.basename($att->file_path).'[^>]*><\/a>/', '', $model->html);
+
+		if ($att->comment_id == ""){
+			$model->intervention_html = preg_replace('/<a[^>]*summernote_thumbnail_link[^>]*?><img[^>]*'.basename($att->file_path).'[^>]*><\/a>/', '', $model->intervention_html);
+		}
+		$model->save();
+		
 		return false;		
 	}
 	
