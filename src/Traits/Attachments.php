@@ -429,6 +429,7 @@ trait Attachments
 				
 				// Resize and save image				
 				$img->crop(intval($coords[2]-$coords[0]), intval($coords[3]-$coords[1]), intval($coords[0]), intval($coords[1]))->save($new_file_path);
+				$att->image_sizes = $img->width()."x".$img->height();
 				
 				// Create new thumbnail
 				$this->makeThumbnailFromImage($img, $new_filename);
@@ -444,7 +445,6 @@ trait Attachments
 				$this->deleteThumbnail(basename($att->file_path));
 
 				// Updated fields
-				$att->image_sizes = $img->width()."x".$img->height();
 				$att->file_path = $new_file_path;
 			}
 		}
