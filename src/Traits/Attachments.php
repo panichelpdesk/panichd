@@ -21,6 +21,13 @@ trait Attachments
 	*/
 	protected function createAttachmentsFrom($html, $ticket, $comment = false, $count = 0)
 	{
+		if ($html == ""){
+			return [
+				'html' => $html,
+				'count' => 0
+			];
+		}
+		
 		$dom = new \DomDocument();
 
         $dom->loadHtml( mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);    
