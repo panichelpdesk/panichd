@@ -23,7 +23,7 @@ trait Attachments
 	{
 		
 		// Html field without embedded image <img> tags
-		if (!preg_match('/src="data:image\/png;base64,/', $html)){
+		if (!preg_match('/src="data:image\/(png|jpeg|gif);base64,/', $html)){
 			return [
 				'html' => $html,
 				'count' => 0
@@ -50,7 +50,7 @@ trait Attachments
 			if (preg_match('/summernote_embedded_image|summernote_thumbnail_image/', $node->getAttribute('class'))){
 				// Image has been processed before. Don't need to do anything with it
 				
-			}elseif(!preg_match('/^data:image\/png;base64,/', $node->getAttribute('src'))){
+			}elseif(!preg_match('/^data:image\/(png|jpeg|gif);base64,/', $node->getAttribute('src'))){
 				// Image src is not of base64 type
 				
 			}else{
