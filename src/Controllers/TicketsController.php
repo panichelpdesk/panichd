@@ -1412,33 +1412,34 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-		$new_agent = Member::findOrFail($request->input('agent_id'));
+		$new_agent = Member::find($request->input('agent_id'));
 		
-		if ($ticket->agent_id==$request->input('agent_id')){
+		if (is_null($new_agent) || $ticket->agent_id==$request->input('agent_id')){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
 			]));
-		}else{
-			$ticket->agent_id = $request->input('agent_id');
-			
-			if ($ticket->status_id==Setting::grab('default_status_id')){
-				$ticket->status_id=Setting::grab('default_reopen_status_id');
-			}
-			$ticket->save();
-			event(new TicketUpdated($original_ticket, $ticket));
-			
-			session()->flash('status', trans('panichd::lang.update-agent-ok', [
-				'name' => '#'.$ticket->id.' '.$ticket->subject,
-				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-				'title' => trans('panichd::lang.ticket-status-link-title'),
-				'old_agent' => $old_agent->name,
-				'new_agent' => $new_agent->name
-			]));
-			
-			return redirect()->route(Setting::grab('main_route').'.index');
-		}		
+		}
+		
+		$ticket->agent_id = $request->input('agent_id');
+		
+		$old_status_id = $ticket->status_id;
+		if ($ticket->status_id==Setting::grab('default_status_id')){
+			$ticket->status_id=Setting::grab('default_reopen_status_id');
+		}
+		$ticket->save();
+		event(new TicketUpdated($original_ticket, $ticket));
+		
+		session()->flash('status', trans('panichd::lang.update-agent-ok', [
+			'name' => '#'.$ticket->id.' '.$ticket->subject,
+			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+			'title' => trans('panichd::lang.ticket-status-link-title'),
+			'old_agent' => $old_agent->name,
+			'new_agent' => $new_agent->name
+		]));
+		
+		return redirect()->route(Setting::grab('main_route') . ($ticket->isComplete() ? '-complete' : ($old_status_id == Setting::grab('default_status_id') ? '-newest' : '.index')));	
 	}
 
 	/*
@@ -1447,28 +1448,28 @@ class TicketsController extends Controller
 	public function changePriority(Request $request){
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$old_priority = $ticket->priority()->first();		
-		$new_priority = Models\Priority::findOrFail($request->input('priority_id'));
+		$new_priority = Models\Priority::find($request->input('priority_id'));
 		
-		if ($ticket->priority_id==$request->input('priority_id')){
+		if (is_null($new_priority) || $ticket->priority_id==$request->input('priority_id')){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-priority-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
 			]));
-		}else{
-			$ticket->priority_id = $request->input('priority_id');
-			$ticket->save();
-			
-			session()->flash('status', trans('panichd::lang.update-priority-ok', [
-				'name' => '#'.$ticket->id.' '.$ticket->subject,
-				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-				'title' => trans('panichd::lang.ticket-status-link-title'),
-				'old' => $old_priority->name,
-				'new' => $new_priority->name
-			]));
-			
-			return redirect()->route(Setting::grab('main_route').'.index');
-		}		
+		}
+		
+		$ticket->priority_id = $request->input('priority_id');
+		$ticket->save();
+		
+		session()->flash('status', trans('panichd::lang.update-priority-ok', [
+			'name' => '#'.$ticket->id.' '.$ticket->subject,
+			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+			'title' => trans('panichd::lang.ticket-status-link-title'),
+			'old' => $old_priority->name,
+			'new' => $new_priority->name
+		]));
+		
+		return redirect()->route(Setting::grab('main_route') . ($ticket->isComplete() ? '-complete' : ($ticket->status_id == Setting::grab('default_status_id') ? '-newest' : '.index')));		
 	}
 	
 	/**
