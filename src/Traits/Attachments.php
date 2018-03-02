@@ -23,7 +23,7 @@ trait Attachments
 	{
 		
 		// Html field without embedded image <img> tags
-		if (!preg_match('/<img[^>]*src="data:image\/png;base64,/', $html)){
+		if (!preg_match('/src="data:image\/png;base64,/', $html)){
 			return [
 				'html' => $html,
 				'count' => 0
