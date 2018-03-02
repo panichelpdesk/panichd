@@ -227,15 +227,18 @@ class CommentsController extends Controller
 		// Update comment
 		$comment = Models\Comment::findOrFail($id);
 		$original_comment = clone $comment;
+		$ticket = Models\Ticket::findOrFail($comment->ticket_id);
 		
 		DB::beginTransaction();
 		$comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 		
 		$comment->save();
-		$ticket = Models\Ticket::findOrFail($comment->ticket_id);
+		
+		// Create attachments from embedded images
 		$category_level = $member->levelInCategory($ticket->category_id);
 		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
+		$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
 		
 		$ticket->touch();
 		
