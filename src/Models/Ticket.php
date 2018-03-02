@@ -270,37 +270,43 @@ class Ticket extends Model
 	 * Improves Carbon diffForHumans to specify yesterday, today and tomorrow dates
 	 *
 	 * @param $date Eloquent property from timestamp field
+	 * @param $distant_dates_text boolean (distant dates show date info as descriptive text or date)
 	 *
 	 * @return string
 	*/
-	public function getDateForHumans($date, $descriptive = false)
+	public function getDateForHumans($date, $distant_dates_text = false)
 	{		
+		if ($date == ""){
+			// This is an empty limit_date
+			$date = $this->start_date;
+		}
+		
 		$parsed = Carbon::parse($date);
-		$date_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
+		$now_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
 		$date_text = "";
 		$time = date('H:i', strtotime($date));
 		if ($this->limit_date and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
 			$time = date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
 		}
 		
-		if ($date_diff == -1){
+		if ($now_diff == -1){
 			$date_text = trans('panichd::lang.yesterday') . ", " . $time;
-		}elseif ($date_diff === 0){
+		}elseif ($now_diff === 0){
 			$date_text = trans('panichd::lang.today') . ", " . $time;
-		}elseif ($date_diff == 1){
+		}elseif ($now_diff == 1){
 			$date_text = trans('panichd::lang.tomorrow') . ", " . $time;
-		}elseif ($date_diff > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) > 0){
+		}elseif ($now_diff > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) > 0){
 			// This week
 			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . ", " . $time;
 		}else{
 			// Older than yesterday or after this week
-			if ($descriptive){
+			if ($distant_dates_text){
 				$date_text = Carbon::parse($date)->diffForHumans();
 			}else{
 				$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
 				
 				// Future only
-				if($date_diff > 1) $date_text.=", " . $time;
+				if($now_diff > 1) $date_text.=", " . $time;
 			}
 		}
 			

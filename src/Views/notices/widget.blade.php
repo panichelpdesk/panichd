@@ -21,7 +21,7 @@
 				@endif
 				{{ $notice->intervention }}</p>
 				@foreach ($notice->tags as $tag)
-                    <button class="btn btn-default btn-tag" style="pointer-events: none; background-color: {{ $tag->bg_color }}; color: {{ $tag->text_color }}">{{ $tag->name }}</button>
+                    <button class="btn btn-default btn-xs btn-tag" style="border: none; pointer-events: none; background-color: {{ $tag->bg_color }}; color: {{ $tag->text_color }}">{{ $tag->name }}</button>
                 @endforeach
 				</td>
 				</tr>				
