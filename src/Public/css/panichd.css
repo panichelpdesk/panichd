@@ -349,6 +349,15 @@ h1, h2, h3, h4, h5, h6 {
 	color: #bbb;
 }
 
+/* priority and agent change */
+.popover .popover-title button {
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 2em;
+	margin: -8px -8px 0px 0px;
+}
+
 /* Ticket field error */
 .jquery_error_text {
 	display: none;

@@ -233,7 +233,7 @@ class TicketsController extends Controller
 			foreach ($cat['agents'] as $agent){
 				$html.='<label><input type="radio" name="%1$s_agent" value="'.$agent['id'].'"> '.$agent['name'].'</label><br />';
 			}
-			$html.='<br /><button type="button" class="submit_agent_popover" data-ticket-id="%1$s">'.trans('panichd::lang.btn-change').'</button></div>';
+			$html.='<br /><button type="button" class="btn btn-default btn-sm submit_agent_popover" data-ticket-id="%1$s">'.trans('panichd::lang.btn-change').'</button></div>';
 			$a_cat[$cat['id']]['html']=$html;
 		}
 		
@@ -241,14 +241,14 @@ class TicketsController extends Controller
 		$collection->editColumn('agent', function ($ticket) use($a_cat) {
 			$count = $a_cat[$ticket->category_id]['agents_count'];			
 			
-            $text = '<a href="#" class="'.($count>4 ? 'jquery_agent_change_modal' : ($count == 1 ? 'tooltip-info' : 'jquery_popover')).'" ';
-			
 			if($count>4){
-				$text.= ' title="'.trans('panichd::lang.table-change-agent').'"';
+				$text = '<a href="#" class="jquery_agent_change_modal" title="'.trans('panichd::lang.table-change-agent').'"';
 			}elseif($count==1){
-				$text.= ' title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+				$text = '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
 			}else{
-				$text.= ' title="'.trans('panichd::lang.agents').'" data-toggle="popover" data-placement="auto bottom" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" ';
+				$text = '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
+					.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
+					.trans('panichd::lang.agents').'" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" data-tooltip-title="'.trans('panichd::lang.agents').'" ';
 			}
 			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
 				
@@ -264,9 +264,11 @@ class TicketsController extends Controller
 			}
 			
 			$html = '<div>'.$html.'</div><br />'
-				.'<button type="button" class="submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
+				.'<button type="button" class="btn btn-default btn-sm submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
 
-            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'.trans('panichd::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
+            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
+				.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
+				.trans('panichd::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
         });
 		
 		$collection->editColumn('owner_name', function ($ticket) {

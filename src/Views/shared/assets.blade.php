@@ -25,7 +25,7 @@
 
 </style>
 
-<link href="{{ asset('/vendor/panichd/css/panichd.css') }}?v=20180228" rel="stylesheet">
+<link href="{{ asset('/vendor/panichd/css/panichd.css') }}?v=201800302" rel="stylesheet">
 
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-3.2.1.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-ui-1.12.1.min.js')}}"></script>
