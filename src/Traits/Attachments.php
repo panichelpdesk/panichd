@@ -21,7 +21,9 @@ trait Attachments
 	*/
 	protected function createAttachmentsFrom($html, $ticket, $comment = false, $count = 0)
 	{
-		if ($html == ""){
+		
+		// Html field without embedded image <img> tags
+		if (!preg_match('/<img[^>]*src="data:image\/png;base64,/', $html)){
 			return [
 				'html' => $html,
 				'count' => 0
@@ -29,8 +31,15 @@ trait Attachments
 		}
 		
 		$dom = new \DomDocument();
-
-        $dom->loadHtml( mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);    
+		
+		// Exit when loadHtml doesn't process correctly
+        if (@!$dom->loadHtml( mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD)){
+			\Log::info('ticket '.$ticket->id.' loadHtml error');
+			return [
+				'html' => $html,
+				'count' => 0
+			];
+		}
 
         $images = $dom->getElementsByTagName('img');
 		
@@ -38,10 +47,15 @@ trait Attachments
         foreach($images as $k => $node){
 			$i++;
 
-			if (in_array($node->getAttribute('class'), ['summernote_embedded_image', 'summernote_thumbnail_image'])){
+			if (preg_match('/summernote_embedded_image|summernote_thumbnail_image/', $node->getAttribute('class'))){
 				// Image has been processed before. Don't need to do anything with it
 				
+			}elseif(!preg_match('/^data:image\/png;base64,/', $node->getAttribute('src'))){
+				// Image src is not of base64 type
+				
 			}else{
+				// Image is base64
+				
 				// Read image dimensions
 				$data = $node->getAttribute('src');
 				list($type, $data) = explode(';', $data);
@@ -51,6 +65,7 @@ trait Attachments
 				if ($img->width() < 380 and $img->height() < 300){
 					// Image is small and will not be processed again
 					$node->setAttribute('class', 'summernote_embedded_image');
+					
 				}else{
 					// Create filename
 					$original_filename = 'embedded_image_'.($i+$count).'.png';
