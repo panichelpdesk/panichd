@@ -65,7 +65,14 @@ class Ticket extends Model
      */
     public function scopeActive($query)
     {
-        return $query->whereNull('completed_at')->where('status_id', '!=', Setting::grab('default_status_id'));
+        $query = $query->whereNull('completed_at');
+		
+		$member = Member::findOrFail(auth()->user()->id);
+		if ($member->currentLevel() >= 2){
+			return $query->where('status_id', '!=', Setting::grab('default_status_id'));
+		}else{
+			return $query;
+		}
     }
 	
     /**
@@ -510,7 +517,7 @@ class Ticket extends Model
     public function scopeVisibleForAgent($query, $id = false)
     {
         if (!$id) $id = auth()->user()->id;
-		$agent = Member::findOrFail($id);		
+		$agent = Member::findOrFail($id);
 		
 		if ($agent->currentLevel() == 2) {
 			// Depends on agent_restrict
