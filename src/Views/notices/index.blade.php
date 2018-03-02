@@ -38,7 +38,7 @@
 					<tr>
 					<td>{{ $notice->id }}</td>
 					<td style="color: {{ $notice->status->color }}">{{ $notice->status->name }}</td>
-					<td style="width: 14em;">{!! $notice->getDateForHumans($notice->limit_date) !!}</td>
+					<td style="width: 14em;">{!! $notice->getDateForHumans('limit_date', true) !!}</td>
 					<td>{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}</td>
 					<td>{{ $notice->content }}
 					@if ($notice->all_attachments_count>0)

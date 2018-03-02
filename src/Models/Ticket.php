@@ -274,30 +274,33 @@ class Ticket extends Model
 	 *
 	 * @return string
 	*/
-	public function getDateForHumans($date, $distant_dates_text = false)
+	public function getDateForHumans($date_field, $distant_dates_text = false)
 	{		
-		if ($date == ""){
+		if ($date_field == "limit_date" and $this->limit_date == ""){
 			// This is an empty limit_date
 			$date = $this->start_date;
+		}else{
+			$date = $this->$date_field;
 		}
 		
 		$parsed = Carbon::parse($date);
 		$now_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
 		$date_text = "";
-		$time = date('H:i', strtotime($date));
-		if ($this->limit_date and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
-			$time = date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
+		$time = ", " . date('H:i', strtotime($date));
+		
+		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
+			$time = ", " . date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
 		}
 		
 		if ($now_diff == -1){
-			$date_text = trans('panichd::lang.yesterday') . ", " . $time;
+			$date_text = trans('panichd::lang.yesterday') . $time;
 		}elseif ($now_diff === 0){
-			$date_text = trans('panichd::lang.today') . ", " . $time;
+			$date_text = trans('panichd::lang.today') . $time;
 		}elseif ($now_diff == 1){
-			$date_text = trans('panichd::lang.tomorrow') . ", " . $time;
+			$date_text = trans('panichd::lang.tomorrow') . $time;
 		}elseif ($now_diff > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) > 0){
 			// This week
-			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . ", " . $time;
+			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . $time;
 		}else{
 			// Older than yesterday or after this week
 			if ($distant_dates_text){
@@ -306,7 +309,7 @@ class Ticket extends Model
 				$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
 				
 				// Future only
-				if($now_diff > 1) $date_text.=", " . $time;
+				if($now_diff > 1) $date_text.=$time;
 			}
 		}
 			
@@ -320,7 +323,7 @@ class Ticket extends Model
 	*/
 	public function getCalendarInfo($question_sign = false, $show = 'field')
 	{
-		$date = $title = $icon = "";
+		$date_field = $title = $icon = "";
 		$color = "text-muted";
 		$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->start_date)->startOfDay(), false);			
 		if ($this->limit_date != ""){
@@ -334,11 +337,11 @@ class Ticket extends Model
 					
 		if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
 			// Expired
-			$date = $this->limit_date;
+			$date_field = 'limit_date';
 			if ($limit_days_diff == 0){
-				$title = trans('panichd::lang.calendar-expired-today', ['time' => date('H:i', strtotime($date))]);
+				$title = trans('panichd::lang.calendar-expired-today', ['time' => date('H:i', strtotime($this->limit_date))]);
 			}else{
-				$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date, true)]);
+				$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date_field, true)]);
 			}
 			
 			$icon = "glyphicon-exclamation-sign";
@@ -346,7 +349,7 @@ class Ticket extends Model
 		}elseif($limit_days_diff > 0 or $limit_days_diff === false){
 			if ($start_days_diff > 0){
 				// Scheduled
-				$date = $this->start_date;
+				$date_field = 'start_date';
 				if ($limit_days_diff){
 					if ($start_days_diff == $limit_days_diff){
 						$title = trans('panichd::lang.calendar-scheduled', [
@@ -356,39 +359,39 @@ class Ticket extends Model
 						]);
 					}else{
 						$title = trans('panichd::lang.calendar-scheduled-period', [
-							'date1' => $this->getDateForHumans($date),
-							'date2' => $this->getDateForHumans($this->limit_date)]);
+							'date1' => $this->getDateForHumans('start_date'),
+							'date2' => $this->getDateForHumans('limit_date')]);
 					}
 					$icon = $start_days_diff == 1 ? "glyphicon-time" : "glyphicon-calendar";
 					$color = "text-info";
 				}else{
-					$title = trans('panichd::lang.calendar-active-future', ['description' => $this->getDateForHumans($date, true)]);
+					$title = trans('panichd::lang.calendar-active-future', ['description' => $this->getDateForHumans($date_field, true)]);
 					$icon = "glyphicon-file";
 				}										
 				
 			}elseif($limit_days_diff){
 				// Active with limit
-				$date = $this->limit_date;
-				$title = trans('panichd::lang.calendar-expiration', ['description' => $this->getDateForHumans($date, true)]);
+				$date_field = 'limit_date';
+				$title = trans('panichd::lang.calendar-expiration', ['description' => $this->getDateForHumans($date_field, true)]);
 				$icon = "glyphicon-time";
 				$color = "text-info";
 			}else{
 				// Active without limit
-				$date = $this->start_date;
+				$date_field = 'start_date';
 				if ($start_days_diff == 0){
-					$title = trans('panichd::lang.calendar-active-today', ['description' => $this->getDateForHumans($date, true)]);
+					$title = trans('panichd::lang.calendar-active-today', ['description' => $this->getDateForHumans($date_field, true)]);
 				}else{
-					$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date, true)]);
+					$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date_field, true)]);
 				}
 				
 				$icon = "glyphicon-file";					
 			}				
 		}else{
 			// Due today
-			$date = $this->limit_date;
+			$date_field = 'limit_date';
 			if(Carbon::now()->diffInSeconds(Carbon::parse($this->start_date), false) < 0){
 				// Already started
-				$title = trans('panichd::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($date))]);
+				$title = trans('panichd::lang.calendar-expires-today', ['hour' => date('H:i', strtotime($this->limit_date))]);
 			}else{
 				// Scheduled for today but not yet started
 				$title = trans('panichd::lang.calendar-scheduled-today', [
@@ -406,7 +409,7 @@ class Ticket extends Model
 			return $title;
 		}else{
 			// Full field
-			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> ".$this->getDateForHumans($date)." ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
+			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> ".$this->getDateForHumans($date_field)." ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
 		}
 	}
 	
