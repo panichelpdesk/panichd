@@ -85,6 +85,7 @@ return [
   'filter-calendar'                  => 'Agenda',
   'filter-calendar-all'              => 'Tot',
   'filter-calendar-expired'          => 'Caducats',
+  'filter-calendar-not-scheduled'    => 'No prog.',
   'filter-calendar-today'            => 'Per avui',
   'filter-calendar-tomorrow'         => 'Per demà',
   'filter-calendar-week'             => 'Aquesta setmana',

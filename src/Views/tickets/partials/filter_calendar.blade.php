@@ -38,6 +38,11 @@ if ($setting->grab('calendar_month_filter')){
 	];
 }
 
+$cld_options['not-scheduled'] = [
+	'class' => 'text-default',
+	'icon' => 'glyphicon-file'
+];
+
 ?>
 @foreach ($counts['calendar'] as $cld=>$count)			
 	<?php $text_cld.='<li><a href="'.url($setting->grab('main_route').'/filter/calendar/'.$cld).'">';

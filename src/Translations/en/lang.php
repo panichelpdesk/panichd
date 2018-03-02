@@ -85,6 +85,7 @@ return [
   'filter-calendar'                  => 'Calendar',
   'filter-calendar-all'              => 'All',
   'filter-calendar-expired'          => 'Expired',
+  'filter-calendar-not-scheduled'    => 'Unscheduled',
   'filter-calendar-today'            => 'Expires today',
   'filter-calendar-tomorrow'         => 'Expires tomorrow',
   'filter-calendar-week'             => 'This week',

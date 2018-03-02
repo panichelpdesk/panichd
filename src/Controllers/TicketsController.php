@@ -427,6 +427,10 @@ class TicketsController extends Controller
 					});
 				}
 				
+				// Tickets without limit_date
+				$not_scheduled = clone $tickets;
+				$a_cal['not-scheduled'] = $not_scheduled->whereNull('limit_date');
+				
 				// Builder with calendar filter
 				$tickets->filtered($ticketList, 'calendar');
 				

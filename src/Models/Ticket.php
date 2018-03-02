@@ -569,6 +569,9 @@ class Ticket extends Model
 						if ($calendar_filter == "expired"){
 							// Expired tickets
 							$query = $query->where('limit_date', '<', Carbon::now());
+						}elseif($calendar_filter == "not-scheduled"){
+							// Not scheduled tickets
+							$query = $query->whereNull('limit_date');
 						}else{										
 							// All non expired tickets
 							$query = $query->where('limit_date', '>=', Carbon::now()->today());
