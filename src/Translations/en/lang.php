@@ -160,6 +160,7 @@ return [
   'today'                            => 'Today',
   'tomorrow'                         => 'Tomorrow',
   'update'                           => 'Update',
+  'updated-date'                     => 'Updated :date',
   'user'                             => 'User',
   'year'                             => 'Year',
   'yes'                              => 'Yes',
