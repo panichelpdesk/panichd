@@ -729,7 +729,7 @@ class TicketsController extends Controller
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
 			if ($request->has('start_date')){
-				\Datetime::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('start_date'));
+				\Datetime::createFromFormat(trans('panichd::lang.datetime-format'), $request->input('start_date'));
 				$errors = \DateTime::getLastErrors();
 				if (isset($errors['warnings']) and isset($errors['errors']) and ($errors['warnings'] or $errors['errors'])){
 					$date_error = trans('panichd::lang.validate-ticket-start_date-format', ['format' => trans('panichd::lang.datetimepicker-format')]);
@@ -738,7 +738,7 @@ class TicketsController extends Controller
 						'fields' => ['start_date' => $date_error]
 					]);
 				}else{
-					$start_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('start_date'));
+					$start_date = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $request->input('start_date'));
 					
 					$plus_10_y = date('Y', time())+10;
 				
@@ -754,7 +754,7 @@ class TicketsController extends Controller
 			}
 			
 			if ($request->has('limit_date')){
-				\Datetime::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
+				\Datetime::createFromFormat(trans('panichd::lang.datetime-format'), $request->input('limit_date'));
 				$errors = \DateTime::getLastErrors();
 				
 				if (isset($errors['warnings']) and isset($errors['errors']) and ($errors['warnings'] or $errors['errors'])){
@@ -764,7 +764,7 @@ class TicketsController extends Controller
 						'fields' => ['limit_date' => $date_error]
 					]);
 				}else{
-					$limit_date = Carbon::createFromFormat(trans('panichd::lang.datetimepicker-validation'), $request->input('limit_date'));
+					$limit_date = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $request->input('limit_date'));
 					$plus_10_y = date('Y', time())+10;
 					
 					

@@ -169,9 +169,11 @@ return [
 
     'date-format' => 'Y-m-d',
 
-    'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
+    'datetime-format' => 'Y-m-d H: i',
+	
+	'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
 
-    'datetimepicker-validation' => 'Y-m-d H: i',
+    
 
     'date-info-created' => 'Data de criação',
 

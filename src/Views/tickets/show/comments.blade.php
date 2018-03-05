@@ -57,7 +57,9 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $comment_title }}"><span class="glyphicons glyphicon {{ $glyphicon }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
-					<span class="pull-right">
+					<span class="pull-right tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.creation-date', [
+						'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
+					]) }}">
 					@if ($comment->created_at!=$comment->updated_at)
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: gray"></span>
 					@endif
