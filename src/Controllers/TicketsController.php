@@ -79,6 +79,7 @@ class TicketsController extends Controller
 		
 		$a_select = [
 			'panichd_tickets.id',
+			'panichd_tickets.created_at',
 			'panichd_tickets.subject AS subject',
 			'panichd_tickets.hidden as hidden',
 			'panichd_tickets.content AS content',
@@ -162,7 +163,15 @@ class TicketsController extends Controller
     {
 
 		// Column edits
-        $collection->editColumn('subject', function ($ticket) {
+        $collection->editColumn('id', function ($ticket) {
+			return '<div class="tooltip-wrap-15">'
+				.'<div class="tooltip-info" data-toggle="tooltip" title="'
+				.trans('panichd::lang.creation-date', ['date' => Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))])
+				.'">'.$ticket->id
+				.'</div></div>';
+		});
+		
+		$collection->editColumn('subject', function ($ticket) {
             $field=(string) link_to_route(
 					Setting::grab('main_route').'.show',
 					$ticket->subject,
@@ -212,7 +221,9 @@ class TicketsController extends Controller
         });
 		
 		$collection->editColumn('updated_at', function ($ticket){
-			return '<div class="tooltip-info" data-toggle="tooltip" title="'.Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans().'" style="width: 3em;">'.$ticket->getUpdatedAbbr().'</div>';
+			return '<div class="tooltip-info" data-toggle="tooltip" title="'
+				.trans('panichd::lang.updated-date', ['date' => Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans()])
+				.'" style="width: 3em;">'.$ticket->getUpdatedAbbr().'</div>';
 		});
 
 		// Agents for each category

@@ -159,6 +159,7 @@ return [
   'today'                            => 'Avui',
   'tomorrow'                         => 'Demà',
   'update'                           => 'Actualitzar',
+  'updated-date'                     => 'Actualitzat :date',
   'user'                             => 'Usuari',
   'year'                             => 'Any',
   'yes'                              => 'Sí',

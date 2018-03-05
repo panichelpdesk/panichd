@@ -13,7 +13,8 @@
       @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
 
     body {
-        -webkit-font-smoothing:antialiased;
+        font-family: sans-serif;
+		-webkit-font-smoothing:antialiased;
         -webkit-text-size-adjust:none;
         width: 100%;
         height: 100%;        
