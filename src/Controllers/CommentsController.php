@@ -130,21 +130,17 @@ class CommentsController extends Controller
 		
 		$create_list_comment = false;
 		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id'))){
-			// Agent response types
-			if ($request->get('response_type') == 'reply' and $member->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
-				if ($ticket->user_id == $member->id){
+			// Filter response type
+			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
+			
+			if ($request->has('complete_ticket') and $member->canCloseTicket($request->get('ticket_id'))){
+				if ($comment->type == 'reply' and $ticket->user_id == $member->id){
 					// comment for assigned agent only
 					$comment->type = 'completetx';
 				}else{
-					// Comment for everyone
-					$comment->type = 'reply';
-					
 					// Additional "close" comment entry
 					$create_list_comment = true;
 				}
-				
-			}else{
-				$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 			}
 		}else
 			$comment->type = 'reply';
