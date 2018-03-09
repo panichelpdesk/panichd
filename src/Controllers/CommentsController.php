@@ -128,10 +128,21 @@ class CommentsController extends Controller
 			));
 		}
 		
+		$create_list_comment = false;
 		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id'))){
 			// Agent response types
 			if ($request->get('response_type') == 'reply' and $member->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
-				$comment->type = 'completetx';
+				if ($ticket->user_id == $member->id){
+					// comment for assigned agent only
+					$comment->type = 'completetx';
+				}else{
+					// Comment for everyone
+					$comment->type = 'reply';
+					
+					// Additional "close" comment entry
+					$create_list_comment = true;
+				}
+				
 			}else{
 				$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 			}
@@ -149,6 +160,17 @@ class CommentsController extends Controller
 		$comment->content = $a_content['content'];
         $comment->html = $a_content['html'];
 		$comment->save();
+		
+		// Create additional list comment if has('complete_ticket') but $member != auth()
+		if ($create_list_comment){
+			$list_comment = new Models\Comment;
+			$list_comment->type = "complete";
+			
+			$list_comment->content = $list_comment->html = '';
+			$list_comment->ticket_id = $request->get('ticket_id');
+			$list_comment->user_id = $member->id;
+			$list_comment->save();
+		}
 		
 		// Create attachments from embedded images
 		$this->embedded_images_to_attachments($permission_level, $ticket, $comment);

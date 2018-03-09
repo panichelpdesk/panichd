@@ -1036,7 +1036,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 		
-        $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('created_at','desc')->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('panichd::tickets.show',
             compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
@@ -1325,10 +1325,10 @@ class TicketsController extends Controller
 		if ($ticket->completed_at != ''){
 			if ($member->currentLevel()>1){ 
 				$comment->type = "complete";
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title');
+				$comment->content = $comment->html = '';
 			}else{
 				$comment->type = "completetx";
-				$comment->content = $comment->html = trans('panichd::lang.comment-complete-title') . ($member_reason ? trans('panichd::lang.colon').$member_reason : '');
+				$comment->content = $comment->html = trans('panichd::lang.comment-completetx-title') . ($member_reason ? trans('panichd::lang.colon').$member_reason : '');
 							
 				if ($a_clarification and $a_clarification['content'] != ""){
 					$comment->content = $comment->content . ' ' . trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon') . $a_clarification['content'];
