@@ -24,6 +24,11 @@
 			
 			ajax_form_submit($(this));
 		});
+		
+		// Make modal windows draggable
+		$(".modal-dialog").draggable({
+			handle: ".modal-header"
+		});
 	});
 	
 	function ajax_form_submit(_this)
