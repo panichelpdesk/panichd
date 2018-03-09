@@ -90,15 +90,17 @@
 				@else
 					<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
 				@endif
-					
+				
+				@php
+					\Carbon\Carbon::setLocale(config('app.locale'));
+				@endphp
+				
 				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('panichd::lang.priority') }}</strong>{{ trans('panichd::lang.colon') }}
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
 					</span>
-					@php
-						\Carbon\Carbon::setLocale(config('app.locale'));
-					@endphp
+					
 					<br />
 					@if ($ticket->isComplete())
 						<strong>{{ trans('panichd::lang.start-date') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getDateForHumans('start_date') !!}

@@ -61,7 +61,7 @@
 								<div class="col-lg-12" style="display: none;">
 								<label><input type="checkbox" id="add_to_intervention" name="add_to_intervention" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-intervention') }}</label>
 								</div>
-								@if ($u->canCloseTicket($ticket->id))
+								@if ($u->canCloseTicket($ticket->id) && !$ticket->isComplete())
 									<div class="col-lg-12">
 									<label><input type="checkbox" name="complete_ticket" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-resolve') . trans('panichd::lang.colon')}}</label>
 									&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
