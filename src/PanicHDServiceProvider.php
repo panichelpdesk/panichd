@@ -49,7 +49,7 @@ class PanicHDServiceProvider extends ServiceProvider
                 'middleware' => $authMiddleware,
                 'as'         => 'panichd.install.setup',
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@setup',
-            ]);
+            ]);		
 			
 			Route::post('/panichd/upgrade', [
                 'middleware' => $authMiddleware,
@@ -66,7 +66,7 @@ class PanicHDServiceProvider extends ServiceProvider
 		$installer = new InstallController();
 		
         // if a migration or new setting is missing scape to the installation
-        if (empty($installer->inactiveMigrations()) && !$installer->inactiveSettings()) {
+        if ($installer->isUpdated()) {
             // Send the Agent User model to the view under $u
             // Send settings to views under $setting
 

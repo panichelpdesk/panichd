@@ -111,6 +111,16 @@ class InstallController extends Controller
 			|| count($this->migrations_tables) == count($this->inactiveMigrations())
             || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations()) ) ? false : true;
 	}
+	
+	/**
+	 * Check if PanicHD is up to date
+	 *
+	 * @Return bool
+	*/
+	public function isUpdated()
+	{
+		return (empty($this->inactiveMigrations()) && !$this->inactiveSettings()) ? true : false;
+	}
 
     /*
      * Installation setup
