@@ -35,21 +35,22 @@ return [
 	'package-requires-update'         => 'Panic Help Desk requires to <b>configure an upgrade</b>',
 	'package-requires-update-info'    => 'The administrator has installed a Panic Help Desk upgrade but has not finished configuring it. Please wait until the process has ended',
 	
+	'status-updated'                  => 'The package is up to date and <b>Online</b> right now',
 	'status-out-of-date'              => '<b>Current status: Offline</b> until the the upgrade is configured',
-	'about-to-update'                 => 'This is the Panic Help Desk <b>upgrade menu</b>',
+	'about-to-update'                 => 'Upgrade menu',
 	'about-to-update-description'     => 'Once you click on the "Upgrade now" button, the following changes are going to be done:',
-	'all-tables-migrated'             => 'There are no pending database updates, so no migration will be executed',
+	'all-tables-migrated'             => 'All database modifications are already installed. No changes to do here',
 	
 	'optional-config'                 => 'Optional configuration',
-	'choose-public-folder-action'     => 'Have you done any modifications to the files at Laravel\'s "public/vendor/panichd" folder? Do you want to backup it?',
-	'public-folder-destroy'           => 'No (Recommended option)',
-	'public-folder-backup'            => 'Yes. Make a directory backup before copying the new files',
+	'choose-public-folder-action'     => 'Do you want to backup "public/vendor/panichd" folder before it is reinstalled? (Needed if you have you done any modifications on it\'s files)',
+	'public-folder-destroy'           => 'No',
+	'public-folder-backup'            => 'Yes (A backup folder will be created inside "public/vendor")',
 	
 	'upgrade-now'                     => 'Upgrade now!',
 	
 	'upgrade-done'                    => 'The upgrade has finished correctly',
 	
-		'pending-settings'                => 'There are still some <b>configurations pending</b>',
+	'pending-settings'                => 'There are still some <b>configurations pending</b>',
 	'pending-settings-description'    => 'Before you can add new tickets, you must ensure that you have at least one status, priority, category and an agent assigned to it.',
 	
 	'master-template-file'            => 'Master template file',
@@ -57,7 +58,8 @@ return [
     'master-template-other-path-ex'   => 'ex. views/layouts/app.blade.php',
     'migrations-to-be-installed'      => 'These migrations will be installed:',
     'another-file'                    => 'another File',
-    'upgrade'                         => 'Panic Help Desk version upgrade', // New v0.2.3
-    'settings-to-be-installed'        => 'These settings will be installed:', // New v0.2.3
-    'all-settings-installed'          => 'All needed settings are installed', // New v0.2.3
+    'upgrade'                         => 'Panic Help Desk version upgrade',
+    'settings-to-be-installed'        => 'These settings will be installed:',
+    'all-settings-installed'          => 'All needed configuration settings are registered. No changes to do here',
+	'public-folder-will-be-replaced'  => 'The public/vendor/panichd folder content will be <b>deleted and reinstalled</b>',
 ];

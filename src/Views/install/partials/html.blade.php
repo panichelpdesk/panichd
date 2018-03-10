@@ -24,7 +24,7 @@
 	<div class="page-header" style="margin: 20px 0px 10px 0px;">
 		<div class="row">
 			<div class="col-md-6 col-sm-5"><h1>{{ trans('panichd::install.main-title') }}</h1></div>
-			<div class="col-md-6 col-sm-7"><div class="text-warning pull-right" style="margin: 2em 0em 0em 0em;">@yield('current_status')</div></div>
+			<div class="col-md-6 col-sm-7"><div class="pull-right" style="margin: 2em 0em 0em 0em;">@yield('current_status')</div></div>
 		</div>
 		
 	</div>

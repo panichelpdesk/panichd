@@ -49,7 +49,13 @@ class PanicHDServiceProvider extends ServiceProvider
                 'middleware' => $authMiddleware,
                 'as'         => 'panichd.install.setup',
                 'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@setup',
-            ]);		
+            ]);
+			
+			Route::get('/panichd/upgrade', [
+                'middleware' => $authMiddleware,
+                'as'         => 'panichd.install.upgrade_menu',
+                'uses'       => 'PanicHD\PanicHD\Controllers\InstallController@upgrade_menu',
+            ]);			
 			
 			Route::post('/panichd/upgrade', [
                 'middleware' => $authMiddleware,

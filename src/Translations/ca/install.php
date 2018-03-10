@@ -35,15 +35,16 @@ return [
 	'package-requires-update'         => 'Panic Help Desk requereix <b>configurar una actualització</b>',
 	'package-requires-update-info'    => 'L\'Administrador ha instal·lat una actualització de Panic Help Desk però no ha acabat de configurar-la. Si us plau espera que el procés hagi acabat',
 	
+	'status-updated'                  => 'La llibreria està actualitzada i <b>En línia</b> ara mateix',
 	'status-out-of-date'              => '<b>Estat actual: Fora de línia</b> fins que s\'instal·li la darrera actualització',
 	'about-to-update'                 => 'Aquest és el <b>menú d\'actualització</b> de Panic Help Desk',
 	'about-to-update-description'     => 'Un cop facis clic al botó "Actualitzar ara", es farà els següents canvis:',
-	'all-tables-migrated'             => 'No hi ha actualitzacions pendents de la base de dades així que no s\'executarà cap migració.',
+	'all-tables-migrated'             => 'Totes les modificacions de la base de dades ja estan instal·lades. No es farà canvis.',
 	
 	'optional-config'                 => 'Configuració opcional',
-	'choose-public-folder-action'     => 'Has fet modificacions als fitxers del directori "public/vendor/panichd"? Vols fer-ne una còpia de seguretat?',
-	'public-folder-destroy'           => 'No (Opció recomanada)',
-	'public-folder-backup'            => 'Si. Fer còpia de seguretat del directori abans de copiar els fitxers nous',
+	'choose-public-folder-action'     => 'Vols fer una còpia de seguretat del directori "public/vendor/panichd" abans de reinstal·lar-lo? (Necessari només si has fet modificacions als fitxers que hi ha)',
+	'public-folder-destroy'           => 'No',
+	'public-folder-backup'            => 'Si (Es crearà una còpia de seguretat a "public/vendor")',
 	
 	'upgrade-now'                     => 'Actualitzar ara!',
 	
@@ -59,5 +60,6 @@ return [
     'another-file'                    => 'un altre arxiu',
     'upgrade'                         => 'Actualització de la versió de Panic Help Desk',
     'settings-to-be-installed'        => 'S\'instal·laran aquests ajustos:',
-    'all-settings-installed'          => 'Tots els ajustos necessaris estan instal·lats',
+    'all-settings-installed'          => 'Ja hi ha registrats tots els paràmetres de configuració. No es farà canvis',
+	'public-folder-will-be-replaced'  => '<b>S\'eliminarà i es reinstal·larà</b> el contingut del directori public/vendor/panichd',
 ];

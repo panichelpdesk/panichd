@@ -1,7 +1,11 @@
 @extends('panichd::install.partials.html')
 
 @section('current_status')
-	<span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-out-of-date') !!}
+	@if ($isUpdated)
+		<span class="text-success"><span class="glyphicon glyphicon-ok" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-updated') !!}</span>
+	@else
+		<span class="text-warning"><span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-out-of-date') !!}</span>
+	@endif
 @stop
 
 @section('content')
@@ -30,6 +34,7 @@
 			@endforeach
 		</ul>
 	@endif
+		<li>{!! trans('panichd::install.public-folder-will-be-replaced') !!}</li>
 	</ol>
     
 	<form class="form-horizontal" action="{{url('/panichd/upgrade') }}" method="post">

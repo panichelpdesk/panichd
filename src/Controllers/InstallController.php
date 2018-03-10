@@ -78,27 +78,42 @@ class InstallController extends Controller
 				}
 				
 				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit', 'quickstart'));
-			}else{
-				$inactive_settings = $this->inactiveSettings();
-				
-				if($inactive_settings and count($inactive_settings) > 0){
-					// Panic Help Desk requires an upgrade
-					if (Member::isAdmin()){
-						return view('panichd::install.upgrade', compact('inactive_migrations', 'inactive_settings'));
-					}else{
-						return view('panichd::install.status', [
-							'title' => trans('panichd::install.package-requires-update'),
-							'description' => trans('panichd::install.package-requires-update-info'),
-						]);
-					}
-					
+			}elseif(!$this->isUpdated()){
+				// Panic Help Desk requires an upgrade
+				if (Member::isAdmin()){
+					return view('panichd::install.upgrade', [
+						'inactive_migrations' => $inactive_migrations,
+						'inactive_settings' => $this->inactiveSettings(),
+						'isUpdated' => false
+					]);
 				}else{
-					// Panic Help Desk installed and configured. Go to stats page
-					return redirect()->route('dashboard');
+					return view('panichd::install.status', [
+						'title' => trans('panichd::install.package-requires-update'),
+						'description' => trans('panichd::install.package-requires-update-info'),
+					]);
 				}
+			}else{
+				// Panic Help Desk installed and up to date. Go to stats page
+				return redirect()->route('dashboard');
 			}
 		}
     }
+	
+	/**
+	 * Displays the upgrade menu although there isn't any pending action
+	*/
+	public function upgrade_menu()
+	{
+		if (!$this->isInstalled() or !Member::isAdmin()){
+			return redirect()->route('panichd.install.setup');
+		}
+		
+		return view('panichd::install.upgrade', [
+			'inactive_migrations' => $this->inactiveMigrations(),
+			'inactive_settings' => $this->inactiveSettings(),
+			'isUpdated' => $this->isUpdated()
+		]);
+	}
 	
 	/**
 	 * Check if PanicHD is installed
