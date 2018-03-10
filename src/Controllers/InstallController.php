@@ -19,6 +19,8 @@ use PanicHD\PanicHD\Seeds\DemoDataSeeder;
 class InstallController extends Controller
 {
     public $migrations_tables = [];
+	public $inactive_migrations = false;
+	public $a_inactive_migrations = [];
 
     public function __construct()
     {
@@ -65,12 +67,9 @@ class InstallController extends Controller
 			
 			$inactive_migrations = $this->inactiveMigrations();
 			
-			if (count($this->migrations_tables) == count($inactive_migrations)
-            || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations())
-			) {
+			if (!$this->isInstalled()) {
 				// Panic Help Desk is not installed yet
 				
-				$inactive_migrations = $this->inactiveMigrations();
 				$previous_ticketit = Schema::hasTable('ticketit_settings');
 				
 				$quickstart = true;
@@ -100,6 +99,18 @@ class InstallController extends Controller
 			}
 		}
     }
+	
+	/**
+	 * Check if PanicHD is installed
+	 *
+	 * @Return bool
+	*/
+	public function isInstalled()
+	{
+		return (class_exists('Kordy\Ticketit\TicketitServiceProvider')
+			|| count($this->migrations_tables) == count($this->inactiveMigrations())
+            || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations()) ) ? false : true;
+	}
 
     /*
      * Installation setup
@@ -283,7 +294,10 @@ class InstallController extends Controller
      */
     public function inactiveMigrations()
     {
-        $inactiveMigrations = [];
+        if ($this->inactive_migrations){
+			return $this->a_inactive_migrations;
+		}
+		$inactiveMigrations = [];
         $migration_arr = [];
 
         // Package Migrations
@@ -301,7 +315,8 @@ class InstallController extends Controller
                 $inactiveMigrations[] = $table;
             }
         }
-
+		$this->inactive_migrations = true;
+		$this->a_inactive_migrations = $inactiveMigrations;
         return $inactiveMigrations;
     }
 
