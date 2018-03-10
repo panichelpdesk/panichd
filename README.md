@@ -5,6 +5,7 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
 
 * [Description](#description)
   + [Overview](#overview)
+  + [Translations](#translations)
   + [A ticket step by step example](#a-ticket-step-by-step-example)
   + [Feature synopsis](#features)
   + [Features in detail (link to the Wiki)](https://github.com/panichelpdesk/panichd/wiki/Current-features)
@@ -28,6 +29,18 @@ Panic Help Desk is a ticketing system that may be integrated on any Laravel app.
 This ticketing system is actually mean to be used in a corporate support environment, by these reasons:
 * Only registered users or ticket managers are able to add tickets. For any manager, a ticket can only be assigned to an owner which is registered.
 * We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
+
+#### Translations
+This package is multilingual. Current full covered languages are Catalan, English and Brazillian Portuguese.
+The following are other translations that come from Ticketit and are'nt up to date. A helping hand on any of them will be very welcome:
+* Armenian
+* Deutsch
+* Farsi
+* French
+* Hungarian
+* Italian
+* Russian
+* Spanish
 
 #### A ticket step by step example
 1. A user registers a new ticket for a specific issue
