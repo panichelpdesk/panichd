@@ -1,6 +1,6 @@
 {
     "name": "panichd/panichd",
-    "description": "Ticketing system for Laravel 5.1 to 5.5 based on Kordy/Ticketit with some extra cool features like file attachments, ticket tags, filtering and scheduling. It can be installed and work within an existing laravel 5 project.",
+    "description": "Ticketing system installable in any Laravel 5.1+ project. It includes a set of common features like file attachments, ticket tags, filtering, scheduling and e-mail notifications.",
     "type": "laravel-package",
     "keywords": ["ticketing-system", "helpdesk-ticketing", "laravel", "laravel-package", "laravel-5-package"],
     "require": {
