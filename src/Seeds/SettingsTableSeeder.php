@@ -369,6 +369,13 @@ class SettingsTableSeeder extends Seeder
 			 * Max number of agent specific buttons in filter panel. If agent count is bigger, select2 will be shown
 			*/
 			'max_agent_buttons' => '4',
+			
+			/**
+			 * User card route name if it exists in your app. Configuring it makes Owner name link to it's card by passing user id.
+			 *
+             * Default: 'disabled'
+			*/
+			'user_route' => 'disabled',
         ];
     }
 }

@@ -284,6 +284,9 @@ class TicketsController extends Controller
 		
 		$collection->editColumn('owner_name', function ($ticket) {
 			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			if (Setting::grab('user_route') != 'disabled'){
+				$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
+			}
 			if ($ticket->user_id != $ticket->creator_id){
 				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
 			}
