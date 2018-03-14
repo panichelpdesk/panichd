@@ -118,12 +118,6 @@
 				$nav_icon = "hidden";
 			}			
 		?>
-		<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\DashboardController@index')) || Request::is($setting->grab('admin_route').'/indicator*') ? "active" : "" !!}">
-			<a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index') }}" title="{{ trans('panichd::admin.nav-dashboard-title') }}">
-				<span class="{{ $nav_text }}">{{ trans('panichd::admin.nav-dashboard') }}</span>
-				<span class="{{ $nav_icon }} glyphicon glyphicon-stats"></span>
-			</a>
-		</li>
 
 		<li role="presentation" class="dropdown {!!
 			$tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\StatusesController@index').'*') ||
@@ -136,11 +130,17 @@
 			? "active" : "" !!}">
 
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('panichd::admin.nav-settings') }}">
-				<span class="{{ $nav_text }}">{{ trans('panichd::admin.nav-settings') }}</span>
+				<span class="{{ $nav_text }}">{{ $setting->grab('admin_button_text') }}</span>
 				<span class="{{ $nav_icon }} glyphicon glyphicon-cog"></span>
 				<span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
+				<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\DashboardController@index')) || Request::is($setting->grab('admin_route').'/indicator*') ? 'active' : '' !!}">
+					<a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index') }}" title="{{ trans('panichd::admin.nav-dashboard-title') }}">
+						{{ trans('panichd::admin.nav-dashboard') }}
+					</a>
+				</li>
+				
 				<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\StatusesController@index').'*') ? "active" : "" !!}">
 					<a href="{{ action('\PanicHD\PanicHD\Controllers\StatusesController@index') }}">{{ trans('panichd::admin.nav-statuses') }}</a>
 				</li>
