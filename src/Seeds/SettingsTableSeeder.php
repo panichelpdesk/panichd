@@ -225,6 +225,11 @@ class SettingsTableSeeder extends Seeder
             'attachments_path' => 'panichd_attachments',
 			'thumbnails_path' => 'panichd_thumbnails',
 			
+			/*
+			 * Oldest year for ticket start date or limit date
+			*/
+			'oldest_year' => '2017',
+			
 			
             /*
              * Pagination length: For tickets table.

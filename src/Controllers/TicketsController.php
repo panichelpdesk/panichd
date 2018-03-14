@@ -758,12 +758,12 @@ class TicketsController extends Controller
 				
 					$request->merge([
 						// Avoid PDOException for example with year 1
-						'start_date' => ($start_date->year < 2017 or $start_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $start_date->toDateTimeString(),
+						'start_date' => ($start_date->year < Setting::grab('oldest_year') or $start_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $start_date->toDateTimeString(),
 						'start_date_year' => $start_date->year
 					]);
 					
 					$fields['start_date'] = 'date';
-					$fields['start_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+					$fields['start_date_year'] = 'in:'.implode(',', range(Setting::grab('oldest_year'), $plus_10_y));
 				}
 			}
 			
@@ -784,12 +784,12 @@ class TicketsController extends Controller
 					
 					$request->merge([
 						// Avoid PDOException for example with year 1
-						'limit_date' => ($limit_date->year < 2017 or $limit_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $limit_date->toDateTimeString(),
+						'limit_date' => ($limit_date->year < Setting::grab('oldest_year') or $limit_date->year > $plus_10_y) ? Carbon::now()->toDateTimeString() : $limit_date->toDateTimeString(),
 						'limit_date_year' => $limit_date->year
 					]);
 					
 					$fields['limit_date'] = 'date';
-					$fields['limit_date_year'] = 'in:'.implode(',', range('2017', $plus_10_y));
+					$fields['limit_date_year'] = 'in:'.implode(',', range(Setting::grab('oldest_year'), $plus_10_y));
 				}
 			}
 
