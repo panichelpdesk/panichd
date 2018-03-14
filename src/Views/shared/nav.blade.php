@@ -1,4 +1,9 @@
 <ul class="nav nav-pills">
+	
+	<li role="presentation" class="{!! $n_notices == 0 ? 'disabled' : ($tools->fullUrlIs(route($setting->grab('main_route').'.notices')) ? 'active' : '') !!}" >
+		<a href="{{ $n_notices == 0 ? '#' : route($setting->grab('main_route').'.notices') }}" title="{{ $n_notices == 0 ? trans('panichd::lang.ticket-notices-empty') : trans('panichd::lang.nav-notices-number-title', ['num' => $n_notices]) }}">{{ trans('panichd::lang.ticket-notices-title') }} <span class="badge">{{ $n_notices }}</span></a>
+	</li>
+	
 	<?php 
 		$title = trans('panichd::lang.filter-'.((session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters'))) ? 'on' : 'off').'-total');
 		$nav_hidden_sizes = $setting->grab('nav_icons_user_sizes');
@@ -54,14 +59,6 @@
 			</a>
 		</li>
 	@endif
-	<li role="presentation" class="{!! $tools->fullUrlIs(route($setting->grab('main_route').'.notices')) ? "active" : "" !!}" >
-	@if($n_notices == 0)
-		<a href="#" title="{{ trans('panichd::lang.ticket-notices-empty') }}" style="color: #ccc; cursor: help"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span><span aria-label="{{ trans('panichd::lang.ticket-notices-title') }}"></span></a>
-	@else
-		<a href="{{ route($setting->grab('main_route').'.notices') }}" title="{{ trans('panichd::lang.nav-notices-number-title', ['num' => $n_notices]) }}"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span><span aria-label="{{ trans('panichd::lang.ticket-notices-title') }}"></span> <span class="badge">{{ $n_notices }}</span></a>
-	@endif
-	</li>
-	
 	
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@index')) ? "active" : "" !!}">
 		<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}" title="{{ trans('panichd::lang.nav-active-tickets-title') }}">
