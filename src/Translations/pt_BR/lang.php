@@ -174,11 +174,6 @@ return [
 	'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
 
     
-
-    'date-info-created' => 'Data de criação',
-
-    'date-info-updated' => 'Última data de atualização',
-
     'department' => 'Departamento',
 
     'department-shortening' => 'Dept.',

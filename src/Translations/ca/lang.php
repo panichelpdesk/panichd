@@ -131,8 +131,6 @@ return [
   'date-format'                      => 'd-m-Y',
   'datetime-format'                  => 'd-m-Y H:i',
   'datetimepicker-format'            => 'DD-MM-YYYY HH:mm',
-  'date-info-created'                => 'Data de creació',
-  'date-info-updated'                => 'Data de darrer canvi',
   'department'                       => 'Departament',
   'department-shortening'            => 'Dep.',
   'dept_sub1'                        => 'Area',

@@ -132,8 +132,6 @@ return [
   'date-format'                      => 'Y-m-d',
   'datetime-format'                  => 'Y-m-d H:i',
   'datetimepicker-format'            => 'YYYY-MM-DD HH:mm',
-  'date-info-created'                => 'Creation date',
-  'date-info-updated'                => 'Last update date',
   'department'                       => 'Department',
   'department-shortening'            => 'Dept.',
   'dept_sub1'                        => 'Subdepartment',

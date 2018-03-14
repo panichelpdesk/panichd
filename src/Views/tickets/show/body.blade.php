@@ -15,11 +15,15 @@
 					<a href="{{ route($setting->grab('main_route').'.hide', ['value' => $ticket->hidden ? 'false' : 'true', 'ticket'=>$ticket->id]) }}" class="btn btn-default tooltip-info" style="border: none; color: #aaa;" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.ticket-hidden-button-title') }}">{!! $ticket->hidden ? '<span class="glyphicon glyphicon-eye-close"></span> '.trans('panichd::lang.ticket-hidden') : '<span class="glyphicon glyphicon-eye-open"></span> '.trans('panichd::lang.ticket-visible') !!}</a>
 				@endif
 				@if ($ticket->updated_at!=$ticket->created_at)
-					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-updated') }}" style="display: inline-block; color: #aaa; cursor: help">
+					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.updated-date', [
+						'date' => \Carbon\Carbon::parse($ticket->updated_at)->format(trans('panichd::lang.datetime-format'))
+					]) }}" style="display: inline-block; color: #aaa; cursor: help">
 						<span class="glyphicon glyphicon-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
 					</span>
 				@endif
-				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.date-info-created') }}" style="display: inline-block; color: #aaa; cursor: help">
+				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.creation-date', [
+						'date' => \Carbon\Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))
+					]) }}" style="display: inline-block; color: #aaa; cursor: help">
 					<span class="glyphicon glyphicon-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
 				</span>&nbsp;
 								
@@ -79,7 +83,7 @@
 						<span class="text-warning">{!! $owner_name . ' ' . trans('panichd::lang.ticket-owner-no-email') !!}
 						<br /><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@else
-						<span id="user_{{ $ticket->user_id }}_name" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{!! $owner_name !!}	<span class="glyphicon glyphicon-question-sign"></span></span>
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{!! $owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
 					@endif
 					
 					@if ($setting->grab('departments_feature'))
