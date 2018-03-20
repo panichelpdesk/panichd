@@ -44,11 +44,7 @@ class TicketsController extends Controller
 	// This is loaded via AJAX at file Views\index.blade.php
     public function data($ticketList = 'active')
     {
-        if (LaravelVersion::min('5.4')) {
-            $datatables = app(\Yajra\DataTables\DataTables::class);
-        } else {
-            $datatables = app(\Yajra\Datatables\Datatables::class);
-        }
+		$datatables = app(\Yajra\Datatables\Datatables::class);
 
         $agent = $this->member->find(auth()->user()->id);
 
@@ -153,7 +149,13 @@ class TicketsController extends Controller
         // method rawColumns was introduced in laravel-datatables 7, which is only compatible with >L5.4
         // in previous laravel-datatables versions escaping columns wasn't defaut
         if (LaravelVersion::min('5.4')) {
-            $collection->rawColumns(['subject', 'status', 'priority', 'category', 'agent']);
+            $a_raws = ['id', 'subject', 'intervention', 'status', 'agent', 'priority', 'owner_name', 'calendar', 'updated_at', 'complete_date', 'category', 'tags'];
+			
+			if (Setting::grab('departments_feature')){
+				$a_raws[]= 'dept_info';
+			}
+			
+			$collection->rawColumns($a_raws);
         }
 
         return $collection->make(true);		
@@ -220,12 +222,6 @@ class TicketsController extends Controller
             return "<div style='color: $color'>$status</div>";
         });
 		
-		$collection->editColumn('updated_at', function ($ticket){
-			return '<div class="tooltip-info" data-toggle="tooltip" title="'
-				.trans('panichd::lang.updated-date', ['date' => Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans()])
-				.'" style="width: 3em;">'.$ticket->getUpdatedAbbr().'</div>';
-		});
-
 		// Agents for each category
 		$a_cat_pre = Category::select('id')
 			->withCount('agents')
@@ -310,6 +306,12 @@ class TicketsController extends Controller
 		$collection->editColumn('calendar', function ($ticket) {
 			return '<div style="width: 8em;">'.$ticket->getCalendarInfo().'</div>';
         });
+		
+		$collection->editColumn('updated_at', function ($ticket){
+			return '<div class="tooltip-info" data-toggle="tooltip" title="'
+				.trans('panichd::lang.updated-date', ['date' => Carbon::createFromFormat("Y-m-d H:i:s", $ticket->updated_at)->diffForHumans()])
+				.'" style="width: 3em;">'.$ticket->getUpdatedAbbr().'</div>';
+		});
 
 		$collection->editColumn('complete_date', function ($ticket) {
 			return '<div style="width: 8em;">'.$ticket->getDateForHumans($ticket->completed_at).'</div>';
