@@ -96,6 +96,12 @@ class SettingsTableSeeder extends Seeder
              * Default: panichd::master
              */
             'master_template' => 'panichd::master',
+			
+			/*
+			 * Admin navbar button text is configurable
+			*/
+			'admin_button_text' => 'PanicHD',
+			
             /*
 			 * Tickets email account: The email address for all package notifications.
 			 * Overrides Laravel email and name but uses it's connection parameters
