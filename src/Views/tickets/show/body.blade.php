@@ -71,19 +71,29 @@
 					@endif
 					
 					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} 
-					<?php
-						if ($setting->grab('user_route') != 'disabled'){
-							$owner_name = '<a href="' . route($setting->grab('user_route'), ['id'=> $ticket->user_id]) . '">' . $ticket->owner_name . '</a>';
-						}else{
-							$owner_name = $ticket->owner_name; 
-						}
-					?>
+
+					@if ($setting->grab('user_route') != 'disabled')
+						<a href="{{ route($setting->grab('user_route'), ['id'=> $ticket->user_id]) }}">
+					@endif
+					
+					@if ($ticket->deleted_owner)
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $ticket->owner_name !!}</span>
+					@elseif ($ticket->owner_email != "")
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner_email }}">{!! $ticket->owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
+					@else
+						{!! $ticket->owner_name !!}
+					@endif
+					
+					@if ($setting->grab('user_route') != 'disabled')
+						</a>
+					@endif
+					
+					@if ($ticket->deleted_owner)
+						<br /><span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ trans('panichd::lang.ticket-owner-deleted-warning') }}</span>
+					@endif
 					
 					@if ($ticket->owner_email == "")
-						<span class="text-warning">{!! $owner_name . ' ' . trans('panichd::lang.ticket-owner-no-email') !!}
-						<br /><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
-					@else
-						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner_email }}">{!! $owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
+						<br /><span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 					
 					@if ($setting->grab('departments_feature'))

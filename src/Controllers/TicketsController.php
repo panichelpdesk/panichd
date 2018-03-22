@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use DB;
 use Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
 use PanicHD\PanicHD\Events\TicketCreated;
@@ -110,6 +111,17 @@ class TicketsController extends Controller
 			\DB::raw('group_concat(panichd_tags.bg_color) AS tags_bg_color'),
 			\DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
 		];
+		
+		// Check if member is soft deleted
+		if (Schema::hasColumn('panichd_members', 'deleted_at')){
+			if (config('database.default')=='sqlite'){
+				$a_select[] = \DB::raw('CASE panichd_members.deleted_at WHEN NULL THEN 0 ELSE 1 END as deleted_owner');
+			}else{
+				$a_select[] = \DB::raw('CASE WHEN panichd_members.deleted_at IS NULL THEN 0 ELSE 1 END as deleted_owner');
+			}
+		}else{
+			$a_select[] = '0 as deleted_owner';
+		}
 		
 		if (Setting::grab('departments_feature')){			
 			// Department joins
@@ -281,6 +293,13 @@ class TicketsController extends Controller
 		
 		$collection->editColumn('owner_name', function ($ticket) {
 			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			
+			if ($ticket->deleted_owner == '1'){
+				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
+					."<span class=\"glyphicon glyphicon-exclamation-sign text-danger\"></span>"
+					."&nbsp;" . $return . "</span>";
+			}
+
 			if (Setting::grab('user_route') != 'disabled'){
 				$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
 			}
@@ -1015,9 +1034,21 @@ class TicketsController extends Controller
 			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
 		}
 		
-		$ticket = $ticket
-			->select(['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'])
-			->findOrFail($id);
+		$a_select = ['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'];
+		
+		// Check if member is soft deleted
+		if (Schema::hasColumn('panichd_members', 'deleted_at')){
+			if (config('database.default')=='sqlite'){
+				$a_select[] = \DB::raw('CASE panichd_members.deleted_at WHEN NULL THEN 0 ELSE 1 END as deleted_owner');
+			}else{
+				$a_select[] = \DB::raw('CASE WHEN panichd_members.deleted_at IS NULL THEN 0 ELSE 1 END as deleted_owner');
+			}
+		}else{
+			$a_select[] = '0 as deleted_owner';
+		}
+
+		// Select Ticket and properties
+		$ticket = $ticket->select($a_select)->findOrFail($id);
 		
 		if ($ticket->hidden and $user->currentLevel() == 1){
 			return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
