@@ -52,8 +52,9 @@ class TicketsController extends Controller
 
         $collection
             ->join('users', 'users.id', '=', 'panichd_tickets.user_id')
+			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id')
 			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
-            ->join('users as agent', 'agent.id', '=', 'panichd_tickets.agent_id')
+            ->join('panichd_members as agent', 'agent.id', '=', 'panichd_tickets.agent_id')
 			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
             ->join('panichd_categories', 'panichd_categories.id', '=', 'panichd_tickets.category_id')			
 			
@@ -97,7 +98,7 @@ class TicketsController extends Controller
 			\DB::raw('group_concat(agent.name) AS agent_name'),
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
-			'users.name AS owner_name',
+			'panichd_members.name AS owner_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
 			'panichd_tickets.category_id',
@@ -114,7 +115,7 @@ class TicketsController extends Controller
 			// Department joins
 			$collection				
 				->leftJoin('panichd_departments_persons', function ($join1) {
-					$join1->on('users.person_id','=','panichd_departments_persons.person_id');
+					$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
 				})	
 				->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id');
 			
@@ -728,7 +729,7 @@ class TicketsController extends Controller
 		
 		$fields = [
             'subject'     => 'required|min:3',
-			'owner_id'    => 'required|exists:users,id',
+			'owner_id'    => 'required|exists:panichd_members,id',
 			'category_id' => 'required|in:'.$allowed_categories,
             'content'     => 'required|min:6',            
         ];
@@ -998,20 +999,25 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-		$ticket = $this->tickets->with('category.closingReasons')->with('tags');
 		$user = $this->member->find(auth()->user()->id);
+		
+		$ticket = $this->tickets
+			->with('category.closingReasons')
+			->with('tags')
+			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id');
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
 			// Departments related
-			$ticket = $ticket->join('users', 'users.id', '=', 'panichd_tickets.user_id')
-			->leftJoin('panichd_departments_persons', function ($join1) {
-				$join1->on('users.person_id','=','panichd_departments_persons.person_id');
+			$ticket = $ticket->leftJoin('panichd_departments_persons', function ($join1) {
+				$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
 			})
 			->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id')
 			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
 		}
 		
-		$ticket = $ticket->findOrFail($id);
+		$ticket = $ticket
+			->select(['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'])
+			->findOrFail($id);
 		
 		if ($ticket->hidden and $user->currentLevel() == 1){
 			return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));

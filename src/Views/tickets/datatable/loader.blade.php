@@ -55,7 +55,7 @@
 			@if( $u->currentLevel() > 1 )
 				{ data: 'priority', name: 'panichd_priorities.name', "orderData": [1, 3, 4, 5], "orderSequence": ['desc', 'asc']},
 				@if (session('panichd_filter_owner')=="")
-					{ data: 'owner_name', name: 'users.name' },
+					{ data: 'owner_name', name: 'panichd_members.name' },
 					@if ($setting::grab('departments_feature'))
 						{ data: 'dept_info', name: 'dept_full', searchable: false },
 					@endif

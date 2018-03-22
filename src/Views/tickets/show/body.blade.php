@@ -73,17 +73,17 @@
 					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} 
 					<?php
 						if ($setting->grab('user_route') != 'disabled'){
-							$owner_name = '<a href="' . route($setting->grab('user_route'), ['id'=> $ticket->user_id]) . '">' . $ticket->owner->name . '</a>';
+							$owner_name = '<a href="' . route($setting->grab('user_route'), ['id'=> $ticket->user_id]) . '">' . $ticket->owner_name . '</a>';
 						}else{
-							$owner_name = $ticket->owner->name; 
+							$owner_name = $ticket->owner_name; 
 						}
 					?>
 					
-					@if ($ticket->owner->email == "")
+					@if ($ticket->owner_email == "")
 						<span class="text-warning">{!! $owner_name . ' ' . trans('panichd::lang.ticket-owner-no-email') !!}
 						<br /><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@else
-						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner->email }}">{!! $owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner_email }}">{!! $owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
 					@endif
 					
 					@if ($setting->grab('departments_feature'))
