@@ -7,14 +7,15 @@ return [
   */
   'nav-settings'                  => 'Paràmetres',
   'nav-agents'                    => 'Agents',
+  'nav-categories'                => 'Categories',
+  'nav-configuration'             => 'Configuració',
   'nav-dashboard'                 => 'Panell admin.',
   'nav-dashboard-title'           => 'Panell d\'administrador',
-  'nav-categories'                => 'Categories',
-  'nav-priorities'                => 'Prioritats',
-  'nav-statuses'                  => 'Estats',
+  'nav-members'                   => 'Membres',
   'nav-notices'                   => 'Avisos',
-  'nav-configuration'             => 'Configuració',
-  'nav-administrator'             => 'Administrador',
+  'nav-priorities'                => 'Prioritats',
+  'nav-settings'                  => 'Paràmetres',
+  'nav-statuses'                  => 'Estats',
 
   'table-hash'                    => '#',
   'table-id'                      => 'Id',
@@ -23,6 +24,7 @@ return [
   'table-action'                  => 'Acció',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'Assignació automàtica de nous tiquets',
+  'table-email'                   => 'E-mail',
   'table-magnitude'               => 'Magnitud',
   'table-num-tickets'             => 'Núm. tiquets',
   'table-remove-agent'            => 'Excloure d\'agents',
@@ -34,6 +36,7 @@ return [
   'table-lang'                    => 'Idioma',
   'table-edit'                    => 'Editar',
 
+  'btn-add-new'                   => 'Afegir nou',
   'btn-back'                      => 'Endarrere',
   'btn-change'                    => 'Canviar',
   'btn-create'                    => 'Crear',
@@ -45,6 +48,7 @@ return [
   'btn-save'                      => 'Desar',
   'btn-update'                    => 'Actualitzar',
 
+  // Vocabulary
   'colon'                         => ': ',
 
   /* Access Levels */
@@ -156,6 +160,16 @@ return [
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',
 
+// $admin_route_path/member/____
+  'member-index-title'            => 'Gestió d\'usuaris Membres',
+  'member-index-help'             => 'Els membres son tots els usuaris registrats a la base de dades. L\'administrador d\'aquest lloc web pot haver filtrat la llista',
+  'member-index-empty'            => 'No s\'ha trobat usuaris registrats. Si us plau, revisa si hi ha algun error a la vista de la base de dades "panichd_members"',
+  'member-modal-update-title'     => 'Actualitzar usuari membre',
+  'member-modal-create-title'     => 'Crear usuari membre',
+  'member-delete-confirmation'    => 'Estàs segur que vols eliminar l\'usuari de la base de dades?',
+  'member-password-label'         => 'Contrasenya',
+  'member-password-repeat-label'  => 'Repetir contrasenya',
+  
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
   'priority-index-help'           => 'Pots canviar l\'ordre de les prioritats arrosegant les files d\'aquesta taula. Aquest ordre s\'utilitzarà també a la llista de tiquets quan es seleccioni',
