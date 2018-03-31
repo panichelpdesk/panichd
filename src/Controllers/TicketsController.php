@@ -102,7 +102,7 @@ class TicketsController extends Controller
 			'panichd_members.name AS owner_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
-			'panichd_tickets.category_id',
+			'panichd_categories.id as category_id',
 			'panichd_categories.name AS category',			
 			
 			// Tag Columns
