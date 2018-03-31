@@ -169,8 +169,11 @@ return [
   'member-modal-create-title'     => 'Create member user',
   'member-delete-confirmation'    => 'Are you sure you want to delete this user from database?',
   'member-password-label'         => 'Password',
+  'member-new-password-label'     => 'New password (optional)',
   'member-password-repeat-label'  => 'Repeat password',
-  
+  'member-added-ok'               => 'Member user ":name" has been created correctly',
+  'member-updated-ok'             => 'Member user ":name" has been updated correctly',
+  'member-deleted'                => 'Member user ":name" has been DELETED',
   
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',

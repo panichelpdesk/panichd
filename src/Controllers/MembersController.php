@@ -3,9 +3,10 @@
 namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use PanicHD\PanicHD\Models;
-
 
 class MembersController extends Controller
 {
@@ -19,5 +20,81 @@ class MembersController extends Controller
 		$a_members = Models\Member::orderBy('name')->get();
 		
 		return view('panichd::admin.member.index', compact('a_members'));
+	}
+	
+	/**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+	public function store(Request $request)
+    {
+		$rules = [
+			'name' => 'required',
+			'email' => 'bail|required|unique:panichd_members|email',
+			'password' => 'required|confirmed',
+			'password_confirmation' => 'required'
+		];
+		
+        $this->validate($request, $rules);
+
+        $member = new User;
+		$member->name = $request->name;
+		$member->email = $request->email;
+		$member->password = bcrypt($request->password);
+		$member->save();
+				
+        \Session::flash('status', trans('panichd::admin.member-added-ok', ['name' => $member->name]));
+
+        return redirect()->back();
+    }
+	
+	public function update(Request $request, $id)
+	{
+		$member = User::findOrFail($id);
+		
+		$rules = [
+			'id' => 'exists:users',
+			'name' => 'required',
+			'email' => [
+				'bail',
+				'required',
+				Rule::unique('users')->ignore($id),
+				'email'
+			]
+		];
+		if ($request->password != ""){
+			$rules['password'] = 'required|confirmed';
+			$rules['password_confirmation'] = 'required';
+		}
+		
+        $this->validate($request, $rules);
+		
+		$member->name = $request->name;
+		$member->email = $request->email;
+		if ($request->password != ""){
+			$member->password = bcrypt($request->password);
+		}
+		$member->save();
+		
+		\Session::flash('status', trans('panichd::admin.member-updated-ok', ['name' => $member->name]));
+
+        return redirect()->back();
+	}
+	
+	public function destroy(Request $request, $id)
+	{
+		$member = User::findOrFail($id);
+		if (auth()->user()->id == $id){
+			\Session::flash('warning', 'You cannot delete your own user account');
+			return redirect()->back();
+		}
+		$member->delete();
+		
+		\Session::flash('status', trans('panichd::admin.member-deleted', ['name' => $member->name]));
+
+        return redirect()->back();
 	}
 }

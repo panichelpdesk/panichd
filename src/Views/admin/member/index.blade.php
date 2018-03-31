@@ -83,11 +83,10 @@
 					$("#MemberModal .modal-title").text("{{ trans('panichd::admin.member-modal-update-title') }}");
 					
 					// Input
-					$("#MemberModal #id_input").val();
+					$("#MemberModal #id_input").val($(this).data('member_id'));
 					$("#MemberModal #name_input").val($(this).data('member_name'));
 					$("#MemberModal #email_input").val($(this).data('member_email'));
-					
-					$('#password_input, #password_confirmation_input').closest('div.form-group').hide();
+					$('#MemberModal #password_label').text("{{ trans('panichd::admin.member-new-password-label') . trans('panichd::lang.colon') }}");
 					
 				}else{
 					// Form action
@@ -98,9 +97,13 @@
 					$("#MemberModal .modal-title").text("{{ trans('panichd::admin.member-modal-create-title') }}");
 					
 					// Input
-					$("#MemberModal #id_input, #MemberModal #name_input, #MemberModal #email_input").val('');
-					$('#password_input, #password_confirmation_input').val('').closest('div.form-group').show();
-				}			
+					$("#MemberModal #id_input").val('');
+					$("#MemberModal #name_input").val('{{ old("name") }}');
+					$("#MemberModal #email_input").val('{{ old("email") }}');
+					$('#MemberModal #password_label').text("{{ trans('panichd::admin.member-password-label') . trans('panichd::lang.colon') }}");
+				}
+
+				$('#password_input, #password_confirmation_input').val('');
 				
 				$('#MemberModal').modal('show');				
 				

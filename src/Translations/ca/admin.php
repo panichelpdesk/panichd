@@ -168,7 +168,11 @@ return [
   'member-modal-create-title'     => 'Crear usuari membre',
   'member-delete-confirmation'    => 'Estàs segur que vols eliminar l\'usuari de la base de dades?',
   'member-password-label'         => 'Contrasenya',
+  'member-new-password-label'     => 'Contrasenya nova (opcional)',
   'member-password-repeat-label'  => 'Repetir contrasenya',
+  'member-added-ok'               => 'L\'usuari membre ":name" s\'ha creat correctament',
+  'member-updated-ok'             => 'L\'usuari membre ":name" s\'ha actualitzat correctament',
+  'member-deleted'                => 'L\'usuari membre ":name" s\'ha ELIMINAT',
   
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',

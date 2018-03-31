@@ -43,6 +43,7 @@
 		
 		<div class="form-group">
 			{!! CollectiveForm::label('password', trans('panichd::admin.member-password-label') . trans('panichd::lang.colon'), [
+				'id' => 'password_label',
 				'class' => 'control-label col-lg-3',
 			]) !!}
 			
