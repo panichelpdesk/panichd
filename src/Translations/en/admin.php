@@ -5,7 +5,7 @@ return [
  /*
   *  Constants
   */
-  'nav-settings'                  => 'Settings',
+  'nav-administrators'            => 'Administrators',
   'nav-agents'                    => 'Agents',
   'nav-categories'                => 'Categories',
   'nav-configuration'             => 'Configuration',

@@ -5,7 +5,7 @@ return [
  /*
   *  Constants
   */
-  'nav-settings'                  => 'Paràmetres',
+  'nav-administrators'            => 'Administradors',
   'nav-agents'                    => 'Agents',
   'nav-categories'                => 'Categories',
   'nav-configuration'             => 'Configuració',
