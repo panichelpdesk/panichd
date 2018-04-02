@@ -32,6 +32,7 @@
                         <td>{{ trans('panichd::admin.table-name') }}</td>
 						<td>{{ trans('panichd::admin.table-email') }}</td>
 						<td>{{ trans('panichd::admin.role') }}</td>
+						<td>{{ trans('panichd::lang.tickets') }}
 						<td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
@@ -47,6 +48,14 @@
 							<button type="button" disabled="disabled" class="btn btn-warning btn-xs">{{ trans('panichd::lang.agent') }}</button>
 						@else
 							<button type="button" disabled="disabled" class="btn btn-default btn-xs">{{ trans('panichd::lang.user') }}</button>
+						@endif
+						</td>
+						<td>
+						@if ($member->user_tickets_count != 0)
+							<button type="button" disabled="disabled" class="btn btn-default btn-xs">{{ $member->user_tickets_count }}</button>
+						@endif
+						@if ($member->agent_total_tickets_count != 0)
+							<button type="button" disabled="disabled" class="btn btn-warning btn-xs">{{ $member->agent_total_tickets_count }}</button>
 						@endif
 						</td>
 						<td>

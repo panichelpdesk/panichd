@@ -158,6 +158,7 @@ return [
   'subject'                          => 'Subject',
   'tags'                             => 'Tags',
   'ticket'                           => 'Ticket',
+  'tickets'                          => 'Tickets',
   'today'                            => 'Today',
   'tomorrow'                         => 'Tomorrow',
   'update'                           => 'Update',

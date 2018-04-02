@@ -17,7 +17,7 @@ class MembersController extends Controller
      */
 	public function index(Request $request)
 	{
-		$a_members = Models\Member::orderBy('name')->get();
+		$a_members = Models\Member::withCount(['userTickets', 'agentTotalTickets'])->orderBy('name')->get();
 		
 		return view('panichd::admin.member.index', compact('a_members'));
 	}

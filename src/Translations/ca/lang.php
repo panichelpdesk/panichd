@@ -157,6 +157,7 @@ return [
   'subject'                          => 'Tema',
   'tags'                             => 'Etiquetes',
   'ticket'                           => 'Tiquet',
+  'tickets'                          => 'Tiquets',
   'today'                            => 'Avui',
   'tomorrow'                         => 'Demà',
   'update'                           => 'Actualitzar',
