@@ -49,7 +49,9 @@ return [
   'btn-update'                    => 'Actualitzar',
 
   // Vocabulary
+  'admin'                         => 'Admin',
   'colon'                         => ': ',
+  'role'                          => 'Rol',
 
   /* Access Levels */
   'level-1'                       => 'Tothom',

@@ -49,7 +49,9 @@ return [
   'btn-update'                    => 'Update',
 	
   // Vocabulary
+  'admin'                         => 'Admin',
   'colon'                         => ': ',
+  'role'                          => 'Role',
 
   /* Access Levels */
   'level-1'                       => 'Everyone',
