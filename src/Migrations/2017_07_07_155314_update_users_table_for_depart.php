@@ -26,7 +26,7 @@ class UpdateUsersTableForDepart extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropIfExists('ticketit_department');
+            $table->dropColumn('ticketit_department');
         });
     }
 }
