@@ -101,7 +101,7 @@
 							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
 						@endif
 						@if ($ticket->sub1)
-							<br /><strong>{{ trans('panichd::lang.dept_sub1') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
+							<br /><strong>{{ trans('panichd::lang.dept-descendant') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
 						@endif
 					@endif
 				@endif

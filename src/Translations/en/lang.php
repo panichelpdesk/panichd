@@ -135,7 +135,7 @@ return [
   'deleted-member'                   => 'Deleted member',
   'department'                       => 'Department',
   'department-shortening'            => 'Dept.',
-  'dept_sub1'                        => 'Subdepartment',
+  'dept-descendant'                  => 'Subdepartment',
   'description'                      => 'Description',
   'discard'                          => 'Discard',
   'email-resend-abbr'                => 'FW',

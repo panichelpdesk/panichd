@@ -57,7 +57,7 @@
 				@if (session('panichd_filter_owner')=="")
 					{ data: 'owner_name', name: 'panichd_members.name' },
 					@if ($setting::grab('departments_feature'))
-						{ data: 'dept_info', name: 'dept_full', searchable: false },
+						{ data: 'dept_full_name', name: 'panichd_departments.name' },
 					@endif
 				@endif
 				@if ($ticketList == 'complete')

@@ -124,12 +124,12 @@ class TicketsController extends Controller
 		}
 		
 		if (Setting::grab('departments_feature')){			
-			$collection->join('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id');
+			$collection->join('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
+				->join('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
 			// Department columns				
-			$a_select[] = 'panichd_departments.department AS dept_info';
-			$a_select[] = 'panichd_departments.sub1 AS dept_sub1';
-			$a_select[] = \DB::raw('concat_ws(\' \', panichd_departments.department, panichd_departments.sub1) as dept_full');
+			$a_select[] = 'dep_ancestor.name as dep_ancestor_name';
+			$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
 		}
 		
 		$currentLevel = $agent->currentLevel();
@@ -139,7 +139,7 @@ class TicketsController extends Controller
             ->select($a_select)
 			->with('creator')
 			->with('agent')
-			->with('owner.department')
+			->with('owner.department.ancestor')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
 				$query->countable()->forLevel($currentLevel);
@@ -160,7 +160,7 @@ class TicketsController extends Controller
             $a_raws = ['id', 'subject', 'intervention', 'status', 'agent', 'priority', 'owner_name', 'calendar', 'updated_at', 'complete_date', 'category', 'tags'];
 			
 			if (Setting::grab('departments_feature')){
-				$a_raws[]= 'dept_info';
+				$a_raws[]= 'dept_full_name';
 			}
 			
 			$collection->rawColumns($a_raws);
@@ -306,15 +306,8 @@ class TicketsController extends Controller
 		});
 		
 		if (Setting::grab('departments_feature')){
-			$collection->editColumn('dept_info', function ($ticket) {
-				$dept_info = $title = "";
-				
-				if ($ticket->owner and $ticket->owner->department_id != ""){
-					$dept_info = $ticket->owner->department->resume();
-					$title = $ticket->owner->department->title();
-				}
-				
-				return "<span title=\"$title\">$dept_info</span>";
+			$collection->editColumn('dept_full_name', function ($ticket) {
+				return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->department->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->department->name))) . '</span>';
 			});
 		}
 		

@@ -134,7 +134,7 @@ return [
   'deleted-member'                   => 'Usuari eliminat',
   'department'                       => 'Departament',
   'department-shortening'            => 'Dep.',
-  'dept_sub1'                        => 'Area',
+  'dept-descendant'                  => 'Area',
   'description'                      => 'Descripció',
   'discard'                          => 'Descartar',
   'email-resend-abbr'                => 'RV',
