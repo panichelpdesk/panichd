@@ -7,8 +7,43 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     protected $table = 'panichd_departments';
-    protected $fillable = ['department'];
+    protected $fillable = ['name', 'shortening', 'department_id'];
+	
+	public $timestamps = false;
 
+	/*
+	 * Return ancestor of current Department
+	 *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+	*/
+	public function ancestor()
+	{
+		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'department_id');
+	}
+	
+	
+	/*
+	 * Get ancestor Department of current one if it exists or return current
+	*/
+	public function getAncestor()
+	{
+		if ($this->is_main()){
+			return $this;
+		}else{
+			$this->ancestor()->first();
+		}
+	}
+	
+	/*
+	 * Return all descendants of current Department
+	 *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	*/
+	public function descendants()
+	{
+		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'department_id', 'id');
+	}
+	
     /**
      * Get Members that belong to $this Department
      *
@@ -20,40 +55,34 @@ class Department extends Model
     }
 	
 	/*
-	 * Get main department of current one
-	*/
-	public function parent(){
-		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'department_id');
-	}
-	
-	/*
-	 * Get all sub-departments of current one
-	*/
-	public function children()
-	{
-		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'department_id', 'id');
-	}
-	
-	/*
-	 * Get all department / subdepartment related to current one
-	 * For Parent: Get self + all children
-	 * For child: Get self + parent
+	 * Get all departments in $this Department hierarchy
+	 *
+	 * For a main department: Returns self + all descendants
+	 * For descendant: Returns self + ancestor
 	 *
 	 * @Return collection
 	*/
-	public function related()
+	public function getRelated()
 	{
 		$related = Collect([]);
 		$related->push($this);
-		$parent = $this->parent()->first();
-		if ($parent){
-			// Is Child
-			$related->push($parent);
+		if ($this->is_main()){
+			$related->push($this->descendants()->get());
 		}else{
-			// Is Parent
-			$related->push($this->children()->get());
+			$related->push($this->getAncestor());
 		}
+		
 		return $related;
+	}
+	
+	/**
+	 * Point if this is a main department
+	 *
+	 * @return bool
+	*/
+	public function is_main()
+	{
+		return is_null($this->department_id) ? true : false;
 	}
 	
 	/*

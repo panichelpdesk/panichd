@@ -560,8 +560,8 @@ class Member extends User
 		
 		// Get my related departments
 		$related_departments = [];
-		foreach ($user->department()->first()->related() as $rel){
-			$related_departments [] = $rel->id;
+		foreach ($user->department()->first()->getRelated() as $rel){
+			$related_departments [] = $rel['id'];
 		}
 
 		/*
