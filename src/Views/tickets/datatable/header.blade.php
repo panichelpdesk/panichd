@@ -8,6 +8,7 @@
 			<td>{{-- hidden: has limit --}}</td>
 			<td>{{-- hidden: inverse limit date --}}</td>
 			<td>{{-- hidden: inverse start date --}}</td>
+			<td>{{-- hidden: dep_ancestor_name --}}</td>
 			
             <td>{{ trans('panichd::lang.table-subject') }}</td>
             @if ($setting->grab('subject_content_column') == 'no')

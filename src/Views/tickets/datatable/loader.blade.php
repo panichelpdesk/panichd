@@ -42,6 +42,7 @@
 			{ data: 'has_limit', name: 'has_limit', visible: false, searchable: false },
 			{ data: 'inverse_limit_date', name: 'inverse_limit_date', visible: false, searchable: false },
 			{ data: 'inverse_start_date', name: 'inverse_start_date', visible: false, searchable: false },
+			{ data: 'dep_ancestor_name', name: 'dep_ancestor.name', visible: false },
 			
 			{ data: 'subject', name: 'subject' },
 			@if ($setting->grab('subject_content_column') == 'no')
