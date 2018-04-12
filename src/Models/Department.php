@@ -10,13 +10,13 @@ class Department extends Model
     protected $fillable = ['department'];
 
     /**
-     * Get directly associated users.
+     * Get Members that belong to $this Department
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function users()
+    public function members()
     {
-        return $this->hasMany('PanicHD\PanicHD\Models\Member', 'ticketit_department')->orderBy('name');
+        return $this->hasMany('PanicHD\PanicHD\Models\Member')->orderBy('name');
     }
 	
 	/*

@@ -329,9 +329,9 @@ class Member extends User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function personDepts()
+	public function department()
 	{
-		return $this->HasMany('PanicHD\PanicHD\Models\DepartmentPerson', 'person_id', 'person_id');
+		return $this->belongsTo('PanicHD\PanicHD\Models\Department');
 	}	
 	
     /**
@@ -560,10 +560,8 @@ class Member extends User
 		
 		// Get my related departments
 		$related_departments = [];
-		foreach ($user->personDepts()->get() as $dept){
-			foreach ($dept->department()->first()->related() as $rel){
-				$related_departments [] = $rel->id;
-			}			
+		foreach ($user->department()->first()->related() as $rel){
+			$related_departments [] = $rel->id;
 		}
 
 		/*

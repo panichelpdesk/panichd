@@ -124,17 +124,12 @@ class TicketsController extends Controller
 		}
 		
 		if (Setting::grab('departments_feature')){			
-			// Department joins
-			$collection				
-				->leftJoin('panichd_departments_persons', function ($join1) {
-					$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
-				})	
-				->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id');
+			$collection->join('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id');
 			
 			// Department columns				
-			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.department)) AS dept_info');
-			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.sub1)) AS dept_sub1');
-			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(panichd_departments.department)), group_concat(distinct(panichd_departments.sub1))) as dept_full');
+			$a_select[] = 'panichd_departments.department AS dept_info';
+			$a_select[] = 'panichd_departments.sub1 AS dept_sub1';
+			$a_select[] = \DB::raw('concat_ws(\' \', panichd_departments.department, panichd_departments.sub1) as dept_full');
 		}
 		
 		$currentLevel = $agent->currentLevel();
@@ -144,7 +139,7 @@ class TicketsController extends Controller
             ->select($a_select)
 			->with('creator')
 			->with('agent')
-			->with('owner.personDepts.department')
+			->with('owner.department')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
 				$query->countable()->forLevel($currentLevel);
@@ -314,9 +309,9 @@ class TicketsController extends Controller
 			$collection->editColumn('dept_info', function ($ticket) {
 				$dept_info = $title = "";
 				
-				if ($ticket->owner and count($ticket->owner->personDepts) != 0 and $ticket->owner->personDepts[0]){
-					$dept_info = $ticket->owner->personDepts[0]->department->resume();
-					$title = $ticket->owner->personDepts[0]->department->title();
+				if ($ticket->owner and $ticket->owner->department_id != ""){
+					$dept_info = $ticket->owner->department->resume();
+					$title = $ticket->owner->department->title();
 				}
 				
 				return "<span title=\"$title\">$dept_info</span>";
@@ -1027,10 +1022,7 @@ class TicketsController extends Controller
 		
 		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
 			// Departments related
-			$ticket = $ticket->leftJoin('panichd_departments_persons', function ($join1) {
-				$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
-			})
-			->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id')
+			$ticket = $ticket->join('panichd_departments','panichd_members.department_id','=','panichd_departments.id')
 			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
 		}
 		
