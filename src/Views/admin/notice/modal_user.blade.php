@@ -13,6 +13,7 @@
 			'class' => 'form-horizontal',
 			'data-route-create' => route($setting->grab('admin_route').'.notice.store')
 			]) !!}
+		<input type="hidden" id="user_input" name="user_id" value="" disabled="disabled">
 	
 		<div class="form-group">
 			{!! CollectiveForm::label('user_id', trans('panichd::lang.owner') . trans('panichd::lang.colon'), [
