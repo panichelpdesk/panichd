@@ -52,7 +52,7 @@
                         </td>
 						<td style="vertical-align: middle">
                             @if ($d_user->userDepartment)
-								<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
+								{{ $d_user->userDepartment->getFullName() }}
 							@else
 								<span>{{ trans('panichd::lang.all-depts') }}</span>
 							@endif

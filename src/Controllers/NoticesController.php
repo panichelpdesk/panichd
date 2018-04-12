@@ -25,9 +25,11 @@ class NoticesController extends Controller
 		$a_users = Models\Member::whereNotNull('ticketit_department')->orderBy('name')->get();
 		
 		// All departments
-		$a_depts = Models\Department::orderBy('department')->orderBy('sub1')->get();
+		$departments = Models\Department::doesntHave('ancestor')->with(['descendants' => function($query){
+			$query->orderBy('name');
+		}])->orderBy('name')->get();
 		
-		return view('panichd::admin.notice.index', compact('a_users', 'a_depts'));
+		return view('panichd::admin.notice.index', compact('a_users', 'departments'));
 	}
 	
 	/**

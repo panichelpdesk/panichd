@@ -21,19 +21,6 @@ class Department extends Model
 		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'department_id');
 	}
 	
-	
-	/*
-	 * Get ancestor Department of current one if it exists or return current
-	*/
-	public function getAncestor()
-	{
-		if ($this->is_main()){
-			return $this;
-		}else{
-			$this->ancestor()->first();
-		}
-	}
-	
 	/*
 	 * Return all descendants of current Department
 	 *
@@ -69,7 +56,7 @@ class Department extends Model
 		if ($this->is_main()){
 			$related->push($this->descendants()->get());
 		}else{
-			$related->push($this->getAncestor());
+			$related->push($this->ancestor()->first());
 		}
 		
 		return $related;
@@ -86,38 +73,24 @@ class Department extends Model
 	}
 	
 	/*
-	 * Get formatted concatenation of department and sub1
-	 *
-	 * @param bool $long full text or shortening for department
+	 * Get department name with format "Ancestor: Department"
 	 * 
 	 * @Return string
 	*/
-	public function resume ($long = false)
-	{
-		if ($this->department_id){
-			return ($long ? ucwords(mb_strtolower($this->department)) : $this->shortening).trans('panichd::lang.colon').ucwords(mb_strtolower($this->sub1));
-		}else{
-			return ucwords(mb_strtolower($this->department));
-		}
+	public function getFullName(){
+		$ancestor = ($this->is_main() ? '' : $this->ancestor()->first()->name . trans('panichd::lang.colon'));
+		
+		return ucwords(mb_strtolower($ancestor . $this->name));
 	}
 	
 	/*
-	 * Get formatted department name
+	 * Get Shortened department name with format "A: Department"
 	 * 
 	 * @Return string
 	*/
-	public function deptName(){
-		return ucwords(mb_strtolower($this->department));
-	}
-	
-	
-	/*
-	 * Get formatted department name as title
-	 * 
-	 * @Return string
-	*/
-	public function title ()
-	{
-		return trans('panichd::lang.department-shortening').trans('panichd::lang.colon').$this->deptName();
+	public function getShortName(){
+		$ancestor = $this->is_main() ? '' : $this->ancestor()->first()->shortening . trans('panichd::lang.colon');
+		
+		return ucwords(mb_strtolower($ancestor . $this->name));
 	}
 }
