@@ -96,12 +96,12 @@
 						<br /><span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 					
-					@if ($setting->grab('departments_feature'))
-						@if ($ticket->department)
-							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
+					@if ($setting->grab('departments_feature') && $ticket->owner->department)
+						@if ($ticket->owner->department->ancestor || $ticket->owner->department->is_main())
+							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->department->is_main() ? $ticket->owner->department->getName() : $ticket->owner->department->ancestor->getName()) }}
 						@endif
-						@if ($ticket->sub1)
-							<br /><strong>{{ trans('panichd::lang.dept-descendant') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
+						@if (!$ticket->owner->department->is_main())
+							<br /><strong>{{ trans('panichd::lang.dept-descendant') }}</strong>{{ trans('panichd::lang.colon') . $ticket->owner->department->getName() }}
 						@endif
 					@endif
 				@endif

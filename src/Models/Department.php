@@ -73,11 +73,20 @@ class Department extends Model
 	}
 	
 	/*
+	 * Get formatted name
+	*/
+	public function getName()
+	{
+		return ucwords(mb_strtolower($this->name));
+	}
+	
+	/*
 	 * Get department name with format "Ancestor: Department"
 	 * 
 	 * @Return string
 	*/
-	public function getFullName(){
+	public function getFullName()
+	{
 		$ancestor = ($this->is_main() ? '' : $this->ancestor()->first()->name . trans('panichd::lang.colon'));
 		
 		return ucwords(mb_strtolower($ancestor . $this->name));
@@ -88,7 +97,8 @@ class Department extends Model
 	 * 
 	 * @Return string
 	*/
-	public function getShortName(){
+	public function getShortName()
+	{
 		$ancestor = $this->is_main() ? '' : $this->ancestor()->first()->shortening . trans('panichd::lang.colon');
 		
 		return ucwords(mb_strtolower($ancestor . $this->name));
