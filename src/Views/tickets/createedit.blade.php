@@ -62,7 +62,7 @@
 							@if ($owner->ticketit_department == '0')
 								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
 							@elseif ($owner->ticketit_department != "")						
-								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->resume() }}
+								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
 							@endif
 						@endif						
 						</option>
