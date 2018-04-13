@@ -307,7 +307,9 @@ class TicketsController extends Controller
 		
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_full_name', function ($ticket) {
-				return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->department->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->department->name))) . '</span>';
+				if (isset($ticket->owner->department->name)){
+					return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->department->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->department->name))) . '</span>';
+				}
 			});
 		}
 		
@@ -1009,14 +1011,13 @@ class TicketsController extends Controller
 		$user = $this->member->find(auth()->user()->id);
 		
 		$ticket = $this->tickets
+			->with('owner')
 			->with('category.closingReasons')
 			->with('tags')
 			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id');
 		
-		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
-			// Departments related
-			$ticket = $ticket->join('panichd_departments','panichd_members.department_id','=','panichd_departments.id')
-			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
+		if (Setting::grab('departments_feature')){
+			$ticket = $ticket->with('owner.department.ancestor');
 		}
 		
 		$a_select = ['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'];

@@ -96,7 +96,7 @@
 						<br /><span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 					
-					@if ($setting->grab('departments_feature') && $ticket->owner->department)
+					@if ($setting->grab('departments_feature') && isset($ticket->owner->department))
 						@if ($ticket->owner->department->ancestor || $ticket->owner->department->is_main())
 							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->department->is_main() ? $ticket->owner->department->getName() : $ticket->owner->department->ancestor->getName()) }}
 						@endif
