@@ -99,8 +99,8 @@ class Department extends Model
 	*/
 	public function getShortName()
 	{
-		$ancestor = $this->is_main() ? '' : $this->ancestor()->first()->shortening . trans('panichd::lang.colon');
+		$shortening = $this->is_main() ? '' : $this->ancestor()->first()->shortening . trans('panichd::lang.colon');
 		
-		return ucwords(mb_strtolower($ancestor . $this->name));
+		return $shortening . ucwords(mb_strtolower($this->name));
 	}
 }
