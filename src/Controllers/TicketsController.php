@@ -124,8 +124,8 @@ class TicketsController extends Controller
 		}
 		
 		if (Setting::grab('departments_feature')){			
-			$collection->join('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
-				->join('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
+			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
+				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
 			// Department columns				
 			$a_select[] = 'dep_ancestor.name as dep_ancestor_name';
