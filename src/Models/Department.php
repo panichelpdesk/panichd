@@ -41,27 +41,6 @@ class Department extends Model
         return $this->hasMany('PanicHD\PanicHD\Models\Member')->orderBy('name');
     }
 	
-	/*
-	 * Get all departments in $this Department hierarchy
-	 *
-	 * For a main department: Returns self + all descendants
-	 * For descendant: Returns self + ancestor
-	 *
-	 * @Return collection
-	*/
-	public function getRelated()
-	{
-		$related = Collect([]);
-		$related->push($this);
-		if ($this->is_main()){
-			$related->push($this->descendants()->get());
-		}else{
-			$related->push($this->ancestor()->first());
-		}
-		
-		return $related;
-	}
-	
 	/**
 	 * Point if this is a main department
 	 *
