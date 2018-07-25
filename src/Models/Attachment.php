@@ -42,6 +42,13 @@ class Attachment extends Model
      */
     protected $touches = ['ticket', 'comment'];
 	
+	private $image_mimetypes = [
+		'image/gif' => 'image',
+		'image/ico' => 'image',
+		'image/jpeg' => 'image',
+		'image/png' => 'image'
+	];
+	
 	/**
 	 * Delete Attachment instance and related files at server storage folder
 	*/
@@ -72,26 +79,49 @@ class Attachment extends Model
 	
 	public function scopeImages($query)
 	{
-		$query->where('mimetype', 'like', 'image/%');
+		$a_mimes = array_keys($this->image_mimetypes);
+		
+		$query->where(function($q1)use($a_mimes){
+			
+			$q1->where('mimetype', 'like', current($a_mimes));
+			
+			foreach (array_slice($a_mimes, 1) as $mime){
+				$q1->orWhere('mimetype', 'like', $mime);
+			}
+		});
 	}
 	
 	public function scopeNotImages($query)
 	{
-		$query->where('mimetype', 'not like', 'image/%');
+		$a_mimes = array_keys($this->image_mimetypes);
+		
+		$query->where(function($q1)use($a_mimes){
+			foreach ($a_mimes as $mime){
+				$q1->where('mimetype', 'not like', $mime);
+			}
+		});
 	}
 	
 	public function getShorthandMime($mimetype)
 	{
-		$mimetype_patterns = [
-			'image/' => 'image',
+		$file_mimetypes = [			
+			// Pdf
 			'application/pdf' => 'pdf',
+			
+			// MS Word like document
 			'application/msword' => 'msword',
 			'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'msword',
 			'text/rtf' => 'msword',
+			
+			// Spreadsheet
 			'application/vnd.ms-excel' => 'msexcel',
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'msexcel',
+			
+			// Compressed file
 			'application/zip' => 'compressed'
 		];
+		
+		$mimetype_patterns = $this->image_mimetypes + $file_mimetypes;
 		
 		if (preg_match('/('.str_replace('/', '\/', implode(')|(', array_keys($mimetype_patterns))).')/', $mimetype, $ret, PREG_OFFSET_CAPTURE) == 1
 			and isset($ret[0]) and isset($mimetype_patterns[$ret[0][0]])){			
