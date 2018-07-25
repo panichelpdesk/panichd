@@ -236,6 +236,16 @@ class SettingsTableSeeder extends Seeder
 			*/
 			'oldest_year' => '2017',
 			
+			/*
+			 * String replacements to execute within Purifiable trait before clean() method
+			*/
+			'html_replacements' => [
+				'</p><p>' => '</p><p> ',
+				'<br />' => '<br>',
+				'<br>' => ' '
+			],
+			
+			
 			
             /*
              * Pagination length: For tickets table.
