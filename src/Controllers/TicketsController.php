@@ -324,7 +324,7 @@ class TicketsController extends Controller
 		});
 
 		$collection->editColumn('complete_date', function ($ticket) {
-			return '<div style="width: 8em;">'.$ticket->getDateForHumans($ticket->completed_at).'</div>';
+			return '<div style="width: 8em;">'.$ticket->getDateForHumans('completed_at').'</div>';
         });
 		
         $collection->editColumn('category', function ($ticket) {
