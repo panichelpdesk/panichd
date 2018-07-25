@@ -124,17 +124,12 @@ class TicketsController extends Controller
 		}
 		
 		if (Setting::grab('departments_feature')){			
-			// Department joins
-			$collection				
-				->leftJoin('panichd_departments_persons', function ($join1) {
-					$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
-				})	
-				->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id');
+			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
+				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
 			// Department columns				
-			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.department)) AS dept_info');
-			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.sub1)) AS dept_sub1');
-			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(panichd_departments.department)), group_concat(distinct(panichd_departments.sub1))) as dept_full');
+			$a_select[] = 'dep_ancestor.name as dep_ancestor_name';
+			$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
 		}
 		
 		$currentLevel = $agent->currentLevel();
@@ -144,7 +139,7 @@ class TicketsController extends Controller
             ->select($a_select)
 			->with('creator')
 			->with('agent')
-			->with('owner.personDepts.department')
+			->with('owner.department.ancestor')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
 				$query->countable()->forLevel($currentLevel);
@@ -165,7 +160,7 @@ class TicketsController extends Controller
             $a_raws = ['id', 'subject', 'intervention', 'status', 'agent', 'priority', 'owner_name', 'calendar', 'updated_at', 'complete_date', 'category', 'tags'];
 			
 			if (Setting::grab('departments_feature')){
-				$a_raws[]= 'dept_info';
+				$a_raws[]= 'dept_full_name';
 			}
 			
 			$collection->rawColumns($a_raws);
@@ -311,15 +306,10 @@ class TicketsController extends Controller
 		});
 		
 		if (Setting::grab('departments_feature')){
-			$collection->editColumn('dept_info', function ($ticket) {
-				$dept_info = $title = "";
-				
-				if ($ticket->owner and count($ticket->owner->personDepts) != 0 and $ticket->owner->personDepts[0]){
-					$dept_info = $ticket->owner->personDepts[0]->department->resume();
-					$title = $ticket->owner->personDepts[0]->department->title();
+			$collection->editColumn('dept_full_name', function ($ticket) {
+				if (isset($ticket->owner->department->name)){
+					return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->department->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->department->name))) . '</span>';
 				}
-				
-				return "<span title=\"$title\">$dept_info</span>";
 			});
 		}
 		
@@ -1021,17 +1011,13 @@ class TicketsController extends Controller
 		$user = $this->member->find(auth()->user()->id);
 		
 		$ticket = $this->tickets
+			->with('owner')
 			->with('category.closingReasons')
 			->with('tags')
 			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id');
 		
-		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
-			// Departments related
-			$ticket = $ticket->leftJoin('panichd_departments_persons', function ($join1) {
-				$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
-			})
-			->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id')
-			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
+		if (Setting::grab('departments_feature')){
+			$ticket = $ticket->with('owner.department.ancestor');
 		}
 		
 		$a_select = ['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'];

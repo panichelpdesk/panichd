@@ -7,88 +7,79 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     protected $table = 'panichd_departments';
-    protected $fillable = ['department'];
-
-    /**
-     * Get directly associated users.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users()
-    {
-        return $this->hasMany('PanicHD\PanicHD\Models\Member', 'ticketit_department')->orderBy('name');
-    }
+    protected $fillable = ['name', 'shortening', 'department_id'];
 	
+	public $timestamps = false;
+
 	/*
-	 * Get main department of current one
+	 * Return ancestor of current Department
+	 *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
 	*/
-	public function parent(){
+	public function ancestor()
+	{
 		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'department_id');
 	}
 	
 	/*
-	 * Get all sub-departments of current one
+	 * Return all descendants of current Department
+	 *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	*/
-	public function children()
+	public function descendants()
 	{
 		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'department_id', 'id');
 	}
 	
-	/*
-	 * Get all department / subdepartment related to current one
-	 * For Parent: Get self + all children
-	 * For child: Get self + parent
+    /**
+     * Get Members that belong to $this Department
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function members()
+    {
+        return $this->hasMany('PanicHD\PanicHD\Models\Member')->orderBy('name');
+    }
+	
+	/**
+	 * Point if this is a main department
 	 *
-	 * @Return collection
+	 * @return bool
 	*/
-	public function related()
+	public function is_main()
 	{
-		$related = Collect([]);
-		$related->push($this);
-		$parent = $this->parent()->first();
-		if ($parent){
-			// Is Child
-			$related->push($parent);
-		}else{
-			// Is Parent
-			$related->push($this->children()->get());
-		}
-		return $related;
+		return is_null($this->department_id) ? true : false;
 	}
 	
 	/*
-	 * Get formatted concatenation of department and sub1
-	 *
-	 * @param bool $long full text or shortening for department
-	 * 
-	 * @Return string
+	 * Get formatted name
 	*/
-	public function resume ($long = false)
+	public function getName()
 	{
-		if ($this->department_id){
-			return ($long ? ucwords(mb_strtolower($this->department)) : $this->shortening).trans('panichd::lang.colon').ucwords(mb_strtolower($this->sub1));
-		}else{
-			return ucwords(mb_strtolower($this->department));
-		}
+		return ucwords(mb_strtolower($this->name));
 	}
 	
 	/*
-	 * Get formatted department name
+	 * Get department name with format "Ancestor: Department"
 	 * 
 	 * @Return string
 	*/
-	public function deptName(){
-		return ucwords(mb_strtolower($this->department));
+	public function getFullName()
+	{
+		$ancestor = ($this->is_main() ? '' : $this->ancestor()->first()->name . trans('panichd::lang.colon'));
+		
+		return ucwords(mb_strtolower($ancestor . $this->name));
 	}
 	
-	
 	/*
-	 * Get formatted department name as title
+	 * Get Shortened department name with format "A: Department"
 	 * 
 	 * @Return string
 	*/
-	public function title ()
+	public function getShortName()
 	{
-		return trans('panichd::lang.department-shortening').trans('panichd::lang.colon').$this->deptName();
+		$shortening = $this->is_main() ? '' : $this->ancestor()->first()->shortening . trans('panichd::lang.colon');
+		
+		return $shortening . ucwords(mb_strtolower($this->name));
 	}
 }

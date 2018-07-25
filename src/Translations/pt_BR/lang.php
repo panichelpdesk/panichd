@@ -178,7 +178,7 @@ return [
 
     'department-shortening' => 'Dept.',
 
-    'dept_sub1' => 'Sub Departamento',
+    'dept-descendant' => 'Sub Departamento',
     'description' => 'Descrição',
 
     'discard' => 'Descartar',

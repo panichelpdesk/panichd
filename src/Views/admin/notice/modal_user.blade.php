@@ -13,6 +13,7 @@
 			'class' => 'form-horizontal',
 			'data-route-create' => route($setting->grab('admin_route').'.notice.store')
 			]) !!}
+		<input type="hidden" id="user_input" name="user_id" value="" disabled="disabled">
 	
 		<div class="form-group">
 			{!! CollectiveForm::label('user_id', trans('panichd::lang.owner') . trans('panichd::lang.colon'), [
@@ -37,17 +38,14 @@
 			<div class="col-lg-9">
 				<select name="department_id" id="department_select2" class="form_select2 form-control" style="display: none; width: 100%">
 				<option value="0">{{ trans('panichd::lang.all-depts') }}</option>
-				<?php $department = $a_depts[0]->deptName(); ?>
-				<optgroup label="{{ $department }}">				
-				@foreach ($a_depts as $dept)
-					@if ($dept->deptName() != $department)
-						</optgroup>
-						<?php $department = $dept->deptName();?>
-						<optgroup label="{{ $department }}">
-					@endif
-					<option value="{{ $dept->id }}">{{ $dept->resume() }}</option>
+				@foreach ($departments as $ancestor)
+					<optgroup label="{{ $ancestor->name }}">
+						{{ $ancestor->name }}
+					</optgroup>
+					@foreach($ancestor->descendants as $descendant)
+						<option value="{{ $descendant->id }}">{{ $descendant->getShortName() }}</option>
+					@endforeach
 				@endforeach
-				</optgroup>
 				</select>
 			</div>
 		</div>

@@ -329,9 +329,9 @@ class Member extends User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function personDepts()
+	public function department()
 	{
-		return $this->HasMany('PanicHD\PanicHD\Models\DepartmentPerson', 'person_id', 'person_id');
+		return $this->belongsTo('PanicHD\PanicHD\Models\Department');
 	}	
 	
     /**
@@ -556,15 +556,12 @@ class Member extends User
      */
     public function getMyNoticesUsers()
     {
-		$user = self::find(auth()->user()->id);
-		
 		// Get my related departments
 		$related_departments = [];
-		foreach ($user->personDepts()->get() as $dept){
-			foreach ($dept->department()->first()->related() as $rel){
-				$related_departments [] = $rel->id;
-			}			
+		foreach ($this->getRelatedDepartments() as $rel){
+			$related_departments [] = $rel->id;
 		}
+
 
 		/*
 		 *	Get related Departamental users from my related departments
@@ -573,7 +570,7 @@ class Member extends User
 		 *    - agent ticketit_department in related_departments
 		 *    - agent person in related_departments
 		*/
-		$related_users = Member::where('id','!=',$user->id)
+		$related_users = Member::where('id','!=',$this->id)
 			->whereIn('ticketit_department', $related_departments);		
 		
 		// Get users that are visible by all departments
@@ -588,5 +585,24 @@ class Member extends User
 		}
 		
 		return $related_users;
+	}
+	
+	/*
+	 * Get member related departments in Department hierarchy
+	 *
+	 * For a main department: Returns self + all descendants
+	 * For descendant: Returns self + ancestor
+	 *
+	 * @Return collection
+	*/
+	public function getRelatedDepartments()
+	{
+		$member_department = $this->department()->get();
+		
+		if ($this->department()->first()->is_main()){
+			return $member_department->merge($this->department()->first()->descendants()->get());
+		}else{
+			return $member_department->merge($this->department()->first()->ancestor()->get());
+		}
 	}
 }

@@ -205,7 +205,7 @@ class PanicHDServiceProvider extends ServiceProvider
 					$a_notices = Ticket::active()->notHidden()->whereIn('user_id', Member::find(auth()->user()->id)->getMyNoticesUsers())
 						->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
 						->select('panichd_tickets.*')
-						->with('owner.personDepts.department')
+						->with('owner.department')
 						->with('status')->with('tags')
 						->withCount('allAttachments')
 						->orderByRaw('CASE when status_id="'.Setting::grab('default_close_status_id').'" then 2 else 1 end')
