@@ -301,11 +301,7 @@ class Ticket extends Model
 		}
 		
 		// Time
-		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
-			$time = ", " . date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
-		}else{
-			$time = ", " . date('H:i', strtotime($date));
-		}
+		$time = ", ". $this->getTime($date_field);
 		
 		$parsed = Carbon::parse($date);
 		$days = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
@@ -331,6 +327,40 @@ class Ticket extends Model
 		}
 			
 		return $date_text;
+	}
+	
+	/*
+	 * Get time from specified date field.
+	 *
+	 * - Output a time range if limit_date was specified and it's in same day as start date
+	 *
+	 * @param $date_field string
+	 *
+	 * @return string
+	*/
+	public function getTime($date_field = 'limit_date')
+	{
+		if ($date_field == "limit_date" and $this->limit_date == ""){
+			// This is an empty limit_date
+			$date = $this->start_date;
+		}else{
+			$date = $this->$date_field;
+		}
+		
+		
+		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
+			// Range for same day
+			$start = strtotime($this->start_date);
+			$limit = strtotime($this->limit_date);
+			
+			return date(date('i', $start) == "00" ? 'H' : 'H:i', $start)
+				. '-'
+				. date(date('i', $limit) == "00" ? 'H' : 'H:i', $limit)
+				. 'h';
+		}else{
+			// Normal time
+			return date('H:i', strtotime($date)) . 'h';
+		}
 	}
 	
 	/**
