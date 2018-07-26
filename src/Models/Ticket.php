@@ -300,22 +300,19 @@ class Ticket extends Model
 			$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
 		}
 		
-		// Time
-		$time = ", ". $this->getTime($date_field);
-		
 		$parsed = Carbon::parse($date);
 		$days = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
 		
 		if ($days == -1){
-			$date_text = trans('panichd::lang.yesterday') . $time;
+			$text_to_format = trans('panichd::lang.yesterday');
 		}elseif ($days === 0){
-			$date_text = trans('panichd::lang.today') . $time;
+			$text_to_format = trans('panichd::lang.today');
 		}elseif ($days == 1){
-			$date_text = trans('panichd::lang.tomorrow') . $time;
+			$text_to_format = trans('panichd::lang.tomorrow');
 		}elseif ($days > 1){
 			if ($parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) >= 0){
 				// Within 6 days
-				$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . $time;
+				$text_to_format = trans('panichd::lang.day_'.$parsed->dayOfWeek);
 				
 			}else{
 				// Distant future
@@ -325,6 +322,14 @@ class Ticket extends Model
 			// Distant past 
 			
 		}
+		
+		if (isset($text_to_format)){
+			$date_text = trans('panichd::lang.datetime-text', [
+				'date' => $text_to_format,
+				'time' => $this->getTime($date_field)
+				]);
+		}
+
 			
 		return $date_text;
 	}
@@ -355,11 +360,10 @@ class Ticket extends Model
 			
 			return date(date('i', $start) == "00" ? 'H' : 'H:i', $start)
 				. '-'
-				. date(date('i', $limit) == "00" ? 'H' : 'H:i', $limit)
-				. 'h';
+				. date(date('i', $limit) == "00" ? 'H' : 'H:i', $limit);
 		}else{
 			// Normal time
-			return date('H:i', strtotime($date)) . 'h';
+			return date('H:i', strtotime($date));
 		}
 	}
 	

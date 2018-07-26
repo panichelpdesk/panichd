@@ -12,7 +12,12 @@
 				<tr>
 				<td style="width: 14em;">{{ $notice->id }}<br /><span style="font-weight: bold">{{ $notice->status->name }}</span>
 				<div style="margin: 1em 0em 0em 0em; font-weight: bold;">
-				<span class="tooltip-info" title="{{ date(trans('panichd::lang.date-format'), strtotime(is_null($notice->limit_date) ? $notice->start_date : $notice->limit_date)) . ", " . $notice->getTime('limit_date') }}" data-toggle="tooltip" data-placement="auto bottom"><span class="glyphicon glyphicon-calendar"></span> {!! $notice->getDateForHumans('limit_date', true) !!}</span>
+				<span class="tooltip-info" title="{{
+				trans('panichd::lang.datetime-text', [
+						'date' => date(trans('panichd::lang.date-format'), strtotime(is_null($notice->limit_date) ? $notice->start_date : $notice->limit_date)),
+						'time' => $notice->getTime('limit_date')
+					])
+				}}" data-toggle="tooltip" data-placement="auto bottom"><span class="glyphicon glyphicon-calendar"></span> {!! $notice->getDateForHumans('limit_date', true) !!}</span>
 				</div>
 				
 				</td>
