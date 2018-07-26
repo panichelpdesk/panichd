@@ -301,6 +301,8 @@ class Ticket extends Model
 		}
 		
 		$parsed = Carbon::parse($date);
+		
+		// Real days  diff
 		$days = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
 		
 		if ($days == -1){
@@ -309,18 +311,26 @@ class Ticket extends Model
 			$text_to_format = trans('panichd::lang.today');
 		}elseif ($days == 1){
 			$text_to_format = trans('panichd::lang.tomorrow');
-		}elseif ($days > 1){
-			if ($parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) >= 0){
+		}elseif ($days > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) >= 0){
+			
 				// Within 6 days
 				$text_to_format = trans('panichd::lang.day_'.$parsed->dayOfWeek);
 				
+		}elseif($distant_dates_text){
+			
+			// Real weeks diff
+			$weeks = Carbon::now()->startOfWeek()->diffInWeeks($parsed->startOfWeek(), false);
+			
+			if ($weeks == 0){
+				$date_text = Carbon::now()->addDays($days)->diffForHumans();
+				
+			}elseif ($weeks >= -5 and $weeks <= 5){
+				$date_text = Carbon::now()->addWeeks($weeks)->diffForHumans();
 			}else{
-				// Distant future
+				// Real months diff
+				$months = Carbon::now()->startOfMonth()->diffInMonths($parsed->startOfMonth(), false);
+				$date_text = Carbon::now()->addMonths($months)->diffForHumans();
 			}
-			
-		}else{
-			// Distant past 
-			
 		}
 		
 		if (isset($text_to_format)){
