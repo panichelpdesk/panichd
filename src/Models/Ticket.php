@@ -274,7 +274,10 @@ class Ticket extends Model
     }
 	
 	/*
-	 * Improves Carbon diffForHumans to specify yesterday, today and tomorrow dates
+	 * Improves Carbon diffForHumans to specify dates in text:
+	 * 
+	 * - Yesterday, today, tomorrow
+	 * - Day of week for future dates within the next 6 days
 	 *
 	 * @param $date Eloquent property from timestamp field
 	 * @param $distant_dates_text boolean (distant dates show date info as descriptive text or date)
@@ -289,35 +292,42 @@ class Ticket extends Model
 		}else{
 			$date = $this->$date_field;
 		}
-		
-		$parsed = Carbon::parse($date);
-		$now_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
-		$date_text = "";
-		$time = ", " . date('H:i', strtotime($date));
-		
-		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
-			$time = ", " . date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
+
+		// Default date
+		if ($distant_dates_text){
+			$date_text = Carbon::parse($date)->diffForHumans();
+		}else{
+			$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
 		}
 		
-		if ($now_diff == -1){
-			$date_text = trans('panichd::lang.yesterday') . $time;
-		}elseif ($now_diff === 0){
-			$date_text = trans('panichd::lang.today') . $time;
-		}elseif ($now_diff == 1){
-			$date_text = trans('panichd::lang.tomorrow') . $time;
-		}elseif ($now_diff > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) > 0){
-			// This week
-			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . $time;
+		// Time
+		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
+			$time = ", " . date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
 		}else{
-			// Older than yesterday or after this week
-			if ($distant_dates_text){
-				$date_text = Carbon::parse($date)->diffForHumans();
-			}else{
-				$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
+			$time = ", " . date('H:i', strtotime($date));
+		}
+		
+		$parsed = Carbon::parse($date);
+		$days = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
+		
+		if ($days == -1){
+			$date_text = trans('panichd::lang.yesterday') . $time;
+		}elseif ($days === 0){
+			$date_text = trans('panichd::lang.today') . $time;
+		}elseif ($days == 1){
+			$date_text = trans('panichd::lang.tomorrow') . $time;
+		}elseif ($days > 1){
+			if ($parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) >= 0){
+				// Within 6 days
+				$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . $time;
 				
-				// Future only
-				if($now_diff > 1) $date_text.=$time;
+			}else{
+				// Distant future
 			}
+			
+		}else{
+			// Distant past 
+			
 		}
 			
 		return $date_text;
