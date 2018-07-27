@@ -11,33 +11,26 @@ use PanicHD\PanicHD\Traits\CacheVars;
 class FiltersController extends Controller
 {
     use CacheVars;
+
+	// Available ticket filters
+	private $a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
 	
+	/*
+	 * Update a single filter
+	*/
 	public function manage(Request $request, $filter, $value)
     {
-		$a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
-        //### PENDING: User permissions check or redirect back
+        
+		//### PENDING: User permissions check or redirect back
 
-        if ($filter=="removeall"){
-			// Delete each filter from session
-			foreach ($a_filters as $single){
-				$request->session()->forget('panichd_filter_'.$single);
-			}
-			
-			// General filter uncheck
-			$request->session()->forget('panichd_filters');
-			
-			// Redirect to specified list
-			return \Redirect::route(Models\Setting::grab('main_route').($value=="complete" ? '-complete' : '.index'));
-		}
-		
-		if (in_array($filter, $a_filters) == true) {
+        if (in_array($filter, $this->a_filters) == true) {
             if ($value == 'remove') {
                 // Delete filter
                 $request->session()->forget('panichd_filter_'.$filter);
 				
 				// General filter uncheck if none
 				$current = false;
-				foreach ($a_filters as $single){
+				foreach ($this->a_filters as $single){
 					if ($request->session()->exists('panichd_filter_'.$single)){
 						$current = true;
 						break;
@@ -86,4 +79,20 @@ class FiltersController extends Controller
 
         return \Redirect::back();
     }
+	
+	/*
+	 * Remove all filters
+	*/
+	public function removeall(Request $request)
+	{
+		// Delete each filter from session
+		foreach ($this->a_filters as $filter){
+			$request->session()->forget('panichd_filter_'.$filter);
+		}
+		
+		// General filter uncheck
+		$request->session()->forget('panichd_filters');
+
+		return \Redirect::back();
+	}
 }
