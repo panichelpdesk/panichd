@@ -160,6 +160,7 @@ return [
   'category-reason-is-empty'      => 'La raó de tancament :number no té text',
   'category-reason-too-short'     => 'La raó de tancament :number amb el nom ":name" requereix :min caràcters',
   'category-reason-no-status'     => 'La raó de tancament :number amb el nom ":name" requereix un estat definit',
+  'category-tag-not-valid-format' => 'L\'etiqueta ":tag" no té un format vàlid',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',

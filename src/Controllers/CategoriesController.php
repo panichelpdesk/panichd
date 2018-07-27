@@ -48,11 +48,10 @@ class CategoriesController extends Controller
     {
         list($request, $reason_rules, $reason_messages, $a_reasons) = $this->add_reasons_to($request);
 		
-		list($request, $tag_rules, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
+		list($request, $tag_rules, $tag_messages, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
 		
-		// Do Laravel validation
-		$rules = array_merge($reason_rules, $tag_rules);		
-		$this->do_validate($request, $rules, $reason_messages);
+		// Do Laravel validation	
+		$this->do_validate($request, array_merge($reason_rules, $tag_rules), array_merge($reason_messages, $tag_messages));
 
         $category = new Category();
         
@@ -138,11 +137,10 @@ class CategoriesController extends Controller
     {		
 		list($request, $reason_rules, $reason_messages, $a_reasons) = $this->add_reasons_to($request);
 		
-		list($request, $tag_rules, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
+		list($request, $tag_rules, $tag_messages, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
 		
 		// Do Laravel validation
-		$rules = array_merge($reason_rules, $tag_rules);		
-		$this->do_validate($request, $rules, $reason_messages);
+		$this->do_validate($request, array_merge($reason_rules, $tag_rules), array_merge($reason_messages, $tag_messages));
 		
         $category = Category::findOrFail($id);		
 
@@ -227,7 +225,7 @@ class CategoriesController extends Controller
      */
     protected function add_tags_to($request)
     {        
-        $rules = [];
+        $tag_rules = $tag_messages = [];
 		
 		// Allow alphanumeric and the following: ? @ / - _
         $tag_rule = "required|regex:/^[A-Za-z0-9?@\/\-_\s]+$/";
@@ -239,7 +237,8 @@ class CategoriesController extends Controller
             foreach ($request->input('new_tags') as $tag) {
                 $a_tags_new[] = $tag;
                 $request['tag'.++$i] = $tag;
-                $rules['tag'.$i] = $tag_rule;
+                $tag_rules['tag'.$i] = $tag_rule;
+				$tag_messages['tag'.$i.'.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$tag]);
             }
         }
 
@@ -252,7 +251,8 @@ class CategoriesController extends Controller
                     $request->merge(['jquery_tag_name_'.$i=>$tag]);
                     $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $tag;
                     $request['jquery_tag_name_'.$i] = $tag;
-                    $rules['jquery_tag_name_'.$i] = $tag_rule;
+                    $tag_rules['jquery_tag_name_'.$i] = $tag_rule;
+					$tag_messages['jquery_tag_name_'.$i.'.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$tag]);
                 }
 
                 // Add colors for tag update
@@ -262,7 +262,7 @@ class CategoriesController extends Controller
             }
         }        
 
-        return [$request, $rules, $a_tags_new, $a_tags_update];
+        return [$request, $tag_rules, $tag_messages, $a_tags_new, $a_tags_update];
     }
 	
 	/**

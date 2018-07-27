@@ -161,6 +161,7 @@ return [
   'category-reason-is-empty'      => 'Closing reason :number has no text',
   'category-reason-too-short'     => 'Closing reason :number with name ":name" requires :min characters',
   'category-reason-no-status'     => 'Closing reason :number with name ":name" requires a defined status',
+  'category-tag-not-valid-format' => 'Tag ":tag" format is not valid',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',
