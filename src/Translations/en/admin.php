@@ -156,6 +156,11 @@ return [
   'category-edit-tag'             => 'Edit tag',
   'category-edit-tag-background'  => 'Background',
   'category-edit-tag-text'        => 'Text',
+  
+  // Category form validation
+  'category-reason-is-empty'      => 'Closing reason :number has no text',
+  'category-reason-too-short'     => 'Closing reason :number with name ":name" requires :min characters',
+  'category-reason-no-status'     => 'Closing reason :number with name ":name" requires a defined status',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',

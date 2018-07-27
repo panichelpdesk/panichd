@@ -156,6 +156,11 @@ return [
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',
 
+  // Category form validation
+  'category-reason-is-empty'      => 'La raó de tancament :number no té text',
+  'category-reason-too-short'     => 'La raó de tancament :number amb el nom ":name" requereix :min caràcters',
+  'category-reason-no-status'     => 'La raó de tancament :number amb el nom ":name" requereix un estat definit',
+
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
   'priority-index-help'           => 'Pots canviar l\'ordre de les prioritats arrosegant les files d\'aquesta taula. Aquest ordre s\'utilitzarà també a la llista de tiquets quan es seleccioni',

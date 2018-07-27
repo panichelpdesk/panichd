@@ -46,13 +46,13 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        list($request, $reason_rules, $a_reasons) = $this->add_reasons_to($request);
+        list($request, $reason_rules, $reason_messages, $a_reasons) = $this->add_reasons_to($request);
 		
 		list($request, $tag_rules, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
 		
 		// Do Laravel validation
 		$rules = array_merge($reason_rules, $tag_rules);		
-		$this->do_validate($request, $rules);
+		$this->do_validate($request, $rules, $reason_messages);
 
         $category = new Category();
         
@@ -136,13 +136,13 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {		
-		list($request, $reason_rules, $a_reasons) = $this->add_reasons_to($request);
+		list($request, $reason_rules, $reason_messages, $a_reasons) = $this->add_reasons_to($request);
 		
 		list($request, $tag_rules, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
 		
 		// Do Laravel validation
 		$rules = array_merge($reason_rules, $tag_rules);		
-		$this->do_validate($request, $rules);
+		$this->do_validate($request, $rules, $reason_messages);
 		
         $category = Category::findOrFail($id);		
 
@@ -173,8 +173,10 @@ class CategoriesController extends Controller
      */
     protected function add_reasons_to($request)
     {        
-        $rules = $a_new = $a_update = $a_delete = [];
+        $reason_rules = $reason_messages = $a_new = $a_update = $a_delete = [];
 		$regex_text = trans('panichd::lang.regex-text-inline');
+		
+		$min_chars = "5";
 		
 		if ($request->exists('reason_ordering')){			
 			foreach ($request->input('reason_ordering') as $ordering=>$i){
@@ -187,24 +189,33 @@ class CategoriesController extends Controller
 					];
 					if ($request->exists('jquery_reason_text_'.$i)){
 						$reason['text'] = $request->input('jquery_reason_text_'.$i);
-						$rules['jquery_reason_text_'.$i] = "required|min:5|regex:".$regex_text;
+						$reason_rules['jquery_reason_text_'.$i] = "required|min:$min_chars|regex:".$regex_text;
+
+						// Reason message
+						$reason_messages['jquery_reason_text_'.$i.'.required'] = trans('panichd::admin.category-reason-is-empty', ['number' => $i+1]);					
+						$reason_messages['jquery_reason_text_'.$i.'.min'] = trans('panichd::admin.category-reason-too-short', ['number' => $i+1, 'name'=>$reason['text'], 'min' => $min_chars]);
 					}
+
 					if ($request->exists('jquery_reason_status_id_'.$i)){
 						$reason['status_id'] = $request->input('jquery_reason_status_id_'.$i);
-						$rules['jquery_reason_status_id_'.$i] = "required|exists:panichd_statuses,id";
+						$reason_rules['jquery_reason_status_id_'.$i] = "required|exists:panichd_statuses,id";
+
+						// Reason message
+						$reason_messages['jquery_reason_status_id_'.$i.'.required'] = trans('panichd::admin.category-reason-no-status', ['number' => $i+1,'name'=>$reason['text']]);
 					}				
 					
 					if ($request->input('jquery_reason_id_'.$i) == "new"){
 						$a_new[] = $reason;					
 					}else{
 						$a_update[$request->input('jquery_reason_id_'.$i)] = $reason;
-					}		
+					}
 				}
 			}
 		}
+		
 		$a_reasons = ['new'=>$a_new, 'update'=>$a_update, 'delete'=>$a_delete];
 		
-        return [$request, $rules, $a_reasons];
+        return [$request, $reason_rules, $reason_messages, $a_reasons];
     }
 	
     /**
@@ -259,7 +270,7 @@ class CategoriesController extends Controller
      *
      * @param Request $request
      */
-	protected function do_validate($request, $rules)
+	protected function do_validate($request, $rules, $reason_messages)
 	{
 		$rules = array_merge($rules, [
             'name'         => 'required',
@@ -274,7 +285,7 @@ class CategoriesController extends Controller
 			]);
 		}
 		
-		$this->validate($request, $rules);
+		$this->validate($request, $rules, $reason_messages);
 	}
 	
 	/*
