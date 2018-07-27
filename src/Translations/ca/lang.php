@@ -131,6 +131,7 @@ return [
   'date-format'                      => 'd-m-Y',
   'datetime-format'                  => 'd-m-Y H:i',
   'datetimepicker-format'            => 'DD-MM-YYYY HH:mm',
+  'datetime-text'                    => ':date, :timeh',
   'deleted-member'                   => 'Usuari eliminat',
   'department'                       => 'Area',
   'department-shortening'            => 'Dep.',

@@ -274,7 +274,10 @@ class Ticket extends Model
     }
 	
 	/*
-	 * Improves Carbon diffForHumans to specify yesterday, today and tomorrow dates
+	 * Improves Carbon diffForHumans to specify dates in text:
+	 * 
+	 * - Yesterday, today, tomorrow
+	 * - Day of week for future dates within the next 6 days
 	 *
 	 * @param $date Eloquent property from timestamp field
 	 * @param $distant_dates_text boolean (distant dates show date info as descriptive text or date)
@@ -289,38 +292,89 @@ class Ticket extends Model
 		}else{
 			$date = $this->$date_field;
 		}
+
+		// Default date
+		if ($distant_dates_text){
+			$date_text = Carbon::parse($date)->diffForHumans();
+		}else{
+			$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
+		}
 		
 		$parsed = Carbon::parse($date);
-		$now_diff = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
-		$date_text = "";
-		$time = ", " . date('H:i', strtotime($date));
 		
-		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
-			$time = ", " . date('H:i', strtotime($this->start_date)) .'-'. date('H:i', strtotime($this->limit_date));
-		}
+		// Real days  diff
+		$days = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
 		
-		if ($now_diff == -1){
-			$date_text = trans('panichd::lang.yesterday') . $time;
-		}elseif ($now_diff === 0){
-			$date_text = trans('panichd::lang.today') . $time;
-		}elseif ($now_diff == 1){
-			$date_text = trans('panichd::lang.tomorrow') . $time;
-		}elseif ($now_diff > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) > 0){
-			// This week
-			$date_text = trans('panichd::lang.day_'.$parsed->dayOfWeek) . $time;
-		}else{
-			// Older than yesterday or after this week
-			if ($distant_dates_text){
-				$date_text = Carbon::parse($date)->diffForHumans();
-			}else{
-				$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
+		if ($days == -1){
+			$text_to_format = trans('panichd::lang.yesterday');
+		}elseif ($days === 0){
+			$text_to_format = trans('panichd::lang.today');
+		}elseif ($days == 1){
+			$text_to_format = trans('panichd::lang.tomorrow');
+		}elseif ($days > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) >= 0){
+			
+				// Within 6 days
+				$text_to_format = trans('panichd::lang.day_'.$parsed->dayOfWeek);
 				
-				// Future only
-				if($now_diff > 1) $date_text.=$time;
+		}elseif($distant_dates_text){
+			
+			// Real weeks diff
+			$weeks = Carbon::now()->startOfWeek()->diffInWeeks($parsed->startOfWeek(), false);
+			
+			if ($weeks == 0){
+				$date_text = Carbon::now()->addDays($days)->diffForHumans();
+				
+			}elseif ($weeks >= -5 and $weeks <= 5){
+				$date_text = Carbon::now()->addWeeks($weeks)->diffForHumans();
+			}else{
+				// Real months diff
+				$months = Carbon::now()->startOfMonth()->diffInMonths($parsed->startOfMonth(), false);
+				$date_text = Carbon::now()->addMonths($months)->diffForHumans();
 			}
 		}
+		
+		if (isset($text_to_format)){
+			$date_text = trans('panichd::lang.datetime-text', [
+				'date' => $text_to_format,
+				'time' => $this->getTime($date_field)
+				]);
+		}
+
 			
 		return $date_text;
+	}
+	
+	/*
+	 * Get time from specified date field.
+	 *
+	 * - Output a time range if limit_date was specified and it's in same day as start date
+	 *
+	 * @param $date_field string
+	 *
+	 * @return string
+	*/
+	public function getTime($date_field = 'limit_date')
+	{
+		if ($date_field == "limit_date" and $this->limit_date == ""){
+			// This is an empty limit_date
+			$date = $this->start_date;
+		}else{
+			$date = $this->$date_field;
+		}
+		
+		
+		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
+			// Range for same day
+			$start = strtotime($this->start_date);
+			$limit = strtotime($this->limit_date);
+			
+			return date(date('i', $start) == "00" ? 'H' : 'H:i', $start)
+				. '-'
+				. date(date('i', $limit) == "00" ? 'H' : 'H:i', $limit);
+		}else{
+			// Normal time
+			return date('H:i', strtotime($date));
+		}
 	}
 	
 	/**
