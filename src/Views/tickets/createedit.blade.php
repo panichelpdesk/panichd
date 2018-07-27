@@ -104,7 +104,7 @@
 				<div class="form-group"><!-- PRIORITY -->
 					{!! CollectiveForm::label('priority', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
-						{!! CollectiveForm::select('priority_id', $priorities, null, ['class' => 'form-control', 'required' => 'required']) !!}
+						{!! CollectiveForm::select('priority_id', $priorities, $a_current['priority_id'], ['class' => 'form-control', 'required' => 'required']) !!}
 					</div>
 				</div>
 				

@@ -170,9 +170,13 @@ class SettingsTableSeeder extends Seeder
 			'status_owner_notification' => 'yes',
 			
 			
-			
+			/*
+             * The default priority for new tickets
+             * Default: 1
+             */
+            'default_priority_id' => 1,
             /*
-             * The default status for new created tickets
+             * The default status for new tickets
              * Default: 1
              */
             'default_status_id' => 1,

@@ -621,6 +621,8 @@ class TicketsController extends Controller
 			$a_current['start_date'] = old ('start_date');
 			$a_current['limit_date'] = old ('limit_date');
 			
+			$a_current['priority_id'] = old('priority_id');
+			
 			$a_current['cat_id'] = old('category_id');
 			$a_current['agent_id'] = old('agent_id');
 			
@@ -632,6 +634,8 @@ class TicketsController extends Controller
 			$a_current['start_date'] = $ticket->start_date;
 			$a_current['limit_date'] = $ticket->limit_date;
 			
+			$a_current['priority_id'] = $ticket->priority_id;
+			
 			$a_current['cat_id'] = $ticket->category_id;
 			$a_current['agent_id'] = $ticket->agent_id;			
 		}else{
@@ -639,6 +643,8 @@ class TicketsController extends Controller
 			$a_current['complete'] = "no";
 			
 			$a_current['start_date'] = $a_current['limit_date'] = "";
+			
+			$a_current['priority_id'] = Setting::grab('default_priority_id');
 			
 			// Default category		
 			if ($member->currentLevel() > 1){
