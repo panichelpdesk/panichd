@@ -30,11 +30,8 @@
 				@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
 					<span class="glyphicon glyphicon-filter"></span>
 				@endif
-				@if (isset($ticket))
-					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->filtered('new')->count() }}
-				@else
-					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
-				@endif
+				
+				{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
 				
 				</span>
 				@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
@@ -69,11 +66,8 @@
 			@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
-			@if (isset($ticket))
-				{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->filtered('active')->count() }}
-			@else
-				{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
-			@endif
+			
+			{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
 			
 			</span>
 			@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
@@ -90,11 +84,8 @@
 			@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
 				<span class="glyphicon glyphicon-filter"></span>
 			@endif
-			@if (isset($ticket))
-				{{ PanicHD\PanicHD\Models\Ticket::complete()->visible()->filtered('complete')->count() }}
-			@else
-				{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
-			@endif
+			
+			{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
 			
 			</span>
 			@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
