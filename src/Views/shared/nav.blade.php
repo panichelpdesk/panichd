@@ -27,16 +27,8 @@
 				<span class="{{ $nav_icon }} glyphicon glyphicon-certificate"></span>
 
 				<span class="badge" title="{{ $title }}" style="cursor: help">
-				@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
-					<span class="glyphicon glyphicon-filter"></span>
-				@endif
-				
-				{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
-				
+					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
 				</span>
-				@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
-					<span class="glyphicon glyphicon-filter"></span>
-				@endif
 				 <span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
@@ -63,16 +55,8 @@
 			<span class="{{ $nav_icon }} glyphicon glyphicon-file"></span>			
 			
 			<span class="badge" title="{{ $title }}" style="cursor: help">
-			@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
-				<span class="glyphicon glyphicon-filter"></span>
-			@endif
-			
-			{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
-			
+				{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
 			</span>
-			@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
-				<span class="glyphicon glyphicon-filter"></span>
-			@endif
 		</a>
 	</li>
 	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete')) || (isset($ticket) && $ticket->isComplete()) ? "active" : "" !!}">
@@ -81,16 +65,8 @@
 			<span class="{{ $nav_icon }} glyphicon glyphicon-ok-circle"></span>
 			
 			<span class="badge" title="{{ $title }}" style="cursor: help">
-			@if (session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters')))
-				<span class="glyphicon glyphicon-filter"></span>
-			@endif
-			
-			{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
-			
+				{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
 			</span>
-			@if (!isset($ticket) and session()->has('panichd_filters') and !session()->has('panichd_filter_currentLevel'))
-				<span class="glyphicon glyphicon-filter"></span>
-			@endif
 		</a>
 	</li>
 

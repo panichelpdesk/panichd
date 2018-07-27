@@ -82,7 +82,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0.3em 0.6em;
 }
 
-#filter_panel .btn.pov-link, #filter_panel .btn.agent-link {
+#filter_panel .removeall-link, #filter_panel .btn.pov-link, #filter_panel .btn.agent-link {
 	border: none;
 }
 

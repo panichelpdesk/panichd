@@ -80,6 +80,7 @@ return [
   'table-aria-sort-asc'              => ': activate to sort column ascending',
   'table-aria-sort-desc'             => ': activate to sort column descending',
   
+  'filter-removeall-title'           => 'Remove all filters',
   'filter-pov'                       => 'View as',
   'filter-year-all'                  => 'All',
   'filter-calendar'                  => 'Calendar',

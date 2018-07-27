@@ -80,6 +80,7 @@ return [
   'table-aria-sort-asc'              => ': activar per ordenar ordre ascendent',
   'table-aria-sort-desc'             => ': activar per ordenar ordre descendent',
   
+  'filter-removeall-title'           => 'Elimina tots els filtres',
   'filter-pov'                       => 'Vista',
   'filter-year-all'                  => 'Tots',
   'filter-calendar'                  => 'Agenda',
