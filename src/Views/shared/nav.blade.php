@@ -21,7 +21,7 @@
 	?>
 	
 	@if($u->canViewNewTickets())
-		<li role="presentation" class="dropdown {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@create')) ? "active" : "" !!}">
+		<li role="presentation" class="dropdown {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@create')) || (isset($ticket) && $ticket->isNew()) ? "active" : "" !!}">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('panichd::lang.nav-new-tickets-title') }}">
 				<span class="{{ $nav_text }}">{{ trans('panichd::lang.nav-new-tickets') }}</span>
 				<span class="{{ $nav_icon }} glyphicon glyphicon-certificate"></span>
@@ -57,7 +57,7 @@
 		</li>
 	@endif
 	
-	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@index')) ? "active" : "" !!}">
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@index')) || (isset($ticket) && $ticket->isActive()) ? "active" : "" !!}">
 		<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}" title="{{ trans('panichd::lang.nav-active-tickets-title') }}">
 			<span class="{{ $nav_text }}">{{ trans('panichd::lang.active-tickets-adjective') }}</span>
 			<span class="{{ $nav_icon }} glyphicon glyphicon-file"></span>			
@@ -75,7 +75,7 @@
 			@endif
 		</a>
 	</li>
-	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete')) ? "active" : "" !!}">
+	<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete')) || (isset($ticket) && $ticket->isComplete()) ? "active" : "" !!}">
 		<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete') }}" title="{{ trans('panichd::lang.nav-completed-tickets-title') }}">
 			<span class="{{ $nav_text }}">{{ trans('panichd::lang.complete-tickets-adjective') }}</span>
 			<span class="{{ $nav_icon }} glyphicon glyphicon-ok-circle"></span>
