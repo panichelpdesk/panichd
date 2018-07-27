@@ -202,8 +202,9 @@ class CategoriesController extends Controller
 				}
 			}
 		}
+		$a_reasons = ['new'=>$a_new, 'update'=>$a_update, 'delete'=>$a_delete];
 		
-        return [$request, $rules, ['new'=>$a_new, 'update'=>$a_update, 'delete'=>$a_delete]];
+        return [$request, $rules, $a_reasons];
     }
 	
     /**
