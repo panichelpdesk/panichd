@@ -3,7 +3,9 @@
 @append
 
 @section('panichd_nav')
-	@include('panichd::shared.nav')
+	<ul class="nav navbar-nav">
+		@include('panichd::shared.nav')
+	</ul>
 @stop
 
 @include('panichd::shared.errors')

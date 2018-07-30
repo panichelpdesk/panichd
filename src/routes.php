@@ -100,6 +100,9 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@agentSelectList',
         ]);
 		
+		// Remove all filters
+		Route::get("$main_route_path/filter/removeall", 'PanicHD\PanicHD\Controllers\FiltersController@removeall');
+
 		// Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
     });

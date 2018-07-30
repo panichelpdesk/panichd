@@ -43,7 +43,7 @@ class Ticket extends Model
 	}
 	
     /**
-     * List of completed tickets.
+     * Check if ticket has comments
      *
      * @return bool
      */
@@ -51,10 +51,42 @@ class Ticket extends Model
     {
         return (bool) count($this->comments);
     }
+	
+	/**
+     * Check if ticket is in Active list
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        $member = Member::findOrFail(auth()->user()->id);
+		if ($member->currentLevel() >= 2){
+			return (bool) (is_null($this->completed_at) and $this->status_id != Setting::grab('default_status_id'));
+		}else{
+			return (bool) is_null($this->completed_at);
+		}
+		return (bool) $this->completed_at;
+    }
 
-    public function isComplete()
+	/**
+     * Check if ticket is in Complete list
+     *
+     * @return bool
+     */
+	public function isComplete()
     {
         return (bool) $this->completed_at;
+    }
+
+	/**
+     * Check if ticket is in Newest list
+     *
+     * @return bool
+     */
+	public function isNew()
+    {
+        $member = Member::findOrFail(auth()->user()->id);
+		return (bool) ($member->currentLevel() >= 2 and is_null($this->completed_at) and $this->status_id == Setting::grab('default_status_id'));
     }
 
 	
