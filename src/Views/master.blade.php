@@ -23,7 +23,7 @@
 	@yield('panichd_assets')
 </head>
 <body>
-    <header>
+    <header id="panichd_header">
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -77,8 +77,8 @@
                 </div>
             </div>
         </nav>
-    </head>
-	<div class="container-fluid">
+    </header>
+	<div id="panichd_content" class="container-fluid">
 		@yield('panichd_errors')
         @yield('content')
 	</div>
