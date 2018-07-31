@@ -101,7 +101,8 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
         ]);
 		
 		// Remove all filters
-		Route::get("$main_route_path/filter/removeall", 'PanicHD\PanicHD\Controllers\FiltersController@removeall');
+		Route::get("$main_route_path/filter/removeall/{list?}", 'PanicHD\PanicHD\Controllers\FiltersController@removeall')
+			->name("$main_route-filter-removeall");
 
 		// Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');

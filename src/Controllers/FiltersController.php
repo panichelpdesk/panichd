@@ -137,7 +137,7 @@ class FiltersController extends Controller
 	/*
 	 * Remove all filters
 	*/
-	public function removeall(Request $request)
+	public function removeall(Request $request, $list = null)
 	{
 		// Delete each filter from session
 		foreach ($this->a_filters as $filter){
@@ -146,7 +146,12 @@ class FiltersController extends Controller
 		
 		// General filter uncheck
 		$request->session()->forget('panichd_filters');
-
+		
+		if ($list != "" and array_key_exists($list, $this->a_lists)){
+			// Redirect to specified route
+			return redirect()->route(Setting::grab('main_route').$this->a_lists[$list]);
+		}
+		
 		return \Redirect::back();
 	}
 }
