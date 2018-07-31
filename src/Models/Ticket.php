@@ -541,7 +541,7 @@ class Ticket extends Model
      */
     public function scopeUserTickets($query, $id)
     {
-        return $query->where('user_id', $id)->notHidden();
+        return $query->where('user_id', $id);
     }
 
     /**
@@ -588,7 +588,7 @@ class Ticket extends Model
         } elseif (auth()->user()->panichd_agent){
 			return $query->visibleForAgent(auth()->user()->id);
         } else {
-            return $query->userTickets(auth()->user()->id);
+            return $query->userTickets(auth()->user()->id)->notHidden();
         }
     }
 
@@ -619,14 +619,14 @@ class Ticket extends Model
 				return $query->agentTickets($id);
 			}
 		}else{
-			return $query->userTickets($id)
+			// Agent with currentLevel() == 1
+			return $query->userTickets($id)->notHidden()
 				->whereDoesntHave('category',function($q1) use($id){
 					$q1->whereHas('agents',function($q2) use($id){
 						$q2->where('id',$id);
 					});
 				});
 		}
-		
     }
 	
 	/**
@@ -643,7 +643,7 @@ class Ticket extends Model
 		
 		if ($member->currentLevel() == 1){
 			// If session()->has('panichd_filter_currentLevel')
-			return $query->userTickets(auth()->user()->id);
+			return $query->userTickets(auth()->user()->id)->notHidden();
 		}else{
 			if (session()->has('panichd_filters')){
 				
@@ -713,7 +713,7 @@ class Ticket extends Model
 
 				// Owner filter
 				if ((!$filter or $filter == 'owner') and session()->has('panichd_filter_owner')){
-					if (session('panichd_filter_owner')=="me"){
+					if (session('panichd_filter_owner') == "me"){
 						$query = $query->userTickets(auth()->user()->id);
 					}else{
 						$query = $query->userTickets(session('panichd_filter_owner'));
