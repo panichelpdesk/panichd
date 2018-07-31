@@ -139,44 +139,69 @@
                 </ul>
                 <br>
                 <div class="tab-content">
-                    <div id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "in active" : ""}}">
-                        <a href="#" class="list-group-item disabled">
+                    <ul id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "in active" : ""}}">
+                        <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-category') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
-                                <em>
-                                    {{ trans('panichd::admin.index-open') }} /
-                                     {{ trans('panichd::admin.index-closed') }}
-                                </em>
+                                
+								<?php 
+									$counter_lists_text = trans('panichd::lang.newest-tickets-adjective') . ' - ' . trans('panichd::lang.active-tickets-adjective') . ' - ' . trans('panichd::lang.complete-tickets-adjective');
+								?>
+								
+								<em>{{ $counter_lists_text }}</em>
                             </span>
-                        </a>
+                        </li>
                         @foreach($categories as $category)
-                            <a href="#" class="list-group-item">
-                        <span style="color: {{ $category->color }}">
-                            {{ $category->name }} <span class="badge">{{ $category->tickets()->count() }}</span>
-                        </span>
-                        <span class="pull-right text-muted small">
-                            <em>
-                                {{ $category->tickets()->whereNull('completed_at')->count() }} /
-                                 {{ $category->tickets()->whereNotNull('completed_at')->count() }}
-                            </em>
-                        </span>
-                            </a>
+                            <li class="list-group-item">
+								<span style="color: {{ $category->color }}">
+									{{ $category->name }} <span class="badge"  style="background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
+								</span>
+								<span class="pull-right small">
+									<?php
+										$a_button = [
+											'newest' => $category->tickets()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
+											'active' => $category->tickets()->active()->count() . ' ' . trans('panichd::lang.active-tickets-adjective'),
+											'complete' => $category->tickets()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
+										];
+									?>
+									
+									@if ($category->tickets()->newest()->count() == 0)
+										{{ $a_button['newest'] }}
+									@else
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective'), 'category' => $category->name ]) }}">
+										{{ $a_button['newest'] }}
+										</a>
+									@endif
+									 -
+									@if ($category->tickets()->active()->count() == 0)
+										{{ $a_button['active'] }}
+									@else
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective'), 'category' => $category->name ]) }}">
+										{{ $a_button['active'] }}
+										</a>
+									@endif
+									 -
+									@if ($category->tickets()->complete()->count() == 0)
+										{{ $a_button['complete'] }}
+									@else
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective'), 'category' => $category->name ]) }}">
+										{{ $a_button['complete'] }}
+										</a>
+									@endif
+								</span>
+                            </li>
                         @endforeach
                         {!! $categories->render() !!}
-                    </div>
+                    </ul>
                     <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "in active" : ""}}">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-agent') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
-                                <em>
-                                    {{ trans('panichd::lang.newest-tickets-adjective') }} -
-                                    {{ trans('panichd::lang.active-tickets-adjective') }} -
-                                    {{ trans('panichd::lang.complete-tickets-adjective') }}
-                                </em>
+                                <em>{{ $counter_lists_text }}</em>
                             </span>
                         </li>
                         @foreach($agents as $agent)
@@ -232,11 +257,7 @@
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
-                                <em>
-                                    {{ trans('panichd::lang.newest-tickets-adjective') }} -
-                                    {{ trans('panichd::lang.active-tickets-adjective') }} -
-                                    {{ trans('panichd::lang.complete-tickets-adjective') }}
-                                </em>
+                                <em>{{ $counter_lists_text }}</em>
                             </span>
                         </li>
                         @foreach($users as $user)

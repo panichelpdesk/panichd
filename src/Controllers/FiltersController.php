@@ -17,7 +17,7 @@ class FiltersController extends Controller
 	private $a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
 	
 	// Filters that can be called via /filteronly/
-	private $a_only_filters = ['owner', 'agent'];
+	private $a_only_filters = ['category', 'owner', 'agent'];
 	
 	// Ticket list names and related route name
 	private $a_lists = [
@@ -97,6 +97,9 @@ class FiltersController extends Controller
 	public function only(Request $request, $filter, $value, $list)
 	{
 		if (in_array($filter, $this->a_only_filters) and in_array($list, array_keys($this->a_lists))){
+			
+			$apply = false;
+			
 			if (in_array($filter, ['owner', 'agent'])){
 				$member = Models\Member::where('id', $value);
 			}
@@ -104,6 +107,14 @@ class FiltersController extends Controller
 			if (($filter == "owner" and $member->count() == 1)
 				or ($filter == "agent" and $member->count() == 1 and $member->first()->isAgent())){
 				
+				$apply = true;
+				
+			}elseif($filter == "category" and Models\Category::where('id', $value)->count() == 1){
+				
+				$apply = true;
+			}
+			
+			if ($apply){
 				// Delete each filter from session
 				foreach ($this->a_filters as $delete){
 					$request->session()->forget('panichd_filter_'.$delete);

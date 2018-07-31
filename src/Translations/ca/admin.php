@@ -85,6 +85,7 @@ return [
   'index-performance-chart'             => 'Quants dies de promig per resoldre un tiquet?',
   'index-categories-chart'              => 'Distribució de tickets per Categoria',
   'index-agents-chart'                  => 'Distribució de tickets per Agent',
+  'index-view-category-tickets'         => 'Veure tiquets :list de la categoria :category',
   'index-view-agent-tickets'            => 'Veure tiquets :list assignats a l\'agent',
   'index-view-user-tickets'             => 'Veure tiquets :list de l\'usuari',
 
