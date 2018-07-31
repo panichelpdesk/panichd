@@ -85,6 +85,7 @@ return [
   'index-performance-chart'             => 'How many days in average to resolve a ticket?',
   'index-categories-chart'              => 'Tickets distribution per category',
   'index-agents-chart'                  => 'Tickets distribution per Agent',
+  'index-view-user-tickets'             => 'View user :list tickets',
 
 // $admin_route_path/agent/____
   'agent-index-title'             => 'Agent Management',

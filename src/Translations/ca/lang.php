@@ -146,6 +146,7 @@ return [
   'last-update'                      => 'Última actualització',
   'limit-date'                       => 'Data límit',
   'list'                             => 'Llista',
+  'newest-tickets-adjective'         => 'Nous',
   'no'                               => 'No',
   'no-replies'                       => 'Sense respostes.',
   'owner'                            => 'Propietari',

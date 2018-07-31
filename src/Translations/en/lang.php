@@ -147,6 +147,7 @@ return [
   'last-update'                      => 'Last Update',
   'limit-date'                       => 'Limit date',
   'list'                             => 'List',
+  'newest-tickets-adjective'         => 'New',
   'no'                               => 'No',
   'no-replies'                       => 'No replies.',
   'owner'                            => 'Owner',

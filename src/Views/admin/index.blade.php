@@ -197,37 +197,64 @@
                         @endforeach
                         {!! $agents->render() !!}
                     </div>
-                    <div id="information-panel-users" class="list-group tab-pane fade {{$active_tab == "users" ? "in active" : ""}}">
-                        <a href="#" class="list-group-item disabled">
+                    <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "in active" : "" }}">
+                        <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-user') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
                             <span class="pull-right text-muted small">
                                 <em>
-                                    {{ trans('panichd::admin.index-open') }} /
-                                    {{ trans('panichd::admin.index-closed') }}
+                                    {{ trans('panichd::lang.newest-tickets-adjective') }} -
+                                    {{ trans('panichd::lang.active-tickets-adjective') }} -
+                                    {{ trans('panichd::lang.complete-tickets-adjective') }}
                                 </em>
                             </span>
-                        </a>
+                        </li>
                         @foreach($users as $user)
-                            <a href="#" class="list-group-item">
+                            <li class="list-group-item">
                                 <span>
                                     {{ $user->name }}
                                     <span class="badge">
-                                        {{ $user->userTickets(false)->count()  +
-                                         $user->userTickets(true)->count() }}
+                                        {{ $user->tickets()->count() }}
                                     </span>
                                 </span>
-                                <span class="pull-right text-muted small">
-                                    <em>
-                                        {{ $user->userTickets(false)->count() }} /
-                                        {{ $user->userTickets(true)->count() }}
-                                    </em>
+                                <span class="pull-right small">
+                                    <?php
+										$a_button = [
+											'newest' => $user->tickets()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
+											'active' => $user->tickets()->active()->count() . ' ' . trans('panichd::lang.active-tickets-adjective'),
+											'complete' => $user->tickets()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
+										];
+									?>
+									
+									@if ($user->tickets()->newest()->count() == 0)
+										{{ $a_button['newest'] }}
+									@else
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
+										{{ $a_button['newest'] }}
+										</a>
+									@endif
+									 -
+									@if ($user->tickets()->active()->count() == 0)
+										{{ $a_button['active'] }}
+									@else
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
+										{{ $a_button['active'] }}
+										</a>
+									@endif
+									 -
+									@if ($user->tickets()->complete()->count() == 0)
+										{{ $a_button['complete'] }}
+									@else
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
+										{{ $a_button['complete'] }}
+										</a>
+									@endif
                                 </span>
                             </a>
                         @endforeach
                         {!! $users->render() !!}
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
