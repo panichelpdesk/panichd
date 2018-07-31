@@ -166,8 +166,8 @@
                         @endforeach
                         {!! $categories->render() !!}
                     </div>
-                    <div id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "in active" : ""}}">
-                        <a href="#" class="list-group-item disabled">
+                    <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "in active" : ""}}">
+                        <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-agent') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
@@ -177,26 +177,27 @@
                                     {{ trans('panichd::admin.index-closed') }}
                                 </em>
                             </span>
-                        </a>
+                        </li>
                         @foreach($agents as $agent)
-                            <a href="#" class="list-group-item">
-                                <span>
-                                    {{ $agent->name }}
-                                    <span class="badge">
-                                        {{ $agent->agentTickets(false)->count()  +
-                                         $agent->agentTickets(true)->count() }}
-                                    </span>
-                                </span>
+                            <li class="list-group-item">
+                                <?php $agent_text = $agent->name . ' <span class="badge">' . ($agent->agentTickets(false)->count()  +
+                                         $agent->agentTickets(true)->count()) . '</span>'; ?>
+								@if ($setting->grab('user_route') != 'disabled')
+									<a href="{{ route($setting->grab('user_route'), ['id' => $agent->id]) }}">{!! $agent_text !!}</a>
+								@else
+									<span>{!! $agent_text !!}</span>
+								@endif
+								
                                 <span class="pull-right text-muted small">
                                     <em>
                                         {{ $agent->agentTickets(false)->count() }} /
                                          {{ $agent->agentTickets(true)->count() }}
                                     </em>
                                 </span>
-                            </a>
+                            </li>
                         @endforeach
                         {!! $agents->render() !!}
-                    </div>
+                    </ul>
                     <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "in active" : "" }}">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-user') }}
@@ -212,12 +213,13 @@
                         </li>
                         @foreach($users as $user)
                             <li class="list-group-item">
-                                <span>
-                                    {{ $user->name }}
-                                    <span class="badge">
-                                        {{ $user->tickets()->count() }}
-                                    </span>
-                                </span>
+                                <?php $user_text = $user->name . ' <span class="badge">' . $user->tickets()->count() . '</span>'; ?>
+								@if ($setting->grab('user_route') != 'disabled')
+									<a href="{{ route($setting->grab('user_route'), ['id' => $user->id]) }}">{!! $user_text !!}</a>
+								@else
+									<span>{!! $user_text !!}</span>
+								@endif
+								
                                 <span class="pull-right small">
                                     <?php
 										$a_button = [
