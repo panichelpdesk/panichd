@@ -9,46 +9,57 @@
 @section('content')
     @if($tickets_count)
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-lg-offset-1">
+            <div class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3" style="font-size: 5em;">
+                            <div class="col-xs-3" style="font-size: 3em;">
                                 <i class="glyphicon glyphicon-book"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <h1>{{ $tickets_count }}</h1>
-                                <div>{{ trans('panichd::admin.index-total-tickets') }}</div>
+                                <h2>{{ $tickets_count }} <small>{{ trans('panichd::admin.index-total-tickets') }}</small></h2>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-4">
+            <div class="col-md-3">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3" style="font-size: 3em;">
+                                <i class="glyphicon glyphicon-certificate"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <h1>{{ $a_tickets_count['newest'] }} <small>{{ trans('panichd::admin.index-newest-tickets') }}</small></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-md-3">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3" style="font-size: 5em;">
+                            <div class="col-xs-3" style="font-size: 3em;">
                                 <i class="glyphicon glyphicon-file"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <h1>{{ $open_tickets_count }}</h1>
-                                <div>{{ trans('panichd::admin.index-open-tickets') }}</div>
+                                <h1>{{ $a_tickets_count['active'] }} <small>{{ trans('panichd::admin.index-active-tickets') }}</small></h1>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-4">
+            <div class="col-md-3">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3" style="font-size: 5em;">
+                            <div class="col-xs-3" style="font-size: 3em;">
                                 <i class="glyphicon glyphicon-ok-circle"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <h1>{{ $closed_tickets_count }}</h1>
-                                <span>{{ trans('panichd::admin.index-closed-tickets') }}</span>
+                                <h1>{{ $a_tickets_count['complete'] }} <small>{{ trans('panichd::admin.index-complete-tickets') }}</small></h1>
                             </div>
                         </div>
                     </div>

@@ -85,6 +85,7 @@
 	?>
 
 	<li role="presentation" class="dropdown {!!
+		$tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\DashboardController@index').'*') ||
 		$tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\StatusesController@index').'*') ||
 		$tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\PrioritiesController@index').'*') ||
 		$tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\AgentsController@index').'*') ||
@@ -100,7 +101,7 @@
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
-			<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\DashboardController@index')) || Request::is($setting->grab('admin_route').'/indicator*') ? 'active' : '' !!}">
+			<li role="presentation" class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\DashboardController@index').'*') || Request::is($setting->grab('admin_route').'/indicator*') ? 'active' : '' !!}">
 				<a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index') }}" title="{{ trans('panichd::admin.nav-dashboard-title') }}">
 					{{ trans('panichd::admin.nav-dashboard') }}
 				</a>

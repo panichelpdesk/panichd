@@ -24,8 +24,11 @@ class DashboardController extends Controller
 		
 		// Load Dashboard info
 		$tickets_count = Ticket::count();
-        $open_tickets_count = Ticket::whereNull('completed_at')->count();
-        $closed_tickets_count = $tickets_count - $open_tickets_count;
+        $a_tickets_count = [
+			'newest' => Ticket::newest()->count(),
+			'active' => Ticket::active()->count(),
+			'complete' => Ticket::complete()->count()
+		];
 
         // Per Category pagination
         $categories = Category::paginate(10, ['*'], 'cat_page');
@@ -70,8 +73,8 @@ class DashboardController extends Controller
         return view('panichd::admin.index',
             compact(
                 'open_tickets_count',
-                'closed_tickets_count',
                 'tickets_count',
+                'a_tickets_count',
                 'categories',
                 'agents',
                 'users',
