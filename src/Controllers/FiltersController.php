@@ -5,6 +5,7 @@ namespace PanicHD\PanicHD\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PanicHD\PanicHD\Models;
+use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Traits\CacheVars;
 
 
@@ -14,6 +15,16 @@ class FiltersController extends Controller
 
 	// Available ticket filters
 	private $a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
+	
+	// Filters that can be called via /filteronly/
+	private $a_only_filters = ['owner'];
+	
+	// Ticket list names and related route name
+	private $a_lists = [
+		'newest' => '-newest',
+		'active' => '.index',
+		'complete' => '-complete'
+	];
 	
 	/*
 	 * Update a single filter
@@ -79,6 +90,33 @@ class FiltersController extends Controller
 
         return \Redirect::back();
     }
+	
+	/*
+	 * Delete all filters and apply only the selected one
+	*/
+	public function only(Request $request, $filter, $value, $list)
+	{
+		if (in_array($filter, $this->a_only_filters) and in_array($list, array_keys($this->a_lists))){
+			if ($filter == "owner" and Models\Member::where('id', $value)->count() == 1){
+				
+				// Delete each filter from session
+				foreach ($this->a_filters as $delete){
+					$request->session()->forget('panichd_filter_'.$delete);
+				}
+				
+				// Add single filter
+				$request->session()->put('panichd_filter_'.$filter, $value);
+				
+				// General filter check
+				$request->session()->put('panichd_filters','yes');
+				
+				// Redirect to specified route
+				return redirect()->route(Setting::grab('main_route').$this->a_lists[$list]);
+			}
+		}
+		
+		return \Redirect::back();
+	}
 	
 	/*
 	 * Remove all filters

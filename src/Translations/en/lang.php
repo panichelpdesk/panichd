@@ -95,6 +95,7 @@ return [
   'filter-calendar-within-14-days'   => 'In 14 days',
   'filter-category'                  => 'Category',
   'filter-category-all'              => 'All',
+  'filter-owner-all'                 => 'All',
   'filter-agent'                     => 'Agent',
   'filter-agent-all'                 => 'All',
   'filter-on-total'                  => 'Count depends on active filters',

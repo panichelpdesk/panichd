@@ -499,6 +499,12 @@ class TicketsController extends Controller
 			if (session('panichd_filter_category') != '') {
 				$tickets->where('category_id', session('panichd_filter_category'));
 			}
+			
+			// Add Owner filter
+			if (session('panichd_filter_owner') != '') {
+				$tickets->where('user_id', session('panichd_filter_owner'));
+				$counts['owner'] = $tickets->count();
+			}
 
             // Visible Agents
             if (session('panichd_filter_category') == '') {

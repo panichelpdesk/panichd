@@ -105,6 +105,9 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 
 		// Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
+		
+		// Use single filter in specified list
+		Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only');
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAdminMiddleware'], function () use ($admin_route, $admin_route_path) {

@@ -712,8 +712,12 @@ class Ticket extends Model
 				}
 
 				// Owner filter
-				if ((!$filter or $filter == 'owner') and session()->has('panichd_filter_owner') and session('panichd_filter_owner')=="me"){
-					$query = $query->userTickets(auth()->user()->id);
+				if ((!$filter or $filter == 'owner') and session()->has('panichd_filter_owner')){
+					if (session('panichd_filter_owner')=="me"){
+						$query = $query->userTickets(auth()->user()->id);
+					}else{
+						$query = $query->userTickets(session('panichd_filter_owner'));
+					}
 				}			
 			}
 			

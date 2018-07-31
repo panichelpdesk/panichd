@@ -95,6 +95,7 @@ return [
   'filter-calendar-within-14-days'   => 'Fins 14 dies',
   'filter-category'                  => 'Categoria',
   'filter-category-all'              => 'Totes',
+  'filter-owner-all'                 => 'Tots',
   'filter-agent'                     => 'Agent',
   'filter-agent-all'                 => 'Tots',
   'filter-on-total'                  => 'Compte segons filtre',
