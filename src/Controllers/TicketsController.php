@@ -59,14 +59,16 @@ class TicketsController extends Controller
 				$join2->on('panichd_members.id', '=', 'panichd_tickets.user_id');
 			})
 			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
-            ->join('panichd_members as agent', 'agent.id', '=', 'panichd_tickets.agent_id')
+            ->leftJoin('panichd_members as agent', function ($join3){
+				$join3->on('agent.id', '=', 'panichd_tickets.agent_id');
+			})
 			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
             ->join('panichd_categories', 'panichd_categories.id', '=', 'panichd_tickets.category_id')			
 			
             
 			// Tags joins
-			->leftJoin('panichd_taggables', function ($join3) {
-                $join3->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
+			->leftJoin('panichd_taggables', function ($join4) {
+                $join4->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
                     ->where('panichd_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
             ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
