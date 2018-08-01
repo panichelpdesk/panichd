@@ -122,17 +122,6 @@ class TicketsController extends Controller
 			\DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
 		];
 		
-		// Check if member is soft deleted
-		if (Schema::hasColumn('panichd_members', 'deleted_at')){
-			if (config('database.default')=='sqlite'){
-				$a_select[] = \DB::raw('CASE panichd_members.deleted_at WHEN NULL THEN 0 ELSE 1 END as deleted_owner');
-			}else{
-				$a_select[] = \DB::raw('CASE WHEN panichd_members.deleted_at IS NULL THEN 0 ELSE 1 END as deleted_owner');
-			}
-		}else{
-			$a_select[] = '0 as deleted_owner';
-		}
-		
 		if (Setting::grab('departments_feature')){			
 			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
 				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
@@ -309,7 +298,7 @@ class TicketsController extends Controller
 			}else
 				$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
 			
-			if ($ticket->owner_name == "" or $ticket->deleted_owner == '1'){
+			if ($ticket->owner_name == "" or is_null($ticket->owner)){
 				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
 					."<span class=\"glyphicon glyphicon-exclamation-sign text-danger\"></span>"
 					."&nbsp;" . $return . "</span>";
@@ -1051,12 +1040,14 @@ class TicketsController extends Controller
 			->with('agent')
 			->with('category.closingReasons')
 			->with('tags')
-			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id')
-			->leftJoin('panichd_members as creator', function($join1){
-				$join1->on('creator.id', '=', 'panichd_tickets.creator_id');
+			->leftJoin('panichd_members', function($join1){
+				$join1->on('panichd_members.id', '=', 'panichd_tickets.user_id');
 			})
-			->leftJoin('panichd_members as agent', function($join2){
-				$join2->on('agent.id', '=', 'panichd_tickets.agent_id');
+			->leftJoin('panichd_members as creator', function($join2){
+				$join2->on('creator.id', '=', 'panichd_tickets.creator_id');
+			})
+			->leftJoin('panichd_members as agent', function($join3){
+				$join3->on('agent.id', '=', 'panichd_tickets.agent_id');
 			});
 		
 		if (Setting::grab('departments_feature')){
@@ -1070,17 +1061,6 @@ class TicketsController extends Controller
 			'agent.name as agent_name',
 			'panichd_members.email as owner_email'
 		];
-		
-		// Check if member is soft deleted
-		if (Schema::hasColumn('panichd_members', 'deleted_at')){
-			if (config('database.default')=='sqlite'){
-				$a_select[] = \DB::raw('CASE panichd_members.deleted_at WHEN NULL THEN 0 ELSE 1 END as deleted_owner');
-			}else{
-				$a_select[] = \DB::raw('CASE WHEN panichd_members.deleted_at IS NULL THEN 0 ELSE 1 END as deleted_owner');
-			}
-		}else{
-			$a_select[] = '0 as deleted_owner';
-		}
 
 		// Select Ticket and properties
 		$ticket = $ticket->select($a_select)->findOrFail($id);
