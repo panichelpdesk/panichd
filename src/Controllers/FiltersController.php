@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Traits\CacheVars;
+use PanicHD\PanicHD\Traits\TicketFilters;
 
 
 class FiltersController extends Controller
 {
-    use CacheVars;
+    use CacheVars, TicketFilters;
 
-	// Available ticket filters
-	private $a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
+	// $a_filters is in TicketFilters trait
 	
 	// Filters that can be called via /filteronly/
 	private $a_only_filters = ['category', 'owner', 'agent'];
@@ -31,7 +31,6 @@ class FiltersController extends Controller
 	*/
 	public function manage(Request $request, $filter, $value)
     {
-        
 		//### PENDING: User permissions check or redirect back
 
         if (in_array($filter, $this->a_filters) == true) {
@@ -39,52 +38,12 @@ class FiltersController extends Controller
                 // Delete filter
                 $request->session()->forget('panichd_filter_'.$filter);
 				
-				// General filter uncheck if none
-				$current = false;
-				foreach ($this->a_filters as $single){
-					if ($request->session()->exists('panichd_filter_'.$single)){
-						$current = true;
-						break;
-					}
-				}
-				if (!$current){
-					$request->session()->forget('panichd_filters');
-				}
+				// Check all filters
+				$this->validateFilters($request);
+				
             } else {
-                $add = false;
-
-                // Filter checks
-                if ($filter=='currentLevel' and in_array($value,[1,2,3])){
-					$add = true;
-				}
-				
-				if ($filter == 'owner' and $value == 'me') {
-					$add = true;
-                }
-				
-				if ($filter == 'calendar' and in_array($value, ['expired', 'today', 'tomorrow', 'week', 'month', 'within-7-days', 'within-14-days', 'not-scheduled'])){
-					$add = true;
-				}
-				
-				if ($filter == 'year' and ($value == 'all' or in_array($value, range($this->getFirstTicketCompleteYear(), date('Y'))))){
-					$add = true;
-				}
-				
-				if ($filter == 'category' and Models\Category::where('id', $value)->count() == 1) {
-                    $add = true;
-                }
-				
-				if ($filter == 'agent' and Models\Member::where('id', $value)->count() == 1) {
-                    $add = true;
-                }  
-
-                // Add filter
-                if ($add) {
-                    $request->session()->put('panichd_filter_'.$filter, $value);
-					
-					// General filter check
-					$request->session()->put('panichd_filters','yes');
-                }
+                // Validate and add a filter
+				$this->addAFilter($request, $filter, $value);
             }
         }
 
@@ -98,40 +57,40 @@ class FiltersController extends Controller
 	{
 		if (in_array($filter, $this->a_only_filters) and in_array($list, array_keys($this->a_lists))){
 			
-			$apply = false;
-			
-			if (in_array($filter, ['owner', 'agent'])){
-				$member = Models\Member::where('id', $value);
+			// Delete each filter from session
+			foreach ($this->a_filters as $delete){
+				$request->session()->forget('panichd_filter_'.$delete);
 			}
 			
-			if (($filter == "owner" and $member->count() == 1)
-				or ($filter == "agent" and $member->count() == 1 and $member->first()->isAgent())){
-				
-				$apply = true;
-				
-			}elseif($filter == "category" and Models\Category::where('id', $value)->count() == 1){
-				
-				$apply = true;
-			}
-			
-			if ($apply){
-				// Delete each filter from session
-				foreach ($this->a_filters as $delete){
-					$request->session()->forget('panichd_filter_'.$delete);
-				}
-				
-				// Add single filter
-				$request->session()->put('panichd_filter_'.$filter, $value);
-				
-				// General filter check
-				$request->session()->put('panichd_filters','yes');
-				
+			// Validate and add a filter
+			if ($this->addAFilter($request, $filter, $value)){
 				// Redirect to specified route
 				return redirect()->route(Setting::grab('main_route').$this->a_lists[$list]);
 			}
 		}
 		
 		return \Redirect::back();
+	}
+	
+	/*
+	 * Add a filter and validate it
+	 *
+	 * @Return bool
+	*/
+	public function addAFilter($request, $filter, $value)
+	{
+		// Add filter
+		$request->session()->put('panichd_filter_'.$filter, $value);
+		
+		// Check all filters
+		list($request, $filters_count) = $this->validateFilters($request);
+	   
+		if ($filters_count > 0) {
+			// General filter check
+			$request->session()->put('panichd_filters','yes');
+		}
+		
+		return $request->session()->exists('panichd_filter_'.$filter);
 	}
 	
 	/*

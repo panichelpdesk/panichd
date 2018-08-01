@@ -23,10 +23,11 @@ use PanicHD\PanicHD\Models\Ticket;
 use PanicHD\PanicHD\Traits\Attachments;
 use PanicHD\PanicHD\Traits\CacheVars;
 use PanicHD\PanicHD\Traits\Purifiable;
+use PanicHD\PanicHD\Traits\TicketFilters;
 
 class TicketsController extends Controller
 {
-    use Attachments, CacheVars, Purifiable;
+    use Attachments, CacheVars, Purifiable, TicketFilters;
 
     protected $tickets;
     protected $member;
@@ -405,6 +406,9 @@ class TicketsController extends Controller
 			'ticketList'=>$ticketList,			
 			'a_cat_agents'=>$a_cat_agents			
 		];
+		
+		$this->validateFilters($request);
+		
 		$data = array_merge ($data, $this->ticketCounts($request, $ticketList));
 		
 		return view('panichd::tickets.index', $data);
