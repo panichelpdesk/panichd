@@ -100,7 +100,7 @@ class TicketsController extends Controller
 			'panichd_tickets.updated_at AS updated_at',
 			'panichd_tickets.completed_at AS completed_at',
 			'panichd_tickets.agent_id',
-			\DB::raw('group_concat(agent.name) AS agent_name'),
+			'agent.name as agent_name',
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
 			'panichd_members.name AS owner_name',
@@ -259,17 +259,24 @@ class TicketsController extends Controller
 		// Agent column with $a_cat[]
 		$collection->editColumn('agent', function ($ticket) use($a_cat) {
 			$count = $a_cat[$ticket->category_id]['agents_count'];			
+			$text = "";
+			
+			if ($ticket->agent_name == "" or is_null($ticket->agent)){
+				$text.= "<span class=\"glyphicon glyphicon-exclamation-sign tooltip-info text-danger\"  data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\"></span> ";
+			}
 			
 			if($count>4){
-				$text = '<a href="#" class="jquery_agent_change_modal" title="'.trans('panichd::lang.table-change-agent').'"';
+				$text.= '<a href="#" class="jquery_agent_change_modal" title="'.trans('panichd::lang.table-change-agent').'"';
 			}elseif($count==1){
-				$text = '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+				$text.= '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
 			}else{
-				$text = '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
+				$text.= '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
 					.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
 					.trans('panichd::lang.agents').'" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" data-tooltip-title="'.trans('panichd::lang.agents').'" ';
 			}
-			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">' . $ticket->agent->name . '</a>';
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'
+				. ($ticket->agent_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->agent) ? $ticket->agent_name : $ticket->agent->name)) 
+				. '</a>';
 				
 			return $text;
         });		
