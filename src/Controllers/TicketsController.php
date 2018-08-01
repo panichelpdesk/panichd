@@ -52,8 +52,12 @@ class TicketsController extends Controller
         $collection = Ticket::inList($ticketList)->visible()->filtered($ticketList);
 
         $collection
-            ->join('users', 'users.id', '=', 'panichd_tickets.user_id')
-			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id')
+            ->leftJoin('users', function ($join1){
+				$join1->on('users.id', '=', 'panichd_tickets.user_id');
+			})
+			->leftJoin('panichd_members', function ($join2) {
+				$join2->on('panichd_members.id', '=', 'panichd_tickets.user_id');
+			})
 			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
             ->join('panichd_members as agent', 'agent.id', '=', 'panichd_tickets.agent_id')
 			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
@@ -61,8 +65,8 @@ class TicketsController extends Controller
 			
             
 			// Tags joins
-			->leftJoin('panichd_taggables', function ($join) {
-                $join->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
+			->leftJoin('panichd_taggables', function ($join3) {
+                $join3->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
                     ->where('panichd_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
             ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
@@ -135,7 +139,7 @@ class TicketsController extends Controller
 		$currentLevel = $agent->currentLevel();
 		
 		$collection
-            ->groupBy('panichd_tickets.id')
+			->groupBy('panichd_tickets.id')
             ->select($a_select)
 			->with('creator')
 			->with('agent')
@@ -265,7 +269,7 @@ class TicketsController extends Controller
 					.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
 					.trans('panichd::lang.agents').'" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" data-tooltip-title="'.trans('panichd::lang.agents').'" ';
 			}
-			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">' . $ticket->agent->name . '</a>';
 				
 			return $text;
         });		
@@ -287,17 +291,23 @@ class TicketsController extends Controller
         });
 		
 		$collection->editColumn('owner_name', function ($ticket) {
-			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			if ($ticket->owner_name == ""){
+				$return = trans('panichd::lang.deleted-member');
+			}else
+				$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
 			
-			if ($ticket->deleted_owner == '1'){
+			if ($ticket->owner_name == "" or $ticket->deleted_owner == '1'){
 				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
 					."<span class=\"glyphicon glyphicon-exclamation-sign text-danger\"></span>"
 					."&nbsp;" . $return . "</span>";
 			}
-
-			if (Setting::grab('user_route') != 'disabled'){
-				$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
+			
+			if ($ticket->owner_name != ""){
+				if (Setting::grab('user_route') != 'disabled'){
+					$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
+				}
 			}
+			
 			if ($ticket->user_id != $ticket->creator_id){
 				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
 			}
