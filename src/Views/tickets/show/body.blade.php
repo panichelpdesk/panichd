@@ -67,7 +67,14 @@
 				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
 					@if ($ticket->user_id != $ticket->creator_id)
-						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') . $ticket->creator->name }}<br />
+						<?php $creator_name = $ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name); ?>
+						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') }}
+						@if ($ticket->creator_name == "" || is_null($ticket->creator))
+							<span class="glyphicon glyphicon-exclamation-sign tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $creator_name }}</span>
+						@else
+							{{ $creator_name }}
+						@endif
+						<br />
 					@endif
 					
 					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} 
