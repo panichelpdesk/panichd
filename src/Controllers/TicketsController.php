@@ -58,17 +58,20 @@ class TicketsController extends Controller
 			->leftJoin('panichd_members', function ($join2) {
 				$join2->on('panichd_members.id', '=', 'panichd_tickets.user_id');
 			})
+			->leftJoin('panichd_members as creator', function ($join3){
+				$join3->on('creator.id', '=', 'panichd_tickets.creator_id');
+			})
 			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
-            ->leftJoin('panichd_members as agent', function ($join3){
-				$join3->on('agent.id', '=', 'panichd_tickets.agent_id');
+            ->leftJoin('panichd_members as agent', function ($join4){
+				$join4->on('agent.id', '=', 'panichd_tickets.agent_id');
 			})
 			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
             ->join('panichd_categories', 'panichd_categories.id', '=', 'panichd_tickets.category_id')			
 			
             
 			// Tags joins
-			->leftJoin('panichd_taggables', function ($join4) {
-                $join4->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
+			->leftJoin('panichd_taggables', function ($join5) {
+                $join5->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
                     ->where('panichd_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
             ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
@@ -106,6 +109,7 @@ class TicketsController extends Controller
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
 			'panichd_members.name AS owner_name',
+			'creator.name as creator_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
 			'panichd_tickets.category_id',
@@ -318,7 +322,7 @@ class TicketsController extends Controller
 			}
 			
 			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon'). ($ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name)) ."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
 			}
 			
 			return $return;
@@ -1043,12 +1047,16 @@ class TicketsController extends Controller
 		
 		$ticket = $this->tickets
 			->with('owner')
+			->with('creator')
 			->with('agent')
 			->with('category.closingReasons')
 			->with('tags')
 			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id')
-			->leftJoin('panichd_members as agent', function($join1){
-				$join1->on('agent.id', '=', 'panichd_tickets.agent_id');
+			->leftJoin('panichd_members as creator', function($join1){
+				$join1->on('creator.id', '=', 'panichd_tickets.creator_id');
+			})
+			->leftJoin('panichd_members as agent', function($join2){
+				$join2->on('agent.id', '=', 'panichd_tickets.agent_id');
 			});
 		
 		if (Setting::grab('departments_feature')){
@@ -1058,6 +1066,7 @@ class TicketsController extends Controller
 		$a_select = [
 			'panichd_tickets.*',
 			'panichd_members.name as owner_name',
+			'creator.name as creator_name',
 			'agent.name as agent_name',
 			'panichd_members.email as owner_email'
 		];
