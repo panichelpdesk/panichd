@@ -148,7 +148,13 @@
 				</span>
 				
 				@if ($u->currentLevel() > 1)
-					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}{{ $ticket->agent->name }}
+					<?php $agent_name = $ticket->agent_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->agent) ? $ticket->agent_name : $ticket->agent->name); ?>
+					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}
+					@if ($ticket->agent_name == "" || is_null($ticket->agent))
+						<span class="glyphicon glyphicon-exclamation-sign tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $agent_name }}</span>
+					@else
+						{{ $agent_name }}
+					@endif
 				@endif
 								
 				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
