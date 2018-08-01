@@ -1043,15 +1043,24 @@ class TicketsController extends Controller
 		
 		$ticket = $this->tickets
 			->with('owner')
+			->with('agent')
 			->with('category.closingReasons')
 			->with('tags')
-			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id');
+			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id')
+			->leftJoin('panichd_members as agent', function($join1){
+				$join1->on('agent.id', '=', 'panichd_tickets.agent_id');
+			});
 		
 		if (Setting::grab('departments_feature')){
 			$ticket = $ticket->with('owner.department.ancestor');
 		}
 		
-		$a_select = ['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'];
+		$a_select = [
+			'panichd_tickets.*',
+			'panichd_members.name as owner_name',
+			'agent.name as agent_name',
+			'panichd_members.email as owner_email'
+		];
 		
 		// Check if member is soft deleted
 		if (Schema::hasColumn('panichd_members', 'deleted_at')){
