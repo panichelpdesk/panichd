@@ -144,7 +144,7 @@ class Member extends User
     public static function isTicketOwner($id)
     {
         if (auth()->check()) {
-            if (auth()->user()->id == Ticket::find($id)->user->id) {
+            if (auth()->user()->id == Ticket::find($id)->user_id) {
                 return true;
             }
         }
