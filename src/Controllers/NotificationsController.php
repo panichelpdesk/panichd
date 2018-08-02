@@ -321,7 +321,7 @@ class NotificationsController extends Controller
 						$m->subject($to['subject']);
 					};
 
-					if (Setting::grab('queue_emails') == 'yes') {
+					if (Setting::grab('queue_emails')) {
 						Mail::queue($to['template'], $data, $mail_callback);
 					} else {
 						Mail::send($to['template'], $data, $mail_callback);
@@ -337,7 +337,7 @@ class NotificationsController extends Controller
 					
 					$mail = new \PanicHD\PanicHD\Mail\PanicHDNotification($to['template'], $data, $email_from, $email_replyto, $to['subject']);
 
-					if (Setting::grab('queue_emails') == 'yes') {
+					if (Setting::grab('queue_emails')) {
 						Mail::to($to['recipient'])->queue($mail);
 					} else {
 						Mail::to($to['recipient'])->send($mail);
