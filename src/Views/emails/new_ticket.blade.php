@@ -6,7 +6,7 @@
 @extends($email)
 
 @section('content')
-	@if ($u->currentLevel() > 1)
+	@if ($current_level > 1)
 		<p>{!! trans('panichd::email/globals.agent_new_ticket', ['agent' => $notification_owner->name]) !!}</p>
 	@else
 		<p>{!! trans('panichd::email/globals.user_new_ticket', ['user' => $notification_owner->name]) !!}</p>
