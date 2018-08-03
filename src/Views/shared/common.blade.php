@@ -37,6 +37,7 @@
 	{
 		// Disable submit button until AJAX response has come
 		_this.prop('disabled', true);
+		setTimeout(function(){ _this.prop("disabled", false);}, 3000);
 		
 		var form = _this.closest('form');
 		var formData = new FormData(form[0]);
@@ -85,9 +86,6 @@
 						return false;
 					}			
 				}
-				
-				// Enable submit button
-				_this.prop('disabled', false);
 			}
 		});
 	}
