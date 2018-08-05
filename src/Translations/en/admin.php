@@ -5,16 +5,17 @@ return [
  /*
   *  Constants
   */
-  'nav-settings'                  => 'Settings',
+  'nav-administrators'            => 'Administrators',
   'nav-agents'                    => 'Agents',
+  'nav-categories'                => 'Categories',
+  'nav-configuration'             => 'Configuration',
   'nav-dashboard'                 => 'Dashboard',
   'nav-dashboard-title'           => 'Administrator dashboard',
-  'nav-categories'                => 'Categories',
-  'nav-priorities'                => 'Priorities',
-  'nav-statuses'                  => 'Statuses',
+  'nav-members'                   => 'Members',
   'nav-notices'                   => 'Notices',
-  'nav-configuration'             => 'Configuration',
-  'nav-administrator'             => 'Administrator',  //new
+  'nav-priorities'                => 'Priorities',
+  'nav-settings'                  => 'Settings',
+  'nav-statuses'                  => 'Statuses',
 
   'table-hash'                    => '#',
   'table-id'                      => 'ID',
@@ -23,6 +24,7 @@ return [
   'table-action'                  => 'Action',
   'table-categories'              => 'Categories',
   'table-categories-autoasg-title'=> 'New tickets automatic assignment',
+  'table-email'                   => 'E-mail',
   'table-magnitude'               => 'Magnitude',
   'table-num-tickets'             => 'Tickets count',
   'table-remove-agent'            => 'Remove from agents',
@@ -34,6 +36,7 @@ return [
   'table-lang'                    => 'Lang',
   'table-edit'                    => 'Edit',
 
+  'btn-add-new'                   => 'Add new one',
   'btn-back'                      => 'Back',
   'btn-change'                    => 'Change',
   'btn-create'                    => 'Create',
@@ -44,8 +47,11 @@ return [
   'btn-submit'                    => 'Submit',
   'btn-save'                      => 'Save',
   'btn-update'                    => 'Update',
-
+	
+  // Vocabulary
+  'admin'                         => 'Admin',
   'colon'                         => ': ',
+  'role'                          => 'Role',
 
   /* Access Levels */
   'level-1'                       => 'Everyone',
@@ -74,8 +80,8 @@ return [
   'index-category'                      => 'Category',
   'index-agents'                        => 'Agents',
   'index-agent'                         => 'Agent',
-  'index-administrators'                => 'Administrators',  //new
-  'index-administrator'                 => 'Administrator',  //new
+  'index-administrators'                => 'Administrators',
+  'index-administrator'                 => 'Administrator',
   'index-users'                         => 'Users',
   'index-user'                          => 'User',
   'index-tickets'                       => 'Tickets',
@@ -91,7 +97,7 @@ return [
   'index-view-user-tickets'             => 'View user own :list tickets',
 
 // $admin_route_path/agent/____
-  'agent-index-title'             => 'Agent Management',
+  'agent-index-title'             => 'Agents Management',
   'agent-index-no-agents'         => 'There are no agents',
   'agent-index-create-new'        => 'Add agent',
   'agent-create-form-agent'       => 'User',
@@ -111,14 +117,14 @@ return [
   
 
 // $admin_route_path/administrators/____
-  'administrator-index-title'                   => 'Administrator Management',  //new
-  'btn-create-new-administrator'                => 'Create new administrator',  //new
-  'administrator-index-no-administrators'       => 'There are no administrators, ',  //new
-  'administrator-index-create-new'              => 'Add administrators',  //new
-  'administrator-create-title'                  => 'Add Administrator',  //new
-  'administrator-create-add-administrators'     => 'Add Administrators',  //new
-  'administrator-create-no-users'               => 'There are no user accounts, create user accounts first.',  //new
-  'administrator-create-select-user'            => 'Select user accounts to be added as administrators',  //new
+  'administrator-index-title'                   => 'Administrators Management',
+  'btn-create-new-administrator'                => 'Create new administrator',
+  'administrator-index-no-administrators'       => 'There are no administrators, ',
+  'administrator-index-create-new'              => 'Add administrators',
+  'administrator-create-title'                  => 'Add Administrator',
+  'administrator-create-add-administrators'     => 'Add Administrators',
+  'administrator-create-no-users'               => 'There are no user accounts, create user accounts first.',
+  'administrator-create-select-user'            => 'Select user accounts to be added as administrators',
 
 // $admin_route_path/category/____
   'category-index-title'          => 'Categories Management',
@@ -167,6 +173,20 @@ return [
   'category-reason-no-status'     => 'Closing reason :number with name ":name" requires a defined status',
   'category-tag-not-valid-format' => 'Tag ":tag" format is not valid',
 
+// $admin_route_path/member/____
+  'member-index-title'            => 'Member users management',
+  'member-index-help'             => 'Members are all registered users in database. This website administrator may have filtered the list',
+  'member-index-empty'            => 'No registered members were found. Please, check if there is any error in database "panichd_members" view',
+  'member-modal-update-title'     => 'Update member user',
+  'member-modal-create-title'     => 'Create member user',
+  'member-delete-confirmation'    => 'Are you sure you want to delete this user from database?',
+  'member-password-label'         => 'Password',
+  'member-new-password-label'     => 'New password (optional)',
+  'member-password-repeat-label'  => 'Repeat password',
+  'member-added-ok'               => 'Member user ":name" has been created correctly',
+  'member-updated-ok'             => 'Member user ":name" has been updated correctly',
+  'member-deleted'                => 'Member user ":name" has been DELETED',
+  
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',
   'priority-index-help'           => 'You may change priority order dragging this table rows. This order will be used also in ticket list when checking this field',

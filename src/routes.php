@@ -177,6 +177,16 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 		
+		// Members management routes (ex. http://url/panichd/member)
+        Route::resource("$admin_route_path/member", 'PanicHD\PanicHD\Controllers\MembersController', [
+            'names' => [
+                'index'   => "$admin_route.member.index",
+                'store'   => "$admin_route.member.store",                
+                'update'  => "$admin_route.member.update",                
+                'destroy' => "$admin_route.member.destroy",                
+            ],
+        ]);
+		
 		//Departments management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/notice", 'PanicHD\PanicHD\Controllers\NoticesController', [
             'names' => [
