@@ -67,17 +67,25 @@
 				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
 					@if ($ticket->user_id != $ticket->creator_id)
-						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') . $ticket->creator->name }}<br />
+						<?php $creator_name = $ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name); ?>
+						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') }}
+						@if ($ticket->creator_name == "" || is_null($ticket->creator))
+							<span class="glyphicon glyphicon-exclamation-sign tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $creator_name }}</span>
+						@else
+							{{ $creator_name }}
+						@endif
+						<br />
 					@endif
 					
 					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} 
-
+					<?php $owner_name = $ticket->owner_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->owner) ? $ticket->owner_name : $ticket->owner->name); ?>
+					
 					@if ($setting->grab('user_route') != 'disabled')
 						<a href="{{ route($setting->grab('user_route'), ['id'=> $ticket->user_id]) }}">
 					@endif
 					
-					@if ($ticket->deleted_owner)
-						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $ticket->owner_name !!}</span>
+					@if (is_null($ticket->owner))
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $owner_name !!}</span>
 					@elseif ($ticket->owner_email != "")
 						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner_email }}">{!! $ticket->owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
 					@else
@@ -88,7 +96,7 @@
 						</a>
 					@endif
 					
-					@if ($ticket->deleted_owner)
+					@if (is_null($ticket->owner))
 						<br /><span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ trans('panichd::lang.ticket-owner-deleted-warning') }}</span>
 					@endif
 					
@@ -96,12 +104,12 @@
 						<br /><span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 					
-					@if ($setting->grab('departments_feature'))
-						@if ($ticket->department)
-							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->department)) }}
+					@if ($setting->grab('departments_feature') && isset($ticket->owner->department))
+						@if ($ticket->owner->department->ancestor || $ticket->owner->department->is_main())
+							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->department->is_main() ? $ticket->owner->department->getName() : $ticket->owner->department->ancestor->getName()) }}
 						@endif
-						@if ($ticket->sub1)
-							<br /><strong>{{ trans('panichd::lang.dept_sub1') }}</strong>{{ trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->sub1)) }}
+						@if (!$ticket->owner->department->is_main())
+							<br /><strong>{{ trans('panichd::lang.dept-descendant') }}</strong>{{ trans('panichd::lang.colon') . $ticket->owner->department->getName() }}
 						@endif
 					@endif
 				@endif
@@ -148,7 +156,13 @@
 				</span>
 				
 				@if ($u->currentLevel() > 1)
-					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}{{ $ticket->agent->name }}
+					<?php $agent_name = $ticket->agent_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->agent) ? $ticket->agent_name : $ticket->agent->name); ?>
+					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}
+					@if ($ticket->agent_name == "" || is_null($ticket->agent))
+						<span class="glyphicon glyphicon-exclamation-sign tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $agent_name }}</span>
+					@else
+						{{ $agent_name }}
+					@endif
 				@endif
 								
 				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )

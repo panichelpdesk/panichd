@@ -5,85 +5,112 @@ namespace PanicHD\PanicHD\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PanicHD\PanicHD\Models;
+use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Traits\CacheVars;
+use PanicHD\PanicHD\Traits\TicketFilters;
 
 
 class FiltersController extends Controller
 {
-    use CacheVars;
+    use CacheVars, TicketFilters;
+
+	// $a_filters is in TicketFilters trait
 	
+	// Filters that can be called via /filteronly/
+	private $a_only_filters = ['category', 'owner', 'agent'];
+	
+	// Ticket list names and related route name
+	private $a_lists = [
+		'newest' => '-newest',
+		'active' => '.index',
+		'complete' => '-complete'
+	];
+	
+	/*
+	 * Update a single filter
+	*/
 	public function manage(Request $request, $filter, $value)
     {
-		$a_filters = ['currentLevel', 'owner', 'calendar', 'year', 'category', 'agent'];
-        //### PENDING: User permissions check or redirect back
+		//### PENDING: User permissions check or redirect back
 
-        if ($filter=="removeall"){
-			// Delete each filter from session
-			foreach ($a_filters as $single){
-				$request->session()->forget('panichd_filter_'.$single);
-			}
-			
-			// General filter uncheck
-			$request->session()->forget('panichd_filters');
-			
-			// Redirect to specified list
-			return \Redirect::route(Models\Setting::grab('main_route').($value=="complete" ? '-complete' : '.index'));
-		}
-		
-		if (in_array($filter, $a_filters) == true) {
+        if (in_array($filter, $this->a_filters) == true) {
             if ($value == 'remove') {
                 // Delete filter
                 $request->session()->forget('panichd_filter_'.$filter);
 				
-				// General filter uncheck if none
-				$current = false;
-				foreach ($a_filters as $single){
-					if ($request->session()->exists('panichd_filter_'.$single)){
-						$current = true;
-						break;
-					}
-				}
-				if (!$current){
-					$request->session()->forget('panichd_filters');
-				}
+				// Check all filters
+				$this->validateFilters($request);
+				
             } else {
-                $add = false;
-
-                // Filter checks
-                if ($filter=='currentLevel' and in_array($value,[1,2,3])){
-					$add = true;
-				}
-				
-				if ($filter == 'owner' and $value == 'me') {
-					$add = true;
-                }
-				
-				if ($filter == 'calendar' and in_array($value, ['expired', 'today', 'tomorrow', 'week', 'month', 'within-7-days', 'within-14-days', 'not-scheduled'])){
-					$add = true;
-				}
-				
-				if ($filter == 'year' and ($value == 'all' or in_array($value, range($this->getFirstTicketCompleteYear(), date('Y'))))){
-					$add = true;
-				}
-				
-				if ($filter == 'category' and Models\Category::where('id', $value)->count() == 1) {
-                    $add = true;
-                }
-				
-				if ($filter == 'agent' and Models\Member::where('id', $value)->count() == 1) {
-                    $add = true;
-                }  
-
-                // Add filter
-                if ($add) {
-                    $request->session()->put('panichd_filter_'.$filter, $value);
-					
-					// General filter check
-					$request->session()->put('panichd_filters','yes');
-                }
+                // Validate and add a filter
+				$this->addAFilter($request, $filter, $value);
             }
         }
 
         return \Redirect::back();
     }
+	
+	/*
+	 * Delete all filters and apply only the selected one
+	*/
+	public function only(Request $request, $filter, $value, $list)
+	{
+		if (in_array($filter, $this->a_only_filters) and in_array($list, array_keys($this->a_lists))){
+			
+			// Delete each filter from session
+			foreach ($this->a_filters as $delete){
+				$request->session()->forget('panichd_filter_'.$delete);
+			}
+			
+			// Validate and add a filter
+			if ($this->addAFilter($request, $filter, $value)){
+				// Redirect to specified route
+				return redirect()->route(Setting::grab('main_route').$this->a_lists[$list]);
+			}
+		}
+		
+		return \Redirect::back();
+	}
+	
+	/*
+	 * Add a filter and validate it
+	 *
+	 * @Return bool
+	*/
+	public function addAFilter($request, $filter, $value)
+	{
+		// Add filter
+		$request->session()->put('panichd_filter_'.$filter, $value);
+		
+		// Check all filters
+		list($request, $filters_count) = $this->validateFilters($request);
+	   
+		if ($filters_count > 0) {
+			// General filter check
+			$request->session()->put('panichd_filters','yes');
+		}
+		
+		return $request->session()->exists('panichd_filter_'.$filter);
+	}
+	
+	/*
+	 * Remove all filters
+	*/
+	public function removeall(Request $request, $list = null)
+	{
+		// Delete each filter from session
+		foreach ($this->a_filters as $filter){
+			$request->session()->forget('panichd_filter_'.$filter);
+		}
+		
+		// General filter uncheck
+		$request->session()->forget('panichd_filters');
+		
+		if ($list != "" and array_key_exists($list, $this->a_lists)){
+			// Redirect to specified route
+			return redirect()->route(Setting::grab('main_route').$this->a_lists[$list]);
+		}
+		
+		return \Redirect::back();
+	}
 }

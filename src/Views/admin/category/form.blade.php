@@ -75,8 +75,8 @@
 					<input type="hidden" id="jquery_reason_status_id_{{$i}}" name="jquery_reason_status_id_{{$i}}" value="{{$reason->status_id}}" disabled="disabled">
 				</div>				
 			@endforeach
-				<input type="hidden" id="reasons_count" name="reasons_count" value="<?=isset($i)?$i+1:0;?>">
 			@endif
+			<input type="hidden" id="reasons_count" name="reasons_count" value="<?=isset($i)?$i+1:0;?>">
 			</div>
 			
 			<div id="reason_template" style="display: none">				

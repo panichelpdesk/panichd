@@ -100,8 +100,16 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@agentSelectList',
         ]);
 		
+		// Remove all filters
+		Route::get("$main_route_path/filter/removeall/{list?}", 'PanicHD\PanicHD\Controllers\FiltersController@removeall')
+			->name("$main_route-filter-removeall");
+
 		// Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
+		
+		// Use single filter in specified list
+		Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only')
+			->name("$main_route-filteronly");
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAdminMiddleware'], function () use ($admin_route, $admin_route_path) {

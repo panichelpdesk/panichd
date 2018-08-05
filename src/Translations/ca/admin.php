@@ -60,8 +60,9 @@ return [
   'index-title'                         => 'Panell d\'Administració de Tiquets',
   'index-empty-records'                 => 'Encara no hi ha tiquets',
   'index-total-tickets'                 => 'Tiquets totals',
-  'index-open-tickets'                  => 'Tiquets oberts',
-  'index-closed-tickets'                => 'Tiquets tancats',
+  'index-newest-tickets'                => 'Tiquets nous',
+  'index-active-tickets'                => 'Tiquets oberts',
+  'index-complete-tickets'              => 'Tiquets tancats',
   'index-performance-indicator'         => 'Indicador de rendiment',
   'index-periods'                       => 'Períodes',
   'index-3-months'                      => '3 mesos',
@@ -85,6 +86,9 @@ return [
   'index-performance-chart'             => 'Quants dies de promig per resoldre un tiquet?',
   'index-categories-chart'              => 'Distribució de tickets per Categoria',
   'index-agents-chart'                  => 'Distribució de tickets per Agent',
+  'index-view-category-tickets'         => 'Veure tiquets :list de la categoria :category',
+  'index-view-agent-tickets'            => 'Veure tiquets :list assignats a l\'agent',
+  'index-view-user-tickets'             => 'Veure tiquets :list de l\'usuari',
 
 // $admin_route_path/agent/____
   'agent-index-title'             => 'Gestió d\'Agents',
@@ -155,6 +159,12 @@ return [
   'category-edit-tag'             => 'Editar etiqueta',
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',
+
+  // Category form validation
+  'category-reason-is-empty'      => 'La raó de tancament :number no té text',
+  'category-reason-too-short'     => 'La raó de tancament :number amb el nom ":name" requereix :min caràcters',
+  'category-reason-no-status'     => 'La raó de tancament :number amb el nom ":name" requereix un estat definit',
+  'category-tag-not-valid-format' => 'L\'etiqueta ":tag" no té un format vàlid',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',

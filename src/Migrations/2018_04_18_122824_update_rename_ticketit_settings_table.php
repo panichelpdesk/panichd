@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUsersTableForDepart extends Migration
+class UpdateRenameTicketitSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,7 @@ class UpdateUsersTableForDepart extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('ticketit_department')->nullable();
-        });
+        Schema::rename('ticketit_settings', 'panichd_settings');
     }
 
     /**
@@ -25,8 +23,6 @@ class UpdateUsersTableForDepart extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('ticketit_department');
-        });
+		Schema::rename('panichd_settings', 'ticketit_settings');
     }
 }

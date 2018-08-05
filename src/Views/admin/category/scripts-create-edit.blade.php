@@ -57,7 +57,6 @@ $(function(){
 				new_i = $('#reasons_count').val();
 				$('#reasons_count').val(parseInt(new_i)+1);
 				
-				
 				newreason = $('#reason_template').clone()
 					.attr('id','reason_wrap_'+new_i).css('display','block');
 				

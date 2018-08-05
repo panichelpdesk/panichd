@@ -52,18 +52,18 @@
                         </td>
 						<td style="vertical-align: middle">
                             @if ($d_user->userDepartment)
-								<span title="{{ $d_user->userDepartment->title() }}">{{ $d_user->userDepartment->resume(true) }}</span>
+								{{ $d_user->userDepartment->getFullName() }}
 							@else
 								<span>{{ trans('panichd::lang.all-depts') }}</span>
 							@endif
 							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-info btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							{!! link_to_route(
 							$setting->grab('admin_route').'.notice.destroy', trans('panichd::admin.btn-delete'), $d_user->id,
 							[
-							'class' => 'btn btn-danger deleteit',
+							'class' => 'btn btn-default deleteit',
 							'form' => "delete-$d_user->id",
 							"user" => $d_user->name
 							])
@@ -101,9 +101,11 @@
 					// Title
 					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-update') }}");
 					
+					// User id input
+					$("#modalDepartmentUser #user_input").val($(this).data('user_id')).prop('disabled', false);
+					
 					// Selects
-					$("#modalDepartmentUser #user_select2 option[value='"+$(this).data('user_id')+"']").prop('selected', true);
-					//$("#modalDepartmentUser #user_select2").hide();				
+					$('#modalDepartmentUser #user_select2').prop('disabled', true).hide();
 					$("#modalDepartmentUser #modal_user_name").show().text($(this).data('user_name'));
 					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('department_id')+"']").prop('selected', true);
 					
@@ -118,8 +120,12 @@
 					// Title
 					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-create') }}");
 					
+					// User id input
+					$("#modalDepartmentUser #user_input").prop('disabled', true);
+					
 					// Selects
 					$("#modalDepartmentUser #modal_user_name").text('').hide();					
+					$('#modalDepartmentUser #user_select2').prop('disabled', false).show();
 					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").prop('selectedIndex',0);
 					//$("#modalDepartmentUser #user_select2").show();
 					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").select2();

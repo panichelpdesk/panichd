@@ -23,7 +23,7 @@
 	@yield('panichd_assets')
 </head>
 <body>
-    <header>
+    <header id="panichd_header">
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -44,9 +44,7 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        @yield('panichd_nav')
-                    </ul>
+                    @yield('panichd_nav')
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -79,8 +77,8 @@
                 </div>
             </div>
         </nav>
-    </head>
-	<div class="container-fluid">
+    </header>
+	<div id="panichd_content" class="container-fluid">
 		@yield('panichd_errors')
         @yield('content')
 	</div>

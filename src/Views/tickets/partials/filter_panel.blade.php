@@ -8,6 +8,10 @@
 		@endif
 		
 		@if ($u->currentLevel() > 1)
+			@if (session()->has('panichd_filters'))
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/removeall" class="btn btn-default tooltip-info removeall-link"  data-toggle="tooltip" title="{{ trans('panichd::lang.filter-removeall-title') }}" data-placement="auto bottom"><span class="glyphicon glyphicon-filter"></span></a>
+			@endif
+
 			@include('panichd::tickets.partials.filter_blocks')
 			{!! $button_create !!}
 		@else			

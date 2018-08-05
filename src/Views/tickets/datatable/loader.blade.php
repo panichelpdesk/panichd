@@ -42,6 +42,7 @@
 			{ data: 'has_limit', name: 'has_limit', visible: false, searchable: false },
 			{ data: 'inverse_limit_date', name: 'inverse_limit_date', visible: false, searchable: false },
 			{ data: 'inverse_start_date', name: 'inverse_start_date', visible: false, searchable: false },
+			{ data: 'dep_ancestor_name', name: 'dep_ancestor.name', visible: false },
 			
 			{ data: 'subject', name: 'subject' },
 			@if ($setting->grab('subject_content_column') == 'no')
@@ -57,7 +58,7 @@
 				@if (session('panichd_filter_owner')=="")
 					{ data: 'owner_name', name: 'panichd_members.name' },
 					@if ($setting::grab('departments_feature'))
-						{ data: 'dept_info', name: 'dept_full', searchable: false },
+						{ data: 'dept_full_name', name: 'panichd_departments.name' },
 					@endif
 				@endif
 				@if ($ticketList == 'complete')

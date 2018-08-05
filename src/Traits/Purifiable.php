@@ -16,8 +16,8 @@ trait Purifiable
      */
     public function purifyHtml($rawHtml)
     {
-        $a_html['content'] = trim(Purifier::clean($this->br_to_space($rawHtml), ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
-        $a_html['html'] = trim(Purifier::clean($rawHtml, Setting::grab('purifier_config')), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
+		$a_html['content'] = trim(Purifier::clean($this->getReplaced($rawHtml), ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
+        $a_html['html'] = trim(Purifier::clean($this->getReplaced($rawHtml), Setting::grab('purifier_config')), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
 
         return $a_html;
     }
@@ -31,17 +31,14 @@ trait Purifiable
      */
     public function purifyInterventionHtml($rawHtml)
     {
-        $a_html['intervention'] = trim(Purifier::clean($this->br_to_space($rawHtml), ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
-        $a_html['intervention_html'] = trim(Purifier::clean($rawHtml, Setting::grab('purifier_config')), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
+        $a_html['intervention'] = trim(Purifier::clean($this->getReplaced($rawHtml), ['HTML.Allowed' => '']), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
+        $a_html['intervention_html'] = trim(Purifier::clean($this->getReplaced($rawHtml), Setting::grab('purifier_config')), chr(0xC2).chr(0xA0)." \t\n\r\0\x0B");
 
         return $a_html;
     }
 	
-	public function br_to_space($html)
+	public function getReplaced($html)
 	{
-		$html = str_replace('</p><p>', '</p><p> ', $html);
-		$html = str_replace('<br />', '<br>', $html);
-		$html = str_replace('<br>', ' ', $html);
-		return $html;
+		return str_replace(array_keys(Setting::grab('html_replacements')), array_values(Setting::grab('html_replacements')), $html);
 	}
 }

@@ -23,10 +23,11 @@ use PanicHD\PanicHD\Models\Ticket;
 use PanicHD\PanicHD\Traits\Attachments;
 use PanicHD\PanicHD\Traits\CacheVars;
 use PanicHD\PanicHD\Traits\Purifiable;
+use PanicHD\PanicHD\Traits\TicketFilters;
 
 class TicketsController extends Controller
 {
-    use Attachments, CacheVars, Purifiable;
+    use Attachments, CacheVars, Purifiable, TicketFilters;
 
     protected $tickets;
     protected $member;
@@ -52,17 +53,26 @@ class TicketsController extends Controller
         $collection = Ticket::inList($ticketList)->visible()->filtered($ticketList);
 
         $collection
-            ->join('users', 'users.id', '=', 'panichd_tickets.user_id')
-			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id')
+            ->leftJoin('users', function ($join1){
+				$join1->on('users.id', '=', 'panichd_tickets.user_id');
+			})
+			->leftJoin('panichd_members', function ($join2) {
+				$join2->on('panichd_members.id', '=', 'panichd_tickets.user_id');
+			})
+			->leftJoin('panichd_members as creator', function ($join3){
+				$join3->on('creator.id', '=', 'panichd_tickets.creator_id');
+			})
 			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
-            ->join('panichd_members as agent', 'agent.id', '=', 'panichd_tickets.agent_id')
+            ->leftJoin('panichd_members as agent', function ($join4){
+				$join4->on('agent.id', '=', 'panichd_tickets.agent_id');
+			})
 			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
             ->join('panichd_categories', 'panichd_categories.id', '=', 'panichd_tickets.category_id')			
 			
             
 			// Tags joins
-			->leftJoin('panichd_taggables', function ($join) {
-                $join->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
+			->leftJoin('panichd_taggables', function ($join5) {
+                $join5->on('panichd_tickets.id', '=', 'panichd_taggables.taggable_id')
                     ->where('panichd_taggables.taggable_type', '=', 'PanicHD\\PanicHD\\Models\\Ticket');
             })
             ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
@@ -96,10 +106,11 @@ class TicketsController extends Controller
 			'panichd_tickets.updated_at AS updated_at',
 			'panichd_tickets.completed_at AS completed_at',
 			'panichd_tickets.agent_id',
-			\DB::raw('group_concat(agent.name) AS agent_name'),
+			'agent.name as agent_name',
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
 			'panichd_members.name AS owner_name',
+			'creator.name as creator_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
 			'panichd_categories.id as category_id',
@@ -112,39 +123,23 @@ class TicketsController extends Controller
 			\DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
 		];
 		
-		// Check if member is soft deleted
-		if (Schema::hasColumn('panichd_members', 'deleted_at')){
-			if (config('database.default')=='sqlite'){
-				$a_select[] = \DB::raw('CASE panichd_members.deleted_at WHEN NULL THEN 0 ELSE 1 END as deleted_owner');
-			}else{
-				$a_select[] = \DB::raw('CASE WHEN panichd_members.deleted_at IS NULL THEN 0 ELSE 1 END as deleted_owner');
-			}
-		}else{
-			$a_select[] = '0 as deleted_owner';
-		}
-		
 		if (Setting::grab('departments_feature')){			
-			// Department joins
-			$collection				
-				->leftJoin('panichd_departments_persons', function ($join1) {
-					$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
-				})	
-				->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id');
+			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
+				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
 			// Department columns				
-			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.department)) AS dept_info');
-			$a_select[] = \DB::raw('group_concat(distinct(panichd_departments.sub1)) AS dept_sub1');
-			$a_select[] = \DB::raw('concat_ws(\' \', group_concat(distinct(panichd_departments.department)), group_concat(distinct(panichd_departments.sub1))) as dept_full');
+			$a_select[] = 'dep_ancestor.name as dep_ancestor_name';
+			$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
 		}
 		
 		$currentLevel = $agent->currentLevel();
 		
 		$collection
-            ->groupBy('panichd_tickets.id')
+			->groupBy('panichd_tickets.id')
             ->select($a_select)
 			->with('creator')
 			->with('agent')
-			->with('owner.personDepts.department')
+			->with('owner.department.ancestor')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
 				$query->countable()->forLevel($currentLevel);
@@ -165,7 +160,7 @@ class TicketsController extends Controller
             $a_raws = ['id', 'subject', 'intervention', 'status', 'agent', 'priority', 'owner_name', 'calendar', 'updated_at', 'complete_date', 'category', 'tags'];
 			
 			if (Setting::grab('departments_feature')){
-				$a_raws[]= 'dept_info';
+				$a_raws[]= 'dept_full_name';
 			}
 			
 			$collection->rawColumns($a_raws);
@@ -260,17 +255,24 @@ class TicketsController extends Controller
 		// Agent column with $a_cat[]
 		$collection->editColumn('agent', function ($ticket) use($a_cat) {
 			$count = $a_cat[$ticket->category_id]['agents_count'];			
+			$text = "";
+			
+			if ($ticket->agent_name == "" or is_null($ticket->agent)){
+				$text.= "<span class=\"glyphicon glyphicon-exclamation-sign tooltip-info text-danger\"  data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\"></span> ";
+			}
 			
 			if($count>4){
-				$text = '<a href="#" class="jquery_agent_change_modal" title="'.trans('panichd::lang.table-change-agent').'"';
+				$text.= '<a href="#" class="jquery_agent_change_modal" title="'.trans('panichd::lang.table-change-agent').'"';
 			}elseif($count==1){
-				$text = '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+				$text.= '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
 			}else{
-				$text = '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
+				$text.= '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
 					.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
 					.trans('panichd::lang.agents').'" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" data-tooltip-title="'.trans('panichd::lang.agents').'" ';
 			}
-			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'.$ticket->agent->name.'</a>';
+			$text.= 'data-ticket-id="'.$ticket->id.'" data-category-id="'.$ticket->category_id.'" data-agent-id="'.$ticket->agent_id.'">'
+				. ($ticket->agent_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->agent) ? $ticket->agent_name : $ticket->agent->name)) 
+				. '</a>';
 				
 			return $text;
         });		
@@ -292,34 +294,35 @@ class TicketsController extends Controller
         });
 		
 		$collection->editColumn('owner_name', function ($ticket) {
-			$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
+			if ($ticket->owner_name == ""){
+				$return = trans('panichd::lang.deleted-member');
+			}else
+				$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
 			
-			if ($ticket->deleted_owner == '1'){
+			if ($ticket->owner_name == "" or is_null($ticket->owner)){
 				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
 					."<span class=\"glyphicon glyphicon-exclamation-sign text-danger\"></span>"
 					."&nbsp;" . $return . "</span>";
 			}
-
-			if (Setting::grab('user_route') != 'disabled'){
-				$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
+			
+			if ($ticket->owner_name != ""){
+				if (Setting::grab('user_route') != 'disabled'){
+					$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
+				}
 			}
+			
 			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon').$ticket->creator->name."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon'). ($ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name)) ."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
 			}
 			
 			return $return;
 		});
 		
 		if (Setting::grab('departments_feature')){
-			$collection->editColumn('dept_info', function ($ticket) {
-				$dept_info = $title = "";
-				
-				if ($ticket->owner and count($ticket->owner->personDepts) != 0 and $ticket->owner->personDepts[0]){
-					$dept_info = $ticket->owner->personDepts[0]->department->resume();
-					$title = $ticket->owner->personDepts[0]->department->title();
+			$collection->editColumn('dept_full_name', function ($ticket) {
+				if (isset($ticket->owner->department->name)){
+					return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->department->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->department->name))) . '</span>';
 				}
-				
-				return "<span title=\"$title\">$dept_info</span>";
 			});
 		}
 		
@@ -334,7 +337,7 @@ class TicketsController extends Controller
 		});
 
 		$collection->editColumn('complete_date', function ($ticket) {
-			return '<div style="width: 8em;">'.$ticket->getDateForHumans($ticket->completed_at).'</div>';
+			return '<div style="width: 8em;">'.$ticket->getDateForHumans('completed_at').'</div>';
         });
 		
         $collection->editColumn('category', function ($ticket) {
@@ -403,6 +406,9 @@ class TicketsController extends Controller
 			'ticketList'=>$ticketList,			
 			'a_cat_agents'=>$a_cat_agents			
 		];
+		
+		$this->validateFilters($request);
+		
 		$data = array_merge ($data, $this->ticketCounts($request, $ticketList));
 		
 		return view('panichd::tickets.index', $data);
@@ -508,6 +514,12 @@ class TicketsController extends Controller
 			// Add Category filter to ticket builder
 			if (session('panichd_filter_category') != '') {
 				$tickets->where('category_id', session('panichd_filter_category'));
+			}
+			
+			// Add Owner filter
+			if (session('panichd_filter_owner') != '') {
+				$tickets->where('user_id', session('panichd_filter_owner'));
+				$counts['owner'] = $tickets->count();
 			}
 
             // Visible Agents
@@ -631,6 +643,8 @@ class TicketsController extends Controller
 			$a_current['start_date'] = old ('start_date');
 			$a_current['limit_date'] = old ('limit_date');
 			
+			$a_current['priority_id'] = old('priority_id');
+			
 			$a_current['cat_id'] = old('category_id');
 			$a_current['agent_id'] = old('agent_id');
 			
@@ -642,6 +656,8 @@ class TicketsController extends Controller
 			$a_current['start_date'] = $ticket->start_date;
 			$a_current['limit_date'] = $ticket->limit_date;
 			
+			$a_current['priority_id'] = $ticket->priority_id;
+			
 			$a_current['cat_id'] = $ticket->category_id;
 			$a_current['agent_id'] = $ticket->agent_id;			
 		}else{
@@ -649,6 +665,8 @@ class TicketsController extends Controller
 			$a_current['complete'] = "no";
 			
 			$a_current['start_date'] = $a_current['limit_date'] = "";
+			
+			$a_current['priority_id'] = Setting::grab('default_priority_id');
 			
 			// Default category		
 			if ($member->currentLevel() > 1){
@@ -1021,31 +1039,32 @@ class TicketsController extends Controller
 		$user = $this->member->find(auth()->user()->id);
 		
 		$ticket = $this->tickets
+			->with('owner')
+			->with('creator')
+			->with('agent')
 			->with('category.closingReasons')
 			->with('tags')
-			->join('panichd_members', 'panichd_members.id', '=', 'panichd_tickets.user_id');
-		
-		if ($user->currentLevel()>1 and Setting::grab('departments_feature')){
-			// Departments related
-			$ticket = $ticket->leftJoin('panichd_departments_persons', function ($join1) {
-				$join1->on('panichd_members.person_id','=','panichd_departments_persons.person_id');
+			->leftJoin('panichd_members', function($join1){
+				$join1->on('panichd_members.id', '=', 'panichd_tickets.user_id');
 			})
-			->leftJoin('panichd_departments','panichd_departments_persons.department_id','=','panichd_departments.id')
-			->select('panichd_tickets.*', 'panichd_departments.department', 'panichd_departments.sub1');
+			->leftJoin('panichd_members as creator', function($join2){
+				$join2->on('creator.id', '=', 'panichd_tickets.creator_id');
+			})
+			->leftJoin('panichd_members as agent', function($join3){
+				$join3->on('agent.id', '=', 'panichd_tickets.agent_id');
+			});
+		
+		if (Setting::grab('departments_feature')){
+			$ticket = $ticket->with('owner.department.ancestor');
 		}
 		
-		$a_select = ['panichd_tickets.*', 'panichd_members.name as owner_name', 'panichd_members.email as owner_email'];
-		
-		// Check if member is soft deleted
-		if (Schema::hasColumn('panichd_members', 'deleted_at')){
-			if (config('database.default')=='sqlite'){
-				$a_select[] = \DB::raw('CASE panichd_members.deleted_at WHEN NULL THEN 0 ELSE 1 END as deleted_owner');
-			}else{
-				$a_select[] = \DB::raw('CASE WHEN panichd_members.deleted_at IS NULL THEN 0 ELSE 1 END as deleted_owner');
-			}
-		}else{
-			$a_select[] = '0 as deleted_owner';
-		}
+		$a_select = [
+			'panichd_tickets.*',
+			'panichd_members.name as owner_name',
+			'creator.name as creator_name',
+			'agent.name as agent_name',
+			'panichd_members.email as owner_email'
+		];
 
 		// Select Ticket and properties
 		$ticket = $ticket->select($a_select)->findOrFail($id);

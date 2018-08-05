@@ -60,8 +60,9 @@ return [
   'index-title'                         => 'Tickets System Dashboard',
   'index-empty-records'                 => 'No tickets yet',
   'index-total-tickets'                 => 'Total tickets',
-  'index-open-tickets'                  => 'Open tickets',
-  'index-closed-tickets'                => 'Closed tickets',
+  'index-newest-tickets'                => 'New tickets',
+  'index-active-tickets'                => 'Active tickets',
+  'index-complete-tickets'              => 'Closed tickets',
   'index-performance-indicator'         => 'Performance Indicator',
   'index-periods'                       => 'Periods',
   'index-3-months'                      => '3 months',
@@ -85,6 +86,9 @@ return [
   'index-performance-chart'             => 'How many days in average to resolve a ticket?',
   'index-categories-chart'              => 'Tickets distribution per category',
   'index-agents-chart'                  => 'Tickets distribution per Agent',
+  'index-view-category-tickets'         => 'View :list tickets in :category category',
+  'index-view-agent-tickets'            => 'View agent assigned :list tickets',
+  'index-view-user-tickets'             => 'View user own :list tickets',
 
 // $admin_route_path/agent/____
   'agent-index-title'             => 'Agent Management',
@@ -156,6 +160,12 @@ return [
   'category-edit-tag'             => 'Edit tag',
   'category-edit-tag-background'  => 'Background',
   'category-edit-tag-text'        => 'Text',
+  
+  // Category form validation
+  'category-reason-is-empty'      => 'Closing reason :number has no text',
+  'category-reason-too-short'     => 'Closing reason :number with name ":name" requires :min characters',
+  'category-reason-no-status'     => 'Closing reason :number with name ":name" requires a defined status',
+  'category-tag-not-valid-format' => 'Tag ":tag" format is not valid',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',

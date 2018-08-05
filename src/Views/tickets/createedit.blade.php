@@ -62,7 +62,7 @@
 							@if ($owner->ticketit_department == '0')
 								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
 							@elseif ($owner->ticketit_department != "")						
-								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->resume() }}
+								{{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
 							@endif
 						@endif						
 						</option>
@@ -104,7 +104,7 @@
 				<div class="form-group"><!-- PRIORITY -->
 					{!! CollectiveForm::label('priority', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 control-label']) !!}
 					<div class="col-lg-9">
-						{!! CollectiveForm::select('priority_id', $priorities, null, ['class' => 'form-control', 'required' => 'required']) !!}
+						{!! CollectiveForm::select('priority_id', $priorities, $a_current['priority_id'], ['class' => 'form-control', 'required' => 'required']) !!}
 					</div>
 				</div>
 				
