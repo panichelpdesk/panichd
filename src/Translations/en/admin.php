@@ -174,18 +174,18 @@ return [
   'category-tag-not-valid-format' => 'Tag ":tag" format is not valid',
 
 // $admin_route_path/member/____
-  'member-index-title'            => 'Member users management',
+  'member-index-title'            => 'Members management',
   'member-index-help'             => 'Members are all registered users in database. This website administrator may have filtered the list',
   'member-index-empty'            => 'No registered members were found. Please, check if there is any error in database "panichd_members" view',
-  'member-modal-update-title'     => 'Update member user',
-  'member-modal-create-title'     => 'Create member user',
+  'member-modal-update-title'     => 'Update member',
+  'member-modal-create-title'     => 'Create member',
   'member-delete-confirmation'    => 'Are you sure you want to delete this user from database?',
   'member-password-label'         => 'Password',
   'member-new-password-label'     => 'New password (optional)',
   'member-password-repeat-label'  => 'Repeat password',
-  'member-added-ok'               => 'Member user ":name" has been created correctly',
-  'member-updated-ok'             => 'Member user ":name" has been updated correctly',
-  'member-deleted'                => 'Member user ":name" has been DELETED',
+  'member-added-ok'               => 'Member ":name" has been created correctly',
+  'member-updated-ok'             => 'Member ":name" has been updated correctly',
+  'member-deleted'                => 'Member ":name" has been DELETED',
   
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',
