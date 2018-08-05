@@ -122,9 +122,8 @@ class InstallController extends Controller
 	*/
 	public function isInstalled()
 	{
-		return (class_exists('Kordy\Ticketit\TicketitServiceProvider')
-			|| count($this->migrations_tables) == count($this->inactiveMigrations())
-            || in_array('2017_12_25_222719_update_panichd_priorities_add_position', $this->inactiveMigrations()) ) ? false : true;
+		return (count($this->migrations_tables) == count($this->inactiveMigrations())
+            || in_array('2017_12_25_222719_update_panichd_priorities_add_magnitude', $this->inactiveMigrations()) ) ? false : true;
 	}
 	
 	/**
