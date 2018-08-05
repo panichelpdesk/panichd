@@ -30,8 +30,6 @@
 
 <li class="divider"></li>
 
-
-
 @if ($setting->grab('departments_notices_feature'))
 	<li role="presentation"  class="{!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\NoticesController@index').'*') ? "active" : "" !!}">
 		<a href="{{ action('\PanicHD\PanicHD\Controllers\NoticesController@index') }}">{{ trans('panichd::admin.nav-notices') }}</a>
