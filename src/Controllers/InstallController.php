@@ -68,6 +68,8 @@ class InstallController extends Controller
 			$inactive_migrations = $this->inactiveMigrations();
 			
 			if (!$this->isInstalled()) {
+				\Cache::forever('panichd::installation', 'install');
+				
 				// Panic Help Desk is not installed yet
 				
 				$previous_ticketit = Schema::hasTable('ticketit_settings');
@@ -122,6 +124,10 @@ class InstallController extends Controller
 	*/
 	public function isInstalled()
 	{
+		// Not installed if we're in installation process
+		if (\Cache::has('panichd::installation')) return false;
+		
+		// Not installed if no PanicHD migrations installed or choosen one is missing
 		return (count($this->migrations_tables) == count($this->inactiveMigrations())
             || in_array('2017_12_25_222719_update_panichd_priorities_add_magnitude', $this->inactiveMigrations()) ) ? false : true;
 	}
@@ -187,7 +193,9 @@ class InstallController extends Controller
 		}
 		
 		$admin->save();
-
+		
+		\Cache::forget('panichd::installation');
+		
         return redirect()->route('panichd.install.index')->with('current_status', 'installed');
     }
 	
