@@ -127,9 +127,16 @@ class TicketsController extends Controller
 			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
 				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
-			// Department columns				
-			$a_select[] = 'dep_ancestor.name as dep_ancestor_name';
-			$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
+			// Department columns
+			$a_select[] = \DB::raw('CASE panichd_departments.department_id WHEN NULL THEN "" ELSE dep_ancestor.name END as dep_ancestor_name');
+			
+			if (config('database.default')=='sqlite'){
+				$a_select[] = \DB::raw('dep_ancestor.name + panichd_departments.name as dept_full_name'); #\''.trans('panichd::lang.colon').' +
+			}else{
+				$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
+			}
+		}else{
+			$a_select[] = '"" as dep_ancestor_name';
 		}
 		
 		$currentLevel = $agent->currentLevel();
