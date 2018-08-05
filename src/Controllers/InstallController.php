@@ -178,8 +178,8 @@ class InstallController extends Controller
 		]);
 		
 		// Add current user to panichd_admin
-		$admin = Member::find(auth()->user()->id);
-        $admin->panichd_admin = true;
+		$admin_user = User::find(auth()->user()->id);
+        $admin_user->panichd_admin = true;
 		
 		if ($request->has('quickstart')){
 			// Insert quickstart seed data
@@ -188,11 +188,14 @@ class InstallController extends Controller
 			]);
 			
 			// Add current user as an agent in the last added category
-			$admin->panichd_agent = true;
-			$admin->categories()->sync([Category::first()->id]);
+			$admin_user->panichd_agent = true;
+			
+			// App\User doesn't have categories()
+			$admin_member = Member::find(auth()->user()->id);
+			$admin_member->categories()->sync([Category::first()->id]);
 		}
 		
-		$admin->save();
+		$admin_user->save();
 		
 		\Cache::forget('panichd::installation');
 		
