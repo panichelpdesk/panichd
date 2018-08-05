@@ -13,7 +13,9 @@ class UpdateRenameTicketitSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::rename('ticketit_settings', 'panichd_settings');
+        if (Schema::hasTable('ticketit_settings')){
+			Schema::rename('ticketit_settings', 'panichd_settings');
+		}
     }
 
     /**
@@ -23,6 +25,8 @@ class UpdateRenameTicketitSettingsTable extends Migration
      */
     public function down()
     {
-		Schema::rename('panichd_settings', 'ticketit_settings');
+		if (Schema::hasTable('panichd_settings')){
+			Schema::rename('panichd_settings', 'ticketit_settings');
+		}
     }
 }
