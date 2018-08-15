@@ -177,6 +177,8 @@ return [
   'member-index-title'            => 'Members management',
   'member-index-help'             => 'Members are all registered users in database. This website administrator may have filtered the list',
   'member-index-empty'            => 'No registered members were found. Please, check if there is any error in database "panichd_members" view',
+  'member-table-own-tickets'      => 'Own tickets',
+  'member-table-assigned-tickets' => 'Assigned tickets',
   'member-modal-update-title'     => 'Update member',
   'member-modal-create-title'     => 'Create member',
   'member-delete-confirmation'    => 'Are you sure you want to delete this user from database?',
