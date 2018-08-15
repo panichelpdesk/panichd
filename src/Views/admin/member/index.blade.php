@@ -56,25 +56,30 @@
 						<td>
                             <button type="button" class="btn btn-default btn_member_modal" data-member_id="{{ $member->id }}" data-member_name="{{ $member->name }}" data-member_email="{{ $member->email }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.member.update', ['id' => $member->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							@if ($member->panichd_admin != '1')
-								{!! link_to_route(
-								$setting->grab('admin_route').'.member.destroy', trans('panichd::admin.btn-delete'), $member->id,
-								[
-								'class' => 'btn btn-default deleteit',
-								'form' => "delete-$member->id",
-								"user" => $member->name
-								])
+								@if ($member->user_tickets_count == 0 && $member->agent_total_tickets_count == 0)
+									{!! link_to_route(
+									$setting->grab('admin_route').'.member.destroy', trans('panichd::admin.btn-delete'), $member->id,
+									[
+									'class' => 'btn btn-default deleteit',
+									'form' => "delete-$member->id",
+									"user" => $member->name
+									])
+										!!}
+									
+									{!! CollectiveForm::open([
+													'method' => 'DELETE',
+													'route' => [
+																$setting->grab('admin_route').'.member.destroy',
+																$member->id
+																],
+													'id' => "delete-$member->id"
+													])
 									!!}
+									{!! CollectiveForm::close() !!}
+								@else
+									<button type="button" class="btn btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
+								@endif
 								
-								{!! CollectiveForm::open([
-												'method' => 'DELETE',
-												'route' => [
-															$setting->grab('admin_route').'.member.destroy',
-															$member->id
-															],
-												'id' => "delete-$member->id"
-												])
-								!!}
-								{!! CollectiveForm::close() !!}
 							@endif
                         </td>
                     </tr>

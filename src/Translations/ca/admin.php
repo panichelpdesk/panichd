@@ -187,6 +187,8 @@ return [
   'member-added-ok'               => 'El membre ":name" s\'ha creat correctament',
   'member-updated-ok'             => 'El membre ":name" s\'ha actualitzat correctament',
   'member-deleted'                => 'El membre ":name" s\'ha ELIMINAT',
+  'member-delete-own-user-error'  => 'No pots eliminar el teu propi compte d\'usuari',
+  'member-with-tickets-delete'    => 'No pots eliminar un membre amb tiquets relacionats',
   
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',

@@ -86,12 +86,19 @@ class MembersController extends Controller
 	
 	public function destroy(Request $request, $id)
 	{
-		$member = User::findOrFail($id);
+		$user = User::findOrFail($id);
+		$member = Models\Member::findOrFail($id);
 		if (auth()->user()->id == $id){
-			\Session::flash('warning', 'You cannot delete your own user account');
+			\Session::flash('warning', trans('panichd::admin.member-delete-own-user-error'));
 			return redirect()->back();
 		}
-		$member->delete();
+		
+		if ($member->userTickets()->count() > 0 or $member->agentTotalTickets()->count() > 0){
+			\Session::flash('warning', trans('panichd::admin.member-with-tickets-delete'));
+			return redirect()->back();
+		}
+		
+		$user->delete();
 		
 		\Session::flash('status', trans('panichd::admin.member-deleted', ['name' => $member->name]));
 
