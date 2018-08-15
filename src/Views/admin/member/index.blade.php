@@ -46,7 +46,7 @@
 						@if ($member->panichd_admin == '1')
 							<button type="button" disabled="disabled" class="btn btn-danger btn-xs">{{ trans('panichd::admin.admin') }}</button>
 						@elseif ($member->panichd_agent == '1')
-							<button type="button" disabled="disabled" class="btn btn-warning btn-xs">{{ trans('panichd::lang.agent') }}</button>
+							<a href="{{ route($setting->grab('admin_route') . '.agent.index')}}" class="btn btn-warning btn-xs">{{ trans('panichd::lang.agent') }}</button>
 						@else
 							<button type="button" disabled="disabled" class="btn btn-default btn-xs">{{ trans('panichd::lang.user') }}</button>
 						@endif
@@ -56,7 +56,13 @@
 						<td>
                             <button type="button" class="btn btn-default btn_member_modal" data-member_id="{{ $member->id }}" data-member_name="{{ $member->name }}" data-member_email="{{ $member->email }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.member.update', ['id' => $member->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							@if ($member->panichd_admin != '1')
-								@if ($member->user_tickets_count == 0 && $member->agent_total_tickets_count == 0)
+								@if ($member->user_tickets_count != 0 || $member->agent_total_tickets_count != 0)
+									<button type="button" class="btn btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
+								
+								@elseif($member->isAgent())
+									<button type="button" class="btn btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-delete-agent') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
+									
+								@else
 									{!! link_to_route(
 									$setting->grab('admin_route').'.member.destroy', trans('panichd::admin.btn-delete'), $member->id,
 									[
@@ -76,10 +82,8 @@
 													])
 									!!}
 									{!! CollectiveForm::close() !!}
-								@else
-									<button type="button" class="btn btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
+									
 								@endif
-								
 							@endif
                         </td>
                     </tr>
