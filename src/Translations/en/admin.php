@@ -188,6 +188,8 @@ return [
   'member-added-ok'               => 'Member ":name" has been created correctly',
   'member-updated-ok'             => 'Member ":name" has been updated correctly',
   'member-deleted'                => 'Member ":name" has been DELETED',
+  'member-delete-own-user-error'  => 'You cannot delete your own user account',
+  'member-with-tickets-delete'    => 'You cannot delete a member with related tickets',
   
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Priorities Management',
