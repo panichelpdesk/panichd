@@ -189,6 +189,7 @@ return [
   'member-updated-ok'             => 'Member ":name" has been updated correctly',
   'member-deleted'                => 'Member ":name" has been DELETED',
   'member-delete-own-user-error'  => 'You cannot delete your own user account',
+  'member-delete-agent'           => 'To enable this member deletion, delete it\'ts agent roles first',
   'member-with-tickets-delete'    => 'You cannot delete a member with related tickets',
   
 // $admin_route_path/priority/____

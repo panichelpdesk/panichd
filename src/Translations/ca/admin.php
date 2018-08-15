@@ -188,6 +188,7 @@ return [
   'member-updated-ok'             => 'El membre ":name" s\'ha actualitzat correctament',
   'member-deleted'                => 'El membre ":name" s\'ha ELIMINAT',
   'member-delete-own-user-error'  => 'No pots eliminar el teu propi compte d\'usuari',
+  'member-delete-agent'           => 'Per a poder eliminar aquest membre, elimina primer els seus rols d\'agent',
   'member-with-tickets-delete'    => 'No pots eliminar un membre amb tiquets relacionats',
   
 // $admin_route_path/priority/____
