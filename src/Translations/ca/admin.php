@@ -176,6 +176,8 @@ return [
   'member-index-title'            => 'Gestió d\'usuaris Membres',
   'member-index-help'             => 'Els membres son tots els usuaris registrats a la base de dades. L\'administrador d\'aquest lloc web pot haver filtrat la llista',
   'member-index-empty'            => 'No s\'ha trobat usuaris registrats. Si us plau, revisa si hi ha algun error a la vista de la base de dades "panichd_members"',
+  'member-table-own-tickets'      => 'Tiquets propis',
+  'member-table-assigned-tickets' => 'Tiquets assignats',
   'member-modal-update-title'     => 'Actualitzar membre',
   'member-modal-create-title'     => 'Crear membre',
   'member-delete-confirmation'    => 'Estàs segur que vols eliminar aquest membre de la base de dades?',

@@ -32,7 +32,8 @@
                         <td>{{ trans('panichd::admin.table-name') }}</td>
 						<td>{{ trans('panichd::admin.table-email') }}</td>
 						<td>{{ trans('panichd::admin.role') }}</td>
-						<td>{{ trans('panichd::lang.tickets') }}
+						<td>{{ trans('panichd::admin.member-table-own-tickets') }}</td>
+						<td>{{ trans('panichd::admin.member-table-assigned-tickets') }}</td>
 						<td>{{ trans('panichd::admin.table-action') }}</td>
                     </tr>
                 </thead>
@@ -50,14 +51,8 @@
 							<button type="button" disabled="disabled" class="btn btn-default btn-xs">{{ trans('panichd::lang.user') }}</button>
 						@endif
 						</td>
-						<td>
-						@if ($member->user_tickets_count != 0)
-							<button type="button" disabled="disabled" class="btn btn-default btn-xs">{{ $member->user_tickets_count }}</button>
-						@endif
-						@if ($member->agent_total_tickets_count != 0)
-							<button type="button" disabled="disabled" class="btn btn-warning btn-xs">{{ $member->agent_total_tickets_count }}</button>
-						@endif
-						</td>
+						<td>{{ $member->user_tickets_count }}</td>
+						<td>{{ $member->agent_total_tickets_count }}</td>
 						<td>
                             <button type="button" class="btn btn-default btn_member_modal" data-member_id="{{ $member->id }}" data-member_name="{{ $member->name }}" data-member_email="{{ $member->email }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.member.update', ['id' => $member->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							@if ($member->panichd_admin != '1')
