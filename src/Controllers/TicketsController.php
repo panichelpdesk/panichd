@@ -941,7 +941,8 @@ class TicketsController extends Controller
 			$ticket->priority_id = $request->priority_id;			
 		}else{
 			$ticket->status_id = Setting::grab('default_status_id');		
-			$ticket->priority_id = Models\Priority::first()->id;
+			$default_priority_id = Setting::grab('default_priority_id');
+			$ticket->priority_id = $default_priority_id == 0 ? Models\Priority::first()->id : $default_priority_id;
 		}
 
 		if ($request->start_date != ""){
