@@ -12,7 +12,7 @@ use Validator;
 
 trait Attachments
 {
-	/**
+    /**
 	 * Generate attachment from any embbeded image within $html that exceeds any of the max dimensions (hardcoded 380 x 300 max)
 	 *
 	 * @Param $html string
@@ -21,19 +21,35 @@ trait Attachments
 	*/
 	protected function createAttachmentsFrom($html, $ticket, $comment = false, $count = 0)
 	{
-		
-		// Html field without embedded image <img> tags
+	    // Html field without embedded image <img> tags
 		if (!preg_match('/src="data:image\/(png|jpeg|gif);base64,/', $html)){
 			return [
 				'html' => $html,
 				'count' => 0
 			];
 		}
-		
-		$dom = new \DomDocument();
-		
+
+        $dom = new \DomDocument();
+
+        if (@!$dom->loadHtml( mb_convert_encoding('<div>' . $html . '</div>', 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD)){
+            return [
+                'html' => $html,
+                'count' => 0
+            ];
+        }
+
+        $container = $dom->getElementsByTagName('div')->item(0);
+        $container = $container->parentNode->removeChild($container);
+        while ($dom->firstChild) {
+            $dom->removeChild($dom->firstChild);
+        }
+
+        while ($container->firstChild ) {
+            $dom->appendChild($container->firstChild);
+        }
+
 		// Exit when loadHtml doesn't process correctly
-        if (@!$dom->loadHtml( mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD)){
+        if (!$dom){
 			\Log::info('ticket '.$ticket->id.' loadHtml error');
 			return [
 				'html' => $html,
