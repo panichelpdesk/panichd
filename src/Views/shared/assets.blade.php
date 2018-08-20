@@ -1,4 +1,4 @@
-<link rel="StyleSheet" href="{{asset('vendor/panichd/css/bootstrap/bootstrap-3.3.7.min.css')}}">
+<link rel="StyleSheet" href="{{asset('vendor/panichd/css/bootstrap/bootstrap-4.1.3.min.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/dataTables.bootstrap.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/responsive.bootstrap.min.css')}}">
 @if($editor_enabled)
@@ -29,7 +29,7 @@
 
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-3.3.1.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-ui-1.12.1.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('vendor/panichd/js/bootstrap/bootstrap-3.3.7.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/bootstrap/bootstrap-4.1.3.bundle.min.js')}}"></script>
 
 <script type="text/javascript" src="{{asset('vendor/panichd/js/select2/select2.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/panichd/js/select2/i18n/'.App::getLocale().'.js')}}"></script>
