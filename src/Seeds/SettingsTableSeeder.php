@@ -380,12 +380,6 @@ class SettingsTableSeeder extends Seeder
 			'ticket_attachments_feature' => 'yes',
 			
 			/*
-			 * Bootstrap widths in where specified navigation elements get text replaced with an icon
-			*/
-			'nav_icons_user_sizes' => 'sm',
-			'nav_icons_admin_sizes' => 'sm,md',
-			
-			/*
 			 * Calendar filter options switch between week and month or 7 and 14 days
 			*/
 			'calendar_month_filter' => 'no',
