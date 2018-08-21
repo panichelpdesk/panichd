@@ -74,7 +74,7 @@
                         <i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                <button type="button" class="btn btn-light btn-xs dropdown-toggle" data-toggle="dropdown">
                                     {{ trans('panichd::admin.index-periods') }}
                                     <span class="caret"></span>
                                 </button>
@@ -181,7 +181,7 @@
 									@if ($category->tickets()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective'), 'category' => $category->name ]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective'), 'category' => $category->name ]) }}">
 										{{ $a_button['newest'] }}
 										</a>
 									@endif
@@ -189,7 +189,7 @@
 									@if ($category->tickets()->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective'), 'category' => $category->name ]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective'), 'category' => $category->name ]) }}">
 										{{ $a_button['active'] }}
 										</a>
 									@endif
@@ -197,7 +197,7 @@
 									@if ($category->tickets()->complete()->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective'), 'category' => $category->name ]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective'), 'category' => $category->name ]) }}">
 										{{ $a_button['complete'] }}
 										</a>
 									@endif
@@ -237,7 +237,7 @@
 									@if ($agent->agentTickets(false)->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
 										{{ $a_button['newest'] }}
 										</a>
 									@endif
@@ -245,7 +245,7 @@
 									@if ($agent->agentTickets(false)->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
 										{{ $a_button['active'] }}
 										</a>
 									@endif
@@ -253,7 +253,7 @@
 									@if ($agent->agentTickets(true)->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
 										{{ $a_button['complete'] }}
 										</a>
 									@endif
@@ -292,7 +292,7 @@
 									@if ($user->tickets()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
 										{{ $a_button['newest'] }}
 										</a>
 									@endif
@@ -300,7 +300,7 @@
 									@if ($user->tickets()->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
 										{{ $a_button['active'] }}
 										</a>
 									@endif
@@ -308,7 +308,7 @@
 									@if ($user->tickets()->complete()->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
 										{{ $a_button['complete'] }}
 										</a>
 									@endif

@@ -56,7 +56,7 @@
 					@endif
 					<td>
 					@foreach ($notice->tags as $tag)
-						<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; background-color: {{ $tag->bg_color }}; color: {{ $tag->text_color }}">{{ $tag->name }}</button>
+						<button class="btn btn-light btn-tag btn-xs" style="pointer-events: none; background-color: {{ $tag->bg_color }}; color: {{ $tag->text_color }}">{{ $tag->name }}</button>
 					@endforeach
 					</td>
 					</tr>				

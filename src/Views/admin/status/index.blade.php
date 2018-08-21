@@ -46,13 +46,13 @@
 						<td>
                             {!! link_to_route(
 								$setting->grab('admin_route').'.status.edit', trans('panichd::admin.btn-edit'), $status->id,
-								['class' => 'btn btn-default'] )
+								['class' => 'btn btn-light'] )
 							!!}
 
 							{!! link_to_route(
 								$setting->grab('admin_route').'.status.destroy', trans('panichd::admin.btn-delete'), $status->id,
 								[
-								'class' => 'btn btn-default deleteit',
+								'class' => 'btn btn-light deleteit',
 								'data-id' => "$status->id",
 
 								"data-name" => $status->name,

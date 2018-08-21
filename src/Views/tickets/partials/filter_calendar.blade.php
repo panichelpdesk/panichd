@@ -56,7 +56,7 @@ $cld_options['not-scheduled'] = [
 	<?php $text_cld.= $this_cld . '</a></li>';?>		
 @endforeach
 <div class="dropdown" style="display: inline-block;">
-<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('panichd::lang.filter-calendar-all') : $calendar_name !!}
+<button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{!! $calendar_name=="All" ? trans('panichd::lang.filter-calendar-all') : $calendar_name !!}
 <span class="caret {{ $cld_class }}"></span></button>
 <ul class="dropdown-menu">
 @if ($calendar_name!="All")

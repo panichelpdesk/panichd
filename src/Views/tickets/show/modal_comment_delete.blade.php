@@ -10,7 +10,7 @@
         <p>{{ trans('panichd::lang.show-ticket-delete-comment-msg') }}</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('panichd::lang.btn-cancel') }}</button>
+        <button type="button" class="btn btn-light" data-dismiss="modal">{{ trans('panichd::lang.btn-cancel') }}</button>
         <button type="button" class="btn btn-danger" id="delete-comment-submit">{{ trans('panichd::lang.btn-delete') }}</button>
       </div>
     </div>

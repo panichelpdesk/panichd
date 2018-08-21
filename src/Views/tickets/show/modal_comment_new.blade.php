@@ -24,8 +24,8 @@
 						<div id="comment-type-buttons" class="form-group">
 							{!! CollectiveForm::label('type', trans('panichd::lang.show-ticket-add-comment-type') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
 							<div class="col-lg-10">
-								<button type="button" class="btn btn-default btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="glyphicons glyphicon glyphicon-pencil"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
-								<button type="button" class="btn btn-default btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="glyphicons glyphicon glyphicon-envelope"></span> {{ trans('panichd::lang.show-ticket-add-comment-reply') }}</button>
+								<button type="button" class="btn btn-light btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="glyphicons glyphicon glyphicon-pencil"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
+								<button type="button" class="btn btn-light btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="glyphicons glyphicon glyphicon-envelope"></span> {{ trans('panichd::lang.show-ticket-add-comment-reply') }}</button>
 								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
 							</div>
 						</div>
@@ -84,7 +84,7 @@
 				<!-- Div edit attachment -->
 				<fieldset id="new_comment_modal_attachment"  class="fieldset-for-attachment form-horizontal" style="display: none">		
 					@include('panichd::tickets.partials.attachment_form_fields')
-					<button class="btn btn-default div-discard-attachment-update" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('panichd::lang.discard') }}</button>
+					<button class="btn btn-light div-discard-attachment-update" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('panichd::lang.discard') }}</button>
 					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('panichd::lang.update') }}</button>
 				</fieldset>
 			</div>

@@ -15,7 +15,7 @@
                 {!! link_to_route(
                     $setting->grab('admin_route').'.configuration.index',
                     trans('panichd::admin.btn-back'), null,
-                    ['class' => 'btn btn-default'])
+                    ['class' => 'btn btn-light'])
                 !!}
                 {!! link_to_route(
                     $setting->grab('admin_route').'.configuration.create',

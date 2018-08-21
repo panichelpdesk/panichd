@@ -72,20 +72,20 @@
 						<td style="vertical-align: middle">
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
-								<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
+								<button class="btn btn-light btn-tag btn-xs" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
 							@endforeach
 						@endif
 						</td>
 						<td>
                             {!! link_to_route(
                                                     $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
-                                                    ['class' => 'btn btn-default'] )
+                                                    ['class' => 'btn btn-light'] )
                                 !!}
 
                                 {!! link_to_route(
                                                     $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
                                                     [
-                                                    'class' => 'btn btn-default deleteit',
+                                                    'class' => 'btn btn-light deleteit',
                                                     'form' => "delete-$category->id",
                                                     "node" => $category->name
                                                     ])

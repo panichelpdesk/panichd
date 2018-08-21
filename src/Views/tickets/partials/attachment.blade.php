@@ -49,7 +49,7 @@
 					</s>
 				@endif
 				@if($u->currentLevel() > 1 && isset($template) && $template == "createedit")
-					<button type="button" role="button" class="btn btn-default btn-xs edit_attachment"
+					<button type="button" role="button" class="btn btn-light btn-xs edit_attachment"
 					@if (isset($edit_div) && isset($back_div))
 						data-edit-div="{{ $edit_div }}" data-back-div="{{ $back_div }}"
 					@else

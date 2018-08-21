@@ -19,7 +19,7 @@
                 <tfoot>
                     <tr>
                         <td class="text-center">
-                            {!! link_to_route($setting->grab('admin_route').'.administrator.index', trans('panichd::admin.btn-back'), null, ['class' => 'btn btn-default']) !!}
+                            {!! link_to_route($setting->grab('admin_route').'.administrator.index', trans('panichd::admin.btn-back'), null, ['class' => 'btn btn-light']) !!}
                             {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
                         </td>
                     </tr>

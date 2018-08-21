@@ -51,13 +51,13 @@
 						<td>
                             {!! link_to_route(
 								$setting->grab('admin_route').'.priority.edit', trans('panichd::admin.btn-edit'), $priority->id,
-								['class' => 'btn btn-default'] )
+								['class' => 'btn btn-light'] )
 							!!}
 
 							{!! link_to_route(
 								$setting->grab('admin_route').'.priority.destroy', trans('panichd::admin.btn-delete'), $priority->id,
 								[
-								'class' => 'btn btn-default deleteit',
+								'class' => 'btn btn-light deleteit',
 								'form' => "delete-$priority->id",
 								"node" => $priority->name,
 								'data-id' => "$priority->id",

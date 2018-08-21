@@ -12,7 +12,7 @@
     <div class="panel-heading">
         <h3>{{ trans('panichd::admin.notice-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
+                <button type="button" class="btn btn-light btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
             </div>
         </h3>
     </div>
@@ -59,11 +59,11 @@
 							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-light btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							{!! link_to_route(
 							$setting->grab('admin_route').'.notice.destroy', trans('panichd::admin.btn-delete'), $d_user->id,
 							[
-							'class' => 'btn btn-default deleteit',
+							'class' => 'btn btn-light deleteit',
 							'form' => "delete-$d_user->id",
 							"user" => $d_user->name
 							])

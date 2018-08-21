@@ -31,7 +31,7 @@ $(function(){
 				+'<div><span id="new_attachment_'+num+'_display_new_filename">'+file.name+'</span> <s id="new_attachment_'+num+'_display_original_filename"></s>'
 				
 				// Button
-				+'<button type="button" role="button" class="btn btn-default btn-xs edit_attachment"';
+				+'<button type="button" role="button" class="btn btn-light btn-xs edit_attachment"';
 				
 			if ($('#'+$(this).data('attach-id')).data('new-attachment-modal-id')){
 				html += ' data-modal-id="'+$('#'+$(this).data('attach-id')).data('new-attachment-modal-id')+'"';

@@ -65,7 +65,7 @@
 					@endif
 					{!! $comment->updated_at->diffForHumans() !!} 
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id) and $comment->type=='note')
-						<button type="button" class="btn btn-default btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
+						<button type="button" class="btn btn-light btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
 						<span class="glyphicon glyphicon-remove" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
 					@endif
 					</span>
@@ -88,9 +88,9 @@
                 </div>
 				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					@if ($comment->type=='note')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
+						<button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
 					@elseif($comment->type=='reply')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
+						<button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
 					@endif
 				
 				@endif

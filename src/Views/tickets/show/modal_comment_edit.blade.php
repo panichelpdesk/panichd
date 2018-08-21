@@ -58,7 +58,7 @@
 				<!-- Div edit attachment -->
 				<fieldset id="edit_comment_{{ $comment->id }}_attachment"  class="fieldset-for-attachment form-horizontal" style="display: none">		
 					@include('panichd::tickets.partials.attachment_form_fields')
-					<button class="btn btn-default div-discard-attachment-update" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.discard') }}</button>
+					<button class="btn btn-light div-discard-attachment-update" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.discard') }}</button>
 					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.update') }}</button>
 				</fieldset>
 			</div>
