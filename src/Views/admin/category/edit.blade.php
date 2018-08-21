@@ -9,7 +9,7 @@
 
 @section('panichd_assets')
 	<style type="text/css">
-		#tag-panel .glyphicon {
+		#tag-panel .fa {
 			color: #777;
 		}
 		

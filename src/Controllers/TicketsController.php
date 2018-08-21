@@ -199,7 +199,7 @@ class TicketsController extends Controller
 				return $field;
 			}else{
 				$field = '<div style="margin: 0em 0em 1em 0em;">'.$field.'</div>' . $ticket->content;
-				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="fa fa-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 
 				return $field;
 			}
@@ -208,7 +208,7 @@ class TicketsController extends Controller
 		if (Setting::grab('subject_content_column') == 'no'){
 			$collection->editColumn('content', function ($ticket) {
 				$field = $ticket->content;
-				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="glyphicons glyphicon glyphicon-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="fa fa-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 
 				return $field;
 			});
@@ -218,13 +218,13 @@ class TicketsController extends Controller
 			$field=$ticket->intervention;
 			if ($ticket->intervention!="" and ($ticket->comments_count>0 or $ticket->hidden)) $field.="<br />";
 			
-			if($ticket->hidden) $field.= '<span class="glyphicon glyphicon-eye-close tooltip-info tickethidden" data-toggle="tooltip" title="'.trans('panichd::lang.ticket-hidden').'" style="margin: 0em 0.5em 0em 0em;"></span>';
+			if($ticket->hidden) $field.= '<span class="fa fa-eye-slash tooltip-info tickethidden" data-toggle="tooltip" title="'.trans('panichd::lang.ticket-hidden').'" style="margin: 0em 0.5em 0em 0em;"></span>';
 			
 			if ($ticket->recent_comments_count>0){
 				$field.=$ticket->recent_comments_count.' ';
 			}
 			if ($ticket->comments_count>0){
-				$field.='<span class="glyphicons glyphicon glyphicon-comment tooltip-info comment" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+				$field.='<span class="fa fa-comment tooltip-info comment" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
 			
 			return $field;
@@ -265,7 +265,7 @@ class TicketsController extends Controller
 			$text = "";
 			
 			if ($ticket->agent_name == "" or is_null($ticket->agent)){
-				$text.= "<span class=\"glyphicon glyphicon-exclamation-sign tooltip-info text-danger\"  data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\"></span> ";
+				$text.= "<span class=\"fa fa-exclamation-circle tooltip-info text-danger\"  data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\"></span> ";
 			}
 			
 			if($count>4){
@@ -308,7 +308,7 @@ class TicketsController extends Controller
 			
 			if ($ticket->owner_name == "" or is_null($ticket->owner)){
 				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
-					."<span class=\"glyphicon glyphicon-exclamation-sign text-danger\"></span>"
+					."<span class=\"fa fa-exclamation-circle text-danger\"></span>"
 					."&nbsp;" . $return . "</span>";
 			}
 			
@@ -319,7 +319,7 @@ class TicketsController extends Controller
 			}
 			
 			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"glyphicon glyphicon-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon'). ($ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name)) ."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";				
+				$return .="&nbsp;<span class=\"fa fa-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon'). ($ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name)) ."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";
 			}
 			
 			return $return;

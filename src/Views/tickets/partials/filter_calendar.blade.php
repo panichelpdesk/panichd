@@ -6,48 +6,48 @@ $cld_class = "";
 $cld_options = [
 	'expired' => [
 		'class' => 'text-danger',
-		'icon' => 'glyphicon-exclamation-sign',
+		'icon' => 'fa fa-exclamation-circle',
 	],
 	'today' => [
 		'class' => 'text-warning',
-		'icon' => 'glyphicon-warning-sign',
+		'icon' => 'fa fa-exclamation-triangle',
 	],
 	'tomorrow' => [
 		'class' => 'text-info',
-		'icon' => 'glyphicon-time',
+		'icon' => 'fa fa-clock-o',
 	]
 ];
 
 if ($setting->grab('calendar_month_filter')){
 	$cld_options['week'] = [
 		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
+		'icon' => 'fa fa-calendar',
 	];
 	$cld_options['month'] = [
 		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
+		'icon' => 'fa fa-calendar',
 	];
 }else{
 	$cld_options['within-7-days'] = [
 		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
+		'icon' => 'fa fa-calendar',
 	];
 	$cld_options['within-14-days'] = [
 		'class' => 'text-info',
-		'icon' => 'glyphicon-calendar',
+		'icon' => 'fa fa-calendar',
 	];
 }
 
 $cld_options['not-scheduled'] = [
 	'class' => 'text-default',
-	'icon' => 'glyphicon-file'
+	'icon' => 'fa fa-file'
 ];
 
 ?>
 @foreach ($counts['calendar'] as $cld=>$count)			
 	<?php $text_cld.='<li><a href="'.url($setting->grab('main_route').'/filter/calendar/'.$cld).'">';
 	
-	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="glyphicon '.$cld_options[$cld]['icon'].'"></span> ' : '').trans('panichd::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
+	$this_cld = '<span class="'.(isset($cld_options[$cld]['class']) ? $cld_options[$cld]['class'] : "").'">'.( isset($cld_options[$cld]['icon']) ? '<span class="'.$cld_options[$cld]['icon'].'"></span> ' : '').trans('panichd::lang.filter-calendar-'.$cld).' <span class="badge">'.$count.'</span></span>';
 	?>
 	@if ($cld==session('panichd_filter_calendar'))
 		<?php $calendar_name = $this_cld;

@@ -437,7 +437,7 @@ class Ticket extends Model
 				$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date_field, true)]);
 			}
 			
-			$icon = "glyphicon-exclamation-sign";
+			$icon = "fa fa-exclamation-circle";
 			$color = "text-danger";
 		}elseif($limit_days_diff > 0 or $limit_days_diff === false){
 			if ($start_days_diff > 0){
@@ -455,18 +455,18 @@ class Ticket extends Model
 							'date1' => $this->getDateForHumans('start_date'),
 							'date2' => $this->getDateForHumans('limit_date')]);
 					}
-					$icon = $start_days_diff == 1 ? "glyphicon-time" : "glyphicon-calendar";
+					$icon = $start_days_diff == 1 ? "fa fa-clock-o" : "fa fa-calendar";
 					$color = "text-info";
 				}else{
 					$title = trans('panichd::lang.calendar-active-future', ['description' => $this->getDateForHumans($date_field, true)]);
-					$icon = "glyphicon-file";
+					$icon = "fa fa-file";
 				}										
 				
 			}elseif($limit_days_diff){
 				// Active with limit
 				$date_field = 'limit_date';
 				$title = trans('panichd::lang.calendar-expiration', ['description' => $this->getDateForHumans($date_field, true)]);
-				$icon = "glyphicon-time";
+				$icon = "fa fa-clock-o";
 				$color = "text-info";
 			}else{
 				// Active without limit
@@ -477,7 +477,7 @@ class Ticket extends Model
 					$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date_field, true)]);
 				}
 				
-				$icon = "glyphicon-file";					
+				$icon = "fa fa-file";
 			}				
 		}else{
 			// Due today
@@ -493,7 +493,7 @@ class Ticket extends Model
 				]);
 			}
 			
-			$icon = "glyphicon-warning-sign";
+			$icon = "fa fa-exclamation-triangle";
 			$color = "text-warning";
 		}
 		
@@ -502,7 +502,7 @@ class Ticket extends Model
 			return $title;
 		}else{
 			// Full field
-			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"glyphicon $icon\"></span> ".$this->getDateForHumans($date_field)." ".($question_sign ? "<span class=\"glyphicon glyphicon-question-sign\"></span>" : "")."</span>";
+			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"$icon\"></span> ".$this->getDateForHumans($date_field)." ".($question_sign ? "<span class=\"fa fa-question-circle\"></span>" : "")."</span>";
 		}
 	}
 	

@@ -2,9 +2,9 @@
 
 @section('current_status')
 	@if ($isUpdated)
-		<span class="text-success"><span class="glyphicon glyphicon-ok" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-updated') !!}</span>
+		<span class="text-success"><span class="fa fa-check" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-updated') !!}</span>
 	@else
-		<span class="text-warning"><span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-out-of-date') !!}</span>
+		<span class="text-warning"><span class="fa fa-exclamation-triangle" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.status-out-of-date') !!}</span>
 	@endif
 @stop
 

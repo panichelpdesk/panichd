@@ -26,7 +26,7 @@
         <div class="panel-body">    
 			<div class="alert alert-info alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}
+				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}
 			</div>
 		
             <table id="priority_table" class="table table-hover">
@@ -42,7 +42,7 @@
                 <tbody>
                 @foreach($priorities as $priority)
                     <tr data-id="{{ $priority->id }}">
-                        <td style="vertical-align: center"><span class="glyphicon glyphicon-option-vertical" style="color: #aaa"></span></td>
+                        <td style="vertical-align: center"><span class="fa fa-ellipsis-v" style="color: #aaa"></span></td>
 						<td class="magnitude">{{ $priority->magnitude }}</td>
                         <td class="name" data-color="{{ $priority->color }}" style="color: {{ $priority->color }}; vertical-align: middle">
                             {{ $priority->name }}

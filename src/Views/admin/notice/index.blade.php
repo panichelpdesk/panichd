@@ -20,11 +20,11 @@
 		@if (!session()->exists('status'))
 			<div class="alert alert-info alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.notice-index-help') !!}
+				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.notice-index-help') !!}
 			</div>
 			<div class="alert alert-warning alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-warning-sign" style="color: orange;"></span> {!! trans('panichd::admin.notice-index-owner-alert') !!}
+				<span class="fa fa-exclamation-triangle" style="color: orange;"></span> {!! trans('panichd::admin.notice-index-owner-alert') !!}
 			</div>
 		@endif
 

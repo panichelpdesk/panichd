@@ -55,7 +55,7 @@
 							@else
 								{{ trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.name') }} &lt;{{ config('mail.from.address') }}>
 							@endif
-							 <span class="glyphicon glyphicon-question-sign"></span></span>
+							 <span class="fa fa-question-circle"></span></span>
                         </td>
 						<td style="vertical-align: middle">
 						{{ trans('panichd::admin.level-'.$category->create_level) }}

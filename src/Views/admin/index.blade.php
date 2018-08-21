@@ -14,7 +14,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-book"></i>
+                                <i class="fa fa-book"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h2>{{ $tickets_count }} <small>{{ trans('panichd::admin.index-total-tickets') }}</small></h2>
@@ -28,7 +28,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-certificate"></i>
+                                <i class="fa fa-certificate"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $a_tickets_count['newest'] }} <small>{{ trans('panichd::admin.index-newest-tickets') }}</small></h1>
@@ -42,7 +42,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-file"></i>
+                                <i class="fa fa-file"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $a_tickets_count['active'] }} <small>{{ trans('panichd::admin.index-active-tickets') }}</small></h1>
@@ -56,7 +56,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-ok-circle"></i>
+                                <i class="fa fa-check-circle"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <h1>{{ $a_tickets_count['complete'] }} <small>{{ trans('panichd::admin.index-complete-tickets') }}</small></h1>
@@ -126,24 +126,24 @@
                 </div>
             </div>
             <div class="col-md-4">
-                {{--<h4><i class="glyphicon glyphicon-info-sign"></i> Tickets Activities</h4>--}}
+                {{--<h4><i class="fa fa-info-circle"></i> Tickets Activities</h4>--}}
                 {{--<hr />--}}
                 <ul class="nav nav-tabs nav-justified">
                     <li class="{{$active_tab == "cat" ? "active" : ""}}">
                         <a data-toggle="pill" href="#information-panel-categories">
-                            <i class="glyphicon glyphicon-folder-close"></i>
+                            <i class="fa fa-folder"></i>
                             <small>{{ trans('panichd::admin.index-categories') }}</small>
                         </a>
                     </li>
                     <li class="{{$active_tab == "agents" ? "active"  : ""}}">
                         <a data-toggle="pill" href="#information-panel-agents">
-                            <i class="glyphicon glyphicon-user"></i>
+                            <i class="fa fa-user"></i>
                             <small>{{ trans('panichd::admin.index-agents') }}</small>
                         </a>
                     </li>
                     <li class="{{$active_tab == "users" ? "active" : ""}}">
                         <a data-toggle="pill" href="#information-panel-users">
-                            <i class="glyphicon glyphicon-user"></i>
+                            <i class="fa fa-user"></i>
                             <small>{{ trans('panichd::admin.index-users') }}</small>
                         </a>
                     </li>

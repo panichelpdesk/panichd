@@ -4,27 +4,27 @@
 			<div class="col-sm-8 col-lg-7">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">
 				@if ($ticket->completed_at)
-					<span class="text-success"><span class="glyphicon glyphicon-ok-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
+					<span class="text-success"><span class="fa fa-check-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@else
-					<span class="text-warning"><span class="glyphicon glyphicon-file" title="tiquet obert" style="cursor: help"></span> {{ $ticket->subject }}</span>
+					<span class="text-warning"><span class="fa fa-file" title="tiquet obert" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@endif
 				</h2>
 			</div>
 			<div class="col-sm-4 col-lg-5 text-right">
 				@if ($u->currentLevel() > 1)
-					<a href="{{ route($setting->grab('main_route').'.hide', ['value' => $ticket->hidden ? 'false' : 'true', 'ticket'=>$ticket->id]) }}" class="btn btn-light tooltip-info" style="border: none; color: #aaa;" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.ticket-hidden-button-title') }}">{!! $ticket->hidden ? '<span class="glyphicon glyphicon-eye-close"></span> '.trans('panichd::lang.ticket-hidden') : '<span class="glyphicon glyphicon-eye-open"></span> '.trans('panichd::lang.ticket-visible') !!}</a>
+					<a href="{{ route($setting->grab('main_route').'.hide', ['value' => $ticket->hidden ? 'false' : 'true', 'ticket'=>$ticket->id]) }}" class="btn btn-light tooltip-info" style="border: none; color: #aaa;" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.ticket-hidden-button-title') }}">{!! $ticket->hidden ? '<span class="fa fa-eye-slash"></span> '.trans('panichd::lang.ticket-hidden') : '<span class="fa fa-eye"></span> '.trans('panichd::lang.ticket-visible') !!}</a>
 				@endif
 				@if ($ticket->updated_at!=$ticket->created_at)
 					<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.updated-date', [
 						'date' => \Carbon\Carbon::parse($ticket->updated_at)->format(trans('panichd::lang.datetime-format'))
 					]) }}" style="display: inline-block; color: #aaa; cursor: help">
-						<span class="glyphicon glyphicon-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
+						<span class="fa fa-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
 					</span>
 				@endif
 				<span class="tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.creation-date', [
 						'date' => \Carbon\Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))
 					]) }}" style="display: inline-block; color: #aaa; cursor: help">
-					<span class="glyphicon glyphicon-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
+					<span class="fa fa-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
 				</span>&nbsp;
 								
 				@if($u->isAdmin())
@@ -70,7 +70,7 @@
 						<?php $creator_name = $ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name); ?>
 						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') }}
 						@if ($ticket->creator_name == "" || is_null($ticket->creator))
-							<span class="glyphicon glyphicon-exclamation-sign tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $creator_name }}</span>
+							<span class="fa fa-exclamation-circle tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $creator_name }}</span>
 						@else
 							{{ $creator_name }}
 						@endif
@@ -87,7 +87,7 @@
 					@if (is_null($ticket->owner))
 						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $owner_name !!}</span>
 					@elseif ($ticket->owner_email != "")
-						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner_email }}">{!! $ticket->owner_name !!} <span class="glyphicon glyphicon-question-sign"></span></span>
+						<span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $ticket->owner_email }}">{!! $ticket->owner_name !!} <span class="fa fa-question-circle"></span></span>
 					@else
 						{!! $ticket->owner_name !!}
 					@endif
@@ -97,11 +97,11 @@
 					@endif
 					
 					@if (is_null($ticket->owner))
-						<br /><span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{ trans('panichd::lang.ticket-owner-deleted-warning') }}</span>
+						<br /><span class="text-danger"><span class="fa fa-exclamation-circle"></span> {{ trans('panichd::lang.ticket-owner-deleted-warning') }}</span>
 					@endif
 					
 					@if ($ticket->owner_email == "")
-						<br /><span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
+						<br /><span class="text-warning"><span class="fa fa-exclamation-triangle"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 					
 					@if ($setting->grab('departments_feature') && isset($ticket->owner->department))
@@ -159,7 +159,7 @@
 					<?php $agent_name = $ticket->agent_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->agent) ? $ticket->agent_name : $ticket->agent->name); ?>
 					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}
 					@if ($ticket->agent_name == "" || is_null($ticket->agent))
-						<span class="glyphicon glyphicon-exclamation-sign tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $agent_name }}</span>
+						<span class="fa fa-exclamation-circle tooltip-info text-danger"  data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $agent_name }}</span>
 					@else
 						{{ $agent_name }}
 					@endif

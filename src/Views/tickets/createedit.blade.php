@@ -52,7 +52,7 @@
 			
 			<div class="form-group"><!-- OWNER -->
                 
-				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class control-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 
                 <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
                     <select name="owner_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
@@ -74,7 +74,7 @@
 			@if ($u->currentLevel() > 1)
 			<div class="jquery_level2_show">
 				<div class="form-group">
-					<label class="col-lg-3 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+					<label class="col-lg-3 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 					
 					<div class="col-lg-9" style="padding-top: 7px;">
 						<label><input type="radio" name="hidden" value="false" {{ (!isset($ticket) || (isset($ticket) && !$ticket->hidden)) ? 'checked' : '' }}> {{ trans('panichd::lang.yes') }}</label><label style="margin: 0em 0em 0em 1em;"><input type="radio" name="hidden" value="true" {{ (isset($ticket) && $ticket->hidden) ? 'checked' : ''}}> {{ trans('panichd::lang.no') }}</label>
@@ -87,8 +87,8 @@
 						'class' => 'col-lg-3 control-label'
 					]) !!}
 					<div class="col-lg-9">
-						<button type="button" id="complete_no" class="btn btn-light text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="glyphicon glyphicon-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
-						<button type="button" id="complete_yes" class="btn btn-light text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="glyphicon glyphicon-ok-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>
+						<button type="button" id="complete_no" class="btn btn-light text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="fa fa-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
+						<button type="button" id="complete_yes" class="btn btn-light text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="fa fa-check-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>
 					</div>
 					{!! CollectiveForm::hidden('complete', isset($ticket) ? ($ticket->completed_at == '' ? 'no' : 'yes') : 'no',['id' => 'value_complete']) !!}
 				</div>			
@@ -114,7 +114,7 @@
 						<div class="input-group date" id="start_date">
 							<input type="text" class="form-control" name="start_date" value="{{ $a_current['start_date'] }}"/>
 							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
+								<span class="fa fa-calendar"></span>
 							</span>
 						</div>
 						<div class="jquery_error_text"></div>
@@ -126,7 +126,7 @@
 						<div class="input-group date" id="limit_date">
 							<input type="text" class="form-control" name="limit_date"  value="{{ $a_current['limit_date'] }}"/>
 							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
+								<span class="fa fa-calendar"></span>
 							</span>
 						</div>
 						<div class="jquery_error_text"></div>
@@ -180,7 +180,7 @@
 			@endif
 			
             <div class="form-group"><!-- DESCRIPTION -->
-                <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-describe-issue') }}"> *{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>
+                <label for="content" class="col-lg-2 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-describe-issue') }}"> *{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
                 <div class="col-lg-10 summernote-text-wrapper">
                 <textarea class="form-control summernote-editor" style="display: none" rows="5" name="content" cols="50">{!! $a_current['description'] !!}</textarea>
 				<div class="jquery_error_text"></div>
@@ -190,7 +190,7 @@
 			@if ($u->currentLevel() > 1)
 				<div class="jquery_level2_show">
 					<div class="form-group"><!-- INTERVENTION -->
-						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-intervention-help') }}">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }} <span class="glyphicon glyphicon-question-sign" style="color: #bbb"></span></label>			
+						<label for="intervention" class="col-lg-2 control-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-intervention-help') }}">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 						<div class="col-lg-10 summernote-text-wrapper">
 						<textarea class="form-control summernote-editor" style="display: none" rows="5" name="intervention" cols="50">{!! $a_current['intervention'] !!}</textarea>			
 						</div>

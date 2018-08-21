@@ -24,7 +24,7 @@ $(function(){
 			var html = '<div><div id="attachment_block_'+num+'" class="jquery_attachment_block panel panel-default text-warning check_parent unchecked check_related_bg"><div class="panel-body"><div class="media">'
 				
 				// Upload icon
-				+'<div class="media-left"><span class="media-object glyphicon glyphicon-upload" style="font-size: 30px" title="{{ trans('panichd::lang.pending-attachment') }}" style="cursor: help"></span></div>'
+				+'<div class="media-left"><span class="media-object fa fa-upload" style="font-size: 30px" title="{{ trans('panichd::lang.pending-attachment') }}" style="cursor: help"></span></div>'
 				
 				// Filename
 				+'<div class="media-body check_related_text">'
@@ -50,7 +50,7 @@ $(function(){
 				
 				// Block button
 				+'<div class="media-right media-middle">'					
-				+'<a href="#" class="check_button" data-delete_id="delete_new_attachment_check_'+num+'"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>'
+				+'<a href="#" class="check_button" data-delete_id="delete_new_attachment_check_'+num+'"><span class="media-object pull-right fa fa-remove" aria-hidden="true"></span><span class="media-object  pull-right fa fa-check" aria-hidden="true" style="display: none"></span></a>'
 				+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
 				+'</div></div></div>'
 				+'<div class="jquery_error_text"></div></div>';
@@ -167,12 +167,12 @@ $(function(){
 				+','+select.y2
 			);
 			
-			if ($('#'+prefix+'image_crop').closest('.media').find('.glyphicon-scissors').length == 0){
-				$('#'+prefix+'image_crop').closest('.media').find('.jquery_scissors_previous').after('<span class="glyphicon glyphicon-scissors pull-center" style="margin-left: 0.5em; color: orange;" aria-hidden="true" title="{{ trans('panichd::lang.crop-image') }}"></span>');
+			if ($('#'+prefix+'image_crop').closest('.media').find('.fa fa-scissors').length == 0){
+				$('#'+prefix+'image_crop').closest('.media').find('.jquery_scissors_previous').after('<span class="fa fa-scissors pull-center" style="margin-left: 0.5em; color: orange;" aria-hidden="true" title="{{ trans('panichd::lang.crop-image') }}"></span>');
 			}
 		}else{
 			$('#'+prefix+'image_crop').val('');			
-			$('#'+prefix+'image_crop').closest('.media').find('.glyphicon-scissors').remove();
+			$('#'+prefix+'image_crop').closest('.media').find('.fa fa-scissors').remove();
 		}		
 		
 		// Display values

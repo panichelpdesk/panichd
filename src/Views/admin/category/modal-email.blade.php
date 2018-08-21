@@ -17,9 +17,9 @@
 						
 						<div class="col-lg-9"><label id="email_scope_default">{!! CollectiveForm::radio('email_scope','default', !isset($category) || (isset($category) && $category->email == "") ? true : false) !!} {{ trans('panichd::admin.category-email-default') . trans('panichd::admin.colon') }}</label>
 						@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
-							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="fa fa-question-circle"></span></span>
 						@else
-							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="fa fa-question-circle"></span></span>
 						@endif
 						
 						</div>	
@@ -62,9 +62,9 @@
 						
 						<div class="col-lg-9"><label id="email_replies_0">{!! CollectiveForm::radio('email_replies',0, !isset($category) || (isset($category) && $category->email_replies != 1)  ? true : false) !!} {{ trans('panichd::admin.category-email-default') . trans('panichd::admin.colon') }}</label>
 						@if ($setting->grab('email.account.mailbox') != 'default' && $setting->grab('email.account.name') != 'default')
-							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}">{{ $setting->grab('email.account.mailbox') }} <span class="fa fa-question-circle"></span></span>
 						@else
-							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="glyphicon glyphicon-question-sign"></span></span>
+							<span class="tooltip-info" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.address') }} <span class="fa fa-question-circle"></span></span>
 						@endif
 						
 						</div>	

@@ -79,7 +79,7 @@
 		    </div>
 			@if (isset($template) && $template == "createedit")
 				<div class="media-right media-middle">
-					<a href="#" class="check_button" data-delete_id="delete_attached_check_{{ $loop->index }}"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>
+					<a href="#" class="check_button" data-delete_id="delete_attached_check_{{ $loop->index }}"><span class="media-object pull-right fa fa-remove" aria-hidden="true"></span><span class="media-object  pull-right fa fa-check" aria-hidden="true" style="display: none"></span></a>
 					<input type="checkbox" id="delete_attached_check_{{ $loop->index }}" name="delete_files[]" value="{{ $attachment->id }}" checked="checked" style="display: none" disabled="disabled">
 				</div>
 			@endif

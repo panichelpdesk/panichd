@@ -43,7 +43,7 @@
                                 @if ($category->pivot->autoassign==1)
 									<span class="tooltip-info" style="display: inline-block; border: 1px solid {{ $category->color }}; border-width: 0px 0px 1px 0px; color: {{ $category->color }};  margin: 0em 0.5em; padding: 0.1em" title="{{ trans('panichd::admin.table-categories-autoasg-title')}}">
 									{{  $category->name }}
-									 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+									 <span class="fa fa-play-circle" aria-hidden="true"></span>
 									</span>
 								@else
 									<span style="color: {{ $category->color }}">

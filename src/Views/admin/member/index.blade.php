@@ -19,7 +19,7 @@
 	@if (!session()->exists('status'))
 		<div class="alert alert-info alert-dismissable fade in">
 			<button type="button" class="close" data-dismiss="alert">×</button>
-			<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.member-index-help') !!}
+			<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.member-index-help') !!}
 		</div>
 	@endif
 	@if(!$a_members)

@@ -22,7 +22,7 @@
 	<li class="nav-item dropdown {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@create')) || (isset($ticket) && $ticket->isNew()) ? "active" : "" !!}">
 		<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('panichd::lang.nav-new-tickets-title') }}">
 			<span class="{{ $nav_text }}">{{ trans('panichd::lang.nav-new-tickets') }}</span>
-			<span class="{{ $nav_icon }} glyphicon glyphicon-certificate"></span>
+			<span class="{{ $nav_icon }} fa fa-certificate"></span>
 
 			<span class="badge" title="{{ $title }}" style="cursor: help">
 				{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
@@ -37,7 +37,7 @@
 	<li class="nav-item {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@create')) ? "active" : "" !!}">
 		<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@create') }}" title="{{ trans('panichd::lang.nav-create-ticket-title') }}">
 		<span class="{{ $nav_text }}">{{ trans('panichd::lang.nav-create-ticket') }}</span>
-		<span class="{{ $nav_icon }} glyphicon glyphicon-plus"></span>
+		<span class="{{ $nav_icon }} fa fa-plus"></span>
 		</a>
 	</li>
 @endif
@@ -45,7 +45,7 @@
 <li class="nav-item {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@index')) || (isset($ticket) && $ticket->isActive()) ? "active" : "" !!}">
 	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}" title="{{ trans('panichd::lang.nav-active-tickets-title') }}">
 		<span class="{{ $nav_text }}">{{ trans('panichd::lang.active-tickets-adjective') }}</span>
-		<span class="{{ $nav_icon }} glyphicon glyphicon-file"></span>			
+		<span class="{{ $nav_icon }} fa fa-file"></span>
 		
 		<span class="badge" title="{{ $title }}" style="cursor: help">
 			{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
@@ -55,7 +55,7 @@
 <li class="nav-item {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete')) || (isset($ticket) && $ticket->isComplete()) ? "active" : "" !!}">
 	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete') }}" title="{{ trans('panichd::lang.nav-completed-tickets-title') }}">
 		<span class="{{ $nav_text }}">{{ trans('panichd::lang.complete-tickets-adjective') }}</span>
-		<span class="{{ $nav_icon }} glyphicon glyphicon-ok-circle"></span>
+		<span class="{{ $nav_icon }} fa fa-check-circle"></span>
 		
 		<span class="badge" title="{{ $title }}" style="cursor: help">
 			{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
@@ -93,7 +93,7 @@
 
 		<a class="nav-link" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('panichd::admin.nav-settings') }}">
 			<span class="{{ $nav_text }}">{{ $setting->grab('admin_button_text') }}</span>
-			<span class="{{ $nav_icon }} glyphicon glyphicon-cog"></span>
+			<span class="{{ $nav_icon }} fa fa-cog"></span>
 		</a>
 
 		@include('panichd::shared.nav_dropdown')

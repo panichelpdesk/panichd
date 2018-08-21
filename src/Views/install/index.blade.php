@@ -1,7 +1,7 @@
 @extends('panichd::install.partials.html')
 
 @section('current_status')
-	<span class="glyphicon glyphicon-alert" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.not-yet-installed') !!}
+	<span class="fa fa-exclamation-triangle" style="font-size: 1.5em; padding: 0em 0.5em 0em 0em;"></span>{!! trans('panichd::install.not-yet-installed') !!}
 @stop
 
 @section('content')
