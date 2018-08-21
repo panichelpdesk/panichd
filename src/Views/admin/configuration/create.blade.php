@@ -7,8 +7,8 @@
 @include('panichd::shared.common')
 
 @section('content')
-     <div class="panel panel-default">
-      <div class="panel-heading">
+     <div class="card bg-light">
+      <div class="card-header">
         <h3>{{ trans('panichd::admin.config-create-title') }}
           <div class="panel-nav pull-right" style="margin-top: -7px;">          
               {!! link_to_route(
@@ -19,7 +19,7 @@
           </div>
         </h3>  
       </div>       
-      <div class="panel-body">
+      <div class="card-body">
         <div class="form-horizontal">
 {!! CollectiveForm::open(['route' => $setting->grab('admin_route').'.configuration.store']) !!}
 
@@ -66,7 +66,7 @@
           {!! CollectiveForm::close() !!}
         </div>
       </div>
-      <div class="panel-footer">
+      <div class="card-footer">
       </div>
     </div>
 

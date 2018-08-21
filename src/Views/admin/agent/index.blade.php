@@ -9,8 +9,8 @@
 @include('panichd::admin.agent.form_new')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.agent-index-title') }}
                 <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
             </h2>

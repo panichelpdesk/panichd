@@ -66,8 +66,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Filter panel */
+#filter_panel {
+	margin: 0em 0em 0.8em 0em;
+}
+
 #filter_panel .btn-light .badge {
 	background-color: #bbb ;
+}
+
+#filter_panel .card-body {
+	padding: 0.5rem;
 }
 
 #filter_panel .title {
@@ -205,7 +213,7 @@ h1, h2, h3, h4, h5, h6 {
 /*
  * Tickets table
 */
-#tickets-table .glyphicon.attachment, #tickets-table .glyphicon.comment, #tickets-table .glyphicon.tickethidden {
+#tickets-table .fa.attachment, #tickets-table .fa.comment, #tickets-table .fa.tickethidden {
 	color: #555;
 }
 
@@ -249,15 +257,15 @@ h1, h2, h3, h4, h5, h6 {
 	border: transparent;
 }
 
-.panel-highlight {
+.card-highlight {
 	border-color: #FFE171;
 }
 
-.panel-highlight > .panel-heading {
+.card-highlight > .card-header {
 	background-color: #FFE171;
 }
 
-.panel-highlight > .panel-body {
+.card-highlight > .card-body {
 	background-color: lightyellow;
 }
 
@@ -270,10 +278,10 @@ h1, h2, h3, h4, h5, h6 {
 	color: #777;
 }
 
-.grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.checked .glyphicon-remove {
+.grouped_check_list.deletion_list .check_parent.unchecked .fa-check, .grouped_check_list.deletion_list .check_parent.checked .fa-remove {
 	display: none;
 }
-.grouped_check_list.deletion_list .check_parent.checked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-remove {
+.grouped_check_list.deletion_list .check_parent.checked .fa-check, .grouped_check_list.deletion_list .check_parent.unchecked .fa-remove {
 	display: inline !important;
 }	
 
@@ -360,7 +368,7 @@ h1, h2, h3, h4, h5, h6 {
 	cursor: help;
 }
 
-.tooltip-info .glyphicon-question-sign {
+.tooltip-info .fa-question-circle {
 	color: #bbb;
 }
 
@@ -392,7 +400,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Ticket attachments */
-.attached_list .panel-body {
+.attached_list .card-body {
 	padding: 8px;
 }
 

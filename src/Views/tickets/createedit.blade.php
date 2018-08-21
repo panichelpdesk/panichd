@@ -13,7 +13,7 @@
 		<div class="col-lg-6 col-lg-pull-6">
 	@endif
 	
-	<div class="well bs-component">
+	<div class="card bg-light"><div class="card-body">
         @if (isset($ticket))
 			{!! CollectiveForm::model($ticket, [
 				 'route' => [$setting->grab('main_route').'.update', $ticket->id],
@@ -232,7 +232,7 @@
                 </div>
             </div>
         {!! CollectiveForm::close() !!}
-    </div>
+    </div></div>
 	
 	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $n_notices > 0)
 		</div>

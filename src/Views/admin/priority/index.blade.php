@@ -7,8 +7,8 @@
 @include('panichd::shared.common')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.priority-index-title') }}
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.priority.create',
@@ -23,7 +23,7 @@
                 {!! link_to_route($setting->grab('admin_route').'.priority.create', trans('panichd::admin.priority-index-create-new')) !!}
             </h3>
         @else
-        <div class="panel-body">    
+        <div class="card-body">
 			<div class="alert alert-info alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}

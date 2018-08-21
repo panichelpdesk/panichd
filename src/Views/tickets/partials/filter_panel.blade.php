@@ -1,10 +1,10 @@
-<!-- filter panel --><div id="filter_panel" class="panel panel-default">	
-	<div class="panel-body">
+<!-- filter panel --><div id="filter_panel" class="card">
+	<div class="card-body">
 		<?php $button_create = link_to_route($setting->grab('main_route').'.create', trans('panichd::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-light pull-right']);?>
 		
 		@if ($u->currentLevel() == 2 and $u->maxLevel() == 2)
 			<div class="title pov">{{ trans('panichd::lang.filter-pov') }}</div>
-			<a href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari"><button type="button" class="btn btn-light pov-link">{{ trans('panichd::lang.agent') }}</button></a>			
+			<a href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari"><button type="button" class="btn btn-light pov-link">{{ trans('panichd::lang.agent') }}</button></a>
 		@endif
 		
 		@if ($u->currentLevel() > 1)
@@ -26,5 +26,5 @@
 			</div>			
 		@endif
 	
-	</div>	
+	</div>
 </div><!-- /filter panel -->

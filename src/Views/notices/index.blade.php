@@ -8,13 +8,13 @@
 
 @section('content')
 @if($n_notices == 0)
-	<div class="panel panel-default">
-		<div class="panel-body" style="text-align: center">{{ trans('panichd::lang.ticket-notices-empty') }}</div>
+	<div class="card bg-light">
+		<div class="card-body" style="text-align: center">{{ trans('panichd::lang.ticket-notices-empty') }}</div>
 	</div>
 @else
-	<div class="panel panel-default">
-		<div class="panel-heading">{{ trans('panichd::lang.ticket-notices-title') . ' (' . $a_notices->count() . ')' }}</div>
-		<div class="panel-body">
+	<div class="card bg-light">
+		<div class="card-header">{{ trans('panichd::lang.ticket-notices-title') . ' (' . $a_notices->count() . ')' }}</div>
+		<div class="card-body">
 			<table class="table table-hover table-striped">
 				<thead>
 					<tr>                        

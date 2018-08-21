@@ -8,8 +8,8 @@
 
 @section('content')
         <!-- configuration -->
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card bg-light">
+    <div class="card-header">
         <h3>{{ trans('panichd::admin.config-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
                 {!! link_to_route(
@@ -26,7 +26,9 @@
         </h3>
     </div>
     @if($configurations->isEmpty())
-        <div class="well text-center">{{ trans('panichd::admin.config-index-no-settings') }}</div>
+        <div class="card bg-light">
+            <div class="card-body text-center">{{ trans('panichd::admin.config-index-no-settings') }}</div>
+        </div>
     @else
         <ul class="nav nav-tabs nav-justified">
             <li class="active"><a data-toggle="tab" href="#init-configs">{{ trans('panichd::admin.config-index-initial') }}</a></li>

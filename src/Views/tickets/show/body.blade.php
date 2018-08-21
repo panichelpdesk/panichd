@@ -1,5 +1,5 @@
-<div class="panel panel-default">
-    <div id="ticket-body" class="panel-body">        
+<div class="card bg-light">
+    <div id="ticket-body" class="card-body">
 		<div class="row" style="margin-bottom: 0.2em;">
 			<div class="col-sm-8 col-lg-7">				
 				<h2 style="margin: 0em 0em 0.5em 0em;">

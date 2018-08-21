@@ -7,8 +7,8 @@
 @include('panichd::shared.common')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.category-index-title') }}
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.category.create',

@@ -8,15 +8,15 @@
 
 @section('content')
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card bg-light">
+    <div class="card-header">
         <h3>{{ trans('panichd::admin.notice-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
                 <button type="button" class="btn btn-light btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
             </div>
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 		@if (!session()->exists('status'))
 			<div class="alert alert-info alert-dismissable fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
@@ -29,7 +29,9 @@
 		@endif
 
 	@if(!$a_users)
-        <div class="well text-center">{{ trans('panichd::admin.notice-index-empty') }}</div>
+		<div class="card bg-light">
+			<div class="card-body text-center">{{ trans('panichd::admin.notice-index-empty') }}</div>
+		</div>
     @else
 		<div id="message"></div>
             <table class="table table-hover table-striped">

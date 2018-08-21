@@ -111,11 +111,11 @@
 
 		// Highlight related comment when showing related modal
 		$('.jquery_panel_hightlight').on('show.bs.modal', function (e) {
-			$(e.relatedTarget).closest('div.panel').addClass('panel-highlight');				
+			$(e.relatedTarget).closest('div.panel').addClass('card-highlight');
 		});
 		
 		$('.jquery_panel_hightlight').on('hidden.bs.modal', function (e) {
-			$('div.panel').removeClass('panel-highlight');
+			$('div.panel').removeClass('card-highlight');
 		});
 		
 		$('#new_comment_submit').click(function(e){

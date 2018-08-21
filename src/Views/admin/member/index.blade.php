@@ -7,15 +7,13 @@
 @include('panichd::shared.common')
 
 @section('content')
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card bg-light">
+    <div class="card-header">
         <h3>{{ trans('panichd::admin.member-index-title') }}
-            <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-light btn_member_modal" data-route="create">{{ trans('panichd::admin.btn-add-new') }}</button>
-            </div>
+			<button type="button" class="btn btn-primary pull-right btn_member_modal" data-route="create">{{ trans('panichd::admin.btn-add-new') }}</button>
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 	@if (!session()->exists('status'))
 		<div class="alert alert-info alert-dismissable fade in">
 			<button type="button" class="close" data-dismiss="alert">×</button>
@@ -23,7 +21,9 @@
 		</div>
 	@endif
 	@if(!$a_members)
-        <div class="well text-center">{{ trans('panichd::admin.member-index-empty') }}</div>
+		<div class="card bg-light">
+			<div class="card-body text-center">{{ trans('panichd::admin.member-index-empty') }}</div>
+		</div>
     @else
 		<div id="message"></div>
             <table id="dataTable" class="table table-hover table-striped">

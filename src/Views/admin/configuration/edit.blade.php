@@ -7,8 +7,8 @@
 @include('panichd::shared.common')
 
 @section('content')
-     <div class="panel panel-default">
-      <div class="panel-heading">
+     <div class="card bg-light">
+      <div class="card-header">
         <h3>{{ trans('panichd::admin.config-edit-title') }}
           <div class="panel-nav pull-right" style="margin-top: -7px;">          
               {!! link_to_route(
@@ -26,23 +26,25 @@
           </div>
         </h3>  
       </div>     
-      <div class="panel-body">
+      <div class="card-body">
         <div class="form-horizontal">
 {!! CollectiveForm::model($configuration, ['route' => [$setting->grab('admin_route').'.configuration.update', $configuration->id], 'method' => 'patch']) !!}
-             <div class="well">
-                 <b>{{ trans('panichd::admin.config-edit-tools') }}</b><br>
-                 <a href="https://www.functions-online.com/unserialize.html" target="_blank">
-                     {{ trans('panichd::admin.config-edit-unserialize') }}
-                 </a>
-                 <br>
-                 <a href="https://www.functions-online.com/serialize.html" target="_blank">
-                     {{ trans('panichd::admin.config-edit-serialize') }}
-                 </a>
-             </div>
+            <div class="card bg-light">
+                <div class="card-body">
+                     <b>{{ trans('panichd::admin.config-edit-tools') }}</b><br>
+                     <a href="https://www.functions-online.com/unserialize.html" target="_blank">
+                         {{ trans('panichd::admin.config-edit-unserialize') }}
+                     </a>
+                     <br>
+                     <a href="https://www.functions-online.com/serialize.html" target="_blank">
+                         {{ trans('panichd::admin.config-edit-serialize') }}
+                     </a>
+                 </div>
+            </div>
 
             @if(trans("panichd::settings." . $configuration->slug) != ("panichd::settings." . $configuration->slug) && trans("panichd::settings." . $configuration->slug))
-                <div class="panel panel-info">
-                    <div class="panel-body">{!! trans("panichd::settings." . $configuration->slug) !!}</div>
+                <div class="card bg-info">
+                    <div class="card-body">{!! trans("panichd::settings." . $configuration->slug) !!}</div>
                 </div>
             @endif
 

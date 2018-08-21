@@ -4,15 +4,15 @@
 @include('panichd::shared.common')
 
 @section('content')    
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.administrator-create-title') }}</h2>
         </div>
         @if ($users->isEmpty())
             <h3 class="text-center">{{ trans('panichd::admin.administrator-create-no-users') }}</h3>
         @else
             {!! CollectiveForm::open(['route'=> $setting->grab('admin_route').'.administrator.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-            <div class="panel-body">
+            <div class="card-body">
                 {{ trans('panichd::admin.administrator-create-select-user') }}
             </div>
             <table class="table table-hover">

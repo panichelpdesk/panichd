@@ -53,9 +53,9 @@
 				{!! $comment->updated_at->diffForHumans() !!}
 			</div></div></div>
 		@else
-		<div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
+		<div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title">
                     <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $comment_title }}"><span class="{{ $icon_class }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
 					<span class="pull-right tooltip-info" data-toggle="tooltip" data-placement="auto top" title="{{ trans('panichd::lang.creation-date', [
 						'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
@@ -71,7 +71,7 @@
 					</span>
                 </h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="row">
                     <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><div id="jquery_comment_edit_{{$comment->id}}" class="summernote-text-wrapper"> {!! $comment->html !!} </div>
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))

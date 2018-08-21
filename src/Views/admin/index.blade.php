@@ -8,69 +8,32 @@
 
 @section('content')
     @if($tickets_count)
+        <?php
+            $a_cards = [
+                ['class' => 'bg-light', 'icon' => 'book', 'body' => '<h2>' . $tickets_count . '<small>' . trans('panichd::admin.index-total-tickets') . '</small></h2>'],
+                ['class' => 'text-white bg-info', 'icon' => 'certificate', 'body' => '<h2 class="text-white">' . $a_tickets_count['newest'] . '<small>' . trans('panichd::admin.index-newest-tickets') . '</small></h2>'],
+                ['class' => 'text-white bg-warning', 'icon' => 'file', 'body' => '<h2 class="text-white">' . $a_tickets_count['active'] . '<small>' . trans('panichd::admin.index-active-tickets') . '</small></h2>'],
+                ['class' => 'text-white bg-success', 'icon' => 'check-circle', 'body' => '<h2 class="text-white">' . $a_tickets_count['complete'] . '<small>' . trans('panichd::admin.index-complete-tickets') . '</small></h2>'],
+            ];
+
+        ?>
         <div class="row">
-            <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="fa fa-book"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h2>{{ $tickets_count }} <small>{{ trans('panichd::admin.index-total-tickets') }}</small></h2>
-                            </div>
+            @foreach ($a_cards as $card)
+                <div class="col-sm-6 col-lg-3">
+                    <div class="media {{ $card['class'] }}">
+                        <i class="mr-3 fa fa-{{ $card['icon'] }}" style="font-size: 2.5em; margin: 0.5em"></i>
+                        <div class="media-body align-self-center mr-2">
+                            {!! $card['body'] !!}
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="fa fa-certificate"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h1>{{ $a_tickets_count['newest'] }} <small>{{ trans('panichd::admin.index-newest-tickets') }}</small></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-			<div class="col-md-3">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="fa fa-file"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h1>{{ $a_tickets_count['active'] }} <small>{{ trans('panichd::admin.index-active-tickets') }}</small></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="fa fa-check-circle"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h1>{{ $a_tickets_count['complete'] }} <small>{{ trans('panichd::admin.index-complete-tickets') }}</small></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
 
         <div class="row">
             <div class="col-md-8">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+                <div class="card bg-light">
+                    <div class="card-header">
                         <i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
                         <div class="pull-right">
                             <div class="btn-group">
@@ -98,27 +61,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div id="curve_chart" style="width: 100%; height: 350px"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                        <div class="card bg-light">
+                            <div class="card-header">
                                 {{ trans('panichd::admin.index-tickets-share-per-category') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div id="catpiechart" style="width: auto; height: 350;"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                        <div class="card bg-light">
+                            <div class="card-header">
                                 {{ trans('panichd::admin.index-tickets-share-per-agent') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div id="agentspiechart" style="width: auto; height: 350;"></div>
                             </div>
                         </div>
@@ -321,8 +284,10 @@
             </div>
         </div>
     @else
-        <div class="well text-center">
-            {{ trans('panichd::admin.index-empty-records') }}
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                {{ trans('panichd::admin.index-empty-records') }}
+            </div>
         </div>
     @endif
 @stop
