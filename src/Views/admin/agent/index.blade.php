@@ -53,7 +53,7 @@
 								
                             @endforeach
 							
-							 <button type="button" class="btn btn-light btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('panichd::admin.btn-edit')}}</button>
+							 <button type="button" class="btn btn-light btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('panichd::admin.btn-edit')}}</button>
 							
 							@include('panichd::admin.agent.form_edit')
                         </td>						
@@ -66,7 +66,7 @@
                                         ],
                             'id' => "delete-$agent->id"
                             ]) !!}
-                            {!! CollectiveForm::submit(trans('panichd::admin.btn-remove'), ['class' => 'btn btn-light btn-sm']) !!}
+                            {!! CollectiveForm::submit(trans('panichd::admin.btn-remove'), ['class' => 'btn btn-light btn-default btn-sm']) !!}
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>

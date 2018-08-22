@@ -78,18 +78,18 @@
 						</td>
 						<td>
                             {!! link_to_route(
-                                                    $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
-                                                    ['class' => 'btn btn-light'] )
-                                !!}
+                                $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
+                                ['class' => 'btn btn-light btn-default'] )
+                             !!}
 
-                                {!! link_to_route(
-                                                    $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
-                                                    [
-                                                    'class' => 'btn btn-light deleteit',
-                                                    'form' => "delete-$category->id",
-                                                    "node" => $category->name
-                                                    ])
-                                !!}
+                            {!! link_to_route(
+                                $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
+                                [
+                                'class' => 'btn btn-light btn-default deleteit',
+                                'form' => "delete-$category->id",
+                                "node" => $category->name
+                                ])
+                            !!}
                             {!! CollectiveForm::open([
                                             'method' => 'DELETE',
                                             'route' => [

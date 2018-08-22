@@ -11,10 +11,10 @@
         <div class="card-header">
             <h2>{{ trans('panichd::admin.status-index-title') }}
                 {!! link_to_route(
-                                    $setting->grab('admin_route').'.status.create',
-                                    trans('panichd::admin.btn-create-new-status'), null,
-                                    ['class' => 'btn btn-primary pull-right'])
-                !!}
+                    $setting->grab('admin_route').'.status.create',
+                    trans('panichd::admin.btn-create-new-status'), null,
+                    ['class' => 'btn btn-primary pull-right']
+                ) !!}
             </h2>
         </div>
 
@@ -46,13 +46,13 @@
 						<td>
                             {!! link_to_route(
 								$setting->grab('admin_route').'.status.edit', trans('panichd::admin.btn-edit'), $status->id,
-								['class' => 'btn btn-light'] )
+								['class' => 'btn btn-light btn-default'] )
 							!!}
 
 							{!! link_to_route(
 								$setting->grab('admin_route').'.status.destroy', trans('panichd::admin.btn-delete'), $status->id,
 								[
-								'class' => 'btn btn-light deleteit',
+								'class' => 'btn btn-light btn-default deleteit',
 								'data-id' => "$status->id",
 
 								"data-name" => $status->name,

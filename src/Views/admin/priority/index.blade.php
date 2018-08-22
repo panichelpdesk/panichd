@@ -11,10 +11,10 @@
         <div class="card-header">
             <h2>{{ trans('panichd::admin.priority-index-title') }}
                 {!! link_to_route(
-                                    $setting->grab('admin_route').'.priority.create',
-                                    trans('panichd::admin.btn-create-new-priority'), null,
-                                    ['class' => 'btn btn-primary pull-right'])
-                !!}
+					$setting->grab('admin_route').'.priority.create',
+					trans('panichd::admin.btn-create-new-priority'), null,
+					['class' => 'btn btn-primary pull-right']
+				) !!}
             </h2>
         </div>
 
@@ -51,13 +51,13 @@
 						<td>
                             {!! link_to_route(
 								$setting->grab('admin_route').'.priority.edit', trans('panichd::admin.btn-edit'), $priority->id,
-								['class' => 'btn btn-light'] )
+								['class' => 'btn btn-light btn-default'] )
 							!!}
 
 							{!! link_to_route(
 								$setting->grab('admin_route').'.priority.destroy', trans('panichd::admin.btn-delete'), $priority->id,
 								[
-								'class' => 'btn btn-light deleteit',
+								'class' => 'btn btn-light btn-default deleteit',
 								'form' => "delete-$priority->id",
 								"node" => $priority->name,
 								'data-id' => "$priority->id",

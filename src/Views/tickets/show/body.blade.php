@@ -248,11 +248,11 @@
 				<button type="submit" class="btn btn-light" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>
 			@elseif($ticket->completed_at && $reopen_perm == 'yes')
 				{!! link_to_route($setting->grab('main_route').'.reopen', trans('panichd::lang.reopen-ticket'), $ticket->id,
-										['class' => 'btn btn-light']) !!}
+										['class' => 'btn btn-light btn-default']) !!}
 			@endif
 			@if($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 				{!! link_to_route($setting->grab('main_route').'.edit', trans('panichd::lang.btn-edit'), $ticket->id,[
-					'class' => 'btn btn-light',
+					'class' => 'btn btn-light btn-default',
 					'style' => 'margin: 0em 0em 0em 0.5em'
 				]) !!}
 				<div class="visible-xs"><br /></div>

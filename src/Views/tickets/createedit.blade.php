@@ -85,8 +85,8 @@
 						'class' => 'col-lg-3 col-form-label'
 					]) !!}
 					<div class="col-lg-9">
-						<button type="button" id="complete_no" class="btn btn-light text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="fa fa-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
-						<button type="button" id="complete_yes" class="btn btn-light text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="fa fa-check-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>
+						<button type="button" id="complete_no" class="btn btn-light btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="fa fa-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
+						<button type="button" id="complete_yes" class="btn btn-light btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="fa fa-check-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>
 					</div>
 					{!! CollectiveForm::hidden('complete', isset($ticket) ? ($ticket->completed_at == '' ? 'no' : 'yes') : 'no',['id' => 'value_complete']) !!}
 				</div>			
