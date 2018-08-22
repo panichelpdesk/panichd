@@ -265,15 +265,15 @@ class TicketsController extends Controller
 			$text = "";
 			
 			if ($ticket->agent_name == "" or is_null($ticket->agent)){
-				$text.= "<span class=\"fa fa-exclamation-circle tooltip-info text-danger\"  data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\"></span> ";
+				$text.= "<span class=\"fa fa-exclamation-circle tooltip-info text-danger\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".trans('panichd::lang.deleted-member')."\"></span> ";
 			}
 			
 			if($count>4){
 				$text.= '<a href="#" class="jquery_agent_change_modal" title="'.trans('panichd::lang.table-change-agent').'"';
 			}elseif($count==1){
-				$text.= '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="auto bottom" ';
+				$text.= '<a href="#" class="tooltip-info" title="'.trans('panichd::lang.table-one-agent').'" data-toggle="tooltip" data-placement="bottom" ';
 			}else{
-				$text.= '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
+				$text.= '<a href="#" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
 					.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
 					.trans('panichd::lang.agents').'" data-content="'.e(sprintf($a_cat[$ticket->category_id]['html'],$ticket->id)).'" data-tooltip-title="'.trans('panichd::lang.agents').'" ';
 			}
@@ -295,7 +295,7 @@ class TicketsController extends Controller
 			$html = '<div>'.$html.'</div><br />'
 				.'<button type="button" class="btn btn-default btn-sm submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
 
-            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="auto bottom" title="'
+            return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
 				.e('<button type="button" class="pull-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
 				.trans('panichd::lang.table-change-priority').'" data-content="'.e($html).'">'.e($ticket->priority).'</a>';
         });
@@ -307,7 +307,7 @@ class TicketsController extends Controller
 				$return = str_replace (" ", "&nbsp;", $ticket->owner_name);
 			
 			if ($ticket->owner_name == "" or is_null($ticket->owner)){
-				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
+				$return = "<span class=\"tooltip-info\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".trans('panichd::lang.deleted-member')."\">"
 					."<span class=\"fa fa-exclamation-circle text-danger\"></span>"
 					."&nbsp;" . $return . "</span>";
 			}
@@ -319,7 +319,7 @@ class TicketsController extends Controller
 			}
 			
 			if ($ticket->user_id != $ticket->creator_id){
-				$return .="&nbsp;<span class=\"fa fa-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon'). ($ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name)) ."\" data-toggle=\"tooltip\" data-placement=\"auto bottom\" style=\"color: #aaa;\"></span>";
+				$return .="&nbsp;<span class=\"fa fa-user tooltip-info\" title=\"".trans('panichd::lang.show-ticket-creator').trans('panichd::lang.colon'). ($ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name)) ."\" data-toggle=\"tooltip\" data-placement=\"bottom\" style=\"color: #aaa;\"></span>";
 			}
 			
 			return $return;

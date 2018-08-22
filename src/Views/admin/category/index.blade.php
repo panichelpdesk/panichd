@@ -47,7 +47,7 @@
                             {{ $category->name }}
                         </td>
 						<td style="vertical-align: middle">
-                            <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') }}
+                            <span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') }}
 							@if ($category->email != "")
 								{{ trans('panichd::admin.category-email-origin-category') }}">{{ $category->email_name }} &lt;{{ $category->email }}>
 							@elseif($setting->grab('email.account.name') != 'default' && $setting->grab('email.account.mailbox') != 'default')

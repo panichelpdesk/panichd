@@ -42,7 +42,7 @@
 					<span class="tooltip-info" title="{{ trans('panichd::lang.datetime-text', [
 						'date' => date(trans('panichd::lang.date-format'), strtotime(is_null($notice->limit_date) ? $notice->start_date : $notice->limit_date)),
 						'time' => $notice->getTime('limit_date')
-					]) }}" data-toggle="tooltip" data-placement="auto bottom"><span class="fa fa-calendar"></span> {!! $notice->getDateForHumans('limit_date', true) !!}</span>
+					]) }}" data-toggle="tooltip" data-placement="bottom"><span class="fa fa-calendar"></span> {!! $notice->getDateForHumans('limit_date', true) !!}</span>
 					</td>
 					<td>{{ link_to_route($setting->grab('main_route').'.show', $notice->subject, $notice->id) }}</td>
 					<td>{{ $notice->content }}

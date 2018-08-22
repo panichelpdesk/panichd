@@ -13,7 +13,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-email-from-info') }}">{{ trans('panichd::admin.category-create-email') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
+		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-email-from-info') }}">{{ trans('panichd::admin.category-create-email') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
 		<div class="col-lg-8">
 			@if (isset($category) && isset($category->email))
 				@php
@@ -30,17 +30,17 @@
 					@endphp
 				@endif
 			@endif
-			<span id="email_scope_website" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}" {!! $email_origin == 'website' ? '' : 'style="display: none"' !!}>{{ config('mail.from.address') }} <span class="fa fa-question-circle"></span></span>
+			<span id="email_scope_website" class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ config('mail.from.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-website') }}" {!! $email_origin == 'website' ? '' : 'style="display: none"' !!}>{{ config('mail.from.address') }} <span class="fa fa-question-circle"></span></span>
 			
-			<span id="email_scope_tickets" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}" {!! $email_origin == 'tickets' ? '' : 'style="display: none"' !!}>{{ $setting->grab('email.account.mailbox') }} <span class="fa fa-question-circle"></span></span>
+			<span id="email_scope_tickets" class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $setting->grab('email.account.name') . '. ' . trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-tickets') }}" {!! $email_origin == 'tickets' ? '' : 'style="display: none"' !!}>{{ $setting->grab('email.account.mailbox') }} <span class="fa fa-question-circle"></span></span>
 			
-			<span id="email_scope_category" class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-category') }}" {!! $email_origin == 'category' ? '' : 'style="display: none"' !!}><span class="email">{{ isset($category) ? $category->email : '' }}</span> <span class="fa fa-question-circle"></span></span>
+			<span id="email_scope_category" class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') . trans('panichd::admin.category-email-origin-category') }}" {!! $email_origin == 'category' ? '' : 'style="display: none"' !!}><span class="email">{{ isset($category) ? $category->email : '' }}</span> <span class="fa fa-question-circle"></span></span>
 			
 			<button type="button" class="btn btn-light btn-sm" id="edit_email" data-toggle="modal" data-target="#email-edit-modal">{{ trans('panichd::admin.btn-edit') }}</button>
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-create-new-tickets-help') }}">{{ trans('panichd::admin.category-create-new-tickets') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
+		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-create-new-tickets-help') }}">{{ trans('panichd::admin.category-create-new-tickets') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
 		<div class="col-lg-8">
 			<select name="create_level" class="generate_default_select2" style="display: none; width: 100%">
 				<?php $levels = [1, 2, 3];
@@ -54,7 +54,7 @@
 	</div>
 	<div class="col-md-9">
 	<div class="form-group">
-		<label class="control-label col-sm-2 tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-edit-closing-reasons-help') }}">{{ trans('panichd::admin.category-edit-closing-reasons') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
+		<label class="control-label col-sm-2 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-edit-closing-reasons-help') }}">{{ trans('panichd::admin.category-edit-closing-reasons') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
 		<div class="col-sm-10">
 			<p><button type="button" class="btn btn-light" id="button_new_reason" data-toggle="modal" data-target="#reason-edit-modal" data-i="new">{{ trans('panichd::admin.btn-create') }}</button></p>
 			

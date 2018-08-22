@@ -502,7 +502,7 @@ class Ticket extends Model
 			return $title;
 		}else{
 			// Full field
-			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"auto bottom\"><span class=\"$icon\"></span> ".$this->getDateForHumans($date_field)." ".($question_sign ? "<span class=\"fa fa-question-circle\"></span>" : "")."</span>";
+			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"bottom\"><span class=\"$icon\"></span> ".$this->getDateForHumans($date_field)." ".($question_sign ? "<span class=\"fa fa-question-circle\"></span>" : "")."</span>";
 		}
 	}
 	
