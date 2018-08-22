@@ -15,14 +15,13 @@
 				{!! CollectiveForm::open([
 					'method' => 'POST',
 					'route' => $setting->grab('main_route').'-comment.store',
-					'class' => 'form-horizontal',
 					'enctype' => 'multipart/form-data'
 				]) !!}
 					{!! CollectiveForm::hidden('ticket_id', $ticket->id ) !!}
 			
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 						<div id="comment-type-buttons" class="form-group">
-							{!! CollectiveForm::label('type', trans('panichd::lang.show-ticket-add-comment-type') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+							{!! CollectiveForm::label('type', trans('panichd::lang.show-ticket-add-comment-type') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 							<div class="col-lg-10">
 								<button type="button" class="btn btn-light btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="fa fa-pencil"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
 								<button type="button" class="btn btn-light btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="fa fa-envelope"></span> {{ trans('panichd::lang.show-ticket-add-comment-reply') }}</button>
@@ -30,16 +29,16 @@
 							</div>
 						</div>
 					@endif					
-					<div class="form-group">
+					<div class="form-group row">
 						<div class="col-lg-12 summernote-text-wrapper">
 							{!! CollectiveForm::textarea('content', null, ['class' => 'form-control summernote-editor', 'rows' => "3"]) !!}
 						</div>
 					</div>
 					
 					@if($setting->grab('ticket_attachments_feature'))
-						<div class="form-group">
+						<div class="form-group row">
 							{!! CollectiveForm::label('attachments', trans('panichd::lang.attachments') . trans('panichd::lang.colon'), [
-								'class' => 'col-lg-2 control-label'
+								'class' => 'col-lg-2 col-form-label'
 							]) !!}
 							<div class="col-lg-10">
 								<ul class="list-group">							
@@ -52,7 +51,7 @@
 						</div>						
 					@endif
 					@if ($u->currentLevel() > 1)
-						<div class="form-group">
+						<div class="form-group row">
 							<div class="col-lg-12" style="display: none;">
 							<label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
 							</div>
@@ -82,7 +81,7 @@
 				</fieldset>
 				
 				<!-- Div edit attachment -->
-				<fieldset id="new_comment_modal_attachment"  class="fieldset-for-attachment form-horizontal" style="display: none">		
+				<fieldset id="new_comment_modal_attachment"  class="fieldset-for-attachment" style="display: none">
 					@include('panichd::tickets.partials.attachment_form_fields')
 					<button class="btn btn-light div-discard-attachment-update" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('panichd::lang.discard') }}</button>
 					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="new_comment_modal_attachment" data-back-div="new_comment_modal_comment">{{ trans('panichd::lang.update') }}</button>

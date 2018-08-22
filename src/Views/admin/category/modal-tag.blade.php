@@ -7,7 +7,7 @@
 			</div>
             <div class="modal-body">
                 <div class="col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group row">
                         {!! CollectiveForm::text('name', null, ['id'=>'jquery_popup_tag_input', 'class' => 'form-control', 'required']) !!}
                     </div> 
 				</div>

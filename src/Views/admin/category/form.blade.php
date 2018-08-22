@@ -1,19 +1,19 @@
 <div class="row">
 	<div class="col-md-3">
-	<div class="form-group">
-		{!! CollectiveForm::label('name', trans('panichd::admin.category-create-name') . trans('panichd::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
+	<div class="form-group row">
+		{!! CollectiveForm::label('name', trans('panichd::admin.category-create-name') . trans('panichd::admin.colon'), ['class' => 'col-lg-4 col-form-label']) !!}
 		<div class="col-lg-8">
 			{!! CollectiveForm::text('name', isset($category) ? $category->name : null, ['class' => 'form-control']) !!}
 		</div>
 	</div>
-	<div class="form-group">
-		{!! CollectiveForm::label('color', trans('panichd::admin.category-create-color') . trans('panichd::admin.colon'), ['class' => 'col-lg-4 control-label']) !!}
+	<div class="form-group row">
+		{!! CollectiveForm::label('color', trans('panichd::admin.category-create-color') . trans('panichd::admin.colon'), ['class' => 'col-lg-4 col-form-label']) !!}
 		<div class="col-lg-8 ">
 			@yield('colorpicker_snippet')
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-email-from-info') }}">{{ trans('panichd::admin.category-create-email') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
+	<div class="form-group row">
+		<label class="col-form-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-email-from-info') }}">{{ trans('panichd::admin.category-create-email') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
 		<div class="col-lg-8">
 			@if (isset($category) && isset($category->email))
 				@php
@@ -39,8 +39,8 @@
 			<button type="button" class="btn btn-light btn-sm" id="edit_email" data-toggle="modal" data-target="#email-edit-modal">{{ trans('panichd::admin.btn-edit') }}</button>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-create-new-tickets-help') }}">{{ trans('panichd::admin.category-create-new-tickets') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
+	<div class="form-group row">
+		<label class="col-form-label col-lg-4 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-create-new-tickets-help') }}">{{ trans('panichd::admin.category-create-new-tickets') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
 		<div class="col-lg-8">
 			<select name="create_level" class="generate_default_select2" style="display: none; width: 100%">
 				<?php $levels = [1, 2, 3];
@@ -53,8 +53,8 @@
 	</div>
 	</div>
 	<div class="col-md-9">
-	<div class="form-group">
-		<label class="control-label col-sm-2 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-edit-closing-reasons-help') }}">{{ trans('panichd::admin.category-edit-closing-reasons') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-2 tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-edit-closing-reasons-help') }}">{{ trans('panichd::admin.category-edit-closing-reasons') . trans('panichd::admin.colon') }}<span class="fa fa-question-circle"></span></label>
 		<div class="col-sm-10">
 			<p><button type="button" class="btn btn-light" id="button_new_reason" data-toggle="modal" data-target="#reason-edit-modal" data-i="new">{{ trans('panichd::admin.btn-create') }}</button></p>
 			
@@ -99,15 +99,15 @@
 		</div>
 	</div>
 	
-	<div class="form-group">
-		<label class="control-label col-sm-2" for="admin-select2-tags">{{ trans('panichd::admin.category-edit-new-tags') . trans('panichd::admin.colon') }}</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-2" for="admin-select2-tags">{{ trans('panichd::admin.category-edit-new-tags') . trans('panichd::admin.colon') }}</label>
 		<div class="col-sm-10">
 		<select id="admin-select2-tags" class="select2-multiple" name="new_tags[]" multiple="multiple" style="display: none; width: 100%"></select></div>
 		
 	</div>
 	@if (isset($category) and $category->has('tags'))
-	<div class="form-group">
-		<label class="control-label col-sm-2">{{ trans('panichd::admin.category-edit-current-tags') . trans('panichd::admin.colon') }}</label>
+	<div class="form-group row">
+		<label class="col-form-label col-sm-2">{{ trans('panichd::admin.category-edit-current-tags') . trans('panichd::admin.colon') }}</label>
 		<div class="col-sm-10">					
 			<div id="tag-panel" class="grouped_check_list deletion_list no-border coloured-list pull-left">
 				@foreach ($category->tags as $i=>$tag)

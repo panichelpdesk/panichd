@@ -37,7 +37,7 @@
 		<li>{!! trans('panichd::install.public-folder-will-be-replaced') !!}</li>
 	</ol>
     
-	<form class="form-horizontal" action="{{url('/panichd/upgrade') }}" method="post">
+	<form action="{{url('/panichd/upgrade') }}" method="post">
 	{{ csrf_field() }}
 	<h4>{{ trans('panichd::install.optional-config') }}</h4>
 	<ul>

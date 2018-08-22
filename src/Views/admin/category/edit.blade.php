@@ -25,9 +25,8 @@
 		<div class="card-body">
 			{!! CollectiveForm::model($category, [
 				'route' => [$setting->grab('admin_route').'.category.update', $category->id],
-				'method' => 'PATCH',
-				'class' => 'form-horizontal'
-				]) !!}
+				'method' => 'PATCH'
+			]) !!}
 			<legend>{{ trans('panichd::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
 			@include('panichd::admin.category.form', ['update', true])
 			@include('panichd::admin.category.modal-email')

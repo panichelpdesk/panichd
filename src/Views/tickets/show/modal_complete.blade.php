@@ -14,14 +14,12 @@
 						$setting->grab('main_route').'.complete',
 						$ticket->id
 						],
-			'id' => 'complete-ticket-form',
-			'class' => 'form-horizontal'			
-			])
-		!!}
+			'id' => 'complete-ticket-form'
+		]) !!}
 		
 		@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-			<div class="form-group">
-				{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 control-label']) !!}
+			<div class="form-group row">
+				{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 				<div class="col-lg-10">
 					{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), [
 						'class' => 'form-control'
@@ -30,7 +28,7 @@
 			</div>
 			
 			@if (!$ticket->intervention_html)
-				<div class="form-group">
+				<div class="form-group row">
 					<div class="col-lg-10 col-lg-offset-2">
 						<label><input type="checkbox" id="blank_intervention_check" name="blank_intervention" value="yes"> {{ trans('panichd::lang.show-ticket-modal-complete-blank-intervention-check') }}</label>
 					</div>
@@ -38,8 +36,8 @@
 			@endif
 		@else
 			@if ($a_reasons)
-				<div class="form-group">
-				{!! CollectiveForm::label(null, trans('panichd::lang.closing-reason') . trans('panichd::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
+				<div class="form-group row">
+				{!! CollectiveForm::label(null, trans('panichd::lang.closing-reason') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
 				
 				<div class="col-md-9">
 				@foreach ($a_reasons as $id => $reason)
@@ -52,8 +50,8 @@
 			@endif
 			
 			
-			<div class="form-group">
-                {!! CollectiveForm::label('clarification', trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
+			<div class="form-group row">
+                {!! CollectiveForm::label('clarification', trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
                 <div class="col-md-9">
                     {!! CollectiveForm::textarea('clarification', null, ['class' => 'form-control summernote-editor', 'rows' => '5']) !!}
                 </div>

@@ -11,36 +11,34 @@
 					<button type="button" class="close" data-dismiss="alert">{{ trans('panichd::lang.flash-x') }}</button>
 					{!! trans('panichd::admin.status-delete-warning') !!}
 				</div>
-				<fieldset class="form-horizontal">					
-					
-					<div class="form-group"><!-- SUBJECT -->
-						{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), [
-							'class' => 'control-label col-lg-3',
-						]) !!}
-						<div class="col-lg-9">
-							<?php 
-							foreach($statuses_list as $key=>$value){
-								$a_list = array_diff_key($statuses_list, [$key=>$value]);
-								
-								echo CollectiveForm::select('status_id', $a_list, null, [
-									'style' => 'display: none',
-									'id' => 'select_status_without_'.$key,
-									'class' => 'form-control modal-status-select'
-								]);
-							}
-							?>
-						</div>
+
+				<div class="form-group row"><!-- SUBJECT -->
+					{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), [
+						'class' => 'col-form-label col-lg-3',
+					]) !!}
+					<div class="col-lg-9">
+						<?php
+						foreach($statuses_list as $key=>$value){
+							$a_list = array_diff_key($statuses_list, [$key=>$value]);
+
+							echo CollectiveForm::select('status_id', $a_list, null, [
+								'style' => 'display: none',
+								'id' => 'select_status_without_'.$key,
+								'class' => 'form-control modal-status-select'
+							]);
+						}
+						?>
 					</div>
-					
-					<div class="text-right col-md-12">
-						{!! CollectiveForm::hidden('modal-status-id', null) !!}
-						{!! CollectiveForm::button( trans('panichd::admin.btn-delete'), [
-							'type' => 'button',
-							'id' => 'submit_status_delete_modal',
-							'class' => 'btn btn-primary'
-						]) !!}
-					</div>
-				</fieldset>
+				</div>
+
+				<div class="text-right col-md-12">
+					{!! CollectiveForm::hidden('modal-status-id', null) !!}
+					{!! CollectiveForm::button( trans('panichd::admin.btn-delete'), [
+						'type' => 'button',
+						'id' => 'submit_status_delete_modal',
+						'class' => 'btn btn-primary'
+					]) !!}
+				</div>
 			</div>			
         </div>
     </div>

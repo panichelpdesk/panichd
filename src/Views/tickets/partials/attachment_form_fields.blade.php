@@ -1,12 +1,12 @@
-<div class="form-group">
-	{!! CollectiveForm::label('original_filename', trans('panichd::lang.attachment-edit-original-filename') . trans('panichd::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
+<div class="form-group row">
+	{!! CollectiveForm::label('original_filename', trans('panichd::lang.attachment-edit-original-filename') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
 	<div class="col-md-9">
 		<span id="attachment_form_original_filename"></span>
 	</div>
 </div>
 					
-<div class="form-group">
-	{!! CollectiveForm::label('new_filename', trans('panichd::lang.attachment-edit-new-filename') . trans('panichd::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
+<div class="form-group row">
+	{!! CollectiveForm::label('new_filename', trans('panichd::lang.attachment-edit-new-filename') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
 	<div class="col-md-9">
 		{!! CollectiveForm::text('new_filename', null , [
 			'id' => 'attachment_form_new_filename',
@@ -15,8 +15,8 @@
 	</div>						 
 </div>
 
-<div class="form-group">
-	{!! CollectiveForm::label('description', trans('panichd::lang.description') . trans('panichd::lang.colon'), ['class' => 'col-md-3 control-label']) !!}
+<div class="form-group row">
+	{!! CollectiveForm::label('description', trans('panichd::lang.description') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
 	<div class="col-md-9">
 		{!! CollectiveForm::text('description', null , [
 			'id' => 'attachment_form_description',
@@ -26,7 +26,7 @@
 </div>
 
 <div id="attachment_form_image_row" style="display: none">
-	<div class="form-group">
+	<div class="form-group row">
 		{!! CollectiveForm::label(null, trans('panichd::lang.crop-image') . trans('panichd::lang.colon'), ['class' => 'col-md-3']) !!}
 		<div class="col-md-9">
 			<div class="text-muted">{{ trans('panichd::lang.attachment-edit-crop-info') }}</div>

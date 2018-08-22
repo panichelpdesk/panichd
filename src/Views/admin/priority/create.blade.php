@@ -7,7 +7,7 @@
 @section('content')
     <div class="card bg-light">
         <div class="card-body">
-            {!! CollectiveForm::open(['route'=> $setting->grab('admin_route').'.priority.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+            {!! CollectiveForm::open(['route'=> $setting->grab('admin_route').'.priority.store', 'method' => 'POST']) !!}
                 <legend>{{ trans('panichd::admin.priority-create-title') }}</legend>
                 @include('panichd::admin.priority.form')
             {!! CollectiveForm::close() !!}

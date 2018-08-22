@@ -11,11 +11,9 @@
 					<button type="button" class="close" data-dismiss="alert">{{ trans('panichd::lang.flash-x') }}</button>
 					{!! trans('panichd::admin.priority-delete-warning') !!}
 				</div>
-				<fieldset class="form-horizontal">					
-					
-					<div class="form-group"><!-- SUBJECT -->
+				<div class="form-group row"><!-- SUBJECT -->
 					{!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), [
-						'class' => 'control-label col-lg-3',
+						'class' => 'col-form-label col-lg-3',
 					]) !!}
 					<div class="col-lg-9">
 						<?php 
@@ -32,15 +30,14 @@
 					</div>
 				</div>
 					
-					<div class="text-right col-md-12">
-						{!! CollectiveForm::hidden('modal-priority-id', null) !!}
-						{!! CollectiveForm::button( trans('panichd::admin.btn-delete'), [
-							'type' => 'button',
-							'id' => 'submit_priority_delete_modal',
-							'class' => 'btn btn-primary'
-						]) !!}
-					</div>
-				</fieldset>
+				<div class="text-right col-md-12">
+					{!! CollectiveForm::hidden('modal-priority-id', null) !!}
+					{!! CollectiveForm::button( trans('panichd::admin.btn-delete'), [
+						'type' => 'button',
+						'id' => 'submit_priority_delete_modal',
+						'class' => 'btn btn-primary'
+					]) !!}
+				</div>
 			</div>			
         </div>
     </div>
