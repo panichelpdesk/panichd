@@ -18,11 +18,11 @@
     </div>
     <div class="card-body">
 		@if (!session()->exists('status'))
-			<div class="alert alert-info alert-dismissable fade in">
+			<div class="alert alert-info alert-dismissable fade show">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.notice-index-help') !!}
 			</div>
-			<div class="alert alert-warning alert-dismissable fade in">
+			<div class="alert alert-warning alert-dismissable fade show">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<span class="fa fa-exclamation-triangle" style="color: orange;"></span> {!! trans('panichd::admin.notice-index-owner-alert') !!}
 			</div>

@@ -40,7 +40,7 @@
         </ul>
     <br />
         <div class="tab-content">
-            <div id="init-configs" class="tab-pane fade in active">
+            <div id="init-configs" class="tab-pane fade show active">
                 @include('panichd::admin.configuration.tables.init_table')
             </div>
             <div id="ticket-configs" class="tab-pane fade">
