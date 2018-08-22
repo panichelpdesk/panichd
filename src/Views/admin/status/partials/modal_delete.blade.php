@@ -3,8 +3,8 @@
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">			
 			<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
                 <h4 class="modal-title">Delete Status</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
             </div>
             <div class="modal-body">
 				<div class="alert alert-warning">

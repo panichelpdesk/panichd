@@ -2,9 +2,9 @@
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
                 <h4 class="modal-title" id="tag-edit-modal-Label">{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "<span id="jquery_popup_tag_title"></span>"</h4>
-            </div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
+			</div>
             <div class="modal-body">
                 <div class="col-sm-12">
                     <div class="form-group">

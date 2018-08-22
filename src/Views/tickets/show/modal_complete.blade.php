@@ -3,8 +3,8 @@
   <div class="modal-dialog {{ $u->currentLevel() == 1 ? 'modal-lg' : ''}}">
     <div class="modal-content">
 		<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('panichd::lang.btn-mark-complete') }}</h4>
+			<h4 class="modal-title">{{ trans('panichd::lang.btn-mark-complete') }}</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
 		</div>
 		<div class="modal-body">
 

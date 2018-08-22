@@ -4,8 +4,8 @@
 			{!! CollectiveForm::open(['method' => 'POST', 'route' => $setting->grab('main_route').'-notification.resend', 'class' => 'form-horizontal']) !!}
 			{!! CollectiveForm::hidden('comment_id', $comment->id, ['id'=>'comment_id']) !!}
 			<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
                 <h4 class="modal-title">{{ trans('panichd::lang.show-ticket-email-resend') }}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
             </div>
             <div class="modal-body">
 				<fieldset>

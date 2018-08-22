@@ -2,8 +2,8 @@
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">			
 			<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
                 <h4 class="modal-title" id="modal-comment-new-Label">{{ trans('panichd::lang.show-ticket-add-comment') }}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
             </div>
             <div class="modal-body">
 				<div id="new_comment_errors" class="alert alert-danger" style="display: none;">
