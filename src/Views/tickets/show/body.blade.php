@@ -1,4 +1,4 @@
-<div class="card bg-light">
+<div class="card">
     <div id="ticket-body" class="card-body">
 		<div class="row" style="margin-bottom: 0.2em;">
 			<div class="col-sm-8 col-lg-7">				
@@ -62,7 +62,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-lg-3 col-sm-4">				
+			<div class="col-xl-2 col-lg-3 col-md-4">
 				<p>
 				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
 				@if ($u->currentLevel() > 1)
@@ -173,20 +173,28 @@
 				@endif
 				</p>				
 			</div>
-			<div class="col-lg-9 col-sm-8">
-				<div class="row row-eq-height">
-					<div class="description-col {{ $ticket->intervention_html ? 'col-lg-6' : 'col-md-12'}}">
-						<div>
-							<b>{{ trans('panichd::lang.description') }}</b>
+			<div class="col-xl-10 col-lg-9 col-md-8">
+				<div class="row equal">
+					<div class="{{ $ticket->intervention_html ? 'col-lg-6 mb-3 mb-lg-0' : 'col-md-12'}}">
+						<div class="card" style="height: 100%">
+							<div class="card-body">
+								<div>
+									<b>{{ trans('panichd::lang.description') }}</b>
+								</div>
+								<div class="summernote-text-wrapper"> {!! $ticket->html !!} </div>
+							</div>
 						</div>
-						<div class="summernote-text-wrapper"> {!! $ticket->html !!} </div>
 					</div>
 					@if ($ticket->intervention_html)
-						<div class="intervention-col col-lg-6">
-							<div>
-								<b>{{ trans('panichd::lang.intervention') }}</b>
+						<div class="col-lg-6">
+							<div class="card" style="height: 100%">
+								<div class="card-body">
+									<div>
+										<b>{{ trans('panichd::lang.intervention') }}</b>
+									</div>
+									<div class="summernote-text-wrapper"> {!! $ticket->intervention_html !!} </div>
+								</div>
 							</div>
-							<div class="summernote-text-wrapper"> {!! $ticket->intervention_html !!} </div>
 						</div>
 					@endif					
 				</div>
