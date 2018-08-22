@@ -130,6 +130,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*
+ * Used in Ticket card. Style from Bootstrap 3
+*/
+.btn.btn-default {
+	color: black;
+	background-color: white;
+	border-color: #ccc;
+}
+
+.btn.btn-default:hover, .btn.btn-default:active {
+	background-color: #ddd;
+}
+
+
+/*
  * General Select2 styles
 */
 #panichd_content .select2-selection {

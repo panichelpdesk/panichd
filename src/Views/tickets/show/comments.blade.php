@@ -53,9 +53,9 @@
 				{!! $comment->updated_at->diffForHumans() !!}
 			</div></div></div>
 		@else
-		<div class="card bg-light">
+		<div class="card bg-light mb-3">
             <div class="card-header">
-                <h3 class="card-title">
+                <h6 class="card-title mb-0">
                     <span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $comment_title }}"><span class="{{ $icon_class }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
 					<span class="pull-right tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.creation-date', [
 						'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
@@ -69,7 +69,7 @@
 						<span class="fa fa-remove" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
 					@endif
 					</span>
-                </h3>
+                </h6>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -88,9 +88,9 @@
                 </div>
 				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					@if ($comment->type=='note')
-						<button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
 					@elseif($comment->type=='reply')
-						<button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
+						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
 					@endif
 				
 				@endif
