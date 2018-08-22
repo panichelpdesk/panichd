@@ -97,6 +97,10 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0.3em 0.6em;
 }
 
+#filter_panel .btn.pov-link {
+	margin: 0em 0.5em 0em 0em;
+}
+
 #filter_panel .removeall-link, #filter_panel .btn.pov-link, #filter_panel .btn.agent-link {
 	border: none;
 }
@@ -119,6 +123,10 @@ h1, h2, h3, h4, h5, h6 {
 #filter_panel .btn.agent-current .badge {
 	color: white;
 	background: #666;
+}
+
+#filter_panel .select2-selection {
+	background-color: #f8f9fa;
 }
 
 /*

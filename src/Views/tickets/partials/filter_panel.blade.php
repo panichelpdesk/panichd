@@ -4,12 +4,12 @@
 		
 		@if ($u->currentLevel() == 2 and $u->maxLevel() == 2)
 			<div class="title pov">{{ trans('panichd::lang.filter-pov') }}</div>
-			<a href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari"><button type="button" class="btn btn-light pov-link">{{ trans('panichd::lang.agent') }}</button></a>
+			<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari">{{ trans('panichd::lang.agent') }}</a>
 		@endif
 		
 		@if ($u->currentLevel() > 1)
 			@if (session()->has('panichd_filters'))
-				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/removeall" class="btn btn-light tooltip-info removeall-link"  data-toggle="tooltip" title="{{ trans('panichd::lang.filter-removeall-title') }}" data-placement="auto bottom"><span class="fa fa-filter"></span></a>
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/removeall" class="btn btn-light btn-sm tooltip-info removeall-link"  data-toggle="tooltip" title="{{ trans('panichd::lang.filter-removeall-title') }}" data-placement="auto bottom"><span class="fa fa-filter"></span></a>
 			@endif
 
 			@include('panichd::tickets.partials.filter_blocks')
