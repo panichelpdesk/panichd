@@ -2,7 +2,7 @@
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/dataTables.bootstrap.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/responsive.bootstrap.min.css')}}">
 @if($editor_enabled)
-	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/summernote/summernote.css')}}">
+	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/summernote/summernote-bs4.css')}}">
 	@if($include_font_awesome)
 		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/font-awesome.min.css')}}">
 	@endif

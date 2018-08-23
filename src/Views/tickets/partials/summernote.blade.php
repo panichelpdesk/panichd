@@ -6,13 +6,12 @@
 	
 @endif
 
-<script src="{{ asset('vendor/panichd/js/summernote/summernote.min.js') }}"></script>
+<script src="{{ asset('vendor/panichd/js/summernote/summernote-bs4.min.js') }}"></script>
 @if($editor_locale)
     <script src="{{ asset('vendor/panichd/js/summernote/lang/summernote-'.$editor_locale.'.min.js') }}"></script>
 @endif
+
 <script>
-
-
     $(function() {
 
         var options = $.extend(true, {lang: '{{$editor_locale}}' {!! $codemirror_enabled ? ", codemirror: {theme: '{$codemirror_theme}', mode: 'text/html', htmlMode: true, lineWrapping: true}" : ''  !!} } , {!! $editor_options !!});
@@ -23,7 +22,5 @@
             $("#content").summernote("focus");
         });
     });
-
-
 </script>
 @endif

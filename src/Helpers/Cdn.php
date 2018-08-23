@@ -11,7 +11,7 @@ namespace PanicHD\PanicHD\Helpers;
 class Cdn
 {
     const CodeMirror = '5.31.0';
-    const Summernote = '0.8.8';
+    const Summernote = '0.8.10';
     const FontAwesome = '4.7.0';
 
     // https://datatables.net/download/
