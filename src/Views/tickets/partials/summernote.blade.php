@@ -8,7 +8,7 @@
 
 <script src="{{ asset('vendor/panichd/js/summernote/summernote-bs4.min.js') }}"></script>
 @if($editor_locale)
-    <script src="{{ asset('vendor/panichd/js/summernote/lang/summernote-'.$editor_locale.'.min.js') }}"></script>
+    <script src="{{ asset('vendor/panichd/js/summernote/lang/summernote-'.$editor_locale.'.js') }}"></script>
 @endif
 
 <script>
