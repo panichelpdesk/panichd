@@ -111,8 +111,9 @@
 					<div class="col-lg-9">
 						<div class="input-group date" id="start_date">
 							<input type="text" class="form-control" name="start_date" value="{{ $a_current['start_date'] }}"/>
+							<span class="input-group-addon" style="display: none"></span>
 							<span class="input-group-append">
-								<span class="input-group-text"><span class="fa fa-calendar"></span></span>
+								<button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
 							</span>
 						</div>
 						<div class="jquery_error_text"></div>
@@ -123,8 +124,9 @@
 					<div class="col-lg-9">
 						<div class="input-group date" id="limit_date">
 							<input type="text" class="form-control" name="limit_date"  value="{{ $a_current['limit_date'] }}"/>
-							<span class="input-group-addon">
-								<span class="fa fa-calendar"></span>
+							<span class="input-group-addon" style="display: none"></span>
+							<span class="input-group-append">
+								<button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
 							</span>
 						</div>
 						<div class="jquery_error_text"></div>
@@ -336,6 +338,12 @@
 				, minDate: '{{ $a_current['start_date'] }}'
 			@endif
 		});
+
+		$('#start_date .btn, #limit_date .btn').click(function(e){
+            e.preventDefault();
+		    $('#' + $(this).closest('.input-group').prop('id')).data("DateTimePicker").toggle();
+		});
+
         $("#start_date").on("dp.change", function (e) {
             $('#limit_date').data("DateTimePicker").minDate(e.date);
         });
