@@ -34,7 +34,7 @@
             <div class="col-md-8">
                 <div class="card bg-light">
                     <div class="card-header">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
+                        <i class="fa fa-chart-bar fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-light btn-xs dropdown-toggle" data-toggle="dropdown">

@@ -209,8 +209,8 @@
 					@if($images_count > 0)
 						<div class="{{ $ticket->attachments()->notImages()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
 							<div class="row">
-							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-images') }}</b></div>
-							<div class="col-xs-12">
+							<div class="col-md-3"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-images') }}</b></div>
+							<div class="col-md-9">
 								<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 														
 								@foreach($ticket->attachments()->images()->get() as $attachment)							
@@ -224,8 +224,8 @@
 					@if($notimages_count > 0)
 						<div class="{{ $ticket->attachments()->images()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
 							<div class="row">
-							<div class="col-xs-12"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-files') }}</b></div>
-							<div class="col-xs-12">
+							<div class="col-md-4"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-files') }}</b></div>
+							<div class="col-md-8">
 								<div id="ticket_attached" class="row panel-group attached_list">
 														
 								@foreach($ticket->attachments()->notImages()->get() as $attachment)									
@@ -245,7 +245,7 @@
 		
 		<div style="margin: 1em 0em 0em 0em;">
 			@if(! $ticket->completed_at && $close_perm == 'yes')			
-				<button type="submit" class="btn btn-light" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>
+				<button type="submit" class="btn btn-light btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>
 			@elseif($ticket->completed_at && $reopen_perm == 'yes')
 				{!! link_to_route($setting->grab('main_route').'.reopen', trans('panichd::lang.reopen-ticket'), $ticket->id,
 										['class' => 'btn btn-light btn-default']) !!}

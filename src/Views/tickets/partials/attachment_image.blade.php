@@ -8,7 +8,7 @@
 		@if (\File::exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.$setting->grab('thumbnails_path').DIRECTORY_SEPARATOR).basename($attachment->file_path)))
 			<img src="{{ URL::to('/').'/storage/'.$setting->grab('thumbnails_path').'/'.basename($attachment->file_path) }}">
 		@else
-			<i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
+			<i class="fa fa-file-image fa-2x" aria-hidden="true"></i>
 		@endif
 	</div>
 </div>
