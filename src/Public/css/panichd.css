@@ -289,10 +289,10 @@ h1, h2, h3, h4, h5, h6 {
 	color: #777;
 }
 
-.grouped_check_list.deletion_list .check_parent.unchecked .fa-check, .grouped_check_list.deletion_list .check_parent.checked .fa-remove {
+.grouped_check_list.deletion_list .check_parent.unchecked .fa-check, .grouped_check_list.deletion_list .check_parent.checked .fa-times {
 	display: none;
 }
-.grouped_check_list.deletion_list .check_parent.checked .fa-check, .grouped_check_list.deletion_list .check_parent.unchecked .fa-remove {
+.grouped_check_list.deletion_list .check_parent.checked .fa-check, .grouped_check_list.deletion_list .check_parent.unchecked .fa-times {
 	display: inline !important;
 }	
 
