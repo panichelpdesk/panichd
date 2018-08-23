@@ -16,7 +16,7 @@ $cld_options = [
 	],
 	'tomorrow' => [
 		'text_class' => 'text-info',
-		'icon' => 'fa fa-clock-o',
+		'icon' => 'fa fa-clock',
         'badge_class' => 'text-white bg-info'
 	]
 ];

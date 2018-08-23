@@ -455,7 +455,7 @@ class Ticket extends Model
 							'date1' => $this->getDateForHumans('start_date'),
 							'date2' => $this->getDateForHumans('limit_date')]);
 					}
-					$icon = $start_days_diff == 1 ? "fa fa-clock-o" : "fa fa-calendar";
+					$icon = $start_days_diff == 1 ? "fa fa-clock" : "fa fa-calendar";
 					$color = "text-info";
 				}else{
 					$title = trans('panichd::lang.calendar-active-future', ['description' => $this->getDateForHumans($date_field, true)]);
@@ -466,7 +466,7 @@ class Ticket extends Model
 				// Active with limit
 				$date_field = 'limit_date';
 				$title = trans('panichd::lang.calendar-expiration', ['description' => $this->getDateForHumans($date_field, true)]);
-				$icon = "fa fa-clock-o";
+				$icon = "fa fa-clock";
 				$color = "text-info";
 			}else{
 				// Active without limit

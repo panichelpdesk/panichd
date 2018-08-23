@@ -18,7 +18,7 @@
 					<span class="tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.updated-date', [
 						'date' => \Carbon\Carbon::parse($ticket->updated_at)->format(trans('panichd::lang.datetime-format'))
 					]) }}" style="display: inline-block; color: #aaa; cursor: help">
-						<span class="fa fa-pencil"></span> {{ $ticket->updated_at->diffForHumans() }}
+						<span class="fa fa-pencil-alt"></span> {{ $ticket->updated_at->diffForHumans() }}
 					</span>
 				@endif
 				<span class="tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.creation-date', [

@@ -5,7 +5,7 @@
 			
 			switch ($comment->type){
 				case 'note':
-					$icon_class = "fa fa-pencil text-info";
+					$icon_class = "fa fa-pencil-alt text-info";
 					$comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
 					break;
 				case 'complete': // Simple complete box
@@ -48,7 +48,7 @@
 			<div class="row"><div class="col-xs-12"><div style="margin: 0em 0em 1em 0em; padding: 0px 15px;">
 				<span class="{{ $icon_class }}" aria-hidden="true" style="margin: 0em 0.5em 0em 0em;"></span>{!! $comment_header !!}
 				@if ($comment->created_at!=$comment->updated_at)
-					<span class="fa fa-pencil" aria-hidden="true" style="color: gray"></span>
+					<span class="fa fa-pencil-alt" aria-hidden="true" style="color: gray"></span>
 				@endif
 				{!! $comment->updated_at->diffForHumans() !!}
 			</div></div></div>
@@ -61,12 +61,12 @@
 						'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
 					]) }}">
 					@if ($comment->created_at!=$comment->updated_at)
-						<span class="fa fa-pencil" aria-hidden="true" style="color: gray"></span>
+						<span class="fa fa-pencil-alt" aria-hidden="true" style="color: gray"></span>
 					@endif
 					{!! $comment->updated_at->diffForHumans() !!} 
 					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id) and $comment->type=='note')
 						<button type="button" class="btn btn-light btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
-						<span class="fa fa-remove" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
+						<span class="fa fa-times" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
 					@endif
 					</span>
                 </h6>

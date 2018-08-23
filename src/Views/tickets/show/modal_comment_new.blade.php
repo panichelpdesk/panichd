@@ -23,7 +23,7 @@
 						<div id="comment-type-buttons" class="form-group">
 							{!! CollectiveForm::label('type', trans('panichd::lang.show-ticket-add-comment-type') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 							<div class="col-lg-10">
-								<button type="button" class="btn btn-light btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="fa fa-pencil"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
+								<button type="button" class="btn btn-light btn-info btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="btn-info"><span  aria-hidden="true" class="fa fa-pencil-alt"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
 								<button type="button" class="btn btn-light btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="btn-warning"><span aria-hidden="true" class="fa fa-envelope"></span> {{ trans('panichd::lang.show-ticket-add-comment-reply') }}</button>
 								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
 							</div>
