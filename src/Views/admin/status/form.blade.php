@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="form-group row">
-    <div class="col-lg-10 col-lg-offset-2">
+    <div class="col-lg-10 offset-lg-2">
         @if(isset($status))
             {!! CollectiveForm::submit(trans('panichd::admin.btn-update'), ['class' => 'btn btn-primary']) !!}
         @else

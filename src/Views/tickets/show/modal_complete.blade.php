@@ -29,7 +29,7 @@
 			
 			@if (!$ticket->intervention_html)
 				<div class="form-group row">
-					<div class="col-lg-10 col-lg-offset-2">
+					<div class="col-lg-10 offset-lg-2">
 						<label><input type="checkbox" id="blank_intervention_check" name="blank_intervention" value="yes"> {{ trans('panichd::lang.show-ticket-modal-complete-blank-intervention-check') }}</label>
 					</div>
 				</div>

@@ -25,14 +25,14 @@
 						</div>	
 					</div>
 					<div class="form-group row">
-						<div class="col-lg-9 col-lg-offset-3">
+						<div class="col-lg-9 offset-lg-3">
 							<label id="email_scope_category">{!! CollectiveForm::radio('email_scope','category', isset($category) && $category->email != "" ? true : false) !!} {{ trans('panichd::admin.category-email-this') . trans('panichd::admin.colon') }}</label>
 						</div>
 					</div>
 					
 					<div class="form-group row">
 						{!! CollectiveForm::label('email_name', trans('panichd::admin.category-email-name') . trans('panichd::admin.colon'), [
-							'class' => 'col-sm-2 col-sm-offset-1 col-lg-offset-3 col-form-label']) !!}
+							'class' => 'col-sm-2 offset-sm-1 offset-lg-3 col-form-label']) !!}
 						
 						<div class="col-sm-9 col-lg-7">{!! CollectiveForm::text('email_name', isset($category) && $category->email_name != "" ? $category->email_name : null, [
 							'class' => 'form-control jquery_email',
@@ -43,7 +43,7 @@
 					
 					<div class="form-group row">
 						{!! CollectiveForm::label('email', trans('panichd::admin.category-email') . trans('panichd::admin.colon'), [
-							'class' => 'col-sm-2 col-sm-offset-1 col-lg-offset-3 col-form-label']) !!}
+							'class' => 'col-sm-2 offset-sm-1 offset-lg-3 col-form-label']) !!}
 						
 						<div class="col-sm-9 col-lg-7">{!! CollectiveForm::text('email', isset($category) && $category->email != "" ? $category->email : null, [
 								'class' => 'form-control jquery_email',
@@ -70,7 +70,7 @@
 						</div>	
 					</div>
 					<div class="form-group row">
-						<div class="col-lg-9 col-lg-offset-3">
+						<div class="col-lg-9 offset-lg-3">
 							<label id="email_replies_1">{!! CollectiveForm::radio('email_replies',1, isset($category) && $category->email_replies == 1 ? true : false) !!} {{ trans('panichd::admin.category-email-this') }}</label> ({{ trans('panichd::admin.category-email-reply-this-info') }})
 						</div>
 					</div>
