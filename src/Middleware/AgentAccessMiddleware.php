@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Middleware;
 
 use Closure;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Traits\TicketRoutes;
 
@@ -20,7 +19,7 @@ class AgentAccessMiddleware
      */
     public function handle($request, Closure $next)
     {
-		$member = Member::findOrFail(auth()->user()->id);
+		$member = \PanicHDMember::findOrFail(auth()->user()->id);
 		
 		// Granted to all Admins		
 		if ($member->isAdmin()) {

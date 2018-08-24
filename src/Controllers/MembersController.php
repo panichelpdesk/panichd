@@ -17,7 +17,7 @@ class MembersController extends Controller
      */
 	public function index(Request $request)
 	{
-		$a_members = Models\Member::withCount(['userTickets', 'agentTotalTickets'])->orderBy('name')->get();
+		$a_members = \PanicHDMember::withCount(['userTickets', 'agentTotalTickets'])->orderBy('name')->get();
 		
 		return view('panichd::admin.member.index', compact('a_members'));
 	}
@@ -87,7 +87,7 @@ class MembersController extends Controller
 	public function destroy(Request $request, $id)
 	{
 		$user = User::findOrFail($id);
-		$member = Models\Member::findOrFail($id);
+		$member = \PanicHDMember::findOrFail($id);
 		if (auth()->user()->id == $id){
 			\Session::flash('warning', trans('panichd::admin.member-delete-own-user-error'));
 			return redirect()->back();

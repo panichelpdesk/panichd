@@ -38,7 +38,7 @@ class Department extends Model
      */
     public function members()
     {
-        return $this->hasMany('PanicHD\PanicHD\Models\Member')->orderBy('name');
+        return $this->hasMany('PanicHDMember')->orderBy('name');
     }
 	
 	/**

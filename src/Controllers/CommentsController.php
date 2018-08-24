@@ -11,7 +11,6 @@ use InvalidArgumentException;
 use PanicHD\PanicHD\Events\CommentCreated;
 use PanicHD\PanicHD\Events\CommentUpdated;
 use PanicHD\PanicHD\Models;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Status;
 use PanicHD\PanicHD\Traits\Attachments;
@@ -91,7 +90,7 @@ class CommentsController extends Controller
 		
 		$common_data = [
 			'request' => $request,
-			'member' => Member::findOrFail(\Auth::user()->id),
+			'member' => \PanicHDMember::findOrFail(\Auth::user()->id),
 			'a_content' => $a_content,
 			'a_result_errors' => $a_result_errors
 		];

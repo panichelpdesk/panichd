@@ -16,7 +16,6 @@ use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -32,7 +31,7 @@ class TicketsController extends Controller
     protected $tickets;
     protected $member;
 
-    public function __construct(Ticket $tickets, Member $member)
+    public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
@@ -531,9 +530,9 @@ class TicketsController extends Controller
 
             // Visible Agents
             if (session('panichd_filter_category') == '') {
-				$filters['agent'] = Member::visible()->get();
+				$filters['agent'] = \PanicHDMember::visible()->get();
 			}else{
-                $filters['agent']= Member::visible()->whereHas('categories', function ($q1) use ($category) {
+                $filters['agent']= \PanicHDMember::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 })
 				->get();
@@ -631,9 +630,9 @@ class TicketsController extends Controller
 		$member = $this->member->find(auth()->user()->id);
 
 		if ($member->currentLevel() > 1){
-			$a_owners = Member::with('userDepartment')->orderBy('name')->get();
+			$a_owners = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
 		}else{
-			$a_owners = Member::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
+			$a_owners = \PanicHDMember::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -1494,7 +1493,7 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-		$new_agent = Member::find($request->input('agent_id'));
+		$new_agent = \PanicHDMember::find($request->input('agent_id'));
 		
 		if (is_null($new_agent) || $ticket->agent_id==$request->input('agent_id')){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [

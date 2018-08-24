@@ -5,21 +5,20 @@ namespace PanicHD\PanicHD\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 
 class AdministratorsController extends Controller
 {
     public function index()
     {
-        $administrators = Member::admins();
+        $administrators = \PanicHDMember::admins();
 
         return view('panichd::admin.administrator.index', compact('administrators'));
     }
 
     public function create()
     {
-        $users = Member::paginate(Setting::grab('paginate_items'));
+        $users = \PanicHDMember::paginate(Setting::grab('paginate_items'));
 
         return view('panichd::admin.administrator.create', compact('users'));
     }
@@ -61,7 +60,7 @@ class AdministratorsController extends Controller
      */
     public function addAdministrators($user_ids)
     {
-        $users = Member::find($user_ids);
+        $users = \PanicHDMember::find($user_ids);
         foreach ($users as $user) {
             $user->panichd_admin = true;
             $user->save();
@@ -80,7 +79,7 @@ class AdministratorsController extends Controller
      */
     public function removeAdministrator($id)
     {
-        $administrator = Member::find($id);
+        $administrator = \PanicHDMember::find($id);
         $administrator->panichd_admin = false;
         $administrator->save();
 
@@ -105,7 +104,7 @@ class AdministratorsController extends Controller
     public function syncAdministratorCategories($id, Request $request)
     {
         $form_cats = ($request->input('administrator_cats') == null) ? [] : $request->input('administrator_cats');
-        $administrator = Member::find($id);
+        $administrator = \PanicHDMember::find($id);
         $administrator->categories()->sync($form_cats);
     }
 }
