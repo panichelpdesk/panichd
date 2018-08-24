@@ -35,6 +35,16 @@ class PanicHDServiceProvider extends ServiceProvider
             return;
         }
         
+		// Alias for Member model
+		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+		$member_model_class = 'PanicHD\PanicHD\Models\Member';
+		if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1 and Setting::grab('member_model_class') != 'default'){
+			// TODO: Check Class existence before using it. Add in cache to avoid this checks in every load
+			$member_model_class = Setting::grab('member_model_class');
+		}
+		
+		$loader->alias('PanicHDMember', $member_model_class);		
+		
 		$this->loadTranslationsFrom(__DIR__.'/Translations', 'panichd');
         $this->loadViewsFrom(__DIR__.'/Views', 'panichd');
 		
