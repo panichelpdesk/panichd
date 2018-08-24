@@ -9,7 +9,7 @@ use PanicHD\PanicHD\Models\Category;
 
 class Member extends User
 {
-    protected $table = 'panichd_members';
+    protected $table = 'users';
 	
 	/**
      * list of all agents and returning collection.
