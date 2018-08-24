@@ -22,7 +22,7 @@ class NoticesController extends Controller
 	public function index()
 	{
 		// All users
-		$a_users = Models\Member::whereNotNull('ticketit_department')->orderBy('name')->get();
+		$a_users = \PanicHDMember::whereNotNull('ticketit_department')->orderBy('name')->get();
 		
 		// All departments
 		$departments = Models\Department::doesntHave('ancestor')->with(['descendants' => function($query){

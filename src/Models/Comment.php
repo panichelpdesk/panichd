@@ -47,6 +47,7 @@ class Comment extends Model
         return $this->belongsTo('PanicHD\PanicHD\Models\Ticket', 'ticket_id');
     }
 
+	// TODO: Delete user() method
     /**
      * Get comment related App\User.
      *
@@ -58,13 +59,13 @@ class Comment extends Model
     }
 	
 	/**
-     * Get Comment owner as PanicHD\PanicHD\Models\Member model
+     * Get Comment owner as PanicHDMember model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Member', 'user_id');
+        return $this->belongsTo('PanicHDMember', 'user_id');
     }
 
     public function attachments()

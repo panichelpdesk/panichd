@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Date\Date;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Traits\ContentEllipse;
 
 /**
@@ -59,7 +58,7 @@ class Ticket extends Model
      */
     public function isActive()
     {
-        $member = Member::findOrFail(auth()->user()->id);
+        $member = \PanicHDMember::findOrFail(auth()->user()->id);
 		if ($member->currentLevel() >= 2){
 			return (bool) (is_null($this->completed_at) and $this->status_id != Setting::grab('default_status_id'));
 		}else{
@@ -85,7 +84,7 @@ class Ticket extends Model
      */
 	public function isNew()
     {
-        $member = Member::findOrFail(auth()->user()->id);
+        $member = \PanicHDMember::findOrFail(auth()->user()->id);
 		return (bool) ($member->currentLevel() >= 2 and is_null($this->completed_at) and $this->status_id == Setting::grab('default_status_id'));
     }
 
@@ -99,7 +98,7 @@ class Ticket extends Model
     {
         $query = $query->whereNull('completed_at');
 		
-		$member = Member::findOrFail(auth()->user()->id);
+		$member = \PanicHDMember::findOrFail(auth()->user()->id);
 		if ($member->currentLevel() >= 2){
 			return $query->where('status_id', '!=', Setting::grab('default_status_id'));
 		}else{
@@ -198,13 +197,13 @@ class Ticket extends Model
     }
 	
 	/**
-     * Get Ticket owner as PanicHD\PanicHD\Models\Member model
+     * Get Ticket owner as PanicHDMember model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Member', 'user_id');
+        return $this->belongsTo('PanicHDMember', 'user_id');
     }
 
     /**
@@ -214,7 +213,7 @@ class Ticket extends Model
      */
     public function agent()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Member', 'agent_id');
+        return $this->belongsTo('PanicHDMember', 'agent_id');
     }
 
     /**
@@ -603,7 +602,7 @@ class Ticket extends Model
     public function scopeVisibleForAgent($query, $id = false)
     {
         if (!$id) $id = auth()->user()->id;
-		$agent = Member::findOrFail($id);
+		$agent = \PanicHDMember::findOrFail($id);
 		
 		if ($agent->currentLevel() == 2) {
 			// Depends on agent_restrict
@@ -639,7 +638,7 @@ class Ticket extends Model
      */
 	public function scopeFiltered($query, $ticketList, $filter = false)
 	{
-		$member = Member::find(auth()->user()->id);
+		$member = \PanicHDMember::find(auth()->user()->id);
 		
 		if ($member->currentLevel() == 1){
 			// If session()->has('panichd_filter_currentLevel')
@@ -807,7 +806,7 @@ class Ticket extends Model
         $count = 0;
         $lowest_tickets = 1000000;
         // If no agent selected, select the admin
-        $first_admin = Member::admins()->first();
+        $first_admin = \PanicHDMember::admins()->first();
         $selected_agent_id = $first_admin->id;
         foreach ($agents as $agent) {
             if ($count == 0) {

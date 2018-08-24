@@ -56,7 +56,7 @@
 	</div>
 	
 	<div class="dropdown" style="display: inline-block;">
-	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{{ \PanicHD\PanicHD\Models\Member::find(session('panichd_filter_owner'))->name }} <span class="badge">{{ $counts['owner'] }}</span>
+	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;"><span class="">{{ \PanicHDMember::find(session('panichd_filter_owner'))->name }} <span class="badge">{{ $counts['owner'] }}</span>
 	<span class="caret"></span></button>
 	<ul class="dropdown-menu">
 	<li><a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/owner/remove">{{ trans('panichd::lang.filter-owner-all') }}</a></li>
