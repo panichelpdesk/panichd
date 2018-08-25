@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Models;
 
 use App\User;
-use Auth;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 
@@ -94,7 +93,7 @@ class Member extends User
     public static function isAgent($id = null)
     {
         if (isset($id)) {
-            $user = User::find($id);
+            $user = \PanicHDMember::find($id);
             if ($user->panichd_agent) {
                 return true;
             }

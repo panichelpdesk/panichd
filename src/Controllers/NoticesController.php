@@ -49,7 +49,7 @@ class NoticesController extends Controller
 		
         $this->validate($request, $rules);
 
-        $user = \App\User::findOrFail($request->input('user_id'));
+        $user = \PanicHDMember::findOrFail($request->input('user_id'));
 		
 		$user->ticketit_department = $request->input('department_id');
 		$user->save();
@@ -65,7 +65,7 @@ class NoticesController extends Controller
 	}
 	
 	public function destroy($id){
-		$user = \App\User::findOrFail($id);
+		$user = \PanicHDMember::findOrFail($id);
 		$user->ticketit_department = null;
 		$user->save();
 		

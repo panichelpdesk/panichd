@@ -49,13 +49,13 @@ class Comment extends Model
 
 	// TODO: Delete user() method
     /**
-     * Get comment related App\User.
+     * Get comment related \PanicHDMember.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('\PanicHDMember', 'user_id');
     }
 	
 	/**
@@ -65,7 +65,7 @@ class Comment extends Model
      */
     public function owner()
     {
-        return $this->belongsTo('PanicHDMember', 'user_id');
+        return $this->belongsTo('\PanicHDMember', 'user_id');
     }
 
     public function attachments()

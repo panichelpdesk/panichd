@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -177,7 +176,7 @@ class InstallController extends Controller
 		]);
 		
 		// Add current user to panichd_admin
-		$admin_user = User::find(auth()->user()->id);
+		$admin_user = \PanicHDMember::find(auth()->user()->id);
         $admin_user->panichd_admin = true;
 		
 		if ($request->has('quickstart')){
