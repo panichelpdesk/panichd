@@ -30,16 +30,18 @@ class MembersController extends Controller
      */
 	public function store(Request $request)
     {
+		$member = new \PanicHDMember;
+		
 		$rules = [
 			'name' => 'required',
-			'email' => 'bail|required|unique:panichd_members|email',
+			'email' => 'bail|required|unique:' . $member->getTable() . '|email',
 			'password' => 'required|confirmed',
 			'password_confirmation' => 'required'
 		];
 		
         $this->validate($request, $rules);
 
-        $member = new \PanicHDMember;
+        
 		$member->name = $request->name;
 		$member->email = $request->email;
 		$member->password = bcrypt($request->password);
