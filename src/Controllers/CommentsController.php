@@ -90,7 +90,7 @@ class CommentsController extends Controller
 		
 		$common_data = [
 			'request' => $request,
-			'member' => \PanicHDMember::findOrFail(\Auth::user()->id),
+			'member' => \PanicHDMember::findOrFail(auth()->user()->id),
 			'a_content' => $a_content,
 			'a_result_errors' => $a_result_errors
 		];

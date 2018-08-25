@@ -118,7 +118,7 @@ class ConfigurationsController extends Controller
       $value = $request->value;
 
       if ($request->serialize) {
-          //if(!Hash::check($request->password, Auth::user()->password)){
+          //if(!Hash::check($request->password, auth()->user()->password)){
           if (!Auth::attempt($request->only('password'), false, false)) {
               return back()->withErrors([trans('panichd::admin.config-edit-auth-failed')]);
           }
