@@ -176,7 +176,7 @@ return [
 // $admin_route_path/member/____
   'member-index-title'            => 'Members management',
   'member-index-help'             => 'Members are all registered users in database. This website administrator may have filtered the list',
-  'member-index-empty'            => 'No registered members were found. Please, check if there is any error in database "panichd_members" view',
+  'member-index-empty'            => 'No registered members were found',
   'member-table-own-tickets'      => 'Own tickets',
   'member-table-assigned-tickets' => 'Assigned tickets',
   'member-modal-update-title'     => 'Update member',
