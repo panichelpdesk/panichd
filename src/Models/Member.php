@@ -126,8 +126,8 @@ class Member extends User
      */
     public static function isAssignedAgent($id)
     {
-        if (auth()->check() && Auth::user()->panichd_agent) {
-            if (Auth::user()->id == Ticket::find($id)->agent->id) {
+        if (auth()->check() && auth()->user()->panichd_agent) {
+            if (auth()->user()->id == Ticket::find($id)->agent->id) {
                 return true;
             }
         }
