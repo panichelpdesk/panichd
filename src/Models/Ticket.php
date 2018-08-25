@@ -183,17 +183,17 @@ class Ticket extends Model
      */
     public function creator()
     {
-        return $this->belongsTo('App\User', 'creator_id');
+        return $this->belongsTo('\PanicHDMember', 'creator_id');
     }
 	
     /**
-     * Get Ticket owner as App\User model
+     * Get Ticket owner as \PanicHDMember model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('\PanicHDMember', 'user_id');
     }
 	
 	/**
@@ -203,7 +203,7 @@ class Ticket extends Model
      */
     public function owner()
     {
-        return $this->belongsTo('PanicHDMember', 'user_id');
+        return $this->belongsTo('\PanicHDMember', 'user_id');
     }
 
     /**
@@ -213,7 +213,7 @@ class Ticket extends Model
      */
     public function agent()
     {
-        return $this->belongsTo('PanicHDMember', 'agent_id');
+        return $this->belongsTo('\PanicHDMember', 'agent_id');
     }
 
     /**

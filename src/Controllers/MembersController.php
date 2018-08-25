@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use PanicHD\PanicHD\Models;
@@ -40,7 +39,7 @@ class MembersController extends Controller
 		
         $this->validate($request, $rules);
 
-        $member = new User;
+        $member = new \PanicHDMember;
 		$member->name = $request->name;
 		$member->email = $request->email;
 		$member->password = bcrypt($request->password);
@@ -53,7 +52,7 @@ class MembersController extends Controller
 	
 	public function update(Request $request, $id)
 	{
-		$member = User::findOrFail($id);
+		$member = \PanicHDMember::findOrFail($id);
 		
 		$rules = [
 			'id' => 'exists:users',
@@ -86,7 +85,7 @@ class MembersController extends Controller
 	
 	public function destroy(Request $request, $id)
 	{
-		$user = User::findOrFail($id);
+		$user = \PanicHDMember::findOrFail($id);
 		$member = \PanicHDMember::findOrFail($id);
 		if (auth()->user()->id == $id){
 			\Session::flash('warning', trans('panichd::admin.member-delete-own-user-error'));
