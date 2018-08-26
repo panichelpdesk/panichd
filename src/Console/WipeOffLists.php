@@ -75,7 +75,7 @@ class WipeOffLists extends Command
 				Models\Tag::truncate();
 				
 				// Active agents deletion
-				foreach (Models\Member::agents()->get() as $member){
+				foreach ( \PanicHDMember::agents()->get() as $member){
 					$member->panichd_agent = 0;
 					$member->save();
 				}

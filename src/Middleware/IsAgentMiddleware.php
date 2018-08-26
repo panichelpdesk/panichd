@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Middleware;
 
 use Closure;
-use PanicHD\PanicHD\Models\Member;
 
 class IsAgentMiddleware
 {
@@ -17,7 +16,7 @@ class IsAgentMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Member::isAgent() || Member::isAdmin()) {
+        if (\PanicHDMember::isAgent() || \PanicHDMember::isAdmin()) {
             return $next($request);
         }
 

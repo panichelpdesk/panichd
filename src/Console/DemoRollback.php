@@ -79,7 +79,7 @@ class DemoRollback extends Command
 				Models\Tag::truncate();
 				
 				// Active agents deletion
-				foreach (Models\Member::agents()->get() as $member){
+				foreach ( \PanicHDMember::agents()->get() as $member){
 					$member->panichd_agent = 0;
 					$member->save();
 				}
@@ -93,7 +93,7 @@ class DemoRollback extends Command
 		}
 		
 		// Delete demo users
-		$o_members = Models\Member::where('email', 'like', '%@demodataseeder.com');
+		$o_members = \PanicHDMember::where('email', 'like', '%@demodataseeder.com');
 		if ($o_members->count() == 0){
 			$this->info(trans('panichd::console.demo-users-not-found'));
 		}else{
@@ -101,8 +101,8 @@ class DemoRollback extends Command
 				$member->delete();
 			}
 			
-			if (Models\Member::count() == 0){
-				Models\Member::truncate();
+			if ( \PanicHDMember::count() == 0){
+				PanicHDMember::truncate();
 			}
 		}
 

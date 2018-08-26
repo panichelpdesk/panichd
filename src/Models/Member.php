@@ -3,13 +3,12 @@
 namespace PanicHD\PanicHD\Models;
 
 use App\User;
-use Auth;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 
 class Member extends User
 {
-    protected $table = 'panichd_members';
+    protected $table = 'users';
 	
 	/**
      * list of all agents and returning collection.
@@ -94,7 +93,7 @@ class Member extends User
     public static function isAgent($id = null)
     {
         if (isset($id)) {
-            $user = User::find($id);
+            $user = \PanicHDMember::find($id);
             if ($user->panichd_agent) {
                 return true;
             }
@@ -127,8 +126,8 @@ class Member extends User
      */
     public static function isAssignedAgent($id)
     {
-        if (auth()->check() && Auth::user()->panichd_agent) {
-            if (Auth::user()->id == Ticket::find($id)->agent->id) {
+        if (auth()->check() && auth()->user()->panichd_agent) {
+            if (auth()->user()->id == Ticket::find($id)->agent->id) {
                 return true;
             }
         }
@@ -160,7 +159,7 @@ class Member extends User
 	public static function maxLevel()
 	{
 		if (!auth()->check()) return 0;
-		$member = Member::find(auth()->user()->id);
+		$member = \PanicHDMember::find(auth()->user()->id);
 		if ($member->isAdmin()){
 			return 3;
 		}elseif($member->isAgent()){
@@ -179,7 +178,7 @@ class Member extends User
 	public static function currentLevel()
 	{
 		if (!auth()->check()) return 0;
-		$member = Member::find(auth()->user()->id);
+		$member = \PanicHDMember::find(auth()->user()->id);
 		if ($member->isAdmin()){
 			return 3;
 		}elseif($member->isAgent()){
@@ -228,7 +227,7 @@ class Member extends User
 	public static function canCloseTicket($id)
 	{
 		if (!auth()->check()) return false;
-		$member = Member::find(auth()->user()->id);
+		$member = \PanicHDMember::find(auth()->user()->id);
 		
 		$a_perm = Setting::grab('close_ticket_perm');
 
@@ -259,10 +258,10 @@ class Member extends User
 	{
 		if (!auth()->check()) return false;
 		
-		if (Member::canManageTicket($id)){
+		if (\PanicHDMember::canManageTicket($id)){
 			return true;
 		}else{
-			return Member::isTicketOwner($id);
+			return \PanicHDMember::isTicketOwner($id);
 		}
 	}
 	
@@ -276,7 +275,7 @@ class Member extends User
 	public static function canManageTicket($id)
 	{
 		if (!auth()->check()) return false;
-		$member = Member::find(auth()->user()->id);
+		$member = \PanicHDMember::find(auth()->user()->id);
 		
 		if ($member->isAdmin()){
 			return true;
@@ -299,7 +298,7 @@ class Member extends User
 	public static function canViewNewTickets()
 	{
 		if (!auth()->check()) return false;
-		$member = Member::find(auth()->user()->id);
+		$member = \PanicHDMember::find(auth()->user()->id);
 		
 		if ($member->isAdmin()){
 			return true;
@@ -524,7 +523,7 @@ class Member extends User
      */
     public function scopeVisibleForAgent($query, $id)
     {
-        $member = Member::findOrFail($id);
+        $member = \PanicHDMember::findOrFail($id);
 		
 		if ($member->currentLevel() == 2) {
 			// Depends on agent_restrict
@@ -563,11 +562,11 @@ class Member extends User
 		 *    - agent ticketit_department in related_departments
 		 *    - agent person in related_departments
 		*/
-		$related_users = Member::where('id','!=',$this->id)
+		$related_users = \PanicHDMember::where('id','!=',$this->id)
 			->whereIn('ticketit_department', $related_departments);		
 		
 		// Get users that are visible by all departments
-		$all_dept_users = Member::where('ticketit_department','0');
+		$all_dept_users = \PanicHDMember::where('ticketit_department','0');
 		
 		if (version_compare(app()->version(), '5.3.0', '>=')) {
 			$related_users = $related_users->pluck('id')->toArray();

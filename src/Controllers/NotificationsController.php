@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Mail;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Comment;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
 
@@ -25,7 +24,7 @@ class NotificationsController extends Controller
 	
 	public function newTicket(Ticket $ticket)
     {
-        $notification_owner = Member::find(auth()->user()->id);
+        $notification_owner = \PanicHDMember::find(auth()->user()->id);
         $template = 'panichd::emails.new_ticket';
         
 		// Affects only agent notification.

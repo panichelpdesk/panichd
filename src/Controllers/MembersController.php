@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use PanicHD\PanicHD\Models;
@@ -17,7 +16,7 @@ class MembersController extends Controller
      */
 	public function index(Request $request)
 	{
-		$a_members = Models\Member::withCount(['userTickets', 'agentTotalTickets'])->orderBy('name')->get();
+		$a_members = \PanicHDMember::withCount(['userTickets', 'agentTotalTickets'])->orderBy('name')->get();
 		
 		return view('panichd::admin.member.index', compact('a_members'));
 	}
@@ -31,16 +30,18 @@ class MembersController extends Controller
      */
 	public function store(Request $request)
     {
+		$member = new \PanicHDMember;
+		
 		$rules = [
 			'name' => 'required',
-			'email' => 'bail|required|unique:panichd_members|email',
+			'email' => 'bail|required|unique:' . $member->getTable() . '|email',
 			'password' => 'required|confirmed',
 			'password_confirmation' => 'required'
 		];
 		
         $this->validate($request, $rules);
 
-        $member = new User;
+        
 		$member->name = $request->name;
 		$member->email = $request->email;
 		$member->password = bcrypt($request->password);
@@ -53,7 +54,7 @@ class MembersController extends Controller
 	
 	public function update(Request $request, $id)
 	{
-		$member = User::findOrFail($id);
+		$member = \PanicHDMember::findOrFail($id);
 		
 		$rules = [
 			'id' => 'exists:users',
@@ -86,8 +87,8 @@ class MembersController extends Controller
 	
 	public function destroy(Request $request, $id)
 	{
-		$user = User::findOrFail($id);
-		$member = Models\Member::findOrFail($id);
+		$user = \PanicHDMember::findOrFail($id);
+		$member = \PanicHDMember::findOrFail($id);
 		if (auth()->user()->id == $id){
 			\Session::flash('warning', trans('panichd::admin.member-delete-own-user-error'));
 			return redirect()->back();

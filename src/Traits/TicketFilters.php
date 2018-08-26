@@ -25,7 +25,7 @@ trait TicketFilters
 		
 		if (session('panichd_filter_owner') != ""){
 			$owner = session('panichd_filter_owner');
-			if ($owner != "me" and is_null(Models\Member::find($owner))){
+			if ($owner != "me" and is_null( \PanicHDMember::find($owner))){
 				$request->session()->forget('panichd_filter_owner');
 			}else
 				$filters_count++;
@@ -55,7 +55,7 @@ trait TicketFilters
 		}
 		
 		if (session('panichd_filter_agent') != ""){
-			$member = Models\Member::find(session('panichd_filter_agent'));
+			$member = \PanicHDMember::find(session('panichd_filter_agent'));
 			if (is_null($member) or !$member->isAgent()){
 				$request->session()->forget('panichd_filter_agent');
 			}else

@@ -23,7 +23,7 @@
 			<div class="col-lg-9 modal_user_wrap">
 				<div id="modal_user_name"></div>
 				<select name="user_id" id="user_select2" class="form_select2 form-control" style="display: none; width: 100%">
-				@foreach (App\User::whereNull('ticketit_department')->orderBy('name')->get() as $user)
+				@foreach (\PanicHDMember::whereNull('ticketit_department')->orderBy('name')->get() as $user)
 					<option value="{{ $user->id }}">{{ $user->name }} - {{ $user->email }}</option>
 				@endforeach
 				</select>

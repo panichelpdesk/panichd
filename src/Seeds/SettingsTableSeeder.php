@@ -98,6 +98,13 @@ class SettingsTableSeeder extends Seeder
             'master_template' => 'panichd::master',
 			
 			/*
+			 * Default Member model for PanicHD
+			 * Default: default (which means using PanicHD\PanicHD\Models\Member)
+			 */
+			'member_model_class' => 'default',
+			 
+			
+			/*
 			 * Admin navbar button text is configurable
 			*/
 			'admin_button_text' => 'PanicHD',

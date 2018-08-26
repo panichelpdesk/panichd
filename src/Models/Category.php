@@ -58,7 +58,7 @@ class Category extends Model
      */
     public function agents()
     {
-        return $this->belongsToMany('\PanicHD\PanicHD\Models\Member', 'panichd_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
+        return $this->belongsToMany('\PanicHDMember', 'panichd_categories_users', 'category_id', 'user_id')->withPivot('autoassign')->orderBy('name');
     }
 
     /**

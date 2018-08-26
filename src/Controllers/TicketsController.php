@@ -16,7 +16,6 @@ use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -32,7 +31,7 @@ class TicketsController extends Controller
     protected $tickets;
     protected $member;
 
-    public function __construct(Ticket $tickets, Member $member)
+    public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
@@ -46,6 +45,8 @@ class TicketsController extends Controller
 	// This is loaded via AJAX at file Views\index.blade.php
     public function data($ticketList = 'active')
     {
+		$members_table = (new \PanicHDMember)->getTable();
+		
 		$datatables = app(\Yajra\Datatables\Datatables::class);
 
         $agent = $this->member->find(auth()->user()->id);
@@ -56,14 +57,14 @@ class TicketsController extends Controller
             ->leftJoin('users', function ($join1){
 				$join1->on('users.id', '=', 'panichd_tickets.user_id');
 			})
-			->leftJoin('panichd_members', function ($join2) {
-				$join2->on('panichd_members.id', '=', 'panichd_tickets.user_id');
+			->leftJoin($members_table . ' as members', function ($join2) {
+				$join2->on('members.id', '=', 'panichd_tickets.user_id');
 			})
-			->leftJoin('panichd_members as creator', function ($join3){
+			->leftJoin($members_table . ' as creator', function ($join3){
 				$join3->on('creator.id', '=', 'panichd_tickets.creator_id');
 			})
 			->join('panichd_statuses', 'panichd_statuses.id', '=', 'panichd_tickets.status_id')
-            ->leftJoin('panichd_members as agent', function ($join4){
+            ->leftJoin($members_table . ' as agent', function ($join4){
 				$join4->on('agent.id', '=', 'panichd_tickets.agent_id');
 			})
 			->join('panichd_priorities', 'panichd_priorities.id', '=', 'panichd_tickets.priority_id')
@@ -109,7 +110,7 @@ class TicketsController extends Controller
 			'agent.name as agent_name',
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
-			'panichd_members.name AS owner_name',
+			$members_table . '.name AS owner_name',
 			'creator.name as creator_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
@@ -124,7 +125,7 @@ class TicketsController extends Controller
 		];
 		
 		if (Setting::grab('departments_feature')){			
-			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'panichd_members.department_id')
+			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', $members_table . '.department_id')
 				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
 			// Department columns
@@ -531,9 +532,9 @@ class TicketsController extends Controller
 
             // Visible Agents
             if (session('panichd_filter_category') == '') {
-				$filters['agent'] = Member::visible()->get();
+				$filters['agent'] = \PanicHDMember::visible()->get();
 			}else{
-                $filters['agent']= Member::visible()->whereHas('categories', function ($q1) use ($category) {
+                $filters['agent']= \PanicHDMember::visible()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 })
 				->get();
@@ -631,9 +632,9 @@ class TicketsController extends Controller
 		$member = $this->member->find(auth()->user()->id);
 
 		if ($member->currentLevel() > 1){
-			$a_owners = Member::with('userDepartment')->orderBy('name')->get();
+			$a_owners = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
 		}else{
-			$a_owners = Member::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
+			$a_owners = \PanicHDMember::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
 		}
 		
 		$priorities = $this->getCacheList('priorities');
@@ -773,7 +774,7 @@ class TicketsController extends Controller
 		
 		$fields = [
             'subject'     => 'required|min:3',
-			'owner_id'    => 'required|exists:panichd_members,id',
+			'owner_id'    => 'required|exists:' . $this->member->getTable() . ',id',
 			'category_id' => 'required|in:'.$allowed_categories,
             'content'     => 'required|min:6',            
         ];
@@ -1045,6 +1046,7 @@ class TicketsController extends Controller
     public function show($id)
     {
 		$user = $this->member->find(auth()->user()->id);
+		$members_table = $this->member->getTable();
 		
 		$ticket = $this->tickets
 			->with('owner')
@@ -1052,13 +1054,13 @@ class TicketsController extends Controller
 			->with('agent')
 			->with('category.closingReasons')
 			->with('tags')
-			->leftJoin('panichd_members', function($join1){
-				$join1->on('panichd_members.id', '=', 'panichd_tickets.user_id');
+			->leftJoin($members_table, function($join1) use($members_table){
+				$join1->on($members_table . '.id', '=', 'panichd_tickets.user_id');
 			})
-			->leftJoin('panichd_members as creator', function($join2){
+			->leftJoin($members_table . ' as creator', function($join2){
 				$join2->on('creator.id', '=', 'panichd_tickets.creator_id');
 			})
-			->leftJoin('panichd_members as agent', function($join3){
+			->leftJoin($members_table . ' as agent', function($join3){
 				$join3->on('agent.id', '=', 'panichd_tickets.agent_id');
 			});
 		
@@ -1068,10 +1070,10 @@ class TicketsController extends Controller
 		
 		$a_select = [
 			'panichd_tickets.*',
-			'panichd_members.name as owner_name',
+			$members_table . '.name as owner_name',
 			'creator.name as creator_name',
 			'agent.name as agent_name',
-			'panichd_members.email as owner_email'
+			$members_table . '.email as owner_email'
 		];
 
 		// Select Ticket and properties
@@ -1494,7 +1496,7 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-		$new_agent = Member::find($request->input('agent_id'));
+		$new_agent = \PanicHDMember::find($request->input('agent_id'));
 		
 		if (is_null($new_agent) || $ticket->agent_id==$request->input('agent_id')){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [

@@ -2,7 +2,6 @@
 
 namespace PanicHD\PanicHD\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use PanicHD\PanicHD\Traits\Attachments;
 
@@ -74,7 +73,7 @@ class Attachment extends Model
 
     public function uploadedBy()
     {
-        return $this->belongsTo(User::class, 'uploaded_by_id');
+        return $this->belongsTo(\PanicHDMember::class, 'uploaded_by_id');
     }
 	
 	public function scopeImages($query)

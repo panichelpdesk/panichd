@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +10,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Category;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Seeds\SettingsTableSeeder;
 use PanicHD\PanicHD\Seeds\DemoDataSeeder;
@@ -82,7 +80,7 @@ class InstallController extends Controller
 				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit', 'quickstart'));
 			}elseif(!$this->isUpdated()){
 				// Panic Help Desk requires an upgrade
-				if (Member::isAdmin()){
+				if ( \PanicHDMember::isAdmin()){
 					return view('panichd::install.upgrade', [
 						'inactive_migrations' => $inactive_migrations,
 						'inactive_settings' => $this->inactiveSettings(),
@@ -106,7 +104,7 @@ class InstallController extends Controller
 	*/
 	public function upgrade_menu()
 	{
-		if (!$this->isInstalled() or !Member::isAdmin()){
+		if (!$this->isInstalled() or !PanicHDMember::isAdmin()){
 			return redirect()->route('panichd.install.setup');
 		}
 		
@@ -178,7 +176,7 @@ class InstallController extends Controller
 		]);
 		
 		// Add current user to panichd_admin
-		$admin_user = User::find(auth()->user()->id);
+		$admin_user = \PanicHDMember::find(auth()->user()->id);
         $admin_user->panichd_admin = true;
 		
 		if ($request->has('quickstart')){
@@ -191,7 +189,7 @@ class InstallController extends Controller
 			$admin_user->panichd_agent = true;
 			
 			// App\User doesn't have categories()
-			$admin_member = Member::find(auth()->user()->id);
+			$admin_member = \PanicHDMember::find(auth()->user()->id);
 			$admin_member->categories()->sync([Category::first()->id]);
 		}
 		
@@ -207,7 +205,7 @@ class InstallController extends Controller
      */
 	public function upgrade(Request $request)
 	{
-		if (Member::isAdmin()){
+		if ( \PanicHDMember::isAdmin()){
 			// Migrations and Settings
 			$this->initialSettings();
 			
