@@ -174,6 +174,15 @@ Execute these commands:
 
 8. If you have followed all these steps, you may access now http://your-laravel-app-URL/panichd in your browser.
 
+## Configuration
+* Parameters: All classification fields of a ticket are customizable, like priorities, statuses... and within their own menues in the Package.
+* Settings: This package comes with the ability to let you add your own configuration settings, although it will require you to write the necessary code to have it working. Anyway, the package comes with a set of configurable settings, which allow you to change many aspects of the Package functionality, like:
+  - Package routes for tickets and admin menues
+  - Tickets workflow (default priority, status...) and default limits
+  - Enable / disable different kind of email notifications
+* Package customization:
+  - You can create a custom Member model, for example to allow using a different table than "users" for PanicHD Members. You can read the [configuration steps for that in the wiki](https://github.com/panichelpdesk/panichd/wiki/Package-customizations).
+
 ## Contributing
 
 Please read our [contributing reference](CONTRIBUTING.md).
