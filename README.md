@@ -16,6 +16,7 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
   + [Complete installation](#complete-installation)
     + [With the web installer](#option-1-web-installer)
     + [With command line](#option-2-command-line-for-advanced-users)
+* [Configuration and customization](#configuration-and-customization)
 * [Contributing](#contributing)
 * [Built with](#built-with)
 * [Acknowledgements](#acknowledgements)
@@ -173,6 +174,15 @@ Execute these commands:
    `php artisan panichd:demo-rollback`
 
 8. If you have followed all these steps, you may access now http://your-laravel-app-URL/panichd in your browser.
+
+## Configuration and customization
+* Parameters: All classification fields of a ticket are customizable, like priorities, statuses... and within their own menues in the Package.
+* Settings: This package comes with the ability to let you add your own configuration settings, although it will require you to write the necessary code to have it working. Anyway, the package comes with a set of configurable settings, which allow you to change many aspects of the Package functionality, like:
+  - Package routes for tickets and admin menues
+  - Tickets workflow (default priority, status...) and default limits
+  - Enable / disable different kind of email notifications
+* Package customization:
+  - You can create a custom Member model, for example to allow using a different table than "users" for PanicHD Members. You can read the [configuration steps for that in the wiki](https://github.com/panichelpdesk/panichd/wiki/Package-customizations).
 
 ## Contributing
 
