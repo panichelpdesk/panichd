@@ -15,6 +15,6 @@ class Cdn
     const FontAwesome = '5.2.0';
 
     // https://datatables.net/download/
-    const DataTables = '1.10.16';
-    const DataTablesResponsive = '2.2.0';
+    const DataTables = '1.10.18';
+    const DataTablesResponsive = '2.2.2';
 }
