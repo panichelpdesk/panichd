@@ -10,7 +10,7 @@ namespace PanicHD\PanicHD\Helpers;
  */
 class Cdn
 {
-    const CodeMirror = '5.31.0';
+    const CodeMirror = '5.40.0';
     const Summernote = '0.8.10';
     const FontAwesome = '5.2.0';
 

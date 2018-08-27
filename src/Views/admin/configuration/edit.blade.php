@@ -136,9 +136,9 @@
 
 
     @if($should_serialize)
-	<script src="{{asset('vendor/panichd/js/codemirror/codemirror.min.js')}}"></script>
-    <script src="{{asset('vendor/panichd/js/codemirror/mode/clike.min.js')}}"></script>
-    <script src="{{asset('vendor/panichd/js/codemirror/mode/php.min.js')}}"></script>
+	<script src="{{asset('vendor/panichd/js/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
+    <script src="{{asset('vendor/panichd/js/codemirror/mode/clike-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
+    <script src="{{asset('vendor/panichd/js/codemirror/mode/php-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
     <script type="text/javascript">
         window.addEventListener('load', function(){
             CodeMirror.fromTextArea( document.querySelector("textarea[name='value']"), {

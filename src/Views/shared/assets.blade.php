@@ -5,8 +5,8 @@
 		<link rel="StyleSheet" href="{{asset('vendor/panichd/font-awesome/css/all.min.css')}}">
 	@endif
 	@if($codemirror_enabled)
-		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror.min.css')}}">	
-		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/'.$codemirror_theme.'.min.css')}}">
+		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.css')}}">
+		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '-' . $codemirror_theme . '.min.css')}}">
 	@endif
 @endif
 

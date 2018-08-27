@@ -1,9 +1,8 @@
 @if($editor_enabled)
 
 @if($codemirror_enabled)
-    <script src="{{asset('vendor/panichd/js/codemirror/codemirror.min.js')}}"></script>
-    <script src="{{asset('vendor/panichd/js/codemirror/mode/xml.min.js')}}"></script>
-	
+    <script src="{{asset('vendor/panichd/js/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
+    <script src="{{asset('vendor/panichd/js/codemirror/mode/xml-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
 @endif
 
 <script src="{{ asset('vendor/panichd/js/summernote/summernote-bs4.min.js') }}"></script>
