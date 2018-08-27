@@ -91,21 +91,21 @@
             <div class="col-md-4">
                 {{--<h4><i class="fa fa-info-circle"></i> Tickets Activities</h4>--}}
                 {{--<hr />--}}
-                <ul class="nav nav-tabs nav-justified">
-                    <li class="{{$active_tab == "cat" ? "active" : ""}}">
-                        <a data-toggle="pill" href="#information-panel-categories">
+                <ul class="nav nav-tabs nav-justified" class="nav-item">
+                    <li class="nav-item {{$active_tab == "cat" ? "active" : ""}}">
+                        <a class="nav-link active" data-toggle="pill" role="tab" href="#information-panel-categories">
                             <i class="fa fa-folder"></i>
                             <small>{{ trans('panichd::admin.index-categories') }}</small>
                         </a>
                     </li>
-                    <li class="{{$active_tab == "agents" ? "active"  : ""}}">
-                        <a data-toggle="pill" href="#information-panel-agents">
+                    <li class="nav-item {{$active_tab == "agents" ? "active"  : ""}}">
+                        <a class="nav-link" data-toggle="pill" role="tab" href="#information-panel-agents">
                             <i class="fa fa-user"></i>
                             <small>{{ trans('panichd::admin.index-agents') }}</small>
                         </a>
                     </li>
-                    <li class="{{$active_tab == "users" ? "active" : ""}}">
-                        <a data-toggle="pill" href="#information-panel-users">
+                    <li class="nav-item {{$active_tab == "users" ? "active" : ""}}">
+                        <a class="nav-link" data-toggle="pill" role="tab" href="#information-panel-users">
                             <i class="fa fa-user"></i>
                             <small>{{ trans('panichd::admin.index-users') }}</small>
                         </a>
@@ -113,7 +113,7 @@
                 </ul>
                 <br>
                 <div class="tab-content">
-                    <ul id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "in active" : ""}}">
+                    <ul id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "show active" : ""}}"  role="tabpanel">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-category') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
@@ -129,9 +129,8 @@
                         </li>
                         @foreach($categories as $category)
                             <li class="list-group-item">
-								<span style="color: {{ $category->color }}">
-									{{ $category->name }} <span class="badge"  style="background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
-								</span>
+								<span style="color: {{ $category->color }}">{{ $category->name }} </span><span class="badge"  style="color: white; background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
+
 								<span class="pull-right small">
 									<?php
 										$a_button = [
@@ -167,9 +166,9 @@
 								</span>
                             </li>
                         @endforeach
-                        {!! $categories->render() !!}
+                        {!! $categories->links('pagination::bootstrap-4') !!}
                     </ul>
-                    <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "in active" : ""}}">
+                    <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "show active" : ""}}" role="tabpanel">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-agent') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
@@ -223,9 +222,9 @@
                                 </span>
                             </li>
                         @endforeach
-                        {!! $agents->render() !!}
+                        {!! $agents->links('pagination::bootstrap-4') !!}
                     </ul>
-                    <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "in active" : "" }}">
+                    <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "show active" : "" }}" role="tabpanel">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-user') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
@@ -276,9 +275,9 @@
 										</a>
 									@endif
                                 </span>
-                            </a>
+                            </li>
                         @endforeach
-                        {!! $users->render() !!}
+                        {!! $users->links('pagination::bootstrap-4') !!}
                     </ul>
                 </div>
             </div>
