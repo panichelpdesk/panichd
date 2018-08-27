@@ -1,9 +1,10 @@
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/bootstrap/bootstrap-4.1.3.min.css')}}">
+@if($include_font_awesome)
+	<link rel="StyleSheet" href="{{asset('vendor/panichd/font-awesome/css/all-5.2.0.min.css')}}">
+@endif
+
 @if($editor_enabled)
 	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/summernote/summernote-bs4.css')}}">
-	@if($include_font_awesome)
-		<link rel="StyleSheet" href="{{asset('vendor/panichd/font-awesome/css/all.min.css')}}">
-	@endif
 	@if($codemirror_enabled)
 		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.css')}}">
 		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '-' . $codemirror_theme . '.min.css')}}">
