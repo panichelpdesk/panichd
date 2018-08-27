@@ -6,6 +6,8 @@
 
 @include('panichd::shared.common')
 
+@include('panichd::tickets.datatable.assets')
+
 @if (PanicHD\PanicHD\Models\Ticket::count() == 0)
 	@section('content')
 		<div class="card bg-light">

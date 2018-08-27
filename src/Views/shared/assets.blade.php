@@ -1,6 +1,4 @@
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/bootstrap/bootstrap-4.1.3.min.css')}}">
-<link rel="StyleSheet" href="{{asset('vendor/panichd/css/dataTables.bootstrap.css')}}">
-<link rel="StyleSheet" href="{{asset('vendor/panichd/css/responsive.bootstrap.min.css')}}">
 @if($editor_enabled)
 	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/summernote/summernote-bs4.css')}}">
 	@if($include_font_awesome)
