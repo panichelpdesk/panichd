@@ -9,7 +9,7 @@
 
 @section('panichd_assets')
 	<style type="text/css">
-		#tag-panel .glyphicon {
+		#tag-panel .fa {
 			color: #777;
 		}
 		
@@ -20,18 +20,19 @@
 	</style>
 @append
 
-@section('content')	
-	<div class="well bs-component">
-        {!! CollectiveForm::model($category, [
-			'route' => [$setting->grab('admin_route').'.category.update', $category->id],
-			'method' => 'PATCH',
-			'class' => 'form-horizontal'
+@section('content')
+	<div class="card bg-light">
+		<div class="card-body">
+			{!! CollectiveForm::model($category, [
+				'route' => [$setting->grab('admin_route').'.category.update', $category->id],
+				'method' => 'PATCH'
 			]) !!}
-        <legend>{{ trans('panichd::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
-        @include('panichd::admin.category.form', ['update', true])
-		@include('panichd::admin.category.modal-email')
-        {!! CollectiveForm::close() !!}
-    </div>
+			<legend>{{ trans('panichd::admin.category-edit-title', ['name' => ucwords($category->name)]) }}</legend>
+			@include('panichd::admin.category.form', ['update', true])
+			@include('panichd::admin.category.modal-email')
+			{!! CollectiveForm::close() !!}
+		</div>
+	</div>
 	@include('panichd::admin.category.modal-reason')
 	@include('panichd::admin.category.modal-tag')
 @stop

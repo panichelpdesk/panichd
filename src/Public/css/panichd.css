@@ -30,7 +30,7 @@ body {
 	font-weight: 300;
 	font-size: 16px;
 	color: black;
-	padding-top: 3.5em;
+	padding-top: 3.8em;
 	-webkit-font-smoothing: antialiased;
 	-webkit-overflow-scrolling: touch;
 }
@@ -58,9 +58,28 @@ h1, h2, h3, h4, h5, h6 {
     color: #636363;
 }
 
+.btn-xs {
+	padding  : .4rem;
+	font-size  : .9rem;
+	line-height  : .5;
+	border-radius : .2rem;
+}
+
+.fa {
+	color: gray;
+}
+
 /* Filter panel */
-.btn-default .badge {
+#filter_panel {
+	margin: 0em 0em 0.8em 0em;
+}
+
+#filter_panel .btn-light .badge {
 	background-color: #bbb ;
+}
+
+#filter_panel .card-body {
+	padding: 0.5rem;
 }
 
 #filter_panel .title {
@@ -80,6 +99,10 @@ h1, h2, h3, h4, h5, h6 {
 
 #filter_panel .btn.pov-link, #filter_panel .btn.agent-link, #filter_panel .btn.agent-current {
 	padding: 0.3em 0.6em;
+}
+
+#filter_panel .btn.pov-link {
+	margin: 0em 0.5em 0em 0em;
 }
 
 #filter_panel .removeall-link, #filter_panel .btn.pov-link, #filter_panel .btn.agent-link {
@@ -105,6 +128,24 @@ h1, h2, h3, h4, h5, h6 {
 	color: white;
 	background: #666;
 }
+
+#filter_panel .select2-selection {
+	background-color: #f8f9fa;
+}
+
+/*
+ * Used in Ticket card. Style from Bootstrap 3
+*/
+.btn.btn-default {
+	color: black;
+	background-color: white;
+	border-color: #ccc;
+}
+
+.btn.btn-default:hover, .btn.btn-default:active {
+	background-color: #ddd;
+}
+
 
 /*
  * General Select2 styles
@@ -198,7 +239,7 @@ h1, h2, h3, h4, h5, h6 {
 /*
  * Tickets table
 */
-#tickets-table .glyphicon.attachment, #tickets-table .glyphicon.comment, #tickets-table .glyphicon.tickethidden {
+#tickets-table .fa.attachment, #tickets-table .fa.comment, #tickets-table .fa.tickethidden {
 	color: #555;
 }
 
@@ -220,18 +261,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-#ticket-body .description-col, #ticket-body .intervention-col {
-	border: 1px solid #ddd;
-	margin: 0px 15px 0px 0px;
-	padding: 15px;
-	border-radius: 5px;
-}
-
 @media screen and (max-width: 1999px){
-	#ticket-body .description-col, #ticket-body .intervention-col {
-		margin: 15px;
-	}
-	
 	#ticket-body .row-ticket-attachments {
 		margin: 15px -15px 5px -15px;
 	}
@@ -242,15 +272,15 @@ h1, h2, h3, h4, h5, h6 {
 	border: transparent;
 }
 
-.panel-highlight {
+.card-highlight {
 	border-color: #FFE171;
 }
 
-.panel-highlight > .panel-heading {
+.card-highlight > .card-header {
 	background-color: #FFE171;
 }
 
-.panel-highlight > .panel-body {
+.card-highlight > .card-body {
 	background-color: lightyellow;
 }
 
@@ -263,10 +293,10 @@ h1, h2, h3, h4, h5, h6 {
 	color: #777;
 }
 
-.grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.checked .glyphicon-remove {
+.grouped_check_list.deletion_list .check_parent.unchecked .fa-check, .grouped_check_list.deletion_list .check_parent.checked .fa-times {
 	display: none;
 }
-.grouped_check_list.deletion_list .check_parent.checked .glyphicon-ok, .grouped_check_list.deletion_list .check_parent.unchecked .glyphicon-remove {
+.grouped_check_list.deletion_list .check_parent.checked .fa-check, .grouped_check_list.deletion_list .check_parent.unchecked .fa-times {
 	display: inline !important;
 }	
 
@@ -295,14 +325,14 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0px 25px 10px 0px;
 }
 
-.grouped_check_list.coloured-list .check_parent.unchecked .btn-default {
+.grouped_check_list.coloured-list .check_parent.unchecked .btn-light {
 	color: gray;	
 }
 .grouped_check_list.coloured-list .check_parent.unchecked .check_info {
 	background: white;
 }
 
-.grouped_check_list.coloured-list .check_parent.checked a.btn-default {
+.grouped_check_list.coloured-list .check_parent.checked a.btn-light {
 	color: #00e600;
 }
 .grouped_check_list.coloured-list .check_parent.checked .check_info {
@@ -317,33 +347,7 @@ h1, h2, h3, h4, h5, h6 {
 .form-control {
 	font-size: 16px;
 }
-.text-info {
-	color: #549ee8;
-}
 
-.text-info .badge {
-	background-color: #549ee8;
-}
-/* btn-info: #84bef5; */
-
-.text-warning {
-	color: #e69138;
-}
-.text-warning .badge {
-	background-color: #e69138;
-}
-/* btn-warning background: #f6b26b; */
-
-.text-danger .badge {
-	background-color: #a94442;
-}
-
-.text-success {
-	color: #68c240;
-}
-.text-success .badge {
-	background-color: #68c240;
-}
 
 .tooltip-wrap-15 .tooltip {
 	width: 15em;
@@ -353,7 +357,7 @@ h1, h2, h3, h4, h5, h6 {
 	cursor: help;
 }
 
-.tooltip-info .glyphicon-question-sign {
+.tooltip-info .fa-question-circle {
 	color: #bbb;
 }
 
@@ -385,7 +389,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Ticket attachments */
-.attached_list .panel-body {
+.attached_list .card {
+	margin: 0em 0.5em 0.5em 0em;
+}
+
+.attached_list .card-body {
 	padding: 8px;
 }
 

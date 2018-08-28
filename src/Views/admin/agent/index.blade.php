@@ -9,8 +9,8 @@
 @include('panichd::admin.agent.form_new')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.agent-index-title') }}
                 <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
             </h2>
@@ -43,7 +43,7 @@
                                 @if ($category->pivot->autoassign==1)
 									<span class="tooltip-info" style="display: inline-block; border: 1px solid {{ $category->color }}; border-width: 0px 0px 1px 0px; color: {{ $category->color }};  margin: 0em 0.5em; padding: 0.1em" title="{{ trans('panichd::admin.table-categories-autoasg-title')}}">
 									{{  $category->name }}
-									 <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+									 <span class="fa fa-play-circle" aria-hidden="true"></span>
 									</span>
 								@else
 									<span style="color: {{ $category->color }}">
@@ -53,7 +53,7 @@
 								
                             @endforeach
 							
-							 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('panichd::admin.btn-edit')}}</button>
+							 <button type="button" class="btn btn-light btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('panichd::admin.btn-edit')}}</button>
 							
 							@include('panichd::admin.agent.form_edit')
                         </td>						
@@ -66,7 +66,7 @@
                                         ],
                             'id' => "delete-$agent->id"
                             ]) !!}
-                            {!! CollectiveForm::submit(trans('panichd::admin.btn-remove'), ['class' => 'btn btn-default btn-sm']) !!}
+                            {!! CollectiveForm::submit(trans('panichd::admin.btn-remove'), ['class' => 'btn btn-light btn-default btn-sm']) !!}
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>

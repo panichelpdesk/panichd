@@ -2,8 +2,8 @@
   <div class="modal-dialog" role="document">
 	<div class="modal-content">
 	  <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h4 class="modal-title" id="myModalLabel">{{ trans('panichd::admin.agent-index-create-new') }}</h4>
+	  	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	  </div>
 	  <div class="modal-body">								  
 		{!! CollectiveForm::open([
@@ -12,8 +12,8 @@
 						$setting->grab('admin_route').'.agent.store'
 						],
 				]) !!}
-		<div class="form-group">
-		<label for="usuari" class="control-label col-sm-2">{{ trans('panichd::admin.agent-create-form-agent') }}</label>
+		<div class="form-group row">
+		<label for="usuari" class="col-form-label col-sm-2">{{ trans('panichd::admin.agent-create-form-agent') }}</label>
 		<div class="col-sm-10">
 			<select class="generate_default_select2" style="width: 100%" name="agent_id">
 				@foreach ($not_agents as $newagent)

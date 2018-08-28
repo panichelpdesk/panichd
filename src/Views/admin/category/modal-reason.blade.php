@@ -2,15 +2,15 @@
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
                 <h4 class="modal-title" id="tag-edit-modal-Label">{{ trans('panichd::admin.category-edit-reason') }}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
             </div>
             <div class="modal-body">
                 
 				
-				<form action="" class="form-horizontal">
-					<div class="form-group">
-						{!! CollectiveForm::label('reason', trans('panichd::admin.category-edit-reason-label') . trans('panichd::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
+				<form action="">
+					<div class="form-group row">
+						{!! CollectiveForm::label('reason', trans('panichd::admin.category-edit-reason-label') . trans('panichd::admin.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 						
 						<div class="col-lg-10">{!! CollectiveForm::text('text', null, [
 								'id'=>'jquery_popup_reason_text',
@@ -19,8 +19,8 @@
 						</div>
 					</div>
 					
-					<div class="form-group">
-						{!! CollectiveForm::label('status', trans('panichd::admin.category-edit-reason-status') . trans('panichd::admin.colon'), ['class' => 'col-lg-2 control-label']) !!}
+					<div class="form-group row">
+						{!! CollectiveForm::label('status', trans('panichd::admin.category-edit-reason-status') . trans('panichd::admin.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 						
 						<div class="col-lg-10">{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), ['id' => 'jquery_popup_select_status', 'class' => 'form-control']) !!}
 						</div>

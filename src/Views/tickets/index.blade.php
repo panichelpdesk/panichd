@@ -6,10 +6,12 @@
 
 @include('panichd::shared.common')
 
+@include('panichd::tickets.datatable.assets')
+
 @if (PanicHD\PanicHD\Models\Ticket::count() == 0)
 	@section('content')
-		<div class="panel panel-default">
-			<div class="panel-body">
+		<div class="card bg-light">
+			<div class="card-body">
 				{{ trans('panichd::lang.no-tickets-yet') }}
 			</div>
 		</div>
@@ -17,8 +19,8 @@
 @else
 	@section('content')
 		@include('panichd::tickets.partials.filter_panel')
-		<div class="panel panel-default">
-			<div class="panel-body">
+		<div class="card bg-light">
+			<div class="card-body">
 				<div id="message"></div>
 				@include('panichd::tickets.datatable.header')
 			</div>

@@ -1,8 +1,8 @@
 <div class=""><!-- for jquery_error -->
-<div id="attachment_block_{{ $loop->index }}" class="jquery_attachment_block panel panel-default text-default check_parent unchecked check_related_bg">
-	<div class="panel-body">
+<div id="attachment_block_{{ $loop->index }}" class="jquery_attachment_block card bg-default text-default check_parent unchecked check_related_bg">
+	<div class="card-body">
 		<div class="media">
-		    <div class="media-left">		        
+		    <div class="media-left mr-3">
 				<?php 
 					$mime = $attachment->getShorthandMime($attachment->mimetype);
 				?>
@@ -23,18 +23,18 @@
 					@if (\File::exists(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.$setting->grab('thumbnails_path').DIRECTORY_SEPARATOR).basename($attachment->file_path)))
 						<img width="40px" height="40px" src="{{ URL::to('/').'/storage/'.$setting->grab('thumbnails_path').'/'.basename($attachment->file_path) }}">
 					@else
-						<i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
+						<i class="fa fa-file-image fa-2x" aria-hidden="true"></i>
 					@endif
 				@elseif ($mime == 'pdf')
-					<i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i>
+					<i class="fa fa-file-pdf fa-2x" aria-hidden="true"></i>
 				@elseif ($mime == 'msword')
-					<i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+					<i class="fa fa-file-word fa-2x" aria-hidden="true"></i>
 				@elseif ($mime == 'msexcel')
-					<i class="fa fa-file-excel-o fa-2x" aria-hidden="true"></i>
+					<i class="fa fa-file-excel fa-2x" aria-hidden="true"></i>
 				@elseif ($mime == 'compressed')
-					<i class="fa fa-file-zip-o fa-2x" aria-hidden="true"></i>
+					<i class="fa fa-file-archive fa-2x" aria-hidden="true"></i>
 				@else
-					<i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+					<i class="fa fa-file fa-2x" aria-hidden="true"></i>
 				@endif		
 				</a>
 		    </div>
@@ -49,7 +49,7 @@
 					</s>
 				@endif
 				@if($u->currentLevel() > 1 && isset($template) && $template == "createedit")
-					<button type="button" role="button" class="btn btn-default btn-xs edit_attachment"
+					<button type="button" role="button" class="btn btn-light btn-xs edit_attachment"
 					@if (isset($edit_div) && isset($back_div))
 						data-edit-div="{{ $edit_div }}" data-back-div="{{ $back_div }}"
 					@else
@@ -79,7 +79,7 @@
 		    </div>
 			@if (isset($template) && $template == "createedit")
 				<div class="media-right media-middle">
-					<a href="#" class="check_button" data-delete_id="delete_attached_check_{{ $loop->index }}"><span class="media-object pull-right glyphicon glyphicon-remove" aria-hidden="true"></span><span class="media-object  pull-right glyphicon glyphicon-ok" aria-hidden="true" style="display: none"></span></a>
+					<a href="#" class="check_button" data-delete_id="delete_attached_check_{{ $loop->index }}"><span class="media-object pull-right fa fa-times" aria-hidden="true"></span><span class="media-object  pull-right fa fa-check" aria-hidden="true" style="display: none"></span></a>
 					<input type="checkbox" id="delete_attached_check_{{ $loop->index }}" name="delete_files[]" value="{{ $attachment->id }}" checked="checked" style="display: none" disabled="disabled">
 				</div>
 			@endif

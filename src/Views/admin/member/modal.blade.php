@@ -3,21 +3,20 @@
   <div class="modal-dialog">
     <div class="modal-content">
 		<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('panichd::admin.member-modal-create-title') }}</h4>
+			<h4 class="modal-title">{{ trans('panichd::admin.member-modal-create-title') }}</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
 			'route' => [$setting->grab('admin_route').'.member.store'],
 			'method' => 'PATCH',
-			'class' => 'form-horizontal',
 			'data-route-create' => route($setting->grab('admin_route').'.member.store')
 			]) !!}
 		{!! CollectiveForm::hidden('id', null, ['id' => 'id_input']) !!}
 	
-		<div class="form-group">
+		<div class="form-group row">
 			{!! CollectiveForm::label('name', trans('panichd::lang.name') . trans('panichd::lang.colon'), [
-				'class' => 'control-label col-lg-3',
+				'class' => 'col-form-label col-lg-3',
 			]) !!}
 			
 			<div class="col-lg-9">
@@ -28,9 +27,9 @@
 			</div>
 		</div>
 		
-		<div class="form-group">
+		<div class="form-group row">
 			{!! CollectiveForm::label('email', trans('panichd::lang.email') . trans('panichd::lang.colon'), [
-				'class' => 'control-label col-lg-3',
+				'class' => 'col-form-label col-lg-3',
 			]) !!}
 			
 			<div class="col-lg-9">
@@ -41,10 +40,10 @@
 			</div>
 		</div>
 		
-		<div class="form-group">
+		<div class="form-group row">
 			{!! CollectiveForm::label('password', trans('panichd::admin.member-password-label') . trans('panichd::lang.colon'), [
 				'id' => 'password_label',
-				'class' => 'control-label col-lg-3',
+				'class' => 'col-form-label col-lg-3',
 			]) !!}
 			
 			<div class="col-lg-9">
@@ -52,9 +51,9 @@
 			</div>
 		</div>
 		
-		<div class="form-group">
+		<div class="form-group row">
 			{!! CollectiveForm::label('password_confirmation', trans('panichd::admin.member-password-repeat-label') . trans('panichd::lang.colon'), [
-				'class' => 'control-label col-lg-3',
+				'class' => 'col-form-label col-lg-3',
 			]) !!}
 			
 			<div class="col-lg-9">

@@ -8,73 +8,36 @@
 
 @section('content')
     @if($tickets_count)
+        <?php
+            $a_cards = [
+                ['class' => 'bg-light', 'icon' => 'book', 'body' => '<h2>' . $tickets_count . '<small>' . trans('panichd::admin.index-total-tickets') . '</small></h2>'],
+                ['class' => 'text-white bg-info', 'icon' => 'certificate', 'body' => '<h2 class="text-white">' . $a_tickets_count['newest'] . '<small>' . trans('panichd::admin.index-newest-tickets') . '</small></h2>'],
+                ['class' => 'text-white bg-warning', 'icon' => 'file', 'body' => '<h2 class="text-white">' . $a_tickets_count['active'] . '<small>' . trans('panichd::admin.index-active-tickets') . '</small></h2>'],
+                ['class' => 'text-white bg-success', 'icon' => 'check-circle', 'body' => '<h2 class="text-white">' . $a_tickets_count['complete'] . '<small>' . trans('panichd::admin.index-complete-tickets') . '</small></h2>'],
+            ];
+
+        ?>
         <div class="row">
-            <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-book"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h2>{{ $tickets_count }} <small>{{ trans('panichd::admin.index-total-tickets') }}</small></h2>
-                            </div>
+            @foreach ($a_cards as $card)
+                <div class="col-sm-6 col-lg-3">
+                    <div class="media {{ $card['class'] }}">
+                        <i class="mr-3 fa fa-{{ $card['icon'] }}" style="font-size: 2.5em; margin: 0.5em"></i>
+                        <div class="media-body align-self-center mr-2">
+                            {!! $card['body'] !!}
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-certificate"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h1>{{ $a_tickets_count['newest'] }} <small>{{ trans('panichd::admin.index-newest-tickets') }}</small></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-			<div class="col-md-3">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-file"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h1>{{ $a_tickets_count['active'] }} <small>{{ trans('panichd::admin.index-active-tickets') }}</small></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3" style="font-size: 3em;">
-                                <i class="glyphicon glyphicon-ok-circle"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <h1>{{ $a_tickets_count['complete'] }} <small>{{ trans('panichd::admin.index-complete-tickets') }}</small></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
 
         <div class="row">
             <div class="col-md-8">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <i class="fa fa-chart-bar fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                <button type="button" class="btn btn-light btn-xs dropdown-toggle" data-toggle="dropdown">
                                     {{ trans('panichd::admin.index-periods') }}
                                     <span class="caret"></span>
                                 </button>
@@ -98,27 +61,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div id="curve_chart" style="width: 100%; height: 350px"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                        <div class="card bg-light">
+                            <div class="card-header">
                                 {{ trans('panichd::admin.index-tickets-share-per-category') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div id="catpiechart" style="width: auto; height: 350;"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                        <div class="card bg-light">
+                            <div class="card-header">
                                 {{ trans('panichd::admin.index-tickets-share-per-agent') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div id="agentspiechart" style="width: auto; height: 350;"></div>
                             </div>
                         </div>
@@ -126,31 +89,31 @@
                 </div>
             </div>
             <div class="col-md-4">
-                {{--<h4><i class="glyphicon glyphicon-info-sign"></i> Tickets Activities</h4>--}}
+                {{--<h4><i class="fa fa-info-circle"></i> Tickets Activities</h4>--}}
                 {{--<hr />--}}
-                <ul class="nav nav-tabs nav-justified">
-                    <li class="{{$active_tab == "cat" ? "active" : ""}}">
-                        <a data-toggle="pill" href="#information-panel-categories">
-                            <i class="glyphicon glyphicon-folder-close"></i>
+                <ul class="nav nav-tabs nav-justified" class="nav-item">
+                    <li class="nav-item {{$active_tab == "cat" ? "active" : ""}}">
+                        <a class="nav-link active" data-toggle="pill" role="tab" href="#information-panel-categories">
+                            <i class="fa fa-folder"></i>
                             <small>{{ trans('panichd::admin.index-categories') }}</small>
                         </a>
                     </li>
-                    <li class="{{$active_tab == "agents" ? "active"  : ""}}">
-                        <a data-toggle="pill" href="#information-panel-agents">
-                            <i class="glyphicon glyphicon-user"></i>
+                    <li class="nav-item {{$active_tab == "agents" ? "active"  : ""}}">
+                        <a class="nav-link" data-toggle="pill" role="tab" href="#information-panel-agents">
+                            <i class="fa fa-user"></i>
                             <small>{{ trans('panichd::admin.index-agents') }}</small>
                         </a>
                     </li>
-                    <li class="{{$active_tab == "users" ? "active" : ""}}">
-                        <a data-toggle="pill" href="#information-panel-users">
-                            <i class="glyphicon glyphicon-user"></i>
+                    <li class="nav-item {{$active_tab == "users" ? "active" : ""}}">
+                        <a class="nav-link" data-toggle="pill" role="tab" href="#information-panel-users">
+                            <i class="fa fa-user"></i>
                             <small>{{ trans('panichd::admin.index-users') }}</small>
                         </a>
                     </li>
                 </ul>
                 <br>
                 <div class="tab-content">
-                    <ul id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "in active" : ""}}">
+                    <ul id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "show active" : ""}}"  role="tabpanel">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-category') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
@@ -166,9 +129,8 @@
                         </li>
                         @foreach($categories as $category)
                             <li class="list-group-item">
-								<span style="color: {{ $category->color }}">
-									{{ $category->name }} <span class="badge"  style="background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
-								</span>
+								<span style="color: {{ $category->color }}">{{ $category->name }} </span><span class="badge"  style="color: white; background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
+
 								<span class="pull-right small">
 									<?php
 										$a_button = [
@@ -181,7 +143,7 @@
 									@if ($category->tickets()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective'), 'category' => $category->name ]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective'), 'category' => $category->name ]) }}">
 										{{ $a_button['newest'] }}
 										</a>
 									@endif
@@ -189,7 +151,7 @@
 									@if ($category->tickets()->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective'), 'category' => $category->name ]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective'), 'category' => $category->name ]) }}">
 										{{ $a_button['active'] }}
 										</a>
 									@endif
@@ -197,16 +159,16 @@
 									@if ($category->tickets()->complete()->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective'), 'category' => $category->name ]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'category', 'value' => $category->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-category-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective'), 'category' => $category->name ]) }}">
 										{{ $a_button['complete'] }}
 										</a>
 									@endif
 								</span>
                             </li>
                         @endforeach
-                        {!! $categories->render() !!}
+                        {!! $categories->links('pagination::bootstrap-4') !!}
                     </ul>
-                    <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "in active" : ""}}">
+                    <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "show active" : ""}}" role="tabpanel">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-agent') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
@@ -237,7 +199,7 @@
 									@if ($agent->agentTickets(false)->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
 										{{ $a_button['newest'] }}
 										</a>
 									@endif
@@ -245,7 +207,7 @@
 									@if ($agent->agentTickets(false)->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
 										{{ $a_button['active'] }}
 										</a>
 									@endif
@@ -253,16 +215,16 @@
 									@if ($agent->agentTickets(true)->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
 										{{ $a_button['complete'] }}
 										</a>
 									@endif
                                 </span>
                             </li>
                         @endforeach
-                        {!! $agents->render() !!}
+                        {!! $agents->links('pagination::bootstrap-4') !!}
                     </ul>
-                    <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "in active" : "" }}">
+                    <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "show active" : "" }}" role="tabpanel">
                         <li class="list-group-item">
                             <span>{{ trans('panichd::admin.index-user') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
@@ -292,7 +254,7 @@
 									@if ($user->tickets()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'newest']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
 										{{ $a_button['newest'] }}
 										</a>
 									@endif
@@ -300,7 +262,7 @@
 									@if ($user->tickets()->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'active']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
 										{{ $a_button['active'] }}
 										</a>
 									@endif
@@ -308,21 +270,23 @@
 									@if ($user->tickets()->complete()->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
-										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'complete']) }}" class="btn btn-default btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
+										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
 										{{ $a_button['complete'] }}
 										</a>
 									@endif
                                 </span>
-                            </a>
+                            </li>
                         @endforeach
-                        {!! $users->render() !!}
+                        {!! $users->links('pagination::bootstrap-4') !!}
                     </ul>
                 </div>
             </div>
         </div>
     @else
-        <div class="well text-center">
-            {{ trans('panichd::admin.index-empty-records') }}
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                {{ trans('panichd::admin.index-empty-records') }}
+            </div>
         </div>
     @endif
 @stop

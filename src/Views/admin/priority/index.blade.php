@@ -7,14 +7,14 @@
 @include('panichd::shared.common')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.priority-index-title') }}
                 {!! link_to_route(
-                                    $setting->grab('admin_route').'.priority.create',
-                                    trans('panichd::admin.btn-create-new-priority'), null,
-                                    ['class' => 'btn btn-primary pull-right'])
-                !!}
+					$setting->grab('admin_route').'.priority.create',
+					trans('panichd::admin.btn-create-new-priority'), null,
+					['class' => 'btn btn-primary pull-right']
+				) !!}
             </h2>
         </div>
 
@@ -23,10 +23,10 @@
                 {!! link_to_route($setting->grab('admin_route').'.priority.create', trans('panichd::admin.priority-index-create-new')) !!}
             </h3>
         @else
-        <div class="panel-body">    
-			<div class="alert alert-info alert-dismissable fade in">
+        <div class="card-body">
+			<div class="alert alert-info alert-dismissable fade show">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}
+				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}
 			</div>
 		
             <table id="priority_table" class="table table-hover">
@@ -42,7 +42,7 @@
                 <tbody>
                 @foreach($priorities as $priority)
                     <tr data-id="{{ $priority->id }}">
-                        <td style="vertical-align: center"><span class="glyphicon glyphicon-option-vertical" style="color: #aaa"></span></td>
+                        <td style="vertical-align: center"><span class="fa fa-ellipsis-v" style="color: #aaa"></span></td>
 						<td class="magnitude">{{ $priority->magnitude }}</td>
                         <td class="name" data-color="{{ $priority->color }}" style="color: {{ $priority->color }}; vertical-align: middle">
                             {{ $priority->name }}
@@ -51,13 +51,13 @@
 						<td>
                             {!! link_to_route(
 								$setting->grab('admin_route').'.priority.edit', trans('panichd::admin.btn-edit'), $priority->id,
-								['class' => 'btn btn-default'] )
+								['class' => 'btn btn-light btn-default'] )
 							!!}
 
 							{!! link_to_route(
 								$setting->grab('admin_route').'.priority.destroy', trans('panichd::admin.btn-delete'), $priority->id,
 								[
-								'class' => 'btn btn-default deleteit',
+								'class' => 'btn btn-light btn-default deleteit',
 								'form' => "delete-$priority->id",
 								"node" => $priority->name,
 								'data-id' => "$priority->id",

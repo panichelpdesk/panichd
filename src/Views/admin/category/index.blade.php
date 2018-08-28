@@ -7,8 +7,8 @@
 @include('panichd::shared.common')
 
 @section('content')
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card bg-light">
+        <div class="card-header">
             <h2>{{ trans('panichd::admin.category-index-title') }}
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.category.create',
@@ -47,7 +47,7 @@
                             {{ $category->name }}
                         </td>
 						<td style="vertical-align: middle">
-                            <span class="tooltip-info" data-toggle="tooltip" data-placement="auto bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') }}
+                            <span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::admin.category-email-origin') . trans('panichd::admin.colon') }}
 							@if ($category->email != "")
 								{{ trans('panichd::admin.category-email-origin-category') }}">{{ $category->email_name }} &lt;{{ $category->email }}>
 							@elseif($setting->grab('email.account.name') != 'default' && $setting->grab('email.account.mailbox') != 'default')
@@ -55,7 +55,7 @@
 							@else
 								{{ trans('panichd::admin.category-email-origin-website') }}">{{ config('mail.from.name') }} &lt;{{ config('mail.from.address') }}>
 							@endif
-							 <span class="glyphicon glyphicon-question-sign"></span></span>
+							 <span class="fa fa-question-circle"></span></span>
                         </td>
 						<td style="vertical-align: middle">
 						{{ trans('panichd::admin.level-'.$category->create_level) }}
@@ -72,24 +72,24 @@
 						<td style="vertical-align: middle">
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
-								<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
+								<button class="btn btn-light btn-tag btn-xs" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
 							@endforeach
 						@endif
 						</td>
 						<td>
                             {!! link_to_route(
-                                                    $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
-                                                    ['class' => 'btn btn-default'] )
-                                !!}
+                                $setting->grab('admin_route').'.category.edit', trans('panichd::admin.btn-edit'), $category->id,
+                                ['class' => 'btn btn-light btn-default'] )
+                             !!}
 
-                                {!! link_to_route(
-                                                    $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
-                                                    [
-                                                    'class' => 'btn btn-default deleteit',
-                                                    'form' => "delete-$category->id",
-                                                    "node" => $category->name
-                                                    ])
-                                !!}
+                            {!! link_to_route(
+                                $setting->grab('admin_route').'.category.destroy', trans('panichd::admin.btn-delete'), $category->id,
+                                [
+                                'class' => 'btn btn-light btn-default deleteit',
+                                'form' => "delete-$category->id",
+                                "node" => $category->name
+                                ])
+                            !!}
                             {!! CollectiveForm::open([
                                             'method' => 'DELETE',
                                             'route' => [

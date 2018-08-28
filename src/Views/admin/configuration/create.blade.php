@@ -7,49 +7,48 @@
 @include('panichd::shared.common')
 
 @section('content')
-     <div class="panel panel-default">
-      <div class="panel-heading">
+     <div class="card bg-light">
+      <div class="card-header">
         <h3>{{ trans('panichd::admin.config-create-title') }}
           <div class="panel-nav pull-right" style="margin-top: -7px;">          
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.index',
                   trans('panichd::admin.btn-back'), null,
-                  ['class' => 'btn btn-default'])
+                  ['class' => 'btn btn-light'])
               !!}
           </div>
         </h3>  
       </div>       
-      <div class="panel-body">
-        <div class="form-horizontal">
-{!! CollectiveForm::open(['route' => $setting->grab('admin_route').'.configuration.store']) !!}
+      <div class="card-body">
+            {!! CollectiveForm::open(['route' => $setting->grab('admin_route').'.configuration.store']) !!}
 
             <!-- Slug Field -->
-            <div class="form-group">
-                {!! CollectiveForm::label('slug', trans('panichd::admin.config-edit-slug') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+            <div class="form-group row">
+                {!! CollectiveForm::label('slug', trans('panichd::admin.config-edit-slug') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 col-form-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('slug', null, ['class' => 'form-control']) !!}
                 </div>
             </div>
 
             <!-- Default Field -->
-            <div class="form-group">
-                {!! CollectiveForm::label('default', trans('panichd::admin.config-edit-default') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+            <div class="form-group row">
+                {!! CollectiveForm::label('default', trans('panichd::admin.config-edit-default') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 col-form-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('default', null, ['class' => 'form-control']) !!}
                 </div>
             </div>
 
             <!-- Value Field -->
-            <div class="form-group">
-                {!! CollectiveForm::label('value', trans('panichd::admin.config-edit-value') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+            <div class="form-group row">
+                {!! CollectiveForm::label('value', trans('panichd::admin.config-edit-value') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 col-form-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('value', null, ['class' => 'form-control']) !!}
                 </div>
             </div>
 
             <!-- Lang Field -->
-            <div class="form-group">
-                {!! CollectiveForm::label('lang', trans('panichd::admin.config-edit-language') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 control-label']) !!}
+            <div class="form-group row">
+                {!! CollectiveForm::label('lang', trans('panichd::admin.config-edit-language') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 col-form-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('lang', null, ['class' => 'form-control']) !!}
                     
@@ -57,16 +56,15 @@
             </div>
 
             <!-- Submit Field -->
-            <div class="form-group">
-                <div class="col-sm-10 col-sm-offset-2">
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
                   {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
                 </div>
             </div>
             
           {!! CollectiveForm::close() !!}
-        </div>
       </div>
-      <div class="panel-footer">
+      <div class="card-footer">
       </div>
     </div>
 

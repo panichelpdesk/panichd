@@ -30,8 +30,8 @@
 	</div>
 	
 	
-	<div class="panel panel-default">
-		<div class="panel-body">
+	<div class="card bg-light">
+		<div class="card-body">
 			@yield('content')
 			
 		

@@ -7,23 +7,23 @@
 @include('panichd::shared.common')
 
 @section('content')
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card bg-light">
+    <div class="card-header">
         <h3>{{ trans('panichd::admin.member-index-title') }}
-            <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-default btn_member_modal" data-route="create">{{ trans('panichd::admin.btn-add-new') }}</button>
-            </div>
+			<button type="button" class="btn btn-primary pull-right btn_member_modal" data-route="create">{{ trans('panichd::admin.btn-add-new') }}</button>
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 	@if (!session()->exists('status'))
-		<div class="alert alert-info alert-dismissable fade in">
+		<div class="alert alert-info alert-dismissable fade show">
 			<button type="button" class="close" data-dismiss="alert">×</button>
-			<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.member-index-help') !!}
+			<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.member-index-help') !!}
 		</div>
 	@endif
 	@if(!$a_members)
-        <div class="well text-center">{{ trans('panichd::admin.member-index-empty') }}</div>
+		<div class="card bg-light">
+			<div class="card-body text-center">{{ trans('panichd::admin.member-index-empty') }}</div>
+		</div>
     @else
 		<div id="message"></div>
             <table id="dataTable" class="table table-hover table-striped">
@@ -48,39 +48,37 @@
 						@elseif ($member->panichd_agent == '1')
 							<a href="{{ route($setting->grab('admin_route') . '.agent.index')}}" class="btn btn-warning btn-xs">{{ trans('panichd::lang.agent') }}</button>
 						@else
-							<button type="button" disabled="disabled" class="btn btn-default btn-xs">{{ trans('panichd::lang.user') }}</button>
+							<button type="button" disabled="disabled" class="btn btn-light btn-default btn-xs">{{ trans('panichd::lang.user') }}</button>
 						@endif
 						</td>
 						<td>{{ $member->user_tickets_count }}</td>
 						<td>{{ $member->agent_total_tickets_count }}</td>
 						<td>
-                            <button type="button" class="btn btn-default btn_member_modal" data-member_id="{{ $member->id }}" data-member_name="{{ $member->name }}" data-member_email="{{ $member->email }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.member.update', ['id' => $member->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-light btn-default btn_member_modal" data-member_id="{{ $member->id }}" data-member_name="{{ $member->name }}" data-member_email="{{ $member->email }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.member.update', ['id' => $member->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							@if ($member->panichd_admin != '1')
 								@if ($member->user_tickets_count != 0 || $member->agent_total_tickets_count != 0)
-									<button type="button" class="btn btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
+									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
 								
 								@elseif($member->isAgent())
-									<button type="button" class="btn btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-delete-agent') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
+									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-delete-agent') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
 									
 								@else
 									{!! link_to_route(
-									$setting->grab('admin_route').'.member.destroy', trans('panichd::admin.btn-delete'), $member->id,
-									[
-									'class' => 'btn btn-default deleteit',
-									'form' => "delete-$member->id",
-									"user" => $member->name
-									])
-										!!}
+										$setting->grab('admin_route').'.member.destroy', trans('panichd::admin.btn-delete'), $member->id,
+										[
+										'class' => 'btn btn-light btn-default deleteit',
+										'form' => "delete-$member->id",
+										"user" => $member->name
+									]) !!}
 									
 									{!! CollectiveForm::open([
-													'method' => 'DELETE',
-													'route' => [
-																$setting->grab('admin_route').'.member.destroy',
-																$member->id
-																],
-													'id' => "delete-$member->id"
-													])
-									!!}
+										'method' => 'DELETE',
+										'route' => [
+													$setting->grab('admin_route').'.member.destroy',
+													$member->id
+													],
+										'id' => "delete-$member->id"
+									]) !!}
 									{!! CollectiveForm::close() !!}
 									
 								@endif

@@ -3,21 +3,20 @@
   <div class="modal-dialog">
     <div class="modal-content">
 		<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
-		<h4 class="modal-title">{{ trans('panichd::admin.btn-create-new-notice') }}</h4>
+			<h4 class="modal-title">{{ trans('panichd::admin.btn-create-new-notice') }}</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
 			'route' => [$setting->grab('admin_route').'.notice.store'],
 			'method' => 'PATCH',
-			'class' => 'form-horizontal',
 			'data-route-create' => route($setting->grab('admin_route').'.notice.store')
 			]) !!}
 		<input type="hidden" id="user_input" name="user_id" value="" disabled="disabled">
 	
-		<div class="form-group">
+		<div class="form-group row">
 			{!! CollectiveForm::label('user_id', trans('panichd::lang.owner') . trans('panichd::lang.colon'), [
-				'class' => 'control-label col-lg-3',
+				'class' => 'col-form-label col-lg-3',
 			]) !!}
 			
 			<div class="col-lg-9 modal_user_wrap">
@@ -30,9 +29,9 @@
 			</div>
 		</div>
 		
-		<div class="form-group">
+		<div class="form-group row">
 			{!! CollectiveForm::label('department_id', trans('panichd::lang.department') . trans('panichd::lang.colon'), [
-				'class' => 'control-label col-lg-3',
+				'class' => 'col-form-label col-lg-3',
 			]) !!}
 		
 			<div class="col-lg-9">

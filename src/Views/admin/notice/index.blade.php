@@ -8,28 +8,30 @@
 
 @section('content')
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card bg-light">
+    <div class="card-header">
         <h3>{{ trans('panichd::admin.notice-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-default btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
+                <button type="button" class="btn btn-light btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
             </div>
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 		@if (!session()->exists('status'))
-			<div class="alert alert-info alert-dismissable fade in">
+			<div class="alert alert-info alert-dismissable fade show">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-info-sign" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.notice-index-help') !!}
+				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.notice-index-help') !!}
 			</div>
-			<div class="alert alert-warning alert-dismissable fade in">
+			<div class="alert alert-warning alert-dismissable fade show">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<span class="glyphicon glyphicon-warning-sign" style="color: orange;"></span> {!! trans('panichd::admin.notice-index-owner-alert') !!}
+				<span class="fa fa-exclamation-triangle" style="color: orange;"></span> {!! trans('panichd::admin.notice-index-owner-alert') !!}
 			</div>
 		@endif
 
 	@if(!$a_users)
-        <div class="well text-center">{{ trans('panichd::admin.notice-index-empty') }}</div>
+		<div class="card bg-light">
+			<div class="card-body text-center">{{ trans('panichd::admin.notice-index-empty') }}</div>
+		</div>
     @else
 		<div id="message"></div>
             <table class="table table-hover table-striped">
@@ -59,24 +61,22 @@
 							
                         </td>
 						<td>
-                            <button type="button" class="btn btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-light btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							{!! link_to_route(
-							$setting->grab('admin_route').'.notice.destroy', trans('panichd::admin.btn-delete'), $d_user->id,
-							[
-							'class' => 'btn btn-default deleteit',
-							'form' => "delete-$d_user->id",
-							"user" => $d_user->name
-							])
-                                !!}
+								$setting->grab('admin_route').'.notice.destroy', trans('panichd::admin.btn-delete'), $d_user->id,
+								[
+								'class' => 'btn btn-light btn-default deleteit',
+								'form' => "delete-$d_user->id",
+								"user" => $d_user->name
+							]) !!}
                             {!! CollectiveForm::open([
-                                            'method' => 'DELETE',
-                                            'route' => [
-                                                        $setting->grab('admin_route').'.notice.destroy',
-                                                        $d_user->id
-                                                        ],
-                                            'id' => "delete-$d_user->id"
-                                            ])
-                            !!}
+								'method' => 'DELETE',
+								'route' => [
+											$setting->grab('admin_route').'.notice.destroy',
+											$d_user->id
+											],
+								'id' => "delete-$d_user->id"
+							]) !!}
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>

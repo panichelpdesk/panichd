@@ -8,14 +8,14 @@
 
 @section('content')
         <!-- configuration -->
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card bg-light">
+    <div class="card-header">
         <h3>{{ trans('panichd::admin.config-index-title') }}
             <div class="panel-nav pull-right" style="margin-top: -7px;">
                 {!! link_to_route(
                     $setting->grab('admin_route').'.configuration.index',
                     trans('panichd::admin.btn-back'), null,
-                    ['class' => 'btn btn-default'])
+                    ['class' => 'btn btn-light'])
                 !!}
                 {!! link_to_route(
                     $setting->grab('admin_route').'.configuration.create',
@@ -26,19 +26,21 @@
         </h3>
     </div>
     @if($configurations->isEmpty())
-        <div class="well text-center">{{ trans('panichd::admin.config-index-no-settings') }}</div>
+        <div class="card bg-light">
+            <div class="card-body text-center">{{ trans('panichd::admin.config-index-no-settings') }}</div>
+        </div>
     @else
-        <ul class="nav nav-tabs nav-justified">
-            <li class="active"><a data-toggle="tab" href="#init-configs">{{ trans('panichd::admin.config-index-initial') }}</a></li>
-            <li><a data-toggle="tab" href="#ticket-configs">{{ trans('panichd::admin.config-index-tickets') }}</a></li>
-            <li><a data-toggle="tab" href="#email-configs">{{ trans('panichd::admin.config-index-notifications') }}</a></li>
-            <li><a data-toggle="tab" href="#perms-configs">{{ trans('panichd::admin.config-index-permissions') }}</a></li>
-            <li><a data-toggle="tab" href="#editor-configs">{{ trans('panichd::admin.config-index-editor') }}</a></li>
-            <li><a data-toggle="tab" href="#other-configs">{{ trans('panichd::admin.config-index-other') }}</a></li>
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" href="#init-configs">{{ trans('panichd::admin.config-index-initial') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#ticket-configs">{{ trans('panichd::admin.config-index-tickets') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#email-configs">{{ trans('panichd::admin.config-index-notifications') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#perms-configs">{{ trans('panichd::admin.config-index-permissions') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#editor-configs">{{ trans('panichd::admin.config-index-editor') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#other-configs">{{ trans('panichd::admin.config-index-other') }}</a></li>
         </ul>
     <br />
         <div class="tab-content">
-            <div id="init-configs" class="tab-pane fade in active">
+            <div id="init-configs" class="tab-pane fade show active">
                 @include('panichd::admin.configuration.tables.init_table')
             </div>
             <div id="ticket-configs" class="tab-pane fade">
