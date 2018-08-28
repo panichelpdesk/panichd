@@ -120,7 +120,7 @@ class PanicHDServiceProvider extends ServiceProvider
 				$view->with(compact('n_notices'));
 			});
 
-            view()->composer('panichd::tickets.partials.summernote', function ($view) {
+            view()->composer(['panichd::tickets.partials.summernote', 'panichd::shared.summernote'], function ($view) {
                 $editor_locale = Setting::grab('summernote_locale');
 
                 if ($editor_locale == 'laravel') {

@@ -32,9 +32,10 @@
 
 @include('panichd::shared.photoswipe_files')
 @include('panichd::shared.jcrop_files')
+@include('panichd::tickets.partials.summernote')
 
 @section('footer')
     @include('panichd::tickets.show.script')
-    @include('panichd::tickets.partials.summernote')
+
 	@include('panichd::tickets.partials.tags_footer_script')
 @append

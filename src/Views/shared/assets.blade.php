@@ -3,14 +3,6 @@
 	<link rel="StyleSheet" href="{{asset('vendor/panichd/font-awesome/css/all-5.2.0.min.css')}}">
 @endif
 
-@if($editor_enabled)
-	<link rel="StyleSheet" href="{{asset('vendor/panichd/css/summernote/summernote-bs4.css')}}">
-	@if($codemirror_enabled)
-		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.css')}}">
-		<link rel="StyleSheet" href="{{asset('vendor/panichd/css/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '-' . $codemirror_theme . '.min.css')}}">
-	@endif
-@endif
-
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/select2.min.css')}}">
 <style type="text/css">
 .select2-selection__choice {

@@ -242,6 +242,7 @@
 @include('panichd::shared.photoswipe_files')
 @include('panichd::shared.datetimepicker')
 @include('panichd::shared.jcrop_files')
+@include('panichd::tickets.partials.summernote')
 
 @section('footer')
     <script type="text/javascript">
@@ -351,7 +352,6 @@
             $('#start_date').data("DateTimePicker").maxDate(e.date);
         });
 	});	
-	</script>	
-	@include('panichd::tickets.partials.summernote')
+	</script>
 	@include('panichd::tickets.partials.tags_footer_script')
 @append

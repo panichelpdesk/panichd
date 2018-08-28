@@ -6,6 +6,36 @@
 
 @include('panichd::shared.common')
 
+@include('panichd::shared.summernote')
+
+@section('footer')
+    <script>
+        function changeSerialize(e){
+            document.querySelector("#serialize-password").style.display = e.checked ? 'block' : 'none';
+            document.querySelector(".help-block").style.display = e.checked ? 'block' : 'none';
+        }
+
+        changeSerialize(document.querySelector("input[name='serialize']"));
+    </script>
+
+    @if($should_serialize)
+        <script src="{{asset('vendor/panichd/js/codemirror/mode/clike-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
+        <script src="{{asset('vendor/panichd/js/codemirror/mode/php-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
+        <script type="text/javascript">
+            window.addEventListener('load', function(){
+                CodeMirror.fromTextArea( document.querySelector("textarea[name='value']"), {
+                    lineNumbers: true,
+                    mode: 'text/x-php',
+                    theme: 'monokai',
+                    indentUnit: 2,
+                    lineWrapping: true
+                });
+            });
+
+        </script>
+    @endif
+@append
+
 @section('content')
      <div class="card bg-light">
       <div class="card-header">
@@ -122,35 +152,4 @@
           {!! CollectiveForm::close() !!}
       </div>
     </div>
-
-    <script>
-        function changeSerialize(e){
-            document.querySelector("#serialize-password").style.display = e.checked ? 'block' : 'none';
-            document.querySelector(".help-block").style.display = e.checked ? 'block' : 'none';
-        }
-
-        changeSerialize(document.querySelector("input[name='serialize']"));
-
-
-    </script>
-
-
-    @if($should_serialize)
-	<script src="{{asset('vendor/panichd/js/codemirror/codemirror-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
-    <script src="{{asset('vendor/panichd/js/codemirror/mode/clike-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
-    <script src="{{asset('vendor/panichd/js/codemirror/mode/php-' . PanicHD\PanicHD\Helpers\Cdn::CodeMirror . '.min.js')}}"></script>
-    <script type="text/javascript">
-        window.addEventListener('load', function(){
-            CodeMirror.fromTextArea( document.querySelector("textarea[name='value']"), {
-                lineNumbers: true,
-                mode: 'text/x-php',
-                theme: 'monokai',
-                indentUnit: 2,
-                lineWrapping: true
-            });
-        });
-
-    </script>
-    @endif
-
 @stop
