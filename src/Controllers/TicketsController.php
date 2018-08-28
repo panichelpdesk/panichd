@@ -110,7 +110,7 @@ class TicketsController extends Controller
 			'agent.name as agent_name',
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
-			$members_table . '.name AS owner_name',
+			'members.name AS owner_name',
 			'creator.name as creator_name',
 			'panichd_tickets.user_id',
 			'panichd_tickets.creator_id',		
@@ -125,7 +125,7 @@ class TicketsController extends Controller
 		];
 		
 		if (Setting::grab('departments_feature')){			
-			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', $members_table . '.department_id')
+			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'members.department_id')
 				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 			
 			// Department columns
