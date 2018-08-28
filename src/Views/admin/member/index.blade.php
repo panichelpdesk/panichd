@@ -59,7 +59,7 @@
 								@if ($member->user_tickets_count != 0 || $member->agent_total_tickets_count != 0)
 									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
 								
-								@elseif($member->isAgent())
+								@elseif($member->panichd_agent == '1')
 									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-delete-agent') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
 									
 								@else
