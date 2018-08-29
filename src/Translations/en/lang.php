@@ -41,8 +41,9 @@ return [
   'table-info-attachments-total'     => ':num attached files',
   'table-info-comments-total'        => ':num Total comments.',
   'table-info-comments-recent'       => ':num recent ones.',
+  'table-info-notes-total'           => ':num internal notes',
 
-  'calendar-active'            => 'Started :description',
+        'calendar-active'            => 'Started :description',
   'calendar-active-today'      => 'Started :description',
   'calendar-active-future'     => 'Starts :description',
   'calendar-expired'           => 'Expired :description',

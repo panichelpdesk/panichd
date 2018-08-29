@@ -150,11 +150,12 @@ class TicketsController extends Controller
 			->with('owner.department.ancestor')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
-				$query->countable()->forLevel($currentLevel);
+				$query->countable()->forLevel($currentLevel)->where('type', '!=', 'note');
 			}])
 			->withCount(['recentComments' => function($query) use($currentLevel){
-				$query->countable()->forLevel($currentLevel);
-			}]);
+				$query->countable()->forLevel($currentLevel)->where('type', '!=', 'note');
+			}])
+            ->withCount('internalNotes');
 
         $collection = $datatables->of($collection);
 
@@ -225,8 +226,11 @@ class TicketsController extends Controller
 				$field.=$ticket->recent_comments_count.' ';
 			}
 			if ($ticket->comments_count>0){
-				$field.='<span class="fa fa-comment tooltip-info comment" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
+				$field.=$ticket->comments_count . ' <span class="fa fa-comments tooltip-info comment" title="'.trans('panichd::lang.table-info-comments-total', ['num'=>$ticket->comments_count]).($ticket->recent_comments_count>0 ? ' '.trans('panichd::lang.table-info-comments-recent', ['num'=>$ticket->recent_comments_count]) : '').'"></span>';
 			}
+			if ($this->member->currentLevel() >= 2 and $ticket->internal_notes_count > 0){
+			    $field.= ' ' . $ticket->internal_notes_count . ' <span class="fa fa-pencil-alt tooltip-info comment" title="' . trans('panichd::lang.table-info-notes-total', ['num' => $ticket->internal_notes_count]) . '"></span>';
+            }
 			
 			return $field;
 		});

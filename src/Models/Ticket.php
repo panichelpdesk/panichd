@@ -227,7 +227,7 @@ class Ticket extends Model
     }
 	
 	/**
-     * Get Ticket comments.
+     * Get Ticket comments updated recently
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -235,6 +235,17 @@ class Ticket extends Model
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Comment', 'ticket_id')->where('panichd_comments.updated_at','>', Carbon::yesterday());
     }
+
+    /*
+     * Get Ticket internal notes only
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function internalNotes()
+    {
+        return $this->hasMany('PanicHD\PanicHD\Models\Comment', 'ticket_id')->where('panichd_comments.type','note');
+    }
+
 
     /**
      * Ticket attachments (NOT including its comments attachments).

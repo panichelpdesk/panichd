@@ -41,6 +41,7 @@ return [
   'table-info-attachments-total'     => ':num fitxers adjunts',
   'table-info-comments-total'        => ':num comentaris totals.',
   'table-info-comments-recent'       => ':num recents.',
+  'table-info-notes-total'           => ':num notes internes',
   
   'calendar-active'            => 'Va començar :description',
   'calendar-active-today'      => 'Ha començat :description',
