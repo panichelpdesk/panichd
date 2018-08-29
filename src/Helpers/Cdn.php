@@ -10,9 +10,13 @@ namespace PanicHD\PanicHD\Helpers;
  */
 class Cdn
 {
-    const CodeMirror = '5.40.0';
-    const Summernote = '0.8.10';
+    // General usage
     const FontAwesome = '5.2.0';
+
+    // Edition fields
+    const Summernote = '0.8.10';
+    const CodeMirror = '5.40.0';
+    const ColorPicker = '3.0.3';
 
     // https://datatables.net/download/
     const DataTables = '1.10.18';
