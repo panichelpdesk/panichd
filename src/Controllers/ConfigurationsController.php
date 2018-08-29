@@ -84,7 +84,7 @@ class ConfigurationsController extends Controller
 
       Session::flash('configuration', 'Setting saved successfully.');
       \Cache::forget('panichd::settings'); // refresh cached settings
-    return redirect()->action('PanicHD\PanicHD\Controllers\ConfigurationsController@index');
+    return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
   }
 
   /**
