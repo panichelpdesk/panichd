@@ -123,9 +123,6 @@ return [
 
     'filter-agent-all' => 'Todos',
 
-    'filter-on-total' => 'A contagem depende de filtros ativos',
-
-    'filter-off-total' => 'Total total',
 
     'btn-add' => 'Adicionar',
     'btn-back' => 'Voltar',

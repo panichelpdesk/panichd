@@ -98,8 +98,6 @@ return [
   'filter-owner-all'                 => 'All',
   'filter-agent'                     => 'Agent',
   'filter-agent-all'                 => 'All',
-  'filter-on-total'                  => 'Count depends on active filters',
-  'filter-off-total'                 => 'Total total',
 
   'btn-add'                          => 'Add',
   'btn-back'                         => 'Back',

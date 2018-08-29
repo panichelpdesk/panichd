@@ -98,8 +98,6 @@ return [
   'filter-owner-all'                 => 'Tots',
   'filter-agent'                     => 'Agent',
   'filter-agent-all'                 => 'Tots',
-  'filter-on-total'                  => 'Compte segons filtre',
-  'filter-off-total'                 => 'Compte total',
 
   'btn-add'                          => 'Afegir',
   'btn-back'                         => 'Enrere',

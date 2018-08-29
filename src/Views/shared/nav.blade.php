@@ -2,16 +2,12 @@
 	<a class="nav-link" href="{{ $n_notices == 0 ? '#' : route($setting->grab('main_route').'.notices') }}" title="{{ $n_notices == 0 ? trans('panichd::lang.ticket-notices-empty') : trans('panichd::lang.nav-notices-number-title', ['num' => $n_notices]) }}">{{ trans('panichd::lang.ticket-notices-title') }} <span class="badge">{{ $n_notices }}</span></a>
 </li>
 
-<?php 
-	$title = trans('panichd::lang.filter-'.((session()->has('panichd_filter_currentLevel') or (isset($ticket) and session()->has('panichd_filters'))) ? 'on' : 'off').'-total');
-?>
-
 @if($u->canViewNewTickets())
 	<li class="nav-item dropdown {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@create')) || (isset($ticket) && $ticket->isNew()) ? "active" : "" !!}">
 		<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('panichd::lang.nav-new-tickets-title') }}">
 			<span>{{ trans('panichd::lang.nav-new-tickets') }}</span>
 
-			<span class="badge" title="{{ $title }}" style="cursor: help">
+			<span class="badge" style="cursor: help">
 				{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
 			</span>
 		</a>
@@ -32,7 +28,7 @@
 	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}" title="{{ trans('panichd::lang.nav-active-tickets-title') }}">
 		<span>{{ trans('panichd::lang.active-tickets-adjective') }}</span>
 
-		<span class="badge" title="{{ $title }}" style="cursor: help">
+		<span class="badge" style="cursor: help">
 			{{ PanicHD\PanicHD\Models\Ticket::active()->visible()->count() }}
 		</span>
 	</a>
@@ -41,7 +37,7 @@
 	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete') }}" title="{{ trans('panichd::lang.nav-completed-tickets-title') }}">
 		<span>{{ trans('panichd::lang.complete-tickets-adjective') }}</span>
 
-		<span class="badge" title="{{ $title }}" style="cursor: help">
+		<span class="badge" style="cursor: help">
 			{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
 		</span>
 	</a>
