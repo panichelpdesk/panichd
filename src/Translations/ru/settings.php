@@ -112,16 +112,6 @@ HTML
 HTML
     ,
 
-    'include_font_awesome' => <<<'HTML'
-			<p>Подключать Font-awesome css. Выставьте <code>0</code>, если он уже используется на страницах</p>
-
-			<p>
-				Не подключать: <code>0</code><br>
-				Подключать: <code>1</code>
-			</p>
-HTML
-    ,
-
     'summernote_locale' => <<<'HTML'
 			<p>
 				Какой язык должен использовать summernote<br>

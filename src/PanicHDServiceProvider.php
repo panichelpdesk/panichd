@@ -117,12 +117,6 @@ class PanicHDServiceProvider extends ServiceProvider
                 $view->with(compact('master', 'email', 'tools', 'editor_enabled', 'codemirror_enabled', 'codemirror_theme'));
             });
 
-            // Include font awesome css or not
-            view()->composer('panichd::shared.assets', function ($view) {
-                $include_font_awesome = Setting::grab('include_font_awesome');
-                $view->with(compact('include_font_awesome'));
-            });
-			
 			// Include $n_notices in shared.nav and tickets.createedit templates
 			view()->composer(['panichd::shared.nav', 'panichd::tickets.createedit'], function ($view) {
 				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->notHidden()->whereIn('user_id', \PanicHDMember::find(auth()->user()->id)->getMyNoticesUsers())->count() : 0;

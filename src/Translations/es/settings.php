@@ -76,15 +76,6 @@ ENDHTML
 			</p>
 ENDHTML
 
-    , 'include_font_awesome' => <<<'ENDHTML'
-			<p>Si Font-awesome css se incluyo fuera de Panic Help Desk, deberías configurar esto como <code>0</code></p>
-
-			<p>
-				No incluir: <code>0</code><br>
-				Incluir: <code>1</code>
-			</p>
-ENDHTML
-
     , 'summernote_locale' => <<<"ENDHTML"
 			<p>
 			    ¿Qué lenguaje debería usar el editor de texto summernote js?<br>

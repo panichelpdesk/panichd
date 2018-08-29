@@ -1,8 +1,5 @@
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/bootstrap/bootstrap-4.1.3.min.css')}}">
-@if($include_font_awesome)
-	<link rel="StyleSheet" href="{{asset('vendor/panichd/font-awesome/css/all-5.2.0.min.css')}}">
-@endif
-
+<link rel="StyleSheet" href="{{asset('vendor/panichd/font-awesome/css/all-5.2.0.min.css')}}">
 <link rel="StyleSheet" href="{{asset('vendor/panichd/css/select2.min.css')}}">
 <style type="text/css">
 .select2-selection__choice {
