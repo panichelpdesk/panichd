@@ -9,6 +9,8 @@ $(function(){
             var action = $(this).find('span.fa').hasClass("fa-plus") ? 'minus' : 'plus';
             var id = $(this).data('id');
 
+            $(this).closest('tr').find('td').first().effect('highlight');
+
             $('.jquery_ticket_' + id + '_text').each(function(){
                 if (action == 'minus'){
                     $(this).prop('data-height-minus', $(this).height());
@@ -25,7 +27,6 @@ $(function(){
                     $(this).css('height', '');
                 }
             });
-
         });
 
 		// Agent change: Modal for > 4 agents
