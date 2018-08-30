@@ -5,21 +5,27 @@ $(function(){
 
 	    // Plus / less buttons for text fields
         $('.jquery_ticket_text_toggle').click(function(e){
+            var remove = $(this).find('span.fa').hasClass("fa-plus") ? 'plus' : 'minus';
+            var action = $(this).find('span.fa').hasClass("fa-plus") ? 'minus' : 'plus';
+            var id = $(this).data('id');
 
-            if($(this).find('span.fa').hasClass("fa-plus")){
-                $(this).prop('data-height-minus', $('.jquery_ticket_' + $(this).data('id') + '_text').height());
-                $(this).find('span.fa').removeClass('fa-plus').addClass('fa-minus');
-                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_minus').hide();
-                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_plus').css('display', 'inline');
+            $('.jquery_ticket_' + id + '_text').each(function(){
+                if (action == 'minus'){
+                    $(this).prop('data-height-minus', $(this).height());
+                    $(this).find('span.fa').removeClass('fa-plus').addClass('fa-minus');
+                    $(this).find('.text_minus').hide();
+                    $(this).find('.text_plus').css('display', 'inline');
 
-                $(this).prop('data-height-plus', $('.jquery_ticket_' + $(this).data('id') + '_text').height());
-                $('.jquery_ticket_' + $(this).data('id') + '_text').css('height', $(this).prop('data-height-minus')).animate({height: $(this).prop('data-height-plus')}, 500);
-            }else{
-                $(this).find('span.fa').removeClass('fa-minus').addClass('fa-plus');
-                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_minus').show();
-                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_plus').hide();
-                $('.jquery_ticket_' + $(this).data('id') + '_text').css('height', '');
-            }
+                    $(this).prop('data-height-plus', $(this).height());
+                    $(this).css('height', $(this).prop('data-height-minus')).animate({height: $(this).prop('data-height-plus')}, 500);
+                }else{
+                    $(this).find('span.fa').removeClass('fa-minus').addClass('fa-plus');
+                    $(this).find('.text_minus').show();
+                    $(this).find('.text_plus').hide();
+                    $(this).css('height', '');
+                }
+            });
+
         });
 
 		// Agent change: Modal for > 4 agents
