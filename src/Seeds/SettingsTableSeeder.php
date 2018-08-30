@@ -252,9 +252,8 @@ class SettingsTableSeeder extends Seeder
 			 * String replacements to execute within Purifiable trait before clean() method
 			*/
 			'html_replacements' => [
-				'</p><p>' => '</p><p> ',
-				'<br />' => '<br>',
-				'<br>' => ' '
+				'<br />' => '',
+				'<br>' => ''
 			],
 			
 			/*
