@@ -197,6 +197,7 @@ class SettingsTableSeeder extends Seeder
              * Default: false
              */
             'default_reopen_status_id' => false,
+
             /*
              * [Deprecated] User ids who are members of admin role
              * Default: 1
@@ -256,7 +257,11 @@ class SettingsTableSeeder extends Seeder
 				'<br>' => ' '
 			],
 			
-			
+			/*
+			 * If set to a number, limit texts in ticket list to specified character length and show plus / minus icons
+			 */
+			'list_text_max_length' => '300',
+
 			
             /*
              * Pagination length: For tickets table.

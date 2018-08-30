@@ -2,7 +2,26 @@
 $(function(){
 	// Ticket List: Change ticket agent
 	$('#tickets-table').on('draw.dt', function(e){
-		
+
+	    // Plus / less buttons for text fields
+        $('.jquery_ticket_text_toggle').click(function(e){
+
+            if($(this).find('span.fa').hasClass("fa-plus")){
+                $(this).prop('data-height-minus', $('.jquery_ticket_' + $(this).data('id') + '_text').height());
+                $(this).find('span.fa').removeClass('fa-plus').addClass('fa-minus');
+                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_minus').hide();
+                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_plus').css('display', 'inline');
+
+                $(this).prop('data-height-plus', $('.jquery_ticket_' + $(this).data('id') + '_text').height());
+                $('.jquery_ticket_' + $(this).data('id') + '_text').css('height', $(this).prop('data-height-minus')).animate({height: $(this).prop('data-height-plus')}, 500);
+            }else{
+                $(this).find('span.fa').removeClass('fa-minus').addClass('fa-plus');
+                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_minus').show();
+                $('.jquery_ticket_' + $(this).data('id') + '_text').find('.text_plus').hide();
+                $('.jquery_ticket_' + $(this).data('id') + '_text').css('height', '');
+            }
+        });
+
 		// Agent change: Modal for > 4 agents
 		$('.jquery_agent_change_modal').click(function(e){
 			e.preventDefault();				

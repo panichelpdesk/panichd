@@ -200,16 +200,34 @@ class TicketsController extends Controller
 			if (Setting::grab('subject_content_column') == 'no'){
 				return $field;
 			}else{
-				$field = '<div style="margin: 0em 0em 1em 0em;">'.$field.'</div>' . $ticket->content;
-				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="fa fa-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+				$field = '<div style="margin: 0em 0em 1em 0em;">'.$field.'</div>';
 
+				if (Setting::grab('list_text_max_length') != 0 and strlen($ticket->content) > (Setting::grab('list_text_max_length')+30)){
+                    $field.= '<div class="jquery_ticket_' . $ticket->id . '_text"><span class="text_minus">' . mb_substr($ticket->content, 0, Setting::grab('list_text_max_length')) . '...</span>'
+                        .'<span class="text_plus" style="display: none">' . $ticket->content . '</span>'
+                        .' <button class="btn btn-light btn-xs jquery_ticket_text_toggle" data-action="plus" data-height-plus="" data-height-minus="" data-id="' . $ticket->id . '" data-plus-icon="fa fa-minus" data-minus-icon="fa fa-plus"><span class="fa fa-plus"></span></button></div>';
+
+                }else{
+                    $field.= $ticket->content;
+                }
+
+				if ($ticket->all_attachments_count>0){
+                    $field.= "<br />" . $ticket->all_attachments_count . ' <span class="fa fa-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
+                }
 				return $field;
 			}
         });
 		
 		if (Setting::grab('subject_content_column') == 'no'){
 			$collection->editColumn('content', function ($ticket) {
-				$field = $ticket->content;
+                if (Setting::grab('list_text_max_length') != 0 and strlen($ticket->content) > (Setting::grab('list_text_max_length')+30)){
+                    $field = '<div class="jquery_ticket_' . $ticket->id . '_text"><span class="text_minus">' . mb_substr($ticket->content, 0, Setting::grab('list_text_max_length')) . '...</span>'
+                        .'<span class="text_plus" style="display: none">' . $ticket->content . '</span>'
+                        .' <button class="btn btn-light btn-xs jquery_ticket_text_toggle" data-action="plus" data-height-plus="" data-height-minus="" data-id="' . $ticket->id . '" data-plus-icon="fa fa-minus" data-minus-icon="fa fa-plus"><span class="fa fa-plus"></span></button></div>';
+
+                }else{
+                    $field = $ticket->content;
+                }
 				if ($ticket->all_attachments_count>0) $field.= "<br />" . $ticket->all_attachments_count . ' <span class="fa fa-paperclip tooltip-info attachment" title="'.trans('panichd::lang.table-info-attachments-total', ['num' => $ticket->all_attachments_count]).'"></span>';
 
 				return $field;
