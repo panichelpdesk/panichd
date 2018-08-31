@@ -249,6 +249,8 @@ return [
   'show-ticket-js-delete'            => 'Esteu segur que voleu esborrar?: ',
   'show-ticket-modal-delete-title'   => 'Esborrar Tiquet',
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
+  'show-ticket-modal-edit-fields'    => 'Editar més camps',
+
   
   'show-ticket-modal-complete-blank-intervention-check' => 'Deixar actuació en blanc',
   'show-ticket-complete-blank-intervention-alert'       => 'Per a tancar el tiquet cal que confirmis que deixes el camp actuació en blanc',

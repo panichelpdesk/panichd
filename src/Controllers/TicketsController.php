@@ -35,7 +35,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'hide']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'edit_with_values', 'update', 'changeAgent', 'changePriority', 'hide']]);
         $this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 
         $this->tickets = $tickets;
@@ -616,11 +616,12 @@ class TicketsController extends Controller
 				});
 				break;
 			case 'statuses':
-				$instance = Cache::remember('panichd::statuses', 60, function () {
-					if (Setting::grab('use_default_status_id')){
-                        return Models\Status::all();
-                    }else
+            case 'complete_statuses':
+				$instance = Cache::remember('panichd::' . $list, 60, function () use($list) {
+				    if (!Setting::grab('use_default_status_id') or $list == 'complete_statuses'){
                         return Models\Status::all()->where('id', '!=', Setting::grab('default_status_id'));
+                    }else
+                        return Models\Status::all();
 				});
 				break;
 			default:
@@ -649,8 +650,12 @@ class TicketsController extends Controller
 
         return view('panichd::tickets.createedit', $data);
     }
-	
-	public function edit($id){
+
+    /*
+     * Edit a ticket
+     */
+	public function edit($id)
+    {
 		$ticket = $this->tickets->findOrFail($id);
 		
 		$data = $this->create_edit_data($ticket);
@@ -663,8 +668,44 @@ class TicketsController extends Controller
 		
         return view('panichd::tickets.createedit', $data);
 	}
+
+	/*
+	 * Edit a ticket and setting one or many fields by URL
+	 *
+	 * Usage: Show ticket -> complete modal -> "Edit more fields" option
+	 */
+	public function edit_with_values($id, $parameters)
+    {
+        $ticket = $this->tickets->findOrFail($id);
+
+        $data = $this->create_edit_data($ticket);
+
+        // Get URL parameters and replace a_current array with them
+        $a_temp = explode('/', $parameters);
+        $a_parameters = [];
+
+        if (count($a_temp) % 2 == 0){
+            $key = "";
+            foreach($a_temp as $param){
+                if ($key == ""){
+                    $key = $param;
+                }else{
+                    $data['a_current'][$key] = $param;
+                    $key = "";
+                }
+            }
+        }
+
+        $data['ticket'] = $ticket;
+
+        $data['ticket_owner_id'] = $data['ticket']->user_id;
+
+        $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
+
+        return view('panichd::tickets.createedit', $data);
+    }
 	
-	public function create_edit_data($ticket = false)
+	public function create_edit_data($ticket = false, $a_parameters = false)
 	{
 		$member = $this->member->find(auth()->user()->id);
 
@@ -777,7 +818,7 @@ class TicketsController extends Controller
 		}else{
 			$a_tags_selected = [];
 		}
-		
+
 		return compact('a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 	
@@ -1131,6 +1172,7 @@ class TicketsController extends Controller
         }
 		
 		$status_lists = $this->getCacheList('statuses');
+        $complete_status_list = $this->getCacheList('complete_statuses');
 
         // Category tags
         $tag_lists = Category::whereHas('tags')
@@ -1149,7 +1191,7 @@ class TicketsController extends Controller
         $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
         return view('panichd::tickets.show',
-            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'agent_lists', 'tag_lists',
+            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
                 'comments', 'close_perm', 'reopen_perm'));
     }
 	

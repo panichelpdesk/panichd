@@ -26,19 +26,24 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 			
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
-            'names' => [
-                'index'   => $main_route.'.index',
-                'store'   => $main_route.'.store',
-                'create'  => $main_route.'.create',
-                'update'  => $main_route.'.update',
-                'show'    => $main_route.'.show',
-                'destroy' => $main_route.'.destroy',
-                'edit'    => $main_route.'.edit',
-            ],
-            'parameters' => [
-                $field_name => 'ticket',
-            ],
-        ]);
+        'names' => [
+            'index'   => $main_route.'.index',
+            'store'   => $main_route.'.store',
+            'create'  => $main_route.'.create',
+            'update'  => $main_route.'.update',
+            'show'    => $main_route.'.show',
+            'destroy' => $main_route.'.destroy',
+            'edit'    => $main_route.'.edit',
+        ],
+        'parameters' => [
+            $field_name => 'ticket',
+        ],
+    ]);
+
+    // Open Ticket edit page with one or more parameters set by URL
+    Route::get("$main_route_path/{id}/editwithvalues/{parameters}", 'PanicHD\PanicHD\Controllers\TicketsController@edit_with_values')
+        ->where('parameters', '(.*)')
+        ->name("$main_route.edit-with-values");
 	
 	// Attachment routes
     Route::get("$main_route_path/download-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@downloadAttachment')
@@ -65,9 +70,9 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-        //Ticket complete route for permitted user.
-        Route::patch("$main_route_path/{id}/complete", 'PanicHD\PanicHD\Controllers\TicketsController@complete')
-            ->name("$main_route.complete");
+    //Ticket complete route for permitted user.
+    Route::patch("$main_route_path/{id}/complete", 'PanicHD\PanicHD\Controllers\TicketsController@complete')
+        ->name("$main_route.complete");
 
     //Ticket reopen route for permitted user.
     Route::get("$main_route_path/{id}/reopen", 'PanicHD\PanicHD\Controllers\TicketsController@reopen')

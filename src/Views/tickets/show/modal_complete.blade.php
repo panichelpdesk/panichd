@@ -21,7 +21,7 @@
 			<div class="form-group row">
 				{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 				<div class="col-lg-10">
-					{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), [
+					{!! CollectiveForm::select('status_id', $complete_status_list, $setting->grab('default_close_status_id'), [
 						'class' => 'form-control'
 					]) !!}
 				</div>
@@ -61,9 +61,12 @@
 		{!! CollectiveForm::close() !!}	 
 		</div>
 		<div class="modal-footer">
-		<button type="button" id="complete_form_submit" class="btn btn-danger">{{ trans('panichd::lang.btn-submit') }}</button>
+		@if ($u->currentLevel() > 1)
+			<a id="edit-with-values" class="btn btn-default pull-left mr-auto" href="{{ route($setting->grab('main_route').'.edit-with-values', ['id' => $ticket->id, 'parameters' => 'complete/yes/status_id/' . $setting->grab('default_close_status_id')]) }}">{{ trans('panichd::lang.show-ticket-modal-edit-fields') }}</a>
+		@endif
+			<button type="button" id="complete_form_submit" class="btn btn-danger">{{ trans('panichd::lang.btn-submit') }}</button>
 		</div>
-		
-    </div>
-  </div>
+
+</div>
+</div>
 </div>

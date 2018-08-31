@@ -58,7 +58,14 @@
 		$('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
 			$(this).data('form').submit();
 		});
-		
+
+		// Complete modal status_id change
+        $('#ticket-complete-modal #status_id').change(function(){
+           var url = '{{ route($setting->grab('main_route').'.edit-with-values', ['id' => $ticket->id, 'parameters' => 'complete/yes/status_id/']) }}';
+            $('#ticket-complete-modal #edit-with-values')
+               .prop('href', url + '/' + $(this).val());
+        });
+
 		// Complete modal submit button
 		$('#complete_form_submit').click(function(e){				
 			@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
