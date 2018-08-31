@@ -116,7 +116,7 @@
 						@foreach ($a_lists as $list => $a_list)
 							<div class="form-check form-check-inline">
 								<label class="form-check-label">
-									<input type="radio" class="jquery_ticket_list form-check-input" name="complete" value="{{ $a_list['complete'] }}" @if($list == $checked_list) {!! 'checked="checked"' !!}@endif data-list="{{ $list }}" data-default_status_id="{{ $a_list['default_status_id'] }}">{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
+									<input type="radio" id="radio_{{ $list }}_list" class="jquery_ticket_list form-check-input" name="complete" value="{{ $a_list['complete'] }}" @if($list == $checked_list) {!! 'checked="checked"' !!}@endif data-list="{{ $list }}" data-default_status_id="{{ $a_list['default_status_id'] }}">{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
 								</label>
 							</div>
 						@endforeach
@@ -321,6 +321,14 @@
 			}
         });
 
+	    // Change in status affects the List only changing from or to default_status_id
+		$('#select_status').change(function(){
+		    if ($(this).val() == '{{ $setting->grab('default_status_id') }}'){
+                if (!$('#radio_newest_list').is(':checked')) $('#radio_newest_list').prop('checked', true).parent().effect('highlight');
+			}else{
+                if ($('#radio_newest_list').is(':checked')) $('#radio_active_list').prop('checked', true).parent().effect('highlight');
+            }
+		});
 
 	    // Category select with $u->maxLevel() > 1 only
 		$('#category_change').change(function(){
