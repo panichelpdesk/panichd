@@ -7,10 +7,10 @@
 	
 	@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $n_notices > 0)
 		<div class="row">
-		<div class="col-lg-6 col-lg-push-6">
+		<div class="col-xl-5 order-xl-2">
 			@include('panichd::notices.widget')
 		</div>
-		<div class="col-lg-6 col-lg-pull-6">
+		<div class="col-xl-7 order-xl-1">
 	@endif
 	
 	<div class="card bg-light"><div class="card-body">
