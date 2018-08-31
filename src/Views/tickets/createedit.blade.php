@@ -72,23 +72,56 @@
 			@if ($u->currentLevel() > 1)
 			<div class="jquery_level2_show">
 				<div class="form-group row">
-					<label class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+					<label class="col-lg-3 tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 					
-					<div class="col-lg-9" style="padding-top: 7px;">
+					<div class="col-lg-9" style="xpadding-top: 7px;">
 						<label><input type="radio" name="hidden" value="false" {{ (!isset($ticket) || (isset($ticket) && !$ticket->hidden)) ? 'checked' : '' }}> {{ trans('panichd::lang.yes') }}</label><label style="margin: 0em 0em 0em 1em;"><input type="radio" name="hidden" value="true" {{ (isset($ticket) && $ticket->hidden) ? 'checked' : ''}}> {{ trans('panichd::lang.no') }}</label>
 					</div>
 			
 				</div>
 				
 				<div class="form-group row" style="margin-bottom: 3em"><!-- TICKET LIST -->
-					{!! CollectiveForm::label('status_id', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
-						'class' => 'col-lg-3 col-form-label'
+					{!! CollectiveForm::label('complete', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
+						'class' => 'col-lg-3',
+						'title' => trans('panichd::lang.create-ticket-change-list'),
+						'id' => 'last_list',
+						'data-last_list_default_status_id' => $a_current['status_id']
 					]) !!}
 					<div class="col-lg-9">
-						<button type="button" id="complete_no" class="btn btn-light btn-default text-warning" data-value="no" data-click-status="{{$setting->grab('default_close_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? 'style="display:none"' : ''!!}><span class="fa fa-file"></span> {{ trans('panichd::lang.active-tickets-adjective') }}</button>
-						<button type="button" id="complete_yes" class="btn btn-light btn-default text-success" data-value="yes" data-click-status="{{$setting->grab('default_reopen_status_id')}}" title="{{ trans('panichd::lang.create-ticket-change-list') }}" {!! $a_current['complete'] == "yes" ? '' : 'style="display:none"'!!}><span class="fa fa-check-circle"></span> {{ trans('panichd::lang.complete-tickets-adjective') }}</button>
+                        <?php
+							$a_lists = [
+								'newest' => [
+									'complete' => 'no',
+									'default_status_id' => $setting->grab('default_status_id')
+								],
+								'active' => [
+									'complete' => 'no',
+									'default_status_id' => $setting->grab('default_reopen_status_id')
+								],
+								'complete' => [
+									'complete' => 'yes',
+									'default_status_id' => $setting->grab('default_close_status_id')
+								]
+							];
+
+							if ($a_current['complete'] == "yes"){
+								$checked_list = 'complete';
+							}elseif($a_current['status_id'] == $setting->grab('default_status_id')){
+								$checked_list = 'newest';
+							}else{
+								$checked_list = 'active';
+							}
+                        ?>
+
+						@foreach ($a_lists as $list => $a_list)
+							<div class="form-check form-check-inline">
+								<label class="form-check-label">
+									<input type="radio" class="jquery_ticket_list form-check-input" name="complete" value="{{ $a_list['complete'] }}" @if($list == $checked_list) {!! 'checked="checked"' !!}@endif data-list="{{ $list }}" data-default_status_id="{{ $a_list['default_status_id'] }}">{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
+								</label>
+							</div>
+						@endforeach
+
 					</div>
-					{!! CollectiveForm::hidden('complete', isset($ticket) ? ($ticket->completed_at == '' ? 'no' : 'yes') : 'no',['id' => 'value_complete']) !!}
 				</div>			
 			
 				<div class="form-group row"><!-- STATUS -->
@@ -269,7 +302,27 @@
 	var category_id=<?=$a_current['cat_id'];?>;
 
 	$(function(){
-		// Category select with $u->maxLevel() > 1 only
+        // Change in List affects current status
+	    $('.jquery_ticket_list').click(function(){
+            var new_status = "";
+
+            if ($(this).data('default_status_id') != ""){
+                if ($(this).data('list') == 'newest'){
+					new_status = $(this).data('default_status_id');
+                }else if($('#last_list').data('last_list_default_status_id') == $('#select_status').val()){
+                    new_status = $(this).data('default_status_id');
+                }
+
+                if (new_status != ""){
+                    $('#select_status').val(new_status).effect('highlight');
+				}
+
+                $('#last_list').data('last_list_default_status_id', $(this).data('default_status_id'));
+			}
+        });
+
+
+	    // Category select with $u->maxLevel() > 1 only
 		$('#category_change').change(function(){
 			// Update agent list
 			$('#agent_id').prop('disabled',true);
@@ -306,14 +359,6 @@
 			// Update tag list				
 			$('#jquery_select2_container .select2-container').hide();
 			$('#jquery_tag_category_'+$(this).val()).next().show();
-		});
-		
-		$('#complete_no, #complete_yes').click(function(){
-			$(this).hide();
-			var other = $(this).attr('data-value') == 'yes' ? 'no' : 'yes';
-			$('#value_complete').val(other);
-			$('#complete_'+other).show();
-			$('#select_status').val($(this).attr('data-click-status'));
 		});
 		
 		$('#start_date input[name="start_date"]').val('');
