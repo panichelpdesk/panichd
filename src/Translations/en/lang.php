@@ -209,6 +209,12 @@ return [
   'ticket-notices-title'             => 'Notices',
   'ticket-notices-empty'             => 'There are no active notices',
 
+// Newest tickets page reload Modal
+  'page-reload-modal-title'          => 'Page reload',
+  'page-reload-modal-countdown'      => 'This page will reload in <kbd><span id="counter">:num</span></kbd> seconds.',
+  'page-reload-modal-reloading'      => 'This page is reloading... please wait',
+  'page-reload-modal-button-now'     => 'Reload now!',
+
 // Ticket forms messages
   'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-agent-ok'                  => 'Agent was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
@@ -253,7 +259,7 @@ return [
   'show-ticket-modal-delete-message' => 'Are you sure you want to delete ticket: :subject?',
   'show-ticket-modal-edit-fields'    => 'Edit more fields',
 
-        'show-ticket-modal-complete-blank-intervention-check' => 'Leave blank intervention',
+  'show-ticket-modal-complete-blank-intervention-check' => 'Leave blank intervention',
   'show-ticket-complete-blank-intervention-alert'       => 'To complete the ticket you must confirm that you leave intervention field blank',
   'show-ticket-modal-complete-blank-reason-alert'       => 'To complete the ticket you must indicate a closing reason',
   'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',

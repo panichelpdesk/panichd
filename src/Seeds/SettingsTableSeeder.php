@@ -266,6 +266,12 @@ class SettingsTableSeeder extends Seeder
 			 */
 			'list_text_max_length' => '300',
 
+            /*
+             * Interval in which the Newest tickets list will be reloaded automatically. Set to 0 to disable
+             *
+             */
+            'newest_list_reload_seconds' => '60',
+
 			
             /*
              * Pagination length: For tickets table.

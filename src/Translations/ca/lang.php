@@ -206,6 +206,12 @@ return [
   'index-complete-check'             => 'Assegureu-vos de revisar els tiquets tancats si no pot trobar el seu tiquet.',
   'ticket-notices-title'             => 'Avisos',
   'ticket-notices-empty'             => 'No hi ha cap avís actiu',
+/*
+// Newest tickets page reload Modal
+  'page-reload-modal-title'          => 'Recàrrega de pàgina',
+  'page-reload-modal-countdown'      => 'Aquesta pàgina es recarregarà en <kbd><span id="counter">:num</span></kbd> segons.',
+  'page-reload-modal-reloading'      => 'Aquesta pàgina està recarregant... si us plau, espera',
+  'page-reload-modal-button-now'     => 'Recarrega ara!',*/
 
 // Ticket forms messages
   'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',

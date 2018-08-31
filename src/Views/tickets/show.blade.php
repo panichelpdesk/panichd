@@ -26,7 +26,7 @@
 		{!! $comments->render() !!}
         @include('panichd::tickets.show.modal_comment_new')
 		@if ($setting->grab('ticket_attachments_feature'))
-			@include('panichd::shared.attach_files_script')			
+			@include('panichd::shared.attach_files_script')
 		@endif
 @endsection
 
