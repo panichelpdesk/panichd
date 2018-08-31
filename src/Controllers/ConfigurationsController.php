@@ -30,7 +30,7 @@ class ConfigurationsController extends Controller
 		'email.color_button_bg', 'email.account.name', 'email.account.mailbox' ];
 		$tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
             'subject_content_column', 'paginate_items', 'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
-            'attachments_path', 'thumbnails_path', 'oldest_year', 'user_route', 'html_replacements', 'list_text_max_length'];
+            'attachments_path', 'thumbnails_path', 'oldest_year', 'user_route', 'html_replacements', 'list_text_max_length', 'use_default_status_id'];
 		$perms_section = ['agent_restrict', 'close_ticket_perm', 'reopen_ticket_perm'];
 		$editor_section = ['editor_enabled', 'editor_html_highlighter', 'codemirror_theme',
 			'summernote_locale', 'summernote_options_json_file', 'summernote_options_user', 'purifier_config', ];

@@ -188,15 +188,20 @@ class SettingsTableSeeder extends Seeder
              */
             'default_status_id' => 1,
             /*
-             * The default closing status
+             * The default closing status for tickets
              * Default: false
              */
             'default_close_status_id' => false,
             /*
-             * The default reopening status
+             * The default reopening status for tickets
              * Default: false
              */
             'default_reopen_status_id' => false,
+
+            /*
+             * Define the behavior related to default_status_id. If enabled, it allows to edit a ticket using "Newest" list or the status == default_status_id
+             */
+            'use_default_status_id' => 'yes',
 
             /*
              * [Deprecated] User ids who are members of admin role

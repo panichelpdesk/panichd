@@ -617,7 +617,10 @@ class TicketsController extends Controller
 				break;
 			case 'statuses':
 				$instance = Cache::remember('panichd::statuses', 60, function () {
-					return Models\Status::all();
+					if (Setting::grab('use_default_status_id')){
+                        return Models\Status::all();
+                    }else
+                        return Models\Status::all()->where('id', '!=', Setting::grab('default_status_id'));
 				});
 				break;
 			default:
@@ -822,6 +825,8 @@ class TicketsController extends Controller
 			}
 			
 			$fields['status_id'] = 'required|exists:panichd_statuses,id';
+			if (!Setting::grab('use_default_status_id')) $fields['status_id'].= '|not_in:' . Setting::grab('default_status_id');
+
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 			
 			if ($request->has('start_date')){

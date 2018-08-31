@@ -89,25 +89,30 @@
 					]) !!}
 					<div class="col-lg-9">
                         <?php
-							$a_lists = [
-								'newest' => [
-									'complete' => 'no',
-									'default_status_id' => $setting->grab('default_status_id')
-								],
-								'active' => [
-									'complete' => 'no',
-									'default_status_id' => $setting->grab('default_reopen_status_id')
-								],
-								'complete' => [
-									'complete' => 'yes',
-									'default_status_id' => $setting->grab('default_close_status_id')
-								]
+							if ($setting->grab('use_default_status_id')){
+							    $a_lists['newest'] = [
+                                    'complete' => 'no',
+                                    'default_status_id' => $setting->grab('default_status_id')
+                                ];
+							}
+
+							$a_lists['active'] = [
+								'complete' => 'no',
+								'default_status_id' => $setting->grab('default_reopen_status_id')
+							];
+							$a_lists['complete'] = [
+								'complete' => 'yes',
+								'default_status_id' => $setting->grab('default_close_status_id')
 							];
 
 							if ($a_current['complete'] == "yes"){
 								$checked_list = 'complete';
 							}elseif($a_current['status_id'] == $setting->grab('default_status_id')){
-								$checked_list = 'newest';
+								if ($setting->grab('use_default_status_id')){
+                                    $checked_list = 'newest';
+								}else{
+                                    $checked_list = 'active';
+								}
 							}else{
 								$checked_list = 'active';
 							}
@@ -321,14 +326,16 @@
 			}
         });
 
-	    // Change in status affects the List only changing from or to default_status_id
-		$('#select_status').change(function(){
-		    if ($(this).val() == '{{ $setting->grab('default_status_id') }}'){
-                if (!$('#radio_newest_list').is(':checked')) $('#radio_newest_list').prop('checked', true).parent().effect('highlight');
-			}else{
-                if ($('#radio_newest_list').is(':checked')) $('#radio_active_list').prop('checked', true).parent().effect('highlight');
-            }
-		});
+	    @if($setting->grab('use_default_status_id'))
+			// Change in status affects the List only changing from or to default_status_id
+			$('#select_status').change(function(){
+				if ($(this).val() == '{{ $setting->grab('default_status_id') }}'){
+					if (!$('#radio_newest_list').is(':checked')) $('#radio_newest_list').prop('checked', true).parent().effect('highlight');
+				}else{
+					if ($('#radio_newest_list').is(':checked')) $('#radio_active_list').prop('checked', true).parent().effect('highlight');
+				}
+			});
+		@endif
 
 	    // Category select with $u->maxLevel() > 1 only
 		$('#category_change').change(function(){
