@@ -104,7 +104,7 @@ class InstallController extends Controller
 	*/
 	public function upgrade_menu()
 	{
-		if (!$this->isInstalled() or !PanicHDMember::isAdmin()){
+		if (!$this->isInstalled() or !\PanicHDMember::isAdmin()){
 			return redirect()->route('panichd.install.setup');
 		}
 		
