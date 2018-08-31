@@ -375,13 +375,14 @@ class InstallController extends Controller
         }
 
         // Application active migrations
-        $default_Settings = $seeder->getDefaults();
+        $seeder_settings = $seeder->getDefaults();
 
-        if (count($installed_settings) == count($default_Settings)) {
+		$inactive_settings = array_diff_key($seeder_settings, $installed_settings);
+		
+        if (!$inactive_settings) {
             return false;
         }
-
-        $inactive_settings = array_diff_key($default_Settings, $installed_settings);
+        
         return $inactive_settings;
     }
 
