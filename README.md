@@ -182,6 +182,7 @@ Execute these commands:
   - Tickets workflow (default priority, status...) and default limits
   - Enable / disable different kind of email notifications
 * [Laravel integrations detailed in our wiki](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations):
+  - [Create tickets from your Laravel app](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations#create-tickets-from-your-laravel-app)
   - You can [create a custom Member model](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations#custom-member-model), for example to allow using a different table than "users" for PanicHD Members.
 
 ## Contributing
