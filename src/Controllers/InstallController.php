@@ -283,44 +283,6 @@ class InstallController extends Controller
     }
 
     /**
-     * Get list of all files in the views folder.
-     *
-     * @return mixed
-     */
-    public function viewsFilesList($dir_path)
-    {
-        $dir_files = File::files($dir_path);
-        $files = [];
-        foreach ($dir_files as $file) {
-            $path = basename($file);
-            $name = strstr(basename($file), '.', true);
-            $files[$name] = $path;
-        }
-
-        return $files;
-    }
-
-    /**
-     * Get list of all files in the views folder.
-     *
-     * @return mixed
-     */
-    public function allFilesList($dir_path)
-    {
-        $files = [];
-        if (File::exists($dir_path)) {
-            $dir_files = File::allFiles($dir_path);
-            foreach ($dir_files as $file) {
-                $path = basename($file);
-                $name = strstr(basename($file), '.', true);
-                $files[$name] = $path;
-            }
-        }
-
-        return $files;
-    }
-
-    /**
      * Get all Panic Help Desk Package migrations that were not migrated.
      *
      * @return array
