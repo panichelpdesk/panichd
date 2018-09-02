@@ -160,20 +160,20 @@ Execute these commands:
    
 6. If you didn't have Kordy/Ticketit, you will have to enable your user account (or any other) as an admin in Panic Help Desk. In the "users" table, just find your account and set "panichd_admin" value to 1.
 
-7. Optional steps:
-* If you want to add the included default priorities, statuses and category:
-
-   `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
-   
-* If you want to use a demo configuration to test the package, use the DemoDataSeeder:
-
+7. Test functionality with generated demo content
+If you want to test the package first, you can install some demo contents from command line in your Laravel app:
+* To install the demo contents:
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\DemoDataSeeder`
-   
-   If you want to rollback it after using it, you can use the following command:
-   
+
+* To rollback the demo:
    `php artisan panichd:demo-rollback`
 
-8. If you have followed all these steps, you may access now http://your-laravel-app-URL/panichd in your browser.
+8. Configure the package for real environment usage
+* If you want to add the included default priorities, statuses and category:
+   `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
+* If you want to create only  your custom parameters, you can skip to the next installation step
+
+9. Access http://your-laravel-app-URL/panichd in your browser
 
 ## Configurations and Laravel integration
 * Parameters: All classification fields of a ticket are customizable, like priorities, statuses... and within their own menues in the Package.
