@@ -182,11 +182,11 @@ If you want to test the package first, you can install some demo contents from c
        - Package routes for tickets and admin menues
        - Tickets workflow (default priority, status...) and default limits
        - Enable / disable different kind of email notifications
-     - You can also create your own configuration settings [to use anywhere you may need](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations/_edit#use-any-panichd-configuration-setting-in-any-laravel-file)
+     - You can also create your own configuration settings [to use anywhere you may need](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations/#use-any-panichd-configuration-setting-in-any-laravel-file)
    * [Laravel integrations detailed in our wiki](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations):
      - [Create tickets from your Laravel app](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations#create-tickets-from-your-laravel-app)
      - You can [create a custom Member model](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations#custom-member-model), for example to allow using a different table than "users" for PanicHD Members.
-     - [Use any configuration setting in your app](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations/_edit#use-any-panichd-configuration-setting-in-any-laravel-file)
+     - [Use any configuration setting in your app](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations/#use-any-panichd-configuration-setting-in-any-laravel-file)
 
 ## Contributing
 
