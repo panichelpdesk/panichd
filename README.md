@@ -165,8 +165,8 @@ If you want to test the package first, you can install some demo contents from c
 * To install the demo contents:
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\DemoDataSeeder`
 
-* To rollback the demo:
-   `php artisan panichd:demo-rollback`
+* To delete the contents addded by the demo, read the [panichd:demo-rollback command dedicated wiki section](https://github.com/panichelpdesk/panichd/wiki/Command-line-toolbox#panichddemo-rollback).
+   
 
 8. Configure the package for real environment usage
 * If you want to add the included default priorities, statuses and category:
