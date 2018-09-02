@@ -88,7 +88,7 @@ This is a synopsis of the main PanicHD features. For detailed descriptions, exam
   - They can easily manage categories and assigned Agents
   
 * For developers
-  - There is a configuration settings menu that directly comes from Ticketit. It is so useful and flexible to configure the package at your own desire even without altering the package files
+  - There is a [configuration settings menu](https://github.com/panichelpdesk/panichd/wiki/Configuration-settings) that directly comes from Ticketit. It is so useful and flexible to configure the package at your own desire even without altering the package files
   - We have added [some useful Artisan commands](https://github.com/panichelpdesk/panichd/wiki/Command-line-toolbox#artisan-commands) to help you make your own local tests. Click the link or type in the Laravel console the following command:
     
     `php artisan panichd`
@@ -178,10 +178,11 @@ If you want to test the package first, you can install some demo contents from c
 ## Configurations and Laravel integration
    * Ticket Parameters: All ticket classification fields are customizable, like priorities, statuses... and within their own menues in the Package.
    * Settings:
-     - The package comes with a big set of configurable settings, which allow you to change many aspects of it's behavior, like:
+     - The package comes with a big set of [configurable settings](https://github.com/panichelpdesk/panichd/wiki/Configuration-settings), which allow you to change many aspects of it's behavior, like:
        - Package routes for tickets and admin menues
        - Tickets workflow (default priority, status...) and default limits
        - Enable / disable different kind of email notifications
+     - We have created a wiki page specifying a group of [essential settings to be aware of](https://github.com/panichelpdesk/panichd/wiki/Configuration-settings#essential-settings) in any usage environment. It's a very basic set, but it may be a good starting point with them.
      - You can also create your own configuration settings [to use anywhere you may need](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations/#use-any-panichd-configuration-setting-in-any-laravel-file)
    * [Laravel integrations detailed in our wiki](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations):
      - [Create tickets from your Laravel app](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations#create-tickets-from-your-laravel-app)
