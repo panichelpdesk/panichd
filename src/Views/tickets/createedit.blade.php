@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-			<div class="form-group row"><!-- OWNER -->
+			<div class="form-group row" style="margin-bottom: 1.5em"><!-- OWNER -->
 
 				<label for="owner_id" class="{{ $u->currentLevel()==1 ? 'col-lg-2' : 'col-lg-3' }} level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 
@@ -71,18 +71,26 @@
 
 			@if ($u->currentLevel() > 1)
 			<div class="jquery_level2_show">
-				<div class="form-group row">
-					<label class="col-lg-3 tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+				<div class="form-group row align-items-center">
+					<label class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-visible-help') }}">{{ trans('panichd::lang.create-ticket-visible') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 
-					<div class="col-lg-9" style="xpadding-top: 7px;">
-						<label><input type="radio" name="hidden" value="false" {{ (!isset($ticket) || (isset($ticket) && !$ticket->hidden)) ? 'checked' : '' }}> {{ trans('panichd::lang.yes') }}</label><label style="margin: 0em 0em 0em 1em;"><input type="radio" name="hidden" value="true" {{ (isset($ticket) && $ticket->hidden) ? 'checked' : ''}}> {{ trans('panichd::lang.no') }}</label>
+					<div class="col-lg-9">
+						<div class="form-check form-check-inline">
+							<label class="form-check-label">
+								<input type="radio" name="hidden" value="false" {{ (!isset($ticket) || (isset($ticket) && !$ticket->hidden)) ? 'checked' : '' }}> {{ trans('panichd::lang.yes') }}
+							</label>
+						</div><div class="form-check form-check-inline">
+							<label class="form-check-label">
+								<input type="radio" name="hidden" value="true" {{ (isset($ticket) && $ticket->hidden) ? 'checked' : ''}}> {{ trans('panichd::lang.no') }}
+							</label>
+						</div>
 					</div>
 
 				</div>
 
-				<div class="form-group row" style="margin-bottom: 3em"><!-- TICKET LIST -->
+				<div class="form-group row align-items-center" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
 					{!! CollectiveForm::label('complete', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
-						'class' => 'col-lg-3',
+						'class' => 'col-lg-3 col-form-label',
 						'title' => trans('panichd::lang.create-ticket-change-list'),
 						'id' => 'last_list',
 						'data-last_list_default_status_id' => $a_current['status_id']
@@ -157,7 +165,7 @@
 						<div class="jquery_error_text"></div>
 					</div>
 				</div>
-				<div class="form-group row" style="margin-bottom: 3em">
+				<div class="form-group row" style="margin-bottom: 1.5em">
 					{!! CollectiveForm::label('limit_date', trans('panichd::lang.limit-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
 					<div class="col-lg-9">
 						<div class="input-group date" id="limit_date">
