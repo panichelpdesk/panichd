@@ -16,7 +16,7 @@ return [
   'nav-notices-number-title'         => 'There are :num notices',
   'nav-active-tickets-title'         => 'Active tickets',
   'nav-completed-tickets-title'      => 'Completed tickets',
-  
+
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-Z\'0-9¡!¿?,;.:\-\s]*$/',
 
@@ -35,7 +35,7 @@ return [
   'table-completed_at'               => 'Completed at',
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
-  
+
   'no-tickets-yet'                   => 'No tickets yet', # Pending to move old admin.index-empty-records in other languages
   'list-no-tickets'                  => 'There are no tickets in this list',
   'table-info-attachments-total'     => ':num attached files',
@@ -53,14 +53,14 @@ return [
   'calendar-scheduled'         => 'Scheduled on :date from :time1 to :time2H',
   'calendar-scheduled-today'   => 'Scheduled today from :time1 to :time2H',
   'calendar-scheduled-period'  => 'Scheduled from :date1 to :date2',
-  
+
   // Agent related
   'table-change-agent'               => 'Change agent',
   'table-one-agent'                  => 'There is one agent in this category',
-  
+
   // Priority related
   'table-change-priority'            => 'Change priority',
-  
+
   // Datatables
   'table-decimal'                    => '',
   'table-empty'                      => 'No data available in table',
@@ -80,9 +80,11 @@ return [
   'table-paginate-prev'              => 'Previous',
   'table-aria-sort-asc'              => ': activate to sort column ascending',
   'table-aria-sort-desc'             => ': activate to sort column descending',
-  
+
   'filter-removeall-title'           => 'Remove all filters',
   'filter-pov'                       => 'View as',
+  'filter-pov-member-title'          => 'View as a member',
+  'filter-pov-agent-title'           => 'View as an agent',
   'filter-year-all'                  => 'All',
   'filter-calendar'                  => 'Calendar',
   'filter-calendar-all'              => 'All',
@@ -110,9 +112,9 @@ return [
   'btn-edit'                         => 'Edit',
   'btn-mark-complete'                => 'Mark Complete',
   'btn-submit'                       => 'Submit',
-  
 
-  // Vocabulary  
+
+  // Vocabulary
   'active-tickets-adjective'         => 'Active',
   'agent'                            => 'Agent',
   'agents'                           => 'Agents',
@@ -120,7 +122,7 @@ return [
   'attached-images'                  => 'Attached images',
   'attached-files'                   => 'Attached files',
   'attachments'                      => 'Attachments',
-  'category'                         => 'Category',  
+  'category'                         => 'Category',
   'closing-reason'                   => 'Closing reason',
   'closing-clarifications'           => 'Clarifications',
   'colon'                            => ': ',
@@ -147,6 +149,7 @@ return [
   'last-update'                      => 'Last Update',
   'limit-date'                       => 'Limit date',
   'list'                             => 'List',
+  'member'                           => 'Member',
   'name'                             => 'Name',
   'newest-tickets-adjective'         => 'New',
   'no'                               => 'No',
@@ -170,7 +173,7 @@ return [
   'year'                             => 'Year',
   'yes'                              => 'Yes',
   'yesterday'                        => 'Yesterday',
-  
+
   // Days of week
   'day_1'                            => 'Monday',
   'day_2'                            => 'Tuesday',
@@ -180,7 +183,7 @@ return [
   'day_6'                            => 'Saturday',
   'day_7'                            => 'Sunday',
   'day_0'                            => 'Sunday',
-  
+
     // Time units abbreviations
   'second-abbr'                      => 's.',
   'minute-abbr'                      => 'mi.',
@@ -188,7 +191,7 @@ return [
   'day-abbr'                         => 'd.',
   'week-abbr'                        => 'wk.',
   'month-abbr'                       => 'mo.',
-  
+
 
  /*
   *  Page specific
@@ -220,7 +223,7 @@ return [
   'update-agent-ok'                  => 'Agent was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
   'update-priority-same'             => 'Priority was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-ok'               => 'Priority was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
-  
+
 // tickets/create
   'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
@@ -240,13 +243,13 @@ return [
   'attach-files'                     => 'Attach files',
   'pending-attachment'               => 'This file will be uploaded when the ticket is updated',
   'attachment-new-name'              => 'New name',
-  
+
   'edit-ticket'                      => 'Edit Ticket',
   'attachment-edit'                  => 'Edit attachment',
   'attachment-edit-original-filename'=> 'Original filename',
   'attachment-edit-new-filename'     => 'New filename',
   'attachment-edit-crop-info'        => 'Select an area inside the image to crop it. It will be applied after the attachment fields are updated',
-  
+
   'attachment-update-not-valid-name' => 'The new filename for ":file" must be at least 3 character long. HTML is not allowed',
   'attachment-error-equal-name'      => 'Name and description for file ":file" can\'t be the same',
   'attachment-update-not-valid-mime' => 'The file ":file" is not of any valid type',
@@ -264,10 +267,10 @@ return [
   'show-ticket-modal-complete-blank-reason-alert'       => 'To complete the ticket you must indicate a closing reason',
   'show-ticket-complete-bad-status'                     => 'Ticket not completed: The specified status is not valid',
   'show-ticket-complete-bad-reason-id'                  => 'Ticket not completed: The specified reason is not valid',
-  
-  'complete-by-user'                 => 'Ticket completed by :user.',  
+
+  'complete-by-user'                 => 'Ticket completed by :user.',
   'reopened-by-user'                 => 'Ticket reopened by :user.',
-  
+
   'ticket-error-not-valid-file'      => 'A no valid file was attached',
   'ticket-error-not-valid-object'    => 'This file can\'t be processed: :name',
   'ticket-error-max-size-reached'    => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_MB MB',
@@ -275,7 +278,7 @@ return [
   'ticket-error-delete-files'        => 'Some files could not be deleted',
   'ticket-error-file-not-found'      => 'The file ":name" could not be found',
   'ticket-error-file-not-deleted'    => 'The file ":name" could not be deleted',
-  
+
    // Tiquet visible / no visible
   'ticket-visible'             => 'Visible ticket',
   'ticket-hidden'              => 'Hidden ticket',
@@ -285,21 +288,21 @@ return [
   'ticket-hidden-0-comment'    => 'Ticket is now <b>visible</b> for owner',
   'ticket-hidden-1-comment-title' => 'Hided by <b>:agent</b>',
   'ticket-hidden-1-comment'    => 'Ticket is now <b>hidden</b> for owner',
-  
+
   // Comments
   'comment-reply-title'        => 'Messages between owner and agents',
   'comment-reply-from-owner'   => 'Reply from <b>:owner</b>',
   'reply-from-owner-to-owner'  => 'Reply from <b>:owner1</b> to <b>:owner2</b>',
-  
+
   'comment-note-title'         => 'User hidden note',
   'comment-note-from-agent'    => 'Note from <b>:agent</b>',
-  
+
   'comment-completetx-title'   => 'Ticket complete',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
-  
+
   'comment-reopen-title'       => 'Ticket reopened',
   'comment-reopen-by'          => 'Reopened by <b>:owner</b>',
-   
+
   'show-ticket-add-comment'                => 'Add comment',
   'show-ticket-add-note'                   => 'Add internal note',
   'show-ticket-add-comment-type'           => 'Type',
@@ -309,7 +312,7 @@ return [
   'show-ticket-add-com-check-intervention' => 'Append this text in intervention field (visible by user)',
   'show-ticket-add-com-check-resolve'      => 'Complete this ticket and apply the status',
   'add-comment-confirm-blank-intervention' => 'The "intervention" field is empty. Would you want to close ticket anyway?',
-   
+
   'edit-internal-note-title'         => 'Edit internal note',
   'show-ticket-edit-com-check-int'   => 'Add text to the intervention field',
   'show-ticket-delete-comment'       => 'Delete comment',
@@ -317,7 +320,7 @@ return [
   'show-ticket-email-resend'         => 'Resend email',
   'show-ticket-email-resend-user'    => 'To user: ',
   'show-ticket-email-resend-agent'   => 'To agent: ',
-  
+
   // Validations
   'validation-error'                 => 'This form has not been sent',
   'validate-ticket-subject.required' => 'A subject must be set. Please, point out in a few words what is it about',
@@ -329,14 +332,14 @@ return [
   'validate-ticket-limit_date-format'=> 'The limit date format is not valid. Correct is: ":format"',
   'validate-ticket-limit_date'       => 'Limit date year is not valid',
   'validate-ticket-limit_date-lower' => 'Limit date cannot be lower than start date',
-  
+
   'ticket-destroy-error'             => 'The ticket could not be deleted: :error',
   'comment-destroy-error'            => 'The comment could not be deleted: :error',
-  
+
  // Comment form
   'validate-comment-required'        => 'You must type the comment text',
   'validate-comment-min'             => 'You must type a longer text for the comment',
-  
+
 
  /*
   *  Controllers
@@ -378,7 +381,7 @@ return [
   'the-ticket-has-been-completed'    => 'The ticket has been completed! <a href=":link" title=":title"><u>:name</u></a>',
   'the-ticket-has-been-reopened'     => 'The ticket :name has been reopened! <a href=":link" title=":title"><u>:name</u></a>',
   'ticket-status-link-title'         => 'View ticket',
-  
+
   'you-are-not-permitted-to-do-this' => 'You are not permitted to do this action!',
 
  /*
@@ -387,7 +390,7 @@ return [
 
  // EnvironmentReadyMiddleware
  'environment-not-ready'                 => 'Administrator has not finished the required configuration to let tickets be created',
- 
+
  //  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access'     => 'You are not permitted to access this page!',
 

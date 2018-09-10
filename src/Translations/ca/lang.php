@@ -14,9 +14,9 @@ return [
   'nav-create-ticket'                => 'Crear nou',
   'nav-create-ticket-title'          => 'Crear nou tiquet',
   'nav-notices-number-title'         => 'Hi ha :num avisos',
-  'nav-active-tickets-title'         => 'Tiquets oberts',  
+  'nav-active-tickets-title'         => 'Tiquets oberts',
   'nav-completed-tickets-title'      => 'Tiquets tancats',
-  
+
   // Regular expressions
   'regex-text-inline'                => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-ZçÇáéíóúàèòÁÉÍÓÚÀÈÒ\'0-9¡!¿?,;.:\-\s]*$/',
 
@@ -35,14 +35,14 @@ return [
   'table-completed_at'               => 'Tancament',
   'table-category'                   => 'Categoria',
   'table-tags'                       => 'Etiquetes',
-  
+
   'no-tickets-yet'                   => 'Encara no hi ha tiquets',
   'list-no-tickets'                  => 'En aquesta llista no hi ha tiquets',
   'table-info-attachments-total'     => ':num fitxers adjunts',
   'table-info-comments-total'        => ':num comentaris totals.',
   'table-info-comments-recent'       => ':num recents.',
   'table-info-notes-total'           => ':num notes internes',
-  
+
   'calendar-active'            => 'Va començar :description',
   'calendar-active-today'      => 'Ha començat :description',
   'calendar-active-future'     => 'Comença :description',
@@ -53,11 +53,11 @@ return [
   'calendar-scheduled'         => 'Programat el :date de :time1 a :time2H',
   'calendar-scheduled-today'   => 'Programat avui de :time1 a :time2H',
   'calendar-scheduled-period'  => 'Programat del :date1 al :date2',
-  
+
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
   'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
-  
+
   // Priority related
   'table-change-priority'            => 'Canviar la prioritat',
 
@@ -80,9 +80,11 @@ return [
   'table-paginate-prev'              => 'Anterior',
   'table-aria-sort-asc'              => ': activar per ordenar ordre ascendent',
   'table-aria-sort-desc'             => ': activar per ordenar ordre descendent',
-  
+
   'filter-removeall-title'           => 'Elimina tots els filtres',
   'filter-pov'                       => 'Vista',
+  'filter-pov-member-title'          => 'Veure com a membre',
+  'filter-pov-agent-title'           => 'Veure com a agent',
   'filter-year-all'                  => 'Tots',
   'filter-calendar'                  => 'Agenda',
   'filter-calendar-all'              => 'Tot',
@@ -111,7 +113,7 @@ return [
   'btn-mark-complete'                => 'Tancar Tiquet',
   'btn-submit'                       => 'Enviar',
 
-  // Vocabulary  
+  // Vocabulary
   'active-tickets-adjective'         => 'Oberts',
   'agent'                            => 'Tècnic',
   'agents'                           => 'Tècnics',
@@ -123,7 +125,7 @@ return [
   'closing-reason'                   => 'Raó de tancament',
   'closing-clarifications'           => 'Aclariments',
   'colon'                            => ': ',
-  'comments'                         => 'Comentaris', 
+  'comments'                         => 'Comentaris',
   'complete'                         => 'Tancat',
   'complete-tickets-adjective'       => 'Tancats',
   'created'                          => 'Creat',
@@ -146,6 +148,7 @@ return [
   'last-update'                      => 'Última actualització',
   'limit-date'                       => 'Data límit',
   'list'                             => 'Llista',
+  'member'                           => 'Membre',
   'name'                             => 'Nom',
   'newest-tickets-adjective'         => 'Nous',
   'no'                               => 'No',
@@ -169,7 +172,7 @@ return [
   'year'                             => 'Any',
   'yes'                              => 'Sí',
   'yesterday'                        => 'Ahir',
-  
+
   // Days of week
   'day_1'                            => 'Dilluns',
   'day_2'                            => 'Dimarts',
@@ -179,7 +182,7 @@ return [
   'day_6'                            => 'Dissabte',
   'day_7'                            => 'Diumenge',
   'day_0'                            => 'Diumenge',
-  
+
   // Time units abbreviations
   'second-abbr'                      => 's.',
   'minute-abbr'                      => 'mi.',
@@ -197,7 +200,7 @@ return [
 
 // tickets/____
   'index-my-tickets'                 => 'Els meus Tiquets',
-  
+
   'btn-create-new-ticket'            => 'Crear nou',
   'index-complete-none'              => 'No hi han tiquets tancats',
   'index-active-check'               => 'Assegureu-vos de revisar els tiquets oberts si no pot trobar el seu tiquet.',
@@ -218,7 +221,7 @@ return [
   'update-agent-ok'                  => 'Agent canviat correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
   'update-priority-same'             => 'No has canviat la prioritat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-ok'               => 'Prioritat canviada correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
-  
+
 // tickets/create
   'create-ticket-title'              => 'Nou formulari de Tiquet',
   'create-new-ticket'                => 'Crear Nou Tiquet',
@@ -238,13 +241,13 @@ return [
   'attach-files'                     => 'Adjuntar fitxers',
   'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
   'attachment-new-name'              => 'Nom nou',
-  
+
   'edit-ticket'                      => 'Editar Tiquet',
   'attachment-edit'                  => 'Editar adjunt',
   'attachment-edit-original-filename'=> 'Nom original',
   'attachment-edit-new-filename'     => 'Nom nou',
   'attachment-edit-crop-info'        => 'Selecciona un requadre dins la imatge per a retallar-la. S\'aplicarà després d\'actualitzar els camps de l\'adjunt',
-  
+
   'attachment-update-not-valid-name' => 'El nom nou per a ":file" ha de tenir almenys 3 caràcters. No es permet HTML',
   'attachment-error-equal-name'      => 'El nom i la descripció per a ":file" no poden ser iguals',
   'attachment-update-not-valid-mime' => 'El fitxer ":file" no és de cap tipus vàlid',
@@ -257,16 +260,16 @@ return [
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
   'show-ticket-modal-edit-fields'    => 'Editar més camps',
 
-  
+
   'show-ticket-modal-complete-blank-intervention-check' => 'Deixar actuació en blanc',
   'show-ticket-complete-blank-intervention-alert'       => 'Per a tancar el tiquet cal que confirmis que deixes el camp actuació en blanc',
   'show-ticket-modal-complete-blank-reason-alert'       => 'Per a tancar el tiquet cal que indiquis una raó de tancament',
   'show-ticket-complete-bad-status'                     => 'Tiquet no completat: L\'estat indicat no és vàlid',
   'show-ticket-complete-bad-reason-id'                  => 'Tiquet no completat: La raó indicada no és vàlida',
-  
+
   'complete-by-user'                 => 'Tiquet tancat per :user.',
   'reopened-by-user'                 => 'Tiquet reobert per :user.',
-  
+
   'ticket-error-not-valid-file'      => 'S\'ha adjuntat un fitxer no vàlid',
   'ticket-error-not-valid-object'    => 'Aquest fitxer no es pot processar: :name',
   'ticket-error-max-size-reached'    => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen l\'espai disponible per aquest tiquet que és de :available_MB MB',
@@ -274,7 +277,7 @@ return [
   'ticket-error-delete-files'        => 'No s\'ha pogut eliminar alguns fitxers',
   'ticket-error-file-not-found'      => 'No s\'ha localitzat el fitxer ":name"',
   'ticket-error-file-not-deleted'    => 'El fitxer ":name" no s\'ha pogut eliminar',
-  
+
   // Tiquet visible / no visible
   'ticket-visible'             => 'Tiquet visible',
   'ticket-hidden'              => 'Tiquet ocult',
@@ -284,31 +287,31 @@ return [
   'ticket-hidden-0-comment'       => 'El tiquet s\'ha fet <b>visible</b> per a l\'usuari',
   'ticket-hidden-1-comment-title' => 'Ocultat per <b>:agent</b>',
   'ticket-hidden-1-comment'       => 'El tiquet s\'ha <b>ocultat</b> per a l\'usuari',
-  
+
   // Comentaris
   'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',
   'comment-reply-from-owner'   => 'Resposta de <b>:owner</b>',
   'reply-from-owner-to-owner'  => 'Resposta de <b>:owner1</b> a <b>:owner2</b>',
-  
+
   'comment-note-title'         => 'Nota oculta per a l\'usuari',
   'comment-note-from-agent'    => 'Nota de <b>:agent</b>',
-  
+
   'comment-completetx-title'   => 'Tiquet tancat',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
-  
+
   'comment-reopen-title'       => 'Tiquet reobert',
   'comment-reopen-by'          => 'Reobert per <b>:owner</b>',
-  
+
   'show-ticket-add-comment'                => 'Afegir comentari',
   'show-ticket-add-note'                   => 'Afegir nota interna',
   'show-ticket-add-comment-type'           => 'Tipus',
   'show-ticket-add-comment-note'           => 'Nota interna',
-  'show-ticket-add-comment-reply'          => 'Resposta a usuari', 
+  'show-ticket-add-comment-reply'          => 'Resposta a usuari',
   'show-ticket-add-com-check-email-text'   => 'Afegir text a la notificació per a l\'usuari',
   'show-ticket-add-com-check-intervention' => 'Afegir aquesta resposta al camp actuació (visible per l\'usuari)',
   'show-ticket-add-com-check-resolve'      => 'Tancar el tiquet amb estat',
   'add-comment-confirm-blank-intervention' => 'El camp "actuació" està en blanc. Vols tancar el tiquet igualment?',
-  
+
   'edit-internal-note-title'         => 'Editar nota interna',
   'show-ticket-edit-com-check-int'   => 'Afegir el text al camp actuació',
   'show-ticket-delete-comment'       => 'Eliminar comentari',
@@ -316,7 +319,7 @@ return [
   'show-ticket-email-resend'         => 'Reenviar notificacions',
   'show-ticket-email-resend-user'    => 'A l\'usuari: ',
   'show-ticket-email-resend-agent'   => 'Al tècnic: ',
-  
+
   // Validacions
   'validation-error'                 => 'Aquest formulari no s\'ha enviat',
   'validate-ticket-subject.required' => 'Cal indicar un tema. Si us plau, indica en poques paraules de què es tracta',
@@ -328,10 +331,10 @@ return [
   'validate-ticket-limit_date-format'=> 'La data límit té un format incorrecte. El correcte és: ":format"',
   'validate-ticket-limit_date'       => 'L\'any de la data límit no és vàlid',
   'validate-ticket-limit_date-lower' => 'La data límit no pot ser inferior a la d\'inici',
-  
+
   'ticket-destroy-error'             => 'El tiquet no s\'ha pogut eliminar: :error',
   'comment-destroy-error'            => 'El comentari no s\'ha pogut eliminar: :error',
-  
+
  // Comment form
   'validate-comment-required'        => 'Cal que escriguis el text del comentari',
   'validate-comment-min'             => 'Cal posar un text més llarg al comentari',
@@ -376,7 +379,7 @@ return [
   'the-ticket-has-been-completed'    => 'S\'ha tancat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
   'the-ticket-has-been-reopened'     => 'S\'ha reobert el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
   'ticket-status-link-title'         => 'Veure tiquet',
-  
+
   'you-are-not-permitted-to-do-this' => 'No tens permisos per fer aquesta acció!',
 
  /*
@@ -385,7 +388,7 @@ return [
 
  // EnvironmentReadyMiddleware
  'environment-not-ready'                 => 'L\'Administrador no ha finalitzat la configuració per poder afegir tiquets',
- 
+
  //  IsAdminMiddleware IsAgentMiddleware UserAccessMiddleware
   'you-are-not-permitted-to-access'     => 'No tens permisos per accedir a aquesta pàgina!',
 
