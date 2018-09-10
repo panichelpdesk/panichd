@@ -110,7 +110,7 @@ return [
   'btn-delete'                       => 'Esborrar',
   'btn-download'                     => 'Descarregar',
   'btn-edit'                         => 'Editar',
-  'btn-mark-complete'                => 'Tancar Tiquet',
+  'btn-mark-complete'                => 'Tancar',
   'btn-submit'                       => 'Enviar',
 
   // Vocabulary
@@ -148,6 +148,7 @@ return [
   'last-update'                      => 'Última actualització',
   'limit-date'                       => 'Data límit',
   'list'                             => 'Llista',
+  'mark-complete'                    => 'Tancar tiquet',
   'member'                           => 'Membre',
   'name'                             => 'Nom',
   'newest-tickets-adjective'         => 'Nous',

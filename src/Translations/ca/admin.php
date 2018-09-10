@@ -1,4 +1,4 @@
-<?php
+''<?php
 
 return [
 
@@ -57,7 +57,7 @@ return [
   'level-1'                       => 'Tothom',
   'level-2'                       => 'agents assignats + admins.',
   'level-3'                       => 'admins.',
-  
+
  /*
   *  Page specific
   */
@@ -106,7 +106,7 @@ return [
   'agent-store-ok'                => 'L\'usuari ":name" s\'ha afegit com a agent',
   'agent-updated-ok'              => 'L\'agent ":name" s\'ha actualitzat correctament',
   'agent-excluded-ok'            => 'L\'agent ":name" s\'ha exclòs',
-  
+
   'agent-store-error-no-category' => 'Per afegir un agent cal marcar com a mínim una categoria',
 
   // $admin_route_path/agent/edit
@@ -114,7 +114,7 @@ return [
   'agent-edit-table-category'        => 'Categoria',
   'agent-edit-table-agent'           => 'Permisos d\'agent',
   'agent-edit-table-autoassign'      => 'Tiquets nous auto.',
-  
+
 // $admin_route_path/administrators/____
   'administrator-index-title'                   => 'Gestió d\'Administradors',
   'btn-create-new-administrator'                => 'Crear nou administrador',
@@ -153,7 +153,7 @@ return [
   'category-create-color'         => 'Color',
   'category-create-new-tickets'   => 'Qui pot crear tiquets',
   'category-create-new-tickets-help'   => 'Nivell mínim a la categoria per a crear tiquets',
-  'category-edit-title'                => 'Editar Categoria: :name',  
+  'category-edit-title'                => 'Editar Categoria: :name',
   'category-edit-closing-reasons'      => 'Tancaments de tiquet',
   'category-edit-closing-reasons-help' => 'Opcions que l\'usuari haurà de triar quan tanqui un tiquet',
   'category-edit-reason'          => 'Raó de tancament',
@@ -190,7 +190,7 @@ return [
   'member-delete-own-user-error'  => 'No pots eliminar el teu propi compte d\'usuari',
   'member-delete-agent'           => 'Per a poder eliminar aquest membre, elimina primer els seus rols d\'agent',
   'member-with-tickets-delete'    => 'No pots eliminar un membre amb tiquets relacionats',
-  
+
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Gestió de prioritats',
   'priority-index-help'           => 'Pots canviar l\'ordre de les prioritats arrosegant les files d\'aquesta taula. Aquest ordre s\'utilitzarà també a la llista de tiquets quan es seleccioni',
@@ -234,8 +234,8 @@ return [
   'notice-index-js-delete'      => 'Estàs segur/a que vols eliminar aquest avís?',
   'notice-index-help'           => 'Quan es crei un tiquet indicant algun d\'aquests propietaris, passarà dues coses:<br /><br /><p>
   	<ol><li>S\'enviarà un correu electrònic al <b>propietari</b>, amb una plantilla de correu específica.</li><li>Mentre el tiquet estigui <b>obert</b>, els usuaris del mateix departament veuran el tiquet com un <b>avís</b> quan vagin al menú de crear tiquet.</li></ol></p>',
-  'notice-index-owner-alert'    => 'Un usuari normal, quan crei un nou tiquet, no podrà veure cap usuari llistat aquí', 
-  
+  'notice-index-owner-alert'    => 'Un usuari normal, quan crei un nou tiquet, no podrà veure cap usuari llistat aquí',
+
 // $admin_route_path/configuration/____
   'config-index-title'            => 'Paràmetres de configuració',
   'config-index-subtitle'         => 'configuració',
@@ -260,7 +260,7 @@ return [
   'config-edit-serialize'         => 'Obtenir la cadena serialitzada dels valors modificats (per ser introduït en el camp)',  //Get the serialized string of the changed values (to be entered in the field)
   'config-edit-should-serialize'  => 'Cadena serialitzada', //Revisar Serialize
   'config-edit-eval-warning'      => 'When checked, the server will run eval()!
-  									  Don\'t use this if eval() is disabled on your server or if you don\'t exactly know what you are doing! 
+  									  Don\'t use this if eval() is disabled on your server or if you don\'t exactly know what you are doing!
   									  Exact code executed:', //Revisar
   'config-edit-reenter-password'  => 'Torneu a introduir la contrasenya',
   'config-edit-auth-failed'       => 'La contrasenya no coincideix',

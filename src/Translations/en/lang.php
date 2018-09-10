@@ -110,7 +110,7 @@ return [
   'btn-delete'                       => 'Delete',
   'btn-download'                     => 'Download',
   'btn-edit'                         => 'Edit',
-  'btn-mark-complete'                => 'Mark Complete',
+  'btn-mark-complete'                => 'Complete',
   'btn-submit'                       => 'Submit',
 
 
@@ -149,6 +149,7 @@ return [
   'last-update'                      => 'Last Update',
   'limit-date'                       => 'Limit date',
   'list'                             => 'List',
+  'mark-complete'                    => 'Mark Complete',
   'member'                           => 'Member',
   'name'                             => 'Name',
   'newest-tickets-adjective'         => 'New',
