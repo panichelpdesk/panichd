@@ -1,16 +1,15 @@
 <div class="card">
     <div id="ticket-body" class="card-body">
-		<div class="row" style="margin-bottom: 0.2em;">
-			<div class="col-sm-8 col-lg-7">				
-				<h2 style="margin: 0em 0em 0.5em 0em;">
-				@if ($ticket->completed_at)
-					<span class="text-success"><span class="fa fa-check-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
-				@else
-					<span class="text-warning"><span class="fa fa-file" title="tiquet obert" style="cursor: help"></span> {{ $ticket->subject }}</span>
-				@endif
-				</h2>
-			</div>
-			<div class="col-sm-4 col-lg-5 text-right">
+		<div class="d-lg-flex mb-2">
+			<h2 class="mr-auto">
+			@if ($ticket->completed_at)
+				<span class="text-success"><span class="fa fa-check-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
+			@else
+				<span class="text-warning"><span class="fa fa-file" title="tiquet obert" style="cursor: help"></span> {{ $ticket->subject }}</span>
+			@endif
+			</h2>
+
+			<div class="text-right">
 				@if ($u->currentLevel() > 1)
 					<a href="{{ route($setting->grab('main_route').'.hide', ['value' => $ticket->hidden ? 'false' : 'true', 'ticket'=>$ticket->id]) }}" class="btn btn-light tooltip-info" style="border: none; color: #aaa;" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.ticket-hidden-button-title') }}">{!! $ticket->hidden ? '<span class="fa fa-eye-slash"></span> '.trans('panichd::lang.ticket-hidden') : '<span class="fa fa-eye"></span> '.trans('panichd::lang.ticket-visible') !!}</a>
 				@endif
@@ -26,7 +25,7 @@
 					]) }}" style="display: inline-block; color: #aaa; cursor: help">
 					<span class="fa fa-certificate"></span> {{ $ticket->created_at->diffForHumans() }}
 				</span>&nbsp;
-								
+
 				@if($u->isAdmin())
 					@if($setting->grab('delete_modal_type') == 'builtin')
 						{!! link_to_route(
@@ -76,14 +75,14 @@
 						@endif
 						<br />
 					@endif
-					
-					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }} 
+
+					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }}
 					<?php $owner_name = $ticket->owner_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->owner) ? $ticket->owner_name : $ticket->owner->name); ?>
-					
+
 					@if ($setting->grab('user_route') != 'disabled')
 						<a href="{{ route($setting->grab('user_route'), ['id'=> $ticket->user_id]) }}">
 					@endif
-					
+
 					@if (is_null($ticket->owner))
 						<span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $owner_name !!}</span>
 					@elseif ($ticket->owner_email != "")
@@ -91,19 +90,19 @@
 					@else
 						{!! $ticket->owner_name !!}
 					@endif
-					
+
 					@if ($setting->grab('user_route') != 'disabled')
 						</a>
 					@endif
-					
+
 					@if (is_null($ticket->owner))
 						<br /><span class="text-danger"><span class="fa fa-exclamation-circle"></span> {{ trans('panichd::lang.ticket-owner-deleted-warning') }}</span>
 					@endif
-					
+
 					@if ($ticket->owner_email == "")
 						<br /><span class="text-warning"><span class="fa fa-exclamation-triangle"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
-					
+
 					@if ($setting->grab('departments_feature') && isset($ticket->owner->department))
 						@if ($ticket->owner->department->ancestor || $ticket->owner->department->is_main())
 							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->department->is_main() ? $ticket->owner->department->getName() : $ticket->owner->department->ancestor->getName()) }}
@@ -113,24 +112,24 @@
 						@endif
 					@endif
 				@endif
-				
+
 				<br /><strong>{{ trans('panichd::lang.status') }}</strong>{{ trans('panichd::lang.colon') }}
 				@if( $ticket->isComplete() && ! $setting->grab('default_close_status_id') )
 					<span style="color: blue">Complete</span>
 				@else
 					<span style="color: {{ $ticket->status->color }}">{{ $ticket->status->name }}</span>
 				@endif
-				
+
 				@php
 					\Carbon\Carbon::setLocale(config('app.locale'));
 				@endphp
-				
+
 				@if ($u->currentLevel() > 1)
 					<br /><strong>{{ trans('panichd::lang.priority') }}</strong>{{ trans('panichd::lang.colon') }}
 					<span style="color: {{ $ticket->priority->color }}">
 						{{ $ticket->priority->name }}
 					</span>
-					
+
 					<br />
 					@if ($ticket->isComplete())
 						<strong>{{ trans('panichd::lang.start-date') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getDateForHumans('start_date') !!}
@@ -144,17 +143,17 @@
 					@else
 						<strong>{{ trans('panichd::lang.table-calendar') }}</strong>{{ trans('panichd::lang.colon') }}{!! $ticket->getCalendarInfo(true) !!}
 					@endif
-					
-					</p><p>					
+
+					</p><p>
 				@else
 					<br />
 				@endif
-				
+
 				<strong>{{ trans('panichd::lang.category') }}</strong>{{ trans('panichd::lang.colon') }}
 				<span style="color: {{ $ticket->category->color }}">
 					{{ $ticket->category->name }}
 				</span>
-				
+
 				@if ($u->currentLevel() > 1)
 					<?php $agent_name = $ticket->agent_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->agent) ? $ticket->agent_name : $ticket->agent->name); ?>
 					<br /><strong>{{ trans('panichd::lang.responsible') }}</strong>{{ trans('panichd::lang.colon') }}
@@ -164,14 +163,14 @@
 						{{ $agent_name }}
 					@endif
 				@endif
-								
+
 				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
 					<br /><strong>{{ trans('panichd::lang.tags') }}</strong>{{ trans('panichd::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-light btn-xs" style="pointer-events: none; border: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
-					@endforeach					
+					@endforeach
 				@endif
-				</p>				
+				</p>
 			</div>
 			<div class="col-xl-10 col-lg-9 col-md-8">
 				<div class="row equal">
@@ -196,55 +195,47 @@
 								</div>
 							</div>
 						</div>
-					@endif					
+					@endif
 				</div>
-				
+
 				@if($setting->grab('ticket_attachments_feature') && $ticket->attachments->count() > 0)
 					<div class="row row-ticket-attachments" style="">
 					<?php
 						$images_count = $ticket->attachments()->images()->count();
 						$notimages_count = $ticket->attachments()->notImages()->count();
 					?>
-						
+
 					@if($images_count > 0)
 						<div class="{{ $ticket->attachments()->notImages()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
-							<div class="row">
-							<div class="col-md-3"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-images') }}</b></div>
-							<div class="col-md-9">
+							<b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-images') }}</b>
 								<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
-														
-								@foreach($ticket->attachments()->images()->get() as $attachment)							
+
+								@foreach($ticket->attachments()->images()->get() as $attachment)
 									@include('panichd::tickets.partials.attachment_image')
 								@endforeach
 								</div>
 							</div>
-							</div>
-						</div>
 					@endif
 					@if($notimages_count > 0)
 						<div class="{{ $ticket->attachments()->images()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
-							<div class="row">
-							<div class="col-md-4"><b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-files') }}</b></div>
-							<div class="col-md-8">
-								<div id="ticket_attached" class="row panel-group attached_list">
-														
-								@foreach($ticket->attachments()->notImages()->get() as $attachment)									
-									<div class="{{ $images_count > 0 ? 'col-xs-12' : 'col-lg-3 col-md-4 col-sm-6' }}" style="margin-bottom: {{ $images_count > 0 ? '10px' : '15px' }}">
+							<b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-files') }}</b>
+								<div id="ticket_attached" class="panel-group attached_list">
+
+								@foreach($ticket->attachments()->notImages()->get() as $attachment)
+									<div style="margin-bottom: {{ $images_count > 0 ? '10px' : '15px' }}">
 										@include('panichd::tickets.partials.attachment', ['template'=>'view'])
 									</div>
 								@endforeach
 								</div>
-							</div>
-							</div>
 						</div>
-					@endif						
-					</div>					
+					@endif
+					</div>
 				@endif
 			</div>
 		</div>
-		
+
 		<div style="margin: 1em 0em 0em 0em;">
-			@if(! $ticket->completed_at && $close_perm == 'yes')			
+			@if(! $ticket->completed_at && $close_perm == 'yes')
 				<button type="submit" class="btn btn-light btn-default" data-toggle="modal" data-target="#ticket-complete-modal" data-status_id="{{ $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.btn-mark-complete') }}</button>
 			@elseif($ticket->completed_at && $reopen_perm == 'yes')
 				{!! link_to_route($setting->grab('main_route').'.reopen', trans('panichd::lang.reopen-ticket'), $ticket->id,
@@ -258,7 +249,7 @@
 				<div class="visible-xs"><br /></div>
 			@endif
 		</div>
-        
+
         {!! CollectiveForm::open([
                         'method' => 'DELETE',
                         'route' => [
