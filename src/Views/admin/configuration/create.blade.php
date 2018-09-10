@@ -10,7 +10,7 @@
      <div class="card bg-light">
       <div class="card-header">
         <h3>{{ trans('panichd::admin.config-create-title') }}
-          <div class="panel-nav float-right" style="margin-top: -7px;">          
+          <div class="panel-nav float-right" style="margin-top: -7px;">
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.index',
                   trans('panichd::admin.btn-back'), null,
@@ -58,7 +58,7 @@
             <!-- Submit Field -->
             <div class="form-group row">
                 <div class="col-sm-10 offset-sm-2">
-                  {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
+                  {!! CollectiveForm::submit(trans('panichd::admin.btn-add'), ['class' => 'btn btn-primary']) !!}
                 </div>
             </div>
 

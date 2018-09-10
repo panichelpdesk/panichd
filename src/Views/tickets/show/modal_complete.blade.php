@@ -3,7 +3,7 @@
   <div class="modal-dialog {{ $u->currentLevel() == 1 ? 'modal-lg' : ''}}">
     <div class="modal-content">
 		<div class="modal-header">
-			<h4 class="modal-title">{{ trans('panichd::lang.btn-mark-complete') }}</h4>
+			<h4 class="modal-title">{{ trans('panichd::lang.mark-complete') }}</h4>
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</button>
 		</div>
 		<div class="modal-body">
@@ -64,7 +64,7 @@
 		@if ($u->currentLevel() > 1)
 			<a id="edit-with-values" class="btn btn-default mr-auto" href="{{ route($setting->grab('main_route').'.edit-with-values', ['id' => $ticket->id, 'parameters' => 'complete/yes/status_id/' . $setting->grab('default_close_status_id')]) }}">{{ trans('panichd::lang.show-ticket-modal-edit-fields') }}</a>
 		@endif
-			<button type="button" id="complete_form_submit" class="btn btn-danger">{{ trans('panichd::lang.btn-submit') }}</button>
+			<button type="button" id="complete_form_submit" class="btn btn-danger">{{ trans('panichd::lang.btn-mark-complete') }}</button>
 		</div>
 
 </div>

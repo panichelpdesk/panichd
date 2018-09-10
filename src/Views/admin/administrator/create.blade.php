@@ -3,7 +3,7 @@
 
 @include('panichd::shared.common')
 
-@section('content')    
+@section('content')
     <div class="card bg-light">
         <div class="card-header">
             <h2>{{ trans('panichd::admin.administrator-create-title') }}</h2>
@@ -20,7 +20,7 @@
                     <tr>
                         <td class="text-center">
                             {!! link_to_route($setting->grab('admin_route').'.administrator.index', trans('panichd::admin.btn-back'), null, ['class' => 'btn btn-light']) !!}
-                            {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
+                            {!! CollectiveForm::submit(trans('panichd::lang.btn-add'), ['class' => 'btn btn-primary']) !!}
                         </td>
                     </tr>
                 <tbody>

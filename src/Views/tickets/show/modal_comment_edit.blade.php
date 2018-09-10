@@ -46,7 +46,7 @@
 					@endif
 
 					<div class="text-right col-md-12">
-						{!! CollectiveForm::submit( 'Desar', [
+						{!! CollectiveForm::submit( trans('panichd::lang.update'), [
 							'class' => 'btn btn-primary ajax_form_submit',
 							'data-errors_div' => 'edit_comment_errors'
 						]) !!}
