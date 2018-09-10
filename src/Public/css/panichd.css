@@ -88,7 +88,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0em 0.2em 0em 1em;
 }
 
-#filter_panel .title.pov {	
+#filter_panel .title.pov {
 	margin: 0em 0.2em 0em 0em;
 }
 
@@ -240,7 +240,17 @@ h1, h2, h3, h4, h5, h6 {
  * Tickets table
 */
 #tickets-table .fa.attachment, #tickets-table .fa.comment, #tickets-table .fa.tickethidden {
-	color: #555;
+	color: #999;
+}
+
+#tickets-table .jquery_ticket_text_toggle {
+  color: #999;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+#tickets-table .jquery_ticket_text_toggle:hover {
+  background-color: #eee;
 }
 
 /*
@@ -254,7 +264,7 @@ h1, h2, h3, h4, h5, h6 {
 		display: -ms-flexbox;
 		display: flex;
 	}
-	
+
 	#ticket-body .row-ticket-attachments {
 		margin: 15px -15px 5px -30px;
 	}
@@ -298,7 +308,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .grouped_check_list.deletion_list .check_parent.checked .fa-check, .grouped_check_list.deletion_list .check_parent.unchecked .fa-times {
 	display: inline !important;
-}	
+}
 
 .grouped_check_list.deletion_list .check_parent.checked .check_info {
 	text-decoration: line-through;
@@ -326,7 +336,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .grouped_check_list.coloured-list .check_parent.unchecked .btn-light {
-	color: gray;	
+	color: gray;
 }
 .grouped_check_list.coloured-list .check_parent.unchecked .check_info {
 	background: white;
@@ -424,4 +434,3 @@ h1, h2, h3, h4, h5, h6 {
 .attached_list .media-left a.default:hover, .attached_list .media-left a.default:active {
 	color: orange;
 }
-
