@@ -4,9 +4,9 @@
 			<div @if ($u->currentLevel() == 1) class="float-left" @else style="display: inline-block" @endif>
 				<div class="title pov">{{ trans('panichd::lang.filter-pov') }}</div>
 				@if ($u->currentLevel() == 2)
-					<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari">{{ trans('panichd::lang.agent') }}</a>
+					<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="{{ trans('panichd::lang.filter-pov-member-title') }}">{{ trans('panichd::lang.agent') }}</a>
 				@else
-					<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/remove') }}" id="user_pov" data-other="agent_pov" title="veure com agent">{{ trans('panichd::lang.user') }}</a>
+					<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/remove') }}" id="user_pov" data-other="agent_pov" title="{{ trans('panichd::lang.filter-pov-agent-title') }}">{{ trans('panichd::lang.member') }}</a>
 				@endif
 			</div>
 		@endif
