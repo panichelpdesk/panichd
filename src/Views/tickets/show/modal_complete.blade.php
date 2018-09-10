@@ -16,7 +16,7 @@
 						],
 			'id' => 'complete-ticket-form'
 		]) !!}
-		
+
 		@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 			<div class="form-group row">
 				{!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
@@ -26,7 +26,7 @@
 					]) !!}
 				</div>
 			</div>
-			
+
 			@if (!$ticket->intervention_html)
 				<div class="form-group row">
 					<div class="col-lg-10 offset-lg-2">
@@ -38,7 +38,7 @@
 			@if ($a_reasons)
 				<div class="form-group row">
 				{!! CollectiveForm::label(null, trans('panichd::lang.closing-reason') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
-				
+
 				<div class="col-md-9">
 				@foreach ($a_reasons as $id => $reason)
 					<label>{!! CollectiveForm::radio('reason_id',$id) !!} {{ $reason }}</label><br />
@@ -48,8 +48,8 @@
 			@else
 				{!! CollectiveForm::hidden('reason_id','none') !!}
 			@endif
-			
-			
+
+
 			<div class="form-group row">
                 {!! CollectiveForm::label('clarification', trans('panichd::lang.closing-clarifications') . trans('panichd::lang.colon'), ['class' => 'col-md-3 col-form-label']) !!}
                 <div class="col-md-9">
@@ -57,12 +57,12 @@
                 </div>
             </div>
 		@endif
-		
-		{!! CollectiveForm::close() !!}	 
+
+		{!! CollectiveForm::close() !!}
 		</div>
 		<div class="modal-footer">
 		@if ($u->currentLevel() > 1)
-			<a id="edit-with-values" class="btn btn-default pull-left mr-auto" href="{{ route($setting->grab('main_route').'.edit-with-values', ['id' => $ticket->id, 'parameters' => 'complete/yes/status_id/' . $setting->grab('default_close_status_id')]) }}">{{ trans('panichd::lang.show-ticket-modal-edit-fields') }}</a>
+			<a id="edit-with-values" class="btn btn-default mr-auto" href="{{ route($setting->grab('main_route').'.edit-with-values', ['id' => $ticket->id, 'parameters' => 'complete/yes/status_id/' . $setting->grab('default_close_status_id')]) }}">{{ trans('panichd::lang.show-ticket-modal-edit-fields') }}</a>
 		@endif
 			<button type="button" id="complete_form_submit" class="btn btn-danger">{{ trans('panichd::lang.btn-submit') }}</button>
 		</div>

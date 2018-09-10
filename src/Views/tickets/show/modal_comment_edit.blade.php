@@ -1,6 +1,6 @@
 <div class="modal fade jquery_panel_hightlight comment-modal" id="comment-modal-edit-{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="comment-modal-edit-{{$comment->id}}-Label">
     <div class="modal-dialog model-lg" role="document">
-        <div class="modal-content">			
+        <div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">{{ trans('panichd::lang.edit-internal-note-title') }}</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
@@ -10,7 +10,7 @@
 					<button type="button" class="close" data-dismiss="alert">{{ trans('panichd::lang.flash-x') }}</button>
 					<ul></ul>
 				</div>
-				
+
 				<fieldset id="edit_comment_{{ $comment->id }}_comment" class="fieldset-for-comment">
 					{!! CollectiveForm::open([
 						'method' => 'PATCH',
@@ -28,8 +28,8 @@
 								'class' => 'col-lg-2 col-form-label'
 							]) !!}
 							<div class="col-lg-10">
-								<ul class="list-group">							
-									@include('panichd::shared.attach_files_button', ['attach_id' => 'comment_'.$comment->id.'_attached'])			
+								<ul class="list-group">
+									@include('panichd::shared.attach_files_button', ['attach_id' => 'comment_'.$comment->id.'_attached'])
 									<div id="comment_{{ $comment->id }}_attached" class="panel-group grouped_check_list deletion_list attached_list" data-new-attachment-edit-div="edit_comment_{{ $comment->id  }}_attachment" data-new-attachment-back-div="edit_comment_{{ $comment->id }}_comment">
 									@foreach($comment->attachments as $attachment)
 										@include('panichd::tickets.partials.attachment', [
@@ -42,7 +42,7 @@
 									</div>
 								</ul>
 							</div>
-						</div>						
+						</div>
 					@endif
 
 					<div class="text-right col-md-12">
@@ -53,15 +53,17 @@
 					</div>
 					{!! CollectiveForm::close() !!}
 				</fieldset>
-				
+
 				<!-- Div edit attachment -->
 				<fieldset id="edit_comment_{{ $comment->id }}_attachment"  class="fieldset-for-attachment" style="display: none">
 					@include('panichd::tickets.partials.attachment_form_fields')
-					<button class="btn btn-light div-discard-attachment-update" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.discard') }}</button>
-					<button class="btn btn-primary attachment_form_submit pull-right" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.update') }}</button>
+          <div class="mt-4 d-flex">
+            <button class="btn btn-light div-discard-attachment-update mr-auto" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.discard') }}</button>
+  					<button class="btn btn-primary attachment_form_submit" data-edit-div="edit_comment_{{ $comment->id }}_attachment" data-back-div="edit_comment_{{ $comment->id }}_comment">{{ trans('panichd::lang.update') }}</button>
+          </div>
 				</fieldset>
 			</div>
-			
+
         </div>
     </div>
 </div>

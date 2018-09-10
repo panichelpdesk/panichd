@@ -17,7 +17,7 @@
             ];
 
         ?>
-        <div class="row">
+        <div class="row mb-2">
             @foreach ($a_cards as $card)
                 <div class="col-sm-6 col-lg-3">
                     <div class="media {{ $card['class'] }}">
@@ -34,32 +34,28 @@
             <div class="col-md-8">
                 <div class="card bg-light">
                     <div class="card-header">
-                        <i class="fa fa-chart-bar fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-light btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    {{ trans('panichd::admin.index-periods') }}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>
-                                        <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 2) }}">
-                                            {{ trans('panichd::admin.index-3-months') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 5) }}">
-                                            {{ trans('panichd::admin.index-6-months') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 11) }}">
-                                            {{ trans('panichd::admin.index-12-months') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                      <div class="float-right">
+                          <div class="btn-group">
+                              <button type="button" class="btn btn-light btn-xs dropdown-toggle" data-toggle="dropdown">
+                                  {{ trans('panichd::admin.index-periods') }}
+                                  <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu" role="menu">
+                                  <a class="dropdown-item" href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 2) }}">
+                                      {{ trans('panichd::admin.index-3-months') }}
+                                  </a>
+                                  <a class="dropdown-item" href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 5) }}">
+                                      {{ trans('panichd::admin.index-6-months') }}
+                                  </a>
+                                  <a class="dropdown-item" href="{{ action('\PanicHD\PanicHD\Controllers\DashboardController@index', 11) }}">
+                                      {{ trans('panichd::admin.index-12-months') }}
+                                  </a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                      <i class="fa fa-chart-bar fa-fw"></i> {{ trans('panichd::admin.index-performance-indicator') }}
+
                     </div>
                     <div class="card-body">
                         <div id="curve_chart" style="width: 100%; height: 350px"></div>
@@ -114,24 +110,24 @@
                 <br>
                 <div class="tab-content">
                     <ul id="information-panel-categories" class="list-group tab-pane fade {{$active_tab == "cat" ? "show active" : ""}}"  role="tabpanel">
-                        <li class="list-group-item">
-                            <span>{{ trans('panichd::admin.index-category') }}
+                        <li class="list-group-item d-flex">
+                            <span class="mr-auto">{{ trans('panichd::admin.index-category') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
-                            <span class="pull-right text-muted small">
-                                
-								<?php 
+                            <span class="text-muted small">
+
+								<?php
 									$counter_lists_text = trans('panichd::lang.newest-tickets-adjective') . ' - ' . trans('panichd::lang.active-tickets-adjective') . ' - ' . trans('panichd::lang.complete-tickets-adjective');
 								?>
-								
+
 								<em>{{ $counter_lists_text }}</em>
                             </span>
                         </li>
                         @foreach($categories as $category)
-                            <li class="list-group-item">
-								<span style="color: {{ $category->color }}">{{ $category->name }} </span><span class="badge"  style="color: white; background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
+                            <li class="list-group-item d-flex">
+								<span style="color: {{ $category->color }}">{{ $category->name }} </span><span class="badge align-self-center ml-1 mr-auto"  style="color: white; background-color: {{ $category->color }}">{{ $category->tickets()->count() }}</span>
 
-								<span class="pull-right small">
+								<span class="small">
 									<?php
 										$a_button = [
 											'newest' => $category->tickets()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
@@ -139,7 +135,7 @@
 											'complete' => $category->tickets()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
 										];
 									?>
-									
+
 									@if ($category->tickets()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
@@ -170,24 +166,25 @@
                     </ul>
                     <ul id="information-panel-agents" class="list-group tab-pane fade {{$active_tab == "agents" ? "show active" : ""}}" role="tabpanel">
                         <li class="list-group-item">
-                            <span>{{ trans('panichd::admin.index-agent') }}
+                            <span class="mr-auto">{{ trans('panichd::admin.index-agent') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
-                            <span class="pull-right text-muted small">
+                            <span class="text-muted small">
                                 <em>{{ $counter_lists_text }}</em>
                             </span>
                         </li>
                         @foreach($agents as $agent)
-                            <li class="list-group-item">
+                            <li class="list-group-item d-flex">
                                 <?php $agent_text = $agent->name . ' <span class="badge">' . ($agent->agentTickets(false)->count()  +
                                          $agent->agentTickets(true)->count()) . '</span>'; ?>
-								@if ($setting->grab('user_route') != 'disabled')
-									<a href="{{ route($setting->grab('user_route'), ['id' => $agent->id]) }}">{!! $agent_text !!}</a>
-								@else
-									<span>{!! $agent_text !!}</span>
-								@endif
-								
-                                <span class="pull-right small">
+                             <span class="mr-auto">
+                              @if ($setting->grab('user_route') != 'disabled')
+              									<a href="{{ route($setting->grab('user_route'), ['id' => $agent->id]) }}">{!! $agent_text !!}</a>
+              								@else
+              									<span>{!! $agent_text !!}</span>
+              								@endif
+                            </span>
+                            <span class="small">
 									<?php
 										$a_button = [
 											'newest' => $agent->agentTickets(false)->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
@@ -195,7 +192,7 @@
 											'complete' => $agent->agentTickets(true)->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
 										];
 									?>
-									
+
 									@if ($agent->agentTickets(false)->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
@@ -225,24 +222,26 @@
                         {!! $agents->links('pagination::bootstrap-4') !!}
                     </ul>
                     <ul id="information-panel-users" class="list-group tab-pane fade {{ $active_tab == "users" ? "show active" : "" }}" role="tabpanel">
-                        <li class="list-group-item">
-                            <span>{{ trans('panichd::admin.index-user') }}
+                        <li class="list-group-item d-flex">
+                            <span class="mr-auto">{{ trans('panichd::admin.index-user') }}
                                 <span class="badge">{{ trans('panichd::admin.index-total') }}</span>
                             </span>
-                            <span class="pull-right text-muted small">
+                            <span class="text-muted small">
                                 <em>{{ $counter_lists_text }}</em>
                             </span>
                         </li>
                         @foreach($users as $user)
-                            <li class="list-group-item">
+                            <li class="list-group-item d-flex">
                                 <?php $user_text = $user->name . ' <span class="badge">' . $user->tickets()->count() . '</span>'; ?>
-								@if ($setting->grab('user_route') != 'disabled')
-									<a href="{{ route($setting->grab('user_route'), ['id' => $user->id]) }}">{!! $user_text !!}</a>
-								@else
-									<span>{!! $user_text !!}</span>
-								@endif
-								
-                                <span class="pull-right small">
+                              <span class="mr-auto">
+                                @if ($setting->grab('user_route') != 'disabled')
+                									<a href="{{ route($setting->grab('user_route'), ['id' => $user->id]) }}">{!! $user_text !!}</a>
+                								@else
+                									<span>{!! $user_text !!}</span>
+                								@endif
+                              </span>
+
+                                <span class="small">
                                     <?php
 										$a_button = [
 											'newest' => $user->tickets()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
@@ -250,7 +249,7 @@
 											'complete' => $user->tickets()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
 										];
 									?>
-									
+
 									@if ($user->tickets()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else

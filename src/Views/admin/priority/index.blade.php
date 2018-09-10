@@ -9,13 +9,12 @@
 @section('content')
     <div class="card bg-light">
         <div class="card-header">
-            <h2>{{ trans('panichd::admin.priority-index-title') }}
-                {!! link_to_route(
-					$setting->grab('admin_route').'.priority.create',
-					trans('panichd::admin.btn-create-new-priority'), null,
-					['class' => 'btn btn-primary pull-right']
-				) !!}
-            </h2>
+          {!! link_to_route(
+            $setting->grab('admin_route').'.priority.create',
+            trans('panichd::admin.btn-create-new-priority'), null,
+            ['class' => 'btn btn-primary float-right']
+          ) !!}
+          <h2>{{ trans('panichd::admin.priority-index-title') }}</h2>
         </div>
 
         @if ($priorities->isEmpty())
@@ -28,7 +27,7 @@
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<span class="fa fa-info-circle" style="color: #7ED5EC;"></span> {!! trans('panichd::admin.priority-index-help') !!}
 			</div>
-		
+
             <table id="priority_table" class="table table-hover">
                 <thead>
                     <tr>
@@ -103,11 +102,11 @@
 				$.each($('#priority_table tbody tr'), function (index, value){
 					if ($(this).attr('data-id')) a_order.push($(this).data('id'));
 				});
-				
+
 				var max_magnitude = a_order.length;
-				
+
 				$('#priority_table .magnitude').text('...');
-				
+
 				// Do AJAX POST when sorting priorities
 				$.ajax({
 					type: "POST",
@@ -123,20 +122,20 @@
 								$(this).text(max_magnitude-index);
 							});
 						}else{
-							
+
 						}
 					}
 				});
 			}
 		});
-		
+
 		$( ".deleteit" ).click(function( event ) {
             event.preventDefault();
-			
+
 			var form = $.find('#delete-'+$(this).data("id"));
-			
+
 			if ($(form).find("input[name='tickets_new_priority_id']").length >0){
-				
+
 				$('#modal-priority-delete').find('.modal-title').text($(this).data('modal-title'));
 				$('#modal-priority-delete').find('.modal-tickets-count').text($(this).data('tickets-count'));
 				$('#modal-priority-delete').find('.modal-priority-select').hide();
@@ -150,12 +149,12 @@
 				}
 			}
         });
-		
+
 		$('#submit_priority_delete_modal').click(function(e){
 			e.preventDefault();
 			var modal = $(this).closest('#modal-priority-delete');
 			var priority_id = modal.find("input[name='modal-priority-id']").val();
-			
+
 			$('#delete-'+priority_id).find("input[name='tickets_new_priority_id']").val(modal.find('#select_priority_without_'+priority_id).val());
 			$('#delete-'+priority_id).submit();
 		});

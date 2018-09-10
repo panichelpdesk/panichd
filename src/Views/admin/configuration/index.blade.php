@@ -10,19 +10,20 @@
         <!-- configuration -->
 <div class="card bg-light">
     <div class="card-header">
+        <div class="panel-nav float-right">
+            {!! link_to_route(
+                $setting->grab('admin_route').'.configuration.index',
+                trans('panichd::admin.btn-back'), null,
+                ['class' => 'btn btn-light'])
+            !!}
+            {!! link_to_route(
+                $setting->grab('admin_route').'.configuration.create',
+                trans('panichd::admin.btn-create-new-config'), null,
+                ['class' => 'btn btn-primary'])
+            !!}
+        </div>
         <h3>{{ trans('panichd::admin.config-index-title') }}
-            <div class="panel-nav pull-right" style="margin-top: -7px;">
-                {!! link_to_route(
-                    $setting->grab('admin_route').'.configuration.index',
-                    trans('panichd::admin.btn-back'), null,
-                    ['class' => 'btn btn-light'])
-                !!}
-                {!! link_to_route(
-                    $setting->grab('admin_route').'.configuration.create',
-                    trans('panichd::admin.btn-create-new-config'), null,
-                    ['class' => 'btn btn-primary'])
-                !!}
-            </div>
+
         </h3>
     </div>
     @if($configurations->isEmpty())

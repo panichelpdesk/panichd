@@ -12,7 +12,7 @@
     <div class="card bg-light">
         <div class="card-header">
             <h2>{{ trans('panichd::admin.agent-index-title') }}
-                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
+                <button class="btn btn-primaryfloat-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
             </h2>
         </div>
 
@@ -50,13 +50,13 @@
 										{{  $category->name }}
 									</span>
 								@endif
-								
+
                             @endforeach
-							
+
 							 <button type="button" class="btn btn-light btn-default btn-xs" data-toggle="modal" data-target="#CategoriesPopupAgent{{ $agent->id }}" style="margin-left: 1em;">{{ trans('panichd::admin.btn-edit')}}</button>
-							
+
 							@include('panichd::admin.agent.form_edit')
-                        </td>						
+                        </td>
                         <td>
                             {!! CollectiveForm::open([
                             'method' => 'DELETE',
@@ -74,17 +74,17 @@
                 </tbody>
             </table>
         @endif
-    </div>	
+    </div>
 @stop
 
 @section('footer')
 <script type="text/javascript">
-	$(function(){		
+	$(function(){
 		$('.jquery_agent_cat').click(function(){
 			var checked=$(this).hasClass('checked');
 			if (checked){
 				$(this).removeClass('checked');
-				$('#'+$(this).attr('id')+"_auto").prop('checked',false).prop('disabled','disabled');			
+				$('#'+$(this).attr('id')+"_auto").prop('checked',false).prop('disabled','disabled');
 			}else{
 				$(this).addClass('checked');
 				$('#'+$(this).attr('id')+"_auto").prop('checked','checked').prop('disabled',false);

@@ -10,15 +10,15 @@
      <div class="card bg-light">
       <div class="card-header">
         <h3>{{ trans('panichd::admin.config-create-title') }}
-          <div class="panel-nav pull-right" style="margin-top: -7px;">          
+          <div class="panel-nav float-right" style="margin-top: -7px;">          
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.index',
                   trans('panichd::admin.btn-back'), null,
                   ['class' => 'btn btn-light'])
               !!}
           </div>
-        </h3>  
-      </div>       
+        </h3>
+      </div>
       <div class="card-body">
             {!! CollectiveForm::open(['route' => $setting->grab('admin_route').'.configuration.store']) !!}
 
@@ -51,7 +51,7 @@
                 {!! CollectiveForm::label('lang', trans('panichd::admin.config-edit-language') . trans('panichd::admin.colon'), ['class' => 'col-sm-2 col-form-label']) !!}
                 <div class="col-sm-9">
                     {!! CollectiveForm::text('lang', null, ['class' => 'form-control']) !!}
-                    
+
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                   {!! CollectiveForm::submit(trans('panichd::admin.btn-submit'), ['class' => 'btn btn-primary']) !!}
                 </div>
             </div>
-            
+
           {!! CollectiveForm::close() !!}
       </div>
       <div class="card-footer">
@@ -72,8 +72,8 @@
   $(document).ready(function() {
     $("#slug").bind('change', function() {
       var slugger = $('#slug').val();
-          slugger = slugger       
-          .replace(/\W/g, '.')      
+          slugger = slugger
+          .replace(/\W/g, '.')
           .toLowerCase();
       $("#slug").val(slugger);
     });
