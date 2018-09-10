@@ -57,6 +57,7 @@ return [
   // Agent related
   'table-change-agent'               => 'Canviar tècnic',
   'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
+  'table-agent-status-check'         => 'Canviar estat a ":status"',
 
   // Priority related
   'table-change-priority'            => 'Canviar la prioritat',

@@ -21,8 +21,11 @@
 			</ul>
 			</div>
 		@endforeach
-		 
-		</div>
+
+    @if ($setting->grab('use_default_status_id'))
+     <label><input type="checkbox" name="status_checkbox" value="yes">{{ trans('panichd::lang.table-agent-status-check') }}</label>
+     @endif
+    </div>
 		<div class="modal-footer">
 		<button type="submit" class="btn btn-danger">{{ trans('panichd::lang.btn-change') }}</button>
 		</div>

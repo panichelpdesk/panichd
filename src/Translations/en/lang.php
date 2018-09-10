@@ -57,6 +57,7 @@ return [
   // Agent related
   'table-change-agent'               => 'Change agent',
   'table-one-agent'                  => 'There is one agent in this category',
+  'table-agent-status-check'         => 'Change status to ":status"',
 
   // Priority related
   'table-change-priority'            => 'Change priority',

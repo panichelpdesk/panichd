@@ -161,7 +161,7 @@ class TicketsController extends Controller
 
 		\Carbon\Carbon::setLocale(config('app.locale'));
 
-        $this->renderTicketTable($collection);
+        $this->renderTicketTable($collection, $ticketList);
 
         // method rawColumns was introduced in laravel-datatables 7, which is only compatible with >L5.4
         // in previous laravel-datatables versions escaping columns wasn't defaut
@@ -178,7 +178,7 @@ class TicketsController extends Controller
         return $collection->make(true);
     }
 
-    public function renderTicketTable($collection)
+    public function renderTicketTable($collection, $ticketList)
     {
 
 		// Column edits
@@ -280,6 +280,8 @@ class TicketsController extends Controller
 			])
 			->get()->toArray();
 
+    $active_status_name = Setting::grab('default_reopen_status_id') == '0' ? Models\Status::first()->name : Models\Status::find(Setting::grab('default_reopen_status_id'))->name;
+
 		$a_cat = [];
 		foreach ($a_cat_pre as $cat){
 			$a_cat[$cat['id']] = $cat;
@@ -287,7 +289,10 @@ class TicketsController extends Controller
 			foreach ($cat['agents'] as $agent){
 				$html.='<label><input type="radio" name="%1$s_agent" value="'.$agent['id'].'"> '.$agent['name'].'</label><br />';
 			}
-			$html.='<br /><button type="button" class="btn btn-default btn-sm submit_agent_popover" data-ticket-id="%1$s">'.trans('panichd::lang.btn-change').'</button></div>';
+      if ($ticketList == 'newest' and Setting::grab('use_default_status_id')){
+        $html.= '<br /><label><input type="checkbox" name="%1$s_status_checkbox"> ' . trans('panichd::lang.table-agent-status-check', ['status' => $active_status_name]) . '</label>';
+      }
+      $html.='<br /><button type="button" class="btn btn-default btn-sm submit_agent_popover" data-ticket-id="%1$s">'.trans('panichd::lang.btn-change').'</button></div>';
 			$a_cat[$cat['id']]['html']=$html;
 		}
 
@@ -532,7 +537,7 @@ class TicketsController extends Controller
 			}
 		}
 
-        if ($this->member->isAdmin() or ($this->member->isAgent() and Setting::grab('agent_restrict') == 0)) {
+        if ($this->member->isAdmin() or ($this->member->isAgent() and Models\Setting::grab('agent_restrict') == 0)) {
 
 			// Visible categories
             $filters['category'] = Category::visible()->orderBy('name')->get();
@@ -1570,13 +1575,17 @@ class TicketsController extends Controller
 	/*
 	 * Change agent in ticket list
 	*/
-	public function changeAgent(Request $request){
+	public function changeAgent(Request $request)
+  {
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-		$new_agent = \PanicHDMember::find($request->input('agent_id'));
+    if ($request->has('agent_id')){
+      $new_agent = \PanicHDMember::find($request->input('agent_id'));
+    }else
+      $new_agent = clone $old_agent;
 
-		if (is_null($new_agent) || $ticket->agent_id==$request->input('agent_id')){
+		if (!$request->has('status_checkbox') and (is_null($new_agent) || $ticket->agent_id == $request->input('agent_id'))){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
@@ -1584,11 +1593,11 @@ class TicketsController extends Controller
 			]));
 		}
 
-		$ticket->agent_id = $request->input('agent_id');
+		$ticket->agent_id =  $new_agent->id;
 
 		$old_status_id = $ticket->status_id;
-		if ($ticket->status_id==Setting::grab('default_status_id')){
-			$ticket->status_id=Setting::grab('default_reopen_status_id');
+		if ($request->has('status_checkbox') || !Setting::grab('use_default_status_id')){
+			$ticket->status_id = Setting::grab('default_reopen_status_id');
 		}
 		$ticket->save();
 		event(new TicketUpdated($original_ticket, $ticket));
