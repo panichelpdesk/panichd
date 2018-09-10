@@ -9,13 +9,12 @@
 @section('content')
     <div class="card bg-light">
         <div class="card-header">
-            <h2>{{ trans('panichd::admin.status-index-title') }}
-                {!! link_to_route(
-                    $setting->grab('admin_route').'.status.create',
-                    trans('panichd::admin.btn-create-new-status'), null,
-                    ['class' => 'btn btn-primary pull-right']
-                ) !!}
-            </h2>
+            {!! link_to_route(
+                $setting->grab('admin_route').'.status.create',
+                trans('panichd::admin.btn-create-new-status'), null,
+                ['class' => 'btn btn-primary float-right']
+            ) !!}
+            <h2>{{ trans('panichd::admin.status-index-title') }}</h2>
         </div>
 
         @if ($statuses->isEmpty())
@@ -71,7 +70,7 @@
 							@if ($status->tickets_count > 0)
 								{!! CollectiveForm::hidden('tickets_new_status_id', null) !!}
 							@endif
-							
+
                             {!! CollectiveForm::close() !!}
                         </td>
                     </tr>
@@ -88,11 +87,11 @@
     <script>
         $( ".deleteit" ).click(function( event ) {
             event.preventDefault();
-			
+
 			var form = $.find('#delete-'+$(this).data("id"));
-			
+
 			if ($(form).find("input[name='tickets_new_status_id']").length >0){
-				
+
 				$('#modal-status-delete').find('.modal-title').text($(this).data('modal-title'));
 
 				$('#modal-status-delete').find('.modal-tickets-count').text($(this).data('tickets-count'));
@@ -107,12 +106,12 @@
 				}
 			}
         });
-		
+
 		$('#submit_status_delete_modal').click(function(e){
 			e.preventDefault();
 			var modal = $(this).closest('#modal-status-delete');
 			var status_id = modal.find("input[name='modal-status-id']").val();
-			
+
 			$('#delete-'+status_id).find("input[name='tickets_new_status_id']").val(modal.find('#select_status_without_'+status_id).val());
 			$('#delete-'+status_id).submit();
 		});

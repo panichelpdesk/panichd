@@ -13,7 +13,7 @@
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.administrator.create',
                                     trans('panichd::admin.btn-create-new-administrator'), null,
-                                    ['class' => 'btn btn-primary pull-right'])
+                                    ['class' => 'btn btn-primary float-right'])
                 !!}
             </h2>
         </div>

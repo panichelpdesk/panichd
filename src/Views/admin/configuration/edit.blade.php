@@ -40,7 +40,7 @@
      <div class="card bg-light">
       <div class="card-header">
         <h3>{{ trans('panichd::admin.config-edit-title') }}
-          <div class="panel-nav pull-right" style="margin-top: -7px;">          
+          <div class="panel-nav float-right" style="margin-top: -7px;">          
               {!! link_to_route(
                   $setting->grab('admin_route').'.configuration.index',
                   trans('panichd::admin.btn-back'), null,
@@ -54,8 +54,8 @@
               !!}
               --}}
           </div>
-        </h3>  
-      </div>     
+        </h3>
+      </div>
       <div class="card-body">
         {!! CollectiveForm::model($configuration, ['route' => [$setting->grab('admin_route').'.configuration.update', $configuration->id], 'method' => 'patch']) !!}
             <div class="card bg-light">
@@ -83,7 +83,7 @@
                   <div class="col-sm-9">
                       {!! CollectiveForm::text('id', null, ['class' => 'form-control', 'disabled']) !!}
                   </div>
-              </div>                
+              </div>
 
               <!-- Slug Field -->
               <div class="form-group row">

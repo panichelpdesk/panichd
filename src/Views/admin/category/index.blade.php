@@ -13,7 +13,7 @@
                 {!! link_to_route(
                                     $setting->grab('admin_route').'.category.create',
                                     trans('panichd::admin.btn-create-new-category'), null,
-                                    ['class' => 'btn btn-primary pull-right'])
+                                    ['class' => 'btn btn-primary float-right'])
                 !!}
             </h2>
         </div>

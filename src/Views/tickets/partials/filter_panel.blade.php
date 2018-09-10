@@ -1,30 +1,28 @@
 <!-- filter panel --><div id="filter_panel" class="card">
 	<div class="card-body">
-		<?php $button_create = link_to_route($setting->grab('main_route').'.create', trans('panichd::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-light pull-right']);?>
-		
-		@if ($u->currentLevel() == 2 and $u->maxLevel() == 2)
-			<div class="title pov">{{ trans('panichd::lang.filter-pov') }}</div>
-			<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari">{{ trans('panichd::lang.agent') }}</a>
+		@if($u->maxLevel() == 2)
+			<div @if ($u->currentLevel() == 1) class="float-left" @else style="display: inline-block" @endif>
+				<div class="title pov">{{ trans('panichd::lang.filter-pov') }}</div>
+				@if ($u->currentLevel() == 2)
+					<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/1') }}" id="agent_pov" data-other="user_pov" title="veure com usuari">{{ trans('panichd::lang.agent') }}</a>
+				@else
+					<a class="btn btn-light btn-sm pov-link" href="{{ url($setting->grab('main_route').'/filter/currentLevel/remove') }}" id="user_pov" data-other="agent_pov" title="veure com agent">{{ trans('panichd::lang.user') }}</a>
+				@endif
+			</div>
 		@endif
-		
+
 		@if ($u->currentLevel() > 1)
 			@if (session()->has('panichd_filters'))
 				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/removeall" class="btn btn-light btn-sm tooltip-info removeall-link"  data-toggle="tooltip" title="{{ trans('panichd::lang.filter-removeall-title') }}" data-placement="bottom"><span class="fa fa-filter"></span></a>
 			@endif
 
 			@include('panichd::tickets.partials.filter_blocks')
-			{!! $button_create !!}
-		@else			
-			<div class="text-center">
-				@if ($u->maxLevel() == 2)
-					<div class="pull-left">
-						<div class="title pov">{{ trans('panichd::lang.filter-pov') }}</div>
-						<a href="{{ url($setting->grab('main_route').'/filter/currentLevel/remove') }}" id="user_pov" data-other="agent_pov" title="veure com agent"><button type="button" class="btn btn-light pov-link">{{ trans('panichd::lang.user') }}</button></a>
-					</div>
-				@endif
-				<h2 style="display: inline-block; margin: 0em;">{!! trans('panichd::lang.index-my-tickets') !!}</h2>{!! $button_create !!}
-			</div>			
 		@endif
-	
+
+		{!! link_to_route($setting->grab('main_route').'.create', trans('panichd::lang.btn-create-new-ticket'), null, ['class' => 'btn btn-light float-right']); !!}
+
+		@if ($u->currentLevel() == 1)
+			<h2 class="text-center" style="margin: 0px;">{!! trans('panichd::lang.index-my-tickets') !!}</h2>
+		@endif
 	</div>
 </div><!-- /filter panel -->

@@ -10,11 +10,8 @@
 
 <div class="card bg-light">
     <div class="card-header">
-        <h3>{{ trans('panichd::admin.notice-index-title') }}
-            <div class="panel-nav pull-right" style="margin-top: -7px;">
-                <button type="button" class="btn btn-light btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
-            </div>
-        </h3>
+        <button type="button" class="float-right btn btn-light btn_modal_user" data-route="create">{{ trans('panichd::admin.btn-create-new-notice') }}</button>
+        <h3>{{ trans('panichd::admin.notice-index-title') }}</h3>
     </div>
     <div class="card-body">
 		@if (!session()->exists('status'))
@@ -36,7 +33,7 @@
 		<div id="message"></div>
             <table class="table table-hover table-striped">
                 <thead>
-                    <tr>                        
+                    <tr>
                         <td>{{ trans('panichd::admin.notice-index-owner') }}</td>
                         <td>{{ trans('panichd::admin.notice-index-email') }}</td>
 						<td>{{ trans('panichd::admin.notice-index-department') }}</td>
@@ -58,7 +55,7 @@
 							@else
 								<span>{{ trans('panichd::lang.all-depts') }}</span>
 							@endif
-							
+
                         </td>
 						<td>
                             <button type="button" class="btn btn-light btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->userDepartment ? $d_user->userDepartment->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
@@ -92,53 +89,53 @@
     <script>
         $(function(){
 			$('.btn_modal_user').click(function(e){
-			
+
 				if ( $(this).data('route') == 'update'){
 					// Form
 					$('#modalDepartmentUser form').prop('action',$(this).data('form_action'));
 					$("#modalDepartmentUser input[name='_method']").first().val('PATCH');
-					
+
 					// Title
 					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-update') }}");
-					
+
 					// User id input
 					$("#modalDepartmentUser #user_input").val($(this).data('user_id')).prop('disabled', false);
-					
+
 					// Selects
 					$('#modalDepartmentUser #user_select2').prop('disabled', true).hide();
 					$("#modalDepartmentUser #modal_user_name").show().text($(this).data('user_name'));
 					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('department_id')+"']").prop('selected', true);
-					
+
 					// Select2
 					$("#modalDepartmentUser .modal_user_wrap .select2-container").remove();
 					$("#modalDepartmentUser #department_select2").select2();
 				}else{
 					// Form action
-					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-create'));			
+					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-create'));
 					$("#modalDepartmentUser input[name='_method']").first().val('POST');
-					
+
 					// Title
 					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-create') }}");
-					
+
 					// User id input
 					$("#modalDepartmentUser #user_input").prop('disabled', true);
-					
+
 					// Selects
-					$("#modalDepartmentUser #modal_user_name").text('').hide();					
+					$("#modalDepartmentUser #modal_user_name").text('').hide();
 					$('#modalDepartmentUser #user_select2').prop('disabled', false).show();
 					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").prop('selectedIndex',0);
 					//$("#modalDepartmentUser #user_select2").show();
 					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").select2();
-				}			
-				
-				
-				
-				$('#modalDepartmentUser').modal('show');				
-				
+				}
+
+
+
+				$('#modalDepartmentUser').modal('show');
+
 				e.preventDefault();
 			});
-			
-			
+
+
 			$( ".deleteit" ).click(function( event ) {
 				event.preventDefault();
 				if (confirm("{{ trans('panichd::admin.notice-index-js-delete') }} "))
@@ -149,6 +146,6 @@
 
 			});
 		});
-		
+
     </script>
 @append

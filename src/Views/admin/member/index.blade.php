@@ -9,9 +9,8 @@
 @section('content')
 <div class="card bg-light">
     <div class="card-header">
-        <h3>{{ trans('panichd::admin.member-index-title') }}
-			<button type="button" class="btn btn-primary pull-right btn_member_modal" data-route="create">{{ trans('panichd::admin.btn-add-new') }}</button>
-        </h3>
+      <button type="button" class="btn btn-primary float-right btn_member_modal" data-route="create">{{ trans('panichd::admin.btn-add-new') }}</button>
+      <h3>{{ trans('panichd::admin.member-index-title') }}</h3>
     </div>
     <div class="card-body">
 	@if (!session()->exists('status'))
@@ -28,7 +27,7 @@
 		<div id="message"></div>
             <table id="dataTable" class="table table-hover table-striped">
                 <thead>
-                    <tr>                        
+                    <tr>
                         <td>{{ trans('panichd::admin.table-name') }}</td>
 						<td>{{ trans('panichd::admin.table-email') }}</td>
 						<td>{{ trans('panichd::admin.role') }}</td>
@@ -58,10 +57,10 @@
 							@if ($member->panichd_admin != '1')
 								@if ($member->user_tickets_count != 0 || $member->agent_total_tickets_count != 0)
 									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
-								
+
 								@elseif($member->panichd_agent == '1')
 									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-delete-agent') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
-									
+
 								@else
 									{!! link_to_route(
 										$setting->grab('admin_route').'.member.destroy', trans('panichd::admin.btn-delete'), $member->id,
@@ -70,7 +69,7 @@
 										'form' => "delete-$member->id",
 										"user" => $member->name
 									]) !!}
-									
+
 									{!! CollectiveForm::open([
 										'method' => 'DELETE',
 										'route' => [
@@ -80,7 +79,7 @@
 										'id' => "delete-$member->id"
 									]) !!}
 									{!! CollectiveForm::close() !!}
-									
+
 								@endif
 							@endif
                         </td>
@@ -97,29 +96,29 @@
     <script>
         $(function(){
 			$('.btn_member_modal').click(function(e){
-			
+
 				if ( $(this).data('route') == 'update'){
 					// Form
 					$('#MemberModal form').prop('action',$(this).data('form_action'));
 					$("#MemberModal input[name='_method']").first().val('PATCH');
-					
+
 					// Title
 					$("#MemberModal .modal-title").text("{{ trans('panichd::admin.member-modal-update-title') }}");
-					
+
 					// Input
 					$("#MemberModal #id_input").val($(this).data('member_id'));
 					$("#MemberModal #name_input").val($(this).data('member_name'));
 					$("#MemberModal #email_input").val($(this).data('member_email'));
 					$('#MemberModal #password_label').text("{{ trans('panichd::admin.member-new-password-label') . trans('panichd::lang.colon') }}");
-					
+
 				}else{
 					// Form action
-					$('#MemberModal form').prop('action',$('#MemberModal form').data('route-create'));			
+					$('#MemberModal form').prop('action',$('#MemberModal form').data('route-create'));
 					$("#MemberModal input[name='_method']").first().val('POST');
-					
+
 					// Title
 					$("#MemberModal .modal-title").text("{{ trans('panichd::admin.member-modal-create-title') }}");
-					
+
 					// Input
 					$("#MemberModal #id_input").val('');
 					$("#MemberModal #name_input").val('{{ old("name") }}');
@@ -128,13 +127,13 @@
 				}
 
 				$('#password_input, #password_confirmation_input').val('');
-				
-				$('#MemberModal').modal('show');				
-				
+
+				$('#MemberModal').modal('show');
+
 				e.preventDefault();
 			});
-			
-			
+
+
 			$( ".deleteit" ).click(function( event ) {
 				event.preventDefault();
 				if (confirm("{{ trans('panichd::admin.member-delete-confirmation') }} "))
@@ -145,6 +144,6 @@
 
 			});
 		});
-		
+
     </script>
 @append

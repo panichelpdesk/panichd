@@ -14,7 +14,7 @@
 @append
 
 @section('colorpicker_snippet')
-	<button class="btn btn-light pull-left" id="colorpicker_snippet" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: #000000"></span>&nbsp;<b class="caret"></b></button>
+	<button class="btn btn-light" id="colorpicker_snippet" type="button"><span class="color-fill-icon dropdown-color-fill-icon" style="background-color: #000000"></span>&nbsp;<b class="caret"></b></button>
 	<input type="hidden" id="colorpicker_snippet_color" name="color" value="#000000">
 @stop
 
@@ -37,7 +37,7 @@
 				$('#colorpicker_snippet_color').val(color);
 			}
 		});
-		
+
 		@if (isset($input_color) && $input_color != "")
 			$('#colorpicker_snippet .color-fill-icon').css('background-color', '{{ $input_color }}');
 			$('#colorpicker_snippet_color').val('{{ $input_color }}');
@@ -45,4 +45,3 @@
 		</script>
 	@endif
 @append
-
