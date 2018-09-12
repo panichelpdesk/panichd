@@ -656,15 +656,37 @@ class TicketsController extends Controller
     }
 
     /*
-     * Process parameter pairs passed by URL and update and return $data array
+     * Edit a ticket with optional parameters set by URL
+     *
+     */
+    public function edit($id, $parameters = null)
+    {
+        $ticket = $this->tickets->findOrFail($id);
+
+        $data = $this->create_edit_data($ticket);
+
+        // Get URL parameters and replace a_current array with them
+        if (!is_null($parameters)){
+            $data = $this->ticket_URL_parameters($data, $parameters);
+        }
+
+        $data['ticket'] = $ticket;
+
+        $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
+
+        return view('panichd::tickets.createedit', $data);
+    }
+
+    /*
+     * Process parameter pairs passed by URL and update $data array
      */
     public function ticket_URL_parameters($data, $parameters)
     {
-      // Get URL parameters and replace a_current array with them
-      $a_temp = explode('/', $parameters);
-      $a_parameters = [];
+        // Get URL parameters and replace a_current array with them
+        $a_temp = explode('/', $parameters);
+        $a_parameters = [];
 
-      if (count($a_temp) % 2 == 0){
+        if (count($a_temp) % 2 == 0){
           $key = "";
           foreach($a_temp as $param){
               if ($key == ""){
@@ -674,59 +696,9 @@ class TicketsController extends Controller
                   $key = "";
               }
           }
-      }
-
-      return $data;
-   }
-
-    /*
-     * Edit a ticket
-     */
-	public function edit($id)
-    {
-		$ticket = $this->tickets->findOrFail($id);
-
-		$data = $this->create_edit_data($ticket);
-
-		$data['ticket'] = $ticket;
-
-		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
-
-        return view('panichd::tickets.createedit', $data);
-	}
-
-	/*
-	 * Edit a ticket and setting one or many fields by URL
-	 *
-	 * Usage: Show ticket -> complete modal -> "Edit more fields" option
-	 */
-	public function edit_with_values($id, $parameters)
-    {
-        $ticket = $this->tickets->findOrFail($id);
-
-        $data = $this->create_edit_data($ticket);
-
-        // Get URL parameters and replace a_current array with them
-        $a_temp = explode('/', $parameters);
-        $a_parameters = [];
-
-        if (count($a_temp) % 2 == 0){
-            $key = "";
-            foreach($a_temp as $param){
-                if ($key == ""){
-                    $key = $param;
-                }else{
-                    $data['a_current'][$key] = $param;
-                    $key = "";
-                }
-            }
         }
 
-        $data['ticket'] = $ticket;
-
-        $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
-
-        return view('panichd::tickets.createedit', $data);
+        return $data;
     }
 
 	public function create_edit_data($ticket = false, $a_parameters = false)
