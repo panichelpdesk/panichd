@@ -1,13 +1,13 @@
 <?php
 
 Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddleware()], function () use ($main_route, $main_route_path, $admin_route, $admin_route_path) {
-	
+
 	//Route::group(['middleware' => '', function () use ($main_route) {
 
     //Ticket public route
     Route::get("$main_route_path/complete", 'PanicHD\PanicHD\Controllers\TicketsController@indexComplete')
         ->name("$main_route-complete");
-		
+
 	// Get newest tickets list
 	Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
         ->name("$main_route-newest")
@@ -20,10 +20,10 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 	Route::get("$main_route_path/notices", function(){
 		return view('panichd::notices.index');
 	})->name("$main_route.notices");
-	
+
 	// Hide or show ticket to user
 	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
-			
+
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
         'names' => [
@@ -40,15 +40,20 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
         ],
     ]);
 
+		// Open Ticket create page with one or more parameters set by URL
+    Route::get("$main_route_path/createwithvalues/{parameters}", 'PanicHD\PanicHD\Controllers\TicketsController@create_with_values')
+        ->where('parameters', '(.*)')
+        ->name("$main_route.create-with-values");
+
     // Open Ticket edit page with one or more parameters set by URL
     Route::get("$main_route_path/{id}/editwithvalues/{parameters}", 'PanicHD\PanicHD\Controllers\TicketsController@edit_with_values')
         ->where('parameters', '(.*)')
         ->name("$main_route.edit-with-values");
-	
+
 	// Attachment routes
     Route::get("$main_route_path/download-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@downloadAttachment')
         ->name("$main_route.download-attachment");
-		
+
 	Route::get("$main_route_path/view-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@viewAttachment')
         ->name("$main_route.view-attachment");
 
@@ -78,7 +83,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     Route::get("$main_route_path/{id}/reopen", 'PanicHD\PanicHD\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
     //});
-	
+
 			// Returns permission_level for category_id
         Route::get("$main_route_path/permissionLevel/{category_id?}", [
             'as'   => $main_route.'-permissionLevel',
@@ -88,7 +93,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 	// Ticket list: Change agent for a ticket
 	Route::patch("$main_route_path-change.agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
 		->name("$main_route-change.agent");
-		
+
 	// Ticket list: Change priority for a ticket
 	Route::patch("$main_route_path-change.priority", 'PanicHD\PanicHD\Controllers\TicketsController@changePriority')
 		->name("$main_route-change.priority");
@@ -98,20 +103,20 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 		// Send again comment (reply) notification
 		Route::post("$main_route_path-notification.resend", 'PanicHD\PanicHD\Controllers\NotificationsController@notificationResend')
 			->name("$main_route-notification.resend");
-			
+
         //API return list of agents in particular category
         Route::get("$main_route_path/agents/list/{category_id?}/{ticket_id?}", [
             'as'   => $main_route.'agentselectlist',
             'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@agentSelectList',
         ]);
-		
+
 		// Remove all filters
 		Route::get("$main_route_path/filter/removeall/{list?}", 'PanicHD\PanicHD\Controllers\FiltersController@removeall')
 			->name("$main_route-filter-removeall");
 
 		// Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
-		
+
 		// Use single filter in specified list
 		Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only')
 			->name("$main_route-filteronly");
@@ -151,10 +156,10 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
                 'edit'    => "$admin_route.priority.edit",
             ],
         ]);
-		
+
 		Route::post("$admin_route_path/priority/reorder", 'PanicHD\PanicHD\Controllers\PrioritiesController@reorder')
 			->name("$admin_route.priority.reorder");
-		
+
 
         //Agents management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/agent", 'PanicHD\PanicHD\Controllers\AgentsController', [
@@ -181,24 +186,24 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
                 'edit'    => "$admin_route.category.edit",
             ],
         ]);
-		
+
 		// Members management routes (ex. http://url/panichd/member)
         Route::resource("$admin_route_path/member", 'PanicHD\PanicHD\Controllers\MembersController', [
             'names' => [
                 'index'   => "$admin_route.member.index",
-                'store'   => "$admin_route.member.store",                
-                'update'  => "$admin_route.member.update",                
-                'destroy' => "$admin_route.member.destroy",                
+                'store'   => "$admin_route.member.store",
+                'update'  => "$admin_route.member.update",
+                'destroy' => "$admin_route.member.destroy",
             ],
         ]);
-		
+
 		//Departments management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/notice", 'PanicHD\PanicHD\Controllers\NoticesController', [
             'names' => [
                 'index'   => "$admin_route.notice.index",
-                'store'   => "$admin_route.notice.store",                
-                'update'  => "$admin_route.notice.update",                
-                'destroy' => "$admin_route.notice.destroy",                
+                'store'   => "$admin_route.notice.store",
+                'update'  => "$admin_route.notice.update",
+                'destroy' => "$admin_route.notice.destroy",
             ],
         ]);
 

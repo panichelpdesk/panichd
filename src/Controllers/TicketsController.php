@@ -644,9 +644,37 @@ class TicketsController extends Controller
      */
     public function create()
     {
-		$data = $this->create_edit_data();
+	     $data = $this->create_edit_data();
 
-		$data['ticket_owner_id'] = auth()->user()->id;
+        $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
+
+        return view('panichd::tickets.createedit', $data);
+    }
+
+    /**
+     * Open Ticket creation form with one or many parameters pre-setted by URL
+     *
+     * @return Response
+     */
+    public function create_with_values($parameters)
+    {
+  		$data = $this->create_edit_data();
+
+      // Get URL parameters and replace a_current array with them
+      $a_temp = explode('/', $parameters);
+      $a_parameters = [];
+
+      if (count($a_temp) % 2 == 0){
+          $key = "";
+          foreach($a_temp as $param){
+              if ($key == ""){
+                  $key = $param;
+              }else{
+                  $data['a_current'][$key] = $param;
+                  $key = "";
+              }
+          }
+      }
 
 		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
 
@@ -663,8 +691,6 @@ class TicketsController extends Controller
 		$data = $this->create_edit_data($ticket);
 
 		$data['ticket'] = $ticket;
-
-		$data['ticket_owner_id'] = $data['ticket']->user_id;
 
 		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
@@ -700,8 +726,6 @@ class TicketsController extends Controller
 
         $data['ticket'] = $ticket;
 
-        $data['ticket_owner_id'] = $data['ticket']->user_id;
-
         $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
         return view('panichd::tickets.createedit', $data);
@@ -726,7 +750,9 @@ class TicketsController extends Controller
 
 		if (old('category_id')){
 			// Form old values
-			$a_current['complete'] = old('complete');
+         $a_current['owner_id'] = old('owner_id');
+
+         $a_current['complete'] = old('complete');
 
 			$a_current['start_date'] = old ('start_date');
 			$a_current['limit_date'] = old ('limit_date');
@@ -738,7 +764,9 @@ class TicketsController extends Controller
 
 		}elseif($ticket){
 			// Edition values
-			$a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
+         $a_current['owner_id'] = $ticket->owner_id;
+
+         $a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
 			$a_current['status_id'] = $ticket->status_id;
 
 			$a_current['start_date'] = $ticket->start_date;
@@ -750,7 +778,9 @@ class TicketsController extends Controller
 			$a_current['agent_id'] = $ticket->agent_id;
 		}else{
 			// Defaults
-			$a_current['complete'] = "no";
+         $a_current['owner_id'] = auth()->user()->id;
+
+         $a_current['complete'] = "no";
 
 			$a_current['start_date'] = $a_current['limit_date'] = "";
 
