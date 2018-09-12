@@ -24,10 +24,15 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 	// Hide or show ticket to user
 	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
 
-   // Open Ticket create page with one or more parameters set by URL
+   // Open Ticket create page with optional parameters set by URL
    Route::get("$main_route_path/create/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@create')
       ->where('parameters', '(.*)')
       ->name("$main_route.create");
+
+   // Open Ticket edit page with optional parameters set by URL
+   Route::get("$main_route_path/{id}/edit/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@edit')
+       ->where('parameters', '(.*)')
+       ->name("$main_route.edit");
 
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
@@ -36,18 +41,12 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             'store'   => $main_route.'.store',
             'update'  => $main_route.'.update',
             'show'    => $main_route.'.show',
-            'destroy' => $main_route.'.destroy',
-            'edit'    => $main_route.'.edit',
+            'destroy' => $main_route.'.destroy'
         ],
         'parameters' => [
             $field_name => 'ticket',
         ],
     ]);
-
-    // Open Ticket edit page with one or more parameters set by URL
-    Route::get("$main_route_path/{id}/editwithvalues/{parameters}", 'PanicHD\PanicHD\Controllers\TicketsController@edit_with_values')
-        ->where('parameters', '(.*)')
-        ->name("$main_route.edit-with-values");
 
 	// Attachment routes
     Route::get("$main_route_path/download-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@downloadAttachment')
