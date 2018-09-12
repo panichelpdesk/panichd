@@ -24,12 +24,16 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 	// Hide or show ticket to user
 	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
 
+   // Open Ticket create page with one or more parameters set by URL
+   Route::get("$main_route_path/create/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@create')
+      ->where('parameters', '(.*)')
+      ->name("$main_route.create");
+
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
         'names' => [
             'index'   => $main_route.'.index',
             'store'   => $main_route.'.store',
-            'create'  => $main_route.'.create',
             'update'  => $main_route.'.update',
             'show'    => $main_route.'.show',
             'destroy' => $main_route.'.destroy',
@@ -39,11 +43,6 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             $field_name => 'ticket',
         ],
     ]);
-
-		// Open Ticket create page with one or more parameters set by URL
-    Route::get("$main_route_path/createwithvalues/{parameters}", 'PanicHD\PanicHD\Controllers\TicketsController@create_with_values')
-        ->where('parameters', '(.*)')
-        ->name("$main_route.create-with-values");
 
     // Open Ticket edit page with one or more parameters set by URL
     Route::get("$main_route_path/{id}/editwithvalues/{parameters}", 'PanicHD\PanicHD\Controllers\TicketsController@edit_with_values')

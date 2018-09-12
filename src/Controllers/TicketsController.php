@@ -638,28 +638,28 @@ class TicketsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Open Ticket creation form with optional parameters pre-setted by URL
      *
      * @return Response
      */
-    public function create()
+    public function create($parameters = null)
     {
-	     $data = $this->create_edit_data();
+  		$data = $this->create_edit_data();
 
-        $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
+      if (!is_null($parameters)){
+         $data = $this->ticket_URL_parameters($data, $parameters);
+      }
+
+		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
 
         return view('panichd::tickets.createedit', $data);
     }
 
-    /**
-     * Open Ticket creation form with one or many parameters pre-setted by URL
-     *
-     * @return Response
+    /*
+     * Process parameter pairs passed by URL and update and return $data array
      */
-    public function create_with_values($parameters)
+    public function ticket_URL_parameters($data, $parameters)
     {
-  		$data = $this->create_edit_data();
-
       // Get URL parameters and replace a_current array with them
       $a_temp = explode('/', $parameters);
       $a_parameters = [];
@@ -676,10 +676,8 @@ class TicketsController extends Controller
           }
       }
 
-		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
-
-        return view('panichd::tickets.createedit', $data);
-    }
+      return $data;
+   }
 
     /*
      * Edit a ticket
