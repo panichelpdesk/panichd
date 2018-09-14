@@ -30,7 +30,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
       ->name("$main_route.create");
 
    // Open Ticket edit page with optional parameters set by URL
-   Route::get("$main_route_path/{id}/edit/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@edit')
+   Route::get("$main_route_path/{ticket}/edit/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@edit')
        ->where('parameters', '(.*)')
        ->name("$main_route.edit");
 
@@ -82,11 +82,11 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ->name("$main_route.reopen");
     //});
 
-			// Returns permission_level for category_id
-        Route::get("$main_route_path/permissionLevel/{category_id?}", [
-            'as'   => $main_route.'-permissionLevel',
-            'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@permissionLevel',
-        ]);
+	// Returns permission_level for category_id
+    Route::get("$main_route_path/permissionLevel/{category_id?}", [
+        'as'   => $main_route.'-permissionLevel',
+        'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@permissionLevel',
+    ]);
 
 	// Ticket list: Change agent for a ticket
 	Route::patch("$main_route_path-change.agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')

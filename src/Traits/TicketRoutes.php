@@ -15,7 +15,7 @@ trait TicketRoutes
     protected $mod_route_prefix;
 	protected $mod_route_suffix;
 	protected $route_ticket;
-	
+
 	public function __construct(Request $request)
 	{
 		$a_route = explode('.', $request->route()->getName());
@@ -31,18 +31,18 @@ trait TicketRoutes
 			default:
 				$this->mod_route_prefix = current($a_route);
 		}
-		
+
 		// last($a_route) == Route suffix
 		if (in_array(last($a_route), ['download-attachment', 'view-attachment'])){
 			$this->mod_route_suffix = "get-attachment";
 		}else{
 			$this->mod_route_suffix = last($a_route);
 		}
-		
-		$this->route_ticket = false;
-	}	
 
-	
+		$this->route_ticket = false;
+	}
+
+
 	/**
      * Returns related ticket instance to current route
      *
@@ -73,13 +73,12 @@ trait TicketRoutes
 			}else{
 				$ticket_id = $request->get('ticket_id');
 			}
-			
         }
-		
+
 		$this->route_ticket = Ticket::findOrFail($ticket_id);
 		return $this->route_ticket;
     }
-	
+
 	/**
      * Returns related category instance to current route
      *
@@ -97,7 +96,7 @@ trait TicketRoutes
 				$category_id = $this->route_ticket->category_id;
 			}
 		}
-				
+
 		$cat = Category::findOrFail($category_id);
 		return $cat;
 	}
