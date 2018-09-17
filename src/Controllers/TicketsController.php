@@ -720,9 +720,9 @@ class TicketsController extends Controller
 
 		if (old('category_id')){
 			// Form old values
-         $a_current['owner_id'] = old('owner_id');
+            $a_current['owner_id'] = old('owner_id');
 
-         $a_current['complete'] = old('complete');
+            $a_current['complete'] = old('complete');
 
 			$a_current['start_date'] = old ('start_date');
 			$a_current['limit_date'] = old ('limit_date');
@@ -734,9 +734,9 @@ class TicketsController extends Controller
 
 		}elseif($ticket){
 			// Edition values
-         $a_current['owner_id'] = $ticket->owner_id;
+            $a_current['owner_id'] = $ticket->user_id;
 
-         $a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
+            $a_current['complete'] = $ticket->isComplete() ? "yes" : "no";
 			$a_current['status_id'] = $ticket->status_id;
 
 			$a_current['start_date'] = $ticket->start_date;
@@ -748,9 +748,9 @@ class TicketsController extends Controller
 			$a_current['agent_id'] = $ticket->agent_id;
 		}else{
 			// Defaults
-         $a_current['owner_id'] = auth()->user()->id;
+            $a_current['owner_id'] = auth()->user()->id;
 
-         $a_current['complete'] = "no";
+            $a_current['complete'] = "no";
 
 			$a_current['start_date'] = $a_current['limit_date'] = "";
 
