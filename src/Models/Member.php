@@ -9,7 +9,7 @@ use PanicHD\PanicHD\Models\Category;
 class Member extends User
 {
     protected $table = 'users';
-	
+
 	/**
      * list of all agents and returning collection.
      *
@@ -148,7 +148,7 @@ class Member extends User
             }
         }
     }
-	
+
 	/**
      * Get general maximum permission level for current user.
      *
@@ -167,7 +167,7 @@ class Member extends User
 		}else
 			return 1;
 	}
-	
+
 	/**
      * Get current permission level for user.
      *
@@ -190,7 +190,7 @@ class Member extends User
 		}else
 			return 1;
 	}
-	
+
 	/**
      * Get permission level for specified category.
      *
@@ -215,8 +215,8 @@ class Member extends User
 				}
 			}
 		}
-	}	
-	
+	}
+
 	/**
      * Check if user has close permissions on a ticket.
      *
@@ -228,7 +228,7 @@ class Member extends User
 	{
 		if (!auth()->check()) return false;
 		$member = \PanicHDMember::find(auth()->user()->id);
-		
+
 		$a_perm = Setting::grab('close_ticket_perm');
 
         if ($member->isAdmin() && $a_perm['admin'] == 'yes') {
@@ -239,14 +239,14 @@ class Member extends User
 				return true;
 			}
 		}
-		
+
         if ($member->isTicketOwner($id) && $a_perm['owner'] == 'yes') {
             return true;
         }
-		
+
 		return false;
 	}
-	
+
 	/**
      * Check if user can make a comment on a ticket.
      *
@@ -257,14 +257,14 @@ class Member extends User
 	public static function canCommentTicket($id)
 	{
 		if (!auth()->check()) return false;
-		
+
 		if (\PanicHDMember::canManageTicket($id)){
 			return true;
 		}else{
 			return \PanicHDMember::isTicketOwner($id);
 		}
 	}
-	
+
 	/**
      * Check if user has manage permissions on a ticket.
      *
@@ -276,7 +276,7 @@ class Member extends User
 	{
 		if (!auth()->check()) return false;
 		$member = \PanicHDMember::find(auth()->user()->id);
-		
+
 		if ($member->isAdmin()){
 			return true;
 		}elseif ($ticket = Ticket::find($id) ){
@@ -284,10 +284,10 @@ class Member extends User
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-		
+
 	/**
      * Check if user can view new tickets button.
      *
@@ -299,12 +299,12 @@ class Member extends User
 	{
 		if (!auth()->check()) return false;
 		$member = \PanicHDMember::find(auth()->user()->id);
-		
+
 		if ($member->isAdmin()){
 			return true;
-		}elseif($member->isAgent() and $member->currentLevel() == 2){		
+		}elseif($member->isAgent() and $member->currentLevel() == 2){
 			if(Setting::grab('agent_restrict')==1){
-				return $member->categories()->wherePivot('autoassign','1')->count()==0 ? false : true;			
+				return $member->categories()->wherePivot('autoassign','1')->count()==0 ? false : true;
 			}else{
 				return true;
 			}
@@ -322,7 +322,7 @@ class Member extends User
     {
         return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'ticketit_department', 'id');
     }
-	
+
 	/**
      * Get associated department list through person_id
      *
@@ -331,8 +331,8 @@ class Member extends User
 	public function department()
 	{
 		return $this->belongsTo('PanicHD\PanicHD\Models\Department');
-	}	
-	
+	}
+
     /**
      * Get related categories.
      *
@@ -342,7 +342,7 @@ class Member extends User
     {
         return $this->belongsToMany('PanicHD\PanicHD\Models\Category', 'panichd_categories_users', 'user_id', 'category_id')->withPivot('autoassign')->orderBy('name');
     }
-	
+
 	/**
 	 * Get categories where user has permission to create new tickets
 	 *
@@ -351,25 +351,25 @@ class Member extends User
 	public function getNewTicketCategories()
 	{
 		if ($this->isAdmin()){
-			$categories = Category::orderBy('name');			
+			$categories = Category::orderBy('name');
 		}else{
 			$categories = Category::where('create_level', '1')->orderBy('name')->get();
-			
+
 			if ($this->isAgent() and $this->currentLevel() == 2){
 				$create_level_2 = $this->categories()->where('create_level', '2')->get();
-				
+
 				$categories = $categories->merge($create_level_2)->sortBy('name');
 
 			}
-		}		
-		
+		}
+
 		if (LaravelVersion::min('5.3.0')) {
             return $categories->pluck('name', 'id');
         } else {
             return $categories->lists('name', 'id');
         }
 	}
-	
+
 	/**
 	 * Get categories where user has permission to edit tickets
 	 *
@@ -382,9 +382,9 @@ class Member extends User
 		}elseif($this->isAgent() and $this->currentLevel() == 2){
 			$categories = $this->categories()->where('create_level', '<=', '2')->orderBy('name');
 		}else{
-			return [];			
+			return [];
 		}
-		
+
 		if (LaravelVersion::min('5.3.0')) {
             return $categories->pluck('name', 'id');
         } else {
@@ -417,7 +417,7 @@ class Member extends User
             return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id')->whereNull('completed_at');
         }
     }
-	
+
 	/**
      * Get ALL member tickets
      *
@@ -524,7 +524,7 @@ class Member extends User
     public function scopeVisibleForAgent($query, $id)
     {
         $member = \PanicHDMember::findOrFail($id);
-		
+
 		if ($member->currentLevel() == 2) {
 			// Depends on agent_restrict
 			if (Setting::grab('agent_restrict') == 0) {
@@ -540,7 +540,7 @@ class Member extends User
 			return false;
 		}
     }
-	
+
 	/**
      * Get array with all user id's from the departments where current user belongs and users that have ticketit_department = 0
      *
@@ -550,7 +550,12 @@ class Member extends User
     {
 		// Get my related departments
 		$related_departments = [];
-		foreach ($this->getRelatedDepartments() as $rel){
+
+        $c_related = $this->getRelatedDepartments();
+
+        if (!$c_related) return [];
+
+        foreach ($c_related as $rel){
 			$related_departments [] = $rel->id;
 		}
 
@@ -563,11 +568,11 @@ class Member extends User
 		 *    - agent person in related_departments
 		*/
 		$related_users = \PanicHDMember::where('id','!=',$this->id)
-			->whereIn('ticketit_department', $related_departments);		
-		
+			->whereIn('ticketit_department', $related_departments);
+
 		// Get users that are visible by all departments
 		$all_dept_users = \PanicHDMember::where('ticketit_department','0');
-		
+
 		if (version_compare(app()->version(), '5.3.0', '>=')) {
 			$related_users = $related_users->pluck('id')->toArray();
 			$related_users = array_unique(array_merge($related_users, $all_dept_users->pluck('id')->toArray()));
@@ -575,10 +580,10 @@ class Member extends User
 			$related_users = $related_users->lists('id')->toArray();
 			$related_users = array_unique(array_merge($related_users, $all_dept_users->lists('id')->toArray()));
 		}
-		
+
 		return $related_users;
 	}
-	
+
 	/*
 	 * Get member related departments in Department hierarchy
 	 *
@@ -589,8 +594,10 @@ class Member extends User
 	*/
 	public function getRelatedDepartments()
 	{
-		$member_department = $this->department()->get();
-		
+        if (is_null($this->department)) return [];
+
+        $member_department = $this->department()->get();
+
 		if ($this->department()->first()->is_main()){
 			return $member_department->merge($this->department()->first()->descendants()->get());
 		}else{
