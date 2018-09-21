@@ -61,9 +61,9 @@
 
 		// Complete modal status_id change
         $('#ticket-complete-modal #status_id').change(function(){
-           var url = '{{ route($setting->grab('main_route').'.edit', ['id' => $ticket->id, 'parameters' => 'complete/yes/status_id/']) }}';
+           var url = '{{ route($setting->grab('main_route').'.edit', ['id' => $ticket->id]) . '/complete/yes/status_id/' }}';
             $('#ticket-complete-modal #edit-with-values')
-               .prop('href', url + '/' + $(this).val());
+               .prop('href', url + $(this).val());
         });
 
 		// Complete modal submit button
