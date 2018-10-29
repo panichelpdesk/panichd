@@ -204,8 +204,20 @@ class PanicHDServiceProvider extends ServiceProvider
 			// Notices widget
 			view()->composer(['panichd::notices.widget', 'panichd::notices.index'], function ($view) {
 				if (Setting::grab('departments_notices_feature')){
-					// Get notices from related users
-					$a_notices = Ticket::active()->notHidden()->whereIn('user_id', \PanicHDMember::find(auth()->user()->id)->getMyNoticesUsers())
+                    // Get available notice users list
+                    if(is_null(auth()->user())){
+                         $all_dept_users = \PanicHDMember::where('ticketit_department','0');
+                        if (version_compare(app()->version(), '5.3.0', '>=')) {
+                			$a_notice_users = $all_dept_users->pluck('id')->toArray();
+                		}else{
+                			$a_notice_users = $all_dept_users->lists('id')->toArray();
+                		}
+                    }else{
+                        $a_notice_users = \PanicHDMember::find(auth()->user()->id)->getMyNoticesUsers();
+                    }
+
+                    // Get notices
+					$a_notices = Ticket::active()->notHidden()->whereIn('user_id', $a_notice_users)
 						->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
 						->select('panichd_tickets.*')
 						->with('owner.department')
