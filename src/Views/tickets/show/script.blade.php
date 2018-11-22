@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 	// PhotoSwipe items array (load before jQuery .pwsp_gallery_link click selector)
 	var pswpItems = [
 		@foreach($ticket->allAttachments()->images()->get() as $attachment)
