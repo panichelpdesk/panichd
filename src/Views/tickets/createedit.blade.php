@@ -17,5 +17,6 @@
 
 @section('footer')
     @include('panichd::tickets.createedit.scripts')
+	@include('panichd::tickets.partials.comments.new_in_createedit_ticket_scripts')
 	@include('panichd::tickets.partials.tags_footer_script')
 @append

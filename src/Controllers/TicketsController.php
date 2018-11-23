@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
+use PanicHD\PanicHD\Events\CommentCreated;
 use PanicHD\PanicHD\Events\TicketCreated;
 use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
@@ -1071,17 +1072,60 @@ class TicketsController extends Controller
 			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 		}
 
-		// If errors present
-		if ($a_result_errors){
-			return response()->json(array_merge(
-				['result' => 'error'],
-				$a_result_errors
-			));
-		}
+        // Embedded Comments
+        if ($request->has('form_comments')){
+            $custom_messages = [
+                'content.required' => trans('panichd::lang.validate-comment-required'),
+                'content.min' => trans('panichd::lang.validate-comment-min'),
+            ];
+
+            foreach($request->form_comments as $i){
+
+                if (!$request->has('response_' . $i)) continue;
+
+                $response_type = in_array($request->{'response_' . $i}, ['note','reply']) ? $request->{'response_' . $i} : 'note';
+
+                $request_comment = $request->input('comment_' . $i);
+                $a_content = $this->purifyHtml($request_comment);
+
+                $validator = Validator::make($a_content, ['content' => 'required|min:6'], $custom_messages);
+                if ($validator->fails()) {
+                    $a_messages = $validator->errors()->messages();
+                    $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
+                }else{
+                    $comment = new Models\Comment();
+                    $comment->type = $response_type;
+                    $comment->ticket_id = $ticket->id;
+                    $comment->user_id = auth()->user()->id;
+            		$comment->content = $a_content['content'];
+                    $comment->html = $a_content['html'];
+            		$comment->save();
+
+                    $a_new_comments[] = $comment;
+                }
+            }
+        }
+
+        // If errors present
+        if ($a_result_errors){
+            return response()->json(array_merge(
+                ['result' => 'error'],
+                $a_result_errors
+            ));
+        }
 
 		// End transaction
 		DB::commit();
+
+        // Ticket event
 		event(new TicketCreated($ticket));
+
+        // Comment events
+        if (isset($a_new_comments) and $a_new_comments){
+            foreach($a_new_comments as $comment){
+                event(new CommentCreated(Models\Comment::find($comment->id), $request));
+            }
+        }
 
         $this->sync_ticket_tags($request, $ticket);
 
