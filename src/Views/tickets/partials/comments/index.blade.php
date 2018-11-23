@@ -3,7 +3,7 @@
         @if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->forLevel(1)->count() ) )
             <div style="margin-top: 2em;">
                 <h3 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
-                    @if ($u->canCommentTicket($ticket->id))
+                    @if ($menu == 'show' && $u->canCommentTicket($ticket->id))
                         <button type="button" class="btn btn-light btn-default" data-toggle="modal" data-target="#modal-comment-new" data-add-comment="{{ $ticket->hidden ? 'no' : 'yes' }}">{{ $ticket->hidden ? trans('panichd::lang.show-ticket-add-note') : trans('panichd::lang.show-ticket-add-comment') }}</button>
                     @endif
                 </h3>
