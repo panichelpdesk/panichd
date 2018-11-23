@@ -23,6 +23,6 @@
 @include('panichd::tickets.partials.summernote')
 
 @section('footer')
-    @include('panichd::tickets.show.script')
+    @include('panichd::tickets.show.scripts')
 	@include('panichd::tickets.partials.tags_footer_script')
 @append

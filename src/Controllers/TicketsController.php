@@ -674,6 +674,10 @@ class TicketsController extends Controller
 
         $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
+        $member = $this->member->find(auth()->user()->id);
+        $data['comments'] = $ticket->comments()->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+
+
         return view('panichd::tickets.createedit', $data);
     }
 
