@@ -707,7 +707,9 @@ class TicketsController extends Controller
 
 	public function create_edit_data($ticket = false, $a_parameters = false)
 	{
-		$member = $this->member->find(auth()->user()->id);
+        $menu = $ticket ? 'edit' : 'create';
+
+        $member = $this->member->find(auth()->user()->id);
 
 		if ($member->currentLevel() > 1){
 			$a_owners = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
@@ -825,7 +827,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 
-		return compact('a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('menu', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
 	/**
@@ -1196,9 +1198,10 @@ class TicketsController extends Controller
 
         $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
-        return view('panichd::tickets.show',
-            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-                'comments', 'close_perm', 'reopen_perm'));
+        $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
+            'comments', 'close_perm', 'reopen_perm');
+        $data['menu'] = 'show';
+        return view('panichd::tickets.show', $data);
     }
 
     /**
