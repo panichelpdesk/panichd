@@ -56,16 +56,18 @@
 		<div class="card bg-light mb-3">
       <div class="card-header pt-2 pr-3 pb-1 pl-2">
         <h6 class="card-title mb-0">
-          <span class="float-right tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.creation-date', [
-          'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
-          ]) }}">
-            @if ($comment->created_at!=$comment->updated_at)
-            <span class="fa fa-pencil-alt" aria-hidden="true" style="color: gray"></span>
-            @endif
-            {!! $comment->updated_at->diffForHumans() !!}
+          <span class="float-right">
+            <span class="tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.creation-date', [
+            'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
+            ]) }}">
+                @if ($comment->created_at!=$comment->updated_at)
+                    <span class="fa fa-pencil-alt" aria-hidden="true" style="color: gray"></span>
+                @endif
+                {!! $comment->updated_at->diffForHumans() !!}
+            </span>
             @if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id) and $comment->type=='note')
-            <button type="button" class="btn btn-light btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
-            <span class="fa fa-times" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
+                <button type="button" class="btn btn-light btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
+                <span class="fa fa-times" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
             @endif
           </span>
           <span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $comment_title }}"><span class="{{ $icon_class }}" aria-hidden="true"></span> {!! $comment_header !!}</span>

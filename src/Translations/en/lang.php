@@ -242,6 +242,9 @@ return [
   'create-ticket-info-limit-date'    => 'Default: No limit',
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
   'create-ticket-intervention-help'  => 'Taken actions for ticket resolution',
+  'create-ticket-switch-to-note'     => 'Switch to internal note',
+  'create-ticket-switch-to-comment'  => 'Switch to comment',
+
   'attach-files'                     => 'Attach files',
   'pending-attachment'               => 'This file will be uploaded when the ticket is updated',
   'attachment-new-name'              => 'New name',
@@ -292,6 +295,8 @@ return [
   'ticket-hidden-1-comment'    => 'Ticket is now <b>hidden</b> for owner',
 
   // Comments
+  'comment'                    => 'Comment',
+  'note'                       => 'Internal note',
   'comment-reply-title'        => 'Messages between owner and agents',
   'comment-reply-from-owner'   => 'Reply from <b>:owner</b>',
   'reply-from-owner-to-owner'  => 'Reply from <b>:owner1</b> to <b>:owner2</b>',
