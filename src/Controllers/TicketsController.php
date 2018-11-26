@@ -1073,38 +1073,7 @@ class TicketsController extends Controller
 		}
 
         // Embedded Comments
-        if ($request->has('form_comments')){
-            $custom_messages = [
-                'content.required' => trans('panichd::lang.validate-comment-required'),
-                'content.min' => trans('panichd::lang.validate-comment-min'),
-            ];
-
-            foreach($request->form_comments as $i){
-
-                if (!$request->has('response_' . $i)) continue;
-
-                $response_type = in_array($request->{'response_' . $i}, ['note','reply']) ? $request->{'response_' . $i} : 'note';
-
-                $request_comment = $request->input('comment_' . $i);
-                $a_content = $this->purifyHtml($request_comment);
-
-                $validator = Validator::make($a_content, ['content' => 'required|min:6'], $custom_messages);
-                if ($validator->fails()) {
-                    $a_messages = $validator->errors()->messages();
-                    $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
-                }else{
-                    $comment = new Models\Comment();
-                    $comment->type = $response_type;
-                    $comment->ticket_id = $ticket->id;
-                    $comment->user_id = auth()->user()->id;
-            		$comment->content = $a_content['content'];
-                    $comment->html = $a_content['html'];
-            		$comment->save();
-
-                    $a_new_comments[] = $comment;
-                }
-            }
-        }
+        $a_result_errors = $this->add_embedded_comments($request, $ticket, $a_result_errors);
 
         // If errors present
         if ($a_result_errors){
@@ -1139,6 +1108,47 @@ class TicketsController extends Controller
 			'result' => 'ok',
 			'url' => action('\PanicHD\PanicHD\Controllers\TicketsController@index')
 		]);
+    }
+
+    /*
+     * Add embedded comments in ticket creation / edition
+    */
+    public function add_embedded_comments($request, $ticket, $a_result_errors)
+    {
+        if ($request->has('form_comments')){
+            $custom_messages = [
+                'content.required' => trans('panichd::lang.validate-comment-required'),
+                'content.min' => trans('panichd::lang.validate-comment-min'),
+            ];
+
+            foreach($request->form_comments as $i){
+
+                if (!$request->has('response_' . $i)) continue;
+
+                $response_type = in_array($request->{'response_' . $i}, ['note','reply']) ? $request->{'response_' . $i} : 'note';
+
+                $request_comment = $request->input('comment_' . $i);
+                $a_content = $this->purifyHtml($request_comment);
+
+                $validator = Validator::make($a_content, ['content' => 'required|min:6'], $custom_messages);
+                if ($validator->fails()) {
+                    $a_messages = $validator->errors()->messages();
+                    $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
+                }else{
+                    $comment = new Models\Comment();
+                    $comment->type = $response_type;
+                    $comment->ticket_id = $ticket->id;
+                    $comment->user_id = auth()->user()->id;
+            		$comment->content = $a_content['content'];
+                    $comment->html = $a_content['html'];
+            		$comment->save();
+
+                    $a_new_comments[] = $comment;
+                }
+            }
+        }
+
+        return $a_result_errors;
     }
 
     public function downloadAttachment($attachment_id)
@@ -1328,6 +1338,9 @@ class TicketsController extends Controller
 				}
 			}
 		}
+
+        // Embedded Comments
+        $a_result_errors = $this->add_embedded_comments($request, $ticket, $a_result_errors);
 
 		// If errors present
 		if ($a_result_errors){
