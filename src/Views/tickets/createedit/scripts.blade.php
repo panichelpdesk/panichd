@@ -22,6 +22,16 @@ var pswpItems = [
 var category_id=<?=$a_current['cat_id'];?>;
 
 $(function(){
+    // Change visibility affects embedded comments
+    $('input[name=hidden]').click(function(e){
+        if ($(this).val() == 'true'){
+            $('.input_response_type[value=reply]:enabled').closest('.comment_block').find('.switch_response_type').trigger('click');
+            $('.input_response_type:enabled').closest('.comment_block').find('.switch_response_type').hide();
+        }else{
+            $('.input_response_type:enabled').closest('.comment_block').find('.switch_response_type').show();
+        }
+    });
+
     // Change in List affects current status
     $('.jquery_ticket_list').click(function(){
         var new_status = "";

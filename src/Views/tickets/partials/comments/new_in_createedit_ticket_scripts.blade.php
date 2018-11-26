@@ -10,6 +10,9 @@ $(function(){
        _cloned.find('.input_comment_num').val(_num);
        _cloned.find('.input_response_type').prop('disabled', false).attr('name', 'response_' + _num);
        _cloned.find('.input_comment_text').prop('disabled', false).attr('name', 'comment_' + _num);
+       if ($('input[name=hidden]:checked').val() == 'true'){
+           _cloned.find('.switch_response_type').hide();
+       }
        _cloned.css('display', 'block');
        _cloned.appendTo('#comments');
        $('#comment_' + _num).find('.input_comment_text').summernote(summernote_options);
