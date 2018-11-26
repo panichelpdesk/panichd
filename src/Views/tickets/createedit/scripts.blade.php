@@ -69,13 +69,21 @@ $(function(){
                     $('.jquery_level2_class').each(function(elem){
                         $(this).addClass($(this).attr('data-class'));
                     });
+                    // Form elements to show / hide
                     $('.jquery_level2_show').show();
+
+                    // Form input to enable / disable
+                    $('.jquery_level2_enable').prop('disabled', false);
 
                 }else{
                     $('.jquery_level2_class').each(function(elem){
                         $(this).attr('class','jquery_level2_class');
                     });
+                    // Form elements to show / hide
                     $('.jquery_level2_show').hide();
+
+                    // Form input to enable / disable
+                    $('.jquery_level2_enable').prop('disabled', true);
                 }
 
                 var other = resp == 1 ? 2 : 1;

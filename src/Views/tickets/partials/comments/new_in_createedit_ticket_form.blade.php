@@ -1,9 +1,9 @@
-<div class="mt-4 mb-3">
+<div class="mt-4 mb-3 jquery_level2_show">
     <h3 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
         <button type="button" id="add_comment" class="btn btn-light btn-default btn-sm">{{ trans('panichd::lang.show-ticket-add-comment') }}</button>
     </h3>
 </div>
-<div id="comments"></div>
+<div id="comments" class="jquery_level2_show"></div>
 
 <div id="comment_template" class="card bg-light mb-3 comment_block" style="display: none;">
     <div class="card-header pt-1 pr-3 pb-0 pl-2">
@@ -26,9 +26,9 @@
         </h6>
     </div>
     <div class="card-body">
-        <input type="hidden" class="input_comment_num" name="form_comments[]" value="">
-        <input type="hidden" class="input_response_type" name="response_x" value="note" disabled="disabled">
-        <textarea style="display: none" rows="5" class="form-control input_comment_text" name="comment_x" cols="50" disabled="disabled"></textarea>
+        <input type="hidden" class="jquery_level2_enable input_comment_num" name="form_comments[]" value="">
+        <input type="hidden" class="jquery_level2_enable input_response_type" name="response_x" value="note" disabled="disabled">
+        <textarea style="display: none" rows="5" class="form-control jquery_level2_enable input_comment_text" name="comment_x" cols="50" disabled="disabled"></textarea>
         <div class="jquery_error_text"></div>
     </div>
 </div>
