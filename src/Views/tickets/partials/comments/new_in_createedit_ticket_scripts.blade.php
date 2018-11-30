@@ -30,6 +30,7 @@ $(function(){
             $(this).find('.text').text($(this).data('comment-text'));
             _block.find('.note_title').hide();
             _block.find('.comment_title').show();
+            _block.find('.input_comment_notification_text').closest('label').show();
         }else{
             // Switch to internal note
             $(this).find('i.fas').removeClass('fa-pencil-alt').addClass('fa-comment');
@@ -37,6 +38,7 @@ $(function(){
             $(this).find('.text').text($(this).data('note-text'));
             _block.find('.note_title').show();
             _block.find('.comment_title').hide();
+            _block.find('.input_comment_notification_text').closest('label').hide();
         }
     });
 
