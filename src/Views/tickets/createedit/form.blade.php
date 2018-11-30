@@ -263,6 +263,9 @@
         @endif
 
         <div class="text-center"><!-- SUBMIT BUTTON -->
+            @if ($u->currentLevel() > 1)
+                <button type="button" id="add_comment" class="btn btn-light btn-default mr-4">{{ trans('panichd::lang.show-ticket-add-comment') }}</button>
+            @endif
             {!! CollectiveForm::submit(isset($ticket) ? trans('panichd::lang.update') : trans('panichd::lang.btn-add'), [
                     'class' => 'btn btn-primary ajax_form_submit',
                     'data-errors_div' => 'form_errors'
