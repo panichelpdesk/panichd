@@ -24,12 +24,14 @@ $(function(){
         var _block = $(this).closest('.comment_block');
         if ($(this).data('note-text') == $(this).find('.text').text()){
             // Switch to comment
+            $(this).find('i.fas').removeClass('fa-comment').addClass('fa-pencil-alt');
             _block.find('.input_response_type').val('reply');
             $(this).find('.text').text($(this).data('comment-text'));
             _block.find('.note_title').hide();
             _block.find('.comment_title').show();
         }else{
             // Switch to internal note
+            $(this).find('i.fas').removeClass('fa-pencil-alt').addClass('fa-comment');
             _block.find('.input_response_type').val('note');
             $(this).find('.text').text($(this).data('note-text'));
             _block.find('.note_title').show();
