@@ -1,8 +1,3 @@
-<div class="mt-4 mb-3 jquery_level2_show">
-    <h3 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
-        <button type="button" id="add_comment" class="btn btn-light btn-default btn-sm">{{ trans('panichd::lang.show-ticket-add-comment') }}</button>
-    </h3>
-</div>
 <div id="comments" class="jquery_level2_show"></div>
 
 <div id="comment_template" class="card bg-light mb-3 comment_block" style="display: none;">
