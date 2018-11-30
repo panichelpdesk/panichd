@@ -10,6 +10,7 @@ $(function(){
        _cloned.find('.input_comment_num').val(_num);
        _cloned.find('.input_response_type').prop('disabled', false).attr('name', 'response_' + _num);
        _cloned.find('.input_comment_text').prop('disabled', false).attr('name', 'comment_' + _num);
+       _cloned.find('.input_comment_notification_text').prop('disabled', false).attr('name', 'comment_' + _num + '_notification_text');
        if ($('input[name=hidden]:checked').val() == 'true'){
            _cloned.find('.switch_response_type').hide();
        }
@@ -43,7 +44,7 @@ $(function(){
     $('#comments').on('click','.delete_comment', function(e){
         e.preventDefault();
         var _block = $(this).closest('.comment_block');
-        _block.find('.input_response_type, .input_comment_text').prop('disabled', true);
+        _block.find('.input_response_type, .input_comment_text, .input_comment_notification_text').prop('disabled', true);
         _block.slideUp();
     });
 });

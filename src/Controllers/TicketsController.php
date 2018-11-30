@@ -1092,7 +1092,7 @@ class TicketsController extends Controller
         // Comment events
         if ($a_new_comments){
             foreach($a_new_comments as $comment){
-                event(new CommentCreated(Models\Comment::find($comment->id), $request));
+                event(new CommentCreated($comment, $request));
             }
         }
 
@@ -1144,6 +1144,9 @@ class TicketsController extends Controller
             		$comment->content = $a_content['content'];
                     $comment->html = $a_content['html'];
             		$comment->save();
+
+                    // Adds this as a $comment property to check it in NotificationsController
+                    if($request->has('comment_' . $i . '_notification_text')) $comment->add_in_user_notification_text =  'yes';
 
                     $a_new_comments[] = $comment;
                 }
@@ -1364,7 +1367,7 @@ class TicketsController extends Controller
         // Comment events
         if ($a_new_comments){
             foreach($a_new_comments as $comment){
-                event(new CommentCreated(Models\Comment::find($comment->id), $request));
+                event(new CommentCreated($comment, $request));
             }
         }
 
