@@ -1073,7 +1073,7 @@ class TicketsController extends Controller
 		}
 
         // Embedded Comments
-        $a_result_errors = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
 
         // If errors present
         if ($a_result_errors){
@@ -1090,7 +1090,7 @@ class TicketsController extends Controller
 		event(new TicketCreated($ticket));
 
         // Comment events
-        if (isset($a_new_comments) and $a_new_comments){
+        if ($a_new_comments){
             foreach($a_new_comments as $comment){
                 event(new CommentCreated(Models\Comment::find($comment->id), $request));
             }
@@ -1115,6 +1115,8 @@ class TicketsController extends Controller
     */
     public function add_embedded_comments($request, $ticket, $a_result_errors)
     {
+        $a_new_comments = [];
+
         if ($request->has('form_comments')){
             $custom_messages = [
                 'content.required' => trans('panichd::lang.validate-comment-required'),
@@ -1148,7 +1150,7 @@ class TicketsController extends Controller
             }
         }
 
-        return $a_result_errors;
+        return [$a_new_comments, $a_result_errors];
     }
 
     public function downloadAttachment($attachment_id)
@@ -1340,7 +1342,7 @@ class TicketsController extends Controller
 		}
 
         // Embedded Comments
-        $a_result_errors = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
 
 		// If errors present
 		if ($a_result_errors){
@@ -1358,6 +1360,13 @@ class TicketsController extends Controller
 		// End transaction
 		DB::commit();
 		event(new TicketUpdated($original_ticket, $ticket));
+
+        // Comment events
+        if ($a_new_comments){
+            foreach($a_new_comments as $comment){
+                event(new CommentCreated(Models\Comment::find($comment->id), $request));
+            }
+        }
 
 		// Add complete/reopen comment
 		if ($original_ticket->completed_at != $ticket->completed_at and ($original_ticket->completed_at == '' or $ticket->completed_at == '') ){
