@@ -243,7 +243,7 @@ return [
   'create-ticket-describe-issue'     => 'Describe your issue here in details',
   'create-ticket-intervention-help'  => 'Taken actions for ticket resolution',
   'create-ticket-switch-to-note'     => 'Switch to internal note',
-  'create-ticket-switch-to-comment'  => 'Switch to comment',
+  'create-ticket-switch-to-comment'  => 'Switch to reply to user',
 
   'attach-files'                     => 'Attach files',
   'pending-attachment'               => 'This file will be uploaded when the ticket is updated',

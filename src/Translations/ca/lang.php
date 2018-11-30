@@ -241,7 +241,7 @@ return [
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
   'create-ticket-intervention-help'  => 'Accions realitzades per a la resolució del tiquet',
   'create-ticket-switch-to-note'     => 'Canviar a nota interna',
-  'create-ticket-switch-to-comment'  => 'Canviar a comentari',
+  'create-ticket-switch-to-comment'  => 'Canviar a resposta a usuari',
 
 
   'attach-files'                     => 'Adjuntar fitxers',
