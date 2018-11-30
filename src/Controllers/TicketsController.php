@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use Intervention\Image\ImageManagerStatic as Image;
+use PanicHD\PanicHD\Events\CommentCreated;
 use PanicHD\PanicHD\Events\TicketCreated;
 use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
@@ -674,6 +675,10 @@ class TicketsController extends Controller
 
         $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
+        $member = $this->member->find(auth()->user()->id);
+        $data['comments'] = $ticket->comments()->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+
+
         return view('panichd::tickets.createedit', $data);
     }
 
@@ -703,7 +708,9 @@ class TicketsController extends Controller
 
 	public function create_edit_data($ticket = false, $a_parameters = false)
 	{
-		$member = $this->member->find(auth()->user()->id);
+        $menu = $ticket ? 'edit' : 'create';
+
+        $member = $this->member->find(auth()->user()->id);
 
 		if ($member->currentLevel() > 1){
 			$a_owners = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
@@ -821,7 +828,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 
-		return compact('a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('menu', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
 	/**
@@ -1065,17 +1072,29 @@ class TicketsController extends Controller
 			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
 		}
 
-		// If errors present
-		if ($a_result_errors){
-			return response()->json(array_merge(
-				['result' => 'error'],
-				$a_result_errors
-			));
-		}
+        // Embedded Comments
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+
+        // If errors present
+        if ($a_result_errors){
+            return response()->json(array_merge(
+                ['result' => 'error'],
+                $a_result_errors
+            ));
+        }
 
 		// End transaction
 		DB::commit();
+
+        // Ticket event
 		event(new TicketCreated($ticket));
+
+        // Comment events
+        if ($a_new_comments){
+            foreach($a_new_comments as $comment){
+                event(new CommentCreated($comment, $request));
+            }
+        }
 
         $this->sync_ticket_tags($request, $ticket);
 
@@ -1089,6 +1108,52 @@ class TicketsController extends Controller
 			'result' => 'ok',
 			'url' => action('\PanicHD\PanicHD\Controllers\TicketsController@index')
 		]);
+    }
+
+    /*
+     * Add embedded comments in ticket creation / edition
+    */
+    public function add_embedded_comments($request, $ticket, $a_result_errors)
+    {
+        $a_new_comments = [];
+
+        if ($request->has('form_comments')){
+            $custom_messages = [
+                'content.required' => trans('panichd::lang.validate-comment-required'),
+                'content.min' => trans('panichd::lang.validate-comment-min'),
+            ];
+
+            foreach($request->form_comments as $i){
+
+                if (!$request->has('response_' . $i)) continue;
+
+                $response_type = in_array($request->{'response_' . $i}, ['note','reply']) ? $request->{'response_' . $i} : 'note';
+
+                $request_comment = $request->input('comment_' . $i);
+                $a_content = $this->purifyHtml($request_comment);
+
+                $validator = Validator::make($a_content, ['content' => 'required|min:6'], $custom_messages);
+                if ($validator->fails()) {
+                    $a_messages = $validator->errors()->messages();
+                    $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
+                }else{
+                    $comment = new Models\Comment();
+                    $comment->type = $response_type;
+                    $comment->ticket_id = $ticket->id;
+                    $comment->user_id = auth()->user()->id;
+            		$comment->content = $a_content['content'];
+                    $comment->html = $a_content['html'];
+            		$comment->save();
+
+                    // Adds this as a $comment property to check it in NotificationsController
+                    if($request->has('comment_' . $i . '_notification_text')) $comment->add_in_user_notification_text =  'yes';
+
+                    $a_new_comments[] = $comment;
+                }
+            }
+        }
+
+        return [$a_new_comments, $a_result_errors];
     }
 
     public function downloadAttachment($attachment_id)
@@ -1192,9 +1257,10 @@ class TicketsController extends Controller
 
         $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
-        return view('panichd::tickets.show',
-            compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-                'comments', 'close_perm', 'reopen_perm'));
+        $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
+            'comments', 'close_perm', 'reopen_perm');
+        $data['menu'] = 'show';
+        return view('panichd::tickets.show', $data);
     }
 
     /**
@@ -1278,6 +1344,9 @@ class TicketsController extends Controller
 			}
 		}
 
+        // Embedded Comments
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+
 		// If errors present
 		if ($a_result_errors){
 			return response()->json(array_merge(
@@ -1294,6 +1363,13 @@ class TicketsController extends Controller
 		// End transaction
 		DB::commit();
 		event(new TicketUpdated($original_ticket, $ticket));
+
+        // Comment events
+        if ($a_new_comments){
+            foreach($a_new_comments as $comment){
+                event(new CommentCreated($comment, $request));
+            }
+        }
 
 		// Add complete/reopen comment
 		if ($original_ticket->completed_at != $ticket->completed_at and ($original_ticket->completed_at == '' or $ticket->completed_at == '') ){

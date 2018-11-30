@@ -240,6 +240,10 @@ return [
   'create-ticket-info-limit-date'    => 'Predeterminat: Sense límit',
   'create-ticket-describe-issue'     => 'Descriu els detalls del problema',
   'create-ticket-intervention-help'  => 'Accions realitzades per a la resolució del tiquet',
+  'create-ticket-switch-to-note'     => 'Canviar a nota interna',
+  'create-ticket-switch-to-comment'  => 'Canviar a resposta a usuari',
+
+
   'attach-files'                     => 'Adjuntar fitxers',
   'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
   'attachment-new-name'              => 'Nom nou',
@@ -291,6 +295,8 @@ return [
   'ticket-hidden-1-comment'       => 'El tiquet s\'ha <b>ocultat</b> per a l\'usuari',
 
   // Comentaris
+  'comment'                    => 'Comentari',
+  'note'                       => 'Nota interna',
   'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',
   'comment-reply-from-owner'   => 'Resposta de <b>:owner</b>',
   'reply-from-owner-to-owner'  => 'Resposta de <b>:owner1</b> a <b>:owner2</b>',

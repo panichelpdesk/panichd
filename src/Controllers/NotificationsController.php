@@ -15,30 +15,30 @@ class NotificationsController extends Controller
 {
     protected $category;
 	protected $subject;
-	
+
 	public function __construct(Category $category)
 	{
 		$this->category = $category;
 		$this->subject = '['.trans('panichd::email/globals.notify-ticket-category', ['name' => $category->name]).'] #';
 	}
-	
+
 	public function newTicket(Ticket $ticket)
     {
         $notification_owner = \PanicHDMember::find(auth()->user()->id);
         $template = 'panichd::emails.new_ticket';
-        
+
 		// Affects only agent notification.
 		$subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-created-by', ['name' => $ticket->user->name] ).trans('panichd::lang.colon').$ticket->subject;
-		
+
 		$data = [
             'ticket'             => serialize($ticket),
             'notification_owner' => serialize($notification_owner),
 			'current_level' => $notification_owner->currentLevel()
         ];
-		
+
 		// Notificate assigned agent
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
-				
+
 		// Not hidden notices only: Notificate Department email with specific template
 		if (!$ticket->hidden and Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
@@ -47,11 +47,11 @@ class NotificationsController extends Controller
 				'template'  => Setting::grab('email.owner.newticket.template')
 			];
 		}
-		
+
 		// Send notifications
 		$this->sendNotification($a_to, $data);
     }
-	
+
 	public function ticketClosed(Ticket $original_ticket, Ticket $ticket)
 	{
 		$notification_owner = auth()->user();
@@ -62,10 +62,10 @@ class NotificationsController extends Controller
             'notification_owner' => serialize($notification_owner),
             'original_ticket'    => serialize($original_ticket)
         ];
-		
+
 		// Notificate assigned agent
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
-		
+
 		// Notificate ticket owner
 		if(Setting::grab('list_owner_notification') and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
@@ -74,11 +74,11 @@ class NotificationsController extends Controller
 				'template'  => $template
 			];
 		}
-		
+
 		// Send notifications
 		$this->sendNotification($a_to, $data);
 	}
-	
+
     public function ticketStatusUpdated(Ticket $original_ticket, Ticket $ticket)
     {
         $notification_owner = auth()->user();
@@ -91,10 +91,10 @@ class NotificationsController extends Controller
             'original_ticket'    => serialize($original_ticket),
 			'notification_type'  => 'status'
         ];
-        
+
 		// Notificate assigned agent
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
-		
+
 		// Notificate ticket owner
 		if(Setting::grab('status_owner_notification') and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
@@ -103,7 +103,7 @@ class NotificationsController extends Controller
 				'template'  => $template
 			];
 		}
-		
+
         // Send notifications
 		$this->sendNotification($a_to, $data);
     }
@@ -119,10 +119,10 @@ class NotificationsController extends Controller
             'original_ticket'    => serialize($original_ticket),
 			'notification_type'  => 'agent'
         ];
-		
+
 		// Notificate assigned agent
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
-		
+
         // Send notifications
 		$this->sendNotification($a_to, $data);
     }
@@ -142,28 +142,30 @@ class NotificationsController extends Controller
 				'notification_owner' => serialize($notification_owner),
 				'notification_type' => $comment->type
 			];
-			
+
 			// Notificate assigned agent
 			$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
-			
+
 			// Notificate ticket owner
 			if ($comment->type == 'reply' and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
-				if ($request->has('add_in_user_notification_text')){
-					$data['add_in_user_notification_text'] = true;
+                if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
+                    // Element in request comes from Comment modal
+                    // $comment property comes from an embedded comment when editing or creating a ticket
+                    $data['add_in_user_notification_text'] = true;
 				}
-				
+
 				$a_to[] = [
 					'recipient' => $ticket->owner,
 					'subject'   => $subject,
 					'template'  => $template
 				];
 			}
-			
+
 			// Send notifications
 			$this->sendNotification($a_to, $data);
-		}        
+		}
     }
-	
+
 	public function commentUpdate(Comment $original_comment, Comment $comment)
     {
         if ($comment->type == 'note'){
@@ -179,7 +181,7 @@ class NotificationsController extends Controller
 				'ticket' => serialize($ticket),
 				'notification_owner' => serialize($notification_owner)
 			];
-		
+
 			$a_to=[];
 
 			// Email to ticket->agent
@@ -190,7 +192,7 @@ class NotificationsController extends Controller
 					'template'  => $template
 				];
 			}
-			
+
 			// Email to comment->owner
 			if (!$ticket->hidden and !in_array($comment->owner->email, [$notification_owner->email, $ticket->agent->email])){
 				$a_to[] = [
@@ -199,9 +201,9 @@ class NotificationsController extends Controller
 					'template'  => $template
 				];
 			}
-			
+
 			$this->sendNotification($a_to, $data);
-		}        
+		}
     }
 
 	/**
@@ -216,14 +218,14 @@ class NotificationsController extends Controller
 		$template = 'panichd::emails.new_comment';
 		$subject = trans('panichd::lang.email-resend-abbr') . trans('panichd::lang.colon') . $this->subject.$ticket->id . ' ' . trans('panichd::email/globals.notify-new-note-by', ['name' => $comment->user->name]) . trans('panichd::lang.colon') . $ticket->subject;
 		$data = [
-			'comment' => serialize($comment), 
+			'comment' => serialize($comment),
 			'ticket' => serialize($ticket),
 			'notification_owner' => serialize($notification_owner),
 			'notification_type' => $comment->type
 		];
-		
+
 		$a_to = [];
-		
+
 		if ($request->has('to_agent')){
 			$a_to[] = [
 				'recipient' => $ticket->agent,
@@ -238,24 +240,24 @@ class NotificationsController extends Controller
 				'template'  => $template
 			];
 		}
-		
+
 		// Load $this->category for sendNotification
 		$this->category = $ticket->category;
-		
+
 		// Send notifications
 		$this->sendNotification($a_to, $data);
-		
+
 		return back()->with('status','Notificacions reenviades correctament');
 	}
-	
-	
+
+
 	/**
 	 * Create array with default notification recipients
 	*/
 	public function defaultRecipients($ticket, $notification_owner, $subject, $template)
 	{
 		$a_to = [];
-		
+
 		// Email to ticket->agent
 		if ($ticket->agent->email != $notification_owner->email){
 			$a_to[] = [
@@ -264,10 +266,10 @@ class NotificationsController extends Controller
 				'template' => $template
 			];
 		}
-		
+
 		return $a_to;
 	}
-	
+
 	/**
      * Send email notifications from specified mailbox to to other involved users.
      *
@@ -278,7 +280,7 @@ class NotificationsController extends Controller
     public function sendNotification($a_to, $data)
     {
 		$email_replyto = new \stdClass();
-		
+
 		if(Setting::grab('email.account.name') != "default" and Setting::grab('email.account.mailbox') != "default"){
 			// ReplyTo: Use tickets email account
 			$email_replyto->email_name = Setting::grab('email.account.name');
@@ -288,34 +290,34 @@ class NotificationsController extends Controller
 			$email_replyto->email_name = config('mail.from.name');
 			$email_replyto->email = config('mail.from.address');
 		}
-		
+
 		// From: Use same as ReplyTo
 		$email_from = clone $email_replyto;
-		
+
 		if ($this->category->email_name != "" and $this->category->email != ""){
 			// From: Use category email account
 			$email_from->email_name = $this->category->email_name;
 			$email_from->email = $this->category->email;
-			
+
 			if ($this->category->email_replies == 1){
 				// ReplyTo: Use category email account
 				$email_replyto = $email_from;
 			}
 		}
-		
+
 		// Add Email From to template
 		$data = array_merge ($data, [ 'email_from' => serialize($email_from) ]);
-		
+
 		// Send emails
 		if (LaravelVersion::lt('5.4')) {
             foreach ($a_to as $to){
 				if ($to['recipient']->email != ""){
 					// Pass recipient user object to every generated notification email
 					$data = array_merge ($data, ['recipient' => $to['recipient']]);
-					
+
 					$mail_callback = function ($m) use ($to, $email_from, $email_replyto) {
 						$m->to($to['recipient']->email, $to['recipient']->name);
-						
+
 						$m->from($email_from->email, $email_from->email_name);
 						$m->replyTo($email_replyto->email, $email_replyto->email_name);
 
@@ -329,13 +331,13 @@ class NotificationsController extends Controller
 					}
 				}
 			}
-			
+
         } elseif (LaravelVersion::min('5.4')) {
             foreach ($a_to as $to){
 				if ($to['recipient']->email != ""){
 					// Pass recipient user object to every generated notification email
 					$data = array_merge ($data, ['recipient' => $to['recipient']]);
-					
+
 					$mail = new \PanicHD\PanicHD\Mail\PanicHDNotification($to['template'], $data, $email_from, $email_replyto, $to['subject']);
 
 					if (Setting::grab('queue_emails')) {
