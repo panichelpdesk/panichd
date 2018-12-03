@@ -18,6 +18,11 @@ $(function(){
         $(this).find("textarea.modal-summernote-editor").summernote('destroy');
     });
 
+    // Opening new comment modal
+    $('#modal-comment-new').on('show.bs.modal', function (e) {
+        $(this).find('#note_recipients').select2();
+    });
+
     // Comment form: Click on response type buttons (reply or note)
     $('.response_type').click(function(){
         var type = $(this).attr('data-type');
@@ -25,9 +30,15 @@ $(function(){
         $(this).addClass($(this).attr('data-active-class'));
 
         if (type == 'reply'){
+            $(this).closest('.comment-modal').find('#note_recipients').select2('destroy');
+            $(this).closest('.comment-modal').find('#reply_recipients').select2();
+
             $('#add_in_user_notification_text, #add_to_intervention').prop('disabled', false);
             $('#add_in_user_notification_text, #add_to_intervention').closest('div').show();
         }else{
+            $(this).closest('.comment-modal').find('#reply_recipients').select2('destroy');
+            $(this).closest('.comment-modal').find('#note_recipients').select2();
+
             $('#add_in_user_notification_text, #add_to_intervention').prop('disabled', true);
             $('#add_in_user_notification_text, #add_to_intervention').closest('div').hide();
         }

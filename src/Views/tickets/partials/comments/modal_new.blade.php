@@ -28,6 +28,39 @@
 								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
 							</div>
 						</div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">{{ trans('panichd::lang.show-ticket-add-comment-notificate') . trans('panichd::lang.colon') }}</label>
+                            <div class="col-lg-10">
+                                <select name="note_recipients[]" id="note_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
+                                    @foreach ($c_members as $member)
+                                        <option value="{{ $member->id }}" {{ $member->id == $ticket->agent->id ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                                        @if ($setting->grab('departments_notices_feature'))
+                                            @if ($member->ticketit_department == '0')
+                                                {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                                            @elseif ($member->ticketit_department != "")
+                                                {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                            @endif
+                                        @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                <select name="reply_recipients[]" id="reply_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
+                                    @foreach ($c_members as $member)
+                                        <option value="{{ $member->id }}" {{ !is_null($ticket->owner) && $member->id == $ticket->owner->id ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                                        @if ($setting->grab('departments_notices_feature'))
+                                            @if ($member->ticketit_department == '0')
+                                                {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                                            @elseif ($member->ticketit_department != "")
+                                                {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                            @endif
+                                        @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 					@endif
 					<div class="form-group row">
 						<div class="col-lg-12 summernote-text-wrapper">

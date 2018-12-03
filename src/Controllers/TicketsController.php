@@ -1192,7 +1192,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-		$user = $this->member->find(auth()->user()->id);
+		$member = $this->member->find(auth()->user()->id);
 		$members_table = $this->member->getTable();
 
 		$ticket = $this->tickets
@@ -1226,7 +1226,7 @@ class TicketsController extends Controller
 		// Select Ticket and properties
 		$ticket = $ticket->select($a_select)->findOrFail($id);
 
-		if ($ticket->hidden and $user->currentLevel() == 1){
+		if ($ticket->hidden and $member->currentLevel() == 1){
 			return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 		}
 
@@ -1255,10 +1255,16 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 
-        $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+
+        if ($member->currentLevel() > 1){
+            $c_members = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
+        }else{
+            $c_members = \PanicHDMember::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
+        }
 
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-            'comments', 'close_perm', 'reopen_perm');
+            'comments', 'c_members', 'close_perm', 'reopen_perm');
         $data['menu'] = 'show';
         return view('panichd::tickets.show', $data);
     }
