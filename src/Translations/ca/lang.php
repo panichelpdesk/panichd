@@ -315,6 +315,7 @@ return [
   'show-ticket-add-comment-type'           => 'Tipus',
   'show-ticket-add-comment-note'           => 'Nota interna',
   'show-ticket-add-comment-reply'          => 'Resposta a usuari',
+  'show-ticket-add-comment-notificate'     => 'Notificar',
   'show-ticket-add-com-check-email-text'   => 'Afegir text a la notificació per a l\'usuari',
   'show-ticket-add-com-check-intervention' => 'Afegir aquesta resposta al camp actuació (visible per l\'usuari)',
   'show-ticket-add-com-check-resolve'      => 'Tancar el tiquet amb estat',
