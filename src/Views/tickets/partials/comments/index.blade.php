@@ -14,7 +14,9 @@
         @endif
         {!! $comments->render() !!}
 
-        @include('panichd::tickets.partials.comments.modal_new')
+        @if(isset($new_comment_modal))
+            @include('panichd::tickets.partials.comments.modal_new')
+        @endif
     @endif
 @append
 
