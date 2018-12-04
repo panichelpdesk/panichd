@@ -2,8 +2,6 @@
 
 namespace PanicHD\PanicHD\Models;
 
-use DB;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use PanicHD\PanicHD\Traits\ContentEllipse;
 
@@ -34,12 +32,23 @@ class Comment extends Model
 
         // Delete notifications
         \DB::table('panichd_comment_email')->where('comment_id', $this->id)->delete();
+        
 
 		$error = $a_errors ? implode('. ', $a_errors) : null;
 		if ($error != "") return $error;
 
 		parent::delete();
 	}
+
+    /**
+     * Get emails | members whom notifications have been sent.
+     *
+     * Return @collection
+     */
+    public function notifications()
+    {
+        return $this->hasMany('PanicHD\PanicHD\Models\CommentNotification')->orderBy('name');
+    }
 
     /**
      * Get related ticket.
@@ -96,14 +105,4 @@ class Comment extends Model
 	{
 		return $query->whereIN('type', ['reply', 'note', 'completetx']);
 	}
-
-    /**
-     * Get emails | members whom notifications have been sent.
-     *
-     * Return @collection
-     */
-    public function getNotifications()
-    {
-        return \DB::table('panichd_comment_email')->where('comment_id', $this->id)->orderBy('name')->get();
-    }
 }
