@@ -1255,7 +1255,7 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 
-        $comments = $ticket->comments()->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+        $comments = $ticket->comments()->with('notifications')->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
         $c_members = \PanicHDMember::with('userDepartment')->where('email', '!=', auth()->user()->email);
         if ($member->currentLevel() > 1){

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Comment;
+use PanicHD\PanicHD\Models\CommentNotification;
 use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
@@ -160,12 +161,11 @@ class NotificationsController extends Controller
                     $recipient = Member::find($member_id);
                     if (count($recipient) == 1){
                         // Register the notified email
-                        \DB::table('panichd_comment_email')->insert([
-                           ['comment_id' => $comment->id,
+                        $notification = CommentNotification::create([
+                           'comment_id' => $comment->id,
                             'name' => $recipient->name,
                             'email' => $recipient->email,
                             'member_id' => $member_id
-                            ]
                         ]);
 
                         // Add email to actual mail recipients

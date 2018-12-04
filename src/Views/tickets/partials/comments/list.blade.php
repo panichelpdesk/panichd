@@ -4,9 +4,9 @@
 			$comment_title = trans('panichd::lang.comment-'.$comment->type.'-title');
 
             if (in_array($comment->type, ['reply', 'note'])){
-                $c_recipients = $comment->getNotifications();
-                if (count($c_recipients) > 0){
-                    foreach ($c_recipients as $recipient){
+                if (count($comment->notifications) > 0){
+                    $a_recipients = [];
+                    foreach ($comment->notifications as $recipient){
                         $a_recipients[] = $recipient->name;
                     }
                     $recipients = implode(', ', $a_recipients);
@@ -16,7 +16,7 @@
 			switch ($comment->type){
 				case 'note':
 					$icon_class = "fa fa-pencil-alt text-info";
-                    if (count($c_recipients) == 0){
+                    if (count($comment->notifications) == 0){
                         $comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
                     }else{
                         $comment_header = trans('panichd::lang.comment-note-from-agent-to', [
@@ -50,7 +50,7 @@
 					}else{
 						$icon_class .= "text-warning";
 					}
-					if (count($c_recipients) == 0){
+					if (count($comment->notifications) == 0){
 						$comment_header = trans('panichd::lang.comment-reply-from-owner', ['owner' => $comment->owner->name]);
 					}else{
 						$comment_header = trans('panichd::lang.reply-from-owner-to', [
