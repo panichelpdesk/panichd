@@ -1257,10 +1257,11 @@ class TicketsController extends Controller
 
         $comments = $ticket->comments()->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
+        $c_members = \PanicHDMember::with('userDepartment')->where('email', '!=', auth()->user()->email);
         if ($member->currentLevel() > 1){
-            $c_members = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
+            $c_members = $c_members->orderBy('name')->get();
         }else{
-            $c_members = \PanicHDMember::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
+            $c_members = $c_members->whereNull('ticketit_department')->orWhere('id','=',$member->id)->orderBy('name')->get();
         }
 
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
