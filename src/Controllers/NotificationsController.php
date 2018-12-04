@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Comment;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
 
@@ -143,26 +144,50 @@ class NotificationsController extends Controller
 				'notification_type' => $comment->type
 			];
 
-			// Notificate assigned agent
-			$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+            $member = Member::find(auth()->user()->id);
+            $category_level = $member->levelInCategory($ticket->category_id);
+    		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 
-			// Notificate ticket owner
-			if ($comment->type == 'reply' and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+            if ($permission_level < 2){
+                // Notificate assigned agent
+                $a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+
+            }elseif($comment->type == 'note' or !$ticket->hidden){
+                // Selected recipients
+                $c_recipients = $comment->type == 'note' ? $request->note_recipients : $request->reply_recipients;
+
+                foreach($c_recipients as $member_id){
+                    $recipient = Member::find($member_id);
+                    if (count($recipient) == 1){
+                        // Register the notified email
+                        \DB::table('panichd_comment_email')->insert([
+                           ['comment_id' => $comment->id,
+                            'name' => $recipient->name,
+                            'email' => $recipient->email,
+                            'member_id' => $member_id
+                            ]
+                        ]);
+
+                        // Add email to actual mail recipients
+                        $a_to[] = [
+        					'recipient' => $recipient,
+        					'subject'   => $subject,
+        					'template'  => $template
+        				];
+                    }
+
+                }
+
                 if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
                     // Element in request comes from Comment modal
                     // $comment property comes from an embedded comment when editing or creating a ticket
                     $data['add_in_user_notification_text'] = true;
 				}
 
-				$a_to[] = [
-					'recipient' => $ticket->owner,
-					'subject'   => $subject,
-					'template'  => $template
-				];
-			}
+            }
 
 			// Send notifications
-			$this->sendNotification($a_to, $data);
+			if(isset($a_to)) $this->sendNotification($a_to, $data);
 		}
     }
 
