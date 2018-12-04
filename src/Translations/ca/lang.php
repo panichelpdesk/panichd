@@ -297,12 +297,13 @@ return [
   // Comentaris
   'comment'                    => 'Comentari',
   'note'                       => 'Nota interna',
-  'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',
+  'comment-reply-title'        => 'Missatge visibles pels usuaris',
   'comment-reply-from-owner'   => 'Resposta de <b>:owner</b>',
-  'reply-from-owner-to-owner'  => 'Resposta de <b>:owner1</b> a <b>:owner2</b>',
+  'reply-from-owner-to'        => 'Resposta de <b>:owner</b> a <b>:recipients</b>',
 
   'comment-note-title'         => 'Nota oculta per a l\'usuari',
   'comment-note-from-agent'    => 'Nota de <b>:agent</b>',
+  'comment-note-from-agent-to' => 'Nota de <b>:agent</b> a <b>:recipients</b>',
 
   'comment-completetx-title'   => 'Tiquet tancat',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',

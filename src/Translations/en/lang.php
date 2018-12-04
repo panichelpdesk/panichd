@@ -297,12 +297,13 @@ return [
   // Comments
   'comment'                    => 'Comment',
   'note'                       => 'Internal note',
-  'comment-reply-title'        => 'Messages between owner and agents',
+  'comment-reply-title'        => 'Message visible for users',
   'comment-reply-from-owner'   => 'Reply from <b>:owner</b>',
-  'reply-from-owner-to-owner'  => 'Reply from <b>:owner1</b> to <b>:owner2</b>',
+  'reply-from-owner-to'        => 'Reply from <b>:owner</b> to <b>:recipients</b>',
 
   'comment-note-title'         => 'User hidden note',
   'comment-note-from-agent'    => 'Note from <b>:agent</b>',
+  'comment-note-from-agent-to' => 'Note from <b>:agent</b> to <b>:recipients</b>',
 
   'comment-completetx-title'   => 'Ticket complete',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
