@@ -150,8 +150,21 @@ class NotificationsController extends Controller
     		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 
             if ($permission_level < 2){
-                // Notificate assigned agent
-                $a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+                // Get defaults
+                $a_defaults = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+
+                // Add recipients for each default one
+                foreach ($a_defaults as $default){
+                    $a_recipients[] = $default['recipient']->id;
+                }
+
+                // Add all members notified previously
+                $a_recipients = array_unique(array_merge($a_recipients, $ticket->commentNotifications()->where('member_id', '!=', $member->id)->groupBy('member_id')->pluck('member_id')->toArray()));
+                
+                if (!is_null($ticket->owner) and $member->id != $ticket->owner->id and !in_array($ticket->owner->id, $a_recipients)){
+                    // Add ticket owner if it's not the same as who comments
+                    $a_recipients[] = $ticket->owner->id;
+                }
 
             }elseif($comment->type == 'note' or !$ticket->hidden){
                 // Selected recipients
@@ -160,31 +173,33 @@ class NotificationsController extends Controller
                 $a_recipients = isset($comment->a_recipients) ? $comment->a_recipients : ($comment->type == 'note' ? $request->note_recipients : $request->reply_recipients);
 
                 if (count($a_recipients) > 0){
-                    foreach($a_recipients as $member_id){
-                        $recipient = Member::find($member_id);
-                        if (count($recipient) == 1){
-                            // Register the notified email
-                            $notification = CommentNotification::create([
-                               'comment_id' => $comment->id,
-                                'name' => $recipient->name,
-                                'email' => $recipient->email,
-                                'member_id' => $member_id
-                            ]);
-
-                            // Add email to actual mail recipients
-                            $a_to[] = [
-            					'recipient' => $recipient,
-            					'subject'   => $subject,
-            					'template'  => $template
-            				];
-                        }
-                    }
-
                     if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
                         // Element in request comes from Comment modal
                         // $comment property comes from an embedded comment when editing or creating a ticket
                         $data['add_in_user_notification_text'] = true;
     				}
+                }
+            }
+
+            if (count($a_recipients) > 0){
+                foreach($a_recipients as $member_id){
+                    $recipient = Member::find($member_id);
+                    if (count($recipient) == 1){
+                        // Register the notified email
+                        $notification = CommentNotification::create([
+                           'comment_id' => $comment->id,
+                            'name' => $recipient->name,
+                            'email' => $recipient->email,
+                            'member_id' => $member_id
+                        ]);
+
+                        // Add email to actual mail recipients
+                        $a_to[] = [
+                            'recipient' => $recipient,
+                            'subject'   => $subject,
+                            'template'  => $template
+                        ];
+                    }
                 }
             }
 
