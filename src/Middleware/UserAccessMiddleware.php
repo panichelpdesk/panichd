@@ -48,12 +48,12 @@ class UserAccessMiddleware
 			}
 		}
 
-		if ($this->mod_route_prefix == 'ticket') {
-            // Notified users may access the ticket
-            if ($ticket->commentNotifications()->where('member_id', $member->id)->count() > 0){
-                return $next($request);
-            }
+        // Notified users may access the ticket
+        if ($ticket->commentNotifications()->where('member_id', $member->id)->count() > 0){
+            return $next($request);
+        }
 
+		if ($this->mod_route_prefix == 'ticket') {
             // Tickets from users in a visible ticketit_department value for current user
 			if (in_array($ticket->user_id, $member->getMyNoticesUsers())){
 				return $next($request);
