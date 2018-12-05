@@ -712,11 +712,7 @@ class TicketsController extends Controller
 
         $member = $this->member->find(auth()->user()->id);
 
-		if ($member->currentLevel() > 1){
-			$a_owners = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
-		}else{
-			$a_owners = \PanicHDMember::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
-		}
+		$c_members = $this->members_collection($member);
 
 		$priorities = $this->getCacheList('priorities');
 		$status_lists = $this->getCacheList('statuses');
@@ -828,7 +824,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 
-		return compact('menu', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('menu', 'c_members', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
 	/**
@@ -1257,17 +1253,28 @@ class TicketsController extends Controller
 
         $comments = $ticket->comments()->with('notifications')->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
-        $c_members = \PanicHDMember::with('userDepartment')->where('email', '!=', auth()->user()->email);
-        if ($member->currentLevel() > 1){
-            $c_members = $c_members->orderBy('name')->get();
-        }else{
-            $c_members = $c_members->whereNull('ticketit_department')->orWhere('id','=',$member->id)->orderBy('name')->get();
-        }
+        $c_members = $this->members_collection($member, false);
 
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
             'comments', 'c_members', 'close_perm', 'reopen_perm');
         $data['menu'] = 'show';
         return view('panichd::tickets.show', $data);
+    }
+
+    /*
+     * Return a collection with all members
+     *
+     * @return Collection
+    */
+    public function members_collection($member, $auth = true)
+    {
+        $c_members = \PanicHDMember::with('userDepartment');
+        if (!$auth) $c_members = $c_members->where('email', '!=', auth()->user()->email);
+        if ($member->currentLevel() > 1){
+            return $c_members->orderBy('name')->get();
+        }else{
+            return $c_members->whereNull('ticketit_department')->orWhere('id','=',$member->id)->orderBy('name')->get();
+        }
     }
 
     /**
