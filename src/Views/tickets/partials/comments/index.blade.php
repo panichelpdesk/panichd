@@ -1,6 +1,6 @@
 @section('content')
     @if(isset($ticket))
-        @if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments->forLevel(1)->count() ) )
+        @if($u->canCommentTicket($ticket->id) || ( !$comments->isEmpty() && $ticket->comments()->forLevel(1)->count() ) )
             <div style="margin-top: 2em;">
                 <h3 style="margin-top: 0em;">{{ trans('panichd::lang.comments') }}
                     @if ($menu == 'show' && $u->canCommentTicket($ticket->id))

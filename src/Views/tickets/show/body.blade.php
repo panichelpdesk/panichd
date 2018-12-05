@@ -64,37 +64,39 @@
 			<div class="col-xl-2 col-lg-3 col-md-4">
 				<p>
 				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
-				@if ($u->currentLevel() > 1)
-					@if ($ticket->user_id != $ticket->creator_id)
-						<?php $creator_name = $ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name); ?>
-						<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') }}
-						@if ($ticket->creator_name == "" || is_null($ticket->creator))
-							<span class="fa fa-exclamation-circle tooltip-info text-danger"  data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $creator_name }}</span>
-						@else
-							{{ $creator_name }}
-						@endif
-						<br />
-					@endif
-
-					<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }}
-					<?php $owner_name = $ticket->owner_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->owner) ? $ticket->owner_name : $ticket->owner->name); ?>
-
-					@if ($setting->grab('user_route') != 'disabled')
-						<a href="{{ route($setting->grab('user_route'), ['id'=> $ticket->user_id]) }}">
-					@endif
-
-					@if (is_null($ticket->owner))
-						<span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $owner_name !!}</span>
-					@elseif ($ticket->owner_email != "")
-						<span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $ticket->owner_email }}">{!! $ticket->owner_name !!} <span class="fa fa-question-circle"></span></span>
+				@if ($u->currentLevel() > 1 && $ticket->user_id != $ticket->creator_id)
+					<?php $creator_name = $ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name); ?>
+					<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') }}
+					@if ($ticket->creator_name == "" || is_null($ticket->creator))
+						<span class="fa fa-exclamation-circle tooltip-info text-danger"  data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::lang.deleted-member') }}"> {{ $creator_name }}</span>
 					@else
-						{!! $ticket->owner_name !!}
+						{{ $creator_name }}
 					@endif
+					<br />
+				@endif
 
-					@if ($setting->grab('user_route') != 'disabled')
-						</a>
-					@endif
+                <?php $owner_name = $ticket->owner_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->owner) ? $ticket->owner_name : $ticket->owner->name); ?>
+                @if ($u->currentLevel() > 1 || $owner_name != $u->name)
+    				<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }}
 
+    				@if ($setting->grab('user_route') != 'disabled')
+    					<a href="{{ route($setting->grab('user_route'), ['id'=> $ticket->user_id]) }}">
+    				@endif
+
+    				@if (is_null($ticket->owner))
+    					<span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ trans('panichd::lang.deleted-member') }}">{!! $owner_name !!}</span>
+    				@elseif ($ticket->owner_email != "")
+    					<span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $ticket->owner_email }}">{!! $ticket->owner_name !!} <span class="fa fa-question-circle"></span></span>
+    				@else
+    					{!! $ticket->owner_name !!}
+    				@endif
+
+    				@if ($setting->grab('user_route') != 'disabled')
+    					</a>
+    				@endif
+                @endif
+
+                @if ($u->currentLevel() > 1)
 					@if (is_null($ticket->owner))
 						<br /><span class="text-danger"><span class="fa fa-exclamation-circle"></span> {{ trans('panichd::lang.ticket-owner-deleted-warning') }}</span>
 					@endif
