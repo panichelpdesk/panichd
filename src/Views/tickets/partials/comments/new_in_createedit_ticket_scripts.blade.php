@@ -9,8 +9,8 @@ $(function(){
        _cloned.prop('id', 'comment_' + _num);
        _cloned.find('.input_comment_num').val(_num);
        _cloned.find('.input_response_type').prop('disabled', false).attr('name', 'response_' + _num);
-       _cloned.find('.note_recipients').prop('disabled', false).attr('name', 'comment_' + _num + '_note_recipients[]');
-       _cloned.find('.reply_recipients').attr('name', 'comment_' + _num + '_reply_recipients[]');
+       _cloned.find('.note_recipients').prop('disabled', false).attr('name', 'comment_' + _num + '_recipients[]');
+       _cloned.find('.reply_recipients').attr('name', 'comment_' + _num + '_recipients[]');
 
        _cloned.find('.input_comment_text').prop('disabled', false).attr('name', 'comment_' + _num);
 
