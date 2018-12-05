@@ -157,33 +157,33 @@ class NotificationsController extends Controller
                 // Selected recipients
                 $c_recipients = $comment->type == 'note' ? $request->note_recipients : $request->reply_recipients;
 
-                foreach($c_recipients as $member_id){
-                    $recipient = Member::find($member_id);
-                    if (count($recipient) == 1){
-                        // Register the notified email
-                        $notification = CommentNotification::create([
-                           'comment_id' => $comment->id,
-                            'name' => $recipient->name,
-                            'email' => $recipient->email,
-                            'member_id' => $member_id
-                        ]);
+                if (count($c_recipients) > 0){
+                    foreach($c_recipients as $member_id){
+                        $recipient = Member::find($member_id);
+                        if (count($recipient) == 1){
+                            // Register the notified email
+                            $notification = CommentNotification::create([
+                               'comment_id' => $comment->id,
+                                'name' => $recipient->name,
+                                'email' => $recipient->email,
+                                'member_id' => $member_id
+                            ]);
 
-                        // Add email to actual mail recipients
-                        $a_to[] = [
-        					'recipient' => $recipient,
-        					'subject'   => $subject,
-        					'template'  => $template
-        				];
+                            // Add email to actual mail recipients
+                            $a_to[] = [
+            					'recipient' => $recipient,
+            					'subject'   => $subject,
+            					'template'  => $template
+            				];
+                        }
                     }
 
+                    if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
+                        // Element in request comes from Comment modal
+                        // $comment property comes from an embedded comment when editing or creating a ticket
+                        $data['add_in_user_notification_text'] = true;
+    				}
                 }
-
-                if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
-                    // Element in request comes from Comment modal
-                    // $comment property comes from an embedded comment when editing or creating a ticket
-                    $data['add_in_user_notification_text'] = true;
-				}
-
             }
 
 			// Send notifications
