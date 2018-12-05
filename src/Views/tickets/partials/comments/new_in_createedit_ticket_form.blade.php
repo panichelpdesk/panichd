@@ -27,7 +27,7 @@
         <div class="form-group row">
             <label class="col-lg-2 col-form-label">{{ trans('panichd::lang.show-ticket-add-comment-notificate') . trans('panichd::lang.colon') }}</label>
             <div class="col-lg-10">
-                <select class="form-control note_recipients" name="comment_x_note_recipients[]" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
+                <select class="form-control note_recipients" name="comment_x_recipients[]" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
                     @foreach ($c_members as $member)
                         <option value="{{ $member->id }}" {{ ((isset($ticket) && $member->id == $ticket->agent->id) || (!isset($ticket) && $a_current['agent_id'] != auth()->user()->id && $a_current['agent_id'] == $member->id)) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
                         @if ($setting->grab('departments_notices_feature'))
@@ -41,7 +41,7 @@
                     @endforeach
                 </select>
                 @php \Debugbar::info($a_current) @endphp
-                <select class="form-control reply_recipients" name="comment_x_reply_recipients[]" class="form-control" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
+                <select class="form-control reply_recipients" name="comment_x_recipients[]" class="form-control" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
                     @foreach ($c_members as $member)
                         <option value="{{ $member->id }}" {{ ((isset($ticket) && !is_null($ticket->owner) && $member->id == $ticket->owner->id) || (!isset($ticket) && $a_current['owner_id'] != auth()->user()->id && $a_current['owner_id'] == $member->id)) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
                         @if ($setting->grab('departments_notices_feature'))

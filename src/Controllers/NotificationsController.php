@@ -155,10 +155,12 @@ class NotificationsController extends Controller
 
             }elseif($comment->type == 'note' or !$ticket->hidden){
                 // Selected recipients
-                $c_recipients = $comment->type == 'note' ? $request->note_recipients : $request->reply_recipients;
+                // $comment->a_recipients come from embedded comments i TicketsController
+                // $request recipients come from a comment modal in Ticket card
+                $a_recipients = isset($comment->a_recipients) ? $comment->a_recipients : ($comment->type == 'note' ? $request->note_recipients : $request->reply_recipients);
 
-                if (count($c_recipients) > 0){
-                    foreach($c_recipients as $member_id){
+                if (count($a_recipients) > 0){
+                    foreach($a_recipients as $member_id){
                         $recipient = Member::find($member_id);
                         if (count($recipient) == 1){
                             // Register the notified email

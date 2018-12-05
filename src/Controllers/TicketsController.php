@@ -1141,6 +1141,9 @@ class TicketsController extends Controller
                     $comment->html = $a_content['html'];
             		$comment->save();
 
+                    // Comment recipients
+                    if($request->has('comment_' . $i . '_recipients')) $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
+
                     // Adds this as a $comment property to check it in NotificationsController
                     if($request->has('comment_' . $i . '_notification_text')) $comment->add_in_user_notification_text =  'yes';
 
