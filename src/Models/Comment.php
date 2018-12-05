@@ -32,7 +32,7 @@ class Comment extends Model
 
         // Delete notifications
         \DB::table('panichd_comment_email')->where('comment_id', $this->id)->delete();
-        
+
 
 		$error = $a_errors ? implode('. ', $a_errors) : null;
 		if ($error != "") return $error;
@@ -92,7 +92,18 @@ class Comment extends Model
 	public function scopeForLevel($query, $level)
 	{
 		// User level
-		if ($level < 2) return $query->whereIN('type', ['reply', 'complete', 'completetx', 'reopen']);
+		if ($level < 2){
+            return $query->where(function($q1){
+                // Common public comments
+                return $q1->whereIN('type', ['reply', 'complete', 'completetx', 'reopen'])
+                    ->orWhere(function($q2){
+                        $q2->where('type', 'note')->whereHas('notifications', function($q3){
+                            // Notes from where current user has been notified
+                            return $q3->where('member_id', auth()->user()->id);
+                        });
+                    });
+           });
+       }
 
 		// For agent or admin
 		return $query;
