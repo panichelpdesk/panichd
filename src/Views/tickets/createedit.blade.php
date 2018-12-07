@@ -17,6 +17,8 @@
 
 @section('footer')
     @include('panichd::tickets.createedit.scripts')
-	@include('panichd::tickets.partials.comments.new_in_createedit_ticket_scripts')
+	@if ($u->currentLevel() > 1)
+		@include('panichd::tickets.partials.comments.new_in_createedit_ticket_scripts')
+	@endif
 	@include('panichd::tickets.partials.tags_footer_script')
 @append

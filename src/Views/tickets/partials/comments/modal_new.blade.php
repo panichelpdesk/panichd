@@ -32,9 +32,9 @@
                         <div class="form-group row">
                             <label class="col-lg-2 col-form-label">{{ trans('panichd::lang.show-ticket-add-comment-notificate') . trans('panichd::lang.colon') }}</label>
                             <div class="col-lg-10">
-                                <select name="note_recipients[]" id="note_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
+                                <select name="reply_recipients[]" id="reply_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
                                     @foreach ($c_members as $member)
-                                        <option value="{{ $member->id }}" {{ $member->id == $ticket->agent->id ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                                        <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['reply']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
                                         @if ($setting->grab('departments_notices_feature'))
                                             @if ($member->ticketit_department == '0')
                                                 {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
@@ -46,9 +46,9 @@
                                     @endforeach
                                 </select>
 
-                                <select name="reply_recipients[]" id="reply_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
+                                <select name="note_recipients[]" id="note_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
                                     @foreach ($c_members as $member)
-                                        <option value="{{ $member->id }}" {{ !is_null($ticket->owner) && $member->id == $ticket->owner->id ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                                        <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['note']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
                                         @if ($setting->grab('departments_notices_feature'))
                                             @if ($member->ticketit_department == '0')
                                                 {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
