@@ -30,8 +30,8 @@ class UserAccessMiddleware
 		$ticket = $this->getRouteTicket($request);
 
 		// Ticket Owner has access
-		if ($member->isTicketOwner($ticket->id)) {
-			return $next($request);
+		if ($member->isTicketOwner($ticket->id) and !$ticket->hidden) {
+            return $next($request);
 		}
 
 		if ($member->isAgent()) {
