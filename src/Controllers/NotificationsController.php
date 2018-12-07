@@ -160,13 +160,18 @@ class NotificationsController extends Controller
 
                 // Add all members notified previously
                 $a_recipients = array_unique(array_merge($a_recipients, $ticket->commentNotifications()->where('member_id', '!=', $member->id)->groupBy('member_id')->pluck('member_id')->toArray()));
-                
+
+                // Add all comment / note authors
+                foreach ($ticket->comments()->with('owner')->get() as $comm){
+                    if ($member->id != $comm->owner->id and !in_array($comm->owner->id, $a_recipients)) $a_recipients[] = $comm->owner->id;
+                }
+
                 if (!is_null($ticket->owner) and $member->id != $ticket->owner->id and !in_array($ticket->owner->id, $a_recipients)){
                     // Add ticket owner if it's not the same as who comments
                     $a_recipients[] = $ticket->owner->id;
                 }
 
-            }elseif($comment->type == 'note' or !$ticket->hidden){
+            }else{
                 // Selected recipients
                 // $comment->a_recipients come from embedded comments i TicketsController
                 // $request recipients come from a comment modal in Ticket card
