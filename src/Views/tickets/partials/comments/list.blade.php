@@ -3,25 +3,15 @@
         <?php
 			$comment_title = trans('panichd::lang.comment-'.$comment->type.'-title');
 
-            if (in_array($comment->type, ['reply', 'note'])){
-                if (count($comment->notifications) > 0){
-                    $a_recipients = [];
-                    foreach ($comment->notifications as $recipient){
-                        $a_recipients[] = $recipient->name;
-                    }
-                    $recipients = implode(', ', $a_recipients);
-                }
-            }
-
 			switch ($comment->type){
 				case 'note':
 					$icon_class = "fa fa-pencil-alt text-info";
-                    if (count($comment->notifications) == 0){
+                    if (!$u->canManageTicket($ticket->id) || count($comment->notifications) == 0){
                         $comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
                     }else{
                         $comment_header = trans('panichd::lang.comment-note-from-agent-to', [
                             'agent' => $comment->owner->name,
-                            'recipients' => $recipients
+                            'recipients' => implode(', ', $comment->notifications->pluck('name')->toArray())
                         ]);
                     }
 					break;
@@ -50,12 +40,12 @@
 					}else{
 						$icon_class .= "text-warning";
 					}
-					if (count($comment->notifications) == 0){
+					if (!$u->canManageTicket($ticket->id) || count($comment->notifications) == 0){
 						$comment_header = trans('panichd::lang.comment-reply-from-owner', ['owner' => $comment->owner->name]);
 					}else{
-						$comment_header = trans('panichd::lang.reply-from-owner-to', [
+                        $comment_header = trans('panichd::lang.reply-from-owner-to', [
 							'owner' => $comment->owner->name,
-							'recipients' => $recipients
+							'recipients' => implode(', ', $comment->notifications->pluck('name')->toArray())
 						]);
 					}
 					break;
