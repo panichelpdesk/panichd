@@ -1225,10 +1225,6 @@ class TicketsController extends Controller
 		// Select Ticket and properties
 		$ticket = $ticket->select($a_select)->findOrFail($id);
 
-		if ($ticket->hidden and $member->currentLevel() == 1){
-			return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
-		}
-
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
 			$a_tags_selected = $ticket->tags()->pluck('id')->toArray();
