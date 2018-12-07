@@ -85,8 +85,8 @@
 					@endif
 					@if ($u->currentLevel() > 1)
                         <div class="form-row">
-                            <div class="form-check" style="display: none;">
-    		                      <label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
+                            <div class="form-check">
+    		                      <label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
     						</div>
                         </div>
 

@@ -34,14 +34,12 @@ $(function(){
             $(this).closest('.comment-modal').find('#note_recipients').select2('destroy');
             $(this).closest('.comment-modal').find('#reply_recipients').select2();
 
-            $('#add_in_user_notification_text, #add_to_intervention').prop('disabled', false);
-            $('#add_in_user_notification_text, #add_to_intervention').closest('div').show();
+            $('#add_to_intervention').prop('disabled', false).closest('div').show();
         }else{
             $(this).closest('.comment-modal').find('#reply_recipients').select2('destroy');
             $(this).closest('.comment-modal').find('#note_recipients').select2();
 
-            $('#add_in_user_notification_text, #add_to_intervention').prop('disabled', true);
-            $('#add_in_user_notification_text, #add_to_intervention').closest('div').hide();
+            $('#add_to_intervention').prop('disabled', true).closest('div').hide();
         }
 
         var alt = type == 'note' ? 'reply' : 'note';

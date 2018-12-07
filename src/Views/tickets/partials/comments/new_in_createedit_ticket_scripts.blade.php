@@ -14,7 +14,7 @@ $(function(){
 
        _cloned.find('.input_comment_text').prop('disabled', false).attr('name', 'comment_' + _num);
 
-       _cloned.find('.input_comment_notification_text').prop('disabled', false).attr('name', 'comment_' + _num + '_notification_text');
+       _cloned.find('.input_comment_notification_text').attr('name', 'comment_' + _num + '_notification_text');
        if ($('input[name=hidden]:checked').val() == 'true'){
            _cloned.find('.switch_response_type').hide();
        }
@@ -35,8 +35,6 @@ $(function(){
             $(this).find('.text').text($(this).data('comment-text'));
             _block.find('.note_title').hide();
             _block.find('.comment_title').show();
-            _block.find('.input_comment_notification_text').closest('label').show();
-
             _block.find('.note_recipients').prop('disabled', true).select2('destroy').hide();
             _block.find('.reply_recipients').prop('disabled', false).show().select2();
         }else{
@@ -46,8 +44,6 @@ $(function(){
             $(this).find('.text').text($(this).data('note-text'));
             _block.find('.note_title').show();
             _block.find('.comment_title').hide();
-            _block.find('.input_comment_notification_text').closest('label').hide();
-
             _block.find('.reply_recipients').prop('disabled', true).select2('destroy').hide();
             _block.find('.note_recipients').prop('disabled', false).show().select2();
         }
