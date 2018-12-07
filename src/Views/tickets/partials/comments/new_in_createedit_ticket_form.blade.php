@@ -59,6 +59,6 @@
 
         <textarea style="display: none" rows="5" class="form-control jquery_level2_enable input_comment_text" name="comment_x" cols="50" disabled="disabled"></textarea>
         <div class="jquery_error_text"></div>
-        <label class="mt-2" style="display: none"><input type="checkbox" class="input_comment_notification_text" name="comment_x_notification_text" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
+        <label class="mt-2"><input type="checkbox" class="input_comment_notification_text" name="comment_x_notification_text" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
     </div>
 </div>
