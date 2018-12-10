@@ -8,8 +8,6 @@ $(function(){
     });
 
     $('.comment-modal').on('shown.bs.modal', function (e) {
-        $(this).find('.modal-title').text($(e.relatedTarget).text());
-
         if ($(this).prop('id', 'modal-comment-new')){
             // Opening new comment modal
             $(this).find('#note_recipients').select2();
