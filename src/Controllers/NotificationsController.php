@@ -229,27 +229,21 @@ class NotificationsController extends Controller
 				'notification_owner' => serialize($notification_owner)
 			];
 
-			$a_to=[];
+            // Send notification to all comment notified users
+            foreach ($comment->notifications as $notification){
+                $recipient = Member::find($notification->member_id);
+                if (count($recipient) == 1){
+                    if ($recipient->email != $notification_owner->email){
+                        $a_to[] = [
+        					'recipient' => $recipient,
+        					'subject'   => $subject,
+        					'template'  => $template
+        				];
+                    }
+                }
+            }
 
-			// Email to ticket->agent
-			if ($ticket->agent->email != $notification_owner->email){
-				$a_to[] = [
-					'recipient' => $ticket->agent,
-					'subject'   => $subject,
-					'template'  => $template
-				];
-			}
-
-			// Email to comment->owner
-			if (!$ticket->hidden and !in_array($comment->owner->email, [$notification_owner->email, $ticket->agent->email])){
-				$a_to[] = [
-					'recipient' => $comment->owner,
-					'subject'   => $subject,
-					'template'  => $template
-				];
-			}
-
-			$this->sendNotification($a_to, $data);
+			if(isset($a_to)) $this->sendNotification($a_to, $data);
 		}
     }
 
