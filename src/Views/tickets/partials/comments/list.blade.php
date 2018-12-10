@@ -84,9 +84,6 @@
             <div class="card-body">
                 <div class="row">
                     <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><div id="jquery_comment_edit_{{$comment->id}}" class="summernote-text-wrapper"> {!! $comment->html !!} </div>
-					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-						@include('panichd::tickets.partials.comments.modal_edit')
-					@endif
 					</div>
 					@if($setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0)
 						<div class="col-sm-5 attached_list">
@@ -98,9 +95,11 @@
                 </div>
 				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					@if ($comment->type=='note')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
+                        @include('panichd::tickets.partials.comments.modal_edit')
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
 					@elseif($comment->type=='reply')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
+                        @include('panichd::tickets.partials.comments.modal_resend_emails')
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal-{{$comment->id}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
 					@endif
 
 				@endif
@@ -121,6 +120,5 @@
 		])
 	!!}
 	{!! CollectiveForm::close() !!}
-	@include('panichd::tickets.partials.comments.modal_resend_emails')
 	@include('panichd::tickets.partials.comments.modal_delete')
 @endif
