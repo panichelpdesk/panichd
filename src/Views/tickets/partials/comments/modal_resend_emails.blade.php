@@ -1,6 +1,6 @@
-<div class="modal fade jquery_panel_hightlight" id="email-resend-modal" tabindex="-1" role="dialog" >
+<div id="email-resend-modal-{{$comment->id}}" class="modal fade jquery_panel_hightlight notification-resend-modal" tabindex="-1" role="dialog" >
     <div class="modal-dialog model-lg" role="document">
-        <div class="modal-content">			
+        <div class="modal-content">
 			{!! CollectiveForm::open(['method' => 'POST', 'route' => $setting->grab('main_route').'-notification.resend']) !!}
 			{!! CollectiveForm::hidden('comment_id', $comment->id, ['id'=>'comment_id']) !!}
 			<div class="modal-header">

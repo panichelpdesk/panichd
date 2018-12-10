@@ -88,10 +88,8 @@ $(function(){
 
 
     // Comment (reply) notifications resend modal
-    $( "#email-resend-modal" ).on('show.bs.modal', function (e) {
+    $( ".notification-resend-modal" ).on('show.bs.modal', function (e) {
         var button = $(e.relatedTarget);
-        $(this).find('#owner').text($(button).attr('data-owner'));
-        $(this).find('#comment_id').val($(button).attr('data-id'))
     });
 });
 </script>
