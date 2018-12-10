@@ -8,7 +8,7 @@ $(function(){
     });
 
     $('.comment-modal').on('shown.bs.modal', function (e) {
-        if ($(this).prop('id', 'modal-comment-new')){
+        if ($(this).prop('id') =='modal-comment-new'){
             // Opening new comment modal
             $(this).find('#note_recipients').select2();
         }
