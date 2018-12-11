@@ -208,7 +208,7 @@
 					?>
 
 					@if($images_count > 0)
-						<div class="{{ $ticket->attachments()->notImages()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
+						<div class="{{ $ticket->attachments()->notImages()->count() > 0 ? 'col-sm-6' : 'col-12' }}">
 							<b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-images') }}</b>
 								<div id="ticket_attached" class="panel-group grouped_check_list deletion_list attached_list">
 
@@ -219,7 +219,7 @@
 							</div>
 					@endif
 					@if($notimages_count > 0)
-						<div class="{{ $ticket->attachments()->images()->count() > 0 ? 'col-sm-6' : 'col-xs-12' }}">
+						<div class="{{ $ticket->attachments()->images()->count() > 0 ? 'col-sm-6' : 'col-12' }}">
 							<b style="display: block; margin: 0em 0em 0.5em 0em;">{{ trans('panichd::lang.attached-files') }}</b>
 								<div id="ticket_attached" class="panel-group attached_list">
 
