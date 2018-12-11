@@ -297,12 +297,13 @@ return [
   // Comentaris
   'comment'                    => 'Comentari',
   'note'                       => 'Nota interna',
-  'comment-reply-title'        => 'Missatges entre el propietari i els tècnics',
+  'comment-reply-title'        => 'Missatge visibles pels usuaris',
   'comment-reply-from-owner'   => 'Resposta de <b>:owner</b>',
-  'reply-from-owner-to-owner'  => 'Resposta de <b>:owner1</b> a <b>:owner2</b>',
+  'reply-from-owner-to'        => 'Resposta de <b>:owner</b> a <b>:recipients</b>',
 
   'comment-note-title'         => 'Nota oculta per a l\'usuari',
   'comment-note-from-agent'    => 'Nota de <b>:agent</b>',
+  'comment-note-from-agent-to' => 'Nota de <b>:agent</b> a <b>:recipients</b>',
 
   'comment-completetx-title'   => 'Tiquet tancat',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
@@ -315,6 +316,7 @@ return [
   'show-ticket-add-comment-type'           => 'Tipus',
   'show-ticket-add-comment-note'           => 'Nota interna',
   'show-ticket-add-comment-reply'          => 'Resposta a usuari',
+  'show-ticket-add-comment-notificate'     => 'Notificar',
   'show-ticket-add-com-check-email-text'   => 'Afegir text a la notificació per a l\'usuari',
   'show-ticket-add-com-check-intervention' => 'Afegir aquesta resposta al camp actuació (visible per l\'usuari)',
   'show-ticket-add-com-check-resolve'      => 'Tancar el tiquet amb estat',
@@ -325,8 +327,10 @@ return [
   'show-ticket-delete-comment'       => 'Eliminar comentari',
   'show-ticket-delete-comment-msg'   => 'Estàs segur que vols eliminar aquest comentari?',
   'show-ticket-email-resend'         => 'Reenviar notificacions',
-  'show-ticket-email-resend-user'    => 'A l\'usuari: ',
-  'show-ticket-email-resend-agent'   => 'Al tècnic: ',
+  'show-ticket-email-resend-agent'   => '(Tècnic del tiquet)',
+  'show-ticket-email-resend-owner'   => '(Propietari del tiquet)',
+  'notification-resend-confirmation' => 'Notificacions reenviades correctament',
+  'notification-resend-no-recipients'=> 'No s\'ha marcat cap destinatari',
 
   // Validacions
   'validation-error'                 => 'Aquest formulari no s\'ha enviat',

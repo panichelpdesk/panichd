@@ -47,7 +47,7 @@
 
             <div class="{{ $u->currentLevel()==1 ? 'col-lg-10' : 'col-lg-9' }} level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
                 <select name="owner_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
-                @foreach ($a_owners as $owner)
+                @foreach ($c_members as $owner)
                     <option value="{{ $owner->id }}" {{ $owner->id == $a_current['owner_id'] ? 'selected="selected"' : '' }}>{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
                     @if ($setting->grab('departments_notices_feature'))
                         @if ($owner->ticketit_department == '0')

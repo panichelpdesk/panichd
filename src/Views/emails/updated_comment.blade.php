@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$notification_owner = unserialize($notification_owner);
 	$comment = unserialize($comment);
 	$original_comment = unserialize($original_comment);
@@ -16,8 +16,9 @@
 	@else
 		<p>{!! trans('panichd::email/globals.updated_other_note', ['user' => $notification_owner->name, 'other' => $comment->owner->name]) !!}</p>
 	@endif
-
-	@include('panichd::emails.partial.common_fields')
+	@if ($recipient->levelInCategory($ticket->category->id) > 1)
+		@include('panichd::emails.partial.common_fields')
+	@endif
 	<b>{{ trans('panichd::email/globals.original_note_title') }}</b>
 	<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
 		<td>@include('panichd::emails.partial.html_field', ['html_field' => $original_comment->html])</td>
@@ -26,5 +27,5 @@
 	<table border="0" cellpadding="10" cellspacing="0" style="border: 1px solid #ddd; border-radius: 5px;"><tr>
 		<td>@include('panichd::emails.partial.html_field', ['html_field' => $comment->html])</td>
 	</tr></table><br /><br />
-	
+
 @stop

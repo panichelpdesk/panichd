@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Comment;
+use PanicHD\PanicHD\Models\CommentNotification;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
 
@@ -143,26 +145,71 @@ class NotificationsController extends Controller
 				'notification_type' => $comment->type
 			];
 
-			// Notificate assigned agent
-			$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+            $member = Member::find(auth()->user()->id);
+            $category_level = $member->levelInCategory($ticket->category_id);
+    		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 
-			// Notificate ticket owner
-			if ($comment->type == 'reply' and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
-                if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
-                    // Element in request comes from Comment modal
-                    // $comment property comes from an embedded comment when editing or creating a ticket
-                    $data['add_in_user_notification_text'] = true;
-				}
+            if ($permission_level < 2){
+                // Get defaults
+                $a_defaults = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 
-				$a_to[] = [
-					'recipient' => $ticket->owner,
-					'subject'   => $subject,
-					'template'  => $template
-				];
-			}
+                // Add recipients for each default one
+                foreach ($a_defaults as $default){
+                    $a_recipients[] = $default['recipient']->id;
+                }
+
+                // Add all members notified previously
+                $a_recipients = array_unique(array_merge($a_recipients, $ticket->commentNotifications()->where('member_id', '!=', $member->id)->groupBy('member_id')->pluck('member_id')->toArray()));
+
+                // Add all comment / note authors
+                foreach ($ticket->comments()->with('owner')->get() as $comm){
+                    if ($member->id != $comm->owner->id and !in_array($comm->owner->id, $a_recipients)) $a_recipients[] = $comm->owner->id;
+                }
+
+                if (!is_null($ticket->owner) and $member->id != $ticket->owner->id and !in_array($ticket->owner->id, $a_recipients)){
+                    // Add ticket owner if it's not the same as who comments
+                    $a_recipients[] = $ticket->owner->id;
+                }
+
+            }else{
+                // Selected recipients
+                // $comment->a_recipients come from embedded comments i TicketsController
+                // $request recipients come from a comment modal in Ticket card
+                $a_recipients = isset($comment->a_recipients) ? $comment->a_recipients : ($comment->type == 'note' ? $request->note_recipients : $request->reply_recipients);
+
+                if (count($a_recipients) > 0){
+                    if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
+                        // Element in request comes from Comment modal
+                        // $comment property comes from an embedded comment when editing or creating a ticket
+                        $data['add_in_user_notification_text'] = true;
+    				}
+                }
+            }
+
+            if (count($a_recipients) > 0){
+                foreach($a_recipients as $member_id){
+                    $recipient = Member::find($member_id);
+                    if (count($recipient) == 1){
+                        // Register the notified email
+                        $notification = CommentNotification::create([
+                           'comment_id' => $comment->id,
+                            'name' => $recipient->name,
+                            'email' => $recipient->email,
+                            'member_id' => $member_id
+                        ]);
+
+                        // Add email to actual mail recipients
+                        $a_to[] = [
+                            'recipient' => $recipient,
+                            'subject'   => $subject,
+                            'template'  => $template
+                        ];
+                    }
+                }
+            }
 
 			// Send notifications
-			$this->sendNotification($a_to, $data);
+			if(isset($a_to)) $this->sendNotification($a_to, $data);
 		}
     }
 
@@ -182,27 +229,21 @@ class NotificationsController extends Controller
 				'notification_owner' => serialize($notification_owner)
 			];
 
-			$a_to=[];
+            // Send notification to all comment notified users
+            foreach ($comment->notifications as $notification){
+                $recipient = Member::find($notification->member_id);
+                if (count($recipient) == 1){
+                    if ($recipient->email != $notification_owner->email){
+                        $a_to[] = [
+        					'recipient' => $recipient,
+        					'subject'   => $subject,
+        					'template'  => $template
+        				];
+                    }
+                }
+            }
 
-			// Email to ticket->agent
-			if ($ticket->agent->email != $notification_owner->email){
-				$a_to[] = [
-					'recipient' => $ticket->agent,
-					'subject'   => $subject,
-					'template'  => $template
-				];
-			}
-
-			// Email to comment->owner
-			if (!$ticket->hidden and !in_array($comment->owner->email, [$notification_owner->email, $ticket->agent->email])){
-				$a_to[] = [
-					'recipient' => $comment->owner,
-					'subject'   => $subject,
-					'template'  => $template
-				];
-			}
-
-			$this->sendNotification($a_to, $data);
+			if(isset($a_to)) $this->sendNotification($a_to, $data);
 		}
     }
 
@@ -212,8 +253,8 @@ class NotificationsController extends Controller
 	 */
 	public function notificationResend(Request $request)
 	{
-		$comment=Comment::findOrFail($request->input('comment_id'));
-		$ticket=$comment->ticket;
+		$comment = Comment::with('notifications')->findOrFail($request->input('comment_id'));
+		$ticket = $comment->ticket;
 		$notification_owner = $comment->user;
 		$template = 'panichd::emails.new_comment';
 		$subject = trans('panichd::lang.email-resend-abbr') . trans('panichd::lang.colon') . $this->subject.$ticket->id . ' ' . trans('panichd::email/globals.notify-new-note-by', ['name' => $comment->user->name]) . trans('panichd::lang.colon') . $ticket->subject;
@@ -224,30 +265,66 @@ class NotificationsController extends Controller
 			'notification_type' => $comment->type
 		];
 
-		$a_to = [];
+        if ($request->has('recipients')){
 
-		if ($request->has('to_agent')){
-			$a_to[] = [
-				'recipient' => $ticket->agent,
-				'subject'   => $subject,
-				'template'  => $template
-			];
-		}
-		if (!$ticket->hidden and $request->has('to_owner') and (!$request->has('to_agent') or ($request->has('to_agent') and $ticket->owner->email!=$ticket->agent->email))){
-			$a_to[] = [
-				'recipient' => $ticket->owner,
-				'subject'   => $subject,
-				'template'  => $template
-			];
-		}
+            foreach($request->recipients as $recipient_key){
+                // Search by member_id or by email address
+                $recipient = Member::where('id', $recipient_key)->orWhere('email', $recipient_key)->first();
+
+                if (!is_null($recipient)){
+                    $a_to[] = [
+        				'recipient' => $recipient,
+        				'subject'   => $subject,
+        				'template'  => $template
+        			];
+
+                    $notification = $comment->notifications()->where('member_id', $recipient->id)->first();
+                    if (is_null($notification)){
+                        // Register the notified email
+                        $notification = CommentNotification::create([
+                           'comment_id' => $comment->id,
+                            'name' => $recipient->name,
+                            'email' => $recipient->email,
+                            'member_id' => $recipient->id
+                        ]);
+
+                        if ($comment->notifications->count() == 0){
+                            // No previous registered notifications
+                            if ($ticket->agent->id == $comment->owner->id){
+                                // Message from agent to owner, so we register the non registered past owner notification
+                                $notification = CommentNotification::create([
+                                   'comment_id' => $comment->id,
+                                    'name' => $ticket->owner->name,
+                                    'email' => $ticket->owner->email,
+                                    'member_id' => $ticket->owner->id
+                                ]);
+                            }elseif($ticket->owner->id == $comment->owner->id){
+                                // Message from owner to agent, so we register the non registered past agent notification
+                                $notification = CommentNotification::create([
+                                   'comment_id' => $comment->id,
+                                    'name' => $ticket->agent->name,
+                                    'email' => $ticket->agent->email,
+                                    'member_id' => $ticket->agent->id
+                                ]);
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
 
 		// Load $this->category for sendNotification
 		$this->category = $ticket->category;
 
 		// Send notifications
-		$this->sendNotification($a_to, $data);
-
-		return back()->with('status','Notificacions reenviades correctament');
+		if(isset($a_to)){
+            $this->sendNotification($a_to, $data);
+            return back()->with('status', trans('panichd::lang.notification-resend-confirmation'));
+        }else{
+            return back()->with('warning', trans('panichd::lang.notification-resend-no-recipients'));
+        }
 	}
 
 

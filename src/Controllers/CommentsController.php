@@ -194,7 +194,7 @@ class CommentsController extends Controller
 		}
 
 		DB::commit();
-		event(new CommentCreated(Models\Comment::find($comment->id), $request));
+		event(new CommentCreated(clone $comment, $request));
 
 		session()->flash('status', trans('panichd::lang.comment-has-been-added-ok'));
 

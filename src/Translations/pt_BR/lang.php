@@ -2,7 +2,7 @@
 
 return [
 
-    
+
     'nav-new-tickets' => 'Novo',
 
     'nav-new-tickets-title' => 'Novos tickets',
@@ -167,10 +167,10 @@ return [
     'date-format' => 'Y-m-d',
 
     'datetime-format' => 'Y-m-d H: i',
-	
+
 	'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
 
-    
+
     'department' => 'Departamento',
 
     'department-shortening' => 'Dept.',
@@ -360,11 +360,11 @@ return [
 
     'ticket-hidden-1-comment' => 'O boletim é agora <b> escondido </b> para proprietário',
 
-    'comment-reply-title' => 'Mensagens entre dono e agentes',
+    'comment-reply-title' => 'Mensage visível para usuários',
 
     'comment-reply-from-owner' => 'Responda do <b>:owner </b>',
 
-    'reply-from-owner-to-owner' => 'Responda de <b>:owner1 </b> para <b>:owner2 </b>',
+    'reply-from-owner-to'    => 'Responda de <b>:owner</b> para <b>:recipients</b>',
 
     'comment-note-title' => 'Nota escondida do usuário',
 
@@ -404,9 +404,9 @@ return [
 
     'show-ticket-email-resend' => 'Reenviar email',
 
-    'show-ticket-email-resend-user' => 'Ao usuário:',
+    'show-ticket-email-resend-agent' => '(Agente do ticket)',
 
-    'show-ticket-email-resend-agent' => 'Para agente:',
+    'show-ticket-email-resend-owner' => '(Usuário do ticket)',
 
     'validation-error' => 'Este formulário não foi enviado',
 
