@@ -1300,8 +1300,44 @@ class TicketsController extends Controller
 
         $c_members = $this->members_collection($member, false);
 
+        // Recipients for notification resend
+        $a_resend_notifications = [];
+        foreach ($all_comments->get() as $comment){
+            if ($comment->type == 'reply'){
+
+                $a_comment_email_recipients = [$ticket->agent->email];
+                $a_resend_notifications[$comment->id][] = (object)[
+                    'member_id' => $ticket->agent->id,
+                    'email' => $ticket->agent->email,
+                    'name' => $ticket->agent->name
+                ];
+
+                if (!$ticket->hidden and $ticket->agent->email != $ticket->owner->email){
+                     $a_comment_email_recipients[] = $ticket->owner->email;
+                    $a_resend_notifications[$comment->id][] = (object)[
+                        'member_id' => $ticket->owner->id,
+                        'email' => $ticket->owner->email,
+                        'name' => $ticket->owner->name
+                    ];
+                }
+
+                if (count($comment->notifications) > 0){
+                    foreach ($comment->notifications as $notification){
+                        if (!in_array($notification->email, $a_comment_email_recipients)){
+                            $a_comment_email_recipients[] = $notification->email;
+                            $a_resend_notifications[$comment->id][] = (object)[
+                                'member_id' => $notification->member_id,
+                                'email' => $notification->email,
+                                'name' => $notification->name
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-            'comments', 'a_notifications', 'c_members', 'close_perm', 'reopen_perm');
+            'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
         $data['menu'] = 'show';
         return view('panichd::tickets.show', $data);
     }

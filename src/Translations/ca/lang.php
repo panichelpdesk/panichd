@@ -327,8 +327,10 @@ return [
   'show-ticket-delete-comment'       => 'Eliminar comentari',
   'show-ticket-delete-comment-msg'   => 'Estàs segur que vols eliminar aquest comentari?',
   'show-ticket-email-resend'         => 'Reenviar notificacions',
-  'show-ticket-email-resend-user'    => 'A l\'usuari: ',
-  'show-ticket-email-resend-agent'   => 'Al tècnic: ',
+  'show-ticket-email-resend-agent'   => '(Tècnic del tiquet)',
+  'show-ticket-email-resend-owner'   => '(Propietari del tiquet)',
+  'notification-resend-confirmation' => 'Notificacions reenviades correctament',
+  'notification-resend-no-recipients'=> 'No s\'ha marcat cap destinatari',
 
   // Validacions
   'validation-error'                 => 'Aquest formulari no s\'ha enviat',
