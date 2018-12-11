@@ -404,9 +404,9 @@ return [
 
     'show-ticket-email-resend' => 'Reenviar email',
 
-    'show-ticket-email-resend-user' => 'Ao usuário:',
+    'show-ticket-email-resend-agent' => '(Agente do ticket)',
 
-    'show-ticket-email-resend-agent' => 'Para agente:',
+    'show-ticket-email-resend-owner' => '(Usuário do ticket)',
 
     'validation-error' => 'Este formulário não foi enviado',
 

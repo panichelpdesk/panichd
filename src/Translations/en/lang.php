@@ -327,8 +327,10 @@ return [
   'show-ticket-delete-comment'       => 'Delete comment',
   'show-ticket-delete-comment-msg'   => 'Are you sure you want to delete this comment?',
   'show-ticket-email-resend'         => 'Resend email',
-  'show-ticket-email-resend-user'    => 'To user: ',
-  'show-ticket-email-resend-agent'   => 'To agent: ',
+  'show-ticket-email-resend-agent'   => '(Ticket agent)',
+  'show-ticket-email-resend-owner'   => '(Ticket owner)',
+  'notification-resend-confirmation' => 'Notifications were correctly resended',
+  'notification-resend-no-recipients'=> 'No recipients were selected', 
 
   // Validations
   'validation-error'                 => 'This form has not been sent',
