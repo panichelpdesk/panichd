@@ -683,7 +683,7 @@ class TicketsController extends Controller
         $member = $this->member->find(auth()->user()->id);
 
         // Ticket comments
-        $all_comments = $ticket->comments();
+        $all_comments = $ticket->comments()->with('notifications');
         $comments = clone $all_comments;
         $data['comments'] = $comments->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
@@ -702,6 +702,8 @@ class TicketsController extends Controller
             'note' => array_unique($a_note),
             'reply' => array_unique($a_reply)
         ];
+
+        $data['a_resend_notifications'] = $this->get_resend_notifications($ticket, $all_comments);
 
         return view('panichd::tickets.createedit', $data);
     }
@@ -1300,8 +1302,24 @@ class TicketsController extends Controller
 
         $c_members = $this->members_collection($member, false);
 
+        $a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
+
+        $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
+            'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
+        $data['menu'] = 'show';
+        return view('panichd::tickets.show', $data);
+    }
+
+    /*
+     * Get list of resend notifiications for each reply
+     *
+     * @return Array
+    */
+    public function get_resend_notifications($ticket, $all_comments)
+    {
         // Recipients for notification resend
         $a_resend_notifications = [];
+
         foreach ($all_comments->get() as $comment){
             if ($comment->type == 'reply'){
 
@@ -1336,10 +1354,7 @@ class TicketsController extends Controller
             }
         }
 
-        $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-            'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
-        $data['menu'] = 'show';
-        return view('panichd::tickets.show', $data);
+        return $a_resend_notifications;
     }
 
     /*
