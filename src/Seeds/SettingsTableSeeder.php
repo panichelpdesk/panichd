@@ -96,19 +96,19 @@ class SettingsTableSeeder extends Seeder
              * Default: panichd::master
              */
             'master_template' => 'panichd::master',
-			
+
 			/*
 			 * Default Member model for PanicHD
 			 * Default: default (which means using PanicHD\PanicHD\Models\Member)
 			 */
 			'member_model_class' => 'default',
-			 
-			
+
+
 			/*
 			 * Admin navbar button text is configurable
 			*/
 			'admin_button_text' => 'PanicHD',
-			
+
             /*
 			 * Tickets email account: The email address for all package notifications.
 			 * Overrides Laravel email and name but uses it's connection parameters
@@ -116,7 +116,7 @@ class SettingsTableSeeder extends Seeder
 			*/
 			'email.account.name' => 'default',
 			'email.account.mailbox' => 'default',
-			
+
 			/*
              * Template adherence: The email blade template to be extended
              * Default: panichd::emails.templates.panichd
@@ -138,36 +138,36 @@ class SettingsTableSeeder extends Seeder
             'email.color_content_bg' => '#F46B45',
             'email.color_footer_bg'  => '#414141',
             'email.color_button_bg'  => '#AC4D2F',
-			
-			
+
+
 			/**
 			 * Configurable notifications.
 			*/
-			
+
 			/*
              * Agent notify: To notify assigned agent (either auto or manual assignment) of new assigned or transferred tickets
              * Default: 'yes'
              * not to notify agent: 'no'
              */
             'assigned_notification' => 'yes',
-			
+
 			/*
              * Comment notification: Send notification when new comment is posted
              * Default is send notification: 'yes'
              * Do not send notification: 'no'
              */
             'comment_notification' => 'yes',
-			
+
 			/*
              * Status notification: Send email notification to ticket owner/Agent when ticket status is changed
              * Default: 'yes'
              */
             'status_notification' => 'yes',
-			
+
 			/*
 			* Notify owner when ticket list changes (between active and complete only)
 			* Default: 'yes'
-            */			
+            */
 			'list_owner_notification' => 'yes',
 
 			/*
@@ -175,8 +175,8 @@ class SettingsTableSeeder extends Seeder
 			* Default: 'yes'
             */
 			'status_owner_notification' => 'yes',
-			
-			
+
+
 			/*
              * The default priority for new tickets
              * Default: 1
@@ -213,14 +213,14 @@ class SettingsTableSeeder extends Seeder
              * Default: 1
              */
             'paginate_items' => 10,
-			
+
 			/*
 			 * Ticket list: View combined column for subject and content?
 			 * Default: 'no'
 			*/
 			'subject_content_column' => 'no',
-			
-			
+
+
 			/*
 			 * Max total size for attached files (ticket + comments)
 			 *
@@ -232,14 +232,14 @@ class SettingsTableSeeder extends Seeder
 			 *
 			*/
 			'attachments_ticket_max_files_num' => '20',
-			
+
 			/**
 			 * Attachment allowed mimetypes
 			 *
 			 * Default: jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf
 			*/
 			'attachments_mimes' => 'jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf',
-			
+
 			/*
              * Defines relative path under storage_path() where to store attached files
              *
@@ -247,12 +247,12 @@ class SettingsTableSeeder extends Seeder
              */
             'attachments_path' => 'panichd_attachments',
 			'thumbnails_path' => 'panichd_thumbnails',
-			
+
 			/*
 			 * Oldest year for ticket start date or limit date
 			*/
 			'oldest_year' => '2017',
-			
+
 			/*
 			 * String replacements to execute within Purifiable trait before clean() method
 			*/
@@ -260,7 +260,7 @@ class SettingsTableSeeder extends Seeder
 				'<br />' => '',
 				'<br>' => ''
 			],
-			
+
 			/*
 			 * If set to a number, limit texts in ticket list to specified character length and show plus / minus icons
 			 */
@@ -272,14 +272,14 @@ class SettingsTableSeeder extends Seeder
              */
             'newest_list_reload_seconds' => '60',
 
-			
+
             /*
              * Pagination length: For tickets table.
              * Default: 1
              */
             'length_menu' => [[10, 50, 100], [10, 50, 100]],
-            
-			
+
+
             /*
              * Use Queue method when sending emails (Mail::queue instead of Mail::send). Note that Mail::queue needs to be
              * configured first http://laravel.com/docs/5.1/queues
@@ -287,7 +287,14 @@ class SettingsTableSeeder extends Seeder
              * use queue: 'yes'
              */
             'queue_emails' => 'no',
-            
+
+            /*
+             * Enable comment option to select one or many recipients to send comment notification to
+             *
+             * Default: 'yes'
+            */
+            'custom_recipients' => 'yes',
+
             /*
              * Agent restrict: Restrict agents access to only their assigned tickets
              * Default: 'no'
@@ -373,38 +380,38 @@ class SettingsTableSeeder extends Seeder
                 'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',
                 'URI.AllowedSchemes'   => ['data' => true, 'http' => true, 'https' => true, 'mailto' => true, 'ftp' => true],
             ],
-			
+
 			/*
 			 * Panic Help Desk optional features
 			*/
-			
+
 			/*
 			 * View department and sub1 where ticket owner belongs
 			*/
-			'departments_feature' => 'no',	
-			
+			'departments_feature' => 'no',
+
 			/*
 			 * This feature represents two connected functionalities:
 			 * - Ability of associate certain users to departments.
 			 * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
 			*/
 			'departments_notices_feature' => 'no',
-			
+
 			/**
 			 * Allow file attachments for tickets and comments
 			*/
 			'ticket_attachments_feature' => 'yes',
-			
+
 			/*
 			 * Calendar filter options switch between week and month or 7 and 14 days
 			*/
 			'calendar_month_filter' => 'no',
-			
+
 			/*
 			 * Max number of agent specific buttons in filter panel. If agent count is bigger, select2 will be shown
 			*/
 			'max_agent_buttons' => '4',
-			
+
 			/**
 			 * User card route name if it exists in your app. Configuring it makes Owner name link to it's card by passing user id.
 			 *

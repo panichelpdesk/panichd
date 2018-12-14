@@ -149,33 +149,49 @@ class NotificationsController extends Controller
             $category_level = $member->levelInCategory($ticket->category_id);
     		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 
-            if ($permission_level < 2){
-                // Get defaults
-                $a_defaults = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
+            $a_recipients = [];
 
-                // Add recipients for each default one
-                foreach ($a_defaults as $default){
+            if($permission_level < 2 or !Setting::grab('custom_recipients')){
+                // Add recipients for each default one (Ticket agent)
+                foreach ($this->defaultRecipients($ticket, $notification_owner, $subject, $template) as $default){
                     $a_recipients[] = $default['recipient']->id;
                 }
 
-                // Add all members notified previously
-                $a_recipients = array_unique(array_merge($a_recipients, $ticket->commentNotifications()->where('member_id', '!=', $member->id)->groupBy('member_id')->pluck('member_id')->toArray()));
+                // Add ticket owner
+                if(!$ticket->hidden and !is_null($ticket->owner) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])
+                    and ($comment->type == 'reply' or ($comment->type != 'reply' and $ticket->owner->levelInCategory($ticket->category->id) > 1))){
 
-                // Add all comment / note authors
-                foreach ($ticket->comments()->with('owner')->get() as $comm){
-                    if ($member->id != $comm->owner->id and !in_array($comm->owner->id, $a_recipients)) $a_recipients[] = $comm->owner->id;
-                }
-
-                if (!is_null($ticket->owner) and $member->id != $ticket->owner->id and !in_array($ticket->owner->id, $a_recipients)){
-                    // Add ticket owner if it's not the same as who comments
                     $a_recipients[] = $ticket->owner->id;
-                }
+        		}
 
-            }else{
-                // Selected recipients
-                // $comment->a_recipients come from embedded comments i TicketsController
-                // $request recipients come from a comment modal in Ticket card
-                $a_recipients = isset($comment->a_recipients) ? $comment->a_recipients : ($comment->type == 'note' ? $request->note_recipients : $request->reply_recipients);
+                foreach($ticket->comments()->whereIn('type', ['reply', 'note'])->with('owner', 'notifications')->get() as $comm){
+                    // Previous comment authors
+                    if ($comm->owner->id != $notification_owner->id and !in_array($comm->owner->id, $a_recipients)
+                        and ($comment->type == 'reply' or ($comment->type != 'reply' and $comm->owner->levelInCategory($ticket->category->id) > 1))){
+
+                        $a_recipients[] = $comm->owner->id;
+                    }
+
+                    // All previous comments recipients
+                    foreach ($comm->notifications as $notification){
+                        $recipient = Member::find($notification->member_id);
+                        if (count($recipient) == 1 and ($comment->type == 'reply' or ($comment->type != 'reply' and $recipient->levelInCategory($ticket->category->id) > 1))
+                            and $notification_owner->id!= $recipient->id and !in_array($recipient->id, $a_recipients)){
+
+                                $a_recipients[] = $recipient->id;
+                        }
+                    }
+                }
+            }
+
+            if($permission_level > 1){
+                if (Setting::grab('custom_recipients')){
+                    /* About $a_recipients
+                    *   $comment->a_recipients come from embedded comments i TicketsController
+                    *   $request recipients come from a comment modal in Ticket card
+                    */
+                    $a_recipients = isset($comment->a_recipients) ? $comment->a_recipients : ($comment->type == 'note' ? $request->note_recipients : $request->reply_recipients);
+                }
 
                 if (count($a_recipients) > 0){
                     if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
