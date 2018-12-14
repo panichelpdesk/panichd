@@ -31,13 +31,17 @@ $(function(){
         if (type == 'reply'){
             $(this).closest('.comment-modal').find('#note_recipients').select2('destroy');
             $(this).closest('.comment-modal').find('#reply_recipients').select2();
-
-            $('#add_to_intervention').prop('disabled', false).closest('div').show();
+            @if(!$setting->grab('custom_recipients'))
+                $('#add_in_user_notification_text').prop('disabled', false).closest('.form-row').show();
+            @endif
+            $('#add_to_intervention').prop('disabled', false).closest('.form-row').show();
         }else{
             $(this).closest('.comment-modal').find('#reply_recipients').select2('destroy');
             $(this).closest('.comment-modal').find('#note_recipients').select2();
-
-            $('#add_to_intervention').prop('disabled', true).closest('div').hide();
+            @if(!$setting->grab('custom_recipients'))
+                $('#add_in_user_notification_text').prop('disabled', true).closest('.form-row').hide();
+            @endif
+            $('#add_to_intervention').prop('disabled', true).closest('.form-row').hide();
         }
 
         var alt = type == 'note' ? 'reply' : 'note';
