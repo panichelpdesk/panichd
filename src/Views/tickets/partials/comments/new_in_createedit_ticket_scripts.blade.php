@@ -9,8 +9,10 @@ $(function(){
        _cloned.prop('id', 'comment_' + _num);
        _cloned.find('.input_comment_num').val(_num);
        _cloned.find('.input_response_type').prop('disabled', false).attr('name', 'response_' + _num);
-       _cloned.find('.note_recipients').prop('disabled', false).attr('name', 'comment_' + _num + '_recipients[]');
-       _cloned.find('.reply_recipients').attr('name', 'comment_' + _num + '_recipients[]');
+        @if($setting->grab('custom_recipients'))
+            _cloned.find('.note_recipients').prop('disabled', false).attr('name', 'comment_' + _num + '_recipients[]');
+            _cloned.find('.reply_recipients').attr('name', 'comment_' + _num + '_recipients[]');
+        @endif
 
        _cloned.find('.input_comment_text').prop('disabled', false).attr('name', 'comment_' + _num);
 
@@ -35,8 +37,10 @@ $(function(){
             $(this).find('.text').text($(this).data('comment-text'));
             _block.find('.note_title').hide();
             _block.find('.comment_title').show();
-            _block.find('.note_recipients').prop('disabled', true).select2('destroy').hide();
-            _block.find('.reply_recipients').prop('disabled', false).show().select2();
+            @if($setting->grab('custom_recipients'))
+                _block.find('.note_recipients').prop('disabled', true).select2('destroy').hide();
+                _block.find('.reply_recipients').prop('disabled', false).show().select2();
+            @endif
         }else{
             // Switch to internal note
             $(this).find('i.fas').removeClass('fa-pencil-alt').addClass('fa-comment');
@@ -44,8 +48,10 @@ $(function(){
             $(this).find('.text').text($(this).data('note-text'));
             _block.find('.note_title').show();
             _block.find('.comment_title').hide();
-            _block.find('.reply_recipients').prop('disabled', true).select2('destroy').hide();
-            _block.find('.note_recipients').prop('disabled', false).show().select2();
+            @if($setting->grab('custom_recipients'))
+                _block.find('.reply_recipients').prop('disabled', true).select2('destroy').hide();
+                _block.find('.note_recipients').prop('disabled', false).show().select2();
+            @endif
         }
     });
 
