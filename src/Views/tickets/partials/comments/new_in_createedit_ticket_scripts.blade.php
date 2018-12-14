@@ -40,6 +40,8 @@ $(function(){
             @if($setting->grab('custom_recipients'))
                 _block.find('.note_recipients').prop('disabled', true).select2('destroy').hide();
                 _block.find('.reply_recipients').prop('disabled', false).show().select2();
+            @else
+                _block.find('.input_comment_notification_text').prop('disabled', false).closest('label').show();
             @endif
         }else{
             // Switch to internal note
@@ -51,6 +53,8 @@ $(function(){
             @if($setting->grab('custom_recipients'))
                 _block.find('.reply_recipients').prop('disabled', true).select2('destroy').hide();
                 _block.find('.note_recipients').prop('disabled', false).show().select2();
+            @else
+                _block.find('.input_comment_notification_text').prop('disabled', true).closest('label').hide();
             @endif
         }
     });

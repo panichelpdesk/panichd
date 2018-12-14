@@ -86,15 +86,15 @@
 						</div>
 					@endif
 					@if ($u->currentLevel() > 1)
-                        <div class="form-row">
+                        <div class="form-row" @if(!$setting->grab('custom_recipients')) style="display: none" @endif>
                             <div class="form-check">
-    		                      <label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
+    		                      <label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes" @if(!$setting->grab('custom_recipients')) disabled="disabled" @endif> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
     						</div>
                         </div>
 
                         @if ($u->canManageTicket($ticket->id))
-                            <div class="form-row">
-                                <div class="form-check" style="display: none;">
+                            <div class="form-row" style="display: none;">
+                                <div class="form-check">
                                     <label><input type="checkbox" id="add_to_intervention" name="add_to_intervention" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-intervention') }}</label>
                                 </div>
                             </div>
