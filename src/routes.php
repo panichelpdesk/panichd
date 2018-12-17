@@ -116,8 +116,14 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
 
 		// Use single filter in specified list
+        // TODO: Delete this route and controller method. Use filterjust instead
 		Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only')
 			->name("$main_route-filteronly");
+
+        // Use just the specified filters (one or many)
+        Route::get("$main_route_path/filterjust/{parameters?}", 'PanicHD\PanicHD\Controllers\FiltersController@just')
+            ->where('parameters', '(.*)')
+            ->name("$main_route-filterjust");
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAdminMiddleware'], function () use ($admin_route, $admin_route_path) {
