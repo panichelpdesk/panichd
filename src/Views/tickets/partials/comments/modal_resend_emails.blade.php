@@ -1,6 +1,6 @@
-<div class="modal fade jquery_panel_hightlight" id="email-resend-modal" tabindex="-1" role="dialog" >
+<div id="email-resend-modal-{{$comment->id}}" class="modal fade jquery_panel_hightlight notification-resend-modal" tabindex="-1" role="dialog" >
     <div class="modal-dialog model-lg" role="document">
-        <div class="modal-content">			
+        <div class="modal-content">
 			{!! CollectiveForm::open(['method' => 'POST', 'route' => $setting->grab('main_route').'-notification.resend']) !!}
 			{!! CollectiveForm::hidden('comment_id', $comment->id, ['id'=>'comment_id']) !!}
 			<div class="modal-header">
@@ -9,19 +9,19 @@
             </div>
             <div class="modal-body">
 				<fieldset>
-					<div class="form-group row">
-						<div class="col-lg-12">
-						<label><input type="checkbox" name="to_agent" value="yes"> {{ trans('panichd::lang.show-ticket-email-resend-agent') . $ticket->agent->name}}</label>
-						</div>
-					</div>
-					@if(!$ticket->hidden)
-						<div class="form-group row">
-							<div class="col-lg-12">
-							<label><input type="checkbox" name="to_owner" value="yes" checked="checked"> {{ trans('panichd::lang.show-ticket-email-resend-user') }}<span id="owner"></span></label>
-							</div>
-						</div>
-					@endif
-					<div class="text-right col-md-12">
+                    @foreach($a_resend_notifications[$comment->id] as $recipient)
+                        <div class="form-group form-check">
+                            <label><input type="checkbox" class="form-check-input" name="recipients[]" value="{{ ($recipient->member_id == "" ? $recipient->email : $recipient->member_id) }}"> {{ $recipient->name . ' - ' . $recipient->email }}
+                            @if($recipient->email == $ticket->agent->email)
+                                {{ trans('panichd::lang.show-ticket-email-resend-agent') }}
+                            @elseif($recipient->email == $ticket->owner->email)
+                                {{ trans('panichd::lang.show-ticket-email-resend-owner') }}
+                            @endif
+                            </label>
+                        </div>
+                    @endforeach
+
+					<div class="text-right">
 						{!! CollectiveForm::submit( trans('panichd::lang.btn-submit'), ['class' => 'btn btn-primary']) !!}
 					</div>
 

@@ -653,6 +653,11 @@ class TicketsController extends Controller
 
 		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
 
+        $data['a_notifications'] = [
+            'note' => ($data['a_current']['agent_id'] != auth()->user()->id ? [$data['a_current']['agent_id']] : []),
+            'reply' => ($data['a_current']['owner_id'] != auth()->user()->id ? [$data['a_current']['owner_id']] : [])
+        ];
+
         return view('panichd::tickets.createedit', $data);
     }
 
@@ -676,8 +681,29 @@ class TicketsController extends Controller
         $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
         $member = $this->member->find(auth()->user()->id);
-        $data['comments'] = $ticket->comments()->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
+        // Ticket comments
+        $all_comments = $ticket->comments()->with('notifications');
+        $comments = clone $all_comments;
+        $data['comments'] = $comments->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+
+        // Default notification recipients
+        $all_c = clone $all_comments;
+        $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
+        $a_note = [$ticket->agent->id];
+        foreach($all_c->get() as $comm){
+            if ($comm->type == 'reply'){
+                $a_reply = array_merge($a_reply, $comm->notifications->pluck('member_id')->toArray());
+            }elseif($comm->type == 'note'){
+                $a_note = array_merge($a_note, $comm->notifications->pluck('member_id')->toArray());
+            }
+        }
+        $data['a_notifications'] = [
+            'note' => array_unique($a_note),
+            'reply' => array_unique($a_reply)
+        ];
+
+        $data['a_resend_notifications'] = $this->get_resend_notifications($ticket, $all_comments);
 
         return view('panichd::tickets.createedit', $data);
     }
@@ -712,11 +738,7 @@ class TicketsController extends Controller
 
         $member = $this->member->find(auth()->user()->id);
 
-		if ($member->currentLevel() > 1){
-			$a_owners = \PanicHDMember::with('userDepartment')->orderBy('name')->get();
-		}else{
-			$a_owners = \PanicHDMember::whereNull('ticketit_department')->orWhere('id','=',$member->id)->with('userDepartment')->orderBy('name')->get();
-		}
+		$c_members = $this->members_collection($member);
 
 		$priorities = $this->getCacheList('priorities');
 		$status_lists = $this->getCacheList('statuses');
@@ -828,7 +850,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 
-		return compact('menu', 'a_owners', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('menu', 'c_members', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
 	/**
@@ -1145,6 +1167,9 @@ class TicketsController extends Controller
                     $comment->html = $a_content['html'];
             		$comment->save();
 
+                    // Comment recipients
+                    if($request->has('comment_' . $i . '_recipients')) $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
+
                     // Adds this as a $comment property to check it in NotificationsController
                     if($request->has('comment_' . $i . '_notification_text')) $comment->add_in_user_notification_text =  'yes';
 
@@ -1192,7 +1217,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-		$user = $this->member->find(auth()->user()->id);
+		$member = $this->member->find(auth()->user()->id);
 		$members_table = $this->member->getTable();
 
 		$ticket = $this->tickets
@@ -1226,10 +1251,6 @@ class TicketsController extends Controller
 		// Select Ticket and properties
 		$ticket = $ticket->select($a_select)->findOrFail($id);
 
-		if ($ticket->hidden and $user->currentLevel() == 1){
-			return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
-		}
-
         if (version_compare(app()->version(), '5.3.0', '>=')) {
             $a_reasons = $ticket->category->closingReasons()->pluck('text','id')->toArray();
 			$a_tags_selected = $ticket->tags()->pluck('id')->toArray();
@@ -1255,12 +1276,101 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 
-        $comments = $ticket->comments()->forLevel($user->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+        $all_comments = $ticket->comments()->with('notifications')->forLevel($member->levelInCategory($ticket->category_id));
+        $comments = clone $all_comments;
+        $comments = $comments->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+
+        $a_notifications = ['reply' => [], 'note' => []];
+
+        if($member->currentLevel() > 1 && $member->canManageTicket($ticket->id)){
+            $all_c = clone $all_comments;
+            $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
+            $a_note = [$ticket->agent->id];
+            foreach($all_c->get() as $comm){
+                if($comm->type == 'note'){
+                    $a_note = array_merge($a_note, $comm->notifications->pluck('member_id')->toArray());
+                }elseif ($comm->type == 'reply'){
+                    $a_reply = array_merge($a_reply, $comm->notifications->pluck('member_id')->toArray());
+                }
+            }
+
+            $a_notifications = [
+                'note' => array_unique($a_note),
+                'reply' => array_unique($a_reply)
+            ];
+        }
+
+        $c_members = $this->members_collection($member, false);
+
+        $a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
 
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-            'comments', 'close_perm', 'reopen_perm');
+            'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
         $data['menu'] = 'show';
         return view('panichd::tickets.show', $data);
+    }
+
+    /*
+     * Get list of resend notifiications for each reply
+     *
+     * @return Array
+    */
+    public function get_resend_notifications($ticket, $all_comments)
+    {
+        // Recipients for notification resend
+        $a_resend_notifications = [];
+
+        foreach ($all_comments->get() as $comment){
+            if ($comment->type == 'reply'){
+
+                $a_comment_email_recipients = [$ticket->agent->email];
+                $a_resend_notifications[$comment->id][] = (object)[
+                    'member_id' => $ticket->agent->id,
+                    'email' => $ticket->agent->email,
+                    'name' => $ticket->agent->name
+                ];
+
+                if (!$ticket->hidden and $ticket->agent->email != $ticket->owner->email){
+                     $a_comment_email_recipients[] = $ticket->owner->email;
+                    $a_resend_notifications[$comment->id][] = (object)[
+                        'member_id' => $ticket->owner->id,
+                        'email' => $ticket->owner->email,
+                        'name' => $ticket->owner->name
+                    ];
+                }
+
+                if (count($comment->notifications) > 0){
+                    foreach ($comment->notifications as $notification){
+                        if (!in_array($notification->email, $a_comment_email_recipients)){
+                            $a_comment_email_recipients[] = $notification->email;
+                            $a_resend_notifications[$comment->id][] = (object)[
+                                'member_id' => $notification->member_id,
+                                'email' => $notification->email,
+                                'name' => $notification->name
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $a_resend_notifications;
+    }
+
+    /*
+     * Return a collection with all members
+     *
+     * @return Collection
+    */
+    public function members_collection($member, $auth = true)
+    {
+        $c_members = \PanicHDMember::with('userDepartment');
+        if (!$auth) $c_members = $c_members->where('email', '!=', auth()->user()->email);
+        if ($member->currentLevel() > 1){
+            return $c_members->orderBy('name')->get();
+        }else{
+            return $c_members->whereNull('ticketit_department')->orWhere('id','=',$member->id)->orderBy('name')->get();
+        }
     }
 
     /**

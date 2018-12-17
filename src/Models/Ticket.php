@@ -19,7 +19,7 @@ class Ticket extends Model
 
     protected $table = 'panichd_tickets';
     protected $dates = ['completed_at'];
-	
+
 	/**
 	 * Delete Ticket instance and related ones
 	*/
@@ -30,17 +30,17 @@ class Ticket extends Model
 			$error = $att->delete();
 			if($error) $a_errors[] = $error;
 		}
-		
+
 		if($a_errors){
 			return implode('. ', $a_errors);
 		}
-		
+
 		$this->tags()->detach();
 		$this->comments()->delete();
 
 		parent::delete();
 	}
-	
+
     /**
      * Check if ticket has comments
      *
@@ -50,7 +50,7 @@ class Ticket extends Model
     {
         return (bool) count($this->comments);
     }
-	
+
 	/**
      * Check if ticket is in Active list
      *
@@ -88,7 +88,7 @@ class Ticket extends Model
 		return (bool) ($member->currentLevel() >= 2 and is_null($this->completed_at) and $this->status_id == Setting::grab('default_status_id'));
     }
 
-	
+
 	/**
      * List of active tickets.
      *
@@ -104,7 +104,7 @@ class Ticket extends Model
             return $query->where('status_id', '!=', Setting::grab('default_status_id'));
         }
     }
-	
+
     /**
      * List of completed tickets.
      *
@@ -138,11 +138,11 @@ class Ticket extends Model
 				break;
 			case 'complete':
 				return $query->complete($query);
-				break;			
+				break;
 			default:
 				return $query->active($query);
 				break;
-		}        
+		}
     }
 
     /**
@@ -184,7 +184,7 @@ class Ticket extends Model
     {
         return $this->belongsTo('\PanicHDMember', 'creator_id');
     }
-	
+
     /**
      * Get Ticket owner as \PanicHDMember model
      *
@@ -194,7 +194,7 @@ class Ticket extends Model
     {
         return $this->belongsTo('\PanicHDMember', 'user_id');
     }
-	
+
 	/**
      * Get Ticket owner as PanicHDMember model
      *
@@ -224,7 +224,17 @@ class Ticket extends Model
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Comment', 'ticket_id');
     }
-	
+
+    /**
+     * Get email / members notified with comments
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasManyThrough
+     */
+    public function commentNotifications()
+    {
+        return $this->hasManyThrough('PanicHD\PanicHD\Models\CommentNotification', 'PanicHD\PanicHD\Models\Comment');
+    }
+
 	/**
      * Get Ticket comments updated recently
      *
@@ -256,9 +266,9 @@ class Ticket extends Model
         return $this->hasMany(Attachment::class, 'ticket_id')
             ->whereNull('comment_id')->orderByRaw('CASE when mimetype LIKE "image/%" then 1 else 2 end');
     }
-	
+
 	/**
-     * All related attachments for Ticket (+comment attachments) 
+     * All related attachments for Ticket (+comment attachments)
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -313,10 +323,10 @@ class Ticket extends Model
 
         return Date::instance($value);
     }
-	
+
 	/*
 	 * Improves Carbon diffForHumans to specify dates in text:
-	 * 
+	 *
 	 * - Yesterday, today, tomorrow
 	 * - Day of week for future dates within the next 6 days
 	 *
@@ -326,7 +336,7 @@ class Ticket extends Model
 	 * @return string
 	*/
 	public function getDateForHumans($date_field, $distant_dates_text = false)
-	{		
+	{
 		if ($date_field == "limit_date" and $this->limit_date == ""){
 			// This is an empty limit_date
 			$date = $this->start_date;
@@ -340,12 +350,12 @@ class Ticket extends Model
 		}else{
 			$date_text = date(trans('panichd::lang.date-format'), strtotime($date));
 		}
-		
+
 		$parsed = Carbon::parse($date);
-		
+
 		// Real days  diff
 		$days = Carbon::now()->startOfDay()->diffInDays($parsed->startOfDay(), false);
-		
+
 		if ($days == -1){
 			$text_to_format = trans('panichd::lang.yesterday');
 		}elseif ($days === 0){
@@ -353,18 +363,18 @@ class Ticket extends Model
 		}elseif ($days == 1){
 			$text_to_format = trans('panichd::lang.tomorrow');
 		}elseif ($days > 1 and $parsed->diffInSeconds(Carbon::now()->addDays(6)->endOfDay(), false) >= 0){
-			
+
 				// Within 6 days
 				$text_to_format = trans('panichd::lang.day_'.$parsed->dayOfWeek);
-				
+
 		}elseif($distant_dates_text){
-			
+
 			// Real weeks diff
 			$weeks = Carbon::now()->startOfWeek()->diffInWeeks($parsed->startOfWeek(), false);
-			
+
 			if ($weeks == 0){
 				$date_text = Carbon::now()->addDays($days)->diffForHumans();
-				
+
 			}elseif ($weeks >= -5 and $weeks <= 5){
 				$date_text = Carbon::now()->addWeeks($weeks)->diffForHumans();
 			}else{
@@ -373,7 +383,7 @@ class Ticket extends Model
 				$date_text = Carbon::now()->addMonths($months)->diffForHumans();
 			}
 		}
-		
+
 		if (isset($text_to_format)){
 			$date_text = trans('panichd::lang.datetime-text', [
 				'date' => $text_to_format,
@@ -381,10 +391,10 @@ class Ticket extends Model
 				]);
 		}
 
-			
+
 		return $date_text;
 	}
-	
+
 	/*
 	 * Get time from specified date field.
 	 *
@@ -402,13 +412,13 @@ class Ticket extends Model
 		}else{
 			$date = $this->$date_field;
 		}
-		
-		
+
+
 		if ($date_field == "limit_date" and $this->limit_date != "" and Carbon::parse($this->start_date)->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay()) == 0){
 			// Range for same day
 			$start = strtotime($this->start_date);
 			$limit = strtotime($this->limit_date);
-			
+
 			return date(date('i', $start) == "00" ? 'H' : 'H:i', $start)
 				. '-'
 				. date(date('i', $limit) == "00" ? 'H' : 'H:i', $limit);
@@ -417,7 +427,7 @@ class Ticket extends Model
 			return date('H:i', strtotime($date));
 		}
 	}
-	
+
 	/**
 	 * Process start date and limit date and return a formatted div with resumed calendar information
 	 *
@@ -427,16 +437,16 @@ class Ticket extends Model
 	{
 		$date_field = $title = $icon = "";
 		$color = "text-muted";
-		$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->start_date)->startOfDay(), false);			
+		$start_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->start_date)->startOfDay(), false);
 		if ($this->limit_date != ""){
-			$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay(), false);				
+			$limit_days_diff = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($this->limit_date)->startOfDay(), false);
 			if ($limit_days_diff == 0){
 				$limit_seconds_diff = Carbon::now()->diffInSeconds(Carbon::parse($this->limit_date), false);
 			}
 		}else{
 			$limit_days_diff = false;
 		}
-					
+
 		if ($limit_days_diff < 0 or ($limit_days_diff == 0 and isset($limit_seconds_diff) and $limit_seconds_diff < 0)){
 			// Expired
 			$date_field = 'limit_date';
@@ -445,7 +455,7 @@ class Ticket extends Model
 			}else{
 				$title = trans('panichd::lang.calendar-expired', ['description' => $this->getDateForHumans($date_field, true)]);
 			}
-			
+
 			$icon = "fa fa-exclamation-circle";
 			$color = "text-danger";
 		}elseif($limit_days_diff > 0 or $limit_days_diff === false){
@@ -469,8 +479,8 @@ class Ticket extends Model
 				}else{
 					$title = trans('panichd::lang.calendar-active-future', ['description' => $this->getDateForHumans($date_field, true)]);
 					$icon = "fa fa-file";
-				}										
-				
+				}
+
 			}elseif($limit_days_diff){
 				// Active with limit
 				$date_field = 'limit_date';
@@ -485,9 +495,9 @@ class Ticket extends Model
 				}else{
 					$title = trans('panichd::lang.calendar-active', ['description' => $this->getDateForHumans($date_field, true)]);
 				}
-				
+
 				$icon = "fa fa-file";
-			}				
+			}
 		}else{
 			// Due today
 			$date_field = 'limit_date';
@@ -501,11 +511,11 @@ class Ticket extends Model
 					'time2' =>date('H:i', strtotime($this->limit_date))
 				]);
 			}
-			
+
 			$icon = "fa fa-exclamation-triangle";
 			$color = "text-warning";
 		}
-		
+
 		if ($show == 'description') {
 			// Date description
 			return $title;
@@ -514,7 +524,7 @@ class Ticket extends Model
 			return "<span class=\"tooltip-info $color\" title=\"$title\" data-toggle=\"tooltip\" data-placement=\"bottom\"><span class=\"$icon\"></span> ".$this->getDateForHumans($date_field)." ".($question_sign ? "<span class=\"fa fa-question-circle\"></span>" : "")."</span>";
 		}
 	}
-	
+
 	/**
 	 * Get abbreviated and localized last update time
 	 *
@@ -524,7 +534,7 @@ class Ticket extends Model
 	{
 		$seconds = $this->updated_at->diffInSeconds();
 		$days = $this->updated_at->diffInDays();
-		
+
 		if ($seconds < 60){
 			return $seconds." ".trans('panichd::lang.second-abbr');
 		}elseif($seconds < 3600){
@@ -613,7 +623,7 @@ class Ticket extends Model
     {
         if (!$id) $id = auth()->user()->id;
 		$agent = \PanicHDMember::findOrFail($id);
-		
+
 		if ($agent->currentLevel() == 2) {
 			// Depends on agent_restrict
 			if (Setting::grab('agent_restrict') == 0) {
@@ -637,7 +647,7 @@ class Ticket extends Model
 				});
 		}
     }
-	
+
 	/**
      * Filters to ticket list
      *
@@ -649,57 +659,57 @@ class Ticket extends Model
 	public function scopeFiltered($query, $ticketList, $filter = false)
 	{
 		$member = \PanicHDMember::find(auth()->user()->id);
-		
+
 		if ($member->currentLevel() == 1){
 			// If session()->has('panichd_filter_currentLevel')
 			return $query->userTickets(auth()->user()->id)->notHidden();
 		}else{
 			if (session()->has('panichd_filters')){
-				
+
 				if ($ticketList != 'complete'){
 					// Calendar filter
 					if ((!$filter or $filter == 'calendar') and session()->has('panichd_filter_calendar')){
 						$calendar_filter = session('panichd_filter_calendar');
-					
+
 						if ($calendar_filter == "expired"){
 							// Expired tickets
 							$query = $query->where('limit_date', '<', Carbon::now());
 						}elseif($calendar_filter == "not-scheduled"){
 							// Not scheduled tickets
 							$query = $query->whereNull('limit_date');
-						}else{										
+						}else{
 							// All non expired tickets
 							$query = $query->where('limit_date', '>=', Carbon::now()->today());
 						}
-						
+
 						switch ($calendar_filter){
 							case 'today':
 								$query = $query->where('limit_date', '<', Carbon::now()->tomorrow());
 								break;
-								
+
 							case 'tomorrow':
 								$query = $query->where('limit_date', '>=', Carbon::now()->tomorrow());
 								$query = $query->where('limit_date', '<', Carbon::now()->addDays(2)->startOfDay());
 								break;
-								
+
 							case 'week':
 								if (Setting::grab('calendar_month_filter')){
 									$query = $query->where('limit_date', '<', Carbon::now()->endOfWeek());
 								}
 								break;
-							
+
 							case 'month':
 								if (Setting::grab('calendar_month_filter')){
 									$query = $query->where('limit_date', '<', Carbon::now()->endOfMonth());
 								}
 								break;
-								
+
 							case 'within-7-days':
 								if (!Setting::grab('calendar_month_filter')){
 									$query = $query->where('limit_date', '<', Carbon::now()->addDays(7)->endOfDay());
 								}
 								break;
-							
+
 							case 'within-14-days':
 								if (Setting::grab('calendar_month_filter')){
 									$query = $query->where('limit_date', '<', Carbon::now()->addDays(14)->endOfDay());
@@ -708,13 +718,13 @@ class Ticket extends Model
 						}
 					}
 				}
-				
+
 				// Category filter
 				if ((!$filter or $filter == 'category') and session()->has('panichd_filter_category')){
 					$category = session('panichd_filter_category');
 					$query = $query->where('category_id', session('panichd_filter_category'));
 				}
-				
+
 				// Agent filter
 				if ((!$filter or $filter == 'agent') and session()->has('panichd_filter_agent')){
 					$query = $query->agentTickets(session('panichd_filter_agent'));
@@ -727,16 +737,16 @@ class Ticket extends Model
 					}else{
 						$query = $query->userTickets(session('panichd_filter_owner'));
 					}
-				}			
+				}
 			}
-			
+
 			if ($ticketList == 'complete' and (!$filter or $filter == 'year')){
 				// Year filter
 				$query = $query->completedOnYear();
 			}
-			
+
 			return $query;
-		}		
+		}
 	}
 
     /**
@@ -767,7 +777,7 @@ class Ticket extends Model
 	{
 		return $query->where('hidden', '0');
 	}
-	
+
 	/**
 	 * Get tickets completed in selected year
 	 *
@@ -780,7 +790,7 @@ class Ticket extends Model
 	public function scopeCompletedOnYear($query, $year = false)
 	{
 		$query = $query->complete();
-		
+
 		if ($year){
 			// All years
 			if ($year == 'all') return $query;
@@ -796,12 +806,12 @@ class Ticket extends Model
 			// Current year
 			$year = date('Y');
 		}
-		
+
 		return $query->whereYear('completed_at', $year);
 	}
-	
-	
-	
+
+
+
     /**
      * Sets the agent with the lowest tickets assigned in specific category.
      *

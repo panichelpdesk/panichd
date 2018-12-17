@@ -23,8 +23,44 @@
     <div class="card-body">
         <input type="hidden" class="jquery_level2_enable input_comment_num" name="form_comments[]" value="">
         <input type="hidden" class="jquery_level2_enable input_response_type" name="response_x" value="note" disabled="disabled">
+
+        @if($setting->grab('custom_recipients'))
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label">{{ trans('panichd::lang.show-ticket-add-comment-notificate') . trans('panichd::lang.colon') }}</label>
+                <div class="col-lg-10">
+                    <select class="form-control note_recipients" name="comment_x_recipients[]" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
+                        @foreach ($c_members->filter(function($q)use($u){ return $q->id != $u->id; }) as $member)
+                            <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['note']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                            @if ($setting->grab('departments_notices_feature'))
+                                @if ($member->ticketit_department == '0')
+                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                                @elseif ($member->ticketit_department != "")
+                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                @endif
+                            @endif
+                            </option>
+                        @endforeach
+                    </select>
+                    @php \Debugbar::info($a_current) @endphp
+                    <select class="form-control reply_recipients" name="comment_x_recipients[]" class="form-control" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
+                        @foreach ($c_members->filter(function($q)use($u){ return $q->id != $u->id; }) as $member)
+                            <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['reply']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                            @if ($setting->grab('departments_notices_feature'))
+                                @if ($member->ticketit_department == '0')
+                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                                @elseif ($member->ticketit_department != "")
+                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                @endif
+                            @endif
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        @endif
+
         <textarea style="display: none" rows="5" class="form-control jquery_level2_enable input_comment_text" name="comment_x" cols="50" disabled="disabled"></textarea>
         <div class="jquery_error_text"></div>
-        <label class="mt-2" style="display: none"><input type="checkbox" class="input_comment_notification_text" name="comment_x_notification_text" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
+        <label class="mt-2" @if(!$setting->grab('custom_recipients')) style="display: none" @endif><input type="checkbox" class="input_comment_notification_text" name="comment_x_notification_text" value="yes" @if(!$setting->grab('custom_recipients')) disabled="disabled" @endif> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
     </div>
 </div>

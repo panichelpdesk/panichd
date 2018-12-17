@@ -16,7 +16,7 @@
 		@endif
 @endsection
 
-@include('panichd::tickets.partials.comments.index')
+@include('panichd::tickets.partials.comments.index', ['new_comment_modal' => true])
 
 @include('panichd::shared.photoswipe_files')
 @include('panichd::shared.jcrop_files')

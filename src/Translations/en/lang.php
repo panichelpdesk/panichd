@@ -297,12 +297,13 @@ return [
   // Comments
   'comment'                    => 'Comment',
   'note'                       => 'Internal note',
-  'comment-reply-title'        => 'Messages between owner and agents',
+  'comment-reply-title'        => 'Message visible for users',
   'comment-reply-from-owner'   => 'Reply from <b>:owner</b>',
-  'reply-from-owner-to-owner'  => 'Reply from <b>:owner1</b> to <b>:owner2</b>',
+  'reply-from-owner-to'        => 'Reply from <b>:owner</b> to <b>:recipients</b>',
 
   'comment-note-title'         => 'User hidden note',
   'comment-note-from-agent'    => 'Note from <b>:agent</b>',
+  'comment-note-from-agent-to' => 'Note from <b>:agent</b> to <b>:recipients</b>',
 
   'comment-completetx-title'   => 'Ticket complete',
   'comment-complete-by'        => 'Tancat per <b>:owner</b>',
@@ -315,6 +316,7 @@ return [
   'show-ticket-add-comment-type'           => 'Type',
   'show-ticket-add-comment-note'           => 'Internal note',
   'show-ticket-add-comment-reply'          => 'Reply to user',
+  'show-ticket-add-comment-notificate'     => 'Notificate',
   'show-ticket-add-com-check-email-text'   => 'Add text in the user notification',
   'show-ticket-add-com-check-intervention' => 'Append this text in intervention field (visible by user)',
   'show-ticket-add-com-check-resolve'      => 'Complete this ticket and apply the status',
@@ -325,8 +327,10 @@ return [
   'show-ticket-delete-comment'       => 'Delete comment',
   'show-ticket-delete-comment-msg'   => 'Are you sure you want to delete this comment?',
   'show-ticket-email-resend'         => 'Resend email',
-  'show-ticket-email-resend-user'    => 'To user: ',
-  'show-ticket-email-resend-agent'   => 'To agent: ',
+  'show-ticket-email-resend-agent'   => '(Ticket agent)',
+  'show-ticket-email-resend-owner'   => '(Ticket owner)',
+  'notification-resend-confirmation' => 'Notifications were correctly resended',
+  'notification-resend-no-recipients'=> 'No recipients were selected', 
 
   // Validations
   'validation-error'                 => 'This form has not been sent',

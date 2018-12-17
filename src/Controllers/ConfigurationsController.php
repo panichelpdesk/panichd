@@ -27,7 +27,7 @@ class ConfigurationsController extends Controller
 		'email.template', 'email.owner.newticket.template', 'email.header', 'email.signoff', 'email.signature', 'email.dashboard',
 		'email.google_plus_link', 'email.facebook_link', 'email.twitter_link', 'email.footer', 'email.footer_link',
 		'email.color_body_bg', 'email.color_header_bg', 'email.color_content_bg', 'email.color_footer_bg',
-		'email.color_button_bg', 'email.account.name', 'email.account.mailbox' ];
+		'email.color_button_bg', 'email.account.name', 'email.account.mailbox', 'custom_recipients' ];
 		$tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
             'subject_content_column', 'paginate_items', 'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
             'attachments_path', 'thumbnails_path', 'oldest_year', 'user_route', 'html_replacements', 'list_text_max_length', 'use_default_status_id', 'newest_list_reload_seconds'];
@@ -135,7 +135,7 @@ class ConfigurationsController extends Controller
       // refresh cached settings
       \Cache::forget('panichd::settings');
       \Cache::forget('panichd::settings.'.$configuration->slug);
-    
+
     return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
-  }    
+  }
 }

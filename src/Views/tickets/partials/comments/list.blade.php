@@ -6,7 +6,14 @@
 			switch ($comment->type){
 				case 'note':
 					$icon_class = "fa fa-pencil-alt text-info";
-					$comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
+                    if (!$u->canManageTicket($ticket->id) || count($comment->notifications) == 0){
+                        $comment_header = trans('panichd::lang.comment-note-from-agent', ['agent' => $comment->owner->name]);
+                    }else{
+                        $comment_header = trans('panichd::lang.comment-note-from-agent-to', [
+                            'agent' => $comment->owner->name,
+                            'recipients' => implode(', ', $comment->notifications->pluck('name')->toArray())
+                        ]);
+                    }
 					break;
 				case 'complete': // Simple complete box
 				case 'completetx': // Complete with comment text
@@ -33,12 +40,12 @@
 					}else{
 						$icon_class .= "text-warning";
 					}
-					if ($ticket->owner->id == $comment->owner->id){
+					if (!$u->canManageTicket($ticket->id) || count($comment->notifications) == 0){
 						$comment_header = trans('panichd::lang.comment-reply-from-owner', ['owner' => $comment->owner->name]);
 					}else{
-						$comment_header = trans('panichd::lang.reply-from-owner-to-owner', [
-							'owner1' => $comment->owner->name,
-							'owner2' => $ticket->owner->name
+                        $comment_header = trans('panichd::lang.reply-from-owner-to', [
+							'owner' => $comment->owner->name,
+							'recipients' => implode(', ', $comment->notifications->pluck('name')->toArray())
 						]);
 					}
 					break;
@@ -77,9 +84,6 @@
             <div class="card-body">
                 <div class="row">
                     <div class="{{ $setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0 ? 'col-sm-7' : 'col-sm-12' }}"><div id="jquery_comment_edit_{{$comment->id}}" class="summernote-text-wrapper"> {!! $comment->html !!} </div>
-					@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
-						@include('panichd::tickets.partials.comments.modal_edit')
-					@endif
 					</div>
 					@if($setting->grab('ticket_attachments_feature') && $comment->attachments->count() > 0)
 						<div class="col-sm-5 attached_list">
@@ -91,9 +95,11 @@
                 </div>
 				@if ($u->currentLevel() > 1 && $u->canManageTicket($ticket->id))
 					@if ($comment->type=='note')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
+                        @include('panichd::tickets.partials.comments.modal_edit')
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#comment-modal-edit-{{$comment->id}}">{{ trans('panichd::lang.btn-edit') }}</button>
 					@elseif($comment->type=='reply')
-						<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal" data-id="{{$comment->id}}" data-owner="{{$ticket->user->name}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
+                        @include('panichd::tickets.partials.comments.modal_resend_emails')
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#email-resend-modal-{{$comment->id}}">{{ trans('panichd::lang.show-ticket-email-resend') }}</button>
 					@endif
 
 				@endif
@@ -114,6 +120,5 @@
 		])
 	!!}
 	{!! CollectiveForm::close() !!}
-	@include('panichd::tickets.partials.comments.modal_resend_emails')
 	@include('panichd::tickets.partials.comments.modal_delete')
 @endif

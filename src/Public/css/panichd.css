@@ -151,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
  * General Select2 styles
 */
 #panichd_content .select2-selection {
-	height: 34px !important;
+	min-height: 34px !important;
 	border-color: #ccc !important;
 }
 

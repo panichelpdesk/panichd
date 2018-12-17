@@ -250,19 +250,22 @@ class Member extends User
 	/**
      * Check if user can make a comment on a ticket.
      *
-     * @param int $id ticket id
+     * @param $ticket instance of PanicHD\PanicHD\Models\Ticket
      *
      * @return bool
      */
-	public static function canCommentTicket($id)
+	public static function canCommentTicket($ticket)
 	{
 		if (!auth()->check()) return false;
 
-		if (\PanicHDMember::canManageTicket($id)){
-			return true;
-		}else{
-			return \PanicHDMember::isTicketOwner($id);
+		if (\PanicHDMember::canManageTicket($ticket->id)
+            or \PanicHDMember::isTicketOwner($ticket->id)
+            or $ticket->commentNotifications()->where('member_id', auth()->user()->id)->count() > 0){
+
+            return true;
 		}
+
+        return false;
 	}
 
 	/**

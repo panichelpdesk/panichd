@@ -1,5 +1,5 @@
 <div class="modal fade comment-modal" id="modal-comment-new" tabindex="-1" role="dialog" aria-labelledby="modal-comment-new-Label">
-    <div class="modal-dialog model-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
 			<div class="modal-header">
                 <h4 class="modal-title" id="modal-comment-new-Label">{{ trans('panichd::lang.show-ticket-add-comment') }}</h4>
@@ -23,11 +23,46 @@
 						<div id="comment-type-buttons" class="form-group row">
 							{!! CollectiveForm::label('type', trans('panichd::lang.show-ticket-add-comment-type') . trans('panichd::lang.colon'), ['class' => 'col-lg-2 col-form-label']) !!}
 							<div class="col-lg-10">
-								<button type="button" class="btn btn-light bg-info text-white btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="bg-info text-white"><span  aria-hidden="true" class="fa fa-pencil-alt"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
-								<button type="button" class="btn btn-light btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="bg-warning text-white"><span aria-hidden="true" class="fa fa-envelope"></span> {{ trans('panichd::lang.show-ticket-add-comment-reply') }}</button>
+								<button type="button" class="btn btn-light bg-info text-white btn-sm response_type" id="popup_comment_btn_note" data-type="note" data-active-class="bg-info text-white"><span  aria-hidden="true" class="fas fa-pencil-alt"></span> {{ trans('panichd::lang.show-ticket-add-comment-note') }}</button>&nbsp;
+								<button type="button" class="btn btn-light btn-sm response_type" id="popup_comment_btn_reply" data-type="reply"data-active-class="bg-info text-white"><span aria-hidden="true" class="fas fa-comment"></span> {{ trans('panichd::lang.show-ticket-add-comment-reply') }}</button>
 								{!! CollectiveForm::hidden('response_type', 'note',['id'=>'response_type'] ) !!}
 							</div>
 						</div>
+
+                        @if($setting->grab('custom_recipients'))
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label">{{ trans('panichd::lang.show-ticket-add-comment-notificate') . trans('panichd::lang.colon') }}</label>
+                                <div class="col-lg-10">
+                                    <select name="reply_recipients[]" id="reply_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
+                                        @foreach ($c_members as $member)
+                                            <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['reply']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                                            @if ($setting->grab('departments_notices_feature'))
+                                                @if ($member->ticketit_department == '0')
+                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                                                @elseif ($member->ticketit_department != "")
+                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                                @endif
+                                            @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <select name="note_recipients[]" id="note_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
+                                        @foreach ($c_members as $member)
+                                            <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['note']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                                            @if ($setting->grab('departments_notices_feature'))
+                                                @if ($member->ticketit_department == '0')
+                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                                                @elseif ($member->ticketit_department != "")
+                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                                @endif
+                                            @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
 					@endif
 					<div class="form-group row">
 						<div class="col-lg-12 summernote-text-wrapper">
@@ -51,23 +86,34 @@
 						</div>
 					@endif
 					@if ($u->currentLevel() > 1)
-						<div class="form-group row">
-							<div class="col-lg-12" style="display: none;">
-							<label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
-							</div>
+                        <div class="form-row" @if(!$setting->grab('custom_recipients')) style="display: none" @endif>
+                            <div class="form-check">
+    		                      <label><input type="checkbox" id="add_in_user_notification_text" name="add_in_user_notification_text" value="yes" @if(!$setting->grab('custom_recipients')) disabled="disabled" @endif> {{ trans('panichd::lang.show-ticket-add-com-check-email-text') }}</label>
+    						</div>
+                        </div>
 
-							@if ($u->canManageTicket($ticket->id))
-								<div class="col-lg-12" style="display: none;">
-								<label><input type="checkbox" id="add_to_intervention" name="add_to_intervention" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-intervention') }}</label>
-								</div>
-								@if ($u->canCloseTicket($ticket->id) && !$ticket->isComplete())
-									<div class="col-lg-12">
-									<label><input type="checkbox" name="complete_ticket" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-resolve') . trans('panichd::lang.colon')}}</label>
-									&nbsp;{!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), []) !!}
-									</div>
-								@endif
-						@endif
-						</div>
+                        @if ($u->canManageTicket($ticket->id))
+                            <div class="form-row" style="display: none;">
+                                <div class="form-check">
+                                    <label><input type="checkbox" id="add_to_intervention" name="add_to_intervention" value="yes" disabled> {{ trans('panichd::lang.show-ticket-add-com-check-intervention') }}</label>
+                                </div>
+                            </div>
+                        @endif
+
+
+                        @if ($u->canManageTicket($ticket->id) && $u->canCloseTicket($ticket->id) && !$ticket->isComplete())
+                            <div class="form-row align-items-center">
+                                <div class="form-check">
+                                   <label class="mb-0"><input type="checkbox" class="" name="complete_ticket" value="yes"> {{ trans('panichd::lang.show-ticket-add-com-check-resolve') . trans('panichd::lang.colon')}}</label>
+                                &nbsp;
+                                </div>
+                                <div class="form-group col-auto mb-0">
+                                    {!! CollectiveForm::select('status_id', $status_lists, $setting->grab('default_close_status_id'), [
+                                        'class' => 'form-control'
+                                    ]) !!}
+                            </div>
+                            </div>
+                        @endif
 					@endif
 
 					<div class="text-right col-md-12">

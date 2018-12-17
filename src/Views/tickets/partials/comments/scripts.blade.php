@@ -8,7 +8,11 @@ $(function(){
     });
 
     $('.comment-modal').on('shown.bs.modal', function (e) {
-        $(this).find('.modal-title').text($(e.relatedTarget).text());
+        if ($(this).prop('id') =='modal-comment-new'){
+            // Opening new comment modal
+            $(this).find('#note_recipients').select2();
+        }
+
         if ($(e.relatedTarget).data('add-comment') == 'no') $(this).find('#comment-type-buttons').hide();
 
         $(this).find("textarea.modal-summernote-editor").summernote(summernote_options);
@@ -25,11 +29,19 @@ $(function(){
         $(this).addClass($(this).attr('data-active-class'));
 
         if (type == 'reply'){
-            $('#add_in_user_notification_text, #add_to_intervention').prop('disabled', false);
-            $('#add_in_user_notification_text, #add_to_intervention').closest('div').show();
+            $(this).closest('.comment-modal').find('#note_recipients').select2('destroy');
+            $(this).closest('.comment-modal').find('#reply_recipients').select2();
+            @if(!$setting->grab('custom_recipients'))
+                $('#add_in_user_notification_text').prop('disabled', false).closest('.form-row').show();
+            @endif
+            $('#add_to_intervention').prop('disabled', false).closest('.form-row').show();
         }else{
-            $('#add_in_user_notification_text, #add_to_intervention').prop('disabled', true);
-            $('#add_in_user_notification_text, #add_to_intervention').closest('div').hide();
+            $(this).closest('.comment-modal').find('#reply_recipients').select2('destroy');
+            $(this).closest('.comment-modal').find('#note_recipients').select2();
+            @if(!$setting->grab('custom_recipients'))
+                $('#add_in_user_notification_text').prop('disabled', true).closest('.form-row').hide();
+            @endif
+            $('#add_to_intervention').prop('disabled', true).closest('.form-row').hide();
         }
 
         var alt = type == 'note' ? 'reply' : 'note';
@@ -80,10 +92,8 @@ $(function(){
 
 
     // Comment (reply) notifications resend modal
-    $( "#email-resend-modal" ).on('show.bs.modal', function (e) {
+    $( ".notification-resend-modal" ).on('show.bs.modal', function (e) {
         var button = $(e.relatedTarget);
-        $(this).find('#owner').text($(button).attr('data-owner'));
-        $(this).find('#comment_id').val($(button).attr('data-id'))
     });
 });
 </script>
