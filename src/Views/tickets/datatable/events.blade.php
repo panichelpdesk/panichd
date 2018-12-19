@@ -1,55 +1,11 @@
+<div id="page-reload-box" class="text-center" style="position: absolute; bottom: 0;">
+	<div style="display: inline-block;">Hola</div>
+</div>
+
 <script>
 $(function(){
-
-
     // Ticket List: Change ticket agent
 	$('#tickets-table').on('draw.dt', function(e){
-        @if ($ticketList == 'newest' && $setting->grab('newest_list_reload_seconds'))
-
-            var modal_countdown = ({{ $setting->grab('newest_list_reload_seconds') }} - 5)*1000;
-
-            setTimeout(function(){ $('#modal-page-reload').modal('show'); }, modal_countdown);
-            var reload_secs = 6;
-            var page_reload = "";
-
-            $('#modal-page-reload').on('show.bs.modal', function () {
-
-                $('#modal-page-reload #text_countdown').show();
-                $('#modal-page-reload #text_reloading').hide();
-
-                $('#modal-page-reload #counter').text(reload_secs-1);
-
-                // Update the count down every 1 second
-                page_reload = setInterval(function() {
-                    reload_secs = reload_secs - 1;
-
-                    // Output the result in an element with id="demo"
-                    $('#modal-page-reload #counter').text(reload_secs);
-
-                    // If the count down is over, write some text
-                    if (reload_secs == 0) {
-                        $('#modal-page-reload #text_countdown').hide();
-                        $('#modal-page-reload #text_reloading').show();
-                        clearInterval(page_reload);
-                        window.location.reload(false);
-                    }
-                }, 1000);
-            });
-
-            $('#modal-page-reload').on('hidden.bs.modal', function () {
-                clearInterval(page_reload);
-
-                setTimeout(function(){ $('#modal-page-reload').modal('show'); }, modal_countdown);
-                page_reload = "";
-                reload_secs = 6;
-            });
-
-            $('#modal-page-reload #confirm').click(function(e){
-                $('#modal-page-reload #text_countdown').hide();
-                $('#modal-page-reload #text_reloading').show();
-                window.location.reload(false);
-            });
-        @endif
 
 	    // Plus / less buttons for text fields
         $('.jquery_ticket_text_toggle').click(function(e){
