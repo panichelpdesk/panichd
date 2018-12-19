@@ -215,10 +215,8 @@ return [
   'ticket-notices-empty'             => 'There are no active notices',
 
 // Newest tickets page reload Modal
-  'page-reload-modal-title'          => 'Page reload',
-  'page-reload-modal-countdown'      => 'This page will reload in <kbd><span id="counter">:num</span></kbd> seconds.',
+  'page-reload-modal-countdown'      => 'This page will reload in <kbd class=":num_class"><span id="counter">:num</span></kbd> seconds.',
   'page-reload-modal-reloading'      => 'This page is reloading... please wait',
-  'page-reload-modal-button-now'     => 'Reload now!',
 
 // Ticket forms messages
   'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
@@ -330,7 +328,7 @@ return [
   'show-ticket-email-resend-agent'   => '(Ticket agent)',
   'show-ticket-email-resend-owner'   => '(Ticket owner)',
   'notification-resend-confirmation' => 'Notifications were correctly resended',
-  'notification-resend-no-recipients'=> 'No recipients were selected', 
+  'notification-resend-no-recipients'=> 'No recipients were selected',
 
   // Validations
   'validation-error'                 => 'This form has not been sent',
