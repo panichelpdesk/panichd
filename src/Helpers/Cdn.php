@@ -11,7 +11,7 @@ namespace PanicHD\PanicHD\Helpers;
 class Cdn
 {
     // General usage
-    const FontAwesome = '5.2.0';
+    const FontAwesome = '5.6.1';
 
     // Edition fields
     const Summernote = '0.8.10';
