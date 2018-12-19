@@ -77,7 +77,6 @@
 
             $(function(){
                 var toast_countdown = ({{ $setting->grab('newest_list_reload_seconds') }} - 3)*1000;
-                var toast_countdown = 2000;
                 var reload_secs = 4;
 
                 setTimeout(function(){ show_bottom_toast(reload_secs) }, toast_countdown);
