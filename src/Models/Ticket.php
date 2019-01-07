@@ -766,6 +766,18 @@ class Ticket extends Model
         }
     }
 
+    /**
+     * Get tickets that are hidden for users
+     *
+     * @param $query
+     *
+     * @return mixed
+     */
+	public function scopeHidden($query)
+	{
+		return $query->where('hidden', '1');
+	}
+
 	/**
      * Get tickets that are not hidden for users
      *
