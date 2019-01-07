@@ -81,7 +81,7 @@ class TicketsTest extends TestCase
     /*
      * Access a Ticket Card
     */
-    public function testTicketShow()
+    public function testTicketShowEdit()
     {
         $this->load_vars();
 
@@ -93,6 +93,8 @@ class TicketsTest extends TestCase
                 $ticket = $ticket->notHidden()->first();
                 $response = $this->actingAs($this->member)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
                 $response->assertStatus(200);
+                $response = $this->actingAs($this->member)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                $response->assertStatus(302);
 
                 // Hidden ticket without $this->member in notifications
                 $ticket = clone $this->member_tickets_builder;
@@ -105,14 +107,18 @@ class TicketsTest extends TestCase
                 if(!is_null($ticket)){
                     $response = $this->actingAs($this->member)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
                     $response->assertStatus(302);
+                    $response = $this->actingAs($this->member)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response->assertStatus(302);
                 }
             }
 
-            // Agent access
+            // Agent access to assigned ticket
             if(!is_null($this->agent)){
                 $ticket = $this->agent->agentTickets()->inRandomOrder()->first();
 
                 $response = $this->actingAs($this->agent)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                $response->assertStatus(200);
+                $response = $this->actingAs($this->agent)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
                 $response->assertStatus(200);
             }
 
@@ -127,6 +133,8 @@ class TicketsTest extends TestCase
                 if (!is_null($ticket)){
                     $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
                     $response->assertStatus(200);
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response->assertStatus(200);
                 }
 
                 // Active ticket
@@ -136,6 +144,8 @@ class TicketsTest extends TestCase
                 if (!is_null($ticket)){
                     $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
                     $response->assertStatus(200);
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response->assertStatus(200);
                 }
 
                 // Complete ticket
@@ -144,6 +154,8 @@ class TicketsTest extends TestCase
 
                 if (!is_null($ticket)){
                     $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                    $response->assertStatus(200);
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
                     $response->assertStatus(200);
                 }
             }
