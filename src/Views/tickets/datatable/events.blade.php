@@ -1,7 +1,3 @@
-<div id="page-reload-box" class="text-center" style="position: absolute; bottom: 0;">
-	<div style="display: inline-block;">Hola</div>
-</div>
-
 <script>
 $(function(){
     // Ticket List: Change ticket agent
