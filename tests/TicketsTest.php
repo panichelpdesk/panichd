@@ -1,11 +1,12 @@
 <?php
 
-namespace PanicHD\PanicHD\Tests\Feature;
+namespace PanicHD\PanicHD\Tests;
 
 use PanicHD\PanicHD\Models\Ticket;
-use PanicHD\PanicHD\Tests\TestCase;
 
-class TicketsTest extends TestCase
+include 'PanicHDTestCase.php';
+
+class TicketsTest extends PanicHDTestCase
 {
     /*
      * Check that we don't have access without auth() Member

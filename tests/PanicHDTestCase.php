@@ -5,9 +5,8 @@ namespace PanicHD\PanicHD\Tests;
 use PanicHD\PanicHD\Controllers\InstallController;
 use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
-use Tests\TestCase as Base;
 
-class TestCase extends Base
+abstract class PanicHDTestCase extends \PHPUnit_Framework_TestCase
 {
     // Package general status
     protected $status = "Not installed";
