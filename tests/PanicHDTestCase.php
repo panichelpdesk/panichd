@@ -2,13 +2,22 @@
 
 namespace PanicHD\PanicHD\Tests;
 
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\TestCase;
 use PanicHD\PanicHD\Controllers\InstallController;
 use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 
-abstract class PanicHDTestCase extends \PHPUnit_Framework_TestCase
+abstract class PanicHDTestCase extends TestCase
 {
-    // Package general status
+    /**
+     * The base URL to use while testing the application.
+     *
+     * @var string
+     */
+    protected $baseUrl = 'http://localhost';
+	
+	// Package general status
     protected $status = "Not installed";
 
     // Main route
@@ -19,6 +28,21 @@ abstract class PanicHDTestCase extends \PHPUnit_Framework_TestCase
 
     // Eloquent reusable builder for Member Tickets
     protected $member_tickets_builder;
+	
+	/**
+     * Creates the application.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+    public function createApplication()
+    {
+        $laravel_root = __DIR__ . '/../../../../';
+		$app = require $laravel_root . 'bootstrap/app.php';
+
+        $app->make(Kernel::class)->bootstrap();
+
+        return $app;
+    }
 
     /*
      * Load a basic vars set for package tests
