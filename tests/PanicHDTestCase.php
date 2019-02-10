@@ -17,6 +17,9 @@ abstract class PanicHDTestCase extends TestCase
      */
     protected $baseUrl = 'http://localhost';
 	
+	// Cover different test methods for different Laravel Versions
+	protected $laravel_version = null;
+	
 	// Package general status
     protected $status = "Not installed";
 
@@ -85,7 +88,37 @@ abstract class PanicHDTestCase extends TestCase
                 $this->admin = Member::inRandomOrder()->admins()->first();
             }
         }
+		
+		if (is_null($this->laravel_version)){
+			$laravel = app();
+
+			$this->laravel_version = $laravel::VERSION;
+		}
     }
+	
+	/*
+	 * Execute different assertRedirect deppending on Laravel version
+	*/
+	public function versionAssertRedirect($response, $url)
+	{
+		if (version_compare($this->laravel_version, '5.4', '<')){
+			$response->assertRedirectedTo($url);
+		}else{
+			$response->assertRedirect($url);
+		}
+	}
+	
+	/*
+	 * Execute different assertStatus deppending on Laravel version
+	*/
+	public function versionAssertStatus($response, $status)
+	{
+		if (version_compare($this->laravel_version, '5.4', '<')){
+			$response->assertResponseStatus($status);
+		}else{
+			$response->assertStatus($status);
+		}
+	}
 }
 
 ?>
