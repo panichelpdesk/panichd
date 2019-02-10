@@ -22,7 +22,7 @@ class InstallController extends Controller
 
     public function __construct()
     {
-        $migrations = \File::files(dirname(dirname(__FILE__)).'/Migrations');
+        $migrations = File::files(dirname(dirname(__FILE__)).'/Migrations');
         foreach ($migrations as $migration) {
             $this->migrations_tables[] = basename($migration, '.php');
         }
