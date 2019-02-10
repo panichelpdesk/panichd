@@ -69,21 +69,25 @@ abstract class PanicHDTestCase extends TestCase
         }
 
         if (is_null($this->member)){
+			// TODO: Generate fake user
             if (Member::users()->count() > 0){
                 $this->member = Member::whereHas('tickets', function($query){ $query->notHidden(); })->inRandomOrder()->users()->first();
                 if (!is_null($this->member)){
-                    $this->member_tickets_builder = $this->member->tickets()->inRandomOrder();
+                    // TODO: Generate fake tickets
+					$this->member_tickets_builder = $this->member->tickets()->inRandomOrder();
                 }
             }
         }
 
         if (is_null($this->agent)){
-            if (Member::agents()->count() > 0){
+            // TODO: Generate fake agent
+			if (Member::agents()->count() > 0){
                 $this->agent = Member::whereHas('agentTickets')->inRandomOrder()->agents()->first();
             }
         }
 
         if (is_null($this->admin)){
+			// TODO: Generate fake admin
             if (Member::admins()->count() > 0){
                 $this->admin = Member::inRandomOrder()->admins()->first();
             }
