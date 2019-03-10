@@ -138,7 +138,7 @@ class TicketsController extends Controller
 				$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
 			}
 		}else{
-			$a_select[] = '"" as dep_ancestor_name';
+			$a_select[] = \DB::raw('"" as dep_ancestor_name');
 		}
 
 		$currentLevel = $agent->currentLevel();

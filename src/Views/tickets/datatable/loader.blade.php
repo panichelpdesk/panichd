@@ -7,7 +7,7 @@
 		responsive: true,
 		pageLength: {{ $setting->grab('paginate_items') }},
 		lengthMenu: {{ json_encode($setting->grab('length_menu')) }},
-		ajax: '{!! route($setting->grab('main_route').'.data', $ticketList) !!}',
+		ajax: { url: '{!! route($setting->grab('main_route').'.data', $ticketList) !!}', type: 'GET' },
 		language: {
 			decimal:        "{{ trans('panichd::lang.table-decimal') }}",
 			emptyTable:     "{{ trans('panichd::lang.table-empty') }}",
