@@ -86,7 +86,7 @@ trait TicketRoutes
      */
     public function getRouteCategory($request)
     {
-		if ($request->has('category_id')){
+		if ($request->input('category_id') != ""){
 			$category_id = $request->category_id;
 		}else{
 			if ($this->route_ticket){

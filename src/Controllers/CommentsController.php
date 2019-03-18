@@ -132,7 +132,7 @@ class CommentsController extends Controller
 			// Filter response type
 			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 
-			if ($request->has('complete_ticket') and $member->canCloseTicket($request->get('ticket_id'))){
+			if ($request->input('complete_ticket') != "" and $member->canCloseTicket($request->get('ticket_id'))){
 				if ($comment->type == 'reply' and $ticket->user_id == $member->id){
 					// comment for assigned agent only
 					$comment->type = 'completetx';
@@ -145,7 +145,7 @@ class CommentsController extends Controller
 			$comment->type = 'reply';
 
 		// Close ticket + new status
-		if ($member->canCloseTicket($request->get('ticket_id')) and $request->has('complete_ticket')){
+		if ($member->canCloseTicket($request->get('ticket_id')) and $request->input('complete_ticket') != ""){
 			$ticket->completed_at = Carbon::now();
 			$ticket->status_id = Status::where('id',$request->get('status_id'))->count()==1 ? $request->get('status_id') : Setting::grab('default_close_status_id');
 		}
@@ -173,7 +173,7 @@ class CommentsController extends Controller
 		// Update parent ticket
         $ticket->updated_at = $comment->created_at;
 
-		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->has('add_to_intervention')){
+		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->input('add_to_intervention') != ""){
 			$ticket->intervention = $ticket->intervention.$comment->content;
 			$ticket->intervention_html = $ticket->intervention_html.$comment->html;
 		}
@@ -268,7 +268,7 @@ class CommentsController extends Controller
 
 			if (!$a_result_errors){
 				// 3 - destroy checked attachments
-				if ($request->has('delete_files')){
+				if ($request->input('delete_files') != ""){
 					$destroy_error = $this->destroyAttachmentIds($request->delete_files);
 
 					if ($destroy_error) $a_result_errors['messages'][] = $destroy_error;

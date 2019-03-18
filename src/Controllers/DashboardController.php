@@ -59,11 +59,11 @@ class DashboardController extends Controller
         $ticketController = new TicketsController(new Ticket(), new \PanicHDMember());
         $monthly_performance = $ticketController->monthlyPerfomance($indicator_period);
 
-        if (request()->has('cat_page')) {
+        if (request()->input('cat_page') != "") {
             $active_tab = 'cat';
-        } elseif (request()->has('agents_page')) {
+        } elseif (request()->input('agents_page') != "") {
             $active_tab = 'agents';
-        } elseif (request()->has('users_page')) {
+        } elseif (request()->input('users_page') != "") {
             $active_tab = 'users';
         } else {
             $active_tab = 'cat';

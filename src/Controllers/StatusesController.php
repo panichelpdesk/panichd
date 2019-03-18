@@ -119,7 +119,7 @@ class StatusesController extends Controller
         $status = Status::findOrFail($id);
         $name = $status->name;
 
-		if ($request->has('tickets_new_status_id')){
+		if ($request->input('tickets_new_status_id') != ""){
 			$this->validate($request, [
 				'tickets_new_status_id' => 'required|exists:panichd_statuses,id',
 			]);

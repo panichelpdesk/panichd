@@ -194,7 +194,7 @@ class NotificationsController extends Controller
                 }
 
                 if (count($a_recipients) > 0){
-                    if ($request->has('add_in_user_notification_text') or (isset($comment->add_in_user_notification_text))){
+                    if ($request->input('add_in_user_notification_text') != "" or (isset($comment->add_in_user_notification_text))){
                         // Element in request comes from Comment modal
                         // $comment property comes from an embedded comment when editing or creating a ticket
                         $data['add_in_user_notification_text'] = true;
@@ -281,7 +281,7 @@ class NotificationsController extends Controller
 			'notification_type' => $comment->type
 		];
 
-        if ($request->has('recipients')){
+        if ($request->input('recipients') != ""){
 
             foreach($request->recipients as $recipient_key){
                 // Search by member_id or by email address
