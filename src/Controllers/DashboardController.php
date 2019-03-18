@@ -71,7 +71,6 @@ class DashboardController extends Controller
 
         return view('panichd::admin.index',
             compact(
-                'open_tickets_count',
                 'tickets_count',
                 'a_tickets_count',
                 'categories',
