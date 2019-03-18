@@ -18,7 +18,7 @@ class StatusesController extends Controller
     public function index()
     {
         $statuses = Status::withCount('tickets')->get();
-		
+
 		if (LaravelVersion::min('5.3.0')) {
             $statuses_list = $statuses->pluck('name', 'id')->toArray();
         } else {
@@ -118,7 +118,7 @@ class StatusesController extends Controller
     {
         $status = Status::findOrFail($id);
         $name = $status->name;
-		
+
 		if ($request->has('tickets_new_status_id')){
 			$this->validate($request, [
 				'tickets_new_status_id' => 'required|exists:panichd_statuses,id',
@@ -128,7 +128,7 @@ class StatusesController extends Controller
 			if ($status->tickets()->count() > 0){
 				return back()->with('warning', trans('panichd::admin.status-delete-error-no-status', ['name' => $name]));
 			}
-			
+
 			$status->delete();
 		}
 

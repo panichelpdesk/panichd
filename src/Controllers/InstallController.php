@@ -37,7 +37,7 @@ class InstallController extends Controller
 		if (session()->has('current_status')){
 			// Clear stored settings
 			Artisan::call('cache:clear');
-			
+
 			// Load maintenance result page
 			switch (session('current_status')){
 				case 'installed':
@@ -60,23 +60,23 @@ class InstallController extends Controller
 					'description' => trans('panichd::install.ticketit-still-installed', ['link' => 'https://github.com/panichelpdesk/panichd/tree/dev-package#if-kordyticketit-is-installed']),
 					'button' => 'hidden'
 				]);
-				
+
 			}
-			
+
 			$inactive_migrations = $this->inactiveMigrations();
-			
+
 			if (!$this->isInstalled()) {
 				\Cache::forever('panichd::installation', 'install');
-				
+
 				// Panic Help Desk is not installed yet
-				
+
 				$previous_ticketit = Schema::hasTable('ticketit_settings');
-				
+
 				$quickstart = true;
 				if ($previous_ticketit and (\DB::table('ticketit_statuses')->count() > 0 or \DB::table('ticketit_priorities')->count() > 0 or \DB::table('ticketit_categories')->count() > 0)){
 					$quickstart = false;
 				}
-				
+
 				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit', 'quickstart'));
 			}elseif(!$this->isUpdated()){
 				// Panic Help Desk requires an upgrade
@@ -98,7 +98,7 @@ class InstallController extends Controller
 			}
 		}
     }
-	
+
 	/**
 	 * Displays the upgrade menu although there isn't any pending action
 	*/
@@ -107,14 +107,14 @@ class InstallController extends Controller
 		if (!$this->isInstalled() or !\PanicHDMember::isAdmin()){
 			return redirect()->route('panichd.install.setup');
 		}
-		
+
 		return view('panichd::install.upgrade', [
 			'inactive_migrations' => $this->inactiveMigrations(),
 			'inactive_settings' => $this->inactiveSettings(),
 			'isUpdated' => $this->isUpdated()
 		]);
 	}
-	
+
 	/**
 	 * Check if PanicHD is installed
 	 *
@@ -124,12 +124,12 @@ class InstallController extends Controller
 	{
 		// Not installed if we're in installation process
 		if (\Cache::has('panichd::installation')) return false;
-		
+
 		// Not installed if no PanicHD migrations installed or choosen one is missing
 		return (count($this->migrations_tables) == count($this->inactiveMigrations())
             || in_array('2017_12_25_222719_update_panichd_priorities_add_magnitude', $this->inactiveMigrations()) ) ? false : true;
 	}
-	
+
 	/**
 	 * Check if PanicHD is up to date
 	 *
@@ -145,61 +145,61 @@ class InstallController extends Controller
      */
 
     public function setup(Request $request)
-    {	
+    {
 		$previous_ticketit = Schema::hasTable('ticketit_settings');
-		
+
 		// Install migrations and Settings
 		$this->initialSettings();
-		
+
 		// If this is an upgrade from Kordy\Ticketit
 		if ($previous_ticketit){
 			Artisan::call('db:seed', [
 				'--class' => 'PanicHD\\PanicHD\\Seeds\\SettingsPatch',
 			]);
 		}
-		
+
 		// Make attachments directory
 		$att_dir = storage_path(Setting::grab('attachments_path'));
 		if (!File::exists($att_dir)) File::makeDirectory($att_dir, 0775);
-		
+
 		// Make storage link for thumbnail public access
 		Artisan::call('storage:link');
-		
+
 		// Make thumbnails directory
 		$thb_dir = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.Setting::grab('thumbnails_path'));
 		if (!File::exists($thb_dir)) File::makeDirectory($thb_dir, 0775);
-		
+
 		// Publish asset files
 		Artisan::call('vendor:publish', [
 			'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
 			'--tag'      => ['panichd-public'],
 		]);
-		
+
 		// Add current user to panichd_admin
 		$admin_user = \PanicHDMember::find(auth()->user()->id);
         $admin_user->panichd_admin = true;
-		
+
 		if ($request->has('quickstart')){
 			// Insert quickstart seed data
 			Artisan::call('db:seed', [
 				'--class' => 'PanicHD\\PanicHD\\Seeds\\Basic',
 			]);
-			
+
 			// Add current user as an agent in the last added category
 			$admin_user->panichd_agent = true;
-			
+
 			// App\User doesn't have categories()
 			$admin_member = \PanicHDMember::find(auth()->user()->id);
 			$admin_member->categories()->sync([Category::first()->id]);
 		}
-		
+
 		$admin_user->save();
-		
+
 		\Cache::forget('panichd::installation');
-		
+
         return redirect()->route('panichd.install.index')->with('current_status', 'installed');
     }
-	
+
 	/*
      * Upgrade setup
      */
@@ -208,9 +208,9 @@ class InstallController extends Controller
 		if ( \PanicHDMember::isAdmin()){
 			// Migrations and Settings
 			$this->initialSettings();
-			
+
 			$path = public_path().DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'panichd';
-			
+
 			if($request->input('folder-action')=='backup'){
 				// Backup assets
 				File::move($path, $path.'_backup_'.date('Y-m-d_H_i', time()));
@@ -218,14 +218,14 @@ class InstallController extends Controller
 				// Delete published assets
 				File::deleteDirectory($path);
 			}
-			
+
 			// Publish asset files
 			Artisan::call('vendor:publish', [
 				'--provider' => 'PanicHD\\PanicHD\\PanicHDServiceProvider',
 				'--tag'      => ['panichd-public'],
 				'--force'    => true
 			]);
-			
+
 			return redirect()->route('panichd.install.index')->with('current_status', 'upgraded');
 		}else{
 			return redirect()->route('panichd.install.index');
@@ -340,11 +340,11 @@ class InstallController extends Controller
         $seeder_settings = $seeder->getDefaults();
 
 		$inactive_settings = array_diff_key($seeder_settings, $installed_settings);
-		
+
         if (!$inactive_settings) {
             return false;
         }
-        
+
         return $inactive_settings;
     }
 
