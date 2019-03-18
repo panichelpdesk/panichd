@@ -376,7 +376,7 @@ trait Attachments
 
 			// New filename
 			$field = 'attachment_'.$att->id.'_new_filename';
-			if ($request->has($field)){
+			if ($request->input($field) != ""){
 				$a_fields['new_filename'] = [
 					'name' => $field,
 					'value' => $request->input($field)
@@ -385,7 +385,7 @@ trait Attachments
 
 			// Description
 			$field = 'attachment_'.$att->id.'_description';
-			if ($request->has($field)){
+			if ($request->input($field) != ""){
 				$a_fields['description'] = [
 					'name' => $field,
 					'value' => $request->input($field)
@@ -394,7 +394,7 @@ trait Attachments
 
 			// Image cropping
 			$field = 'attachment_'.$att->id.'_image_crop';
-			if ($request->has($field)){
+			if ($request->input($field) != ""){
 				$a_fields['image_crop'] = $request->input($field);
 				$original_filename = basename($att->file_path);
 			}

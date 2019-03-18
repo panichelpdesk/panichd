@@ -137,7 +137,7 @@ class PrioritiesController extends Controller
 	public function reorder(Request $request)
 	{
 		$result = "error";
-		if ($request->has('priorities')){
+		if ($request->input('priorities') != ""){
 
 			$a_priorities = $a_priorities = explode(',', $request->priorities);
 			if (Priority::whereNotIn('id', $a_priorities)->count() == 0
@@ -170,7 +170,7 @@ class PrioritiesController extends Controller
         $priority = Priority::findOrFail($id);
         $name = $priority->name;
 
-		if ($request->has('tickets_new_priority_id')){
+		if ($request->input('tickets_new_priority_id') != ""){
 			$this->validate($request, [
 				'tickets_new_priority_id' => 'required|exists:panichd_priorities,id',
 			]);

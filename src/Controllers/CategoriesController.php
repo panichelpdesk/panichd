@@ -175,12 +175,13 @@ class CategoriesController extends Controller
 		$regex_text = trans('panichd::lang.regex-text-inline');
 
 		$min_chars = "5";
-		
+
 		if ($request->exists('reason_ordering')){
 			foreach ($request->input('reason_ordering') as $ordering=>$i){
-				if ($request->has('jquery_delete_reason_'.$i)){
+				if ($request->input('jquery_delete_reason_'.$i) != ""){
 					$a_delete[] = $request->input('jquery_reason_id_'.$i);
-				}elseif($request->has('jquery_reason_id_'.$i)) {
+
+                }elseif($request->input('jquery_reason_id_'.$i) != "") {
 
 					$reason = [
 						'ordering'=>$ordering
@@ -244,9 +245,9 @@ class CategoriesController extends Controller
 
         $a_tags_update = [];
         for ($i = 0; $i < $request->input('tags_count'); $i++) {
-            if (!$request->has('jquery_delete_tag_'.$i)) {
+            if (!$request->input('jquery_delete_tag_'.$i) != "") {
                 // Add validation for renamed tags
-                if ($request->exists('jquery_tag_name_'.$i) and $request->has('jquery_tag_id_'.$i)) {
+                if ($request->exists('jquery_tag_name_'.$i) and $request->input('jquery_tag_id_'.$i) != "") {
                     $tag = $request->input('jquery_tag_name_'.$i);
                     $request->merge(['jquery_tag_name_'.$i=>$tag]);
                     $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $tag;
@@ -256,7 +257,7 @@ class CategoriesController extends Controller
                 }
 
                 // Add colors for tag update
-                if ($request->has('jquery_tag_color_'.$i)) {
+                if ($request->input('jquery_tag_color_'.$i) != "") {
                     $a_tags_update[$request->input('jquery_tag_id_'.$i)]['color'] = $request->input('jquery_tag_color_'.$i);
                 }
             }
@@ -293,7 +294,7 @@ class CategoriesController extends Controller
 	*/
 	protected function category_email_fields($request, $category)
 	{
-		if ($request->email_scope != 'default' and $request->has('email_name') and $request->has('email')){
+		if ($request->email_scope != 'default' and $request->input('email_name') != "" and $request->input('email') != ""){
 			$category->email_name = $request->email_name;
 			$category->email = $request->email;
 
@@ -384,7 +385,7 @@ class CategoriesController extends Controller
         // Detach checked tags to delete
         $a_detach = $a_rename = [];
         for ($i = 0; $i < $request->input('tags_count'); $i++) {
-            if ($request->has('jquery_delete_tag_'.$i)) {
+            if ($request->input('jquery_delete_tag_'.$i) != "") {
                 // Exclude for sync
                 $a_detach[] = $request->input('jquery_delete_tag_'.$i);
             }

@@ -901,7 +901,7 @@ class TicketsController extends Controller
 
 			$fields['priority_id'] = 'required|exists:panichd_priorities,id';
 
-			if ($request->has('start_date')){
+			if ($request->input('start_date') != ""){
 				\Datetime::createFromFormat(trans('panichd::lang.datetime-format'), $request->input('start_date'));
 				$errors = \DateTime::getLastErrors();
 				if (isset($errors['warnings']) and isset($errors['errors']) and ($errors['warnings'] or $errors['errors'])){
@@ -926,7 +926,7 @@ class TicketsController extends Controller
 				}
 			}
 
-			if ($request->has('limit_date')){
+			if ($request->input('limit_date') != ""){
 				\Datetime::createFromFormat(trans('panichd::lang.datetime-format'), $request->input('limit_date'));
 				$errors = \DateTime::getLastErrors();
 
@@ -1004,7 +1004,7 @@ class TicketsController extends Controller
 
 
 		// Date diff validation
-		if ($request->has('start_date') and isset($start_date) and $request->has('limit_date') and isset($limit_date)
+		if ($request->input('start_date') != "" and isset($start_date) and $request->input('limit_date') != "" and isset($limit_date)
 			and (!$a_result_errors or ($a_result_errors and !isset($a_result_errors['fields']['limit_date'])))){
 
 			if ($start_date->diffInSeconds($limit_date, false) < 0){
@@ -1139,7 +1139,7 @@ class TicketsController extends Controller
     {
         $a_new_comments = [];
 
-        if ($request->has('form_comments')){
+        if ($request->input('form_comments') != ""){
             $custom_messages = [
                 'content.required' => trans('panichd::lang.validate-comment-required'),
                 'content.min' => trans('panichd::lang.validate-comment-min'),
@@ -1147,7 +1147,7 @@ class TicketsController extends Controller
 
             foreach($request->form_comments as $i){
 
-                if (!$request->has('response_' . $i)) continue;
+                if (!$request->input('response_' . $i) != "") continue;
 
                 $response_type = in_array($request->{'response_' . $i}, ['note','reply']) ? $request->{'response_' . $i} : 'note';
 
@@ -1168,10 +1168,10 @@ class TicketsController extends Controller
             		$comment->save();
 
                     // Comment recipients
-                    if($request->has('comment_' . $i . '_recipients')) $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
+                    if($request->input('comment_' . $i . '_recipients') != "") $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
 
                     // Adds this as a $comment property to check it in NotificationsController
-                    if($request->has('comment_' . $i . '_notification_text')) $comment->add_in_user_notification_text =  'yes';
+                    if($request->input('comment_' . $i . '_notification_text') != "") $comment->add_in_user_notification_text =  'yes';
 
                     $a_new_comments[] = $comment;
                 }
@@ -1446,7 +1446,7 @@ class TicketsController extends Controller
 
 			if (!$a_result_errors){
 				// 3 - destroy checked attachments
-				if ($request->has('delete_files')){
+				if ($request->input('delete_files') != ""){
 					$destroy_error = $this->destroyAttachmentIds($request->delete_files);
 
 					if ($destroy_error) $a_result_errors['messages'][] = $destroy_error;
@@ -1766,12 +1766,12 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-    if ($request->has('agent_id')){
+    if ($request->input('agent_id') != ""){
       $new_agent = \PanicHDMember::find($request->input('agent_id'));
     }else
       $new_agent = clone $old_agent;
 
-		if (!$request->has('status_checkbox') and (is_null($new_agent) || $ticket->agent_id == $request->input('agent_id'))){
+		if (!$request->input('status_checkbox') != "" and (is_null($new_agent) || $ticket->agent_id == $request->input('agent_id'))){
 			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
@@ -1782,7 +1782,7 @@ class TicketsController extends Controller
 		$ticket->agent_id =  $new_agent->id;
 
 		$old_status_id = $ticket->status_id;
-		if ($request->has('status_checkbox') || !Setting::grab('use_default_status_id')){
+		if ($request->input('status_checkbox') != "" || !Setting::grab('use_default_status_id')){
 			$ticket->status_id = Setting::grab('default_reopen_status_id');
 		}
 		$ticket->save();

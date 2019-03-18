@@ -179,7 +179,7 @@ class InstallController extends Controller
 		$admin_user = \PanicHDMember::find(auth()->user()->id);
         $admin_user->panichd_admin = true;
 
-		if ($request->has('quickstart')){
+		if ($request->input('quickstart') != ""){
 			// Insert quickstart seed data
 			Artisan::call('db:seed', [
 				'--class' => 'PanicHD\\PanicHD\\Seeds\\Basic',
