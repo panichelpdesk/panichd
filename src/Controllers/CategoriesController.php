@@ -33,7 +33,7 @@ class CategoriesController extends Controller
     public function create()
     {
         $status_lists = $this->Statuses();
-		
+
 		return view('panichd::admin.category.create', compact('status_lists'));
     }
 
@@ -47,23 +47,23 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         list($request, $reason_rules, $reason_messages, $a_reasons) = $this->add_reasons_to($request);
-		
+
 		list($request, $tag_rules, $tag_messages, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
-		
-		// Do Laravel validation	
+
+		// Do Laravel validation
 		$this->do_validate($request, array_merge($reason_rules, $tag_rules), array_merge($reason_messages, $tag_messages));
 
         $category = new Category();
-        
+
 		$category->name = $request->name;
-		$category->color = $request->color;		
-		$category = $this->category_email_fields($request, $category);		
+		$category->color = $request->color;
+		$category = $this->category_email_fields($request, $category);
 		$category->create_level = $request->create_level;
-		
+
 		$category->save();
 
 		$this->sync_reasons($request, $category, $a_reasons);
-		
+
         $this->sync_category_tags($request, $category, $a_tags_new, $a_tags_update);
 
         Session::flash('status', trans('panichd::lang.category-name-has-been-created', ['name' => $request->name]));
@@ -99,12 +99,12 @@ class CategoriesController extends Controller
 				$q->withCount('tickets');
 			}
 		])->with('closingReasons.status')->findOrFail($id);
-		
+
 		$status_lists = $this->Statuses();
 
         return view('panichd::admin.category.edit', compact('category', 'status_lists'));
     }
-	
+
 	 /**
      * Returns statuses list
      * Decouple it with list()
@@ -134,25 +134,25 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
-    {		
+    {
 		list($request, $reason_rules, $reason_messages, $a_reasons) = $this->add_reasons_to($request);
-		
+
 		list($request, $tag_rules, $tag_messages, $a_tags_new, $a_tags_update) = $this->add_tags_to($request);
-		
+
 		// Do Laravel validation
 		$this->do_validate($request, array_merge($reason_rules, $tag_rules), array_merge($reason_messages, $tag_messages));
-		
-        $category = Category::findOrFail($id);		
+
+        $category = Category::findOrFail($id);
 
         $category->name = $request->name;
 		$category->color = $request->color;
-		$category = $this->category_email_fields($request, $category);		
+		$category = $this->category_email_fields($request, $category);
 		$category->create_level = $request->create_level;
-		
+
 		$category->save();
 
 		$this->sync_reasons($request, $category, $a_reasons);
-		
+
         $this->sync_category_tags($request, $category, $a_tags_new, $a_tags_update);
 
         Session::flash('status', trans('panichd::lang.category-name-has-been-modified', ['name' => $request->name]));
@@ -170,18 +170,18 @@ class CategoriesController extends Controller
      * Return Array
      */
     protected function add_reasons_to($request)
-    {        
+    {
         $reason_rules = $reason_messages = $a_new = $a_update = $a_delete = [];
 		$regex_text = trans('panichd::lang.regex-text-inline');
-		
+
 		$min_chars = "5";
 		
-		if ($request->exists('reason_ordering')){			
+		if ($request->exists('reason_ordering')){
 			foreach ($request->input('reason_ordering') as $ordering=>$i){
 				if ($request->has('jquery_delete_reason_'.$i)){
 					$a_delete[] = $request->input('jquery_reason_id_'.$i);
 				}elseif($request->has('jquery_reason_id_'.$i)) {
-                
+
 					$reason = [
 						'ordering'=>$ordering
 					];
@@ -190,7 +190,7 @@ class CategoriesController extends Controller
 						$reason_rules['jquery_reason_text_'.$i] = "required|min:$min_chars|regex:".$regex_text;
 
 						// Reason message
-						$reason_messages['jquery_reason_text_'.$i.'.required'] = trans('panichd::admin.category-reason-is-empty', ['number' => $i+1]);					
+						$reason_messages['jquery_reason_text_'.$i.'.required'] = trans('panichd::admin.category-reason-is-empty', ['number' => $i+1]);
 						$reason_messages['jquery_reason_text_'.$i.'.min'] = trans('panichd::admin.category-reason-too-short', ['number' => $i+1, 'name'=>$reason['text'], 'min' => $min_chars]);
 					}
 
@@ -200,22 +200,22 @@ class CategoriesController extends Controller
 
 						// Reason message
 						$reason_messages['jquery_reason_status_id_'.$i.'.required'] = trans('panichd::admin.category-reason-no-status', ['number' => $i+1,'name'=>$reason['text']]);
-					}				
-					
+					}
+
 					if ($request->input('jquery_reason_id_'.$i) == "new"){
-						$a_new[] = $reason;					
+						$a_new[] = $reason;
 					}else{
 						$a_update[$request->input('jquery_reason_id_'.$i)] = $reason;
 					}
 				}
 			}
 		}
-		
+
 		$a_reasons = ['new'=>$a_new, 'update'=>$a_update, 'delete'=>$a_delete];
-		
+
         return [$request, $reason_rules, $reason_messages, $a_reasons];
     }
-	
+
     /**
      * Adds tag fields to $request
      *
@@ -224,9 +224,9 @@ class CategoriesController extends Controller
      * Return Array
      */
     protected function add_tags_to($request)
-    {        
+    {
         $tag_rules = $tag_messages = [];
-		
+
 		// Allow alphanumeric and the following: ? @ / - _
         $tag_rule = "required|regex:/^[A-Za-z0-9?@\/\-_\s]+$/";
 
@@ -260,11 +260,11 @@ class CategoriesController extends Controller
                     $a_tags_update[$request->input('jquery_tag_id_'.$i)]['color'] = $request->input('jquery_tag_color_'.$i);
                 }
             }
-        }        
+        }
 
         return [$request, $tag_rules, $tag_messages, $a_tags_new, $a_tags_update];
     }
-	
+
 	/**
      * Does the request validation.
      *
@@ -284,10 +284,10 @@ class CategoriesController extends Controller
 				'email'        => 'required|email',
 			]);
 		}
-		
+
 		$this->validate($request, $rules, $reason_messages);
 	}
-	
+
 	/*
 	 * Returns category instance with email fields updated in object
 	*/
@@ -296,7 +296,7 @@ class CategoriesController extends Controller
 		if ($request->email_scope != 'default' and $request->has('email_name') and $request->has('email')){
 			$category->email_name = $request->email_name;
 			$category->email = $request->email;
-			
+
 			if ($request->email_replies == 1){
 				$category->email_replies = 1;
 			}else{
@@ -307,7 +307,7 @@ class CategoriesController extends Controller
 			$category->email = null;
 			$category->email_replies = 0;
 		}
-		
+
 		return $category;
 	}
 
@@ -319,7 +319,7 @@ class CategoriesController extends Controller
      * @param $category instance of PanicHD\PanicHD\Models\Category
      */
     protected function sync_reasons($request, $category, $a_reasons)
-    {        
+    {
 		// Add new reasons
 		foreach ($a_reasons['new'] as $fields) {
 			$new = new Models\Closingreason;
@@ -327,9 +327,9 @@ class CategoriesController extends Controller
 			$new->status_id = $fields['status_id'];
 			$new->category_id = $category->id;
 			$new->ordering = $fields['ordering'];
-			$new->save();		
+			$new->save();
 		}
-		
+
 		// Update reasons
         foreach ($a_reasons['update'] as $id=>$fields) {
             $reason = Models\Closingreason::where('id', $id)->first();
@@ -346,14 +346,14 @@ class CategoriesController extends Controller
 				$reason->ordering=$fields['ordering'];
 				$update = true;
 			}
-			
+
 			if ($update) $reason->save();
         }
-		
+
 		// Delete marked reasons
 		if ($a_reasons['delete']) Models\Closingreason::destroy($a_reasons['delete']);
     }
-	
+
     /**
      * Syncs tags for category instance.
      *
