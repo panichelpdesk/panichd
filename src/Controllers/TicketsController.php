@@ -850,7 +850,7 @@ class TicketsController extends Controller
 			$a_tags_selected = [];
 		}
 
-		return compact('menu', 'c_members', 'priorities', 'status_lists', 'categories', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
+		return compact('menu', 'c_members', 'priorities', 'status_lists', 'agent_lists', 'a_current', 'permission_level', 'tag_lists', 'a_tags_selected');
 	}
 
 	/**
