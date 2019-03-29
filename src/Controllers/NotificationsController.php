@@ -193,7 +193,7 @@ class NotificationsController extends Controller
                     $a_recipients = isset($comment->a_recipients) ? $comment->a_recipients : ($comment->type == 'note' ? $request->note_recipients : $request->reply_recipients);
                 }
 
-                if (count($a_recipients) > 0){
+                if ($a_recipients and count($a_recipients) > 0){
                     if ($request->input('add_in_user_notification_text') != "" or (isset($comment->add_in_user_notification_text))){
                         // Element in request comes from Comment modal
                         // $comment property comes from an embedded comment when editing or creating a ticket
@@ -202,10 +202,10 @@ class NotificationsController extends Controller
                 }
             }
 
-            if (count($a_recipients) > 0){
+            if ($a_recipients and count($a_recipients) > 0){
                 foreach($a_recipients as $member_id){
                     $recipient = Member::find($member_id);
-                    if (count($recipient) == 1){
+                    if (!is_null($recipient)){
                         // Register the notified email
                         $notification = CommentNotification::create([
                            'comment_id' => $comment->id,
