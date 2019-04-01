@@ -14,12 +14,12 @@ trait CacheVars
 	*/
 	protected function getFirstTicketCompleteYear()
 	{
-		return Cache::remember('panichd::first_ticket_complete_year', 60, function(){
+		return Cache::remember('panichd::first_ticket_complete_year', \Carbon\Carbon::now()->addMinutes(60), function(){
 			$ticket = Ticket::complete()->orderBy('completed_at', 'asc')->first();
 			return $ticket ? $ticket->completed_at->year : date('Y');
 		});
 	}
-	
+
 	/**
 	 * Get array with complete tickets count by creation_at year
 	 *
@@ -27,7 +27,7 @@ trait CacheVars
 	*/
 	protected function getCompleteTicketYearCounts()
 	{
-		return Cache::remember('panichd::a_complete_ticket_year_counts', 60, function(){
+		return Cache::remember('panichd::a_complete_ticket_year_counts', \Carbon\Carbon::now()->addMinutes(60), function(){
 			$a_years = range($this->getFirstTicketCompleteYear(), date('Y'));
 			rsort($a_years);
 			$a_year_counts = [];
