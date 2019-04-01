@@ -175,7 +175,7 @@ class NotificationsController extends Controller
                     // All previous comments recipients
                     foreach ($comm->notifications as $notification){
                         $recipient = Member::find($notification->member_id);
-                        if (count($recipient) == 1 and ($comment->type == 'reply' or ($comment->type != 'reply' and $recipient->levelInCategory($ticket->category->id) > 1))
+                        if (!is_null($recipient) and ($comment->type == 'reply' or ($comment->type != 'reply' and $recipient->levelInCategory($ticket->category->id) > 1))
                             and $notification_owner->id!= $recipient->id and !in_array($recipient->id, $a_recipients)){
 
                                 $a_recipients[] = $recipient->id;
@@ -248,7 +248,7 @@ class NotificationsController extends Controller
             // Send notification to all comment notified users
             foreach ($comment->notifications as $notification){
                 $recipient = Member::find($notification->member_id);
-                if (count($recipient) == 1){
+                if (!is_null($recipient)){
                     if ($recipient->email != $notification_owner->email){
                         $a_to[] = [
         					'recipient' => $recipient,
