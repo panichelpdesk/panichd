@@ -614,13 +614,13 @@ class TicketsController extends Controller
 
 		switch ($list){
 			case 'priorities':
-				$instance = Cache::remember('panichd::priorities', 60, function () {
+				$instance = Cache::remember('panichd::priorities', \Carbon\Carbon::now()->addMinutes(60), function () {
 					return Models\Priority::orderBy('magnitude', 'desc')->get();
 				});
 				break;
 			case 'statuses':
             case 'complete_statuses':
-				$instance = Cache::remember('panichd::' . $list, 60, function () use($list) {
+				$instance = Cache::remember('panichd::' . $list, \Carbon\Carbon::now()->addMinutes(60), function () use($list) {
 				    if (!Setting::grab('use_default_status_id') or $list == 'complete_statuses'){
                         return Models\Status::all()->where('id', '!=', Setting::grab('default_status_id'));
                     }else

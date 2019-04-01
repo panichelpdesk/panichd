@@ -48,8 +48,8 @@ class Setting extends Model
          */
         //       Cache::flush();
 
-        $setting = Cache::remember('panichd::settings.'.$slug, 60, function () use ($slug) {
-            $settings = Cache::remember('panichd::settings', 60, function () {
+        $setting = Cache::remember('panichd::settings.'.$slug, \Carbon\Carbon::now()->addMinutes(60), function () use ($slug) {
+            $settings = Cache::remember('panichd::settings', \Carbon\Carbon::now()->addMinutes(60), function () {
                 return Table::all();
             });
 
