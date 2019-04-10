@@ -1,7 +1,10 @@
 <?php
     $dom = new \DomDocument();
 
-    if ($dom->loadHtml( mb_convert_encoding('<div>' . $html_field . '</div>', 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD)){
+    $purifiable = new PanicHD\PanicHD\Helpers\Purifiable();
+    $processed_html = $purifiable->getReplaced($html_field);
+
+    if ($dom->loadHtml( mb_convert_encoding('<div>' . $processed_html . '</div>', 'HTML-ENTITIES', "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD)){
 
         $container = $dom->getElementsByTagName('div')->item(0);
         $container = $container->parentNode->removeChild($container);
@@ -35,6 +38,6 @@
 
     }else{
         \Log::warning('HMTL could not be processed for ' . $field . ' field in ticket #' . $ticket->id);
-        echo $html_field;
+        echo $processed_html;
     }
 ?>
