@@ -29,4 +29,11 @@
             "PanicHD\\PanicHD\\": "src"
         }
     }
+	"extra": {
+		"laravel": {
+			"providers": [
+				"PanicHD\\PanicHD\\PanicHDServiceProvider"
+			],
+		}
+	}
 }
