@@ -28,7 +28,7 @@
         "psr-4": {
             "PanicHD\\PanicHD\\": "src"
         }
-    }
+    },
 	"extra": {
 		"laravel": {
 			"providers": [
