@@ -33,7 +33,7 @@
 		"laravel": {
 			"providers": [
 				"PanicHD\\PanicHD\\PanicHDServiceProvider"
-			],
+			]
 		}
 	}
 }
