@@ -1,5 +1,5 @@
 # Panic Help Desk
-This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). It, of course, has [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and some new and useful ones: File attachments, ticket tags, calendar fields and a filters panel. It may be installed in any project based on Laravel 5.1 to 5.4. It has it's own routes, so it shouldn't affect other packages.
+This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). We have kept almost [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and includes many other functionalities to bring you closer to any production environment, like file attachments, ticket tags, calendar fields and a filters panel. It may work in any Laravel app from version 5.1 to 5.8. It has it's own routes, so it shouldn't affect other packages.
 
 ## Table of contents
 
@@ -32,16 +32,9 @@ This ticketing system is actually mean to be used in a corporate support environ
 * We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
 
 #### Translations
-This package is multilingual. Current full covered languages are Catalan, English and Brazillian Portuguese.
-The following are other translations that come from Ticketit and are'nt up to date. A helping hand on any of them will be very welcome:
-* Armenian
-* Deutsch
-* Farsi
-* French
-* Hungarian
-* Italian
-* Russian
-* Spanish
+This package comes with Catalan, English and Brazillian Portuguese language files. For any of them you don't need to do anything: PanicHD will get your Laravel configuration.
+
+You may also you may create your own language files. There are some outdated language files that come from Ticketit and can be a good starting point. We encourage you to make your own language files and publish them to share with other speakers.
 
 #### A ticket step by step example
 1. A user registers a new ticket for a specific issue
@@ -96,7 +89,7 @@ This is a synopsis of the main PanicHD features. For detailed descriptions, exam
 ## Installing
 ### Requirements
 * [Laravel](https://laravel.com/) 5.1 or higher including:
-  + [Laravel auth](https://laravel.com/docs/5.3/authentication#introduction) with at least one user registered
+  + [Laravel auth](https://laravel.com/docs/master/authentication#authentication-quickstart) with at least one user registered
   + Model App\User.php that uses users table. It is added with Laravel auth by default and PanicHD requires it to be there. It seems that some admin panels change it to App\Models\User.php or maybe other routes. 
   + Valid email configuration (Needed for PanicHD notification emails)
   
@@ -114,7 +107,8 @@ If it's installed in the same Laravel project you want to install Panic Help Des
 ### Installation steps
 1. Open a command line in the Laravel folder and type:
     `composer require panichd/panichd`
-2. Open config/app.php and in the "Providers" section, add:
+2. If you are using Laravel 5.4 or lower, you will have to add the service provider. In this case, Open config/app.php. In the "Providers" section, add:
+
     `PanicHD\PanicHD\PanicHDServiceProvider::class,`
 
 ### Complete installation
