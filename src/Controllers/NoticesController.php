@@ -43,15 +43,15 @@ class NoticesController extends Controller
     {
 		$rules['user_id'] = 'required|exists:users,id';
 		
-		if ($request->input('department_id') != '0'){
-			$rules['department_id'] = 'required|exists:panichd_departments,id';			
+		if ($request->input('group_id') != '0'){
+			$rules['group_id'] = 'required|exists:panichd_groups,id';			
 		}
 		
         $this->validate($request, $rules);
 
         $user = \PanicHDMember::findOrFail($request->input('user_id'));
 		
-		$user->ticketit_department = $request->input('department_id');
+		$user->ticketit_department = $request->input('group_id');
 		$user->save();
 				
         \Session::flash('status', trans('panichd::admin.notice-saved-ok'));

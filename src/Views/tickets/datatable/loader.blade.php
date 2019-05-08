@@ -57,7 +57,7 @@
 				@if (session('panichd_filter_owner')=="")
 					{ data: 'owner_name', name: '{{ $u->getTable() }}.name' },
 					@if ($setting::grab('departments_feature'))
-						{ data: 'dept_full_name', name: 'panichd_departments.name' },
+						{ data: 'dept_full_name', name: 'panichd_groups.name' },
 					@endif
 				@endif
 				@if ($ticketList == 'complete')

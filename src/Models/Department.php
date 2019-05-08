@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    protected $table = 'panichd_departments';
-    protected $fillable = ['name', 'shortening', 'department_id'];
+    protected $table = 'panichd_groups';
+    protected $fillable = ['name', 'full_name', 'group_id'];
 	
 	public $timestamps = false;
 
@@ -18,7 +18,7 @@ class Department extends Model
 	*/
 	public function ancestor()
 	{
-		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'department_id');
+		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'group_id');
 	}
 	
 	/*
@@ -28,7 +28,7 @@ class Department extends Model
 	*/
 	public function descendants()
 	{
-		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'department_id', 'id');
+		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'group_id', 'id');
 	}
 	
     /**
@@ -48,7 +48,7 @@ class Department extends Model
 	*/
 	public function is_main()
 	{
-		return is_null($this->department_id) ? true : false;
+		return is_null($this->group_id) ? true : false;
 	}
 	
 	/*
