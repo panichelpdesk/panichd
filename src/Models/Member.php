@@ -545,21 +545,23 @@ class Member extends User
     }
 
 	/**
-     * Get array with all user id's from the departments where current user belongs and users that have panichd_notice_group_id = 0
-     *
+     * Get an array with member id's that:
+	 * - Belong to any group where current member belongs to
+	 * - Member that have panichd_notice_group_id = 0
+	 * 
      * @return array
      */
-    public function getMyNoticesUsers()
+    public function getNoticeMembers()
     {
 		// Get my related departments
-		$related_departments = [];
+		$a_groups = [];
 
-        $c_related = $this->getRelatedDepartments();
+        $c_related = $this->getRelatedGroups();
 
         if (!$c_related) return [];
 
         foreach ($c_related as $rel){
-			$related_departments [] = $rel->id;
+			$a_groups [] = $rel->id;
 		}
 
 
@@ -567,11 +569,11 @@ class Member extends User
 		 *	Get related Departamental users from my related departments
 		 *
 		 * Conditions:
-		 *    - agent panichd_notice_group_id in related_departments
-		 *    - agent person in related_departments
+		 *    - agent panichd_notice_group_id in a_groups
+		 *    - agent person in a_groups
 		*/
 		$related_users = \PanicHDMember::where('id','!=',$this->id)
-			->whereIn('panichd_notice_group_id', $related_departments);
+			->whereIn('panichd_notice_group_id', $a_groups);
 
 		// Get users that are visible by all departments
 		$all_dept_users = \PanicHDMember::where('panichd_notice_group_id','0');
@@ -595,16 +597,16 @@ class Member extends User
 	 *
 	 * @Return collection
 	*/
-	public function getRelatedDepartments()
+	public function getRelatedGroups()
 	{
         if (is_null($this->group)) return [];
 
-        $member_department = $this->group()->get();
+        $member_group = $this->group()->get();
 
 		if ($this->group()->first()->is_main()){
-			return $member_department->merge($this->group()->first()->descendants()->get());
+			return $member_group->merge($this->group()->first()->descendants()->get());
 		}else{
-			return $member_department->merge($this->group()->first()->ancestor()->get());
+			return $member_group->merge($this->group()->first()->ancestor()->get());
 		}
 	}
 }

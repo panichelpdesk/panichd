@@ -55,7 +55,7 @@ class UserAccessMiddleware
 
 		if ($this->mod_route_prefix == 'ticket') {
             // Tickets from users in a visible panichd_notice_group_id value for current user
-			if (in_array($ticket->user_id, $member->getMyNoticesUsers())){
+			if (in_array($ticket->user_id, $member->getNoticeMembers())){
 				return $next($request);
 			}
 		}

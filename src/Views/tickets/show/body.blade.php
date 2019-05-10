@@ -166,7 +166,7 @@
 					@endif
 				@endif
 
-				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
+				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getNoticeMembers())) )
 					<br /><strong>{{ trans('panichd::lang.tags') }}</strong>{{ trans('panichd::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 						<button class="btn btn-light btn-xs" style="pointer-events: none; border: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
