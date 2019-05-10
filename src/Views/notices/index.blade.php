@@ -52,7 +52,7 @@
 					</td>
 					<td>{{ $notice->intervention }}</td>
 					@if($u->currentLevel() > 1)
-						<td><span title="{{ $u->currentLevel() > 2 ? trans('panichd::lang.show-ticket-creator') . trans('panichd::lang.colon') . $notice->owner->name : '' }}">{{ $notice->owner->panichd_notice_group_id == 0 ? trans('panichd::lang.all-depts') : $notice->owner->userDepartment->resume(true) }}</span></td>
+						<td><span title="{{ $u->currentLevel() > 2 ? trans('panichd::lang.show-ticket-creator') . trans('panichd::lang.colon') . $notice->owner->name : '' }}">{{ $notice->owner->panichd_notice_group_id == 0 ? trans('panichd::lang.all-depts') : $notice->owner->noticeGroup->resume(true) }}</span></td>
 					@endif
 					<td>
 					@foreach ($notice->tags as $tag)

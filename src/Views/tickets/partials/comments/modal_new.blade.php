@@ -40,7 +40,7 @@
                                                 @if ($member->panichd_notice_group_id == '0')
                                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                                                 @elseif ($member->panichd_notice_group_id != "")
-                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->noticeGroup->getFullName() }}
                                                 @endif
                                             @endif
                                             </option>
@@ -54,7 +54,7 @@
                                                 @if ($member->panichd_notice_group_id == '0')
                                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                                                 @elseif ($member->panichd_notice_group_id != "")
-                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
+                                                    {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->noticeGroup->getFullName() }}
                                                 @endif
                                             @endif
                                             </option>

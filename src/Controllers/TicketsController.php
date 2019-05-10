@@ -1364,7 +1364,7 @@ class TicketsController extends Controller
     */
     public function members_collection($member, $auth = true)
     {
-        $c_members = \PanicHDMember::with('userDepartment');
+        $c_members = \PanicHDMember::with('group');
         if (!$auth) $c_members = $c_members->where('email', '!=', auth()->user()->email);
         if ($member->currentLevel() > 1){
             return $c_members->orderBy('name')->get();

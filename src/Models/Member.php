@@ -317,23 +317,23 @@ class Member extends User
 	}
 
 	/**
-     * Get directly associated department (panichd_group_id)
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function userDepartment()
-    {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Group', 'panichd_group_id', 'id');
-    }
-
-	/**
-     * Get member group relationship
+     * Get member group
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
 	public function group()
 	{
 		return $this->belongsTo('PanicHD\PanicHD\Models\Group', 'panichd_group_id');
+	}
+	
+	/**
+     * Get member associated notice group
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+	public function noticeGroup()
+	{
+		return $this->belongsTo('PanicHD\PanicHD\Models\Group', 'panichd_notice_group_id');
 	}
 
     /**

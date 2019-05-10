@@ -53,7 +53,7 @@
                         @if ($owner->panichd_notice_group_id == '0')
                             {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                         @elseif ($owner->panichd_notice_group_id != "")
-                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
+                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->noticeGroup->getFullName() }}
                         @endif
                     @endif
                     </option>
