@@ -386,9 +386,9 @@ class SettingsTableSeeder extends Seeder
 			*/
 
 			/*
-			 * View department and sub1 where ticket owner belongs
+			 * View and manage groups where members may belong to
 			*/
-			'departments_feature' => 'no',
+			'member_groups' => 'no',
 
 			/*
 			 * This feature represents two connected functionalities:

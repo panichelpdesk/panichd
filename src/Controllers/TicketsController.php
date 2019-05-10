@@ -125,7 +125,7 @@ class TicketsController extends Controller
 			\DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
 		];
 
-		if (Setting::grab('departments_feature')){
+		if (Setting::grab('member_groups')){
 			$collection->leftJoin('panichd_groups', 'panichd_groups.id', '=', 'members.department_id')
 				->leftJoin('panichd_groups as dep_ancestor', 'panichd_groups.group_id', '=', 'dep_ancestor.id');
 
@@ -169,7 +169,7 @@ class TicketsController extends Controller
         if (LaravelVersion::min('5.4')) {
             $a_raws = ['id', 'subject', 'intervention', 'status', 'agent', 'priority', 'owner_name', 'calendar', 'updated_at', 'complete_date', 'category', 'tags'];
 
-			if (Setting::grab('departments_feature')){
+			if (Setting::grab('member_groups')){
 				$a_raws[]= 'dept_full_name';
 			}
 
@@ -363,7 +363,7 @@ class TicketsController extends Controller
 			return $return;
 		});
 
-		if (Setting::grab('departments_feature')){
+		if (Setting::grab('member_groups')){
 			$collection->editColumn('dept_full_name', function ($ticket) {
 				if (isset($ticket->owner->group->name)){
 					return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->group->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->group->name))) . '</span>';
@@ -1236,7 +1236,7 @@ class TicketsController extends Controller
 				$join3->on('agent.id', '=', 'panichd_tickets.agent_id');
 			});
 
-		if (Setting::grab('departments_feature')){
+		if (Setting::grab('member_groups')){
 			$ticket = $ticket->with('owner.department.ancestor');
 		}
 

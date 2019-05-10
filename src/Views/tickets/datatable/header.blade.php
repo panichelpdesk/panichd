@@ -24,7 +24,7 @@
 				
 				@if (session('panichd_filter_owner')=="")
 					<td>{{ trans('panichd::lang.table-owner') }}</td>
-					@if ($setting::grab('departments_feature'))
+					@if ($setting::grab('member_groups'))
 						<td>{{ trans('panichd::lang.table-department') }}</td>
 					@endif					
 				@endif

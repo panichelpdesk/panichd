@@ -56,7 +56,7 @@
 				{ data: 'priority', name: 'panichd_priorities.name', "orderData": [1, 3, 4, 5], "orderSequence": ['desc', 'asc']},
 				@if (session('panichd_filter_owner')=="")
 					{ data: 'owner_name', name: '{{ $u->getTable() }}.name' },
-					@if ($setting::grab('departments_feature'))
+					@if ($setting::grab('member_groups'))
 						{ data: 'dept_full_name', name: 'panichd_groups.name' },
 					@endif
 				@endif

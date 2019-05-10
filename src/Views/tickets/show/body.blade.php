@@ -105,7 +105,7 @@
 						<br /><span class="text-warning"><span class="fa fa-exclamation-triangle"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 
-					@if ($setting->grab('departments_feature') && isset($ticket->owner->group))
+					@if ($setting->grab('member_groups') && isset($ticket->owner->group))
 						@if ($ticket->owner->group->ancestor || $ticket->owner->group->is_main())
 							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->group->is_main() ? $ticket->owner->group->getName() : $ticket->owner->group->ancestor->getName()) }}
 						@endif
