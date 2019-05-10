@@ -1369,7 +1369,7 @@ class TicketsController extends Controller
         if ($member->currentLevel() > 1){
             return $c_members->orderBy('name')->get();
         }else{
-            return $c_members->whereNull('ticketit_department')->orWhere('id','=',$member->id)->orderBy('name')->get();
+            return $c_members->whereNull('panichd_notice_group_id')->orWhere('id','=',$member->id)->orderBy('name')->get();
         }
     }
 

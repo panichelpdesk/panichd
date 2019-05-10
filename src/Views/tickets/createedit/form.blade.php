@@ -50,9 +50,9 @@
                 @foreach ($c_members as $owner)
                     <option value="{{ $owner->id }}" {{ $owner->id == $a_current['owner_id'] ? 'selected="selected"' : '' }}>{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
                     @if ($setting->grab('departments_notices_feature'))
-                        @if ($owner->ticketit_department == '0')
+                        @if ($owner->panichd_notice_group_id == '0')
                             {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
-                        @elseif ($owner->ticketit_department != "")
+                        @elseif ($owner->panichd_notice_group_id != "")
                             {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
                         @endif
                     @endif

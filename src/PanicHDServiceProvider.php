@@ -206,7 +206,7 @@ class PanicHDServiceProvider extends ServiceProvider
 				if (Setting::grab('departments_notices_feature')){
                     // Get available notice users list
                     if(is_null(auth()->user())){
-                         $all_dept_users = \PanicHDMember::where('ticketit_department','0');
+                         $all_dept_users = \PanicHDMember::where('panichd_notice_group_id','0');
                         if (version_compare(app()->version(), '5.3.0', '>=')) {
                 			$a_notice_users = $all_dept_users->pluck('id')->toArray();
                 		}else{

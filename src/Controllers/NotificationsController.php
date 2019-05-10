@@ -42,7 +42,7 @@ class NotificationsController extends Controller
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 
 		// Not hidden notices only: Notificate Department email with specific template
-		if (!$ticket->hidden and Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
+		if (!$ticket->hidden and Setting::grab('departments_notices_feature') and ($ticket->owner->panichd_notice_group_id == '0' || $ticket->owner->panichd_notice_group_id != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,
 				'subject'   => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject ,

@@ -22,7 +22,7 @@ class NoticesController extends Controller
 	public function index()
 	{
 		// All users
-		$a_users = \PanicHDMember::whereNotNull('ticketit_department')->orderBy('name')->get();
+		$a_users = \PanicHDMember::whereNotNull('panichd_notice_group_id')->orderBy('name')->get();
 		
 		// All departments
 		$departments = Models\Department::doesntHave('ancestor')->with(['descendants' => function($query){
@@ -51,7 +51,7 @@ class NoticesController extends Controller
 
         $user = \PanicHDMember::findOrFail($request->input('user_id'));
 		
-		$user->ticketit_department = $request->input('group_id');
+		$user->panichd_notice_group_id = $request->input('group_id');
 		$user->save();
 				
         \Session::flash('status', trans('panichd::admin.notice-saved-ok'));
@@ -66,7 +66,7 @@ class NoticesController extends Controller
 	
 	public function destroy($id){
 		$user = \PanicHDMember::findOrFail($id);
-		$user->ticketit_department = null;
+		$user->panichd_notice_group_id = null;
 		$user->save();
 		
 		\Session::flash('status', trans('panichd::admin.notice-deleted-ok'));

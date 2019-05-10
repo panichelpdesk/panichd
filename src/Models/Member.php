@@ -317,13 +317,13 @@ class Member extends User
 	}
 
 	/**
-     * Get directly associated department (ticketit_department)
+     * Get directly associated department (panichd_group_id)
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function userDepartment()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'ticketit_department', 'id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'panichd_group_id', 'id');
     }
 
 	/**
@@ -545,7 +545,7 @@ class Member extends User
     }
 
 	/**
-     * Get array with all user id's from the departments where current user belongs and users that have ticketit_department = 0
+     * Get array with all user id's from the departments where current user belongs and users that have panichd_notice_group_id = 0
      *
      * @return array
      */
@@ -567,14 +567,14 @@ class Member extends User
 		 *	Get related Departamental users from my related departments
 		 *
 		 * Conditions:
-		 *    - agent ticketit_department in related_departments
+		 *    - agent panichd_notice_group_id in related_departments
 		 *    - agent person in related_departments
 		*/
 		$related_users = \PanicHDMember::where('id','!=',$this->id)
-			->whereIn('ticketit_department', $related_departments);
+			->whereIn('panichd_notice_group_id', $related_departments);
 
 		// Get users that are visible by all departments
-		$all_dept_users = \PanicHDMember::where('ticketit_department','0');
+		$all_dept_users = \PanicHDMember::where('panichd_notice_group_id','0');
 
 		if (version_compare(app()->version(), '5.3.0', '>=')) {
 			$related_users = $related_users->pluck('id')->toArray();
