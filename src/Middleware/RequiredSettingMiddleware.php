@@ -18,7 +18,7 @@ class RequiredSettingMiddleware
     public function handle($request, Closure $next, $controller)
     {
         if ($controller == "Notices"){
-			if (Setting::grab('departments_notices_feature')) {
+			if (Setting::grab('notices')) {
 				return $next($request);
 			}
 		}else{

@@ -1,4 +1,4 @@
-@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $n_notices > 0)
+@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('notices') && $n_notices > 0)
     <div class="row">
     <div class="col-xl-5 order-xl-2">
         @include('panichd::notices.widget')
@@ -49,7 +49,7 @@
                 <select name="owner_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                 @foreach ($c_members as $owner)
                     <option value="{{ $owner->id }}" {{ $owner->id == $a_current['owner_id'] ? 'selected="selected"' : '' }}>{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
-                    @if ($setting->grab('departments_notices_feature'))
+                    @if ($setting->grab('notices'))
                         @if ($owner->panichd_notice_group_id == '0')
                             {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                         @elseif ($owner->panichd_notice_group_id != "")
@@ -274,7 +274,7 @@
     {!! CollectiveForm::close() !!}
 </div></div>
 
-@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('departments_notices_feature') && $n_notices > 0)
+@if (!isset($ticket) && $u->currentLevel() == 1 && $setting->grab('notices') && $n_notices > 0)
     </div>
     </div>
 @endif

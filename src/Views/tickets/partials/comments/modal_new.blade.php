@@ -36,7 +36,7 @@
                                     <select name="reply_recipients[]" id="reply_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
                                         @foreach ($c_members as $member)
                                             <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['reply']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
-                                            @if ($setting->grab('departments_notices_feature'))
+                                            @if ($setting->grab('notices'))
                                                 @if ($member->panichd_notice_group_id == '0')
                                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                                                 @elseif ($member->panichd_notice_group_id != "")
@@ -50,7 +50,7 @@
                                     <select name="note_recipients[]" id="note_recipients" class="form-control" multiple="multiple" style="display: none; width: 100%">
                                         @foreach ($c_members as $member)
                                             <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['note']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
-                                            @if ($setting->grab('departments_notices_feature'))
+                                            @if ($setting->grab('notices'))
                                                 @if ($member->panichd_notice_group_id == '0')
                                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                                                 @elseif ($member->panichd_notice_group_id != "")

@@ -31,7 +31,7 @@
                     <select class="form-control note_recipients" name="comment_x_recipients[]" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
                         @foreach ($c_members->filter(function($q)use($u){ return $q->id != $u->id; }) as $member)
                             <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['note']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
-                            @if ($setting->grab('departments_notices_feature'))
+                            @if ($setting->grab('notices'))
                                 @if ($member->panichd_notice_group_id == '0')
                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                                 @elseif ($member->panichd_notice_group_id != "")
@@ -44,7 +44,7 @@
                     <select class="form-control reply_recipients" name="comment_x_recipients[]" class="form-control" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
                         @foreach ($c_members->filter(function($q)use($u){ return $q->id != $u->id; }) as $member)
                             <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['reply']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
-                            @if ($setting->grab('departments_notices_feature'))
+                            @if ($setting->grab('notices'))
                                 @if ($member->panichd_notice_group_id == '0')
                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
                                 @elseif ($member->panichd_notice_group_id != "")

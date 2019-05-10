@@ -119,7 +119,7 @@ class PanicHDServiceProvider extends ServiceProvider
 
 			// Include $n_notices in shared.nav and tickets.createedit templates
 			view()->composer(['panichd::shared.nav', 'panichd::tickets.createedit'], function ($view) {
-				$n_notices = Setting::grab('departments_notices_feature') ? Ticket::active()->notHidden()->whereIn('user_id', \PanicHDMember::find(auth()->user()->id)->getNoticeMembers())->count() : 0;
+				$n_notices = Setting::grab('notices') ? Ticket::active()->notHidden()->whereIn('user_id', \PanicHDMember::find(auth()->user()->id)->getNoticeMembers())->count() : 0;
 				$view->with(compact('n_notices'));
 			});
 
@@ -203,7 +203,7 @@ class PanicHDServiceProvider extends ServiceProvider
 			
 			// Notices widget
 			view()->composer(['panichd::notices.widget', 'panichd::notices.index'], function ($view) {
-				if (Setting::grab('departments_notices_feature')){
+				if (Setting::grab('notices')){
                     // Get available notice users list
                     if(is_null(auth()->user())){
                          $all_dept_users = \PanicHDMember::where('panichd_notice_group_id','0');

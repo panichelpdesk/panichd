@@ -391,11 +391,10 @@ class SettingsTableSeeder extends Seeder
 			'member_groups' => 'no',
 
 			/*
-			 * This feature represents two connected functionalities:
-			 * - Ability of associate certain users to departments.
-			 * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
-			*/
-			'departments_notices_feature' => 'no',
+			 * Ability to manage the association of a member to a custom group for notice reporting
+			 * Any member will be able to see active tickets associated to any of hi's visible notice members
+			 */
+			'notices' => 'no',
 
 			/**
 			 * Allow file attachments for tickets and comments
