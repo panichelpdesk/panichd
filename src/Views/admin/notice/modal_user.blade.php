@@ -30,14 +30,14 @@
 		</div>
 		
 		<div class="form-group row">
-			{!! CollectiveForm::label('department_id', trans('panichd::lang.department') . trans('panichd::lang.colon'), [
+			{!! CollectiveForm::label('group_id', trans('panichd::lang.department') . trans('panichd::lang.colon'), [
 				'class' => 'col-form-label col-lg-3',
 			]) !!}
 		
 			<div class="col-lg-9">
-				<select name="department_id" id="department_select2" class="form_select2 form-control" style="display: none; width: 100%">
+				<select name="group_id" id="department_select2" class="form_select2 form-control" style="display: none; width: 100%">
 				<option value="0">{{ trans('panichd::lang.all-depts') }}</option>
-				@foreach ($departments as $ancestor)
+				@foreach ($c_groups as $ancestor)
 					<optgroup label="{{ $ancestor->name }}">
 						{{ $ancestor->name }}
 					</optgroup>

@@ -42,7 +42,7 @@ class Group extends Model
     }
 	
 	/**
-	 * Point if this is a main department
+	 * Point if this is a main group
 	 *
 	 * @return bool
 	*/

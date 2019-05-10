@@ -24,12 +24,12 @@ class NoticesController extends Controller
 		// All users
 		$a_users = \PanicHDMember::whereNotNull('panichd_notice_group_id')->orderBy('name')->get();
 		
-		// All departments
-		$departments = Models\Group::doesntHave('ancestor')->with(['descendants' => function($query){
+		// All groups
+		$c_groups = Models\Group::doesntHave('ancestor')->with(['descendants' => function($query){
 			$query->orderBy('name');
 		}])->orderBy('name')->get();
 		
-		return view('panichd::admin.notice.index', compact('a_users', 'departments'));
+		return view('panichd::admin.notice.index', compact('a_users', 'c_groups'));
 	}
 	
 	/**

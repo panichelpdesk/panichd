@@ -553,7 +553,7 @@ class Member extends User
      */
     public function getNoticeMembers()
     {
-		// Get my related departments
+		// Get current member related groups
 		$a_groups = [];
 
         $c_related = $this->getRelatedGroups();
@@ -566,7 +566,7 @@ class Member extends User
 
 
 		/*
-		 *	Get related Departamental users from my related departments
+		 *	Get all members from the related groups given collection
 		 *
 		 * Conditions:
 		 *    - agent panichd_notice_group_id in a_groups
@@ -575,7 +575,7 @@ class Member extends User
 		$related_users = \PanicHDMember::where('id','!=',$this->id)
 			->whereIn('panichd_notice_group_id', $a_groups);
 
-		// Get users that are visible by all departments
+		// Get members that are visible by all groups
 		$all_dept_users = \PanicHDMember::where('panichd_notice_group_id','0');
 
 		if (version_compare(app()->version(), '5.3.0', '>=')) {

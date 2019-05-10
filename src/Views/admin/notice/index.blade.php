@@ -58,7 +58,7 @@
 
                         </td>
 						<td>
-                            <button type="button" class="btn btn-light btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-department_id="{{ $d_user->group ? $d_user->group->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
+                            <button type="button" class="btn btn-light btn-default btn_modal_user" data-user_id="{{ $d_user->id }}" data-user_name="{{ $d_user->name }} - {{ $d_user->email }}" data-group_id="{{ $d_user->group ? $d_user->group->id : '0' }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.notice.update', ['id' => $d_user->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							{!! link_to_route(
 								$setting->grab('admin_route').'.notice.destroy', trans('panichd::admin.btn-delete'), $d_user->id,
 								[
@@ -104,7 +104,7 @@
 					// Selects
 					$('#modalDepartmentUser #user_select2').prop('disabled', true).hide();
 					$("#modalDepartmentUser #modal_user_name").show().text($(this).data('user_name'));
-					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('department_id')+"']").prop('selected', true);
+					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('group_id')+"']").prop('selected', true);
 
 					// Select2
 					$("#modalDepartmentUser .modal_user_wrap .select2-container").remove();
