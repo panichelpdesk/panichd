@@ -323,17 +323,17 @@ class Member extends User
      */
     public function userDepartment()
     {
-        return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'panichd_group_id', 'id');
+        return $this->belongsTo('PanicHD\PanicHD\Models\Group', 'panichd_group_id', 'id');
     }
 
 	/**
-     * Get associated department list through person_id
+     * Get member group relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function department()
+	public function group()
 	{
-		return $this->belongsTo('PanicHD\PanicHD\Models\Department');
+		return $this->belongsTo('PanicHD\PanicHD\Models\Group', 'panichd_group_id');
 	}
 
     /**
@@ -588,23 +588,23 @@ class Member extends User
 	}
 
 	/*
-	 * Get member related departments in Department hierarchy
+	 * Get all groups in member Group hierarchy
 	 *
-	 * For a main department: Returns self + all descendants
+	 * For a main group: Returns self + all descendants
 	 * For descendant: Returns self + ancestor
 	 *
 	 * @Return collection
 	*/
 	public function getRelatedDepartments()
 	{
-        if (is_null($this->department)) return [];
+        if (is_null($this->group)) return [];
 
-        $member_department = $this->department()->get();
+        $member_department = $this->group()->get();
 
-		if ($this->department()->first()->is_main()){
-			return $member_department->merge($this->department()->first()->descendants()->get());
+		if ($this->group()->first()->is_main()){
+			return $member_department->merge($this->group()->first()->descendants()->get());
 		}else{
-			return $member_department->merge($this->department()->first()->ancestor()->get());
+			return $member_department->merge($this->group()->first()->ancestor()->get());
 		}
 	}
 }

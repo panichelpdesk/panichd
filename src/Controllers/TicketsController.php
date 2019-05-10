@@ -129,7 +129,7 @@ class TicketsController extends Controller
 			$collection->leftJoin('panichd_groups', 'panichd_groups.id', '=', 'members.department_id')
 				->leftJoin('panichd_groups as dep_ancestor', 'panichd_groups.group_id', '=', 'dep_ancestor.id');
 
-			// Department columns
+			// Group columns
 			$a_select[] = \DB::raw('CASE panichd_groups.group_id WHEN NULL THEN "" ELSE dep_ancestor.name END as dep_ancestor_name');
 
 			if (config('database.default')=='sqlite'){
@@ -365,8 +365,8 @@ class TicketsController extends Controller
 
 		if (Setting::grab('departments_feature')){
 			$collection->editColumn('dept_full_name', function ($ticket) {
-				if (isset($ticket->owner->department->name)){
-					return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->department->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->department->name))) . '</span>';
+				if (isset($ticket->owner->group->name)){
+					return '<span class="tooltip-info" data-toggle="tooltip" title="' . $ticket->dept_full_name . '">' . ($ticket->dep_ancestor_name == "" ? ucwords(mb_strtolower($ticket->dept_full_name)) : $ticket->owner->group->ancestor->shortening . trans('panichd::lang.colon') . ucwords(mb_strtolower($ticket->owner->group->name))) . '</span>';
 				}
 			});
 		}

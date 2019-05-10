@@ -41,7 +41,7 @@ class NotificationsController extends Controller
 		// Notificate assigned agent
 		$a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 
-		// Not hidden notices only: Notificate Department email with specific template
+		// Not hidden notices only: Notificate Group email with specific template
 		if (!$ticket->hidden and Setting::grab('departments_notices_feature') and ($ticket->owner->panichd_notice_group_id == '0' || $ticket->owner->panichd_notice_group_id != "" ) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])){
 			$a_to[] = [
 				'recipient' => $ticket->owner,

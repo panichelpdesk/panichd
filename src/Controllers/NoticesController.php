@@ -25,7 +25,7 @@ class NoticesController extends Controller
 		$a_users = \PanicHDMember::whereNotNull('panichd_notice_group_id')->orderBy('name')->get();
 		
 		// All departments
-		$departments = Models\Department::doesntHave('ancestor')->with(['descendants' => function($query){
+		$departments = Models\Group::doesntHave('ancestor')->with(['descendants' => function($query){
 			$query->orderBy('name');
 		}])->orderBy('name')->get();
 		

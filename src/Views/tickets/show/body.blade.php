@@ -105,12 +105,12 @@
 						<br /><span class="text-warning"><span class="fa fa-exclamation-triangle"></span> {{ trans('panichd::lang.ticket-owner-no-email-warning') }}</span>
 					@endif
 
-					@if ($setting->grab('departments_feature') && isset($ticket->owner->department))
-						@if ($ticket->owner->department->ancestor || $ticket->owner->department->is_main())
-							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->department->is_main() ? $ticket->owner->department->getName() : $ticket->owner->department->ancestor->getName()) }}
+					@if ($setting->grab('departments_feature') && isset($ticket->owner->group))
+						@if ($ticket->owner->group->ancestor || $ticket->owner->group->is_main())
+							<br /><strong>{{ trans('panichd::lang.department') }}</strong>{{ trans('panichd::lang.colon') . ($ticket->owner->group->is_main() ? $ticket->owner->group->getName() : $ticket->owner->group->ancestor->getName()) }}
 						@endif
-						@if (!$ticket->owner->department->is_main())
-							<br /><strong>{{ trans('panichd::lang.dept-descendant') }}</strong>{{ trans('panichd::lang.colon') . $ticket->owner->department->getName() }}
+						@if (!$ticket->owner->group->is_main())
+							<br /><strong>{{ trans('panichd::lang.dept-descendant') }}</strong>{{ trans('panichd::lang.colon') . $ticket->owner->group->getName() }}
 						@endif
 					@endif
 				@endif

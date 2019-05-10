@@ -4,7 +4,7 @@ namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Group extends Model
 {
     protected $table = 'panichd_groups';
     protected $fillable = ['name', 'full_name', 'group_id'];
@@ -12,33 +12,33 @@ class Department extends Model
 	public $timestamps = false;
 
 	/*
-	 * Return ancestor of current Department
+	 * Return ancestor of current Group
 	 *
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
 	*/
 	public function ancestor()
 	{
-		return $this->belongsTo('PanicHD\PanicHD\Models\Department', 'group_id');
+		return $this->belongsTo('PanicHD\PanicHD\Models\Group', 'group_id');
 	}
 	
 	/*
-	 * Return all descendants of current Department
+	 * Return all descendants of current Group
 	 *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	*/
 	public function descendants()
 	{
-		return $this->hasMany('PanicHD\PanicHD\Models\Department', 'group_id', 'id');
+		return $this->hasMany('PanicHD\PanicHD\Models\Group', 'group_id', 'id');
 	}
 	
     /**
-     * Get Members that belong to $this Department
+     * Get Members that belong to $this Group
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function members()
     {
-        return $this->hasMany('\PanicHDMember')->orderBy('name');
+        return $this->hasMany('\PanicHDMember', 'panichd_group_id')->orderBy('name');
     }
 	
 	/**
@@ -60,7 +60,7 @@ class Department extends Model
 	}
 	
 	/*
-	 * Get department name with format "Ancestor: Department"
+	 * Get group name with format "Ancestor: Group"
 	 * 
 	 * @Return string
 	*/
@@ -72,7 +72,7 @@ class Department extends Model
 	}
 	
 	/*
-	 * Get Shortened department name with format "A: Department"
+	 * Get Shortened group name with format "A: Group"
 	 * 
 	 * @Return string
 	*/

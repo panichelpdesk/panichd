@@ -201,7 +201,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-		//Departments management routes (ex. http://url/panichd/agent)
+		// Notices management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/notice", 'PanicHD\PanicHD\Controllers\NoticesController', [
             'names' => [
                 'index'   => "$admin_route.notice.index",
