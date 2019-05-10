@@ -60,26 +60,22 @@ class Group extends Model
 	}
 	
 	/*
-	 * Get group name with format "Ancestor: Group"
+	 * Get group full name
 	 * 
 	 * @Return string
 	*/
 	public function getFullName()
 	{
-		$ancestor = ($this->is_main() ? '' : $this->ancestor()->first()->name . trans('panichd::lang.colon'));
-		
-		return ucwords(mb_strtolower($ancestor . $this->name));
+		return ucwords(mb_strtolower($this->full_name));
 	}
 	
 	/*
-	 * Get Shortened group name with format "A: Group"
+	 * Get group shortened name
 	 * 
 	 * @Return string
 	*/
 	public function getShortName()
 	{
-		$shortening = $this->is_main() ? '' : $this->ancestor()->first()->shortening . trans('panichd::lang.colon');
-		
-		return $shortening . ucwords(mb_strtolower($this->name));
+		return ucwords(mb_strtolower($this->full_name));
 	}
 }
