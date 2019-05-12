@@ -126,7 +126,7 @@ class TicketsController extends Controller
 		];
 
 		if (Setting::grab('member_groups')){
-			$collection->leftJoin('panichd_groups', 'panichd_groups.id', '=', 'members.department_id')
+			$collection->leftJoin('panichd_groups', 'panichd_groups.id', '=', 'members.panichd_group_id')
 				->leftJoin('panichd_groups as dep_ancestor', 'panichd_groups.group_id', '=', 'dep_ancestor.id');
 
 			// Group columns
@@ -148,7 +148,7 @@ class TicketsController extends Controller
             ->select($a_select)
 			->with('creator')
 			->with('agent')
-			->with('owner.department.ancestor')
+			->with('owner.group.ancestor')
 			->withCount('allAttachments')
 			->withCount(['comments' => function($query) use($currentLevel){
 				$query->countable()->forLevel($currentLevel)->where('type', '!=', 'note');
@@ -1237,7 +1237,7 @@ class TicketsController extends Controller
 			});
 
 		if (Setting::grab('member_groups')){
-			$ticket = $ticket->with('owner.department.ancestor');
+			$ticket = $ticket->with('owner.group.ancestor');
 		}
 
 		$a_select = [
