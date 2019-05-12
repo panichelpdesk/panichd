@@ -1,5 +1,5 @@
 <!-- Modal Dialog -->
-<div class="modal fade" id="modalDepartmentUser" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modalNoticeUser" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
 		<div class="modal-header">
@@ -35,7 +35,7 @@
 			]) !!}
 		
 			<div class="col-lg-9">
-				<select name="group_id" id="department_select2" class="form_select2 form-control" style="display: none; width: 100%">
+				<select name="group_id" id="group_select2" class="form_select2 form-control" style="display: none; width: 100%">
 				<option value="0">{{ trans('panichd::lang.all-depts') }}</option>
 				@foreach ($c_groups as $ancestor)
 					<optgroup label="{{ $ancestor->name }}">

@@ -92,45 +92,45 @@
 
 				if ( $(this).data('route') == 'update'){
 					// Form
-					$('#modalDepartmentUser form').prop('action',$(this).data('form_action'));
-					$("#modalDepartmentUser input[name='_method']").first().val('PATCH');
+					$('#modalNoticeUser form').prop('action',$(this).data('form_action'));
+					$("#modalNoticeUser input[name='_method']").first().val('PATCH');
 
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-update') }}");
+					$("#modalNoticeUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-update') }}");
 
 					// User id input
-					$("#modalDepartmentUser #user_input").val($(this).data('user_id')).prop('disabled', false);
+					$("#modalNoticeUser #user_input").val($(this).data('user_id')).prop('disabled', false);
 
 					// Selects
-					$('#modalDepartmentUser #user_select2').prop('disabled', true).hide();
-					$("#modalDepartmentUser #modal_user_name").show().text($(this).data('user_name'));
-					$("#modalDepartmentUser #department_select2 option[value='"+$(this).data('group_id')+"']").prop('selected', true);
+					$('#modalNoticeUser #user_select2').prop('disabled', true).hide();
+					$("#modalNoticeUser #modal_user_name").show().text($(this).data('user_name'));
+					$("#modalNoticeUser #group_select2 option[value='"+$(this).data('group_id')+"']").prop('selected', true);
 
 					// Select2
-					$("#modalDepartmentUser .modal_user_wrap .select2-container").remove();
-					$("#modalDepartmentUser #department_select2").select2();
+					$("#modalNoticeUser .modal_user_wrap .select2-container").remove();
+					$("#modalNoticeUser #group_select2").select2();
 				}else{
 					// Form action
-					$('#modalDepartmentUser form').prop('action',$('#modalDepartmentUser form').data('route-create'));
-					$("#modalDepartmentUser input[name='_method']").first().val('POST');
+					$('#modalNoticeUser form').prop('action',$('#modalNoticeUser form').data('route-create'));
+					$("#modalNoticeUser input[name='_method']").first().val('POST');
 
 					// Title
-					$("#modalDepartmentUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-create') }}");
+					$("#modalNoticeUser .modal-title").text("{{ trans('panichd::admin.notice-modal-title-create') }}");
 
 					// User id input
-					$("#modalDepartmentUser #user_input").prop('disabled', true);
+					$("#modalNoticeUser #user_input").prop('disabled', true);
 
 					// Selects
-					$("#modalDepartmentUser #modal_user_name").text('').hide();
-					$('#modalDepartmentUser #user_select2').prop('disabled', false).show();
-					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").prop('selectedIndex',0);
-					//$("#modalDepartmentUser #user_select2").show();
-					$("#modalDepartmentUser #user_select2, #modalDepartmentUser #department_select2").select2();
+					$("#modalNoticeUser #modal_user_name").text('').hide();
+					$('#modalNoticeUser #user_select2').prop('disabled', false).show();
+					$("#modalNoticeUser #user_select2, #modalNoticeUser #group_select2").prop('selectedIndex',0);
+					//$("#modalNoticeUser #user_select2").show();
+					$("#modalNoticeUser #user_select2, #modalNoticeUser #group_select2").select2();
 				}
 
 
 
-				$('#modalDepartmentUser').modal('show');
+				$('#modalNoticeUser').modal('show');
 
 				e.preventDefault();
 			});
