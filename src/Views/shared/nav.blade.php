@@ -9,7 +9,6 @@
 		<li class="nav-item dropdown {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexNewest')) || $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@create')) || (isset($ticket) && $ticket->isNew()) ? "active" : "" !!}">
 			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ trans('panichd::lang.nav-new-tickets-title') }}">
 				<span>{{ trans('panichd::lang.nav-new-tickets') }}</span>
-
 				<span class="badge" style="cursor: help">
 					{{ PanicHD\PanicHD\Models\Ticket::newest()->visible()->count() }}
 				</span>
