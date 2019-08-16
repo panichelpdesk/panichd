@@ -183,14 +183,20 @@ trait Attachments
      * @return string
 	 * @return bool
      */
-    protected function saveAttachments($request, $a_result_errors, $ticket, $comment = false)
+    protected function saveAttachments($info)
     {
-		if (!$request->attachments){
+		extract($info);
+
+		// If a specific attachments field name has been set
+		$r_attachments = (isset($attachments_field) and $attachments_field) ? $request->{$attachments_field} : $request->attachments;
+
+		if (!$r_attachments){
 			return $a_result_errors;
 		}
 
 		$bytes = $ticket->allAttachments()->sum('bytes');
 		$num = $ticket->allAttachments()->count();
+		if (!isset($comment)) $comment = false;
 		$block = $comment ? $comment->attachments()->count() : $ticket->attachments()->count();
 
 		$new_bytes = 0;
@@ -198,7 +204,7 @@ trait Attachments
 		$index = 0;
 		$a_errors = [];
 
-		foreach ($request->attachments as $uploadedFile) {
+		foreach ($r_attachments as $uploadedFile) {
             /** @var UploadedFile $uploadedFile */
             if (is_null($uploadedFile)) {
                 // No files attached

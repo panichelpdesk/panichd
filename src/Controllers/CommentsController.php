@@ -182,7 +182,7 @@ class CommentsController extends Controller
 
 		if (Setting::grab('ticket_attachments_feature')){
 			// Attached files
-			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket, $comment);
+			$a_result_errors = $this->saveAttachments(compact('request', 'a_result_errors', 'ticket', 'comment'));
 		}
 
 		// If errors present
@@ -264,7 +264,7 @@ class CommentsController extends Controller
 			$a_result_errors = $this->updateAttachments($request, $a_result_errors, $comment->attachments()->get());
 
 			// 2 - add new attachments
-			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket, $comment);
+			$a_result_errors = $this->saveAttachments(compact('request', 'a_result_errors', 'ticket', 'comment'));
 
 			if (!$a_result_errors){
 				// 3 - destroy checked attachments
