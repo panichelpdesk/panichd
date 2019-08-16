@@ -1095,7 +1095,7 @@ class TicketsController extends Controller
 		}
 
         // Embedded Comments
-        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($permission_level, $request, $ticket, $a_result_errors);
 
         // If errors present
         if ($a_result_errors){
@@ -1135,7 +1135,7 @@ class TicketsController extends Controller
     /*
      * Add embedded comments in ticket creation / edition
     */
-    public function add_embedded_comments($request, $ticket, $a_result_errors)
+    public function add_embedded_comments($permission_level, $request, $ticket, $a_result_errors)
     {
         $a_new_comments = [];
 
@@ -1167,6 +1167,9 @@ class TicketsController extends Controller
             		$comment->content = $a_content['content'];
                     $comment->html = $a_content['html'];
 					$comment->save();
+
+					// Create attachments from embedded images
+					$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
 					
 					if (Setting::grab('ticket_attachments_feature')){
 						// Add embedded comment attached files
@@ -1469,7 +1472,7 @@ class TicketsController extends Controller
 		}
 
         // Embedded Comments
-        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($permission_level, $request, $ticket, $a_result_errors);
 
 		// If errors present
 		if ($a_result_errors){
