@@ -187,8 +187,10 @@ trait Attachments
     {
 		extract($info);
 
-		// If a specific attachments field name has been set
+		// Check specific attachments field names
 		$r_attachments = (isset($attachments_field) and $attachments_field) ? $request->{$attachments_field} : $request->attachments;
+		$filenames_field = $attachment_filenames_field ?? 'attachment_new_filenames';
+		$descriptions_field = $attachment_descriptions_field ?? 'attachment_descriptions';
 
 		if (!$r_attachments){
 			return $a_result_errors;
@@ -275,18 +277,18 @@ trait Attachments
 
 			// New attachments edited fields
 			$a_fields = $a_single_errors = [];
-			if (isset($request->input('attachment_new_filenames')[$index])){
+			if (isset($request->input($filenames_field)[$index])){
 				$a_fields['new_filename'] = [
 					'name' => 'new_attachment_new_filename_'.$index, // Not real request input
-					'value' => $request->input('attachment_new_filenames')[$index]
+					'value' => $request->input($filenames_field)[$index]
 				];
 			}else
 				$attachment->new_filename = $original_filename;
 
-			if (isset($request->input('attachment_descriptions')[$index])){
+			if (isset($request->input($descriptions_field)[$index])){
 				$a_fields['description'] = [
 					'name' => 'new_attachment_description_'.$index, // Not real request input
-					'value' => $request->input('attachment_descriptions')[$index]
+					'value' => $request->input($descriptions_field)[$index]
 				];
 			}
 

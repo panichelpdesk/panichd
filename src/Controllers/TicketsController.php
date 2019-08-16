@@ -1158,14 +1158,28 @@ class TicketsController extends Controller
                 if ($validator->fails()) {
                     $a_messages = $validator->errors()->messages();
                     $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
-                }else{
+				
+				}else{
                     $comment = new Models\Comment();
                     $comment->type = $response_type;
                     $comment->ticket_id = $ticket->id;
                     $comment->user_id = auth()->user()->id;
             		$comment->content = $a_content['content'];
                     $comment->html = $a_content['html'];
-            		$comment->save();
+					$comment->save();
+					
+					if (Setting::grab('ticket_attachments_feature')){
+						// Add embedded comment attached files
+						$info = compact('request', 'a_result_errors', 'ticket', 'comment');
+						
+						// Specify form fields
+						$info['attachments_field'] = 'comment_' . $i . '_attachments';
+						$info['attachment_filenames_field'] = 'comment_' . $i . 'attachment_new_filenames';
+						$info['attachment_descriptions_field'] = 'comment_' . $i . 'attachment_descriptions';
+
+						// Process attachments
+						$a_result_errors = $this->saveAttachments($info);
+					}
 
                     // Comment recipients
                     if($request->input('comment_' . $i . '_recipients') != "") $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
