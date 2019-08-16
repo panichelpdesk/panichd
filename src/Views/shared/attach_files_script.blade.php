@@ -2,7 +2,7 @@
 <script type="text/javascript">
 $(function(){
 	// Attach files button
-	$('.btn_attach').on('click', function(e){
+	$(document).on('click', '.btn_attach', function(e){
 
 		var elem = $('<input type="file" name="attachments[]" class="full_file_inputs" data-attach-id="'+$(this).data('attach-id')+'" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);
 
