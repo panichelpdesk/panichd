@@ -66,7 +66,10 @@
             ]) !!}
             <div class="col-lg-10">
                 <ul class="list-group">
-                    @include('panichd::shared.attach_files_button', ['attach_id' => 'comment_template_attached'])
+                    @include('panichd::shared.attach_files_button', [
+                        'attach_id' => 'comment_template_attached',
+                        'prefix' => 'comment_template'
+                    ])
                     <div id="comment_template_attached" class="panel-group grouped_check_list deletion_list attached_list"  data-new-attachment-edit-div="new_comment_modal_attachment" data-new-attachment-back-div="new_comment_modal_comment">
 
                     </div>

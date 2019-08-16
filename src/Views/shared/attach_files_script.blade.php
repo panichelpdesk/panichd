@@ -4,7 +4,7 @@ $(function(){
 	// Attach files button
 	$(document).on('click', '.btn_attach', function(e){
 
-		var elem = $('<input type="file" name="attachments[]" class="full_file_inputs" data-attach-id="'+$(this).data('attach-id')+'" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);
+		var elem = $('<input type="file" name="' + $(this).data('attachments_prefix') + 'attachments[]" class="full_file_inputs" data-attach-id="' + $(this).data('attach-id') + '" data-attachments_prefix="' + $(this).data('attachments_prefix') + '" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);
 
 		$('#'+$(this).data('attach-id')).append(elem);
 
@@ -40,8 +40,8 @@ $(function(){
 			}
 
 				html +=' data-original_filename="'+file.name+'" data-prefix="new_attachment_'+num+'_" style="margin: 0em 0em 0em 1em;">{{ trans('panichd::lang.btn-edit') }}</button>'
-				+'<input type="hidden" id="new_attachment_'+num+'_new_filename" name="attachment_new_filenames[]" value="'+file.name+'">'
-				+'<input type="hidden" id="new_attachment_'+num+'_description" name="attachment_descriptions[]" value="">'
+				+'<input type="hidden" id="new_attachment_'+num+'_new_filename" name="' + $(this).data('attachments_prefix') + 'attachment_new_filenames[]" value="'+file.name+'">'
+				+'<input type="hidden" id="new_attachment_'+num+'_description" name="' + $(this).data('attachments_prefix') + 'attachment_descriptions[]" value="">'
 				+'</div>'
 
 				// Description
@@ -51,7 +51,7 @@ $(function(){
 				// Block button
 				+'<div class="media-right media-middle">'
 				+'<a href="#" class="check_button" data-delete_id="delete_new_attachment_check_'+num+'"><span class="media-object fa fa-times" aria-hidden="true"></span><span class="media-object fa fa-check" aria-hidden="true" style="display: none"></span></a>'
-				+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
+				+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="' + $(this).data('attachments_prefix') + 'block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
 				+'</div></div></div>'
 				+'<div class="jquery_error_text"></div></div>';
 
