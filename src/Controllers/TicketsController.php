@@ -1176,7 +1176,8 @@ class TicketsController extends Controller
 						$info = compact('request', 'a_result_errors', 'ticket', 'comment');
 						
 						// Specify form fields
-						$info['attachments_field'] = 'comment_' . $i . '_attachments';
+					$info['attachments_prefix'] = 'comment_' . $i . '_';
+					$info['attachments_field'] = 'comment_' . $i . '_attachments';
 						$info['attachment_filenames_field'] = 'comment_' . $i . 'attachment_new_filenames';
 						$info['attachment_descriptions_field'] = 'comment_' . $i . 'attachment_descriptions';
 

@@ -21,7 +21,7 @@ $(function(){
 
 		for(var i=0,file;file=files[i];i++) {
 			var num = list_i+i;
-			var html = '<div><div id="attachment_block_'+num+'" class="jquery_attachment_block card bg-default text-warning check_parent unchecked check_related_bg"><div class="card-body"><div class="media">'
+			var html = '<div><div id="' + $(this).data('attachments_prefix') + 'attachment_block_'+num+'" class="jquery_attachment_block card bg-default text-warning check_parent unchecked check_related_bg"><div class="card-body"><div class="media">'
 
 				// Upload icon
 				+'<div class="media-left mr-3"><span class="media-object fa fa-upload text-warning" style="font-size: 30px" title="{{ trans('panichd::lang.pending-attachment') }}" style="cursor: help"></span></div>'
