@@ -1091,7 +1091,7 @@ class TicketsController extends Controller
 			$this->embedded_images_to_attachments($permission_level, $ticket);
 
 			// Attached files
-			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
+			$a_result_errors = $this->saveAttachments(compact('request', 'a_result_errors', 'ticket'));
 		}
 
         // Embedded Comments
@@ -1442,7 +1442,7 @@ class TicketsController extends Controller
 			$a_result_errors = $this->updateAttachments($request, $a_result_errors, $ticket->attachments()->get());
 
 			// 2 - add new attachments
-			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
+			$a_result_errors = $this->saveAttachments(compact('request', 'a_result_errors', 'ticket'));
 
 			if (!$a_result_errors){
 				// 3 - destroy checked attachments
