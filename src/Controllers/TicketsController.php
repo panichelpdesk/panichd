@@ -1156,8 +1156,9 @@ class TicketsController extends Controller
 
                 $validator = Validator::make($a_content, ['content' => 'required|min:6'], $custom_messages);
                 if ($validator->fails()) {
-                    $a_messages = $validator->errors()->messages();
-                    $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
+					$a_messages = $validator->errors()->messages();
+					$a_result_errors['messages'][] = trans('panichd::lang.comment') . trans('panichd::lang.colon') . current($a_messages['content']);
+					$a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
 				
 				}else{
                     $comment = new Models\Comment();
