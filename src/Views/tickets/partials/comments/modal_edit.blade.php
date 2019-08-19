@@ -20,6 +20,7 @@
 					<div class="form-group row">
 						<div class="col-lg-12 summernote-text-wrapper">
 							{!! CollectiveForm::textarea('content', $comment->html, ['class' => 'form-control modal-summernote-editor', 'style' => 'display: none', 'rows' => "3"]) !!}
+							<div class="jquery_error_text"></div>
 						</div>
 					</div>
 					@if($setting->grab('ticket_attachments_feature'))
