@@ -1,5 +1,5 @@
 <div class=""><!-- for jquery_error -->
-<div id="attachment_block_{{ $loop->index }}" class="jquery_attachment_block card bg-default text-default check_parent unchecked check_related_bg">
+<div class="jquery_attachment_block card bg-default text-default check_parent unchecked check_related_bg">
 	<div class="card-body">
 		<div class="media">
 		    <div class="media-left mr-3">
