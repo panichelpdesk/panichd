@@ -1,8 +1,8 @@
 <script type="text/javascript">
 	$(function(){
 		// General Grouped Check List check / uncheck
-		$('.grouped_check_list').on('click', '.check_button', function(e)
-		{	
+		$(document).on('click', '.grouped_check_list .check_button', function(e)
+		{
 			var delete_id = $(this).data('delete_id');
 					
 			if ($(this).closest('.check_parent').hasClass('unchecked')){
