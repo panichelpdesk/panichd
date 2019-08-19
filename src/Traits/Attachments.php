@@ -225,7 +225,7 @@ trait Attachments
 			$original_filename = $uploadedFile->getClientOriginalName() ?: '';
 
 			// Denied uploads block process
-			if (is_array($request->block_file_names) and in_array($original_filename, $request->block_file_names)){
+			if (is_array($request->{($attachments_prefix ?? '') . 'block_file_names'}) and in_array($original_filename, $request->{($attachments_prefix ?? '') . 'block_file_names'})){
 				$index++;
 				continue;
 			}
