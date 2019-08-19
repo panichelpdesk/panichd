@@ -1159,41 +1159,42 @@ class TicketsController extends Controller
 					$a_messages = $validator->errors()->messages();
 					$a_result_errors['messages'][] = trans('panichd::lang.comment') . trans('panichd::lang.colon') . current($a_messages['content']);
 					$a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
-				
-				}else{
-                    $comment = new Models\Comment();
-                    $comment->type = $response_type;
-                    $comment->ticket_id = $ticket->id;
-                    $comment->user_id = auth()->user()->id;
-            		$comment->content = $a_content['content'];
-                    $comment->html = $a_content['html'];
-					$comment->save();
+				}
 
-					// Create attachments from embedded images
-					$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
+				// Create new comment
+				$comment = new Models\Comment();
+				$comment->type = $response_type;
+				$comment->ticket_id = $ticket->id;
+				$comment->user_id = auth()->user()->id;
+				$comment->content = $a_content['content'];
+				$comment->html = $a_content['html'];
+				$comment->save();
+
+				// Create attachments from embedded images
+				$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
+				
+				if (Setting::grab('ticket_attachments_feature')){
+					// Add embedded comment attached files
+					$info = compact('request', 'a_result_errors', 'ticket', 'comment');
 					
-					if (Setting::grab('ticket_attachments_feature')){
-						// Add embedded comment attached files
-						$info = compact('request', 'a_result_errors', 'ticket', 'comment');
-						
-						// Specify form fields
+					// Specify form fields
 					$info['attachments_prefix'] = 'comment_' . $i . '_';
 					$info['attachments_field'] = 'comment_' . $i . '_attachments';
-						$info['attachment_filenames_field'] = 'comment_' . $i . 'attachment_new_filenames';
-						$info['attachment_descriptions_field'] = 'comment_' . $i . 'attachment_descriptions';
+					$info['attachment_filenames_field'] = 'comment_' . $i . 'attachment_new_filenames';
+					$info['attachment_descriptions_field'] = 'comment_' . $i . 'attachment_descriptions';
 
-						// Process attachments
-						$a_result_errors = $this->saveAttachments($info);
-					}
+					// Process attachments
+					$a_result_errors = $this->saveAttachments($info);
+				}
 
-                    // Comment recipients
-                    if($request->input('comment_' . $i . '_recipients') != "") $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
+				// Comment recipients
+				if($request->input('comment_' . $i . '_recipients') != "") $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
 
-                    // Adds this as a $comment property to check it in NotificationsController
-                    if($request->input('comment_' . $i . '_notification_text') != "") $comment->add_in_user_notification_text =  'yes';
+				// Adds this as a $comment property to check it in NotificationsController
+				if($request->input('comment_' . $i . '_notification_text') != "") $comment->add_in_user_notification_text =  'yes';
 
-                    $a_new_comments[] = $comment;
-                }
+				$a_new_comments[] = $comment;
+                
             }
         }
 
