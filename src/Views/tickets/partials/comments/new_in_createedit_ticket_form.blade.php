@@ -57,8 +57,10 @@
                 </div>
             </div>
         @endif
-        <textarea style="display: none" rows="5" class="form-control jquery_level2_enable input_comment_text" name="comment_x" cols="50" disabled="disabled"></textarea>
-        <div class="jquery_error_text"></div>
+        <div>
+            <textarea style="display: none" rows="5" class="form-control jquery_level2_enable input_comment_text" name="comment_x" cols="50" disabled="disabled"></textarea>
+            <div class="jquery_error_text"></div>
+        </div>
         @if($setting->grab('ticket_attachments_feature'))
         <div class="form-group row mt-2">
             {!! CollectiveForm::label('attachments', trans('panichd::lang.attachments') . trans('panichd::lang.colon'), [
@@ -66,10 +68,7 @@
             ]) !!}
             <div class="col-lg-10">
                 <ul class="list-group">
-                    @include('panichd::shared.attach_files_button', [
-                        'attach_id' => 'comment_template_attached',
-                        'prefix' => 'comment_template'
-                    ])
+                    @include('panichd::shared.attach_files_button', ['attach_id' => 'comment_template_attached'])
                     <div id="comment_template_attached" class="panel-group grouped_check_list deletion_list attached_list"  data-new-attachment-edit-div="new_comment_modal_attachment" data-new-attachment-back-div="new_comment_modal_comment">
 
                     </div>
