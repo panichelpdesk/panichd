@@ -14,13 +14,12 @@ $(function(){
 	// Add each attached file name to list when selected
 	$(document).on('change', '.full_file_inputs', function() {
 		var input = $(this),
-			files = $(this).prop('files'),
-			numFiles = input.get(0).files ? input.get(0).files.length : 1;
+			files = $(this).prop('files');
 
-		var list_i = $('#'+$(this).data('attach-id')+' .panel').length;
+		var n_existent = $('#' + $(this).data('attach-id') + ' .jquery_attachment_block').length;
 
 		for(var i=0,file;file=files[i];i++) {
-			var num = list_i+i;
+			var num = n_existent + i;
 			var html = '<div><div id="' + $(this).data('attachments_prefix') + 'attachment_block_'+num+'" class="jquery_attachment_block card bg-default text-warning check_parent unchecked check_related_bg"><div class="card-body"><div class="media">'
 
 				// Upload icon
