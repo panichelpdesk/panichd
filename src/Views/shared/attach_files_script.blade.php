@@ -180,11 +180,11 @@ $(function(){
 		}else{
 			$('#'+prefix+'display_original_filename').text(' - '+original_filename);
 		}
-		$('#'+prefix+'display_new_filename').text(new_filename);
+		$('#'+$(this).data('back-div')).find('#'+prefix+'display_new_filename').text(new_filename);
 		if ($(fieldset).find('#attachment_form_description').val() != ""){
-			$('#'+prefix+'display_description').text($(fieldset).find('#attachment_form_description').val());
+			$('#'+$(this).data('back-div')).find('#'+prefix+'display_description').text($(fieldset).find('#attachment_form_description').val());
 		}else{
-			$('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
+			$('#'+$(this).data('back-div')).find('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
 		}
 
 		if ($(fieldset).find('#hide_modal_id').length){
