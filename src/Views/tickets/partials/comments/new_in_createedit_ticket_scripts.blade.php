@@ -16,6 +16,10 @@ $(function(){
 
        _cloned.find('.input_comment_text').prop('disabled', false).attr('name', 'comment_' + _num);
 
+        _cloned.find('.btn_attach').attr('data-attach-id', 'comment_' + _num + '_attached');
+        _cloned.find('.btn_attach').attr('data-attachments_prefix', 'comment_' + _num + '_');
+        _cloned.find('#comment_template_attached').prop('id', 'comment_' + _num + '_attached');
+
        _cloned.find('.input_comment_notification_text').attr('name', 'comment_' + _num + '_notification_text');
        if ($('input[name=hidden]:checked').val() == 'true'){
            _cloned.find('.switch_response_type').hide();

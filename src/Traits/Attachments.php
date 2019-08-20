@@ -183,14 +183,23 @@ trait Attachments
      * @return string
 	 * @return bool
      */
-    protected function saveAttachments($request, $a_result_errors, $ticket, $comment = false)
+    protected function saveAttachments($info)
     {
-		if (!$request->attachments){
+		extract($info);
+
+		// Check specific attachments field names
+		$r_attachments = (isset($attachments_field) and $attachments_field) ? $request->{$attachments_field} : (isset($attachments_prefix) ? $request->{$attachments_prefix . 'attachments'} : $request->attachments);
+		$filenames_field = $attachment_filenames_field ?? ($attachments_prefix ?? '') . 'attachment_new_filenames';
+		$descriptions_field = $attachment_descriptions_field ?? ($attachments_prefix ?? '') . 'attachment_descriptions';
+		$attachment_block_name = ($attachments_prefix ?? '') . 'attachment_block_';
+
+		if (!$r_attachments){
 			return $a_result_errors;
 		}
 
 		$bytes = $ticket->allAttachments()->sum('bytes');
 		$num = $ticket->allAttachments()->count();
+		if (!isset($comment)) $comment = false;
 		$block = $comment ? $comment->attachments()->count() : $ticket->attachments()->count();
 
 		$new_bytes = 0;
@@ -198,17 +207,17 @@ trait Attachments
 		$index = 0;
 		$a_errors = [];
 
-		foreach ($request->attachments as $uploadedFile) {
+		foreach ($r_attachments as $uploadedFile) {
             /** @var UploadedFile $uploadedFile */
             if (is_null($uploadedFile)) {
                 // No files attached
-                $a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-not-valid-file');
+                $a_errors[$attachment_block_name . ($block+$index)] = trans('panichd::lang.ticket-error-not-valid-file');
 				$index++;
 				continue;
             }
 
             if (!$uploadedFile instanceof UploadedFile) {
-				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-not-valid-object', ['name'=>print_r($uploadedFile, true)]);
+				$a_errors[$attachment_block_name . ($block+$index)] = trans('panichd::lang.ticket-error-not-valid-object', ['name'=>print_r($uploadedFile, true)]);
 				$index++;
 				continue;
             }
@@ -216,7 +225,7 @@ trait Attachments
 			$original_filename = $uploadedFile->getClientOriginalName() ?: '';
 
 			// Denied uploads block process
-			if (is_array($request->block_file_names) and in_array($original_filename, $request->block_file_names)){
+			if (is_array($request->{($attachments_prefix ?? '') . 'block_file_names'}) and in_array($original_filename, $request->{($attachments_prefix ?? '') . 'block_file_names'})){
 				$index++;
 				continue;
 			}
@@ -225,7 +234,7 @@ trait Attachments
 
 			if ($new_bytes/1024/1024 > Setting::grab('attachments_ticket_max_size')){
 
-				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-max-size-reached', [
+				$a_errors[$attachment_block_name . ($block+$index)] = trans('panichd::lang.ticket-error-max-size-reached', [
 					'name' => $original_filename,
 					'available_MB' => round(Setting::grab('attachments_ticket_max_size')-$bytes/1024/1024)
 				]);
@@ -235,7 +244,7 @@ trait Attachments
 			$bytes = $new_bytes;
 
 			if ($num + 1 > Setting::grab('attachments_ticket_max_files_num')){
-				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.ticket-error-max-attachments-count-reached', [
+				$a_errors[$attachment_block_name . ($block+$index)] = trans('panichd::lang.ticket-error-max-attachments-count-reached', [
 					'name' => $original_filename,
 					'max_count'=>Setting::grab('attachments_ticket_max_files_num')
 				]);
@@ -262,32 +271,32 @@ trait Attachments
 			$validator = Validator::make(['file' => $uploadedFile], [ 'file' => 'mimes:'.Setting::grab('attachments_mimes') ]);
 
 			if($validator->fails()){
-				$a_errors['attachment_block_'.($block+$index)] = trans('panichd::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
+				$a_errors[$attachment_block_name . ($block+$index)] = trans('panichd::lang.attachment-update-not-valid-mime', ['file' => $original_filename]);
 				$index++;
 				continue;
 			}
 
 			// New attachments edited fields
 			$a_fields = $a_single_errors = [];
-			if (isset($request->input('attachment_new_filenames')[$index])){
+			if (isset($request->input($filenames_field)[$index])){
 				$a_fields['new_filename'] = [
 					'name' => 'new_attachment_new_filename_'.$index, // Not real request input
-					'value' => $request->input('attachment_new_filenames')[$index]
+					'value' => $request->input($filenames_field)[$index]
 				];
 			}else
 				$attachment->new_filename = $original_filename;
 
-			if (isset($request->input('attachment_descriptions')[$index])){
+			if (isset($request->input($descriptions_field)[$index])){
 				$a_fields['description'] = [
 					'name' => 'new_attachment_description_'.$index, // Not real request input
-					'value' => $request->input('attachment_descriptions')[$index]
+					'value' => $request->input($descriptions_field)[$index]
 				];
 			}
 
 			if ($a_fields) $this->updateSingleAttachment($attachment, $a_fields, $a_single_errors);
 
 			if ($a_single_errors){
-				$a_errors['attachment_block_'.($block+$index)] = implode('. ', $a_single_errors);
+				$a_errors[$attachment_block_name . ($block+$index)] = implode('. ', $a_single_errors);
 				$index++;
 				continue;
 			}

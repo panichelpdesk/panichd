@@ -2,9 +2,9 @@
 <script type="text/javascript">
 $(function(){
 	// Attach files button
-	$('.btn_attach').on('click', function(e){
+	$(document).on('click', '.btn_attach', function(e){
 
-		var elem = $('<input type="file" name="attachments[]" class="full_file_inputs" data-attach-id="'+$(this).data('attach-id')+'" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);
+		var elem = $('<input type="file" name="' + $(this).data('attachments_prefix') + 'attachments[]" class="full_file_inputs" data-attach-id="' + $(this).data('attach-id') + '" data-attachments_prefix="' + $(this).data('attachments_prefix') + '" style="display: none" multiple>').prop('id', 'full_input_'+$('.full_file_inputs').length);
 
 		$('#'+$(this).data('attach-id')).append(elem);
 
@@ -14,14 +14,13 @@ $(function(){
 	// Add each attached file name to list when selected
 	$(document).on('change', '.full_file_inputs', function() {
 		var input = $(this),
-			files = $(this).prop('files'),
-			numFiles = input.get(0).files ? input.get(0).files.length : 1;
+			files = $(this).prop('files');
 
-		var list_i = $('#'+$(this).data('attach-id')+' .panel').length;
+		var n_existent = $('#' + $(this).data('attach-id') + ' .jquery_attachment_block').length;
 
 		for(var i=0,file;file=files[i];i++) {
-			var num = list_i+i;
-			var html = '<div><div id="attachment_block_'+num+'" class="jquery_attachment_block card bg-default text-warning check_parent unchecked check_related_bg"><div class="card-body"><div class="media">'
+			var num = n_existent + i;
+			var html = '<div><div id="' + $(this).data('attachments_prefix') + 'attachment_block_'+num+'" class="jquery_attachment_block card bg-default text-warning check_parent unchecked check_related_bg"><div class="card-body"><div class="media">'
 
 				// Upload icon
 				+'<div class="media-left mr-3"><span class="media-object fa fa-upload text-warning" style="font-size: 30px" title="{{ trans('panichd::lang.pending-attachment') }}" style="cursor: help"></span></div>'
@@ -40,8 +39,8 @@ $(function(){
 			}
 
 				html +=' data-original_filename="'+file.name+'" data-prefix="new_attachment_'+num+'_" style="margin: 0em 0em 0em 1em;">{{ trans('panichd::lang.btn-edit') }}</button>'
-				+'<input type="hidden" id="new_attachment_'+num+'_new_filename" name="attachment_new_filenames[]" value="'+file.name+'">'
-				+'<input type="hidden" id="new_attachment_'+num+'_description" name="attachment_descriptions[]" value="">'
+				+'<input type="hidden" id="new_attachment_'+num+'_new_filename" name="' + $(this).data('attachments_prefix') + 'attachment_new_filenames[]" value="'+file.name+'">'
+				+'<input type="hidden" id="new_attachment_'+num+'_description" name="' + $(this).data('attachments_prefix') + 'attachment_descriptions[]" value="">'
 				+'</div>'
 
 				// Description
@@ -51,7 +50,7 @@ $(function(){
 				// Block button
 				+'<div class="media-right media-middle">'
 				+'<a href="#" class="check_button" data-delete_id="delete_new_attachment_check_'+num+'"><span class="media-object fa fa-times" aria-hidden="true"></span><span class="media-object fa fa-check" aria-hidden="true" style="display: none"></span></a>'
-				+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
+				+'<input type="checkbox" id="delete_new_attachment_check_'+num+'" name="' + $(this).data('attachments_prefix') + 'block_file_names[]" value="'+file.name+'" checked="checked" style="display: none" disabled="disabled"></div>'
 				+'</div></div></div>'
 				+'<div class="jquery_error_text"></div></div>';
 
@@ -181,11 +180,11 @@ $(function(){
 		}else{
 			$('#'+prefix+'display_original_filename').text(' - '+original_filename);
 		}
-		$('#'+prefix+'display_new_filename').text(new_filename);
+		$('#'+$(this).data('back-div')).find('#'+prefix+'display_new_filename').text(new_filename);
 		if ($(fieldset).find('#attachment_form_description').val() != ""){
-			$('#'+prefix+'display_description').text($(fieldset).find('#attachment_form_description').val());
+			$('#'+$(this).data('back-div')).find('#'+prefix+'display_description').text($(fieldset).find('#attachment_form_description').val());
 		}else{
-			$('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
+			$('#'+$(this).data('back-div')).find('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
 		}
 
 		if ($(fieldset).find('#hide_modal_id').length){

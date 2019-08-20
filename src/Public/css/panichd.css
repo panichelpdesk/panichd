@@ -390,7 +390,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .jquery_error .form-control, .jquery_error .note-editor, .jquery_error .jquery_attachment_block {
-	border: 1px solid red;
+	border: 1px solid red !important;
 }
 .jquery_error .jquery_error_text {
 	display: block;

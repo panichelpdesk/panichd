@@ -1091,11 +1091,11 @@ class TicketsController extends Controller
 			$this->embedded_images_to_attachments($permission_level, $ticket);
 
 			// Attached files
-			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
+			$a_result_errors = $this->saveAttachments(compact('request', 'a_result_errors', 'ticket'));
 		}
 
         // Embedded Comments
-        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($permission_level, $request, $ticket, $a_result_errors);
 
         // If errors present
         if ($a_result_errors){
@@ -1135,7 +1135,7 @@ class TicketsController extends Controller
     /*
      * Add embedded comments in ticket creation / edition
     */
-    public function add_embedded_comments($request, $ticket, $a_result_errors)
+    public function add_embedded_comments($permission_level, $request, $ticket, $a_result_errors)
     {
         $a_new_comments = [];
 
@@ -1156,25 +1156,45 @@ class TicketsController extends Controller
 
                 $validator = Validator::make($a_content, ['content' => 'required|min:6'], $custom_messages);
                 if ($validator->fails()) {
-                    $a_messages = $validator->errors()->messages();
-                    $a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
-                }else{
-                    $comment = new Models\Comment();
-                    $comment->type = $response_type;
-                    $comment->ticket_id = $ticket->id;
-                    $comment->user_id = auth()->user()->id;
-            		$comment->content = $a_content['content'];
-                    $comment->html = $a_content['html'];
-            		$comment->save();
+					$a_messages = $validator->errors()->messages();
+					$a_result_errors['messages'][] = trans('panichd::lang.comment') . trans('panichd::lang.colon') . current($a_messages['content']);
+					$a_result_errors['fields']['comment_' . $i] = current($a_messages['content']);
+				}
 
-                    // Comment recipients
-                    if($request->input('comment_' . $i . '_recipients') != "") $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
+				// Create new comment
+				$comment = new Models\Comment();
+				$comment->type = $response_type;
+				$comment->ticket_id = $ticket->id;
+				$comment->user_id = auth()->user()->id;
+				$comment->content = $a_content['content'];
+				$comment->html = $a_content['html'];
+				$comment->save();
 
-                    // Adds this as a $comment property to check it in NotificationsController
-                    if($request->input('comment_' . $i . '_notification_text') != "") $comment->add_in_user_notification_text =  'yes';
+				// Create attachments from embedded images
+				$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
+				
+				if (Setting::grab('ticket_attachments_feature')){
+					// Add embedded comment attached files
+					$info = compact('request', 'a_result_errors', 'ticket', 'comment');
+					
+					// Specify form fields
+					$info['attachments_prefix'] = 'comment_' . $i . '_';
+					$info['attachments_field'] = 'comment_' . $i . '_attachments';
+					$info['attachment_filenames_field'] = 'comment_' . $i . 'attachment_new_filenames';
+					$info['attachment_descriptions_field'] = 'comment_' . $i . 'attachment_descriptions';
 
-                    $a_new_comments[] = $comment;
-                }
+					// Process attachments
+					$a_result_errors = $this->saveAttachments($info);
+				}
+
+				// Comment recipients
+				if($request->input('comment_' . $i . '_recipients') != "") $comment->a_recipients = $request->{'comment_' . $i . '_recipients'};
+
+				// Adds this as a $comment property to check it in NotificationsController
+				if($request->input('comment_' . $i . '_notification_text') != "") $comment->add_in_user_notification_text =  'yes';
+
+				$a_new_comments[] = $comment;
+                
             }
         }
 
@@ -1442,7 +1462,7 @@ class TicketsController extends Controller
 			$a_result_errors = $this->updateAttachments($request, $a_result_errors, $ticket->attachments()->get());
 
 			// 2 - add new attachments
-			$a_result_errors = $this->saveAttachments($request, $a_result_errors, $ticket);
+			$a_result_errors = $this->saveAttachments(compact('request', 'a_result_errors', 'ticket'));
 
 			if (!$a_result_errors){
 				// 3 - destroy checked attachments
@@ -1455,7 +1475,7 @@ class TicketsController extends Controller
 		}
 
         // Embedded Comments
-        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($request, $ticket, $a_result_errors);
+        list($a_new_comments, $a_result_errors) = $this->add_embedded_comments($permission_level, $request, $ticket, $a_result_errors);
 
 		// If errors present
 		if ($a_result_errors){
