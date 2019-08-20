@@ -1,7 +1,13 @@
 @extends($master)
 
 @section('page')
-    {{ trans('panichd::lang.index-title') }}
+    @if($ticketList == 'newest')
+        {{ trans('panichd::lang.nav-new-tickets-title') }}
+    @elseif($ticketList == 'complete')
+        {{ trans('panichd::lang.nav-completed-tickets-title') }}
+    @else
+        {{ trans('panichd::lang.nav-active-tickets-title') }}
+    @endif
 @stop
 
 @include('panichd::shared.common')
