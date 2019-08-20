@@ -80,7 +80,6 @@ return [
   'index-create-new-ticket'          => 'ایجاد تیکت جدید',
   'index-complete-check'             => 'اگر تیکت خود را یافت نمیکنید بخش تیتکت های کامل شده را جستجو نمایید.',
 
-  'create-ticket-title'              => 'تیکت جدید از',
   'create-new-ticket'                => 'تیکت جدید',
   'create-ticket-brief-issue'        => 'شرح خلاصه ای از مشکلتان را بیان کنید',
   'create-ticket-describe-issue'     => 'جزییات کاملی از مشکل خود در این قسمت بیان کنید',

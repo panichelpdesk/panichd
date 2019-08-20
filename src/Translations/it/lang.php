@@ -80,7 +80,6 @@ return [
   'index-create-new-ticket'          => 'crea nuovo Ticket',
   'index-complete-check'             => 'Be sure to check Complete Tickets if you cannot find your ticket.',
 
-  'create-ticket-title'              => 'Modulo Nuova Richiesta di Assistenza',
   'create-new-ticket'                => 'Crea nuovo Ticket',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-describe-issue'     => 'Descrivi il tuo problema nei dettagli',

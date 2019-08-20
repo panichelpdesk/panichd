@@ -1,5 +1,11 @@
 @extends($master)
-@section('page', trans('panichd::lang.create-ticket-title'))
+@section('page')
+	@if(isset($ticket))
+		{{ trans('panichd::lang.edit-ticket') . ' #' . $ticket->id }}
+	@else
+		{{ trans('panichd::lang.create-new-ticket') }}
+	@endif
+@endsection
 
 @include('panichd::shared.common')
 

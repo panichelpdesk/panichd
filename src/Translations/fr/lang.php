@@ -80,7 +80,6 @@ return [
   'index-create-new-ticket'          => 'Créer un nouveau ticket',
   'index-complete-check'             => 'Merci de vérifier les tickets fermés si vous ne trouvez pas votre ticket.',
 
-  'create-ticket-title'              => 'Titre du nouveau ticket',
   'create-new-ticket'                => 'Créer un nouveau ticket',
   'create-ticket-brief-issue'        => 'Résumé de votre demande',
   'create-ticket-describe-issue'     => 'Description de votre demande avec les détails',
