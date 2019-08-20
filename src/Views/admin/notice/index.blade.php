@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-{{ trans('panichd::admin.config-index-title') }}
+{{ trans('panichd::admin.notice-index-title') }}
 @stop
 
 @include('panichd::shared.common')

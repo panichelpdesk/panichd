@@ -1,7 +1,7 @@
 @extends($master)
 
 @section('page')
-    {{ trans('panichd::lang.index-title') }}
+    {{ trans('panichd::lang.ticket-notices-title') }}
 @stop
 
 @include('panichd::shared.common')
