@@ -80,7 +80,6 @@ return [
   'index-create-new-ticket'          => 'создать новый тикет',
   'index-complete-check'             => 'Если не получается найти нужный тикет здесь - проверьте список завершенных.',
 
-  'create-ticket-title'              => 'Создание Тикета',
   'create-new-ticket'                => 'Создание Тикета',
   'create-ticket-brief-issue'        => 'Краткое описание',
   'create-ticket-describe-issue'     => 'Описание',

@@ -81,7 +81,6 @@ return [
   'index-create-new-ticket'          => 'kérelem létrehozása',
   'index-complete-check'             => 'Ellenőrizze a Lezárt kérelmeket, ha nem találja a keresett kérelmet.',
 
-  'create-ticket-title'              => 'Új kérelem',
   'create-new-ticket'                => 'Új kérelem létrehozása',
   'create-ticket-brief-issue'        => 'Tömör összefoglalás',
   'create-ticket-describe-issue'     => 'A probléma részletes kifejtése',

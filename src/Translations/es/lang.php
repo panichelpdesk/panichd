@@ -80,7 +80,6 @@ return [
   'index-create-new-ticket'          => 'crear un tiquete nuevo',
   'index-complete-check'             => 'Asegúrate de revisar los Tiquetes Completados si no puedes encontrar el tiquete.',
 
-  'create-ticket-title'              => 'Formulario de Nuevo Tiquete',
   'create-new-ticket'                => 'Crear Nuevo Tiquete',
   'create-ticket-brief-issue'        => 'Un resumen del problema que tienes',
   'create-ticket-describe-issue'     => 'Describe en detalle el problema que tienes',

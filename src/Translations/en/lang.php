@@ -225,7 +225,6 @@ return [
   'update-priority-ok'               => 'Priority was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
 
 // tickets/create
-  'create-ticket-title'              => 'New Ticket Form',
   'create-new-ticket'                => 'Create New Ticket',
   'create-ticket-brief-issue'        => 'A brief of your issue ticket',
   'create-ticket-notices'            => 'Notices',

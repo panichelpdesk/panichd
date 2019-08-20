@@ -267,7 +267,6 @@ return [
     'update-priority-same' => 'A prioridade não foi alterada! Ticket < a href=": link " title="quot; title" > < u >: name < / u > < / a >',
 
     'update-priority-ok' => 'A prioridade foi atualizada corretamente. Ticket < a href=": link " title="quot; title" > < u >: name < / u > < / a >:: old - > :Novo',
-    'create-ticket-title' => 'Novo Formulário de Chamado',
     'create-new-ticket' => 'Criar Novo Chamado',
     'create-ticket-brief-issue' => 'Descreva brevemente seu Chamado',
 

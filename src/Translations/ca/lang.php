@@ -223,7 +223,6 @@ return [
   'update-priority-ok'               => 'Prioritat canviada correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
 
 // tickets/create
-  'create-ticket-title'              => 'Nou formulari de Tiquet',
   'create-new-ticket'                => 'Crear Nou Tiquet',
   'create-ticket-brief-issue'        => 'Tema del tiquet',
   'create-ticket-notices'            => 'Avís per',

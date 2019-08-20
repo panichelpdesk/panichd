@@ -80,7 +80,6 @@ return [
     'index-create-new-ticket' => 'فتح تذكرة',
     'index-complete-check'    => 'تأكد من مراجعة التذاكر المكتملة إذا لم تعثر على تذكرتك.',
 
-    'create-ticket-title'          => 'نموذج تذكرة جديدة',
     'create-new-ticket'            => 'تذكرة جديدة',
     'create-ticket-brief-issue'    => 'نبذة عن مشكلتك',
     'create-ticket-describe-issue' => 'وصف مشكلتك في التفاصيل',
