@@ -58,7 +58,8 @@ class TicketsController extends Controller
 		if ($ticketList == 'search'){
 			// Filter by all specified fields
 			if(session()->has('search_fields')){
-				foreach (session()->get('search_fields') as $field => $value){
+				$search_fields = session()->get('search_fields');
+				foreach ($search_fields as $field => $value){
 					if ($field == 'list'){
 						$collection->inList($value);
 
@@ -68,6 +69,12 @@ class TicketsController extends Controller
 					}elseif(in_array($field, $this->a_search_fields)){
 						$collection->where($field, 'like', '%' . $value . '%');
 					}
+				}
+
+				if (isset($search_fields['tags'])){
+					$collection->whereHas('tags', function($query) use($search_fields){
+						$query->whereIn('id', $search_fields['tags']);
+					});
 				}
 			}
 
@@ -691,6 +698,11 @@ class TicketsController extends Controller
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};
 			}
+		}
+
+		// Check ticket tags
+		if ($request->filled('category_id') and $request->filled('category_' . $request->category_id . '_tags')){
+			$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
 		}
 
 		if (isset($search_fields)){
