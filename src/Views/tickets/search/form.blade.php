@@ -1,5 +1,5 @@
-<div class="card bg-light"><div class="card-body">
-{!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.form', 'method' => 'POST']) !!}
+<div id="search_form" class="card bg-light mb-2" @if(isset($search_fields)) style="display: none" @endif><div class="card-body">
+{!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.results', 'method' => 'POST']) !!}
 
     <legend>Search tickets</legend>
 
@@ -177,9 +177,8 @@
 
     <div class="text-center"><!-- SUBMIT BUTTON -->
         {!! CollectiveForm::submit('Search', [
-                'class' => 'btn btn-primary ajax_form_submit',
-                'data-errors_div' => 'form_errors'
-            ]) !!}
+            'class' => 'btn btn-primary'
+        ]) !!}
     </div>
 {!! CollectiveForm::close() !!}
 </div></div>
