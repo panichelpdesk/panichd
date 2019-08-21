@@ -50,9 +50,23 @@ class TicketsController extends Controller
 
 		$datatables = app(\Yajra\Datatables\Datatables::class);
 
-        $agent = $this->member->find(auth()->user()->id);
+		$agent = $this->member->find(auth()->user()->id);
+		
+		$collection = Ticket::visible();
 
-        $collection = Ticket::inList($ticketList)->visible()->filtered($ticketList);
+		if ($ticketList == 'search'){
+			// Filter by all specified fields
+			if(session()->has('search_fields')){
+				foreach (session()->get('search_fields') as $field => $value){
+					if ($field == 'subject'){
+						$collection->where('subject', 'like', '%' . $value . '%');
+					}
+				}
+			}
+
+		}else{
+			$collection->inList($ticketList)->filtered($ticketList);
+		}
 
         $collection
             ->leftJoin('users', function ($join1){
@@ -659,11 +673,20 @@ class TicketsController extends Controller
     {
 		$data = $this->search_form_defaults();
 
-		// View visible columns like at active tickets list
-		$data['ticketList'] = 'active';
+		$data['ticketList'] = 'search';
 
-		// Include search fields in $data array
-		$data['search_fields']['subject'] = $request->subject;
+		// Forget last search
+		session()->forget('search_fields');
+
+		// Check Subject
+		if($request->filled('subject')){
+			$search_fields['subject'] = $request->subject;
+		}
+
+		if (isset($search_fields)){
+			// Store search fields in session to use in datatable
+			session(compact('search_fields'));
+		}
 
         return view('panichd::tickets.search.results', $data);
 	}
