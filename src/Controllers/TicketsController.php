@@ -30,7 +30,8 @@ class TicketsController extends Controller
     use Attachments, CacheVars, Purifiable, TicketFilters;
 
     protected $tickets;
-    protected $member;
+	protected $member;
+	protected $a_search_fields = ['subject', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id', 'content', 'intervention'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
@@ -58,8 +59,14 @@ class TicketsController extends Controller
 			// Filter by all specified fields
 			if(session()->has('search_fields')){
 				foreach (session()->get('search_fields') as $field => $value){
-					if ($field == 'subject'){
-						$collection->where('subject', 'like', '%' . $value . '%');
+					if ($field == 'list'){
+						$collection->inList($value);
+
+					}elseif(in_array($field, ['start_date', 'limit_date'])){
+						$collection->where($field, '>=', Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value));
+
+					}elseif(in_array($field, $this->a_search_fields)){
+						$collection->where($field, 'like', '%' . $value . '%');
 					}
 				}
 			}
@@ -678,9 +685,12 @@ class TicketsController extends Controller
 		// Forget last search
 		session()->forget('search_fields');
 
-		// Check Subject
-		if($request->filled('subject')){
-			$search_fields['subject'] = $request->subject;
+		// Check all fields
+		$a_fields = array_merge($this->a_search_fields, ['list', 'start_date', 'limit_date', 'attachment_name']);
+		foreach ($a_fields as $field){
+			if($request->filled($field)){
+				$search_fields[$field] = $request->{$field};
+			}
 		}
 
 		if (isset($search_fields)){

@@ -18,10 +18,10 @@
 
     <div class="form-group row" style="margin-bottom: 1.5em"><!-- OWNER -->
 
-        <label for="owner_id" class="col-lg-3 level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+        <label for="user_id" class="col-lg-3 level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
 
         <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-            <select name="owner_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
+            <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                 <option value="">- none -</option>
                 @foreach ($c_members as $owner)
                     <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
@@ -42,9 +42,7 @@
         <div class="form-group row align-items-center" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
             {!! CollectiveForm::label('complete', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label',
-                'title' => trans('panichd::lang.create-ticket-change-list'),
-                'id' => 'last_list',
-                'data-last_list_default_status_id' => null
+                'title' => trans('panichd::lang.create-ticket-change-list')
             ]) !!}
             <div class="col-lg-9">
                 <div class="form-check form-check-inline">
@@ -79,7 +77,7 @@
         <div class="form-group row"><!-- PRIORITY -->
             {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
-                <select class="form-control" name="status_id">
+                <select class="form-control" name="priority_id">
                     <option value="">- none -</option>
                     @foreach($priorities as $id => $priority)
                         <option value="{{ $id }}">{{ $priority }}</option>
@@ -98,6 +96,7 @@
                         <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
                     </span>
                 </div>
+                <div class="form-text text-muted">From specified date time</div>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom: 1.5em">
@@ -110,6 +109,7 @@
                         <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
                     </span>
                 </div>
+                <div class="form-text text-muted">From specified date time</div>
             </div>
         </div>
     </div>
