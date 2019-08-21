@@ -77,6 +77,12 @@ class TicketsController extends Controller
 					});
 				}
 
+				if (isset($search_fields['comments'])){
+					$collection->whereHas('comments', function($q1) use($search_fields){
+						$q1->where('content', 'like', '%' . $search_fields['comments'] . '%');
+					});
+				}
+
 				if (isset($search_fields['attachment_name'])){
 					$collection->where(function($query) use($search_fields){
 						$query->whereHas('attachments', function($q1) use($search_fields){
@@ -710,7 +716,7 @@ class TicketsController extends Controller
 		session()->forget('search_fields');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields, ['list', 'start_date', 'limit_date', 'attachment_name']);
+		$a_fields = array_merge($this->a_search_fields, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};

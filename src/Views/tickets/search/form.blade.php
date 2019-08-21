@@ -151,14 +151,21 @@
     <div class="form-group row"><!-- DESCRIPTION -->
         <label for="content" class="col-lg-3 col-form-label"> *{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}}</label>
         <div class="col-lg-9">
-        <textarea class="form-control" rows="5" name="content" cols="50"></textarea>
+        <textarea class="form-control" rows="2" name="content" cols="50"></textarea>
         </div>
     </div>
 
     <div class="form-group row"><!-- INTERVENTION -->
         <label for="intervention" class="col-lg-3 col-form-label">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
-        <textarea class="form-control" rows="5" name="intervention" cols="50"></textarea>
+        <textarea class="form-control" rows="2" name="intervention" cols="50"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row"><!-- COMMENTS -->
+        <label for="comments" class="col-lg-3 col-form-label">Comment text{{ trans('panichd::lang.colon') }}</label>
+        <div class="col-lg-9">
+        <textarea class="form-control" rows="2" name="comments" cols="50"></textarea>
         </div>
     </div>
 
