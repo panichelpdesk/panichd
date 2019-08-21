@@ -639,6 +639,38 @@ class TicketsController extends Controller
     }
 
     /**
+     * Ticket search
+     *
+     * @return Response
+     */
+    public function search_form()
+    {
+		$member = $this->member->find(auth()->user()->id);
+
+		$c_members = $this->members_collection($member);
+
+		$c_status = \PanicHD\PanicHD\Models\Status::all();
+
+		$priorities = $this->getCacheList('priorities');
+
+		$a_categories = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
+
+		// Tag lists
+        $c_cat_tags = Category::whereHas('tags')
+        ->with([
+            'tags'=> function ($q1) {
+                $q1->select('id', 'name');
+            },
+            'tags.tickets'=> function ($q2) {
+                $q2->where('id', '0')->select('id');
+            },
+        ])
+        ->select('id', 'name')->get();
+
+        return view('panichd::tickets.search', compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_cat_tags'));
+    }
+
+    /**
      * Open Ticket creation form with optional parameters pre-setted by URL
      *
      * @return Response
