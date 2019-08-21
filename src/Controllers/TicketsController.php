@@ -76,6 +76,23 @@ class TicketsController extends Controller
 						$query->whereIn('id', $search_fields['tags']);
 					});
 				}
+
+				if (isset($search_fields['attachment_name'])){
+					$collection->where(function($query) use($search_fields){
+						$query->whereHas('attachments', function($q1) use($search_fields){
+							$q1->where('original_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+								->orWhere('new_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+								->orWhere('description', 'like', '%' . $search_fields['attachment_name'] . '%');
+							})
+							->orWhereHas('comments', function($q2) use($search_fields) {
+								$q2->whereHas('attachments', function($q3) use($search_fields){
+									$q3->where('original_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+										->orWhere('new_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+										->orWhere('description', 'like', '%' . $search_fields['attachment_name'] . '%');
+								});
+							});
+					});
+				}
 			}
 
 		}else{
