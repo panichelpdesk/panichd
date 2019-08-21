@@ -16,6 +16,29 @@
         </div>
     </div>
 
+    <div class="form-group row"><!-- CREATOR -->
+
+        <label for="creator_id" class="col-lg-3 level_class col-form-label" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3"> Creator: </label>
+
+        <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+            <select name="creator_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
+                <option value="">- none -</option>
+                @foreach ($c_members as $owner)
+                    <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
+                    @if ($setting->grab('departments_notices_feature'))
+                        @if ($owner->ticketit_department == '0')
+                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                        @elseif ($owner->ticketit_department != "")
+                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
+                        @endif
+                    @endif
+                    </option>
+                @endforeach
+            </select>
+            <div class="help-block text-muted">Who created the ticket (Sometimes is an agent in the name of a Member)</div>
+        </div>
+    </div>
+
     <div class="form-group row" style="margin-bottom: 1.5em"><!-- OWNER -->
 
         <label for="user_id" class="col-lg-3 level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
@@ -35,6 +58,7 @@
                     </option>
                 @endforeach
             </select>
+            <div class="help-block text-muted">Member that owns the ticket</div>
         </div>
     </div>
 

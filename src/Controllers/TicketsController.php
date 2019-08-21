@@ -31,7 +31,7 @@ class TicketsController extends Controller
 
     protected $tickets;
 	protected $member;
-	protected $a_search_fields_numeric = ['user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
+	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
