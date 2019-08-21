@@ -31,7 +31,8 @@ class TicketsController extends Controller
 
     protected $tickets;
 	protected $member;
-	protected $a_search_fields = ['subject', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id', 'content', 'intervention'];
+	protected $a_search_fields_numeric = ['user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
+	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
@@ -66,8 +67,11 @@ class TicketsController extends Controller
 					}elseif(in_array($field, ['start_date', 'limit_date'])){
 						$collection->where($field, '>=', Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value));
 
-					}elseif(in_array($field, $this->a_search_fields)){
+					}elseif(in_array($field, $this->a_search_fields_text)){
 						$collection->where($field, 'like', '%' . $value . '%');
+					
+					}elseif(in_array($field, $this->a_search_fields_numeric)){
+						$collection->where($field, $value);
 					}
 				}
 
@@ -716,7 +720,7 @@ class TicketsController extends Controller
 		session()->forget('search_fields');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name']);
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};
