@@ -22,9 +22,11 @@
 @include('panichd::tickets.partials.summernote')
 
 @section('footer')
-    @include('panichd::tickets.createedit.scripts')
+	@include('panichd::tickets.createedit.scripts')
+	@include('panichd::tickets.partials.form_scripts')
 	@if ($u->currentLevel() > 1)
 		@include('panichd::tickets.partials.comments.new_in_createedit_ticket_scripts')
 	@endif
-	@include('panichd::tickets.partials.tags_footer_script')
+
+	@include('panichd::tickets.partials.tags_footer_script', ['category_id' => $a_current['cat_id']])
 @append

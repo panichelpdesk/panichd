@@ -12,9 +12,15 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 	Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
         ->name("$main_route-newest")
 		->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
-
+    
+    // Ticket data loaded by Datatables
     Route::get("$main_route_path/data/{id?}", 'PanicHD\PanicHD\Controllers\TicketsController@data')
-            ->name("$main_route.data");
+        ->name("$main_route.data");
+
+    // Search form
+    Route::get("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@search_form')
+        ->name("$main_route.search.form")
+		->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
 
 	// Notice list
 	Route::get("$main_route_path/notices", function(){
