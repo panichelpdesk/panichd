@@ -135,7 +135,7 @@
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
         <div class="col-lg-9">
-            <select id="agent_id" class="form-control" style="display: none"></select>
+            <select id="agent_id" name="agent_id" class="form-control" style="display: none"></select>
         </div>
     </div>
 
