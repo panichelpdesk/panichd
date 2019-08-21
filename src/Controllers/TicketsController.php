@@ -639,12 +639,42 @@ class TicketsController extends Controller
     }
 
     /**
-     * Ticket search
+     * Ticket search form
      *
      * @return Response
      */
     public function search_form()
     {
+		$data = $this->search_form_defaults();
+
+        return view('panichd::tickets.search', $data);
+	}
+
+	/**
+     * Ticket search results
+     *
+     * @return Response
+     */
+    public function search_results(Request $request)
+    {
+		$data = $this->search_form_defaults();
+
+		// View visible columns like at active tickets list
+		$data['ticketList'] = 'active';
+
+		// Include search fields in $data array
+		$data['search_fields']['subject'] = $request->subject;
+
+        return view('panichd::tickets.search.results', $data);
+	}
+	
+	/**
+     * Ticket search default data
+     *
+     * @return Array
+     */
+	public function search_form_defaults()
+	{
 		$member = $this->member->find(auth()->user()->id);
 
 		$c_members = $this->members_collection($member);
@@ -665,10 +695,10 @@ class TicketsController extends Controller
                 $q2->where('id', '0')->select('id');
             },
         ])
-        ->select('id', 'name')->get();
-
-        return view('panichd::tickets.search', compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_cat_tags'));
-    }
+		->select('id', 'name')->get();
+		
+		return compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_cat_tags');
+	}
 
     /**
      * Open Ticket creation form with optional parameters pre-setted by URL
