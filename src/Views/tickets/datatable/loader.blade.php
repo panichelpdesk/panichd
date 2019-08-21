@@ -76,7 +76,7 @@
 		],
 		@if($ticketList != 'newest')
 			@if( $u->currentLevel() > 1)
-				@if ($ticketList=='active')
+				@if ($ticketList != 'complete')
 					order: [
 						[1, 'desc'],
 						[3, 'desc'],

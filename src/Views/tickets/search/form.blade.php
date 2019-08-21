@@ -1,4 +1,4 @@
-<div id="search_form" class="card bg-light mb-2" @if(isset($search_fields)) style="display: none" @endif><div class="card-body">
+<div id="search_form" class="card bg-light mb-2" @if(isset($ticketList) && $ticketList == 'search') style="display: none" @endif><div class="card-body">
 {!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.results', 'method' => 'POST']) !!}
 
     <legend>Search tickets</legend>
