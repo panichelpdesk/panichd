@@ -70,7 +70,12 @@ class TicketsController extends Controller
 						$collection->inList($value);
 
 					}elseif(in_array($field, ['start_date', 'limit_date'])){
-						$collection->where($field, '>=', Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value));
+						if ($search_fields[$field . '_type'] == 'exact_day'){
+							$collection->whereDate($field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateTimeString());
+						
+						}else{
+							$collection->where($field, ($search_fields[$field . '_type'] == 'from' ? '>=' : '<'), Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateTimeString());
+						}
 
 					}elseif(in_array($field, $this->a_search_fields_text)){
 						$collection->where($field, 'like', '%' . $value . '%');
@@ -788,6 +793,15 @@ class TicketsController extends Controller
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};
+			}
+		}
+
+		// Register Start date and Limit date types (from radio buttons)
+		if ($request->filled('start_date') or $request->filled('start_date')){
+			foreach (['start_date', 'limit_date'] as $field){
+				if($request->filled($field)){
+					$search_fields[$field . '_type'] = $request->{$field . '_type'};
+				}
 			}
 		}
 
