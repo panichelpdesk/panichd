@@ -145,7 +145,7 @@
             'data-level-2-class' => 'col-lg-3'
         ]) !!}
         <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-            <select id="category_change" class="form-control" name="category_id">
+            <select id="select_category" class="form-control" name="category_id">
                 <option value="">- none -</option>
                 @foreach($a_categories as $id => $cat)
                     <option value="{{ $id }}">{{ $cat }}</option>
@@ -159,7 +159,13 @@
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
         <div class="col-lg-9">
-            <select id="agent_id" name="agent_id" class="form-control" style="display: none"></select>
+            <select id="select_category_agent" name="agent_id" class="form-control" style="display: none" disabled="disabled"></select>
+            <select id="select_visible_agent" name="agent_id" class="form-control">
+                <option value="">- none -</option>
+                @foreach($c_visible_agents as $agent)
+                    <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
 

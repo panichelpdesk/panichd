@@ -17,6 +17,7 @@ use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -757,6 +758,8 @@ class TicketsController extends Controller
 
 		$a_categories = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
+		$c_visible_agents = Member::visible()->get();
+
 		// Tag lists
         $c_cat_tags = Category::whereHas('tags')
         ->with([
@@ -769,7 +772,7 @@ class TicketsController extends Controller
         ])
 		->select('id', 'name')->get();
 		
-		return compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_cat_tags');
+		return compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_visible_agents', 'c_cat_tags');
 	}
 
     /**
