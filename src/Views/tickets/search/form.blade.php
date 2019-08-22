@@ -171,7 +171,7 @@
 
     <div class="form-group row"><!-- TAGS -->
         <label class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
-        <div id="jquery_select2_container" class="col-lg-9">
+        <div id="tag_list_container" class="col-lg-9">
         @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => []])
         </div>
     </div>

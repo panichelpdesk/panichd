@@ -107,7 +107,7 @@ $(function(){
         @endif
 
         // Update tag list
-        $('#jquery_select2_container .select2-container').hide();
+        $('#tag_list_container .select2-container').hide();
         $('#jquery_tag_category_'+$(this).val()).next().show();
     });
 });
