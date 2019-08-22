@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row"><!-- START DATE -->
             {!! CollectiveForm::label('start_date', trans('panichd::lang.start-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="start_date">
@@ -120,10 +120,15 @@
                         <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
                     </span>
                 </div>
-                <div class="form-text text-muted">From specified date time</div>
+                <div class="form-text">
+                    <label><input type="radio" name="start_date_type" value="from" checked="checked"> From specified</label>
+                    <label class="ml-2"><input type="radio" name="start_date_type" value="until"> Until specified</label>
+                    <label class="ml-2"><input type="radio" name="start_date_type" value="exact_day"> Exact day, any time</label>
+                </div>
             </div>
         </div>
-        <div class="form-group row" style="margin-bottom: 1.5em">
+        
+        <div class="form-group row" style="margin-bottom: 1.5em"><!-- LIMIT DATE -->
             {!! CollectiveForm::label('limit_date', trans('panichd::lang.limit-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="limit_date">
@@ -133,7 +138,11 @@
                         <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
                     </span>
                 </div>
-                <div class="form-text text-muted">From specified date time</div>
+                <div class="form-text">
+                    <label><input type="radio" name="limit_date_type" value="from" checked="checked"> From specified</label>
+                    <label class="ml-2"><input type="radio" name="limit_date_type" value="until"> Until specified</label>
+                    <label class="ml-2"><input type="radio" name="limit_date_type" value="exact_day"> Exact day, any time</label>
+                </div>
             </div>
         </div>
     </div>
