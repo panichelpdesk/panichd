@@ -172,7 +172,7 @@
     <div class="form-group row"><!-- TAGS -->
         <label class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
         <div id="tag_list_container" class="col-lg-9">
-        @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => []])
+            @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => []])
         </div>
     </div>
 
@@ -181,21 +181,21 @@
     <div class="form-group row"><!-- DESCRIPTION -->
         <label for="content" class="col-lg-3 col-form-label"> *{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}}</label>
         <div class="col-lg-9">
-        <textarea class="form-control" rows="2" name="content" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="content" cols="50"></textarea>
         </div>
     </div>
 
     <div class="form-group row"><!-- INTERVENTION -->
         <label for="intervention" class="col-lg-3 col-form-label">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
-        <textarea class="form-control" rows="2" name="intervention" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="intervention" cols="50"></textarea>
         </div>
     </div>
 
     <div class="form-group row"><!-- COMMENTS -->
         <label for="comments" class="col-lg-3 col-form-label">Comment text{{ trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
-        <textarea class="form-control" rows="2" name="comments" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="comments" cols="50"></textarea>
         </div>
     </div>
 
@@ -209,6 +209,14 @@
             </div>
         </div>
     @endif
+
+    <div class="form-group row"><!-- FIND IN ANY TEXT FIELD -->
+        <label for="comments" class="col-lg-3 col-form-label">Any text field{{ trans('panichd::lang.colon') }}</label>
+        <div class="col-lg-9">
+            <textarea class="form-control" rows="2" name="any_text_field" cols="50"></textarea>
+            <div class="help-block">Find in any text field in: Subject, Description, Intervention, Comments or attachment fields</div>
+        </div>
+    </div>
 
     </div></div>
 
