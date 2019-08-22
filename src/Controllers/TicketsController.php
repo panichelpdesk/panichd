@@ -58,8 +58,12 @@ class TicketsController extends Controller
 		$collection = Ticket::visible();
 
 		if ($ticketList == 'search'){
-			// Filter by all specified fields
-			if(session()->has('search_fields')){
+			if(!session()->has('search_fields')){
+				// Load an empty table
+				$collection->where('panichd_tickets.id', '0');
+
+			}else{
+				// Filter by all specified fields
 				$search_fields = session()->get('search_fields');
 				foreach ($search_fields as $field => $value){
 					if ($field == 'list'){
@@ -722,46 +726,16 @@ class TicketsController extends Controller
      */
     public function search_form()
     {
-		$data = $this->search_form_defaults();
-
-        return view('panichd::tickets.search', $data);
-	}
-
-	/**
-     * Ticket search results
-     *
-     * @return Response
-     */
-    public function search_results(Request $request)
-    {
+		// Forget last search
+		session()->forget('search_fields');
+		
 		$data = $this->search_form_defaults();
 
 		$data['ticketList'] = 'search';
 
-		// Forget last search
-		session()->forget('search_fields');
-
-		// Check all fields
-		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name', 'any_text_field']);
-		foreach ($a_fields as $field){
-			if($request->filled($field)){
-				$search_fields[$field] = $request->{$field};
-			}
-		}
-
-		// Check ticket tags
-		if ($request->filled('category_id') and $request->filled('category_' . $request->category_id . '_tags')){
-			$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
-		}
-
-		if (isset($search_fields)){
-			// Store search fields in session to use in datatable
-			session(compact('search_fields'));
-		}
-
-        return view('panichd::tickets.search.results', $data);
+        return view('panichd::tickets.search', $data);
 	}
-	
+
 	/**
      * Ticket search default data
      *
@@ -794,6 +768,43 @@ class TicketsController extends Controller
 		->select('id', 'name')->get();
 		
 		return compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_visible_agents', 'c_cat_tags');
+	}
+
+	/**
+     * Register search fields in user session
+     *
+     * @return Response
+     */
+    public function register_search_fields(Request $request)
+    {
+		$result = "error";
+		$message = "No field was registered";
+		
+		// Forget last search
+		session()->forget('search_fields');
+
+		// Check all fields
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name', 'any_text_field']);
+		foreach ($a_fields as $field){
+			if($request->filled($field)){
+				$search_fields[$field] = $request->{$field};
+			}
+		}
+
+		// Check ticket tags
+		if ($request->filled('category_id') and $request->filled('category_' . $request->category_id . '_tags')){
+			$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
+		}
+
+		if (isset($search_fields)){
+			// Store search fields in session to use in datatable
+			session(compact('search_fields'));
+
+			$result = "ok";
+			$message = count($search_fields) . " fields registered";
+		}
+
+        return response()->json(['result' => $result, 'messages' => [$message]]);
 	}
 
     /**

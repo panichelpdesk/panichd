@@ -1,5 +1,5 @@
-<div id="search_form" class="card bg-light mb-2" @if(isset($ticketList) && $ticketList == 'search') style="display: none" @endif><div class="card-body">
-{!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.results', 'method' => 'POST']) !!}
+<div id="search_form" class="card bg-light mb-2"><div class="card-body">
+{!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.register', 'method' => 'POST']) !!}
 
     <legend>Search tickets</legend>
 
@@ -222,7 +222,8 @@
 
     <div class="text-center"><!-- SUBMIT BUTTON -->
         {!! CollectiveForm::submit('Search', [
-            'class' => 'btn btn-primary'
+            'class' => 'btn btn-primary ajax_form_submit',
+            'data-errors_div' => 'form_errors'
         ]) !!}
     </div>
 {!! CollectiveForm::close() !!}
