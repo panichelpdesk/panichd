@@ -104,6 +104,27 @@ class TicketsController extends Controller
 							});
 					});
 				}
+
+				if (isset($search_fields['any_text_field'])){
+					$collection->where(function($query) use($search_fields){
+						$query->where('subject', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('content', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('intervention', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhereHas('attachments', function($q1) use($search_fields){
+								$q1->where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%');
+							})
+							->orWhereHas('comments', function($q2) use($search_fields) {
+								$q2->where('content', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhereHas('attachments', function($q3) use($search_fields){
+									$q3->where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+										->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+										->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%');
+								});
+							});
+					});
+				}
 			}
 
 		}else{
@@ -721,7 +742,7 @@ class TicketsController extends Controller
 		session()->forget('search_fields');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name']);
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name', 'any_text_field']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};
