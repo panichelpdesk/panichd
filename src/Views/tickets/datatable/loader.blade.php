@@ -1,7 +1,8 @@
-<script>
+<script type="text/javascript">
+	var datatable = "";
 	$(function(){
 	// Ticket list load
-	$('.table').DataTable({
+	datatable = $('.table').DataTable({
 		processing: false,
 		serverSide: true,
 		responsive: true,

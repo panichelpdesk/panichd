@@ -22,9 +22,9 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
         ->name("$main_route.search.form")
         ->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
     
-    // Search results
-    Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@search_results')
-        ->name("$main_route.search.results")
+    // Search register
+    Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@register_search_fields')
+        ->name("$main_route.search.register")
 		->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
 
 	// Notice list

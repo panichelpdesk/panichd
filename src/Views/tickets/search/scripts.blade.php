@@ -1,4 +1,16 @@
 <script type="text/javascript">
+// After registering search fields
+function success_ajax_callback() {
+    // Hide search form
+    $('#search_form').hide();
+
+    // Load datatable with the new search fields
+    datatable.ajax.reload();
+
+    // Show datatable container
+    $('#search_results').show();
+}
+
 $(function(){
     /* Category change:
        - checks for permissions in new category
@@ -30,6 +42,14 @@ $(function(){
             $('#tag_list_container .select2-container').hide();
             $('#jquery_tag_category_'+$(this).val()).next().show();
         }
+    });
+
+    // Edit search button
+    $('#edit_search').click(function(e){
+        e.preventDefault();
+
+        $('#search_results').hide();
+        $('#search_form').slideDown();
     });
 });
 </script>
