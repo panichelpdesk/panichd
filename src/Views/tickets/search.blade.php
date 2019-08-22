@@ -13,5 +13,6 @@
 
 @section('footer')
 	@include('panichd::tickets.partials.form_scripts')
+	@include('panichd::tickets.search.scripts')
 	@include('panichd::tickets.partials.tags_footer_script')
 @append
