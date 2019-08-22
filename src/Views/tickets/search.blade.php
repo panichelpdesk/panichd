@@ -1,6 +1,6 @@
 @extends($master)
 @section('page')
-	Search results
+	Search tickets
 @endsection
 
 @include('panichd::shared.common')
