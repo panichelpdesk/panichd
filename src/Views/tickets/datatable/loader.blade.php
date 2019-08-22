@@ -3,7 +3,7 @@
 	$(function(){
 	// Ticket list load
 	datatable = $('.table').DataTable({
-		processing: false,
+		processing: @if($ticketList == 'search') true @else false @endif,
 		serverSide: true,
 		responsive: true,
 		pageLength: {{ $setting->grab('paginate_items') }},
