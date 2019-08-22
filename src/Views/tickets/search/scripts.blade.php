@@ -35,7 +35,11 @@ $(function(){
             // Update agent list
             var loadpage = "{!! route($setting->grab('main_route').'agentselectlist') !!}/" + $(this).val() + "/"+$('#select_category_agent').val();
             $('#select_category_agent').load(loadpage, function(){
+                // Show agent select
                 $('#select_category_agent').prop('disabled',false).show();
+                
+                // Default agent has no value
+                $('#select_category_agent option[value=auto]').val('').text('- none -');
             });
 
             // Update tag list
