@@ -48,6 +48,21 @@ $(function(){
         }
     });
 
+    // Date fields with datetimepicker
+    @foreach(['created_at', 'completed_at', 'updated_at'] as $date_field)
+        $('#{{ $date_field }}').datetimepicker({
+            locale: '{{App::getLocale()}}',
+            format: '{{ trans('panichd::lang.datetimepicker-format') }}',
+            keyBinds: { 'delete':null, 'left':null, 'right':null },
+            useCurrent: false
+        });
+
+        $('#{{ $date_field }} .btn').click(function(e){
+            e.preventDefault();
+            $('#' + $(this).closest('.input-group').prop('id')).data("DateTimePicker").toggle();
+        });
+    @endforeach
+
     // Edit search button
     $('#edit_search').click(function(e){
         e.preventDefault();

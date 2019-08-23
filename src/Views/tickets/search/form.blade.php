@@ -236,7 +236,6 @@
             </div>
         </div>
     @endif
-
     <div class="form-group row"><!-- FIND IN ANY TEXT FIELD -->
         <label for="comments" class="col-lg-3 col-form-label">Any text field{{ trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
@@ -244,6 +243,28 @@
             <div class="help-block">Find in any text field in: Subject, Description, Intervention, Comments or attachment fields</div>
         </div>
     </div>
+
+    @foreach(['created_at', 'completed_at', 'updated_at'] as $date_field)
+        <div class="form-group row">
+            {!! CollectiveForm::label($date_field, $date_field . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
+            <div class="col-lg-9">
+                <div class="input-group date" id="{{ $date_field }}">
+                    <input type="text" class="form-control" name="{{ $date_field }}" value=""/>
+                    <span class="input-group-addon" style="display: none"></span>
+                    <span class="input-group-append">
+                        <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
+                    </span>
+                </div>
+                <div class="form-text">
+                    <label><input type="radio" name="{{ $date_field }}_type" value="from" checked="checked"> From specified</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="until"> Until specified</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_year"> Exact Year</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_month"> Year, month</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_day"> Day</label>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
     </div></div>
 
