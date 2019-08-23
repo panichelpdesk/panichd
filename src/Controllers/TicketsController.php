@@ -17,6 +17,7 @@ use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Department;
 use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
@@ -66,7 +67,15 @@ class TicketsController extends Controller
 				// Filter by all specified fields
 				$search_fields = session()->get('search_fields');
 				foreach ($search_fields as $field => $value){
-					if ($field == 'list'){
+					if ($field == 'department_id'){
+						$collection->whereHas('owner', function($query)use($search_fields){
+							$query->whereHas('department', function($q1)use($search_fields){
+								$q1->where('id', $search_fields['department_id'])
+									->orWhere('department_id', $search_fields['department_id']);
+							});
+						});
+
+					}elseif ($field == 'list'){
 						$collection->inList($value);
 
 					}elseif(in_array($field, ['start_date', 'limit_date'])){
@@ -772,7 +781,13 @@ class TicketsController extends Controller
         ])
 		->select('id', 'name')->get();
 		
-		return compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_visible_agents', 'c_cat_tags');
+		$data = compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_visible_agents', 'c_cat_tags');
+
+		if (Setting::grab('departments_feature')){
+			$data['c_departments'] = Department::whereNull('department_id')->with('descendants.ancestor')->orderBy('name', 'asc')->get();
+		}
+
+		return $data;
 	}
 
 	/**
@@ -789,7 +804,7 @@ class TicketsController extends Controller
 		session()->forget('search_fields');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['list', 'start_date', 'limit_date', 'comments', 'attachment_name', 'any_text_field']);
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['department_id', 'list', 'start_date', 'limit_date', 'comments', 'attachment_name', 'any_text_field']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};

@@ -66,7 +66,7 @@ class Department extends Model
 	*/
 	public function getFullName()
 	{
-		$ancestor = ($this->is_main() ? '' : $this->ancestor()->first()->name . trans('panichd::lang.colon'));
+		$ancestor = ($this->is_main() ? '' : $this->ancestor->name . trans('panichd::lang.colon'));
 		
 		return ucwords(mb_strtolower($ancestor . $this->name));
 	}
