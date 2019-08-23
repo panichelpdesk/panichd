@@ -34,7 +34,7 @@ class TicketsController extends Controller
     protected $tickets;
 	protected $member;
 	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
-	protected $a_search_fields_text = ['subject', 'html', 'intervention_html'];
+	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
@@ -95,7 +95,21 @@ class TicketsController extends Controller
 						}
 
 					}elseif(in_array($field, $this->a_search_fields_text)){
-						$collection->where($field, 'like', '%' . $value . '%');
+						if ($field == 'content'){
+							$collection->where(function($query) use($search_fields, $value){
+								$query->where('content', 'like', '%' . $value . '%')
+									->orWhere('html', 'like', '%' . $value . '%');
+							});
+						
+						}elseif ($field == 'intervention'){
+							$collection->where(function($query) use($search_fields, $value){
+								$query->where('intervention', 'like', '%' . $value . '%')
+									->orWhere('intervention_html', 'like', '%' . $value . '%');
+							});
+						
+						}else{
+							$collection->where($field, 'like', '%' . $value . '%');
+						}
 					
 					}elseif(in_array($field, $this->a_search_fields_numeric)){
 						$collection->where($field, $value);
@@ -110,7 +124,8 @@ class TicketsController extends Controller
 
 				if (isset($search_fields['comments'])){
 					$collection->whereHas('comments', function($q1) use($search_fields){
-						$q1->where('content', 'like', '%' . $search_fields['comments'] . '%');
+						$q1->where('content', 'like', '%' . $search_fields['comments'] . '%')
+							->orWhere('html', 'like', '%' . $search_fields['comments'] . '%');
 					});
 				}
 
@@ -134,7 +149,9 @@ class TicketsController extends Controller
 				if (isset($search_fields['any_text_field'])){
 					$collection->where(function($query) use($search_fields){
 						$query->where('subject', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('content', 'like', '%' . $search_fields['any_text_field'] . '%')
 							->orWhere('html', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('intervention', 'like', '%' . $search_fields['any_text_field'] . '%')
 							->orWhere('intervention_html', 'like', '%' . $search_fields['any_text_field'] . '%')
 							->orWhereHas('attachments', function($q1) use($search_fields){
 								$q1->where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
@@ -142,7 +159,8 @@ class TicketsController extends Controller
 									->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%');
 							})
 							->orWhereHas('comments', function($q2) use($search_fields) {
-								$q2->where('html', 'like', '%' . $search_fields['any_text_field'] . '%')
+								$q2->where('content', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhere('html', 'like', '%' . $search_fields['any_text_field'] . '%')
 									->orWhereHas('attachments', function($q3) use($search_fields){
 									$q3->where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
 										->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
