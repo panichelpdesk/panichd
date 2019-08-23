@@ -35,6 +35,7 @@ class TicketsController extends Controller
 	protected $member;
 	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
 	protected $a_search_fields_text = ['subject', 'html', 'intervention_html'];
+	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
@@ -78,12 +79,19 @@ class TicketsController extends Controller
 					}elseif ($field == 'list'){
 						$collection->inList($value);
 
-					}elseif(in_array($field, ['start_date', 'limit_date'])){
-						if ($search_fields[$field . '_type'] == 'exact_day'){
-							$collection->whereDate($field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateTimeString());
+					}elseif(in_array($field, $this->a_search_fields_date)){
+						if (in_array($search_fields[$field . '_type'], ['exact_year', 'exact_month'])){
+							$collection->whereYear('panichd_tickets.' . $field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->format('Y'));
+
+							if ($search_fields[$field . '_type'] == 'exact_month'){
+								$collection->whereMonth('panichd_tickets.' . $field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->format('m'));
+							}
+						
+						}elseif ($search_fields[$field . '_type'] == 'exact_day'){
+							$collection->whereDate('panichd_tickets.' . $field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateString());
 						
 						}else{
-							$collection->where($field, ($search_fields[$field . '_type'] == 'from' ? '>=' : '<'), Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateTimeString());
+							$collection->where('panichd_tickets.' . $field, ($search_fields[$field . '_type'] == 'from' ? '>=' : '<'), Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateTimeString());
 						}
 
 					}elseif(in_array($field, $this->a_search_fields_text)){
@@ -804,19 +812,17 @@ class TicketsController extends Controller
 		session()->forget('search_fields');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, ['department_id', 'list', 'start_date', 'limit_date', 'comments', 'attachment_name', 'any_text_field']);
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, ['department_id', 'list', 'comments', 'attachment_name', 'any_text_field']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};
 			}
 		}
 
-		// Register Start date and Limit date types (from radio buttons)
-		if ($request->filled('start_date') or $request->filled('start_date')){
-			foreach (['start_date', 'limit_date'] as $field){
-				if($request->filled($field)){
-					$search_fields[$field . '_type'] = $request->{$field . '_type'};
-				}
+		// Register date field related types (specified with radio buttons)
+		foreach ($this->a_search_fields_date as $field){
+			if($request->filled($field)){
+				$search_fields[$field . '_type'] = $request->{$field . '_type'};
 			}
 		}
 
