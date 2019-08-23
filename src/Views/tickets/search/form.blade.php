@@ -6,21 +6,17 @@
     <div class="row" data-class="row"><div class="col-md-6">
 
     <div class="form-group row"><!-- SUBJECT -->
-        {!! CollectiveForm::label('subject', '*' . trans('panichd::lang.subject') . trans('panichd::lang.colon'), [
-            'class' => 'col-lg-3 col-form-label level_class',
-            'data-level-1-class' => 'col-lg-2',
-            'data-level-2-class' => 'col-lg-3'
+        {!! CollectiveForm::label('subject', trans('panichd::lang.subject') . trans('panichd::lang.colon'), [
+            'class' => 'col-lg-3 col-form-label'
         ]) !!}
-        <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+        <div class="col-lg-9">
             {!! CollectiveForm::text('subject', null , ['class' => 'form-control', 'placeholder' => trans('panichd::lang.create-ticket-brief-issue')]) !!}
         </div>
     </div>
 
     <div class="form-group row"><!-- CREATOR -->
-
-        <label for="creator_id" class="col-lg-3 level_class col-form-label" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3"> Creator: </label>
-
-        <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+        <label for="creator_id" class="col-lg-3 col-form-label"> Creator: </label>
+        <div class="col-lg-9">
             <select name="creator_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                 <option value="">- none -</option>
                 @foreach ($c_members as $owner)
@@ -41,8 +37,8 @@
     
     <div style="margin-bottom: 1.5em">
         <div class="form-group row"><!-- OWNER -->
-            <label for="user_id" class="col-lg-3 level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
-            <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+            <label for="user_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-owner-help') }}">{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+            <div class="col-lg-9">
                 <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                     <option value="">- none -</option>
                     @foreach ($c_members as $owner)
@@ -63,8 +59,8 @@
 
         @if($setting->grab('departments_feature'))
             <div class="form-group row"><!-- DEPARTMENT -->
-                <label for="user_id" class="col-lg-3 level_class col-form-label" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3"> Department{{trans('panichd::lang.colon')}}</label>
-                <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+                <label for="user_id" class="col-lg-3 col-form-label"> Department{{trans('panichd::lang.colon')}}</label>
+                <div class="col-lg-9">
                     <select name="department_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                         <option value="">- none -</option>
                         @foreach ($c_departments as $dep)
@@ -166,12 +162,10 @@
     </div>
 
     <div class="form-group row"><!-- CATEGORY -->
-        {!! CollectiveForm::label('category_id', '*' . trans('panichd::lang.category') . trans('panichd::lang.colon'), [
-            'class' => 'col-lg-3 col-form-label level_class',
-            'data-level-1-class' => 'col-lg-2',
-            'data-level-2-class' => 'col-lg-3'
+        {!! CollectiveForm::label('category_id', trans('panichd::lang.category') . trans('panichd::lang.colon'), [
+            'class' => 'col-lg-3 col-form-label'
         ]) !!}
-        <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+        <div class="col-lg-9">
             <select id="select_category" class="form-control" name="category_id">
                 <option value="">- none -</option>
                 @foreach($a_categories as $id => $cat)
@@ -206,7 +200,7 @@
     </div><div class="col-md-6">
 
     <div class="form-group row"><!-- DESCRIPTION -->
-        <label for="content" class="col-lg-3 col-form-label"> *{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}}</label>
+        <label for="content" class="col-lg-3 col-form-label">{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}}</label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="content" cols="50"></textarea>
         </div>
