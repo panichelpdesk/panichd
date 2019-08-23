@@ -38,28 +38,46 @@
             <div class="help-block text-muted">Who created the ticket (Sometimes is an agent in the name of a Member)</div>
         </div>
     </div>
-
-    <div class="form-group row" style="margin-bottom: 1.5em"><!-- OWNER -->
-
-        <label for="user_id" class="col-lg-3 level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
-
-        <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
-            <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
-                <option value="">- none -</option>
-                @foreach ($c_members as $owner)
-                    <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
-                    @if ($setting->grab('departments_notices_feature'))
-                        @if ($owner->ticketit_department == '0')
-                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
-                        @elseif ($owner->ticketit_department != "")
-                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
+    
+    <div style="margin-bottom: 1.5em">
+        <div class="form-group row"><!-- OWNER -->
+            <label for="user_id" class="col-lg-3 level_class col-form-label tooltip-info" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3" title="{{ trans('panichd::lang.create-ticket-owner-help') }}"> *{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+            <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+                <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
+                    <option value="">- none -</option>
+                    @foreach ($c_members as $owner)
+                        <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
+                        @if ($setting->grab('departments_notices_feature'))
+                            @if ($owner->ticketit_department == '0')
+                                {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
+                            @elseif ($owner->ticketit_department != "")
+                                {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
+                            @endif
                         @endif
-                    @endif
-                    </option>
-                @endforeach
-            </select>
-            <div class="help-block text-muted">Member that owns the ticket</div>
+                        </option>
+                    @endforeach
+                </select>
+                <div class="help-block text-muted">Member that owns the ticket</div>
+            </div>
         </div>
+
+        @if($setting->grab('departments_feature'))
+            <div class="form-group row"><!-- DEPARTMENT -->
+                <label for="user_id" class="col-lg-3 level_class col-form-label" data-level-1-class="col-lg-2" data-level-2-class="col-lg-3"> Department{{trans('panichd::lang.colon')}}</label>
+                <div class="col-lg-9 level_class" data-level-1-class="col-lg-10" data-level-2-class="col-lg-9">
+                    <select name="department_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
+                        <option value="">- none -</option>
+                        @foreach ($c_departments as $dep)
+                            <option value="{{ $dep->id }}">{{ $dep->name }}</option>
+                            @foreach($dep->descendants as $descendant)
+                                <option value="{{ $descendant->id }}">&nbsp;&nbsp;&nbsp;&nbsp;{{ $descendant->getFullName() }}</option>
+                            @endforeach
+                        @endforeach
+                    </select>
+                    <div class="help-block text-muted">Owner departments</div>
+                </div>
+            </div>
+        @endif
     </div>
 
     <div>
