@@ -48,7 +48,12 @@ $(function(){
         }
     });
 
-    // Date fields with datetimepicker
+    @if(isset($search_fields['category_id']))
+        // Show active category tags
+        $('#jquery_tag_category_{{ $search_fields['category_id'] }}').next().show();
+    @endif
+
+    // Extra date fields with datetimepicker
     @foreach(['created_at', 'completed_at', 'updated_at'] as $date_field)
         $('#{{ $date_field }}').datetimepicker({
             locale: '{{App::getLocale()}}',
