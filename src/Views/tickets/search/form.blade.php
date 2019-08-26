@@ -1,4 +1,4 @@
-<div id="search_form" class="card bg-light mb-2"><div class="card-body">
+<div id="search_form" class="card bg-light mb-2" @if(isset($search_fields)) style="display: none" @endif><div class="card-body">
 {!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.register', 'method' => 'POST']) !!}
 
     <legend>{{ trans('panichd::lang.searchform-title') }}</legend>
@@ -19,13 +19,13 @@
         <div class="col-lg-9">
             <select name="creator_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                 <option value="">{{ trans('panichd::lang.searchform-creator-none') }}</option>
-                @foreach ($c_members as $owner)
-                    <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
+                @foreach ($c_members as $member)
+                    <option value="{{ $member->id }}" @if(isset($search_fields['creator_id']) && $search_fields['creator_id'] == $member->id) selected="selected" @endif>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
                     @if ($setting->grab('departments_notices_feature'))
-                        @if ($owner->ticketit_department == '0')
+                        @if ($member->ticketit_department == '0')
                             {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
-                        @elseif ($owner->ticketit_department != "")
-                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $owner->userDepartment->getFullName() }}
+                        @elseif ($member->ticketit_department != "")
+                            {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . $member->userDepartment->getFullName() }}
                         @endif
                     @endif
                     </option>
@@ -41,7 +41,7 @@
                 <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                     <option value="">{{ trans('panichd::lang.searchform-owner-none') }}</option>
                     @foreach ($c_members as $owner)
-                        <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
+                        <option value="{{ $owner->id }}" @if(isset($search_fields['user_id']) && $search_fields['user_id'] == $owner->id) selected="selected" @endif>{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
                         @if ($setting->grab('departments_notices_feature'))
                             @if ($owner->ticketit_department == '0')
                                 {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
@@ -62,9 +62,9 @@
                     <select name="department_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
                         <option value="">{{ trans('panichd::lang.searchform-department-none') }}</option>
                         @foreach ($c_departments as $dep)
-                            <option value="{{ $dep->id }}">{{ $dep->name }}</option>
+                            <option value="{{ $dep->id }}" @if(isset($search_fields['department_id']) && $search_fields['department_id'] == $dep->id) selected="selected" @endif>{{ $dep->name }}</option>
                             @foreach($dep->descendants as $descendant)
-                                <option value="{{ $descendant->id }}">&nbsp;&nbsp;&nbsp;&nbsp;{{ $descendant->getFullName() }}</option>
+                                <option value="{{ $descendant->id }}" @if(isset($search_fields['department_id']) && $search_fields['department_id'] == $descendant->id) selected="selected" @endif>&nbsp;&nbsp;&nbsp;&nbsp;{{ $descendant->getFullName() }}</option>
                             @endforeach
                         @endforeach
                     </select>
@@ -82,13 +82,13 @@
             <div class="col-lg-9">
                 <div class="form-check form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="" checked="checked">{{ trans('panichd::lang.searchform-list-none') }}
+                        <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="" @if(!isset($search_fields['list'])) checked="checked" @endif>{{ trans('panichd::lang.searchform-list-none') }}
                     </label>
                 </div>
                 @foreach (['newest', 'active', 'complete'] as $list)
                     <div class="form-check form-check-inline">
                         <label class="form-check-label">
-                            <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="{{ $list }}">{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
+                            <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="{{ $list }}" @if(isset($search_fields['list']) && $search_fields['list'] == $list) checked="checked" @endif>{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
                         </label>
                     </div>
                 @endforeach
@@ -104,7 +104,7 @@
                 <select class="form-control" name="status_id">
                     <option value="">{{ trans('panichd::lang.searchform-status-none') }}</option>
                     @foreach($c_status as $status)
-                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                        <option value="{{ $status->id }}" @if(isset($search_fields['status_id']) && $search_fields['status_id'] == $status->id) selected="selected" @endif>{{ $status->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -115,7 +115,7 @@
                 <select class="form-control" name="priority_id">
                     <option value="">{{ trans('panichd::lang.searchform-priority-none') }}</option>
                     @foreach($priorities as $id => $priority)
-                        <option value="{{ $id }}">{{ $priority }}</option>
+                        <option value="{{ $id }}" @if(isset($search_fields['priority_id']) && $search_fields['priority_id'] == $id) selected="selected" @endif>{{ $priority }}</option>
                     @endforeach
                 </select>
             </div>
@@ -166,7 +166,7 @@
             <select id="select_category" class="form-control" name="category_id">
                 <option value="">{{ trans('panichd::lang.searchform-category-none') }}</option>
                 @foreach($a_categories as $id => $cat)
-                    <option value="{{ $id }}">{{ $cat }}</option>
+                    <option value="{{ $id }}" @if(isset($search_fields['category_id']) && $search_fields['category_id'] == $id) selected="selected" @endif>{{ $cat }}</option>
                 @endforeach
             </select>    
        </div>
@@ -181,7 +181,7 @@
             <select id="select_visible_agent" name="agent_id" class="form-control">
                 <option value="">{{ trans('panichd::lang.searchform-agent-none') }}</option>
                 @foreach($c_visible_agents as $agent)
-                    <option value="{{ $agent->id }}">{{ $agent->name }}</option>
+                    <option value="{{ $agent->id }}" @if(isset($search_fields['agent_id']) && $search_fields['agent_id'] == $agent->id) selected="selected" @endif>{{ $agent->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -190,7 +190,7 @@
     <div class="form-group row"><!-- TAGS -->
         <label class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
         <div id="tag_list_container" class="col-lg-9">
-            @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => []])
+            @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => $search_fields['tags'] ?? []])
         </div>
     </div>
 

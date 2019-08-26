@@ -765,12 +765,52 @@ class TicketsController extends Controller
      *
      * @return Response
      */
-    public function search_form()
+    public function search_form($parameters = null)
     {
 		// Forget last search
 		session()->forget('search_fields');
 		
 		$data = $this->search_form_defaults();
+
+		// If there are search parameters
+		if (!is_null($parameters)){
+			// Array of the parameters we allow to use via URL
+			$a_valid_params = array_merge($this->a_search_fields_numeric, ['department_id', 'list', 'tags']);
+
+			$a_temp = explode('/', $parameters);
+			$a_parameters = [];
+
+			if (count($a_temp) % 2 == 0){
+				$key = "";
+				foreach($a_temp as $param){
+					if ($key == ""){
+						$key = $param;
+					
+					}else{
+						if (in_array($key, $a_valid_params)){
+							// Add param value pair into search_fields array
+							$search_fields[$key] = $param;
+						}
+						
+						// key reset to look for a new parameter
+						$key = "";
+					}
+				}
+			}
+
+			if (isset($search_fields['category_id']) and isset($search_fields['tags'])){
+				// Add tag id's to the array
+				$search_fields['tags'] = explode(',', $search_fields['tags']);
+			}
+		}
+
+		if (isset($search_fields)){
+			// Store search fields in session to use in datatable
+			session(compact('search_fields'));
+
+			// Pass search fields array to the view
+			$data['search_fields'] = $search_fields;
+		}
 
 		$data['ticketList'] = 'search';
 
