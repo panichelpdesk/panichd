@@ -167,4 +167,32 @@ class TicketsTest extends PanicHDTestCase
             }
         }
     }
+
+    /*
+     * Ticket Search form
+    */
+    public function testTicketSearch()
+    {
+        $this->load_vars();
+
+        if ($this->status == "Installed" and !is_null($this->main_route)){
+            // Member should not be able to access
+            if(!is_null($this->member)){
+                $response = $this->actingAs($this->member)->get(route($this->main_route . '.search.form'));
+                $this->versionAssertStatus($response, 302);
+            }
+
+            // Agent access
+            if(!is_null($this->agent)){
+                $response = $this->actingAs($this->agent)->get(route($this->main_route . '.search.form'));
+                $this->versionAssertStatus($response, 200);
+            }
+
+            // Admin access
+            if(!is_null($this->admin)){
+                $response = $this->actingAs($this->admin)->get(route($this->main_route . '.search.form'));
+                $this->versionAssertStatus($response, 200);
+            }
+        }
+    }
 }
