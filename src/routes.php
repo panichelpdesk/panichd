@@ -19,13 +19,11 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 
     // Search form
     Route::get("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@search_form')
-        ->name("$main_route.search.form")
-        ->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
+        ->name("$main_route.search.form");
     
     // Search register
     Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@register_search_fields')
-        ->name("$main_route.search.register")
-		->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
+        ->name("$main_route.search.register");
 
 	// Notice list
 	Route::get("$main_route_path/notices", function(){
