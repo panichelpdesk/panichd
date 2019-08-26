@@ -10,7 +10,7 @@
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
         <div class="col-lg-9">
-            {!! CollectiveForm::text('subject', null , ['class' => 'form-control', 'placeholder' => trans('panichd::lang.create-ticket-brief-issue')]) !!}
+            {!! CollectiveForm::text('subject', $search_fields['subject'] ?? null , ['class' => 'form-control', 'placeholder' => trans('panichd::lang.create-ticket-brief-issue')]) !!}
         </div>
     </div>
 
@@ -199,21 +199,21 @@
     <div class="form-group row"><!-- DESCRIPTION -->
         <label for="content" class="col-lg-3 col-form-label">{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}}</label>
         <div class="col-lg-9">
-            <textarea class="form-control" rows="2" name="content" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="content" cols="50">{{ $search_fields['content'] ?? '' }}</textarea>
         </div>
     </div>
 
     <div class="form-group row"><!-- INTERVENTION -->
         <label for="intervention" class="col-lg-3 col-form-label">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
-            <textarea class="form-control" rows="2" name="intervention" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="intervention" cols="50">{{ $search_fields['intervention'] ?? '' }}</textarea>
         </div>
     </div>
 
     <div class="form-group row"><!-- COMMENTS -->
         <label for="comments" class="col-lg-3 col-form-label">{{ trans('panichd::lang.searchform-comments') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
-            <textarea class="form-control" rows="2" name="comments" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="comments" cols="50">{{ $search_fields['comments'] ?? '' }}</textarea>
         </div>
     </div>
 
@@ -223,14 +223,14 @@
                 'class' => 'col-lg-3 col-form-label'
             ]) !!}
             <div class="col-lg-9">
-                {!! CollectiveForm::text('attachment_name', null , ['class' => 'form-control']) !!}
+                {!! CollectiveForm::text('attachment_name', $search_fields['attachment_name'] ?? null , ['class' => 'form-control']) !!}
             </div>
         </div>
     @endif
     <div class="form-group row"><!-- FIND IN ANY TEXT FIELD -->
         <label for="comments" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-any_text_field') }}">{{ trans('panichd::lang.searchform-any_text_field') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
         <div class="col-lg-9">
-            <textarea class="form-control" rows="2" name="any_text_field" cols="50"></textarea>
+            <textarea class="form-control" rows="2" name="any_text_field" cols="50">{{ $search_fields['any_text_field'] ?? '' }}</textarea>
         </div>
     </div>
 

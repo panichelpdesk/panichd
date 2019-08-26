@@ -35,6 +35,7 @@ class TicketsController extends Controller
 	protected $member;
 	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
+	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
@@ -776,8 +777,9 @@ class TicketsController extends Controller
 
 		// If there are search parameters
 		if (!is_null($parameters)){
-			// Array of the parameters we allow to use via URL
-			$a_valid_params = array_merge($this->a_search_fields_numeric, ['department_id', 'list', 'tags']);
+			// URL allowed parameter arrays
+			$a_numeric_params = array_merge($this->a_search_fields_numeric, ['department_id', 'list', 'tags']);
+			$a_text_params = array_merge($this->a_search_fields_text, $this->a_search_fields_text_special);
 
 			$a_temp = explode('/', $parameters);
 			$a_parameters = [];
@@ -789,9 +791,13 @@ class TicketsController extends Controller
 						$key = $param;
 					
 					}else{
-						if (in_array($key, $a_valid_params)){
+						if (in_array($key, $a_numeric_params)){
 							// Add param value pair into search_fields array
 							$search_fields[$key] = $param;
+						
+						}elseif(in_array($key, $a_text_params)){
+							// Decode strings in URL
+							$search_fields[$key] = urldecode($param);
 						}
 						
 						// key reset to look for a new parameter
@@ -873,7 +879,7 @@ class TicketsController extends Controller
 		session()->forget('search_fields');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, ['department_id', 'list', 'comments', 'attachment_name', 'any_text_field']);
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				$search_fields[$field] = $request->{$field};
