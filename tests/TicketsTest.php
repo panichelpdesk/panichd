@@ -65,16 +65,19 @@ class TicketsTest extends PanicHDTestCase
             // Member access
             if(!is_null($this->member)){
                 $response = $this->actingAs($this->member)->get(route($this->main_route . '.create'));
+                $this->versionAssertStatus($response, 200);
             }
 
             // Agent access
             if(!is_null($this->agent)){
                 $response = $this->actingAs($this->agent)->get(route($this->main_route . '.create'));
+                $this->versionAssertStatus($response, 200);
             }
 
             // Admin access
             if(!is_null($this->admin)){
                 $response = $this->actingAs($this->admin)->get(route($this->main_route . '.create'));
+                $this->versionAssertStatus($response, 200);
             }
         }
     }
