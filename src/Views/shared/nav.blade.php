@@ -44,9 +44,9 @@
 	</a>
 </li>
 
-<li class="nav-item {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@search_form')) ? "active" : "" !!}">
+<li id="nav_search_li" class="nav-item {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@search_form')) ? "active" : "" !!}">
 	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@search_form') }}">
-		<span>Search</span>
+		<span>{{ trans('panichd::lang.searchform-nav-text') }}</span>
 	</a>
 </li>
 

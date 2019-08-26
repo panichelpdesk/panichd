@@ -89,6 +89,47 @@ return [
   'show-ticket-modal-delete-title'   => 'Borrar Tiquete',
   'show-ticket-modal-delete-message' => '¿Estás seguro que quieres borrar: :subject?',
 
+// Buscador de tiques
+  'searchform-nav-text'             => 'Buscar',
+  'searchform-title'                => 'Buscar tiques',
+
+  'searchform-creator'              => 'Creador',
+  'searchform-department'           => 'Departamento',
+  'searchform-comments'             => 'Texto en los comentarios',
+  'searchform-attachment_filename'  => 'Nombre de adjunto',
+  'searchform-any_text_field'       => 'Cualquier campo de texto',
+  'searchform-created_at'           => 'Creación',
+  'searchform-completed_at'         => 'Cierre',
+  'searchform-updated_at'           => 'Ultima actualitzación',
+
+  'searchform-help-creator'         => 'Quién creó el tique (A veces es un técnico en nombre de un Miembro)',
+  'searchform-help-owner'           => 'A quién pertenece el tique',
+  'searchform-help-department'      => 'Departamento del propietario del tique',
+  'searchform-help-any_text_field'  => 'Buscar en cualquier campo de texto entre el tema, descripción, actuación, comentarios o campos de ficheros adjuntos',
+
+  'searchform-creator-none'         => '- ninguno -',
+  'searchform-owner-none'           => '- ninguno -',
+  'searchform-department-none'      => '- ninguno -',
+  'searchform-list-none'            => '- ninguna -',
+  'searchform-status-none'          => '- ninguno -',
+  'searchform-priority-none'        => '- ninguna -',
+  'searchform-category-none'        => '- ninguna -',
+  'searchform-agent-none'           => '- ninguno -',
+
+  'searchform-date-type-from'       => 'En adelante',
+  'searchform-date-type-until'      => 'Más antiguos',
+  'searchform-date-type-exact_year' => 'Año exacto',
+  'searchform-date-type-exact_month'=> 'Año y mes',
+  'searchform-date-type-exact_day'  => 'Día exacto',
+
+  'searchform-btn-submit'           => 'Buscar',
+
+  'searchform-validation-no-field'  => 'No se ha indicado ningún campo de búsqueda',
+  'searchform-validation-success'   => 'Se ha registrado :num campos de búsqueda',
+
+  'searchform-results-title'        => 'Resultados de la búsqueda',
+    'searchform-btn-edit'           => 'Editar búsqueda',
+
  /*
   *  Controllers
   */
