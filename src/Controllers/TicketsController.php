@@ -118,9 +118,11 @@ class TicketsController extends Controller
 				}
 
 				if (isset($search_fields['tags'])){
-					$collection->whereHas('tags', function($query) use($search_fields){
-						$query->whereIn('id', $search_fields['tags']);
-					});
+					foreach ($search_fields['tags'] as $tag_id){
+						$collection->whereHas('tags', function($q1) use($tag_id){
+							$q1->where('id', $tag_id);
+						});
+					}
 				}
 
 				if (isset($search_fields['comments'])){
