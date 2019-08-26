@@ -6,8 +6,8 @@ return [
   *  Constants
   */
 
-  'nav-active-tickets'               => 'Tiquetes Activos',
-  'nav-completed-tickets'            => 'Tiquetes Completos',
+  'nav-active-tickets'               => 'Tiques Activos',
+  'nav-completed-tickets'            => 'Tiques Completos',
 
   // Tables
   'table-id'                         => '#',
@@ -58,7 +58,7 @@ return [
   'no-replies'                       => 'Sin respuestas.',
   'owner'                            => 'Dueño',
   'priority'                         => 'Prioridad',
-  'reopen-ticket'                    => 'Reabrir Tiquete',
+  'reopen-ticket'                    => 'Reabrir Tique',
   'reply'                            => 'Responder',
   'responsible'                      => 'Responsable',
   'status'                           => 'Estado',
@@ -72,21 +72,21 @@ return [
   'index-title'                      => 'Soporte página principal',
 
 // tickets/____
-  'index-my-tickets'                 => 'Mis Tiquetes',
-  'btn-create-new-ticket'            => 'Crear nuevo tiquete',
-  'index-complete-none'              => 'No hay tiquetes completados',
-  'index-active-check'               => 'Asegúrate de revisar los Tiquetes Activos si no puedes encontrar el tiquete.',
-  'index-active-none'                => 'No hay tiquetes activos,',
-  'index-create-new-ticket'          => 'crear un tiquete nuevo',
-  'index-complete-check'             => 'Asegúrate de revisar los Tiquetes Completados si no puedes encontrar el tiquete.',
+  'index-my-tickets'                 => 'Mis Tiques',
+  'btn-create-new-ticket'            => 'Crear nuevo tique',
+  'index-complete-none'              => 'No hay tiques completados',
+  'index-active-check'               => 'Asegúrate de revisar los Tiques Activos si no puedes encontrar el tique.',
+  'index-active-none'                => 'No hay tiques activos,',
+  'index-create-new-ticket'          => 'crear un tique nuevo',
+  'index-complete-check'             => 'Asegúrate de revisar los Tiques Completados si no puedes encontrar el tique.',
 
-  'create-new-ticket'                => 'Crear Nuevo Tiquete',
+  'create-new-ticket'                => 'Crear Nuevo Tique',
   'create-ticket-brief-issue'        => 'Un resumen del problema que tienes',
   'create-ticket-describe-issue'     => 'Describe en detalle el problema que tienes',
 
-  'show-ticket-title'                => 'Tiquete',
+  'show-ticket-title'                => 'Tique',
   'show-ticket-js-delete'            => '¿Estás seguro que quieres borrar?: ',
-  'show-ticket-modal-delete-title'   => 'Borrar Tiquete',
+  'show-ticket-modal-delete-title'   => 'Borrar Tique',
   'show-ticket-modal-delete-message' => '¿Estás seguro que quieres borrar: :subject?',
 
  /*
@@ -109,13 +109,13 @@ return [
   'priority-name-has-been-created'   => 'La prioridad :name fue creada!',
   'priority-name-has-been-modified'  => 'La prioridad :name fue modificada!',
   'priority-name-has-been-deleted'   => 'La prioridad :name fue borrada!',
-  'priority-all-tickets-here'        => 'Todos los tiquetes relacionados a la cateogoría aquí',
+  'priority-all-tickets-here'        => 'Todos los tiques relacionados a la cateogoría aquí',
 
 // StatusesController
   'status-name-has-been-created'   => 'El estado :name fue creado!',
   'status-name-has-been-modified'  => 'El estado :name fue modificado!',
   'status-name-has-been-deleted'   => 'El estado :name fue borrado!',
-  'status-all-tickets-here'        => 'Todos los tiquetes relacionados al estado aquí',
+  'status-all-tickets-here'        => 'Todos los tiques relacionados al estado aquí',
 
 // CommentsController
   'comment-has-been-added-ok'        => 'Comentario fue añadido de forma correcta',
@@ -127,15 +127,15 @@ return [
   'notify-status-to'                 => ' estado a ',
   'notify-transferred'               => ' transferido ',
   'notify-to-you'                    => ' a usted ',
-  'notify-created-ticket'            => ' creó tiquete ',
+  'notify-created-ticket'            => ' creó tique ',
   'notify-updated'                   => ' actualizado ',
 
  // TicketsController
-  'the-ticket-has-been-created'      => 'El tiquete fue creado!',
-  'the-ticket-has-been-modified'     => 'El tiquete fue modificado!',
-  'the-ticket-has-been-deleted'      => 'El tiquete :name fue borrado!',
-  'the-ticket-has-been-completed'    => 'El tiquete :name fue completado!',
-  'the-ticket-has-been-reopened'     => 'El tiquete :name fue reabierto!',
+  'the-ticket-has-been-created'      => 'El tique fue creado!',
+  'the-ticket-has-been-modified'     => 'El tique fue modificado!',
+  'the-ticket-has-been-deleted'      => 'El tique :name fue borrado!',
+  'the-ticket-has-been-completed'    => 'El tique :name fue completado!',
+  'the-ticket-has-been-reopened'     => 'El tique :name fue reabierto!',
   'you-are-not-permitted-to-do-this' => 'No tienes los permisos necesarios para realizar esta acción!',
 
  /*

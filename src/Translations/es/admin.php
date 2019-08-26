@@ -65,14 +65,14 @@ return [
   'index-administrator'                 => 'Adinistrador',  //new
   'index-users'                         => 'Usuarios',
   'index-user'                          => 'Usuario',
-  'index-tickets'                       => 'Tiquetes',
+  'index-tickets'                       => 'Tiques',
   'index-open'                          => 'Abierto',
   'index-closed'                        => 'Cerrado',
   'index-total'                         => 'Total',
   'index-month'                         => 'Mes',
-  'index-performance-chart'             => '¿Cuántos días en promedio toma resolver un tiquete?',
-  'index-categories-chart'              => 'Distribución de Tiquetes por Categoría',
-  'index-agents-chart'                  => 'Distribución de Tiquetes por Agente',
+  'index-performance-chart'             => '¿Cuántos días en promedio toma resolver un tique?',
+  'index-categories-chart'              => 'Distribución de Tiques por Categoría',
+  'index-agents-chart'                  => 'Distribución de Tiques por Agente',
 
 // $admin_route_path/agent/____
   'agent-index-title'             => 'Administración de Agentes',
@@ -133,7 +133,7 @@ return [
   'btn-create-new-config'         => 'Añadir configuración nueva',
   'config-index-no-settings'      => 'No existen configuraciones,',
   'config-index-initial'          => 'Inicial',
-  'config-index-tickets'          => 'Tiquetes',
+  'config-index-tickets'          => 'Tiques',
   'config-index-notifications'    => 'Notificaciones',
   'config-index-permissions'      => 'Permisos',
   'config-index-editor'           => 'Editor', //Added: 2016.01.14
