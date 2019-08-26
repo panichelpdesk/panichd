@@ -824,7 +824,7 @@ class TicketsController extends Controller
     public function register_search_fields(Request $request)
     {
 		$result = "error";
-		$message = "No field was registered";
+		$message = trans('panichd::lang.searchform-validation-no-field');
 		
 		// Forget last search
 		session()->forget('search_fields');
@@ -854,7 +854,7 @@ class TicketsController extends Controller
 			session(compact('search_fields'));
 
 			$result = "ok";
-			$message = count($search_fields) . " fields registered";
+			$message = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
 		}
 
         return response()->json(['result' => $result, 'messages' => [$message]]);

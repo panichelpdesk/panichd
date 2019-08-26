@@ -1,7 +1,7 @@
 <div id="search_form" class="card bg-light mb-2"><div class="card-body">
 {!! CollectiveForm::open(['route'=> $setting->grab('main_route').'.search.register', 'method' => 'POST']) !!}
 
-    <legend>Search tickets</legend>
+    <legend>{{ trans('panichd::lang.searchform-title') }}</legend>
 
     <div class="row" data-class="row"><div class="col-md-6">
 
@@ -15,10 +15,10 @@
     </div>
 
     <div class="form-group row"><!-- CREATOR -->
-        <label for="creator_id" class="col-lg-3 col-form-label"> Creator: </label>
+        <label for="creator_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-creator') }}">{{ trans('panichd::lang.searchform-creator')  . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
         <div class="col-lg-9">
             <select name="creator_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
-                <option value="">- none -</option>
+                <option value="">{{ trans('panichd::lang.searchform-creator-none') }}</option>
                 @foreach ($c_members as $owner)
                     <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
                     @if ($setting->grab('departments_notices_feature'))
@@ -31,16 +31,15 @@
                     </option>
                 @endforeach
             </select>
-            <div class="help-block text-muted">Who created the ticket (Sometimes is an agent in the name of a Member)</div>
         </div>
     </div>
     
     <div style="margin-bottom: 1.5em">
         <div class="form-group row"><!-- OWNER -->
-            <label for="user_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.create-ticket-owner-help') }}">{{trans('panichd::lang.owner')}}{{trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+            <label for="user_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-owner') }}">{{trans('panichd::lang.owner') . trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
             <div class="col-lg-9">
                 <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
-                    <option value="">- none -</option>
+                    <option value="">{{ trans('panichd::lang.searchform-owner-none') }}</option>
                     @foreach ($c_members as $owner)
                         <option value="{{ $owner->id }}">{{ $owner->name . ($owner->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $owner->email) }}
                         @if ($setting->grab('departments_notices_feature'))
@@ -53,16 +52,15 @@
                         </option>
                     @endforeach
                 </select>
-                <div class="help-block text-muted">Member that owns the ticket</div>
             </div>
         </div>
 
         @if($setting->grab('departments_feature'))
             <div class="form-group row"><!-- DEPARTMENT -->
-                <label for="user_id" class="col-lg-3 col-form-label"> Department{{trans('panichd::lang.colon')}}</label>
+                <label for="user_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-department') }}">{{trans('panichd::lang.searchform-department') . trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
                 <div class="col-lg-9">
                     <select name="department_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
-                        <option value="">- none -</option>
+                        <option value="">{{ trans('panichd::lang.searchform-department-none') }}</option>
                         @foreach ($c_departments as $dep)
                             <option value="{{ $dep->id }}">{{ $dep->name }}</option>
                             @foreach($dep->descendants as $descendant)
@@ -70,7 +68,6 @@
                             @endforeach
                         @endforeach
                     </select>
-                    <div class="help-block text-muted">Owner departments</div>
                 </div>
             </div>
         @endif
@@ -85,7 +82,7 @@
             <div class="col-lg-9">
                 <div class="form-check form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="" checked="checked">- none -
+                        <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="" checked="checked">{{ trans('panichd::lang.searchform-list-none') }}
                     </label>
                 </div>
                 @foreach (['newest', 'active', 'complete'] as $list)
@@ -105,7 +102,7 @@
             ]) !!}
             <div class="col-lg-9">
                 <select class="form-control" name="status_id">
-                    <option value="">- none -</option>
+                    <option value="">{{ trans('panichd::lang.searchform-status-none') }}</option>
                     @foreach($c_status as $status)
                         <option value="{{ $status->id }}">{{ $status->name }}</option>
                     @endforeach
@@ -116,7 +113,7 @@
             {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <select class="form-control" name="priority_id">
-                    <option value="">- none -</option>
+                    <option value="">{{ trans('panichd::lang.searchform-priority-none') }}</option>
                     @foreach($priorities as $id => $priority)
                         <option value="{{ $id }}">{{ $priority }}</option>
                     @endforeach
@@ -135,9 +132,9 @@
                     </span>
                 </div>
                 <div class="form-text">
-                    <label><input type="radio" name="start_date_type" value="from" checked="checked"> From specified</label>
-                    <label class="ml-2"><input type="radio" name="start_date_type" value="until"> Until specified</label>
-                    <label class="ml-2"><input type="radio" name="start_date_type" value="exact_day"> Exact day, any time</label>
+                    <label><input type="radio" name="start_date_type" value="from" checked="checked"> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                    <label class="ml-2"><input type="radio" name="start_date_type" value="until"> {{ trans('panichd::lang.searchform-date-type-until') }}</label>
+                    <label class="ml-2"><input type="radio" name="start_date_type" value="exact_day"> {{ trans('panichd::lang.searchform-date-type-exact_day') }}</label>
                 </div>
             </div>
         </div>
@@ -153,9 +150,9 @@
                     </span>
                 </div>
                 <div class="form-text">
-                    <label><input type="radio" name="limit_date_type" value="from" checked="checked"> From specified</label>
-                    <label class="ml-2"><input type="radio" name="limit_date_type" value="until"> Until specified</label>
-                    <label class="ml-2"><input type="radio" name="limit_date_type" value="exact_day"> Exact day, any time</label>
+                    <label><input type="radio" name="limit_date_type" value="from" checked="checked"> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                    <label class="ml-2"><input type="radio" name="limit_date_type" value="until"> {{ trans('panichd::lang.searchform-date-type-until') }}</label>
+                    <label class="ml-2"><input type="radio" name="limit_date_type" value="exact_day"> {{ trans('panichd::lang.searchform-date-type-exact_day') }}</label>
                 </div>
             </div>
         </div>
@@ -167,7 +164,7 @@
         ]) !!}
         <div class="col-lg-9">
             <select id="select_category" class="form-control" name="category_id">
-                <option value="">- none -</option>
+                <option value="">{{ trans('panichd::lang.searchform-category-none') }}</option>
                 @foreach($a_categories as $id => $cat)
                     <option value="{{ $id }}">{{ $cat }}</option>
                 @endforeach
@@ -182,7 +179,7 @@
         <div class="col-lg-9">
             <select id="select_category_agent" name="agent_id" class="form-control" style="display: none" disabled="disabled"></select>
             <select id="select_visible_agent" name="agent_id" class="form-control">
-                <option value="">- none -</option>
+                <option value="">{{ trans('panichd::lang.searchform-agent-none') }}</option>
                 @foreach($c_visible_agents as $agent)
                     <option value="{{ $agent->id }}">{{ $agent->name }}</option>
                 @endforeach
@@ -214,15 +211,15 @@
     </div>
 
     <div class="form-group row"><!-- COMMENTS -->
-        <label for="comments" class="col-lg-3 col-form-label">Comment text{{ trans('panichd::lang.colon') }}</label>
+        <label for="comments" class="col-lg-3 col-form-label">{{ trans('panichd::lang.searchform-comments') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="comments" cols="50"></textarea>
         </div>
     </div>
 
     @if ($setting->grab('ticket_attachments_feature'))
-        <div class="form-group row">
-            {!! CollectiveForm::label('attachment_name', 'Attachment filename' . trans('panichd::lang.colon'), [
+        <div class="form-group row"><!-- ATTACHMENT FILENAME -->
+            {!! CollectiveForm::label('attachment_name', trans('panichd::lang.searchform-attachment_filename') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label'
             ]) !!}
             <div class="col-lg-9">
@@ -231,16 +228,15 @@
         </div>
     @endif
     <div class="form-group row"><!-- FIND IN ANY TEXT FIELD -->
-        <label for="comments" class="col-lg-3 col-form-label">Any text field{{ trans('panichd::lang.colon') }}</label>
+        <label for="comments" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-any_text_field') }}">{{ trans('panichd::lang.searchform-any_text_field') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="any_text_field" cols="50"></textarea>
-            <div class="help-block">Find in any text field in: Subject, Description, Intervention, Comments or attachment fields</div>
         </div>
     </div>
 
     @foreach(['created_at', 'completed_at', 'updated_at'] as $date_field)
         <div class="form-group row">
-            {!! CollectiveForm::label($date_field, $date_field . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
+            {!! CollectiveForm::label($date_field, trans('panichd::lang.searchform-' . $date_field) . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="{{ $date_field }}">
                     <input type="text" class="form-control" name="{{ $date_field }}" value=""/>
@@ -250,11 +246,11 @@
                     </span>
                 </div>
                 <div class="form-text">
-                    <label><input type="radio" name="{{ $date_field }}_type" value="from" checked="checked"> From specified</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="until"> Until specified</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_year"> Exact Year</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_month"> Year, month</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_day"> Day</label>
+                    <label><input type="radio" name="{{ $date_field }}_type" value="from" checked="checked"> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="until"> {{ trans('panichd::lang.searchform-date-type-until') }}</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_year"> {{ trans('panichd::lang.searchform-date-type-exact_year') }}</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_month"> {{ trans('panichd::lang.searchform-date-type-exact_month') }}</label>
+                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_day"> {{ trans('panichd::lang.searchform-date-type-exact_day') }}</label>
                 </div>
             </div>
         </div>
@@ -263,7 +259,7 @@
     </div></div>
 
     <div class="text-center"><!-- SUBMIT BUTTON -->
-        {!! CollectiveForm::submit('Search', [
+        {!! CollectiveForm::submit(trans('panichd::lang.searchform-btn-submit'), [
             'class' => 'btn btn-primary ajax_form_submit',
             'data-errors_div' => 'form_errors'
         ]) !!}

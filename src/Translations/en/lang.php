@@ -344,10 +344,50 @@ return [
   'ticket-destroy-error'             => 'The ticket could not be deleted: :error',
   'comment-destroy-error'            => 'The comment could not be deleted: :error',
 
- // Comment form
+  // Comment form
   'validate-comment-required'        => 'You must type the comment text',
   'validate-comment-min'             => 'You must type a longer text for the comment',
 
+// Ticket search form
+   'searchform-nav-text'             => 'Search',
+   'searchform-title'                => 'Search tickets',
+  
+   'searchform-creator'              => 'Creator',
+   'searchform-department'           => 'Department',
+   'searchform-comments'             => 'Comments text',
+   'searchform-attachment_filename'  => 'Attachment filename',
+   'searchform-any_text_field'       => 'Any text field',
+   'searchform-created_at'           => 'Creation datetime',
+   'searchform-completed_at'         => 'Completion datetime',
+   'searchform-updated_at'           => 'Last update',
+ 
+   'searchform-help-creator'         => 'Who created the ticket (Sometimes is an agent in the name of a Member)',
+   'searchform-help-owner'           => 'Member that owns the ticket',
+   'searchform-help-department'      => 'Owner departments',
+   'searchform-help-any_text_field'  => 'Find in any text field in: Subject, Description, Intervention, Comments or attachment fields',
+ 
+   'searchform-creator-none'         => '- none -',
+   'searchform-owner-none'           => '- none -',
+   'searchform-department-none'      => '- none -',
+   'searchform-list-none'            => '- none -',
+   'searchform-status-none'          => '- none -',
+   'searchform-priority-none'        => '- none -',
+   'searchform-category-none'        => '- none -',
+   'searchform-agent-none'           => '- none -',
+   
+   'searchform-date-type-from'       => 'From specified',
+   'searchform-date-type-until'      => 'Until specified',
+   'searchform-date-type-exact_year' => 'Exact Year',
+   'searchform-date-type-exact_month'=> 'Year, month',
+   'searchform-date-type-exact_day'  => 'Exact day',
+ 
+   'searchform-btn-submit'           => 'Search',
+ 
+   'searchform-validation-no-field'  => 'No field was introduced',
+   'searchform-validation-success'   => ':num search fields registered',
+
+   'searchform-results-title'        => 'Search results',
+   'searchform-btn-edit'             => 'Edit search',
 
  /*
   *  Controllers
