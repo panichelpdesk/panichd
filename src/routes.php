@@ -20,7 +20,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     // Search page (Blank form or with search parameters in URL)
     Route::get("$main_route_path/search/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@search_form')
         ->where('parameters', '(.*)')
-        ->name("$main_route.search.form");
+        ->name("$main_route.search");
     
     // Search AJAX registering
     Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@register_search_fields')
