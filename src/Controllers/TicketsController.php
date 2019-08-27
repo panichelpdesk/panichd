@@ -37,6 +37,7 @@ class TicketsController extends Controller
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
+	protected $a_search_fields_date_types = ['from', 'until', 'exact_year', 'exact_month', 'exact_day'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
@@ -799,7 +800,7 @@ class TicketsController extends Controller
 							// Decode strings in URL
 							$search_fields[$key] = urldecode($param);
 						
-						}elseif(in_array(str_replace('_type', '', $key), $this->a_search_fields_date)){
+						}elseif(in_array(str_replace('_type', '', $key), $this->a_search_fields_date) and in_array($param, $this->a_search_fields_date_types)){
 							// Get date field related type
 							$search_fields[$key] = $param;
 						}
@@ -818,8 +819,8 @@ class TicketsController extends Controller
 
 		foreach($this->a_search_fields_date as $field){
 			if(isset($search_fields[$field]) and !isset($search_fields[$field . '_type'])){
-				// Unset date field if it's type is not specified
-				unset($search_fields[$field]);
+				// Set date field default type if not specified
+				$search_fields[$field . '_type'] = 'from';
 			}
 		}
 
@@ -851,7 +852,11 @@ class TicketsController extends Controller
 
 		$priorities = $this->getCacheList('priorities');
 
-		$a_date_additional_types = ['until', 'exact_year', 'exact_month', 'exact_day'];
+		// Date types except "from"
+		$a_date_additional_types = $this->a_search_fields_date_types;
+		if (($key = array_search('from', $a_date_additional_types)) !== false) {
+			unset($a_date_additional_types[$key]);
+		}
 
 		$a_categories = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
