@@ -796,10 +796,40 @@ class TicketsController extends Controller
 							// Add param value pair into search_fields array
 							$search_fields[$key] = $param;
 						
-						}elseif(in_array($key, $a_text_params) or in_array($key, $this->a_search_fields_date)){
+						}elseif(in_array($key, $a_text_params)){
 							// Decode strings in URL
 							$search_fields[$key] = urldecode($param);
+
+						}elseif(in_array($key, $this->a_search_fields_date)){
+							// Decode strings in URL
+							$date = urldecode($param);
 						
+							if (ctype_digit($date) and strlen($date) == 4){
+								// Create a formatted date from year
+								$search_fields[$key] = Carbon::createFromFormat('Y', $date)->startOfYear()->format(trans('panichd::lang.datetime-format')); 
+
+								// Specify date type if it's not set
+								if (!isset($search_fields[$key . '_type'])) $search_fields[$key . '_type'] = 'exact_year';
+
+							}else{
+								try {
+									// Check if it's a full and formatted date time string
+									Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $date);
+									$search_fields[$key] = $date;
+								
+								} catch (\Exception $e) {
+									try {
+										// Check if it's a date string
+										$datetime = Carbon::createFromFormat(trans('panichd::lang.date-format'), $date)->startOfDay()->format(trans('panichd::lang.datetime-format'));
+										$search_fields[$key] = $datetime;
+										if (!isset($search_fields[$key . '_type'])) $search_fields[$key . '_type'] = 'exact_day';
+									
+									}catch (\Exception $e) {
+										// Don't register the date field
+									}
+								}
+							}
+
 						}elseif(in_array(str_replace('_type', '', $key), $this->a_search_fields_date) and in_array($param, $this->a_search_fields_date_types)){
 							// Get date field related type
 							$search_fields[$key] = $param;
