@@ -13,7 +13,7 @@
 @section('footer')
 	<script type="text/javascript">
 	
-	function success_ajax_callback() {
+	function success_ajax_callback(response) {
 		// You may define a specific callback in any form to do additional actions on success
 	}
 
@@ -96,7 +96,7 @@
 					}
 
 					// Custom version in search form own script
-					success_ajax_callback();		
+					success_ajax_callback(response);		
 				}
 			}
 		});
