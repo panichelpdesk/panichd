@@ -75,7 +75,7 @@
 
     <div>
         <div class="form-group row align-items-center @if(isset($search_fields['list'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
-            {!! CollectiveForm::label('complete', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
+            {!! CollectiveForm::label('list', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label',
                 'title' => trans('panichd::lang.create-ticket-change-list')
             ]) !!}
@@ -190,7 +190,7 @@
     </div>
 
     <div class="form-group row @if(isset($search_fields['tags'])) bg-info @endif"><!-- TAGS -->
-        <label for="tag_list" class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
+        <label for="tags" class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
         <div id="tag_list_container" class="col-lg-9">
             @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => $search_fields['tags'] ?? []])
         </div>
@@ -230,7 +230,7 @@
         </div>
     @endif
     <div class="form-group row @if(isset($search_fields['any_text_field'])) bg-info @endif"><!-- FIND IN ANY TEXT FIELD -->
-        <label for="comments" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-any_text_field') }}">{{ trans('panichd::lang.searchform-any_text_field') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
+        <label for="any_text_field" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-any_text_field') }}">{{ trans('panichd::lang.searchform-any_text_field') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="any_text_field" cols="50">{{ $search_fields['any_text_field'] ?? '' }}</textarea>
         </div>
