@@ -132,9 +132,10 @@
                     </span>
                 </div>
                 <div class="form-text">
-                    <label><input type="radio" name="start_date_type" value="from" checked="checked"> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
-                    <label class="ml-2"><input type="radio" name="start_date_type" value="until"> {{ trans('panichd::lang.searchform-date-type-until') }}</label>
-                    <label class="ml-2"><input type="radio" name="start_date_type" value="exact_day"> {{ trans('panichd::lang.searchform-date-type-exact_day') }}</label>
+                    <label><input type="radio" name="start_date_type" value="from" @if(!isset($search_fields['start_date_type']) || $search_fields['start_date_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                    @foreach($a_date_additional_types as $type)
+                        <label class="ml-2"><input type="radio" name="start_date_type" value="{{ $type }}" @if(isset($search_fields['start_date_type']) && $search_fields['start_date_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -150,9 +151,10 @@
                     </span>
                 </div>
                 <div class="form-text">
-                    <label><input type="radio" name="limit_date_type" value="from" checked="checked"> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
-                    <label class="ml-2"><input type="radio" name="limit_date_type" value="until"> {{ trans('panichd::lang.searchform-date-type-until') }}</label>
-                    <label class="ml-2"><input type="radio" name="limit_date_type" value="exact_day"> {{ trans('panichd::lang.searchform-date-type-exact_day') }}</label>
+                    <label><input type="radio" name="limit_date_type" value="from" @if(!isset($search_fields['limit_date_type']) || $search_fields['limit_date_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                    @foreach($a_date_additional_types as $type)
+                        <label class="ml-2"><input type="radio" name="limit_date_type" value="{{ $type }}" @if(isset($search_fields['limit_date_type']) && $search_fields['limit_date_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -239,18 +241,17 @@
             {!! CollectiveForm::label($date_field, trans('panichd::lang.searchform-' . $date_field) . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="{{ $date_field }}">
-                    <input type="text" class="form-control" name="{{ $date_field }}" value=""/>
+                    <input type="text" class="form-control" name="{{ $date_field }}" value="{{ $search_fields[$date_field] ?? '' }}"/>
                     <span class="input-group-addon" style="display: none"></span>
                     <span class="input-group-append">
                         <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
                     </span>
                 </div>
                 <div class="form-text">
-                    <label><input type="radio" name="{{ $date_field }}_type" value="from" checked="checked"> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="until"> {{ trans('panichd::lang.searchform-date-type-until') }}</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_year"> {{ trans('panichd::lang.searchform-date-type-exact_year') }}</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_month"> {{ trans('panichd::lang.searchform-date-type-exact_month') }}</label>
-                    <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="exact_day"> {{ trans('panichd::lang.searchform-date-type-exact_day') }}</label>
+                    <label><input type="radio" name="{{ $date_field }}_type" value="from" @if(!isset($search_fields[$date_field . '_type']) || $search_fields[$date_field . '_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                    @foreach($a_date_additional_types as $type)
+                        <label class="ml-2"><input type="radio" name="{{ $date_field }}_type" value="{{ $type }}" @if(isset($search_fields[$date_field . '_type']) && $search_fields[$date_field . '_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
+                    @endforeach
                 </div>
             </div>
         </div>
