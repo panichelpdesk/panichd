@@ -924,7 +924,11 @@ class TicketsController extends Controller
 			$message = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
 		}
 
-        return response()->json(['result' => $result, 'messages' => [$message]]);
+        return response()->json([
+			'result' => $result,
+			'messages' => [$message],
+			'search_fields' => (isset($search_fields) ? array_keys($search_fields) : [])
+			]);
 	}
 
     /**

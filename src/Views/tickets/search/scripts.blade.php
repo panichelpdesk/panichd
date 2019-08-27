@@ -1,8 +1,16 @@
 <script type="text/javascript">
 // After registering search fields
-function success_ajax_callback() {
+function success_ajax_callback(response) {
     // Hide search form
     $('#search_form').hide();
+
+    // Clean search form previous filled fields
+    $('#search_form .form-group.row').removeClass('bg-info');
+
+    // Highlight filled fields
+    $.each(response.search_fields,function(index, value){
+        $('label[for=' + value + ']').closest('.form-group.row').addClass('bg-info');
+    });
 
     // Load datatable with the new search fields
     datatable.ajax.reload();
