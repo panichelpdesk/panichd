@@ -7,6 +7,9 @@ $(function(){
         format: '{{ trans('panichd::lang.datetimepicker-format') }}',
         @if (isset($ticket) && $a_current['start_date'] != "")
             defaultDate: "{{ $a_current['start_date'] }}",
+
+        @elseif(isset($search_fields['start_date']))
+            defaultDate: "{{ $search_fields['start_date'] }}",
         @endif
         keyBinds: { 'delete':null, 'left':null, 'right':null }
     });
@@ -17,6 +20,9 @@ $(function(){
         format: '{{ trans('panichd::lang.datetimepicker-format') }}',
         @if (isset($ticket) && $a_current['limit_date'] != "")
             defaultDate: "{{ $a_current['limit_date'] }}",
+        
+        @elseif(isset($search_fields['limit_date']))
+            defaultDate: "{{ $search_fields['limit_date'] }}",
         @endif
         keyBinds: { 'delete':null, 'left':null, 'right':null },
         useCurrent: false

@@ -795,9 +795,13 @@ class TicketsController extends Controller
 							// Add param value pair into search_fields array
 							$search_fields[$key] = $param;
 						
-						}elseif(in_array($key, $a_text_params)){
+						}elseif(in_array($key, $a_text_params) or in_array($key, $this->a_search_fields_date)){
 							// Decode strings in URL
 							$search_fields[$key] = urldecode($param);
+						
+						}elseif(in_array(str_replace('_type', '', $key), $this->a_search_fields_date)){
+							// Get date field related type
+							$search_fields[$key] = $param;
 						}
 						
 						// key reset to look for a new parameter
@@ -812,7 +816,14 @@ class TicketsController extends Controller
 			}
 		}
 
-		if (isset($search_fields)){
+		foreach($this->a_search_fields_date as $field){
+			if(isset($search_fields[$field]) and !isset($search_fields[$field . '_type'])){
+				// Unset date field if it's type is not specified
+				unset($search_fields[$field]);
+			}
+		}
+
+		if (isset($search_fields) and $search_fields){
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
 
@@ -840,6 +851,8 @@ class TicketsController extends Controller
 
 		$priorities = $this->getCacheList('priorities');
 
+		$a_date_additional_types = ['until', 'exact_year', 'exact_month', 'exact_day'];
+
 		$a_categories = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
 
 		$c_visible_agents = Member::visible()->get();
@@ -856,7 +869,7 @@ class TicketsController extends Controller
         ])
 		->select('id', 'name')->get();
 		
-		$data = compact('c_members', 'c_status', 'priorities', 'a_categories', 'c_visible_agents', 'c_cat_tags');
+		$data = compact('c_members', 'c_status', 'priorities', 'a_date_additional_types', 'a_categories', 'c_visible_agents', 'c_cat_tags');
 
 		if (Setting::grab('departments_feature')){
 			$data['c_departments'] = Department::whereNull('department_id')->with('descendants.ancestor')->orderBy('name', 'asc')->get();
