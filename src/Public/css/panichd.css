@@ -69,6 +69,18 @@ h1, h2, h3, h4, h5, h6 {
 	color: gray;
 }
 
+/* Hihglight a form group. This is used in ticket search form for filled fields */
+.form-group.row.bg-info {
+	padding: 0.5em 0em;
+}
+
+.form-group.row.bg-info label.col-form-label {
+	font-weight: bold;
+}
+.form-group.row.bg-info label {
+	color: white;
+}
+
 /* Filter panel */
 #filter_panel {
 	margin: 0em 0em 0.8em 0em;

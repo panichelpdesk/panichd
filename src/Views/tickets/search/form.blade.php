@@ -5,7 +5,7 @@
 
     <div class="row" data-class="row"><div class="col-md-6">
 
-    <div class="form-group row"><!-- SUBJECT -->
+    <div class="form-group row @if(isset($search_fields['subject'])) bg-info @endif"><!-- SUBJECT -->
         {!! CollectiveForm::label('subject', trans('panichd::lang.subject') . trans('panichd::lang.colon'), [
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div class="form-group row"><!-- CREATOR -->
+    <div class="form-group row @if(isset($search_fields['creator_id'])) bg-info @endif"><!-- CREATOR -->
         <label for="creator_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-creator') }}">{{ trans('panichd::lang.searchform-creator')  . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
         <div class="col-lg-9">
             <select name="creator_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
@@ -35,7 +35,7 @@
     </div>
     
     <div style="margin-bottom: 1.5em">
-        <div class="form-group row"><!-- OWNER -->
+        <div class="form-group row @if(isset($search_fields['user_id'])) bg-info @endif"><!-- OWNER -->
             <label for="user_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-owner') }}">{{trans('panichd::lang.owner') . trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
             <div class="col-lg-9">
                 <select name="user_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
@@ -56,7 +56,7 @@
         </div>
 
         @if($setting->grab('departments_feature'))
-            <div class="form-group row"><!-- DEPARTMENT -->
+            <div class="form-group row @if(isset($search_fields['department_id'])) bg-info @endif"><!-- DEPARTMENT -->
                 <label for="user_id" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-department') }}">{{trans('panichd::lang.searchform-department') . trans('panichd::lang.colon')}} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
                 <div class="col-lg-9">
                     <select name="department_id" class="generate_default_select2 form-control" style="display: none; width: 100%">
@@ -74,7 +74,7 @@
     </div>
 
     <div>
-        <div class="form-group row align-items-center" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
+        <div class="form-group row align-items-center @if(isset($search_fields['list'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
             {!! CollectiveForm::label('complete', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label',
                 'title' => trans('panichd::lang.create-ticket-change-list')
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <div class="form-group row"><!-- STATUS -->
+        <div class="form-group row @if(isset($search_fields['status_id'])) bg-info @endif"><!-- STATUS -->
             {!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label'
             ]) !!}
@@ -109,7 +109,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group row"><!-- PRIORITY -->
+        <div class="form-group row @if(isset($search_fields['priority_id'])) bg-info @endif"><!-- PRIORITY -->
             {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <select class="form-control" name="priority_id">
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <div class="form-group row"><!-- START DATE -->
+        <div class="form-group row @if(isset($search_fields['start_date'])) bg-info @endif"><!-- START DATE -->
             {!! CollectiveForm::label('start_date', trans('panichd::lang.start-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="start_date">
@@ -140,7 +140,7 @@
             </div>
         </div>
         
-        <div class="form-group row" style="margin-bottom: 1.5em"><!-- LIMIT DATE -->
+        <div class="form-group row @if(isset($search_fields['limit_date'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- LIMIT DATE -->
             {!! CollectiveForm::label('limit_date', trans('panichd::lang.limit-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="limit_date">
@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    <div class="form-group row"><!-- CATEGORY -->
+    <div class="form-group row @if(isset($search_fields['category_id'])) bg-info @endif"><!-- CATEGORY -->
         {!! CollectiveForm::label('category_id', trans('panichd::lang.category') . trans('panichd::lang.colon'), [
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
@@ -174,7 +174,7 @@
        </div>
     </div>
 
-    <div class="form-group row"><!-- AGENT -->
+    <div class="form-group row @if(isset($search_fields['agent_id'])) bg-info @endif"><!-- AGENT -->
         {!! CollectiveForm::label('agent_id', trans('panichd::lang.agent') . trans('panichd::lang.colon'), [
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
@@ -189,8 +189,8 @@
         </div>
     </div>
 
-    <div class="form-group row"><!-- TAGS -->
-        <label class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
+    <div class="form-group row @if(isset($search_fields['tags'])) bg-info @endif"><!-- TAGS -->
+        <label for="tag_list" class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
         <div id="tag_list_container" class="col-lg-9">
             @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => $search_fields['tags'] ?? []])
         </div>
@@ -198,21 +198,21 @@
 
     </div><div class="col-md-6">
 
-    <div class="form-group row"><!-- DESCRIPTION -->
+    <div class="form-group row @if(isset($search_fields['content'])) bg-info @endif"><!-- DESCRIPTION -->
         <label for="content" class="col-lg-3 col-form-label">{{trans('panichd::lang.description')}}{{trans('panichd::lang.colon')}}</label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="content" cols="50">{{ $search_fields['content'] ?? '' }}</textarea>
         </div>
     </div>
 
-    <div class="form-group row"><!-- INTERVENTION -->
+    <div class="form-group row @if(isset($search_fields['intervention'])) bg-info @endif"><!-- INTERVENTION -->
         <label for="intervention" class="col-lg-3 col-form-label">{{ trans('panichd::lang.intervention') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="intervention" cols="50">{{ $search_fields['intervention'] ?? '' }}</textarea>
         </div>
     </div>
 
-    <div class="form-group row"><!-- COMMENTS -->
+    <div class="form-group row @if(isset($search_fields['comments'])) bg-info @endif"><!-- COMMENTS -->
         <label for="comments" class="col-lg-3 col-form-label">{{ trans('panichd::lang.searchform-comments') . trans('panichd::lang.colon') }}</label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="comments" cols="50">{{ $search_fields['comments'] ?? '' }}</textarea>
@@ -220,7 +220,7 @@
     </div>
 
     @if ($setting->grab('ticket_attachments_feature'))
-        <div class="form-group row"><!-- ATTACHMENT FILENAME -->
+        <div class="form-group row @if(isset($search_fields['attachment_name'])) bg-info @endif"><!-- ATTACHMENT FILENAME -->
             {!! CollectiveForm::label('attachment_name', trans('panichd::lang.searchform-attachment_filename') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label'
             ]) !!}
@@ -229,7 +229,7 @@
             </div>
         </div>
     @endif
-    <div class="form-group row"><!-- FIND IN ANY TEXT FIELD -->
+    <div class="form-group row @if(isset($search_fields['any_text_field'])) bg-info @endif"><!-- FIND IN ANY TEXT FIELD -->
         <label for="comments" class="col-lg-3 col-form-label tooltip-info" title="{{ trans('panichd::lang.searchform-help-any_text_field') }}">{{ trans('panichd::lang.searchform-any_text_field') . trans('panichd::lang.colon') }} <span class="fa fa-question-circle" style="color: #bbb"></span></label>
         <div class="col-lg-9">
             <textarea class="form-control" rows="2" name="any_text_field" cols="50">{{ $search_fields['any_text_field'] ?? '' }}</textarea>
@@ -237,7 +237,7 @@
     </div>
 
     @foreach(['created_at', 'completed_at', 'updated_at'] as $date_field)
-        <div class="form-group row">
+        <div class="form-group row @if(isset($search_fields[$date_field])) bg-info @endif">
             {!! CollectiveForm::label($date_field, trans('panichd::lang.searchform-' . $date_field) . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
             <div class="col-lg-9">
                 <div class="input-group date" id="{{ $date_field }}">
