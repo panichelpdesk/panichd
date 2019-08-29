@@ -1503,8 +1503,8 @@ class TicketsController extends Controller
 					// Specify form fields
 					$info['attachments_prefix'] = 'comment_' . $i . '_';
 					$info['attachments_field'] = 'comment_' . $i . '_attachments';
-					$info['attachment_filenames_field'] = 'comment_' . $i . 'attachment_new_filenames';
-					$info['attachment_descriptions_field'] = 'comment_' . $i . 'attachment_descriptions';
+					$info['attachment_filenames_field'] = 'comment_' . $i . '_attachment_new_filenames';
+					$info['attachment_descriptions_field'] = 'comment_' . $i . '_attachment_descriptions';
 
 					// Process attachments
 					$a_result_errors = $this->saveAttachments($info);
