@@ -950,6 +950,13 @@ class TicketsController extends Controller
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
 
+			// Build this search URL
+			$search_URL = route(Setting::grab('main_route') . '.search');
+			foreach($search_fields as $field => $value){
+				$search_URL.= '/' . $field . '/' . (is_array($value) ? implode(',', $value) : $value);
+			}
+
+			// Success message
 			$result = "ok";
 			$message = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
 		}
@@ -957,7 +964,8 @@ class TicketsController extends Controller
         return response()->json([
 			'result' => $result,
 			'messages' => [$message],
-			'search_fields' => (isset($search_fields) ? array_keys($search_fields) : [])
+			'search_fields' => $search_fields ?? [],
+			'search_URL' => $search_URL ?? ''
 			]);
 	}
 
