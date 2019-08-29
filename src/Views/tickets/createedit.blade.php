@@ -25,7 +25,7 @@
 	@include('panichd::tickets.createedit.scripts')
 	@include('panichd::tickets.partials.form_scripts')
 	@if ($u->currentLevel() > 1)
-		@include('panichd::tickets.partials.comments.new_in_createedit_ticket_scripts')
+		@include('panichd::tickets.partials.comments.embedded_scripts')
 	@endif
 
 	@include('panichd::tickets.partials.tags_footer_script', ['category_id' => $a_current['cat_id']])
