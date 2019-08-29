@@ -259,7 +259,7 @@
         @if ($u->currentLevel() > 1)
             </div></div>
 
-            @include('panichd::tickets.partials.comments.new_in_createedit_ticket_form')
+            @include('panichd::tickets.partials.comments.embedded_form')
         @endif
 
         <div class="text-center"><!-- SUBMIT BUTTON -->
