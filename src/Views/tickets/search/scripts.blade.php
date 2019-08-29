@@ -9,8 +9,11 @@ function success_ajax_callback(response) {
 
     // Highlight filled fields
     $.each(response.search_fields,function(index, value){
-        $('label[for=' + value + ']').closest('.form-group.row').addClass('bg-info');
+        $('label[for=' + index + ']').closest('.form-group.row').addClass('bg-info');
     });
+
+    // Update link with Search URL
+    $('#copy_search_URL').attr('href', response.search_URL);
 
     // Load datatable with the new search fields
     datatable.ajax.reload();
