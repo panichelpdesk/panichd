@@ -16,7 +16,7 @@ $(function(){
 		var input = $(this),
 			files = $(this).prop('files');
 
-		var n_existent = $('#' + $(this).data('attach-id') + ' .jquery_attachment_block').length;
+		var n_existent = $('.jquery_attachment_block').length;
 
 		for(var i=0,file;file=files[i];i++) {
 			var num = n_existent + i;
@@ -29,7 +29,7 @@ $(function(){
 				+'<div class="media-body check_related_text">'
 				+'<div><span id="new_attachment_'+num+'_display_new_filename">'+file.name+'</span> <s id="new_attachment_'+num+'_display_original_filename"></s>'
 
-				// Button
+				// Edit button
 				+'<button type="button" role="button" class="btn btn-light btn-xs edit_attachment"';
 
 			if ($('#'+$(this).data('attach-id')).data('new-attachment-modal-id')){
@@ -123,8 +123,13 @@ $(function(){
 		$(editdiv).find('#attachment_form_prefix').val(prefix);
 
 		if ($(this).attr('data-modal-id')){
+			// Showing modal
 			$('#'+$(this).data('modal-id')).modal('show');
+
+			// Pass back-div
+			$(editdiv).find('.attachment_form_submit').attr('data-back-div', $(this).closest('.attached_list').prop('id'));
 		}else{
+			// Switching visible form inside modal
 			$(editdiv).show();
 			$('#'+$(this).data('back-div')).hide();
 		}
@@ -180,18 +185,20 @@ $(function(){
 		}else{
 			$('#'+prefix+'display_original_filename').text(' - '+original_filename);
 		}
-		$('#'+$(this).data('back-div')).find('#'+prefix+'display_new_filename').text(new_filename);
+
+		$('#'+$(this).attr('data-back-div')).find('#'+prefix+'display_new_filename').text(new_filename);
+		
 		if ($(fieldset).find('#attachment_form_description').val() != ""){
-			$('#'+$(this).data('back-div')).find('#'+prefix+'display_description').text($(fieldset).find('#attachment_form_description').val());
+			$('#'+$(this).attr('data-back-div')).find('#'+prefix+'display_description').text($(fieldset).find('#attachment_form_description').val());
 		}else{
-			$('#'+$(this).data('back-div')).find('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
+			$('#'+$(this).attr('data-back-div')).find('#'+prefix+'display_description').text($('#'+prefix+'display_description').data('mimetype'));
 		}
 
 		if ($(fieldset).find('#hide_modal_id').length){
 			$('#'+$(fieldset).find('#hide_modal_id').val()).modal('hide');
 		}else{
-			$('#'+$(this).data('edit-div')).hide();
-			$('#'+$(this).data('back-div')).show();
+			$('#'+$(this).attr('data-edit-div')).hide();
+			$('#'+$(this).attr('data-back-div')).show();
 		}
 
 		e.preventDefault();
