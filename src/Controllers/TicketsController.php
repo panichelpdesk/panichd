@@ -935,47 +935,52 @@ class TicketsController extends Controller
 		// Forget last search
 		session()->forget('search_fields');
 
+		// Start buildind this search URL
+		$search_URL = route(Setting::grab('main_route') . '.search');
+
 		// Check all fields
 		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
-				$search_fields[$field] = $request->{$field};
-			}
-		}
+				// Add field to search
+				$search_fields[$field] = $value_URL = is_array($request->{$field}) ? implode(',', $request->{$field}) : $request->{$field};
 
-		// Register date field related types (specified with radio buttons)
-		foreach ($this->a_search_fields_date as $field){
-			if($request->filled($field)){
-				$search_fields[$field . '_type'] = $request->{$field . '_type'};
-			}
-		}
+				// Update date field in certain cases (Requires field type specified with radio buttons)
+				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
+					
+					$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $search_fields[$field]);
+					if($request->{$field . '_type'} == 'exact_year'){
+						// If a date field type is "exact_year", show only year in URL
+						$value_URL = $carbon_instance->format('Y');
+					
+					}elseif($request->{$field . '_type'} == 'exact_day'){
+						// If a date field type is "exact_day", show only locale datetime string in URL
+						$value_URL = $carbon_instance->format(trans('panichd::lang.date-format'));
+					}
+				}
 
-		// Check ticket tags
-		if ($request->filled('category_id') and $request->filled('category_' . $request->category_id . '_tags')){
-			$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
+				// Add field in search URL
+				$search_URL.= '/' . $field . '/' . $value_URL;
+
+				// Register date type and add in URL
+				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
+					$search_fields[$field . '_type'] = $request->{$field . '_type'};
+
+					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
+				}
+
+				// Register ticket tags and add in URL
+				if ($field == 'category_id' and $request->filled('category_' . $request->category_id . '_tags')){
+					$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
+
+					$search_URL.= '/tags/' . implode(',', $search_fields['tags']);
+				}
+			}
 		}
 
 		if (isset($search_fields)){
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
-
-			// Build this search URL
-			$search_URL = route(Setting::grab('main_route') . '.search');
-			foreach($search_fields as $field => $value){
-				if (in_array($field, $this->a_search_fields_date)){
-					$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value);
-					if($search_fields[$field . '_type'] == 'exact_year'){
-						// If a date field type is "exact_year", show only year in URL
-						$value = $carbon_instance->format('Y');
-					
-					}elseif($search_fields[$field . '_type'] == 'exact_day'){
-						// If a date field type is "exact_day", show only locale datetime string in URL
-						$value = $carbon_instance->format(trans('panichd::lang.date-format'));
-					}
-					
-				}
-				$search_URL.= '/' . $field . '/' . (is_array($value) ? implode(',', $value) : $value);
-			}
 
 			// Success message
 			$result = "ok";
