@@ -13,7 +13,7 @@
         <div class="card-body">
             <h5 class="card-title mb-4">{{ trans('panichd::lang.searchform-results-title') }}
                 <button type="button" id="edit_search" class="btn btn-default btn-sm ml-4">{{ trans('panichd::lang.searchform-btn-edit') }}</button>
-                <a id="copy_search_URL" class="btn btn-default btn-sm ml-2 tooltip-info" href="#" title="This is a permanent URL for this search parameters">search URL</a>
+                <a id="copy_search_URL" class="btn btn-default btn-sm ml-2 tooltip-info" href="#" title="{{ trans('panichd::lang.searchform-help-btn-web') }}">{{ trans('panichd::lang.searchform-btn-web') }}</a>
             </h5>
             @include('panichd::tickets.datatable.header')
         </div>

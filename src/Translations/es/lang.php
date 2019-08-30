@@ -128,7 +128,9 @@ return [
   'searchform-validation-success'   => 'Se ha registrado :num campos de búsqueda',
 
   'searchform-results-title'        => 'Resultados de la búsqueda',
-    'searchform-btn-edit'           => 'Editar búsqueda',
+  'searchform-btn-edit'             => 'Editar búsqueda',
+  'searchform-btn-web'              => 'Web de búsqueda',
+  'searchform-help-btn-web'         => 'Este es un enlace permanente para esta búsqueda',
 
  /*
   *  Controllers

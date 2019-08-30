@@ -388,6 +388,8 @@ return [
 
    'searchform-results-title'        => 'Search results',
    'searchform-btn-edit'             => 'Edit search',
+   'searchform-btn-web'              => 'Search web address',
+   'searchform-help-btn-web'         => 'This is a permanent link to this search',
 
  /*
   *  Controllers
