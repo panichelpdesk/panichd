@@ -17,6 +17,8 @@ use PanicHD\PanicHD\Events\TicketUpdated;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
+use PanicHD\PanicHD\Models\Department;
+use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -30,14 +32,20 @@ class TicketsController extends Controller
     use Attachments, CacheVars, Purifiable, TicketFilters;
 
     protected $tickets;
-    protected $member;
+	protected $member;
+	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
+	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
+	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
+	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
+	protected $a_search_fields_date_types = ['from', 'until', 'exact_year', 'exact_month', 'exact_day'];
 
     public function __construct(Ticket $tickets, \PanicHDMember $member)
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
         $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'hide']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
+		$this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
+		$this->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware', ['only' => ['search_form', 'register_search_fields']]);
 
         $this->tickets = $tickets;
         $this->member = $member;
@@ -50,9 +58,127 @@ class TicketsController extends Controller
 
 		$datatables = app(\Yajra\Datatables\Datatables::class);
 
-        $agent = $this->member->find(auth()->user()->id);
+		$agent = $this->member->find(auth()->user()->id);
+		
+		$collection = Ticket::visible();
 
-        $collection = Ticket::inList($ticketList)->visible()->filtered($ticketList);
+		if ($ticketList == 'search'){
+			if(!session()->has('search_fields')){
+				// Load an empty table
+				$collection->where('panichd_tickets.id', '0');
+
+			}else{
+				// Filter by all specified fields
+				$search_fields = session()->get('search_fields');
+				foreach ($search_fields as $field => $value){
+					if ($field == 'department_id'){
+						$collection->whereHas('owner', function($query)use($search_fields){
+							$query->whereHas('department', function($q1)use($search_fields){
+								$q1->where('id', $search_fields['department_id'])
+									->orWhere('department_id', $search_fields['department_id']);
+							});
+						});
+
+					}elseif ($field == 'list'){
+						$collection->inList($value);
+
+					}elseif(in_array($field, $this->a_search_fields_date)){
+						if (in_array($search_fields[$field . '_type'], ['exact_year', 'exact_month'])){
+							$collection->whereYear('panichd_tickets.' . $field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->format('Y'));
+
+							if ($search_fields[$field . '_type'] == 'exact_month'){
+								$collection->whereMonth('panichd_tickets.' . $field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->format('m'));
+							}
+						
+						}elseif ($search_fields[$field . '_type'] == 'exact_day'){
+							$collection->whereDate('panichd_tickets.' . $field, Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateString());
+						
+						}else{
+							$collection->where('panichd_tickets.' . $field, ($search_fields[$field . '_type'] == 'from' ? '>=' : '<'), Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value)->toDateTimeString());
+						}
+
+					}elseif(in_array($field, $this->a_search_fields_text)){
+						if ($field == 'content'){
+							$collection->where(function($query) use($search_fields, $value){
+								$query->where('content', 'like', '%' . $value . '%')
+									->orWhere('html', 'like', '%' . $value . '%');
+							});
+						
+						}elseif ($field == 'intervention'){
+							$collection->where(function($query) use($search_fields, $value){
+								$query->where('intervention', 'like', '%' . $value . '%')
+									->orWhere('intervention_html', 'like', '%' . $value . '%');
+							});
+						
+						}else{
+							$collection->where($field, 'like', '%' . $value . '%');
+						}
+					
+					}elseif(in_array($field, $this->a_search_fields_numeric)){
+						$collection->where($field, $value);
+					}
+				}
+
+				if (isset($search_fields['tags'])){
+					foreach ($search_fields['tags'] as $tag_id){
+						$collection->whereHas('tags', function($q1) use($tag_id){
+							$q1->where('id', $tag_id);
+						});
+					}
+				}
+
+				if (isset($search_fields['comments'])){
+					$collection->whereHas('comments', function($q1) use($search_fields){
+						$q1->where('content', 'like', '%' . $search_fields['comments'] . '%')
+							->orWhere('html', 'like', '%' . $search_fields['comments'] . '%');
+					});
+				}
+
+				if (isset($search_fields['attachment_name'])){
+					$collection->where(function($query) use($search_fields){
+						$query->whereHas('attachments', function($q1) use($search_fields){
+							$q1->where('original_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+								->orWhere('new_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+								->orWhere('description', 'like', '%' . $search_fields['attachment_name'] . '%');
+							})
+							->orWhereHas('comments', function($q2) use($search_fields) {
+								$q2->whereHas('attachments', function($q3) use($search_fields){
+									$q3->where('original_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+										->orWhere('new_filename', 'like', '%' . $search_fields['attachment_name'] . '%')
+										->orWhere('description', 'like', '%' . $search_fields['attachment_name'] . '%');
+								});
+							});
+					});
+				}
+
+				if (isset($search_fields['any_text_field'])){
+					$collection->where(function($query) use($search_fields){
+						$query->where('subject', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('content', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('html', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('intervention', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhere('intervention_html', 'like', '%' . $search_fields['any_text_field'] . '%')
+							->orWhereHas('attachments', function($q1) use($search_fields){
+								$q1->where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%');
+							})
+							->orWhereHas('comments', function($q2) use($search_fields) {
+								$q2->where('content', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhere('html', 'like', '%' . $search_fields['any_text_field'] . '%')
+									->orWhereHas('attachments', function($q3) use($search_fields){
+									$q3->where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+										->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+										->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%');
+								});
+							});
+					});
+				}
+			}
+
+		}else{
+			$collection->inList($ticketList)->filtered($ticketList);
+		}
 
         $collection
             ->leftJoin('users', function ($join1){
@@ -637,6 +763,237 @@ class TicketsController extends Controller
             return $instance->lists('name', 'id');
         }
     }
+
+    /**
+     * Ticket search form
+     *
+     * @return Response
+     */
+    public function search_form($parameters = null)
+    {
+		// Forget last search
+		session()->forget('search_fields');
+		
+		$data = $this->search_form_defaults();
+
+		// If there are search parameters
+		if (!is_null($parameters)){
+			// URL allowed parameter arrays
+			$a_numeric_params = array_merge($this->a_search_fields_numeric, ['department_id', 'list', 'tags']);
+			$a_text_params = array_merge($this->a_search_fields_text, $this->a_search_fields_text_special);
+
+			$a_temp = explode('/', $parameters);
+			$a_parameters = [];
+
+			if (count($a_temp) % 2 == 0){
+				$key = "";
+				foreach($a_temp as $param){
+					if ($key == ""){
+						$key = $param;
+					
+					}else{
+						if (in_array($key, $a_numeric_params)){
+							// Add param value pair into search_fields array
+							$search_fields[$key] = $param;
+						
+						}elseif(in_array($key, $a_text_params)){
+							// Decode strings in URL
+							$search_fields[$key] = urldecode($param);
+
+						}elseif(in_array($key, $this->a_search_fields_date)){
+							// Decode strings in URL
+							$date = urldecode($param);
+
+							// Reset Carbon instance
+							unset($carbon_instance);
+						
+							if (ctype_digit($date) and strlen($date) == 4){
+								// Create a formatted date from year
+								$carbon_instance = Carbon::createFromFormat('Y', $date)->startOfYear();
+								$search_fields[$key] = $carbon_instance->format(trans('panichd::lang.datetime-format')); 
+
+								// Specify date type if it's not set
+								if (!isset($search_fields[$key . '_type'])) $search_fields[$key . '_type'] = 'exact_year';
+
+							}else{
+								try {
+									// Check if it's a full and formatted date time string
+									$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $date);
+									$search_fields[$key] = $carbon_instance->format(trans('panichd::lang.datetime-format'));
+								
+								} catch (\Exception $e) {
+									try {
+										// Check if it's a date string
+										$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.date-format'), $date)->startOfDay();
+										$search_fields[$key] = $carbon_instance->format(trans('panichd::lang.datetime-format'));
+										if (!isset($search_fields[$key . '_type'])) $search_fields[$key . '_type'] = 'exact_day';
+									
+									}catch (\Exception $e) {
+										// Don't register the date field
+									}
+								}
+							}
+
+							if (isset($carbon_instance)){
+								// Pass DateTimeString for javascript DateTimePicker
+								$search_fields['timestamp_' . $key] = $carbon_instance->toDateTimeString();
+							}
+
+						}elseif(in_array(str_replace('_type', '', $key), $this->a_search_fields_date) and in_array($param, $this->a_search_fields_date_types)){
+							// Get date field related type
+							$search_fields[$key] = $param;
+						}
+						
+						// key reset to look for a new parameter
+						$key = "";
+					}
+				}
+			}
+
+			if (isset($search_fields['category_id']) and isset($search_fields['tags'])){
+				// Add tag id's to the array
+				$search_fields['tags'] = explode(',', $search_fields['tags']);
+			}
+		}
+
+		foreach($this->a_search_fields_date as $field){
+			if(isset($search_fields[$field]) and !isset($search_fields[$field . '_type'])){
+				// Set date field default type if not specified
+				$search_fields[$field . '_type'] = 'from';
+			}
+		}
+
+		if (isset($search_fields) and $search_fields){
+			// Store search fields in session to use in datatable
+			session(compact('search_fields'));
+
+			// Pass search fields array to the view
+			$data['search_fields'] = $search_fields;
+		}
+
+		$data['ticketList'] = 'search';
+
+        return view('panichd::tickets.search', $data);
+	}
+
+	/**
+     * Ticket search default data
+     *
+     * @return Array
+     */
+	public function search_form_defaults()
+	{
+		$member = $this->member->find(auth()->user()->id);
+
+		$c_members = $this->members_collection($member);
+
+		$c_status = \PanicHD\PanicHD\Models\Status::all();
+
+		$priorities = $this->getCacheList('priorities');
+
+		// Date types except "from"
+		$a_date_additional_types = $this->a_search_fields_date_types;
+		if (($key = array_search('from', $a_date_additional_types)) !== false) {
+			unset($a_date_additional_types[$key]);
+		}
+
+		$a_categories = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
+
+		$c_visible_agents = Member::visible()->get();
+
+		// Tag lists
+        $c_cat_tags = Category::whereHas('tags')
+        ->with([
+            'tags'=> function ($q1) {
+                $q1->select('id', 'name');
+            },
+            'tags.tickets'=> function ($q2) {
+                $q2->where('id', '0')->select('id');
+            },
+        ])
+		->select('id', 'name')->get();
+		
+		$data = compact('c_members', 'c_status', 'priorities', 'a_date_additional_types', 'a_categories', 'c_visible_agents', 'c_cat_tags');
+
+		if (Setting::grab('departments_feature')){
+			$data['c_departments'] = Department::whereNull('department_id')->with('descendants.ancestor')->orderBy('name', 'asc')->get();
+		}
+
+		return $data;
+	}
+
+	/**
+     * Register search fields in user session
+     *
+     * @return Response
+     */
+    public function register_search_fields(Request $request)
+    {
+		$result = "error";
+		$message = trans('panichd::lang.searchform-validation-no-field');
+		
+		// Forget last search
+		session()->forget('search_fields');
+
+		// Start buildind this search URL
+		$search_URL = route(Setting::grab('main_route') . '.search');
+
+		// Check all fields
+		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
+		foreach ($a_fields as $field){
+			if($request->filled($field)){
+				// Add field to search
+				$search_fields[$field] = $value_URL = is_array($request->{$field}) ? implode(',', $request->{$field}) : $request->{$field};
+
+				// Update date field in certain cases (Requires field type specified with radio buttons)
+				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
+					
+					$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $search_fields[$field]);
+					if($request->{$field . '_type'} == 'exact_year'){
+						// If a date field type is "exact_year", show only year in URL
+						$value_URL = $carbon_instance->format('Y');
+					
+					}elseif($request->{$field . '_type'} == 'exact_day'){
+						// If a date field type is "exact_day", show only locale datetime string in URL
+						$value_URL = $carbon_instance->format(trans('panichd::lang.date-format'));
+					}
+				}
+
+				// Add field in search URL
+				$search_URL.= '/' . $field . '/' . $value_URL;
+
+				// Register date type and add in URL
+				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
+					$search_fields[$field . '_type'] = $request->{$field . '_type'};
+
+					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
+				}
+
+				// Register ticket tags and add in URL
+				if ($field == 'category_id' and $request->filled('category_' . $request->category_id . '_tags')){
+					$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
+
+					$search_URL.= '/tags/' . implode(',', $search_fields['tags']);
+				}
+			}
+		}
+
+		if (isset($search_fields)){
+			// Store search fields in session to use in datatable
+			session(compact('search_fields'));
+
+			// Success message
+			$result = "ok";
+			$message = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
+		}
+
+        return response()->json([
+			'result' => $result,
+			'messages' => [$message],
+			'search_fields' => $search_fields ?? [],
+			'search_URL' => $search_URL ?? ''
+			]);
+	}
 
     /**
      * Open Ticket creation form with optional parameters pre-setted by URL

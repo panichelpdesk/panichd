@@ -19,8 +19,6 @@ var pswpItems = [
     @endif
 ];
 
-var category_id=<?=$a_current['cat_id'];?>;
-
 $(function(){
     // Change visibility affects embedded comments
     $('input[name=hidden]').click(function(e){
@@ -62,13 +60,17 @@ $(function(){
         });
     @endif
 
-    // Category select with $u->maxLevel() > 1 only
+    /* Category change:
+       - checks for permissions in new category
+       - updates agent list
+       - updates tag list
+    */
     $('#category_change').change(function(){
         // Update agent list
         $('#agent_id').prop('disabled',true);
         var loadpage = "{!! route($setting->grab('main_route').'agentselectlist') !!}/" + $(this).val() + "/"+$('#agent_id').val();
         $('#agent_id').load(loadpage, function(){
-            $('#agent_id').prop('disabled',false);
+            $('#agent_id').prop('disabled',false).show();
         });
 
 
@@ -105,44 +107,8 @@ $(function(){
         @endif
 
         // Update tag list
-        $('#jquery_select2_container .select2-container').hide();
+        $('#tag_list_container .select2-container').hide();
         $('#jquery_tag_category_'+$(this).val()).next().show();
-    });
-
-    $('#start_date input[name="start_date"]').val('');
-    $('#start_date').datetimepicker({
-        locale: '{{App::getLocale()}}',
-        format: '{{ trans('panichd::lang.datetimepicker-format') }}',
-        @if (isset($ticket) && $a_current['start_date'] != "")
-            defaultDate: "{{ $a_current['start_date'] }}",
-        @endif
-        keyBinds: { 'delete':null, 'left':null, 'right':null }
-    });
-
-    $('#limit_date input[name="limit_date"]').val('');
-    $('#limit_date').datetimepicker({
-        locale: '{{App::getLocale()}}',
-        format: '{{ trans('panichd::lang.datetimepicker-format') }}',
-        @if (isset($ticket) && $a_current['limit_date'] != "")
-            defaultDate: "{{ $a_current['limit_date'] }}",
-        @endif
-        keyBinds: { 'delete':null, 'left':null, 'right':null },
-        useCurrent: false
-        @if ($a_current['start_date'] != "")
-            , minDate: '{{ $a_current['start_date'] }}'
-        @endif
-    });
-
-    $('#start_date .btn, #limit_date .btn').click(function(e){
-        e.preventDefault();
-        $('#' + $(this).closest('.input-group').prop('id')).data("DateTimePicker").toggle();
-    });
-
-    $("#start_date").on("dp.change", function (e) {
-        $('#limit_date').data("DateTimePicker").minDate(e.date);
-    });
-    $("#limit_date").on("dp.change", function (e) {
-        $('#start_date').data("DateTimePicker").maxDate(e.date);
     });
 });
 </script>

@@ -1,8 +1,9 @@
-<script>
+<script type="text/javascript">
+	var datatable = "";
 	$(function(){
 	// Ticket list load
-	$('.table').DataTable({
-		processing: false,
+	datatable = $('.table').DataTable({
+		processing: @if($ticketList == 'search') true @else false @endif,
 		serverSide: true,
 		responsive: true,
 		pageLength: {{ $setting->grab('paginate_items') }},
@@ -76,7 +77,7 @@
 		],
 		@if($ticketList != 'newest')
 			@if( $u->currentLevel() > 1)
-				@if ($ticketList=='active')
+				@if ($ticketList != 'complete')
 					order: [
 						[1, 'desc'],
 						[3, 'desc'],

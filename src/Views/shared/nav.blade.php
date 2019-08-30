@@ -33,6 +33,7 @@
 		</span>
 	</a>
 </li>
+
 <li class="nav-item {!! $tools->fullUrlIs(action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete')) || (isset($ticket) && $ticket->isComplete()) ? "active" : "" !!}">
 	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@indexComplete') }}" title="{{ trans('panichd::lang.nav-completed-tickets-title') }}">
 		<span>{{ trans('panichd::lang.complete-tickets-adjective') }}</span>
@@ -40,6 +41,12 @@
 		<span class="badge" style="cursor: help">
 			{{ PanicHD\PanicHD\Models\Ticket::visible()->completedOnYear()->count() }}
 		</span>
+	</a>
+</li>
+
+<li id="nav_search_li" class="nav-item {!! request()->route()->getName() == $setting->grab('main_route').'.search' ? "active" : "" !!}">
+	<a class="nav-link" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@search_form') }}">
+		<span>{{ trans('panichd::lang.searchform-nav-text') }}</span>
 	</a>
 </li>
 

@@ -348,6 +348,51 @@ return [
   'validate-comment-required'        => 'Cal que escriguis el text del comentari',
   'validate-comment-min'             => 'Cal posar un text més llarg al comentari',
 
+
+// Cercador de tiquets
+  'searchform-nav-text'             => 'Cercar',
+  'searchform-title'                => 'Cercar tiquets',
+  
+  'searchform-creator'              => 'Creador',
+  'searchform-department'           => 'Departament',
+  'searchform-comments'             => 'Text als comentaris',
+  'searchform-attachment_filename'  => 'Nom d\'adjunt',
+  'searchform-any_text_field'       => 'Qualsevol camp de text',
+  'searchform-created_at'           => 'Creació',
+  'searchform-completed_at'         => 'Tancament',
+  'searchform-updated_at'           => 'Darrera actualització',
+
+  'searchform-help-creator'         => 'Qui va crear el tiquet (A vegades és un tècnic en nom d\'un Membre)',
+  'searchform-help-owner'           => 'A qui pertany el tiquet',
+  'searchform-help-department'      => 'Departament del propietari del tiquet',
+  'searchform-help-any_text_field'  => 'Cercar a qualsevol camp de text entre el tema, descripció, actuació, comentaris o camps de fitxers adjunts',
+
+  'searchform-creator-none'         => '- cap -',
+  'searchform-owner-none'           => '- cap -',
+  'searchform-department-none'      => '- cap -',
+  'searchform-list-none'            => '- cap -',
+  'searchform-status-none'          => '- cap -',
+  'searchform-priority-none'        => '- cap -',
+  'searchform-category-none'        => '- cap -',
+  'searchform-agent-none'           => '- cap -',
+  
+  'searchform-date-type-from'       => 'En endavant',
+  'searchform-date-type-until'      => 'Més antics',
+  'searchform-date-type-exact_year' => 'Any exacte',
+  'searchform-date-type-exact_month'=> 'Any i mes',
+  'searchform-date-type-exact_day'  => 'Dia exacte',
+
+  'searchform-btn-submit'           => 'Cercar',
+
+  'searchform-validation-no-field'  => 'No s\'ha indicat cap camp de cerca',
+  'searchform-validation-success'   => 'S\'ha registrat :num camps de cerca',
+
+  'searchform-results-title'        => 'Resultats de la cerca',
+  'searchform-btn-edit'             => 'Editar cerca',
+  'searchform-btn-web'              => 'Adreça web de cerca',
+  'searchform-help-btn-web'         => 'Aquest és un enllaç permanent per a aquesta cerca',
+
+
  /*
   *  Controllers
   */

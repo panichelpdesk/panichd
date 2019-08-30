@@ -12,6 +12,11 @@
 
 @section('footer')
 	<script type="text/javascript">
+	
+	function success_ajax_callback(response) {
+		// You may define a specific callback in any form to do additional actions on success
+	}
+
 	$(function(){
 		// Tooltips
 		$('.tooltip-info, .tooltip-show').tooltip();
@@ -82,12 +87,16 @@
 							form.find('.form-control[name='+field+']').closest('div').find('.jquery_error_text:first').text(error).show();
 						}
 					});
+				
 				}else{
 					$('#'+errors_div).hide();
-					if (response.url != ""){
+					if (response.hasOwnProperty('url') && response.url != ""){
 						window.location.href=response.url;
 						return false;
-					}			
+					}
+
+					// Custom version in search form own script
+					success_ajax_callback(response);		
 				}
 			}
 		});
