@@ -389,6 +389,8 @@ return [
 
   'searchform-results-title'        => 'Resultats de la cerca',
   'searchform-btn-edit'             => 'Editar cerca',
+  'searchform-btn-web'              => 'Adreça web de cerca',
+  'searchform-help-btn-web'         => 'Aquest és un enllaç permanent per a aquesta cerca',
 
 
  /*
