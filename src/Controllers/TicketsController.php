@@ -803,10 +803,14 @@ class TicketsController extends Controller
 						}elseif(in_array($key, $this->a_search_fields_date)){
 							// Decode strings in URL
 							$date = urldecode($param);
+
+							// Reset Carbon instance
+							unset($carbon_instance);
 						
 							if (ctype_digit($date) and strlen($date) == 4){
 								// Create a formatted date from year
-								$search_fields[$key] = Carbon::createFromFormat('Y', $date)->startOfYear()->format(trans('panichd::lang.datetime-format')); 
+								$carbon_instance = Carbon::createFromFormat('Y', $date)->startOfYear();
+								$search_fields[$key] = $carbon_instance->format(trans('panichd::lang.datetime-format')); 
 
 								// Specify date type if it's not set
 								if (!isset($search_fields[$key . '_type'])) $search_fields[$key . '_type'] = 'exact_year';
@@ -814,20 +818,25 @@ class TicketsController extends Controller
 							}else{
 								try {
 									// Check if it's a full and formatted date time string
-									Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $date);
-									$search_fields[$key] = $date;
+									$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $date);
+									$search_fields[$key] = $carbon_instance->format(trans('panichd::lang.datetime-format'));
 								
 								} catch (\Exception $e) {
 									try {
 										// Check if it's a date string
-										$datetime = Carbon::createFromFormat(trans('panichd::lang.date-format'), $date)->startOfDay()->format(trans('panichd::lang.datetime-format'));
-										$search_fields[$key] = $datetime;
+										$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.date-format'), $date)->startOfDay();
+										$search_fields[$key] = $carbon_instance->format(trans('panichd::lang.datetime-format'));
 										if (!isset($search_fields[$key . '_type'])) $search_fields[$key . '_type'] = 'exact_day';
 									
 									}catch (\Exception $e) {
 										// Don't register the date field
 									}
 								}
+							}
+
+							if (isset($carbon_instance)){
+								// Pass DateTimeString for javascript DateTimePicker
+								$search_fields['timestamp_' . $key] = $carbon_instance->toDateTimeString();
 							}
 
 						}elseif(in_array(str_replace('_type', '', $key), $this->a_search_fields_date) and in_array($param, $this->a_search_fields_date_types)){

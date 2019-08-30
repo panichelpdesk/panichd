@@ -8,8 +8,8 @@ $(function(){
         @if (isset($ticket) && $a_current['start_date'] != "")
             defaultDate: "{{ $a_current['start_date'] }}",
 
-        @elseif(isset($search_fields['start_date']))
-            defaultDate: "{{ $search_fields['start_date'] }}",
+        @elseif(isset($search_fields['timestamp_start_date']))
+            defaultDate: "{{ $search_fields['timestamp_start_date'] }}",
         @endif
         keyBinds: { 'delete':null, 'left':null, 'right':null }
     });
@@ -21,8 +21,8 @@ $(function(){
         @if (isset($ticket) && $a_current['limit_date'] != "")
             defaultDate: "{{ $a_current['limit_date'] }}",
         
-        @elseif(isset($search_fields['limit_date']))
-            defaultDate: "{{ $search_fields['limit_date'] }}",
+        @elseif(isset($search_fields['timestamp_limit_date']))
+            defaultDate: "{{ $search_fields['timestamp_limit_date'] }}",
         @endif
         keyBinds: { 'delete':null, 'left':null, 'right':null },
         useCurrent: false
