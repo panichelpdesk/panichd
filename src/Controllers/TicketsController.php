@@ -962,6 +962,18 @@ class TicketsController extends Controller
 			// Build this search URL
 			$search_URL = route(Setting::grab('main_route') . '.search');
 			foreach($search_fields as $field => $value){
+				if (in_array($field, $this->a_search_fields_date)){
+					$carbon_instance = Carbon::createFromFormat(trans('panichd::lang.datetime-format'), $value);
+					if($search_fields[$field . '_type'] == 'exact_year'){
+						// If a date field type is "exact_year", show only year in URL
+						$value = $carbon_instance->format('Y');
+					
+					}elseif($search_fields[$field . '_type'] == 'exact_day'){
+						// If a date field type is "exact_day", show only locale datetime string in URL
+						$value = $carbon_instance->format(trans('panichd::lang.date-format'));
+					}
+					
+				}
 				$search_URL.= '/' . $field . '/' . (is_array($value) ? implode(',', $value) : $value);
 			}
 
