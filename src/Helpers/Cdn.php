@@ -15,7 +15,7 @@ class Cdn
     const FontAwesome = '5.10.2';
 
     // Edition fields
-    const CodeMirror = '5.40.0';
+    const CodeMirror = '5.48.4';
     const ColorPicker = '3.0.3';
     const Select2 = '4.0.10';
     const Summernote = '0.8.12';
