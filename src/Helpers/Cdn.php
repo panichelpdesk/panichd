@@ -15,10 +15,10 @@ class Cdn
     const FontAwesome = '5.10.2';
 
     // Edition fields
-    const Summernote = '0.8.10';
     const CodeMirror = '5.40.0';
     const ColorPicker = '3.0.3';
     const Select2 = '4.0.10';
+    const Summernote = '0.8.12';
 
     // https://datatables.net/download/
     const DataTables = '1.10.18';
