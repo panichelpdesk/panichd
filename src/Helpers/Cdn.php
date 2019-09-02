@@ -18,6 +18,7 @@ class Cdn
     const Summernote = '0.8.10';
     const CodeMirror = '5.40.0';
     const ColorPicker = '3.0.3';
+    const Select2 = '4.0.10';
 
     // https://datatables.net/download/
     const DataTables = '1.10.18';
