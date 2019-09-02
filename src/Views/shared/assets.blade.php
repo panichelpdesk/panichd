@@ -15,7 +15,7 @@
 
 <link href="{{ asset('/vendor/panichd/css/panichd.css') }}?v=20190827" rel="stylesheet">
 
-<script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-3.3.1.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-3.4.1.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-ui-1.12.1.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/panichd/bootstrap/bootstrap-' . PanicHD\PanicHD\Helpers\Cdn::Bootstrap . '.bundle.min.js')}}"></script>
 
