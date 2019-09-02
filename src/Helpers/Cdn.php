@@ -11,6 +11,7 @@ namespace PanicHD\PanicHD\Helpers;
 class Cdn
 {
     // General usage
+    const Bootstrap = '4.3.1';
     const FontAwesome = '5.10.2';
 
     // Edition fields
