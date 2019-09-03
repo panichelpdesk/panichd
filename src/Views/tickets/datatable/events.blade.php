@@ -53,7 +53,8 @@ $(function(){
 		// Agent / Priority change: Popover menu
 		$(".jquery_popover")
 			.popover({
-				html: true
+				html: true,
+				sanitize: false
 			})
 		.click(function(e){
 			e.preventDefault();
