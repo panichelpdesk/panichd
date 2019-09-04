@@ -166,7 +166,8 @@ class CommentsController extends Controller
 		$comment->ticket_id = $ticket->id;
 		
 		if ($ticket->agent_id != $this->member->id){
-			// Ticket will be unread for assigned agent
+			// Ticket and comment will be unread for assigned agent
+			$ticket->read_by_agent = 0;
 			$comment->read_by_agent = 0;
 		}
 		
@@ -267,7 +268,8 @@ class CommentsController extends Controller
 		$comment->html = $a_content['html'];
 		
 		if ($ticket->agent_id != $this->member->id){
-			// Ticket will be unread for assigned agent
+			// Ticket and comment will be unread for assigned agent
+			$ticket->read_by_agent = 0;
 			$comment->read_by_agent = 0;
 		}
 
@@ -279,6 +281,8 @@ class CommentsController extends Controller
 		$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
 
 		$ticket->touch();
+
+		$ticket->save();
 
 		if (Setting::grab('ticket_attachments_feature')){
 			// 1 - update existing attachment fields

@@ -2013,6 +2013,12 @@ class TicketsController extends Controller
 			}
 
 			$ticket->completed_at = Carbon::now();
+
+			if ($ticket->agent_id != $this->member->id){
+				// Ticket will be unread for assigned agent
+				$ticket->read_by_agent = 0;
+			}
+
             $ticket->save();
 
 			event(new TicketUpdated($original_ticket, $ticket));
@@ -2100,6 +2106,11 @@ class TicketsController extends Controller
 			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 
+			if ($ticket->agent_id != $this->member->id){
+				// Ticket will be unread for assigned agent
+				$ticket->read_by_agent = 0;
+			}
+
             $ticket->save();
 
 			// Add reopen comment
@@ -2172,6 +2183,11 @@ class TicketsController extends Controller
 
 		$ticket->agent_id =  $new_agent->id;
 
+		if ($new_agent->id != $this->member->id){
+			// Ticket will be unread for assigned agent
+			$ticket->read_by_agent = 0;
+		}
+
 		$old_status_id = $ticket->status_id;
 		if ($request->input('status_checkbox') != "" || !Setting::grab('use_default_status_id')){
 			$ticket->status_id = Setting::grab('default_reopen_status_id');
@@ -2207,6 +2223,12 @@ class TicketsController extends Controller
 		}
 
 		$ticket->priority_id = $request->input('priority_id');
+
+		if ($ticket->agent_id != $this->member->id){
+			// Ticket will be unread for assigned agent
+			$ticket->read_by_agent = 0;
+		}
+
 		$ticket->save();
 
 		session()->flash('status', trans('panichd::lang.update-priority-ok', [
@@ -2231,6 +2253,12 @@ class TicketsController extends Controller
 		}
 
 		$ticket->hidden = $value=='true' ? 1 : 0;
+
+		if ($ticket->agent_id != $this->member->id){
+			// Ticket will be unread for assigned agent
+			$ticket->read_by_agent = 0;
+		}
+
 		$ticket->save();
 
 		$this->hide_actions($ticket);
