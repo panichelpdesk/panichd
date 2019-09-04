@@ -1524,10 +1524,16 @@ class TicketsController extends Controller
 				// Create new comment
 				$comment = new Models\Comment();
 				$comment->type = $response_type;
-				$comment->ticket_id = $ticket->id;
 				$comment->user_id = auth()->user()->id;
 				$comment->content = $a_content['content'];
 				$comment->html = $a_content['html'];
+				$comment->ticket_id = $ticket->id;
+
+				if ($ticket->agent_id != $this->member->id){
+					// Comment will be unread for assigned agent
+					$comment->read_by_agent = 0;
+				}
+
 				$comment->save();
 
 				// Create attachments from embedded images
@@ -2062,8 +2068,13 @@ class TicketsController extends Controller
 			$comment->content = $comment->html = trans('panichd::lang.comment-reopen-title');
 		}
 
-		$comment->ticket_id = $ticket->id;
 		$comment->user_id = $this->member->id;
+		$comment->ticket_id = $ticket->id;
+
+		if ($ticket->agent_id != $this->member->id){
+			// Ticket will be unread for assigned agent
+			$comment->read_by_agent = 0;
+		}
 		$comment->save();
 	}
 
@@ -2245,8 +2256,14 @@ class TicketsController extends Controller
 		$comment = new Models\Comment;
 		$comment->type = "hide_".$ticket->hidden;
 		$comment->content = $comment->html = trans('panichd::lang.ticket-hidden-'.$ticket->hidden.'-comment');
-		$comment->ticket_id = $ticket->id;
 		$comment->user_id = $this->member->id;
+		$comment->ticket_id = $ticket->id;
+		
+		if ($ticket->agent_id != $this->member->id){
+			// Ticket will be unread for assigned agent
+			$comment->read_by_agent = 0;
+		}
+
 		$comment->save();
 	}
 
