@@ -20,11 +20,21 @@ class CommentsController extends Controller
 {
     use Attachments, Purifiable;
 
+	protected $member;
+
     public function __construct()
     {
         $this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['store']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['update', 'destroy']]);
-    }
+	}
+	
+	// Initiate $member before any controller action
+	public function callAction($method, $parameters)
+	{
+		$this->member = \PanicHDMember::findOrFail(auth()->user()->id);
+
+		return parent::callAction($method, $parameters);
+	}
 
     /**
      * Display a listing of the resource.
@@ -90,7 +100,7 @@ class CommentsController extends Controller
 
 		$common_data = [
 			'request' => $request,
-			'member' => \PanicHDMember::findOrFail(auth()->user()->id),
+			'member' => $this->member,
 			'a_content' => $a_content,
 			'a_result_errors' => $a_result_errors
 		];

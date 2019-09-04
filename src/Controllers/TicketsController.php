@@ -39,7 +39,7 @@ class TicketsController extends Controller
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
 	protected $a_search_fields_date_types = ['from', 'until', 'exact_year', 'exact_month', 'exact_day'];
 
-    public function __construct(Ticket $tickets, \PanicHDMember $member)
+    public function __construct(Ticket $tickets)
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
@@ -47,10 +47,17 @@ class TicketsController extends Controller
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware', ['only' => ['search_form', 'register_search_fields']]);
 
-        $this->tickets = $tickets;
-        $this->member = $member;
-    }
+		$this->tickets = $tickets;
+	}
 
+	// Initiate $member before any controller action
+	public function callAction($method, $parameters)
+    {
+		$this->member = \PanicHDMember::findOrFail(auth()->user()->id);
+
+        return parent::callAction($method, $parameters);
+    }
+	
 	// This is loaded via AJAX at file Views\index.blade.php
     public function data($ticketList = 'active')
     {
@@ -58,8 +65,6 @@ class TicketsController extends Controller
 
 		$datatables = app(\Yajra\Datatables\Datatables::class);
 
-		$agent = $this->member->find(auth()->user()->id);
-		
 		$collection = Ticket::visible();
 
 		if ($ticketList == 'search'){
@@ -267,7 +272,7 @@ class TicketsController extends Controller
 			$a_select[] = '"" as dep_ancestor_name';
 		}
 
-		$currentLevel = $agent->currentLevel();
+		$currentLevel = $this->member->currentLevel();
 
 		$collection
 			->groupBy('panichd_tickets.id')
@@ -883,9 +888,7 @@ class TicketsController extends Controller
      */
 	public function search_form_defaults()
 	{
-		$member = $this->member->find(auth()->user()->id);
-
-		$c_members = $this->members_collection($member);
+		$c_members = $this->members_collection($this->member);
 
 		$c_status = \PanicHD\PanicHD\Models\Status::all();
 
@@ -897,7 +900,7 @@ class TicketsController extends Controller
 			unset($a_date_additional_types[$key]);
 		}
 
-		$a_categories = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
+		$a_categories = $this->member->getEditTicketCategories();
 
 		$c_visible_agents = Member::visible()->get();
 
@@ -1008,7 +1011,7 @@ class TicketsController extends Controller
          $data = $this->ticket_URL_parameters($data, $parameters);
       }
 
-		$data['categories'] = $this->member->findOrFail(auth()->user()->id)->getNewTicketCategories();
+		$data['categories'] = $this->member->getNewTicketCategories();
 
         $data['a_notifications'] = [
             'note' => ($data['a_current']['agent_id'] != auth()->user()->id ? [$data['a_current']['agent_id']] : []),
@@ -1035,14 +1038,12 @@ class TicketsController extends Controller
 
         $data['ticket'] = $ticket;
 
-        $data['categories'] = $this->member->findOrFail(auth()->user()->id)->getEditTicketCategories();
-
-        $member = $this->member->find(auth()->user()->id);
+        $data['categories'] = $this->member->getEditTicketCategories();
 
         // Ticket comments
         $all_comments = $ticket->comments()->with('notifications');
         $comments = clone $all_comments;
-        $data['comments'] = $comments->forLevel($member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
+        $data['comments'] = $comments->forLevel($this->member->levelInCategory($ticket->category_id))->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
         // Default notification recipients
         $all_c = clone $all_comments;
@@ -1093,9 +1094,7 @@ class TicketsController extends Controller
 	{
         $menu = $ticket ? 'edit' : 'create';
 
-        $member = $this->member->find(auth()->user()->id);
-
-		$c_members = $this->members_collection($member);
+        $c_members = $this->members_collection($this->member);
 
 		$priorities = $this->getCacheList('priorities');
 		$status_lists = $this->getCacheList('statuses');
@@ -1143,24 +1142,24 @@ class TicketsController extends Controller
 			$a_current['priority_id'] = Setting::grab('default_priority_id');
 
 			// Default category
-			if ($member->currentLevel() > 1){
-				$a_current['cat_id'] = @$member->categories()->get()->first()->id;
+			if ($this->member->currentLevel() > 1){
+				$a_current['cat_id'] = @$this->member->categories()->get()->first()->id;
 				if ($a_current['cat_id'] == null){
-					$a_current['cat_id'] = $member->getNewTicketCategories()->keys()->first();
+					$a_current['cat_id'] = $this->member->getNewTicketCategories()->keys()->first();
 				}
 			}else{
 				$a_current['cat_id'] = Category::orderBy('name')->first()->id;
 			}
 
 			// Default agent
-			$a_current['agent_id'] = $member->id;
+			$a_current['agent_id'] = $this->member->id;
 		}
 
 		// Agent list
 		$agent_lists = $this->agentList($a_current['cat_id']);
 
 		// Permission level for category
-		$permission_level = $member->levelInCategory($a_current['cat_id']);
+		$permission_level = $this->member->levelInCategory($a_current['cat_id']);
 
 		// Current default status
 		if (!$ticket){
@@ -1215,9 +1214,8 @@ class TicketsController extends Controller
 	*/
 	protected function validation_common($request, $new_ticket = true)
 	{
-		$member = $this->member->find(auth()->user()->id);
-		$category_level = $member->levelInCategory($request->category_id);
-		$permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
+		$category_level = $this->member->levelInCategory($request->category_id);
+		$permission_level = ($this->member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 
 		$a_content = $this->purifyHtml($request->get('content'));
 		$common_data = [
@@ -1232,9 +1230,9 @@ class TicketsController extends Controller
         ]);
 
 		if ($new_ticket){
-			$allowed_categories = implode(",", $member->getNewTicketCategories()->keys()->toArray());
+			$allowed_categories = implode(",", $this->member->getNewTicketCategories()->keys()->toArray());
 		}else{
-			$allowed_categories = implode(",", $member->getEditTicketCategories()->keys()->toArray());
+			$allowed_categories = implode(",", $this->member->getEditTicketCategories()->keys()->toArray());
 		}
 
 
@@ -1392,13 +1390,11 @@ class TicketsController extends Controller
 		$common_data = $this->validation_common($request);
 		extract($common_data);
 
-		$member = $this->member->find(auth()->user()->id);
-
 		DB::beginTransaction();
         $ticket = new Ticket();
 
         $ticket->subject = $request->subject;
-		$ticket->creator_id = $member->id;
+		$ticket->creator_id = $this->member->id;
 		$ticket->user_id = $request->owner_id;
 
 		if ($permission_level > 1) {
@@ -1443,7 +1439,7 @@ class TicketsController extends Controller
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
 
-		if ($ticket->agent_id != $member->id){
+		if ($ticket->agent_id != $this->member->id){
 			// Ticket will be unread for assigned agent
 			$ticket->read_by_agent = 0;
 		}
@@ -1601,7 +1597,6 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-		$member = $this->member->find(auth()->user()->id);
 		$members_table = $this->member->getTable();
 
 		$ticket = $this->tickets
@@ -1660,13 +1655,13 @@ class TicketsController extends Controller
 
         $agent_lists = $this->agentList($ticket->category_id);
 
-        $all_comments = $ticket->comments()->with('notifications')->forLevel($member->levelInCategory($ticket->category_id));
+        $all_comments = $ticket->comments()->with('notifications')->forLevel($this->member->levelInCategory($ticket->category_id));
         $comments = clone $all_comments;
         $comments = $comments->orderBy('id','desc')->paginate(Setting::grab('paginate_items'));
 
         $a_notifications = ['reply' => [], 'note' => []];
 
-        if($member->currentLevel() > 1 && $member->canManageTicket($ticket->id)){
+        if($this->member->currentLevel() > 1 && $this->member->canManageTicket($ticket->id)){
             $all_c = clone $all_comments;
             $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
             $a_note = [$ticket->agent->id];
@@ -1684,7 +1679,7 @@ class TicketsController extends Controller
             ];
         }
 
-        $c_members = $this->members_collection($member, false);
+        $c_members = $this->members_collection($this->member, false);
 
         $a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
 
@@ -1750,10 +1745,10 @@ class TicketsController extends Controller
     {
         $c_members = \PanicHDMember::with('userDepartment');
         if (!$auth) $c_members = $c_members->where('email', '!=', auth()->user()->email);
-        if ($member->currentLevel() > 1){
+        if ($this->member->currentLevel() > 1){
             return $c_members->orderBy('name')->get();
         }else{
-            return $c_members->whereNull('ticketit_department')->orWhere('id','=',$member->id)->orderBy('name')->get();
+            return $c_members->whereNull('ticketit_department')->orWhere('id','=',$this->member->id)->orderBy('name')->get();
         }
     }
 
@@ -1770,8 +1765,6 @@ class TicketsController extends Controller
 		$common_data = $this->validation_common($request, false);
 		extract($common_data);
 
-		$member = $this->member->find(auth()->user()->id);
-
 		$original_ticket = Ticket::findOrFail($id); // Requires a specific object instance
 		$ticket = Ticket::findOrFail($id);
 
@@ -1784,7 +1777,7 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-        if ($member->isAgent() or $member->isAdmin()) {
+        if ($this->member->isAgent() or $this->member->isAdmin()) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
 		}
@@ -1816,7 +1809,7 @@ class TicketsController extends Controller
 			$ticket->agent_id = $request->input('agent_id');
 		}
 
-		if ($ticket->agent_id != $member->id){
+		if ($ticket->agent_id != $this->member->id){
 			// Ticket will be unread for assigned agent
 			$ticket->read_by_agent = 0;
 		}
@@ -1872,7 +1865,7 @@ class TicketsController extends Controller
 
 		// Add complete/reopen comment
 		if ($original_ticket->completed_at != $ticket->completed_at and ($original_ticket->completed_at == '' or $ticket->completed_at == '') ){
-			$this->complete_change_actions($ticket, $member);
+			$this->complete_change_actions($ticket, $this->member);
 		}
 
         $this->sync_ticket_tags($request, $ticket);
@@ -1956,16 +1949,15 @@ class TicketsController extends Controller
         if ($this->permToClose($id) == 'yes') {
             $original_ticket = $this->tickets->findOrFail($id);
 			$ticket = clone $original_ticket;
-			$member = $this->member->find(auth()->user()->id);
 
-			if ($ticket->hidden and $member->currentLevel() == 1){
+			if ($ticket->hidden and $this->member->currentLevel() == 1){
 				return redirect()->route(Setting::grab('main_route').'.index')->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
 			}
 
-			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $member->name]);
+			$reason_text = trans('panichd::lang.complete-by-user', ['user' => $this->member->name]);
 			$member_reason = $a_clarification = false;
 
-			if ($member->currentLevel()>1){
+			if ($this->member->currentLevel()>1){
 				if (!$ticket->intervention_html and !$request->exists('blank_intervention')){
 					return redirect()->back()->with('warning', trans('panichd::lang.show-ticket-complete-blank-intervention-alert'));
 				}else{
@@ -2005,7 +1997,7 @@ class TicketsController extends Controller
 			$ticket->intervention = ($had_intervention ? $ticket->intervention . ' ' : '') . $date . ' ' . $reason_text;
 			$ticket->intervention_html = ($had_intervention ? $ticket->intervention_html . '<br />' : '') . $date . ' ' . $reason_text;
 
-			if ($member->currentLevel()<2){
+			if ($this->member->currentLevel()<2){
 				// Check clarification text
 				$a_clarification = $this->purifyHtml($request->get('clarification'));
 				if ($a_clarification['content'] != ""){
@@ -2020,7 +2012,7 @@ class TicketsController extends Controller
 			event(new TicketUpdated($original_ticket, $ticket));
 
 			// Add complete comment
-			$this->complete_change_actions($ticket, $member, $member_reason, $a_clarification);
+			$this->complete_change_actions($ticket, $this->member, $member_reason, $a_clarification);
 
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
 				'name' => '#'.$id.' '.$ticket->subject,
@@ -2040,7 +2032,7 @@ class TicketsController extends Controller
 	*/
 	public function complete_change_actions($ticket, $member, $member_reason = false, $a_clarification = false)
 	{
-		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $member->id)->orderBy('id', 'desc')->first();
+		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $this->member->id)->orderBy('id', 'desc')->first();
 
 		if ($latest and in_array($latest->type, ['complete', 'reopen'])){
 			// Delete last comment for consecutive complete-reopen
@@ -2052,7 +2044,7 @@ class TicketsController extends Controller
 		$comment = new Models\Comment;
 
 		if ($ticket->completed_at != ''){
-			if ($member->currentLevel()>1){
+			if ($this->member->currentLevel()>1){
 				$comment->type = "complete";
 				$comment->content = $comment->html = '';
 			}else{
@@ -2071,7 +2063,7 @@ class TicketsController extends Controller
 		}
 
 		$comment->ticket_id = $ticket->id;
-		$comment->user_id = $member->id;
+		$comment->user_id = $this->member->id;
 		$comment->save();
 	}
 
@@ -2086,8 +2078,7 @@ class TicketsController extends Controller
     {
         if ($this->permToReopen($id) == 'yes') {
             $ticket = $this->tickets->findOrFail($id);
-			$member = $this->member->find(auth()->user()->id);
-
+			
             $ticket->completed_at = null;
 
             if (Setting::grab('default_reopen_status_id')) {
@@ -2095,13 +2086,13 @@ class TicketsController extends Controller
             }
 
 			$date = date(trans('panichd::lang.date-format'), time());
-			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $member->name]);
-			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $member->name]);
+			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
+			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 
             $ticket->save();
 
 			// Add reopen comment
-			$this->complete_change_actions($ticket, $member);
+			$this->complete_change_actions($ticket, $this->member);
 
 
             session()->flash('status', trans('panichd::lang.the-ticket-has-been-reopened', [
@@ -2242,9 +2233,7 @@ class TicketsController extends Controller
 	*/
 	public function hide_actions($ticket)
 	{
-		$member = $this->member->find(auth()->user()->id);
-
-		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $member->id)->orderBy('id', 'desc')->first();
+		$latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $this->member->id)->orderBy('id', 'desc')->first();
 
 		if ($latest and in_array($latest->type, ['hide_0', 'hide_1'])){
 			// Delete last comment for consecutive ticket hide and show for user
@@ -2257,7 +2246,7 @@ class TicketsController extends Controller
 		$comment->type = "hide_".$ticket->hidden;
 		$comment->content = $comment->html = trans('panichd::lang.ticket-hidden-'.$ticket->hidden.'-comment');
 		$comment->ticket_id = $ticket->id;
-		$comment->user_id = $member->id;
+		$comment->user_id = $this->member->id;
 		$comment->save();
 	}
 
@@ -2266,9 +2255,7 @@ class TicketsController extends Controller
 	*/
 	public function permissionLevel ($category_id)
 	{
-		$user = $this->member->find(auth()->user()->id);
-
-		return $user->levelInCategory($category_id);
+		return $this->member->levelInCategory($category_id);
 	}
 
 
@@ -2279,9 +2266,7 @@ class TicketsController extends Controller
      */
     public function permToClose($id)
     {
-        $user = $this->member->find(auth()->user()->id);
-
-		return $user->canCloseTicket($id) ? "yes" : "no";
+        return $this->member->canCloseTicket($id) ? "yes" : "no";
     }
 
     /**
