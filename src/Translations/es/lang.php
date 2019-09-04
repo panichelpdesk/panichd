@@ -19,6 +19,8 @@ return [
   'table-agent'                      => 'Agente',
   'table-category'                   => 'Categoría',
 
+  'updated-by-other'                 => 'Actualizado por otro miembro',
+
   // Datatables
   'table-decimal'                    => '',
   'table-empty'                      => 'No hay data esta tabla',

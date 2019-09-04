@@ -145,6 +145,10 @@ h1, h2, h3, h4, h5, h6 {
 	background-color: #f8f9fa;
 }
 
+.unread_ticket_text {
+	font-weight: bold;
+}
+
 /*
  * Used in Ticket card. Style from Bootstrap 3
 */

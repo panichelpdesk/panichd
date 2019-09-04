@@ -38,6 +38,7 @@ return [
 
   'no-tickets-yet'                   => 'Encara no hi ha tiquets',
   'list-no-tickets'                  => 'En aquesta llista no hi ha tiquets',
+  'updated-by-other'                 => 'Actualitzat per un altre membre',
   'table-info-attachments-total'     => ':num fitxers adjunts',
   'table-info-comments-total'        => ':num comentaris totals.',
   'table-info-comments-recent'       => ':num recents.',
