@@ -1392,11 +1392,13 @@ class TicketsController extends Controller
 		$common_data = $this->validation_common($request);
 		extract($common_data);
 
+		$member = $this->member->find(auth()->user()->id);
+
 		DB::beginTransaction();
         $ticket = new Ticket();
 
         $ticket->subject = $request->subject;
-		$ticket->creator_id = auth()->user()->id;
+		$ticket->creator_id = $member->id;
 		$ticket->user_id = $request->owner_id;
 
 		if ($permission_level > 1) {
@@ -1439,6 +1441,11 @@ class TicketsController extends Controller
         if ($permission_level > 1) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
+		}
+
+		if ($ticket->agent_id != $member->id){
+			// Ticket will be unread for assigned agent
+			$ticket->read_by_agent = 0;
 		}
 
         $ticket->save();
@@ -1763,6 +1770,8 @@ class TicketsController extends Controller
 		$common_data = $this->validation_common($request, false);
 		extract($common_data);
 
+		$member = $this->member->find(auth()->user()->id);
+
 		$original_ticket = Ticket::findOrFail($id); // Requires a specific object instance
 		$ticket = Ticket::findOrFail($id);
 
@@ -1775,7 +1784,6 @@ class TicketsController extends Controller
         $ticket->content = $a_content['content'];
         $ticket->html = $a_content['html'];
 
-		$member = $this->member->find(auth()->user()->id);
         if ($member->isAgent() or $member->isAdmin()) {
             $ticket->intervention = $a_intervention['intervention'];
 			$ticket->intervention_html = $a_intervention['intervention_html'];
@@ -1802,11 +1810,15 @@ class TicketsController extends Controller
 			$ticket->limit_date = date('Y-m-d H:i:s', strtotime($request->limit_date));
 		}
 
-
 		if ($request->input('agent_id') == 'auto') {
 			$ticket->autoSelectAgent();
 		} else {
 			$ticket->agent_id = $request->input('agent_id');
+		}
+
+		if ($ticket->agent_id != $member->id){
+			// Ticket will be unread for assigned agent
+			$ticket->read_by_agent = 0;
 		}
 
 		$ticket->save();
