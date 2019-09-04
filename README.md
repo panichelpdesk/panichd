@@ -34,7 +34,7 @@ This ticketing system is actually mean to be used in a corporate support environ
 #### Translations
 This package comes with Catalan, English and Brazillian Portuguese language files. For any of them you don't need to do anything: PanicHD will get your Laravel configuration.
 
-You may also you may create your own language files. There are some outdated language files that come from Ticketit and can be a good starting point. We encourage you to make your own language files and publish them to share with other speakers.
+You may also you may create your own language files. There are some outdated language files that come from Ticketit and can be a good starting point. We encourage you to make your own language files and create a pull request in PanicHD to share with other speakers.
 
 #### A ticket step by step example
 1. A user registers a new ticket for a specific issue
@@ -71,10 +71,18 @@ This is a synopsis of the main PanicHD features. For detailed descriptions, exam
   - By comments added from both of them within a ticket card
   - By e-mail notifications: All of them will receive notifications relative to relevant changes in the ticket made by any of them
   - Manager may add user hidden messages called "internal notes". If the ticket is assigned to another agent, he will receive a related e-mail notification also
+
+* Ticket filters
+  - All ticket lists include a filter panel that lets you use a specific criteria in some relevant fields (Calendar, category, agent)
+  - These filters are kept in user session until you change or deletes them
+  - Only members with permissions to manage at least one category will be able to use the filter panel
+  - You may activate a field by URL, [as we explain in the wiki](https://github.com/panichelpdesk/panichd/wiki/Laravel-integrations#load-list-with-specified-filters)
   
-* List filtering
-  - The ticket list includes a filter panel that may help managers to filter the ticket list by the most relevant criteria
-  - The ticket table is powered by Datatables, so it can be reordered and filtered by search input
+* Ticket search
+  - There is a dedicated search form where you may specify it by any of the ticket related fields
+  - We have added some advanced search options, like search text in any field, text in comments, text in attachment fields, search by specific date criteria...
+  - After executing the search, you will have a button with a permanent link to it, which has all specified parameters and values in URL
+  - It is enabled for all members with permissions
   
 * For Admins
   - Any classification element may be edited
