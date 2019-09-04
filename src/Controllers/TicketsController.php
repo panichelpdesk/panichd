@@ -239,6 +239,7 @@ class TicketsController extends Controller
 			'panichd_tickets.updated_at AS updated_at',
 			'panichd_tickets.completed_at AS completed_at',
 			'panichd_tickets.agent_id',
+			'panichd_tickets.read_by_agent',
 			'agent.name as agent_name',
 			'panichd_priorities.name AS priority',
 			'panichd_priorities.magnitude AS priority_magnitude',
@@ -315,11 +316,13 @@ class TicketsController extends Controller
 
 		// Column edits
         $collection->editColumn('id', function ($ticket) {
-			return '<div class="tooltip-wrap-15">'
+			return '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0") ? ' unread_ticket_text"' : '' ) . '">'
 				.'<div class="tooltip-info" data-toggle="tooltip" title="'
 				.trans('panichd::lang.creation-date', ['date' => Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))])
 				.'">'.$ticket->id
-				.'</div></div>';
+				.'</div>'
+				. (($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0") ? '<div class="tooltip-info" data-toggle="tooltip" title="' . trans('panichd::lang.updated-by-other') . '"><i class="fas fa-user-edit"></i></div>' : '')
+				.'</div>';
 		});
 
 		$collection->editColumn('subject', function ($ticket) {
@@ -328,6 +331,10 @@ class TicketsController extends Controller
 					$ticket->subject,
 					$ticket->id
 				);
+
+			if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0"){
+				$field = '<span class="unread_ticket_text">' . $field . '</span>';
+			}
 
 			if (Setting::grab('subject_content_column') == 'no'){
 				return $field;
