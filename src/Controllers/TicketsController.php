@@ -33,7 +33,7 @@ class TicketsController extends Controller
 
     protected $tickets;
 	protected $member;
-	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id'];
+	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id', 'read_by_agent'];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
@@ -989,6 +989,11 @@ class TicketsController extends Controller
 		}
 
 		if (isset($search_fields)){
+			
+			
+			\Debugbar::info($search_fields);
+
+			
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
 

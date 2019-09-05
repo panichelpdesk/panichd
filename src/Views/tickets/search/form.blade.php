@@ -73,89 +73,87 @@
         @endif
     </div>
 
-    <div>
-        <div class="form-group row align-items-center @if(isset($search_fields['list'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
-            {!! CollectiveForm::label('list', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
-                'class' => 'col-lg-3 col-form-label',
-                'title' => trans('panichd::lang.create-ticket-change-list')
-            ]) !!}
-            <div class="col-lg-9">
+    <div class="form-group row align-items-center @if(isset($search_fields['list'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- TICKET LIST -->
+        {!! CollectiveForm::label('list', trans('panichd::lang.list') . trans('panichd::lang.colon'), [
+            'class' => 'col-lg-3 col-form-label',
+            'title' => trans('panichd::lang.create-ticket-change-list')
+        ]) !!}
+        <div class="col-lg-9">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="" @if(!isset($search_fields['list'])) checked="checked" @endif>{{ trans('panichd::lang.searchform-list-none') }}
+                </label>
+            </div>
+            @foreach (['newest', 'active', 'complete'] as $list)
                 <div class="form-check form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="" @if(!isset($search_fields['list'])) checked="checked" @endif>{{ trans('panichd::lang.searchform-list-none') }}
+                        <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="{{ $list }}" @if(isset($search_fields['list']) && $search_fields['list'] == $list) checked="checked" @endif>{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
                     </label>
                 </div>
-                @foreach (['newest', 'active', 'complete'] as $list)
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input type="radio" class="jquery_ticket_list form-check-input" name="list" value="{{ $list }}" @if(isset($search_fields['list']) && $search_fields['list'] == $list) checked="checked" @endif>{{ trans('panichd::lang.' . $list . '-tickets-adjective') }}
-                        </label>
-                    </div>
+            @endforeach
+
+        </div>
+    </div>
+
+    <div class="form-group row @if(isset($search_fields['status_id'])) bg-info @endif"><!-- STATUS -->
+        {!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), [
+            'class' => 'col-lg-3 col-form-label'
+        ]) !!}
+        <div class="col-lg-9">
+            <select class="form-control" name="status_id">
+                <option value="">{{ trans('panichd::lang.searchform-status-none') }}</option>
+                @foreach($c_status as $status)
+                    <option value="{{ $status->id }}" @if(isset($search_fields['status_id']) && $search_fields['status_id'] == $status->id) selected="selected" @endif>{{ $status->name }}</option>
                 @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="form-group row @if(isset($search_fields['priority_id'])) bg-info @endif"><!-- PRIORITY -->
+        {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
+        <div class="col-lg-9">
+            <select class="form-control" name="priority_id">
+                <option value="">{{ trans('panichd::lang.searchform-priority-none') }}</option>
+                @foreach($priorities as $id => $priority)
+                    <option value="{{ $id }}" @if(isset($search_fields['priority_id']) && $search_fields['priority_id'] == $id) selected="selected" @endif>{{ $priority }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 
+    <div class="form-group row @if(isset($search_fields['start_date'])) bg-info @endif"><!-- START DATE -->
+        {!! CollectiveForm::label('start_date', trans('panichd::lang.start-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
+        <div class="col-lg-9">
+            <div class="input-group date" id="start_date">
+                <input type="text" class="form-control" name="start_date" value=""/>
+                <span class="input-group-addon" style="display: none"></span>
+                <span class="input-group-append">
+                    <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
+                </span>
+            </div>
+            <div class="form-text">
+                <label><input type="radio" name="start_date_type" value="from" @if(!isset($search_fields['start_date_type']) || $search_fields['start_date_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                @foreach($a_date_additional_types as $type)
+                    <label class="ml-2"><input type="radio" name="start_date_type" value="{{ $type }}" @if(isset($search_fields['start_date_type']) && $search_fields['start_date_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
+                @endforeach
             </div>
         </div>
-
-        <div class="form-group row @if(isset($search_fields['status_id'])) bg-info @endif"><!-- STATUS -->
-            {!! CollectiveForm::label('status_id', trans('panichd::lang.status') . trans('panichd::lang.colon'), [
-                'class' => 'col-lg-3 col-form-label'
-            ]) !!}
-            <div class="col-lg-9">
-                <select class="form-control" name="status_id">
-                    <option value="">{{ trans('panichd::lang.searchform-status-none') }}</option>
-                    @foreach($c_status as $status)
-                        <option value="{{ $status->id }}" @if(isset($search_fields['status_id']) && $search_fields['status_id'] == $status->id) selected="selected" @endif>{{ $status->name }}</option>
-                    @endforeach
-                </select>
+    </div>
+    
+    <div class="form-group row @if(isset($search_fields['limit_date'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- LIMIT DATE -->
+        {!! CollectiveForm::label('limit_date', trans('panichd::lang.limit-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
+        <div class="col-lg-9">
+            <div class="input-group date" id="limit_date">
+                <input type="text" class="form-control" name="limit_date"  value=""/>
+                <span class="input-group-addon" style="display: none"></span>
+                <span class="input-group-append">
+                    <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
+                </span>
             </div>
-        </div>
-        <div class="form-group row @if(isset($search_fields['priority_id'])) bg-info @endif"><!-- PRIORITY -->
-            {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
-            <div class="col-lg-9">
-                <select class="form-control" name="priority_id">
-                    <option value="">{{ trans('panichd::lang.searchform-priority-none') }}</option>
-                    @foreach($priorities as $id => $priority)
-                        <option value="{{ $id }}" @if(isset($search_fields['priority_id']) && $search_fields['priority_id'] == $id) selected="selected" @endif>{{ $priority }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group row @if(isset($search_fields['start_date'])) bg-info @endif"><!-- START DATE -->
-            {!! CollectiveForm::label('start_date', trans('panichd::lang.start-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
-            <div class="col-lg-9">
-                <div class="input-group date" id="start_date">
-                    <input type="text" class="form-control" name="start_date" value=""/>
-                    <span class="input-group-addon" style="display: none"></span>
-                    <span class="input-group-append">
-                        <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
-                    </span>
-                </div>
-                <div class="form-text">
-                    <label><input type="radio" name="start_date_type" value="from" @if(!isset($search_fields['start_date_type']) || $search_fields['start_date_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
-                    @foreach($a_date_additional_types as $type)
-                        <label class="ml-2"><input type="radio" name="start_date_type" value="{{ $type }}" @if(isset($search_fields['start_date_type']) && $search_fields['start_date_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-        
-        <div class="form-group row @if(isset($search_fields['limit_date'])) bg-info @endif" style="margin-bottom: 1.5em"><!-- LIMIT DATE -->
-            {!! CollectiveForm::label('limit_date', trans('panichd::lang.limit-date') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
-            <div class="col-lg-9">
-                <div class="input-group date" id="limit_date">
-                    <input type="text" class="form-control" name="limit_date"  value=""/>
-                    <span class="input-group-addon" style="display: none"></span>
-                    <span class="input-group-append">
-                        <button class="btn btn-light btn-default"><span class="fa fa-calendar"></span></button>
-                    </span>
-                </div>
-                <div class="form-text">
-                    <label><input type="radio" name="limit_date_type" value="from" @if(!isset($search_fields['limit_date_type']) || $search_fields['limit_date_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
-                    @foreach($a_date_additional_types as $type)
-                        <label class="ml-2"><input type="radio" name="limit_date_type" value="{{ $type }}" @if(isset($search_fields['limit_date_type']) && $search_fields['limit_date_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
-                    @endforeach
-                </div>
+            <div class="form-text">
+                <label><input type="radio" name="limit_date_type" value="from" @if(!isset($search_fields['limit_date_type']) || $search_fields['limit_date_type'] == 'from') checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-from') }}</label>
+                @foreach($a_date_additional_types as $type)
+                    <label class="ml-2"><input type="radio" name="limit_date_type" value="{{ $type }}" @if(isset($search_fields['limit_date_type']) && $search_fields['limit_date_type'] == $type) checked="checked" @endif> {{ trans('panichd::lang.searchform-date-type-' . $type) }}</label>
+                @endforeach
             </div>
         </div>
     </div>
@@ -256,6 +254,30 @@
             </div>
         </div>
     @endforeach
+
+    <div class="form-group row align-items-center @if(isset($search_fields['read_by_agent'])) bg-info @endif"><!-- UNREAD TICKETS -->
+        {!! CollectiveForm::label('read_by_agent', trans('panichd::lang.searchform-read_by_agent') . trans('panichd::lang.colon'), [
+            'class' => 'col-lg-3 col-form-label'
+        ]) !!}
+        <div class="col-lg-9">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="jquery_ticket_list form-check-input" name="read_by_agent" value="" checked="checked">{{ trans('panichd::lang.searchform-read_by_agent-none') }}
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="jquery_ticket_list form-check-input" name="read_by_agent" value="1" @if(isset($search_fields['read_by_agent']) && $search_fields['read_by_agent'] == '1') checked="checked" @endif>{{ trans('panichd::lang.searchform-read_by_agent-yes') }}
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="jquery_ticket_list form-check-input" name="read_by_agent" value="0" @if(isset($search_fields['read_by_agent']) && $search_fields['read_by_agent'] == '0') checked="checked" @endif>{{ trans('panichd::lang.searchform-read_by_agent-no') }}
+                </label>
+            </div>
+
+        </div>
+    </div>
 
     </div></div>
 

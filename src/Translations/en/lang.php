@@ -361,6 +361,7 @@ return [
    'searchform-created_at'           => 'Creation datetime',
    'searchform-completed_at'         => 'Completion datetime',
    'searchform-updated_at'           => 'Last update',
+   'searchform-read_by_agent'        => 'Read by assigned agent',
  
    'searchform-help-creator'         => 'Who created the ticket (Sometimes is an agent in the name of a Member)',
    'searchform-help-owner'           => 'Member that owns the ticket',
@@ -381,6 +382,10 @@ return [
    'searchform-date-type-exact_year' => 'Exact Year',
    'searchform-date-type-exact_month'=> 'Year, month',
    'searchform-date-type-exact_day'  => 'Exact day',
+
+   'searchform-read_by_agent-none'   => 'Don\'t filter',
+   'searchform-read_by_agent-yes'    => 'Yes',
+   'searchform-read_by_agent-no'     => 'No',
  
    'searchform-btn-submit'           => 'Search',
  
