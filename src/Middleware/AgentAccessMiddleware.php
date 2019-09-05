@@ -4,6 +4,7 @@ namespace PanicHD\PanicHD\Middleware;
 
 use Closure;
 use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Ticket;
 use PanicHD\PanicHD\Traits\TicketRoutes;
 
 class AgentAccessMiddleware
@@ -26,10 +27,17 @@ class AgentAccessMiddleware
             return $next($request);
         }
 
-		// Get Ticket instance. Fails if not found
+		// Get Ticket from route
 		$ticket = $this->getRouteTicket($request);
 
-		if ($member->isAgent()) {
+		if (!$ticket){
+			if ($request->filled('ticket_id')){
+				// Get ticket from Request
+				$ticket = Ticket::find($request->ticket_id);
+			}
+		}
+
+		if ($ticket and $member->isAgent()) {
 			// Assigned Agent has access always
 			if ($member->isAssignedAgent($ticket->id)){
 				return $next($request);
@@ -37,7 +45,7 @@ class AgentAccessMiddleware
 
 			if ($member->currentLevel() > 1 and Setting::grab('agent_restrict') == 0){
 				// Check if element is a visible item for this agent
-				if ($member->categories()->where('id',$this->getRouteCategory($request)->id)->count() == 1){
+				if ($member->categories()->where('id', $ticket->category->id)->count() == 1){
 					return $next($request);
 				}
 			}

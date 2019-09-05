@@ -73,7 +73,10 @@ trait TicketRoutes
 			}else{
 				$ticket_id = $request->get('ticket_id');
 			}
-        }
+		
+		}else{
+			return false;
+		}
 
 		$this->route_ticket = Ticket::findOrFail($ticket_id);
 		return $this->route_ticket;
