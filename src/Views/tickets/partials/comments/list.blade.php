@@ -60,9 +60,9 @@
 				{!! $comment->updated_at->diffForHumans() !!}
 			</div></div></div>
 		@else
-		<div class="card bg-light mb-3">
+		<div class="card mb-3 bg-light @if($u->id == $ticket->agent_id && $comment->read_by_agent == '0') unread_comment @endif">
       <div class="card-header pt-2 pr-3 pb-1 pl-2">
-        <h6 class="card-title mb-0">
+        <h6 class="card-title mb-0 @if($u->id == $ticket->agent_id && $comment->read_by_agent == '0') text-white @endif">
           <span class="float-right">
             <span class="tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.creation-date', [
             'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))
@@ -76,8 +76,11 @@
                 <button type="button" class="btn btn-light btn-sm comment_deleteit"  data-toggle="modal" data-target="#modal-comment-delete" data-id="{{$comment->id}}" data-text="{{$comment->user->name}}" title="{{ trans('panichd::lang.show-ticket-delete-comment') }}">
                 <span class="fa fa-times" aria-label="{{ trans('panichd::lang.btn-delete') }}" style="color: gray"></span></button>
             @endif
-          </span>
-          <span class="tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $comment_title }}"><span class="{{ $icon_class }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
+		  </span>
+		  @if($u->id == $ticket->agent_id && $comment->read_by_agent == '0')
+		  		<span class="tooltip-info" data-toggle="tooltip" title="{{ trans('panichd::lang.updated-by-other') }}"><i class="fas fa-user-edit"></i></span>
+		  @endif
+          <span class="comment_title tooltip-info" data-toggle="tooltip" data-placement="bottom" title="{{ $comment_title }}"><span class="{{ $icon_class }}" aria-hidden="true"></span> {!! $comment_header !!}</span>
 
         </h6>
       </div>
