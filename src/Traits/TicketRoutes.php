@@ -87,6 +87,8 @@ trait TicketRoutes
      *
      * @return PanicHD\PanicHD\Models\Category
      */
+
+	 // TODO: DEPRECATED
     public function getRouteCategory($request)
     {
 		if ($request->input('category_id') != ""){
@@ -95,8 +97,15 @@ trait TicketRoutes
 			if ($this->route_ticket){
 				$category_id = $this->route_ticket->category_id;
 			}else{
-				$this->route_ticket = $this->getRouteTicket($request);
-				$category_id = $this->route_ticket->category_id;
+				$ticket = $this->getRouteTicket($request);
+
+				if ($ticket and !is_null($ticket)){
+					$this->route_ticket = $ticket;
+					$category_id = $this->route_ticket->category_id;
+
+				}else{
+					return false;
+				}
 			}
 		}
 
