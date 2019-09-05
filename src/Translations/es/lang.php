@@ -103,6 +103,7 @@ return [
   'searchform-created_at'           => 'Creación',
   'searchform-completed_at'         => 'Cierre',
   'searchform-updated_at'           => 'Ultima actualitzación',
+  'searchform-read_by_agent'        => 'Leído por el agente asignado',
 
   'searchform-help-creator'         => 'Quién creó el tique (A veces es un técnico en nombre de un Miembro)',
   'searchform-help-owner'           => 'A quién pertenece el tique',
@@ -123,6 +124,10 @@ return [
   'searchform-date-type-exact_year' => 'Año exacto',
   'searchform-date-type-exact_month'=> 'Año y mes',
   'searchform-date-type-exact_day'  => 'Día exacto',
+
+  'searchform-read_by_agent-none'   => 'No filtrar',
+  'searchform-read_by_agent-yes'    => 'Si',
+  'searchform-read_by_agent-no'     => 'No',
 
   'searchform-btn-submit'           => 'Buscar',
 
