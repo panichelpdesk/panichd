@@ -1694,7 +1694,23 @@ class TicketsController extends Controller
 
         $c_members = $this->members_collection($this->member, false);
 
-        $a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
+		$a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
+		
+		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id){
+			if ($ticket->read_by_agent == '0'){
+				// Mark ticket as read
+				$ticket->read_by_agent = 1;
+				$ticket->save();
+
+				// Mark comments as read
+				foreach ($all_comments->get() as $comment){
+					if ($comment->read_by_agent == '0'){
+						$comment->read_by_agent = 1;
+						$comment->save();
+					}
+				}
+			}
+		}
 
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
             'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
