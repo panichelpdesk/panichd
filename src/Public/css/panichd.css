@@ -145,6 +145,16 @@ h1, h2, h3, h4, h5, h6 {
 	background-color: #f8f9fa;
 }
 
+/* Unread ticket highlighted text style */
+.unread_ticket_text {
+	font-weight: bold;
+}
+
+/* Unread comment highlighted card header */
+.unread_comment .card-header {
+	background-color: #777;
+}
+
 /*
  * Used in Ticket card. Style from Bootstrap 3
 */

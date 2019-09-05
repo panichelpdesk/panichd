@@ -38,6 +38,7 @@ return [
 
   'no-tickets-yet'                   => 'Encara no hi ha tiquets',
   'list-no-tickets'                  => 'En aquesta llista no hi ha tiquets',
+  'updated-by-other'                 => 'Actualitzat per un altre membre',
   'table-info-attachments-total'     => ':num fitxers adjunts',
   'table-info-comments-total'        => ':num comentaris totals.',
   'table-info-comments-recent'       => ':num recents.',
@@ -361,6 +362,7 @@ return [
   'searchform-created_at'           => 'Creació',
   'searchform-completed_at'         => 'Tancament',
   'searchform-updated_at'           => 'Darrera actualització',
+  'searchform-read_by_agent'        => 'Llegit pel tècnic assignat',
 
   'searchform-help-creator'         => 'Qui va crear el tiquet (A vegades és un tècnic en nom d\'un Membre)',
   'searchform-help-owner'           => 'A qui pertany el tiquet',
@@ -381,6 +383,10 @@ return [
   'searchform-date-type-exact_year' => 'Any exacte',
   'searchform-date-type-exact_month'=> 'Any i mes',
   'searchform-date-type-exact_day'  => 'Dia exacte',
+
+  'searchform-read_by_agent-none'   => 'No filtrar',
+  'searchform-read_by_agent-yes'    => 'Sí',
+  'searchform-read_by_agent-no'     => 'No',
 
   'searchform-btn-submit'           => 'Cercar',
 

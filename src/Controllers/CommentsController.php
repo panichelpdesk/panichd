@@ -20,11 +20,21 @@ class CommentsController extends Controller
 {
     use Attachments, Purifiable;
 
+	protected $member;
+
     public function __construct()
     {
         $this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['store']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['update', 'destroy']]);
-    }
+	}
+	
+	// Initiate $member before any controller action
+	public function callAction($method, $parameters)
+	{
+		$this->member = \PanicHDMember::findOrFail(auth()->user()->id);
+
+		return parent::callAction($method, $parameters);
+	}
 
     /**
      * Display a listing of the resource.
@@ -90,7 +100,7 @@ class CommentsController extends Controller
 
 		$common_data = [
 			'request' => $request,
-			'member' => \PanicHDMember::findOrFail(auth()->user()->id),
+			'member' => $this->member,
 			'a_content' => $a_content,
 			'a_result_errors' => $a_result_errors
 		];
@@ -128,11 +138,11 @@ class CommentsController extends Controller
 		}
 
 		$create_list_comment = false;
-		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id'))){
+		if ($member->currentLevel() > 1 and $member->canManageTicket($ticket->id)){
 			// Filter response type
 			$comment->type = in_array($request->get('response_type'), ['note','reply']) ? $request->get('response_type') : 'note';
 
-			if ($request->input('complete_ticket') != "" and $member->canCloseTicket($request->get('ticket_id'))){
+			if ($request->input('complete_ticket') != "" and $member->canCloseTicket($ticket->id)){
 				if ($comment->type == 'reply' and $ticket->user_id == $member->id){
 					// comment for assigned agent only
 					$comment->type = 'completetx';
@@ -145,15 +155,22 @@ class CommentsController extends Controller
 			$comment->type = 'reply';
 
 		// Close ticket + new status
-		if ($member->canCloseTicket($request->get('ticket_id')) and $request->input('complete_ticket') != ""){
+		if ($member->canCloseTicket($ticket->id) and $request->input('complete_ticket') != ""){
 			$ticket->completed_at = Carbon::now();
 			$ticket->status_id = Status::where('id',$request->get('status_id'))->count()==1 ? $request->get('status_id') : Setting::grab('default_close_status_id');
 		}
 
-        $comment->ticket_id = $request->get('ticket_id');
-        $comment->user_id = $member->id;
 		$comment->content = $a_content['content'];
-        $comment->html = $a_content['html'];
+		$comment->html = $a_content['html'];
+		$comment->user_id = $member->id;
+		$comment->ticket_id = $ticket->id;
+		
+		if ($ticket->agent_id != $this->member->id){
+			// Ticket and comment will be unread for assigned agent
+			$ticket->read_by_agent = 0;
+			$comment->read_by_agent = 0;
+		}
+		
 		$comment->save();
 
 		// Create additional list comment if has('complete_ticket') but $member != auth()
@@ -162,7 +179,7 @@ class CommentsController extends Controller
 			$list_comment->type = "complete";
 
 			$list_comment->content = $list_comment->html = '';
-			$list_comment->ticket_id = $request->get('ticket_id');
+			$list_comment->ticket_id = $ticket->id;
 			$list_comment->user_id = $member->id;
 			$list_comment->save();
 		}
@@ -173,7 +190,7 @@ class CommentsController extends Controller
 		// Update parent ticket
         $ticket->updated_at = $comment->created_at;
 
-		if ($member->currentLevel() > 1 and $member->canManageTicket($request->get('ticket_id')) and $comment->type == 'reply' and $request->input('add_to_intervention') != ""){
+		if ($member->currentLevel() > 1 and $member->canManageTicket($ticket->id) and $comment->type == 'reply' and $request->input('add_to_intervention') != ""){
 			$ticket->intervention = $ticket->intervention.$comment->content;
 			$ticket->intervention_html = $ticket->intervention_html.$comment->html;
 		}
@@ -248,7 +265,13 @@ class CommentsController extends Controller
 
 		DB::beginTransaction();
 		$comment->content = $a_content['content'];
-        $comment->html = $a_content['html'];
+		$comment->html = $a_content['html'];
+		
+		if ($ticket->agent_id != $this->member->id){
+			// Ticket and comment will be unread for assigned agent
+			$ticket->read_by_agent = 0;
+			$comment->read_by_agent = 0;
+		}
 
 		$comment->save();
 
@@ -258,6 +281,8 @@ class CommentsController extends Controller
 		$this->embedded_images_to_attachments($permission_level, $ticket, $comment);
 
 		$ticket->touch();
+
+		$ticket->save();
 
 		if (Setting::grab('ticket_attachments_feature')){
 			// 1 - update existing attachment fields
