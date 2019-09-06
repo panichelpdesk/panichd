@@ -378,6 +378,9 @@ return [
    'searchform-status-rule-none'     => 'None of selected',
 
    'searchform-priority-none'        => '- none -',
+   'searchform-priority-rule-any'    => 'Any of selected',
+   'searchform-priority-rule-none'   => 'None of selected',
+
    'searchform-category-none'        => '- none -',
    'searchform-agent-none'           => '- none -',
 

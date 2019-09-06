@@ -120,6 +120,8 @@ return [
   'searchform-status-rule-none'     => 'Ninguno de los escogidos',
 
   'searchform-priority-none'        => '- ninguna -',
+  'searchform-priority-rule-any'    => 'Cualquiera de las escogidas',
+  'searchform-priority-rule-none'   => 'Ninguno de las escogidas',
   'searchform-category-none'        => '- ninguna -',
   'searchform-agent-none'           => '- ninguno -',
 

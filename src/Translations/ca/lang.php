@@ -379,6 +379,9 @@ return [
   'searchform-status-rule-none'     => 'Cap dels triats',
 
   'searchform-priority-none'        => '- cap -',
+  'searchform-priority-rule-any'    => 'Qualsevol de les triades',
+  'searchform-priority-rule-none'   => 'Cap de les triades',
+
   'searchform-category-none'        => '- cap -',
   'searchform-agent-none'           => '- cap -',
   
