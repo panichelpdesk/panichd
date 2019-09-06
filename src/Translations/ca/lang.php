@@ -384,6 +384,10 @@ return [
 
   'searchform-category-none'        => '- cap -',
   'searchform-agent-none'           => '- cap -',
+
+  'searchform-tags-rule-any'        => 'Qualsevol de les triades',
+  'searchform-tags-rule-all'        => 'Totes les triades',
+  'searchform-tags-rule-none'       => 'Cap de les triades',
   
   'searchform-date-type-from'       => 'En endavant',
   'searchform-date-type-until'      => 'Més antics',

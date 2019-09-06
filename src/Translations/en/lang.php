@@ -383,6 +383,10 @@ return [
 
    'searchform-category-none'        => '- none -',
    'searchform-agent-none'           => '- none -',
+   
+   'searchform-tags-rule-any'        => 'Any of selected',
+   'searchform-tags-rule-all'        => 'All selected',
+   'searchform-tags-rule-none'       => 'None of selected',
 
    'searchform-date-type-from'       => 'From specified',
    'searchform-date-type-until'      => 'Until specified',

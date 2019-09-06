@@ -59,6 +59,20 @@ $(function(){
         }
     });
 
+    $('#select_category').change(function(){
+        if ($(this).find('option:selected').val() == ""){
+            // Hide tag selection
+            $('#tag_list_container').hide();
+            
+            // Hide tag rules
+            $('#tags_rules').hide();
+        
+        }else{
+            $('#tag_list_container').show();
+            $('#tags_rules').show();
+        }
+    });
+
     @if(isset($search_fields['category_id']))
         // Show active category tags
         $('#jquery_tag_category_{{ $search_fields['category_id'] }}').next().show();

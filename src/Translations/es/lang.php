@@ -121,9 +121,14 @@ return [
 
   'searchform-priority-none'        => '- ninguna -',
   'searchform-priority-rule-any'    => 'Cualquiera de las escogidas',
-  'searchform-priority-rule-none'   => 'Ninguno de las escogidas',
+  'searchform-priority-rule-none'   => 'Ninguna de las escogidas',
+
   'searchform-category-none'        => '- ninguna -',
   'searchform-agent-none'           => '- ninguno -',
+
+  'searchform-tags-rule-any'        => 'Cualquiera de las escogidas',
+  'searchform-tags-rule-all'        => 'Todas las escogidas',
+  'searchform-tags-rule-none'       => 'Ninguna de las escogidas',
 
   'searchform-date-type-from'       => 'En adelante',
   'searchform-date-type-until'      => 'Más antiguos',
