@@ -34,6 +34,9 @@ class TicketsController extends Controller
     protected $tickets;
 	protected $member;
 	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id', 'read_by_agent'];
+	protected $a_search_fields_numeric_types = [
+		'status_id' => ['any', 'none']
+	];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
@@ -75,6 +78,7 @@ class TicketsController extends Controller
 			}else{
 				// Filter by all specified fields
 				$search_fields = session()->get('search_fields');
+
 				foreach ($search_fields as $field => $value){
 					if ($field == 'department_id'){
 						$collection->whereHas('owner', function($query)use($search_fields){
@@ -120,7 +124,22 @@ class TicketsController extends Controller
 						}
 					
 					}elseif(in_array($field, $this->a_search_fields_numeric)){
-						$collection->where($field, $value);
+						if (isset($search_fields[$field . '_type']) and in_array($search_fields[$field . '_type'], $this->a_search_fields_numeric_types[$field])){
+							// Numeric fields with special criteria
+							$a_values = explode(',', $search_fields[$field]);
+
+							if ($search_fields[$field . '_type'] == 'any'){
+								// Look for any of selected values
+								$collection->whereIn($field, $a_values);
+							}else{
+								// Look without the selected values
+								$collection->whereNotIn($field, $a_values);
+							}
+
+						}else{
+							// Normal numeric field
+							$collection->where($field, $value);
+						}
 					}
 				}
 
@@ -807,7 +826,19 @@ class TicketsController extends Controller
 						if (in_array($key, $a_numeric_params)){
 							// Add param value pair into search_fields array
 							$search_fields[$key] = $param;
+
+							// Add special key for form only
+							$search_fields['array_' . $key] = explode(',', $param);
 						
+						}elseif (array_key_exists(str_replace('_type', '', $key), $this->a_search_fields_numeric_types)){
+							$ref_field = str_replace('_type', '', $key);
+							if (in_array($param, $this->a_search_fields_numeric_types[$ref_field])){
+								$search_fields[$key] = $param;
+							}else{
+								// Apply default type
+								$search_fields[$key] = current($this->a_search_fields_numeric_types[$ref_field]);
+							}
+							
 						}elseif(in_array($key, $a_text_params)){
 							// Decode strings in URL
 							$search_fields[$key] = urldecode($param);
@@ -972,6 +1003,18 @@ class TicketsController extends Controller
 				// Add field in search URL
 				$search_URL.= '/' . $field . '/' . $value_URL;
 
+				// Register numeric field type and add to URL
+				if (array_key_exists($field, $this->a_search_fields_numeric_types)){
+					if ($request->filled($field . '_type') and in_array($request->filled($field . '_type'), $this->a_search_fields_numeric_types[$field])){
+						$search_fields[$field . '_type'] = $request->{$field . '_type'};
+					}else{
+						// Apply default type
+						$search_fields[$field . '_type'] = current($this->a_search_fields_numeric_types[$field]);
+					}
+
+					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
+				} 
+
 				// Register date type and add in URL
 				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
 					$search_fields[$field . '_type'] = $request->{$field . '_type'};
@@ -989,11 +1032,6 @@ class TicketsController extends Controller
 		}
 
 		if (isset($search_fields)){
-			
-			
-			\Debugbar::info($search_fields);
-
-			
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
 

@@ -100,12 +100,16 @@
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
         <div class="col-lg-9">
-            <select class="form-control" name="status_id">
+            <select name="status_id[]" class="generate_default_select2 select2-multiple form-control" multiple="multiple" style="display: none; width: 100%">
                 <option value="">{{ trans('panichd::lang.searchform-status-none') }}</option>
                 @foreach($c_status as $status)
-                    <option value="{{ $status->id }}" @if(isset($search_fields['status_id']) && $search_fields['status_id'] == $status->id) selected="selected" @endif>{{ $status->name }}</option>
+                    <option value="{{ $status->id }}" @if(isset($search_fields['array_status_id']) && in_array($status->id, $search_fields['array_status_id'])) selected="selected" @endif>{{ $status->name }}</option>
                 @endforeach
             </select>
+            <div class="form-text">
+                <label><input type="radio" name="status_id_type" value="any" checked="checked"> Any of selected</label>
+                <label class="ml-2"><input type="radio" name="status_id_type" value="none" @if(isset($search_fields['status_id_type']) && $search_fields['status_id_type'] == 'none') checked="checked" @endif> None of selected</label>
+            </div>
         </div>
     </div>
     <div class="form-group row @if(isset($search_fields['priority_id'])) bg-info @endif"><!-- PRIORITY -->
