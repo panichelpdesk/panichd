@@ -143,8 +143,8 @@ class TicketsController extends Controller
 					}
 				}
 
-				if (isset($search_fields['tags'])){
-					foreach ($search_fields['tags'] as $tag_id){
+				if (isset($search_fields['array_tags'])){
+					foreach ($search_fields['array_tags'] as $tag_id){
 						$collection->whereHas('tags', function($q1) use($tag_id){
 							$q1->where('id', $tag_id);
 						});
@@ -892,11 +892,6 @@ class TicketsController extends Controller
 					}
 				}
 			}
-
-			if (isset($search_fields['category_id']) and isset($search_fields['tags'])){
-				// Add tag id's to the array
-				$search_fields['tags'] = explode(',', $search_fields['tags']);
-			}
 		}
 
 		foreach($this->a_search_fields_date as $field){
@@ -1024,9 +1019,11 @@ class TicketsController extends Controller
 
 				// Register ticket tags and add in URL
 				if ($field == 'category_id' and $request->filled('category_' . $request->category_id . '_tags')){
-					$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
+					$search_fields['array_tags'] = $request->{'category_' . $request->category_id . '_tags'};
 
-					$search_URL.= '/tags/' . implode(',', $search_fields['tags']);
+					$search_fields['tags'] = implode(',', $search_fields['array_tags']);
+
+					$search_URL.= '/tags/' . $search_fields['tags'];
 				}
 			}
 		}
