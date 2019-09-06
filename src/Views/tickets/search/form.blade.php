@@ -115,12 +115,16 @@
     <div class="form-group row @if(isset($search_fields['priority_id'])) bg-info @endif"><!-- PRIORITY -->
         {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
         <div class="col-lg-9">
-            <select class="form-control" name="priority_id">
+            <select name="priority_id[]" class="generate_default_select2 select2-multiple form-control" multiple="multiple" style="display: none; width: 100%">
                 <option value="">{{ trans('panichd::lang.searchform-priority-none') }}</option>
                 @foreach($priorities as $id => $priority)
-                    <option value="{{ $id }}" @if(isset($search_fields['priority_id']) && $search_fields['priority_id'] == $id) selected="selected" @endif>{{ $priority }}</option>
+                    <option value="{{ $id }}" @if(isset($search_fields['array_priority_id']) && in_array($id, $search_fields['array_priority_id'])) selected="selected" @endif>{{ $priority }}</option>
                 @endforeach
             </select>
+            <div class="form-text">
+                <label><input type="radio" name="priority_id_type" value="any" checked="checked"> {{ trans('panichd::lang.searchform-priority-rule-any') }}</label>
+                <label class="ml-2"><input type="radio" name="priority_id_type" value="none" @if(isset($search_fields['priority_id_type']) && $search_fields['priority_id_type'] == 'none') checked="checked" @endif> {{ trans('panichd::lang.searchform-priority-rule-none') }}</label>
+            </div>
         </div>
     </div>
 

@@ -35,7 +35,8 @@ class TicketsController extends Controller
 	protected $member;
 	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id', 'read_by_agent'];
 	protected $a_search_fields_numeric_types = [
-		'status_id' => ['any', 'none']
+		'status_id' => ['any', 'none'],
+		'priority_id' => ['any', 'none']
 	];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
