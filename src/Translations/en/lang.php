@@ -372,11 +372,15 @@ return [
    'searchform-owner-none'           => '- none -',
    'searchform-department-none'      => '- none -',
    'searchform-list-none'            => '- none -',
+
    'searchform-status-none'          => '- none -',
+   'searchform-status-rule-any'      => 'Any of selected',
+   'searchform-status-rule-none'     => 'None of selected',
+
    'searchform-priority-none'        => '- none -',
    'searchform-category-none'        => '- none -',
    'searchform-agent-none'           => '- none -',
-   
+
    'searchform-date-type-from'       => 'From specified',
    'searchform-date-type-until'      => 'Until specified',
    'searchform-date-type-exact_year' => 'Exact Year',
