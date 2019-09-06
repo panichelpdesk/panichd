@@ -107,8 +107,8 @@
                 @endforeach
             </select>
             <div class="form-text">
-                <label><input type="radio" name="status_id_type" value="any" checked="checked"> Any of selected</label>
-                <label class="ml-2"><input type="radio" name="status_id_type" value="none" @if(isset($search_fields['status_id_type']) && $search_fields['status_id_type'] == 'none') checked="checked" @endif> None of selected</label>
+                <label><input type="radio" name="status_id_type" value="any" checked="checked"> {{ trans('panichd::lang.searchform-status-rule-any') }}</label>
+                <label class="ml-2"><input type="radio" name="status_id_type" value="none" @if(isset($search_fields['status_id_type']) && $search_fields['status_id_type'] == 'none') checked="checked" @endif> {{ trans('panichd::lang.searchform-status-rule-none') }}</label>
             </div>
         </div>
     </div>

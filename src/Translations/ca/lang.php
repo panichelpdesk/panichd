@@ -373,7 +373,11 @@ return [
   'searchform-owner-none'           => '- cap -',
   'searchform-department-none'      => '- cap -',
   'searchform-list-none'            => '- cap -',
+
   'searchform-status-none'          => '- cap -',
+  'searchform-status-rule-any'      => 'Qualsevol dels triats',
+  'searchform-status-rule-none'     => 'Cap dels triats',
+
   'searchform-priority-none'        => '- cap -',
   'searchform-category-none'        => '- cap -',
   'searchform-agent-none'           => '- cap -',

@@ -114,7 +114,11 @@ return [
   'searchform-owner-none'           => '- ninguno -',
   'searchform-department-none'      => '- ninguno -',
   'searchform-list-none'            => '- ninguna -',
+
   'searchform-status-none'          => '- ninguno -',
+  'searchform-status-rule-any'      => 'Cualquiera de los escogidos',
+  'searchform-status-rule-none'     => 'Ninguno de los escogidos',
+
   'searchform-priority-none'        => '- ninguna -',
   'searchform-category-none'        => '- ninguna -',
   'searchform-agent-none'           => '- ninguno -',
