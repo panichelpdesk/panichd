@@ -23,6 +23,8 @@ function success_ajax_callback(response) {
 }
 
 $(function(){
+    var tag_filters_without_tags = ['no_filter', 'has_not_tags', 'has_any_tag'];
+
     /* Category change:
        - checks for permissions in new category
        - updates agent list
@@ -38,6 +40,16 @@ $(function(){
 
             // Hide agent list
             $('#select_category_agent').hide();
+
+            // Hide tag selection
+            $('#tag_list_container').hide();
+            
+            // Hide category tag rules
+            $('#category_tags_rules').hide();
+
+            if (tag_filters_without_tags.indexOf($('input[name=tags_type]:checked').val()) == -1){
+                $('#tags_no_filter').click();
+            }
 
         }else{
             // Hide visible agents
@@ -56,6 +68,14 @@ $(function(){
             // Update tag list
             $('#tag_list_container .select2-container').hide();
             $('#jquery_tag_category_'+$(this).val()).next().show();
+
+            if (tag_filters_without_tags.indexOf($('input[name=tags_type]:checked').val()) == -1){
+                // Show tag selection
+                $('#tag_list_container').show();
+            }
+
+            // Hide category tag rules
+            $('#category_tags_rules').show();
         }
     });
 
@@ -63,6 +83,14 @@ $(function(){
         // Show active category tags
         $('#jquery_tag_category_{{ $search_fields['category_id'] }}').next().show();
     @endif
+
+    $('input[name=tags_type]').click(function(e){
+        if ($(this).val() == 'no_filter' || $(this).val() == 'has_not_tags' || $(this).val() == 'has_any_tag'){
+            $('#tag_list_container').slideUp();
+        }else{
+            $('#tag_list_container').slideDown();
+        }
+    });
 
     // Extra date fields with datetimepicker
     @foreach(['created_at', 'completed_at', 'updated_at'] as $date_field)

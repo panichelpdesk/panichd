@@ -100,23 +100,31 @@
             'class' => 'col-lg-3 col-form-label'
         ]) !!}
         <div class="col-lg-9">
-            <select class="form-control" name="status_id">
+            <select name="status_id[]" class="generate_default_select2 select2-multiple form-control" multiple="multiple" style="display: none; width: 100%">
                 <option value="">{{ trans('panichd::lang.searchform-status-none') }}</option>
                 @foreach($c_status as $status)
-                    <option value="{{ $status->id }}" @if(isset($search_fields['status_id']) && $search_fields['status_id'] == $status->id) selected="selected" @endif>{{ $status->name }}</option>
+                    <option value="{{ $status->id }}" @if(isset($search_fields['array_status_id']) && in_array($status->id, $search_fields['array_status_id'])) selected="selected" @endif>{{ $status->name }}</option>
                 @endforeach
             </select>
+            <div class="form-text">
+                <label><input type="radio" name="status_id_type" value="any" checked="checked"> {{ trans('panichd::lang.searchform-status-rule-any') }}</label>
+                <label class="ml-2"><input type="radio" name="status_id_type" value="none" @if(isset($search_fields['status_id_type']) && $search_fields['status_id_type'] == 'none') checked="checked" @endif> {{ trans('panichd::lang.searchform-status-rule-none') }}</label>
+            </div>
         </div>
     </div>
     <div class="form-group row @if(isset($search_fields['priority_id'])) bg-info @endif"><!-- PRIORITY -->
         {!! CollectiveForm::label('priority_id', trans('panichd::lang.priority') . trans('panichd::lang.colon'), ['class' => 'col-lg-3 col-form-label']) !!}
         <div class="col-lg-9">
-            <select class="form-control" name="priority_id">
+            <select name="priority_id[]" class="generate_default_select2 select2-multiple form-control" multiple="multiple" style="display: none; width: 100%">
                 <option value="">{{ trans('panichd::lang.searchform-priority-none') }}</option>
                 @foreach($priorities as $id => $priority)
-                    <option value="{{ $id }}" @if(isset($search_fields['priority_id']) && $search_fields['priority_id'] == $id) selected="selected" @endif>{{ $priority }}</option>
+                    <option value="{{ $id }}" @if(isset($search_fields['array_priority_id']) && in_array($id, $search_fields['array_priority_id'])) selected="selected" @endif>{{ $priority }}</option>
                 @endforeach
             </select>
+            <div class="form-text">
+                <label><input type="radio" name="priority_id_type" value="any" checked="checked"> {{ trans('panichd::lang.searchform-priority-rule-any') }}</label>
+                <label class="ml-2"><input type="radio" name="priority_id_type" value="none" @if(isset($search_fields['priority_id_type']) && $search_fields['priority_id_type'] == 'none') checked="checked" @endif> {{ trans('panichd::lang.searchform-priority-rule-none') }}</label>
+            </div>
         </div>
     </div>
 
@@ -189,8 +197,20 @@
 
     <div class="form-group row @if(isset($search_fields['tags'])) bg-info @endif"><!-- TAGS -->
         <label for="tags" class="col-form-label col-lg-3">{{ trans('panichd::lang.tags') . trans('panichd::lang.colon') }}</label>
-        <div id="tag_list_container" class="col-lg-9">
-            @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => $search_fields['tags'] ?? []])
+        <div class="col-lg-9">
+            <div id="tag_list_container" style="display: none">
+                @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => $search_fields['array_tags'] ?? []])
+            </div>
+            <div class="form-text">
+                <label><input type="radio" id="tags_no_filter" name="tags_type" value="" checked="checked"> {{ trans('panichd::lang.searchform-tags-rule-no-filter') }}</label>
+                <label class="ml-2"><input type="radio" name="tags_type" value="has_not_tags" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'has_not_tags') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-has_not_tags') }}</label>
+                <label class="ml-2"><input type="radio" name="tags_type" value="has_any_tag" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'has_any_tag') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-has_any_tag') }}</label>
+                <span id="category_tags_rules" class="ml-2" @if(!isset($search_fields['category_id'])) style="display: none" @endif>
+                    <label><input type="radio" name="tags_type" value="any" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'all') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-any') }}</label>
+                    <label class="ml-2"><input type="radio" name="tags_type" value="all" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'all') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-all') }}</label>
+                    <label class="ml-2"><input type="radio" name="tags_type" value="none" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'none') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-none') }}</label>
+                </span>
+                </div>
         </div>
     </div>
 

@@ -372,11 +372,25 @@ return [
    'searchform-owner-none'           => '- none -',
    'searchform-department-none'      => '- none -',
    'searchform-list-none'            => '- none -',
+
    'searchform-status-none'          => '- none -',
+   'searchform-status-rule-any'      => 'Any of selected',
+   'searchform-status-rule-none'     => 'None of selected',
+
    'searchform-priority-none'        => '- none -',
+   'searchform-priority-rule-any'    => 'Any of selected',
+   'searchform-priority-rule-none'   => 'None of selected',
+
    'searchform-category-none'        => '- none -',
    'searchform-agent-none'           => '- none -',
    
+   'searchform-tags-rule-no-filter'  => 'Don\'t filter',
+   'searchform-tags-rule-has_not_tags'=> 'Without tags',
+   'searchform-tags-rule-has_any_tag'=> 'With any tag',
+   'searchform-tags-rule-any'        => 'Any of selected',
+   'searchform-tags-rule-all'        => 'All selected',
+   'searchform-tags-rule-none'       => 'None of selected',
+
    'searchform-date-type-from'       => 'From specified',
    'searchform-date-type-until'      => 'Until specified',
    'searchform-date-type-exact_year' => 'Exact Year',

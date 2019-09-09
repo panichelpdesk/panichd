@@ -34,6 +34,11 @@ class TicketsController extends Controller
     protected $tickets;
 	protected $member;
 	protected $a_search_fields_numeric = ['creator_id', 'user_id', 'status_id', 'priority_id', 'category_id', 'agent_id', 'read_by_agent'];
+	protected $a_search_fields_numeric_types = [
+		'status_id' => ['any', 'none'],
+		'priority_id' => ['any', 'none'],
+		'tags' => ['has_not_tags', 'has_any_tag', 'any', 'all', 'none']
+	];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
 	protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
@@ -75,6 +80,7 @@ class TicketsController extends Controller
 			}else{
 				// Filter by all specified fields
 				$search_fields = session()->get('search_fields');
+				
 				foreach ($search_fields as $field => $value){
 					if ($field == 'department_id'){
 						$collection->whereHas('owner', function($query)use($search_fields){
@@ -120,15 +126,57 @@ class TicketsController extends Controller
 						}
 					
 					}elseif(in_array($field, $this->a_search_fields_numeric)){
-						$collection->where($field, $value);
+						if (isset($search_fields[$field . '_type']) and in_array($search_fields[$field . '_type'], $this->a_search_fields_numeric_types[$field])){
+							// Numeric fields with special criteria
+							$a_values = explode(',', $search_fields[$field]);
+
+							if ($search_fields[$field . '_type'] == 'any'){
+								// Look for any of selected values
+								$collection->whereIn($field, $a_values);
+							}else{
+								// Look without the selected values
+								$collection->whereNotIn($field, $a_values);
+							}
+
+						}else{
+							// Normal numeric field
+							$collection->where($field, $value);
+						}
 					}
 				}
 
-				if (isset($search_fields['tags'])){
-					foreach ($search_fields['tags'] as $tag_id){
-						$collection->whereHas('tags', function($q1) use($tag_id){
-							$q1->where('id', $tag_id);
-						});
+				if (isset($search_fields['tags_type'])){
+					if ($search_fields['tags_type'] == 'has_not_tags'){
+						// Tickets without tags
+						$collection->whereDoesntHave('tags');
+					
+					}elseif($search_fields['tags_type'] == 'has_any_tag'){
+						// Tickets that has any tag
+						$collection->whereHas('tags');
+
+					}elseif(isset($search_fields['array_tags'])){
+						if ($search_fields['tags_type'] == 'all'){
+							// All tags together
+							foreach ($search_fields['array_tags'] as $tag_id){
+								$collection->whereHas('tags', function($q1) use($tag_id){
+									$q1->where('id', $tag_id);
+								});
+							}
+						
+						}elseif($search_fields['tags_type'] == 'none'){
+							// None of selected tags
+							foreach ($search_fields['array_tags'] as $tag_id){
+								$collection->whereDoesntHave('tags', function($q1) use($tag_id){
+									$q1->where('id', $tag_id);
+								});
+							}
+						
+						}else{
+							// Any of selected tags
+							$collection->whereHas('tags', function($q1) use($search_fields){
+								$q1->whereIn('id', $search_fields['array_tags']);
+							});
+						}
 					}
 				}
 
@@ -807,7 +855,19 @@ class TicketsController extends Controller
 						if (in_array($key, $a_numeric_params)){
 							// Add param value pair into search_fields array
 							$search_fields[$key] = $param;
+
+							// Add special key for form only
+							$search_fields['array_' . $key] = explode(',', $param);
 						
+						}elseif (array_key_exists(str_replace('_type', '', $key), $this->a_search_fields_numeric_types)){
+							$ref_field = str_replace('_type', '', $key);
+							if (in_array($param, $this->a_search_fields_numeric_types[$ref_field])){
+								$search_fields[$key] = $param;
+							}else{
+								// Apply default type
+								$search_fields[$key] = current($this->a_search_fields_numeric_types[$ref_field]);
+							}
+							
 						}elseif(in_array($key, $a_text_params)){
 							// Decode strings in URL
 							$search_fields[$key] = urldecode($param);
@@ -860,11 +920,6 @@ class TicketsController extends Controller
 						$key = "";
 					}
 				}
-			}
-
-			if (isset($search_fields['category_id']) and isset($search_fields['tags'])){
-				// Add tag id's to the array
-				$search_fields['tags'] = explode(',', $search_fields['tags']);
 			}
 		}
 
@@ -940,7 +995,7 @@ class TicketsController extends Controller
     public function register_search_fields(Request $request)
     {
 		$result = "error";
-		$message = trans('panichd::lang.searchform-validation-no-field');
+		$a_messages = $a_error_fields = [];
 		
 		// Forget last search
 		session()->forget('search_fields');
@@ -972,39 +1027,69 @@ class TicketsController extends Controller
 				// Add field in search URL
 				$search_URL.= '/' . $field . '/' . $value_URL;
 
+				// Register numeric field type and add to URL
+				if (array_key_exists($field, $this->a_search_fields_numeric_types)){
+					if ($request->filled($field . '_type') and in_array($request->filled($field . '_type'), $this->a_search_fields_numeric_types[$field])){
+						$search_fields[$field . '_type'] = $request->{$field . '_type'};
+					}else{
+						// Apply default type
+						$search_fields[$field . '_type'] = current($this->a_search_fields_numeric_types[$field]);
+					}
+
+					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
+				} 
+
 				// Register date type and add in URL
 				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
 					$search_fields[$field . '_type'] = $request->{$field . '_type'};
 
 					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
 				}
+				
+				if ($field == 'category_id' and $request->filled('tags_type') and in_array($request->tags_type, $this->a_search_fields_numeric_types['tags'])){
+					if(in_array($request->tags_type, ['has_not_tags', 'has_any_tag']) or $request->filled('category_' . $request->category_id . '_tags')){
+						// Register tags type
+						$search_fields['tags_type'] = $request->tags_type;
+						$search_URL.= '/tags_type/' . $search_fields['tags_type'];
 
-				// Register ticket tags and add in URL
-				if ($field == 'category_id' and $request->filled('category_' . $request->category_id . '_tags')){
-					$search_fields['tags'] = $request->{'category_' . $request->category_id . '_tags'};
-
-					$search_URL.= '/tags/' . implode(',', $search_fields['tags']);
+						if (!in_array($request->tags_type, ['has_not_tags', 'has_any_tag'])){
+						
+							// Register ticket tags and add in URL
+							$search_fields['array_tags'] = $request->{'category_' . $request->category_id . '_tags'};
+	
+							$search_fields['tags'] = implode(',', $search_fields['array_tags']);
+	
+							$search_URL.= '/tags/' . $search_fields['tags'];
+						
+						}
+					}else{
+						// other tags_type and !filled
+						// Positive rules require tags
+						$a_error_fields['category_' . $request->category_id . '_tags'] = "The selected tag rule requires at least one tag selected";
+					}
 				}
 			}
 		}
 
-		if (isset($search_fields)){
-			
-			
-			\Debugbar::info($search_fields);
+		if ($a_error_fields){
+			$a_messages = array_values($a_error_fields);
 
-			
+		}elseif (isset($search_fields)){
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
 
 			// Success message
 			$result = "ok";
-			$message = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
+			$a_messages[] = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
+		
+		}else{
+			$a_messages[] = trans('panichd::lang.searchform-validation-no-field');
 		}
 
         return response()->json([
 			'result' => $result,
-			'messages' => [$message],
+			'messages' => $a_messages,
+			'fields' => $a_error_fields,
 			'search_fields' => $search_fields ?? [],
 			'search_URL' => $search_URL ?? ''
 			]);

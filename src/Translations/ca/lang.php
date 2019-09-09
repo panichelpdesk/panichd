@@ -373,10 +373,24 @@ return [
   'searchform-owner-none'           => '- cap -',
   'searchform-department-none'      => '- cap -',
   'searchform-list-none'            => '- cap -',
+
   'searchform-status-none'          => '- cap -',
+  'searchform-status-rule-any'      => 'Qualsevol dels triats',
+  'searchform-status-rule-none'     => 'Cap dels triats',
+
   'searchform-priority-none'        => '- cap -',
+  'searchform-priority-rule-any'    => 'Qualsevol de les triades',
+  'searchform-priority-rule-none'   => 'Cap de les triades',
+
   'searchform-category-none'        => '- cap -',
   'searchform-agent-none'           => '- cap -',
+
+  'searchform-tags-rule-no-filter'  => 'No filtrar',
+  'searchform-tags-rule-has_not_tags'=> 'Sense etiquetes',
+  'searchform-tags-rule-has_any_tag'=> 'Amb qualsevol etiqueta',
+  'searchform-tags-rule-any'        => 'Qualsevol de les triades',
+  'searchform-tags-rule-all'        => 'Totes les triades',
+  'searchform-tags-rule-none'       => 'Cap de les triades',
   
   'searchform-date-type-from'       => 'En endavant',
   'searchform-date-type-until'      => 'Més antics',

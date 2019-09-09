@@ -114,10 +114,24 @@ return [
   'searchform-owner-none'           => '- ninguno -',
   'searchform-department-none'      => '- ninguno -',
   'searchform-list-none'            => '- ninguna -',
+
   'searchform-status-none'          => '- ninguno -',
+  'searchform-status-rule-any'      => 'Cualquiera de los escogidos',
+  'searchform-status-rule-none'     => 'Ninguno de los escogidos',
+
   'searchform-priority-none'        => '- ninguna -',
+  'searchform-priority-rule-any'    => 'Cualquiera de las escogidas',
+  'searchform-priority-rule-none'   => 'Ninguna de las escogidas',
+
   'searchform-category-none'        => '- ninguna -',
   'searchform-agent-none'           => '- ninguno -',
+
+  'searchform-tags-rule-no-filter'  => 'No filtrar',
+  'searchform-tags-rule-has_not_tags'=> 'Sin etiquetas',
+  'searchform-tags-rule-has_any_tag'=> 'Con cualquier etiqueta',
+  'searchform-tags-rule-any'        => 'Cualquiera de las escogidas',
+  'searchform-tags-rule-all'        => 'Todas las escogidas',
+  'searchform-tags-rule-none'       => 'Ninguna de las escogidas',
 
   'searchform-date-type-from'       => 'En adelante',
   'searchform-date-type-until'      => 'Más antiguos',
