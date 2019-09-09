@@ -2,34 +2,32 @@
 
 Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddleware()], function () use ($main_route, $main_route_path, $admin_route, $admin_route_path) {
 
-	//Route::group(['middleware' => '', function () use ($main_route) {
-
-    //Ticket public route
-    Route::get("$main_route_path/complete", 'PanicHD\PanicHD\Controllers\TicketsController@indexComplete')
-        ->name("$main_route-complete");
-
-	// Get newest tickets list
-	Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
-        ->name("$main_route-newest")
-		->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
-    
-    // Ticket data loaded by Datatables
-    Route::get("$main_route_path/data/{id?}", 'PanicHD\PanicHD\Controllers\TicketsController@data')
-        ->name("$main_route.data");
-
-    // Search page (Blank form or with search parameters in URL)
-    Route::get("$main_route_path/search/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@search_form')
-        ->where('parameters', '(.*)')
-        ->name("$main_route.search");
-    
-    // Search AJAX registering
-    Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@register_search_fields')
-        ->name("$main_route.search.register");
-
-	// Notice list
+    // Notice list
 	Route::get("$main_route_path/notices", function(){
 		return view('panichd::notices.index');
 	})->name("$main_route.notices");
+    
+    // Get newest tickets list
+	Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
+    ->name("$main_route-newest")
+    ->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
+
+	// Get complete tickets list
+    Route::get("$main_route_path/complete", 'PanicHD\PanicHD\Controllers\TicketsController@indexComplete')
+        ->name("$main_route-complete");
+
+    // Ticket data loaded by Datatables
+        Route::get("$main_route_path/data/{id?}", 'PanicHD\PanicHD\Controllers\TicketsController@data')
+        ->name("$main_route.data");
+    
+    // Search page (Blank form or with search parameters in URL)
+    Route::get("$main_route_path/search/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@search_form')
+    ->where('parameters', '(.*)')
+    ->name("$main_route.search");
+
+    // Search AJAX registering
+    Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@register_search_fields')
+        ->name("$main_route.search.register");
 
 	// Hide or show ticket to user
 	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
@@ -44,6 +42,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
        ->where('parameters', '(.*)')
        ->name("$main_route.edit");
 
+    // Ticket main resource
     $field_name = last(explode('/', $main_route_path));
     Route::resource($main_route_path, 'PanicHD\PanicHD\Controllers\TicketsController', [
         'names' => [
@@ -90,7 +89,6 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     //Ticket reopen route for permitted user.
     Route::get("$main_route_path/{id}/reopen", 'PanicHD\PanicHD\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
-    //});
 
 	// Returns permission_level for category_id
     Route::get("$main_route_path/permissionLevel/{category_id?}", [
