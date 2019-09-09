@@ -995,7 +995,7 @@ class TicketsController extends Controller
     public function register_search_fields(Request $request)
     {
 		$result = "error";
-		$message = trans('panichd::lang.searchform-validation-no-field');
+		$a_messages = $a_error_fields = [];
 		
 		// Forget last search
 		session()->forget('search_fields');
@@ -1047,34 +1047,49 @@ class TicketsController extends Controller
 				}
 				
 				if ($field == 'category_id' and $request->filled('tags_type') and in_array($request->tags_type, $this->a_search_fields_numeric_types['tags'])){
-					// Register tags type
-					$search_fields['tags_type'] = $request->tags_type;
-					$search_URL.= '/tags_type/' . $search_fields['tags_type'];
-					
-					if (!in_array($request->tags_type, ['has_not_tags', 'has_any_tag'])){
-						// Register ticket tags and add in URL
-						$search_fields['array_tags'] = $request->{'category_' . $request->category_id . '_tags'};
+					if(in_array($request->tags_type, ['has_not_tags', 'has_any_tag']) or $request->filled('category_' . $request->category_id . '_tags')){
+						// Register tags type
+						$search_fields['tags_type'] = $request->tags_type;
+						$search_URL.= '/tags_type/' . $search_fields['tags_type'];
 
-						$search_fields['tags'] = implode(',', $search_fields['array_tags']);
-
-						$search_URL.= '/tags/' . $search_fields['tags'];
-					}	
+						if (!in_array($request->tags_type, ['has_not_tags', 'has_any_tag'])){
+						
+							// Register ticket tags and add in URL
+							$search_fields['array_tags'] = $request->{'category_' . $request->category_id . '_tags'};
+	
+							$search_fields['tags'] = implode(',', $search_fields['array_tags']);
+	
+							$search_URL.= '/tags/' . $search_fields['tags'];
+						
+						}
+					}else{
+						// other tags_type and !filled
+						// Positive rules require tags
+						$a_error_fields['category_' . $request->category_id . '_tags'] = "The selected tag rule requires at least one tag selected";
+					}
 				}
 			}
 		}
 
-		if (isset($search_fields)){
+		if ($a_error_fields){
+			$a_messages = array_values($a_error_fields);
+
+		}elseif (isset($search_fields)){
 			// Store search fields in session to use in datatable
 			session(compact('search_fields'));
 
 			// Success message
 			$result = "ok";
-			$message = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
+			$a_messages[] = trans('panichd::lang.searchform-validation-success', ['num' => count($search_fields)]);
+		
+		}else{
+			$a_messages[] = trans('panichd::lang.searchform-validation-no-field');
 		}
 
         return response()->json([
 			'result' => $result,
-			'messages' => [$message],
+			'messages' => $a_messages,
+			'fields' => $a_error_fields,
 			'search_fields' => $search_fields ?? [],
 			'search_URL' => $search_URL ?? ''
 			]);
