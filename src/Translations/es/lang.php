@@ -126,6 +126,9 @@ return [
   'searchform-category-none'        => '- ninguna -',
   'searchform-agent-none'           => '- ninguno -',
 
+  'searchform-tags-rule-no-filter'  => 'No filtrar',
+  'searchform-tags-rule-has_not_tags'=> 'Sin etiquetas',
+  'searchform-tags-rule-has_any_tag'=> 'Con cualquier etiqueta',
   'searchform-tags-rule-any'        => 'Cualquiera de las escogidas',
   'searchform-tags-rule-all'        => 'Todas las escogidas',
   'searchform-tags-rule-none'       => 'Ninguna de las escogidas',

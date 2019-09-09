@@ -37,7 +37,7 @@ class TicketsController extends Controller
 	protected $a_search_fields_numeric_types = [
 		'status_id' => ['any', 'none'],
 		'priority_id' => ['any', 'none'],
-		'tags' => ['any', 'all', 'none']
+		'tags' => ['has_not_tags', 'has_any_tag', 'any', 'all', 'none']
 	];
 	protected $a_search_fields_text = ['subject', 'content', 'intervention'];
 	protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
@@ -80,7 +80,7 @@ class TicketsController extends Controller
 			}else{
 				// Filter by all specified fields
 				$search_fields = session()->get('search_fields');
-
+				
 				foreach ($search_fields as $field => $value){
 					if ($field == 'department_id'){
 						$collection->whereHas('owner', function($query)use($search_fields){
@@ -145,28 +145,38 @@ class TicketsController extends Controller
 					}
 				}
 
-				if (isset($search_fields['array_tags']) and isset($search_fields['tags_type'])){
-					if ($search_fields['tags_type'] == 'all'){
-						// All tags together
-						foreach ($search_fields['array_tags'] as $tag_id){
-							$collection->whereHas('tags', function($q1) use($tag_id){
-								$q1->where('id', $tag_id);
+				if (isset($search_fields['tags_type'])){
+					if ($search_fields['tags_type'] == 'has_not_tags'){
+						// Tickets without tags
+						$collection->whereDoesntHave('tags');
+					
+					}elseif($search_fields['tags_type'] == 'has_any_tag'){
+						// Tickets that has any tag
+						$collection->whereHas('tags');
+
+					}elseif(isset($search_fields['array_tags'])){
+						if ($search_fields['tags_type'] == 'all'){
+							// All tags together
+							foreach ($search_fields['array_tags'] as $tag_id){
+								$collection->whereHas('tags', function($q1) use($tag_id){
+									$q1->where('id', $tag_id);
+								});
+							}
+						
+						}elseif($search_fields['tags_type'] == 'none'){
+							// None of selected tags
+							foreach ($search_fields['array_tags'] as $tag_id){
+								$collection->whereDoesntHave('tags', function($q1) use($tag_id){
+									$q1->where('id', $tag_id);
+								});
+							}
+						
+						}else{
+							// Any of selected tags
+							$collection->whereHas('tags', function($q1) use($search_fields){
+								$q1->whereIn('id', $search_fields['array_tags']);
 							});
 						}
-					
-					}elseif($search_fields['tags_type'] == 'none'){
-						// None of selected tags
-						foreach ($search_fields['array_tags'] as $tag_id){
-							$collection->whereDoesntHave('tags', function($q1) use($tag_id){
-								$q1->where('id', $tag_id);
-							});
-						}
-					
-					}else{
-						// Any of selected tags
-						$collection->whereHas('tags', function($q1) use($search_fields){
-							$q1->whereIn('id', $search_fields['array_tags']);
-						});
 					}
 				}
 
@@ -1035,22 +1045,20 @@ class TicketsController extends Controller
 
 					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
 				}
-
 				
-				if ($field == 'category_id' and $request->filled('category_' . $request->category_id . '_tags')){
-					// Register ticket tags and add in URL
-					$search_fields['array_tags'] = $request->{'category_' . $request->category_id . '_tags'};
-
-					$search_fields['tags'] = implode(',', $search_fields['array_tags']);
-
-					$search_URL.= '/tags/' . $search_fields['tags'];
-
+				if ($field == 'category_id' and $request->filled('tags_type') and in_array($request->tags_type, $this->a_search_fields_numeric_types['tags'])){
 					// Register tags type
-					if ($request->filled('tags_type') and in_array($request->tags_type, $this->a_search_fields_numeric_types['tags'])){
-						$search_fields['tags_type'] = $request->tags_type;
-						$search_URL.= '/tags_type/' . $search_fields['tags_type'];
-					}
-						
+					$search_fields['tags_type'] = $request->tags_type;
+					$search_URL.= '/tags_type/' . $search_fields['tags_type'];
+					
+					if (!in_array($request->tags_type, ['has_not_tags', 'has_any_tag'])){
+						// Register ticket tags and add in URL
+						$search_fields['array_tags'] = $request->{'category_' . $request->category_id . '_tags'};
+
+						$search_fields['tags'] = implode(',', $search_fields['array_tags']);
+
+						$search_URL.= '/tags/' . $search_fields['tags'];
+					}	
 				}
 			}
 		}
