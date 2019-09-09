@@ -202,7 +202,7 @@
                 @include('panichd::tickets.partials.tags_menu', ['categories' => $a_categories, 'tag_lists' => $c_cat_tags, 'a_tags_selected' => $search_fields['array_tags'] ?? []])
             </div>
             <div class="form-text">
-                <label><input type="radio" id="tags_no_filter" name="tags_type" value="no_filter" checked="checked"> {{ trans('panichd::lang.searchform-tags-rule-no-filter') }}</label>
+                <label><input type="radio" id="tags_no_filter" name="tags_type" value="" checked="checked"> {{ trans('panichd::lang.searchform-tags-rule-no-filter') }}</label>
                 <label class="ml-2"><input type="radio" name="tags_type" value="has_not_tags" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'has_not_tags') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-has_not_tags') }}</label>
                 <label class="ml-2"><input type="radio" name="tags_type" value="has_any_tag" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'has_any_tag') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-has_any_tag') }}</label>
                 <span id="category_tags_rules" class="ml-2" @if(!isset($search_fields['category_id'])) style="display: none" @endif>
