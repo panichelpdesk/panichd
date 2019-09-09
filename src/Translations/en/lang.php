@@ -384,6 +384,9 @@ return [
    'searchform-category-none'        => '- none -',
    'searchform-agent-none'           => '- none -',
    
+   'searchform-tags-rule-no-filter'  => 'Don\'t filter',
+   'searchform-tags-rule-has_not_tags'=> 'Without tags',
+   'searchform-tags-rule-has_any_tag'=> 'With any tag',
    'searchform-tags-rule-any'        => 'Any of selected',
    'searchform-tags-rule-all'        => 'All selected',
    'searchform-tags-rule-none'       => 'None of selected',
