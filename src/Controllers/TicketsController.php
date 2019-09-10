@@ -247,7 +247,7 @@ class TicketsController extends Controller
 		
 		return response()->json([
 			'result' => 'ok',
-			'message' => $last_update->id . ',' . $last_update->updated_at
+			'message' => is_null($last_update) ? '' : $last_update->id . ',' . $last_update->updated_at
 		]);
 	}
 	
