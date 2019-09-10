@@ -61,15 +61,15 @@ class TicketsController extends Controller
 		$this->member = \PanicHDMember::findOrFail(auth()->user()->id);
 
         return parent::callAction($method, $parameters);
-    }
+	}
 	
-	// This is loaded via AJAX at file Views\index.blade.php
-    public function data($ticketList = 'active')
-    {
-		$members_table = (new \PanicHDMember)->getTable();
-
-		$datatables = app(\Yajra\Datatables\Datatables::class);
-
+	/*
+	 * Get a ticket collection with all applicable filters
+	 *
+	 * @return Collection
+	*/
+	public function getTicketCollectionFrom($ticketList)
+	{
 		$collection = Ticket::visible();
 
 		if ($ticketList == 'search'){
@@ -232,6 +232,33 @@ class TicketsController extends Controller
 		}else{
 			$collection->inList($ticketList)->filtered($ticketList);
 		}
+
+		return $collection;
+	}
+
+	/*
+	 * Get last updated ticket id and timestamp to trigger datatable reload via javascript
+	 *
+	 * @return String
+	*/
+	public function get_last_update($ticketList)
+	{
+		$last_update = $this->getTicketCollectionFrom($ticketList)->orderBy('updated_at', 'desc')->take(1)->first();
+		
+		return response()->json([
+			'result' => 'ok',
+			'message' => $last_update->id . ',' . $last_update->updated_at
+		]);
+	}
+	
+	// This is loaded via AJAX at file Views\index.blade.php
+    public function data($ticketList = 'active')
+    {
+		$members_table = (new \PanicHDMember)->getTable();
+
+		$datatables = app(\Yajra\Datatables\Datatables::class);
+
+		$collection = $this->getTicketCollectionFrom($ticketList);
 
         $collection
             ->leftJoin('users', function ($join1){

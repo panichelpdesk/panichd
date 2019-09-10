@@ -29,6 +29,10 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     Route::post("$main_route_path/search", 'PanicHD\PanicHD\Controllers\TicketsController@register_search_fields')
         ->name("$main_route.search.register");
 
+    // Check last updated ticket to trigger datatable reload
+    Route::get("$main_route_path/last_update/{ticketList}", 'PanicHD\PanicHD\Controllers\TicketsController@get_last_update')
+        ->name("$main_route.last_update");
+
 	// Hide or show ticket to user
 	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
 
