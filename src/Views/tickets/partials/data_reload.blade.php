@@ -11,7 +11,7 @@
     @section('footer')
         <script type="text/javascript">
             var last_update = "";
-            var check_secs = 5;
+            var check_secs = {{ $setting->grab('check_last_update_seconds') }};
             var check_interval = "";
             var toast_interval = "";
 
@@ -47,7 +47,10 @@
             function init_check_last_update()
             {
                 clearInterval(check_interval);
-                check_interval = setInterval(function(){ check_last_update() }, check_secs*1000);
+
+                if (check_secs != '0'){
+                    check_interval = setInterval(function(){ check_last_update() }, check_secs*1000);
+                }
             }
 
             // When a new ticket has been detected, reload 
