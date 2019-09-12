@@ -216,8 +216,8 @@ return [
   'ticket-notices-empty'             => 'There are no active notices',
 
 // Newest tickets page reload Modal
-  'page-reload-modal-countdown'      => 'This page will reload in <kbd class=":num_class"><span id="counter">:num</span></kbd> seconds.',
-  'page-reload-modal-reloading'      => 'This page is reloading... please wait',
+  'reload-countdown'                 => 'The ticket table will reload in <kbd class=":num_class"><span id="counter">:num</span></kbd> seconds.',
+  'reload-reloading'                 => 'The ticket table is reloading... please wait',
 
 // Ticket forms messages
   'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',

@@ -1,9 +1,9 @@
 @if($ticketList != 'search')
     @php
         $toast_html = '<div class="alert alert-info">'
-            . '<span id="toast_countdown">' . trans('panichd::lang.page-reload-modal-countdown', ['num' => '3', 'num_class' => 'bg-info'])
+            . '<span id="toast_countdown">' . trans('panichd::lang.reload-countdown', ['num' => '3', 'num_class' => 'bg-info'])
             . ' <button id="toast_cancel" type="button" class="btn btn-light btn-xs ml-2">' . trans('panichd::lang.btn-cancel') . '</button></span>'
-            . '<span id="toast_reloading">' . trans('panichd::lang.page-reload-modal-reloading') . '</span>'
+            . '<span id="toast_reloading">' . trans('panichd::lang.reload-reloading') . '</span>'
             . ''
             . '</div>';
     @endphp
