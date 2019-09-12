@@ -214,8 +214,8 @@ return [
   'ticket-notices-empty'             => 'No hi ha cap avís actiu',
 
 // Newest tickets page reload Modal
-  'page-reload-modal-countdown'      => 'Aquesta pàgina es recarregarà en <kbd class=":num_class"><span id="counter">:num</span></kbd> segons.',
-  'page-reload-modal-reloading'      => 'Aquesta pàgina està recarregant... si us plau, espera',
+  'reload-countdown'                 => 'La llista de tiquets es recarregarà en <kbd class=":num_class"><span id="counter">:num</span></kbd> segons.',
+  'reload-reloading'                 => 'La llista de tiquets està recarregant... si us plau, espera',
 
 // Ticket forms messages
   'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',

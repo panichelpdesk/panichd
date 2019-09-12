@@ -82,6 +82,10 @@ return [
   'index-create-new-ticket'          => 'crear un tique nuevo',
   'index-complete-check'             => 'Asegúrate de revisar los Tiques Completados si no puedes encontrar el tique.',
 
+  // Newest tickets page reload Modal
+  'reload-countdown'                 => 'La lista de tiques se recargará en <kbd class=":num_class"><span id="counter">:num</span></kbd> segundos.',
+  'reload-reloading'                 => 'La lista de tiques está recargando... por favor, espere',
+
   'create-new-ticket'                => 'Crear Nuevo Tique',
   'create-ticket-brief-issue'        => 'Un resumen del problema que tienes',
   'create-ticket-describe-issue'     => 'Describe en detalle el problema que tienes',
