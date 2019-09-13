@@ -243,12 +243,22 @@ class TicketsController extends Controller
 	*/
 	public function get_last_update($ticketList)
 	{
-		$last_update = $this->getTicketCollectionFrom($ticketList)->orderBy('updated_at', 'desc')->take(1)->first();
-		
 		return response()->json([
 			'result' => 'ok',
-			'message' => is_null($last_update) ? '' : $last_update->id . ',' . $last_update->updated_at
+			'message' => $this->last_update_string($ticketList)
 		]);
+	}
+
+	/*
+	 * Get last update ticket string from specified list
+	 *
+	 * @return String
+	*/
+	public function last_update_string($ticketList)
+	{
+		$last_update = $this->getTicketCollectionFrom($ticketList)->orderBy('updated_at', 'desc')->take(1)->first();
+		
+		return is_null($last_update) ? '' : $last_update->id . ',' . $last_update->updated_at;
 	}
 	
 	// This is loaded via AJAX at file Views\index.blade.php
