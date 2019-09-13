@@ -2311,10 +2311,15 @@ class TicketsController extends Controller
 	}
 
 	/*
-	 * Change agent in ticket list
+	 * AJAX agent change in ticket list
+	 * 
+	 * @return Response
 	*/
 	public function changeAgent(Request $request)
   {
+		$result = "error";
+		$message = "";
+	
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
@@ -2324,11 +2329,11 @@ class TicketsController extends Controller
       $new_agent = clone $old_agent;
 
 		if (!$request->input('status_checkbox') != "" and (is_null($new_agent) || $ticket->agent_id == $request->input('agent_id'))){
-			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
+			$message = trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
-			]));
+			]);
 		}
 
 		$ticket->agent_id =  $new_agent->id;
@@ -2345,15 +2350,21 @@ class TicketsController extends Controller
 		$ticket->save();
 		event(new TicketUpdated($original_ticket, $ticket));
 
-		session()->flash('status', trans('panichd::lang.update-agent-ok', [
-			'name' => '#'.$ticket->id.' '.$ticket->subject,
-			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-			'title' => trans('panichd::lang.ticket-status-link-title'),
-			'old_agent' => $old_agent->name,
-			'new_agent' => $new_agent->name
-		]));
+		if (!$message){
+			$result = "ok";
+			$message = trans('panichd::lang.update-agent-ok', [
+				'new_agent' => $new_agent->name,
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		}
 
-		return redirect()->route(Setting::grab('main_route') . ($ticket->isComplete() ? '-complete' : ($old_status_id == Setting::grab('default_status_id') ? '-newest' : '.index')));
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string($request->ticketList)
+		]);
 	}
 
 	/*

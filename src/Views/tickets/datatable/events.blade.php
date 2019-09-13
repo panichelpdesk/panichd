@@ -1,7 +1,6 @@
 <script>
 $(function(){
-    // Ticket List: Change ticket agent
-	$('#tickets-table').on('draw.dt', function(e){
+    $('#tickets-table').on('draw.dt', function(e){
 
 	    // Plus / less buttons for text fields
         $('.jquery_ticket_text_toggle').click(function(e){
@@ -74,6 +73,34 @@ $(function(){
 
 			// Form submit
 			$('#modalAgentChange').find('form').submit();
+		});
+
+		// Make AJAX send from modalAgentChange form submit
+		$(document).on('submit', '#modalAgentChange form', function(e){
+			e.preventDefault();
+
+			var form = $(this);
+			var Form_Data = new FormData(form[0]);
+
+			// Append existent last_update value
+			Form_Data.append('ticketList', '{{ $ticketList }}');
+
+			$.ajax({
+				processData: false,
+				contentType: false,
+				type: "POST",
+				url: form.prop('action'),
+				data: Form_Data,
+
+				success: function( response ) {
+					$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
+					$('#bottom_toast').addClass('show');
+					if (response.result == 'ok'){
+						
+					}
+                }
+			});
+
 		});
 
 		// Agent change: Popover menu submit

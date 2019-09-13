@@ -9,7 +9,7 @@
 		<div class="modal-body">
 		{!! CollectiveForm::open([
 			'route' => [$setting->grab('main_route').'-change.agent'],
-			'method' => 'PATCH'
+			'method' => 'POST'
 		]) !!}
 		{!! CollectiveForm::hidden('ticket_id', '',['id'=>'agent_ticket_id_field'] ) !!}
 		@foreach ($a_cat_agents as $category)

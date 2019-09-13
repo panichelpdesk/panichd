@@ -101,7 +101,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     ]);
 
 	// Ticket list: Change agent for a ticket
-	Route::patch("$main_route_path-change.agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
+	Route::POST("$main_route_path-change.agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
 		->name("$main_route-change.agent");
 
 	// Ticket list: Change priority for a ticket
