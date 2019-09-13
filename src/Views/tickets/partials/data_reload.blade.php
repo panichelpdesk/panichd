@@ -1,4 +1,4 @@
-@if($ticketList != 'search')
+@if($u->isAgent() && $ticketList != 'search')
     @php
         $toast_html = '<div class="alert alert-info">'
             . '<span id="toast_countdown">' . trans('panichd::lang.reload-countdown', ['num' => '3', 'num_class' => 'bg-info'])
