@@ -24,7 +24,7 @@
                             }else{
                                 if(response.message != last_update){
                                     // New ticket update
-                                    show_bottom_toast(response.message);
+                                    show_last_update_toast(response.message);
                                 
                                 }else{
                                     // Restart check interval
@@ -46,7 +46,7 @@
             }
 
             // When a new ticket has been detected, reload 
-            function show_bottom_toast(new_message)
+            function show_last_update_toast(new_message)
             {
                 clearInterval(check_interval);
                 clearInterval(toast_interval);
@@ -87,6 +87,9 @@
 
                         // Restart check interval
                         init_check_last_update();
+
+                        // Hide any existent popover
+                        $(".jquery_popover").popover('hide');
 
                         // Reload datatable
                         datatable.ajax.reload();
