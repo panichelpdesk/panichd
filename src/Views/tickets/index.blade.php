@@ -35,10 +35,11 @@
 		@include('panichd::tickets.partials.priority_popover_form')
 	@stop
 
+	@include('panichd::tickets.partials.data_reload')
+
 	@section('footer')
 		@include('panichd::tickets.datatable.loader')
 		@include('panichd::tickets.datatable.events')
 	@append
 @endif
 
-@include('panichd::tickets.partials.data_reload')

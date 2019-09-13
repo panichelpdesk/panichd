@@ -1,13 +1,5 @@
 @if($u->isAgent())
-    @php
-        $toast_html = '<div class="alert alert-info">'
-            . '<span id="toast_countdown">' . trans('panichd::lang.reload-countdown', ['num' => '3', 'num_class' => 'bg-info'])
-            . ' <button id="toast_cancel" type="button" class="btn btn-light btn-xs ml-2">' . trans('panichd::lang.btn-cancel') . '</button></span>'
-            . '<span id="toast_reloading">' . trans('panichd::lang.reload-reloading') . '</span>'
-            . ''
-            . '</div>';
-    @endphp
-    @include('panichd::shared.bottom_toast', ['toast_html' => $toast_html])
+    @include('panichd::shared.bottom_toast')
     @section('footer')
         <script type="text/javascript">
             var last_update = "";
@@ -62,6 +54,12 @@
                 var reload_secs = 6;
 
                 // Show bottom toast
+                $('#bottom_toast').empty().append('<div class="alert alert-info">'
+                    + '<span id="toast_countdown">{!! trans('panichd::lang.reload-countdown', ['num' => '3', 'num_class' => 'bg-info']) !!}'
+                    + ' <button id="toast_cancel" type="button" class="btn btn-light btn-xs ml-2">{{ trans('panichd::lang.btn-cancel') }}</button></span>'
+                    + '<span id="toast_reloading">{{ trans('panichd::lang.reload-reloading') }}</span>'
+                    + '</div>');
+                
                 $('#toast_countdown #counter').text(reload_secs-3);
                 $('#toast_countdown').show();
                 $('#toast_reloading').hide();

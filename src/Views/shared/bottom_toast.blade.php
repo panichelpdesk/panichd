@@ -48,5 +48,5 @@
 @append
 
 @section('footer')
-    <div id="bottom_toast">{!! $toast_html !!}</div>
+    <div id="bottom_toast">@if(isset($toast_html)){!! $toast_html !!}@endif</div>
 @append
