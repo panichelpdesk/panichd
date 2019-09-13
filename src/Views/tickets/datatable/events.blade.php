@@ -95,47 +95,63 @@ $(function(){
 				data: Form_Data,
 
 				success: function( response ) {
-					// Show bottom message
-					$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
-					$('#bottom_toast').addClass('show');
-					
-					// If datatable needs a reload
-					if (last_update != response.last_update){
-						// Apply new last update refference
-                        last_update = response.last_update;
-
-                        // Hide any existent popover
-                        $(".jquery_popover").popover('hide');
-
-                        // Reload datatable
-                        datatable.ajax.reload();
-					}
-
-					// Restart check interval
-					init_check_last_update();
-
-					// Hide bottom message
-					setInterval(function(){ $('#bottom_toast').removeClass('show'); }, 2000);
+					popover_success(response);
                 }
 			});
 
 		});
 
-		// Agent change: Popover menu submit
-		$(document).on('click','.submit_priority_popover',function(e){
+		// Priority change: Popover menu submit
+		$(document).off('click', '.submit_priority_popover');
+		$(document).on('click', '.submit_priority_popover', function(e){
 			e.preventDefault();
 
-			// Form fields
-			$('#PriorityPopoverForm #priority_ticket_id_field').val($(this).attr('data-ticket-id'));
-			var priority_val = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
-			$('#PriorityPopoverForm #priority_id_field').val(priority_val);
+			$.ajax({
+				type: "POST",
+				url: "{{ route($setting->grab('main_route').'-change.priority') }}",
+				data: {
+					_token: "{{ csrf_token() }}",
+					ticket_id: $(this).attr('data-ticket-id'),
+					priority_id: $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val(),
+					ticketList: '{{ $ticketList }}'
+				},
 
-			// Form submit
-			$('#PriorityPopoverForm').find('form').submit();
-
+				success: function( response ) {
+					popover_success(response);
+                }
+			});
 		});
 
-		// Agent change: Tooltip for 1 agents
+
+		/*
+		 * Common AJAX success response for ticket changes within datatable
+		*/
+		function popover_success(response)
+		{
+			// Show bottom message
+			$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
+			$('#bottom_toast').addClass('show');
+			
+			// If datatable needs a reload
+			if (last_update != response.last_update){
+				// Apply new last update refference
+				last_update = response.last_update;
+
+				// Hide any existent popover
+				$(".jquery_popover").popover('hide');
+
+				// Reload datatable
+				datatable.ajax.reload();
+			}
+
+			// Restart check interval
+			init_check_last_update();
+
+			// Hide bottom message
+			setInterval(function(){ $('#bottom_toast').removeClass('show'); }, 2000);
+		}
+
+		// Agent: Tooltip when there is only 1 agents
 		$(".tooltip-info").tooltip();
 	});
 
