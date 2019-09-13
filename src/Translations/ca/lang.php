@@ -219,9 +219,9 @@ return [
 
 // Ticket forms messages
   'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
-  'update-agent-ok'                  => 'Agent canviat correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-agent-ok'                  => 'Agent canviat a ":new_agent" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-same'             => 'No has canviat la prioritat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
-  'update-priority-ok'               => 'Prioritat canviada correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
+  'update-priority-ok'               => 'Prioritat canviada a ":new" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
 
 // tickets/create
   'create-new-ticket'                => 'Crear Nou Tiquet',

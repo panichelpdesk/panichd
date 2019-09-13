@@ -221,9 +221,9 @@ return [
 
 // Ticket forms messages
   'update-agent-same'                => 'Agent was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
-  'update-agent-ok'                  => 'Agent was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-agent-ok'                  => 'Agent updated to ":new_agent" on ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-same'             => 'Priority was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
-  'update-priority-ok'               => 'Priority was correctly updated. Ticket <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
+  'update-priority-ok'               => 'Priority updated to ":new" in ticket <a href=":link" title=":title"><u>:name</u></a>',
 
 // tickets/create
   'create-new-ticket'                => 'Create New Ticket',
