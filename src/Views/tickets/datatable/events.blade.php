@@ -93,11 +93,27 @@ $(function(){
 				data: Form_Data,
 
 				success: function( response ) {
+					// Show bottom message
 					$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
 					$('#bottom_toast').addClass('show');
-					if (response.result == 'ok'){
-						
+					
+					// If datatable needs a reload
+					if (last_update != response.last_update){
+						// Apply new last update refference
+                        last_update = response.last_update;
+
+                        // Hide any existent popover
+                        $(".jquery_popover").popover('hide');
+
+                        // Reload datatable
+                        datatable.ajax.reload();
 					}
+
+					// Restart check interval
+					init_check_last_update();
+
+					// Hide bottom message
+					setInterval(function(){ $('#bottom_toast').removeClass('show'); }, 2000);
                 }
 			});
 
