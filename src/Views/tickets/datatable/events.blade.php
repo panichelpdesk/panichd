@@ -60,6 +60,7 @@ $(function(){
 		});
 
 		// Agent change: Popover menu submit
+		$(document).off('click','.submit_agent_popover');
 		$(document).on('click','.submit_agent_popover',function(e){
 			e.preventDefault();
 
@@ -76,6 +77,7 @@ $(function(){
 		});
 
 		// Make AJAX send from modalAgentChange form submit
+		$(document).off('submit', '#modalAgentChange form');
 		$(document).on('submit', '#modalAgentChange form', function(e){
 			e.preventDefault();
 
