@@ -99,8 +99,8 @@
             }
 
             $(function(){
-                // Init check interval
-                init_check_last_update();
+                // Get last update first value
+                check_last_update();
 
                 $('#toast_cancel').click( function () {
                     // Clear countdown
