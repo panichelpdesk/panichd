@@ -2371,16 +2371,19 @@ class TicketsController extends Controller
 	 * Change priority in ticket list
 	*/
 	public function changePriority(Request $request){
+		$result = "error";
+		$message = "";
+		
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$old_priority = $ticket->priority()->first();
 		$new_priority = Models\Priority::find($request->input('priority_id'));
 
 		if (is_null($new_priority) || $ticket->priority_id==$request->input('priority_id')){
-			return redirect()->back()->with('warning', trans('panichd::lang.update-priority-same', [
+			$message = trans('panichd::lang.update-priority-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
-			]));
+			]);
 		}
 
 		$ticket->priority_id = $request->input('priority_id');
@@ -2392,15 +2395,21 @@ class TicketsController extends Controller
 
 		$ticket->save();
 
-		session()->flash('status', trans('panichd::lang.update-priority-ok', [
-			'name' => '#'.$ticket->id.' '.$ticket->subject,
-			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-			'title' => trans('panichd::lang.ticket-status-link-title'),
-			'old' => $old_priority->name,
-			'new' => $new_priority->name
-		]));
+		if (!$message){
+			$result = "ok";
+			$message = trans('panichd::lang.update-priority-ok', [
+				'new' => $new_priority->name,
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		}
 
-		return redirect()->route(Setting::grab('main_route') . ($ticket->isComplete() ? '-complete' : ($ticket->status_id == Setting::grab('default_status_id') ? '-newest' : '.index')));
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string($request->ticketList)
+		]);
 	}
 
 	/**
