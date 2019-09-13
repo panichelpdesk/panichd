@@ -22,6 +22,8 @@
 
 @include('panichd::shared.datetimepicker')
 
+@include('panichd::tickets.partials.data_reload')
+
 @section('footer')
     @include('panichd::tickets.datatable.loader')
     @include('panichd::tickets.datatable.events')
