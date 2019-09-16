@@ -18,6 +18,7 @@
             @include('panichd::tickets.datatable.header')
         </div>
     </div>
+    @include('panichd::tickets.partials.modal_agent')
 @endsection
 
 @include('panichd::shared.datetimepicker')

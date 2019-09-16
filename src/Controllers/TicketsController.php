@@ -1021,6 +1021,8 @@ class TicketsController extends Controller
 			$data['c_departments'] = Department::whereNull('department_id')->with('descendants.ancestor')->orderBy('name', 'asc')->get();
 		}
 
+		$data['a_cat_agents'] = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
+
 		return $data;
 	}
 
