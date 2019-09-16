@@ -132,16 +132,17 @@ $(function(){
 			$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
 			$('#bottom_toast').addClass('show');
 			
-			// If datatable needs a reload
-			if (last_update != response.last_update){
-				// Apply new last update refference
-				last_update = response.last_update;
-
+			if(response.result == 'ok'){
 				// Hide any existent popover
 				$(".jquery_popover").popover('hide');
+			}
 
+			if(response.result == 'ok' || last_update != response.last_update){
 				// Reload datatable
 				datatable.ajax.reload();
+
+				// Apply new last update refference
+				last_update = response.last_update;
 			}
 
 			// Restart check interval
