@@ -95,7 +95,7 @@ $(function(){
 				data: Form_Data,
 
 				success: function( response ) {
-					popover_success(response);
+					success_popover(response);
                 }
 			});
 
@@ -117,7 +117,7 @@ $(function(){
 				},
 
 				success: function( response ) {
-					popover_success(response);
+					success_popover(response);
                 }
 			});
 		});
@@ -126,7 +126,7 @@ $(function(){
 		/*
 		 * Common AJAX success response for ticket changes within datatable
 		*/
-		function popover_success(response)
+		function success_popover(response)
 		{
 			// Show bottom message
 			$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
@@ -148,7 +148,9 @@ $(function(){
 			init_check_last_update();
 
 			// Hide bottom message
-			setInterval(function(){ $('#bottom_toast').removeClass('show'); }, 2000);
+			setTimeout(function(){
+				$('#bottom_toast').removeClass('show');
+			}, 2000);
 		}
 
 		// Agent: Tooltip when there is only 1 agents
