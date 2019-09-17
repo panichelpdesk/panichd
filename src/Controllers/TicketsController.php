@@ -2377,25 +2377,26 @@ class TicketsController extends Controller
 		$message = "";
 		
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
-		$old_priority = $ticket->priority()->first();
-		$new_priority = Models\Priority::find($request->input('priority_id'));
+		$original_ticket = clone $ticket;
 
-		if (is_null($new_priority) || $ticket->priority_id==$request->input('priority_id')){
+		if (!$request->filled('priority_id') || is_null($new_priority = Models\Priority::find($request->input('priority_id'))) || $ticket->priority_id==$request->input('priority_id')){
 			$message = trans('panichd::lang.update-priority-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
 			]);
+		
+		}else{
+			$ticket->priority_id = $request->input('priority_id');
+
+			if ($ticket->agent_id != $this->member->id){
+				// Ticket will be unread for assigned agent
+				$ticket->read_by_agent = 0;
+			}
+	
+			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
 		}
-
-		$ticket->priority_id = $request->input('priority_id');
-
-		if ($ticket->agent_id != $this->member->id){
-			// Ticket will be unread for assigned agent
-			$ticket->read_by_agent = 0;
-		}
-
-		$ticket->save();
 
 		if (!$message){
 			$result = "ok";
