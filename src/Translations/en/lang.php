@@ -60,8 +60,9 @@ return [
   'table-one-agent'                  => 'There is one agent in this category',
   'table-agent-status-check'         => 'Change status to ":status"',
 
-  // Priority related
+  // list AJAX changes
   'table-change-priority'            => 'Change priority',
+  'table-change-status'              => 'Change status',
 
   // Datatables
   'table-decimal'                    => '',
@@ -224,6 +225,9 @@ return [
   'update-agent-ok'                  => 'Agent updated to ":new_agent" on ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-same'             => 'Priority was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-ok'               => 'Priority updated to ":new" in ticket <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-same'               => 'Status was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-ok'                 => 'Status updated to ":new" in ticket <a href=":link" title=":title"><u>:name</u></a>',
+  
 
 // tickets/create
   'create-new-ticket'                => 'Create New Ticket',
