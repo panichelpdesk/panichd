@@ -101,20 +101,27 @@ $(function(){
 
 		});
 
-		// Priority change: Popover menu submit
-		$(document).off('click', '.submit_priority_popover');
-		$(document).on('click', '.submit_priority_popover', function(e){
+		// Popover submit (Priority)
+		$(document).off('click', '.popover_submit');
+		$(document).on('click', '.popover_submit', function(e){
 			e.preventDefault();
+
+			var URL = "{{ route($setting->grab('main_route').'.ajax.priority') }}";
+
+			var ajax_data = {
+				_token: "{{ csrf_token() }}",
+				ticket_id: $(this).attr('data-ticket-id'),
+				ticketList: '{{ $ticketList }}'
+			};
+
+			if ($(this).attr('data-field') == 'priority'){
+				ajax_data.priority_id = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
+			}
 
 			$.ajax({
 				type: "POST",
-				url: "{{ route($setting->grab('main_route').'.ajax.priority') }}",
-				data: {
-					_token: "{{ csrf_token() }}",
-					ticket_id: $(this).attr('data-ticket-id'),
-					priority_id: $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val(),
-					ticketList: '{{ $ticketList }}'
-				},
+				url: URL,
+				data: ajax_data,
 
 				success: function( response ) {
 					success_popover(response);

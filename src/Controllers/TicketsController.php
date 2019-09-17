@@ -554,7 +554,7 @@ class TicketsController extends Controller
 			}
 
 			$html = '<div>'.$html.'</div><br />'
-				.'<button type="button" class="btn btn-default btn-sm submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
+				.'<button type="button" class="btn btn-default btn-sm popover_submit" data-field="priority" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
 
             return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
 				.e('<button type="button" class="float-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
