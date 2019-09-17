@@ -48,7 +48,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'hide']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'changeStatus', 'hide']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware', ['only' => ['search_form', 'register_search_fields']]);
 
@@ -61,15 +61,15 @@ class TicketsController extends Controller
 		$this->member = \PanicHDMember::findOrFail(auth()->user()->id);
 
         return parent::callAction($method, $parameters);
-    }
+	}
 	
-	// This is loaded via AJAX at file Views\index.blade.php
-    public function data($ticketList = 'active')
-    {
-		$members_table = (new \PanicHDMember)->getTable();
-
-		$datatables = app(\Yajra\Datatables\Datatables::class);
-
+	/*
+	 * Get a ticket collection with all applicable filters
+	 *
+	 * @return Collection
+	*/
+	public function getTicketCollectionFrom($ticketList)
+	{
 		$collection = Ticket::visible();
 
 		if ($ticketList == 'search'){
@@ -232,6 +232,43 @@ class TicketsController extends Controller
 		}else{
 			$collection->inList($ticketList)->filtered($ticketList);
 		}
+
+		return $collection;
+	}
+
+	/*
+	 * Get last updated ticket id and timestamp to trigger datatable reload via javascript
+	 *
+	 * @return String
+	*/
+	public function get_last_update($ticketList)
+	{
+		return response()->json([
+			'result' => 'ok',
+			'message' => $this->last_update_string($ticketList)
+		]);
+	}
+
+	/*
+	 * Get last update ticket string from specified list
+	 *
+	 * @return String
+	*/
+	public function last_update_string($ticketList)
+	{
+		$last_update = $this->getTicketCollectionFrom($ticketList)->orderBy('updated_at', 'desc')->take(1)->first();
+		
+		return is_null($last_update) ? '' : $last_update->id . ',' . $last_update->updated_at;
+	}
+	
+	// This is loaded via AJAX at file Views\index.blade.php
+    public function data($ticketList = 'active')
+    {
+		$members_table = (new \PanicHDMember)->getTable();
+
+		$datatables = app(\Yajra\Datatables\Datatables::class);
+
+		$collection = $this->getTicketCollectionFrom($ticketList);
 
         $collection
             ->leftJoin('users', function ($join1){
@@ -449,11 +486,20 @@ class TicketsController extends Controller
 			return $field;
 		});
 
-        $collection->editColumn('status', function ($ticket) {
-            $color = $ticket->color_status;
-            $status = e($ticket->status);
+		$a_statuses = Models\Status::orderBy('name', 'asc')->get();
 
-            return "<div style='color: $color'>$status</div>";
+        $collection->editColumn('status', function ($ticket) use($a_statuses) {
+			$html = "";
+			foreach ($a_statuses as $status){
+				$html.= '<label style="color: '.$status->color.'"><input type="radio" name="'.$ticket->id.'_status" value="'.$status->id.'"> '.$status->name.'</label><br />';
+			}
+
+			$html = '<div>'.$html.'</div><br />'
+				.'<button type="button" class="btn btn-default btn-sm popover_submit" data-field="status" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
+
+            return '<a href="#Status" style="color: '.$ticket->color_status.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
+				.e('<button type="button" class="float-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
+				.trans('panichd::lang.table-change-status').'" data-content="'.e($html).'">'.e($ticket->status).'</a>';
         });
 
 		// Agents for each category
@@ -517,7 +563,7 @@ class TicketsController extends Controller
 			}
 
 			$html = '<div>'.$html.'</div><br />'
-				.'<button type="button" class="btn btn-default btn-sm submit_priority_popover" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
+				.'<button type="button" class="btn btn-default btn-sm popover_submit" data-field="priority" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
 
             return '<a href="#Priority" style="color: '.$ticket->color_priority.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
 				.e('<button type="button" class="float-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
@@ -983,6 +1029,8 @@ class TicketsController extends Controller
 		if (Setting::grab('departments_feature')){
 			$data['c_departments'] = Department::whereNull('department_id')->with('descendants.ancestor')->orderBy('name', 'asc')->get();
 		}
+
+		$data['a_cat_agents'] = Category::with(['agents'=>function($q){$q->select('id','name');}])->select('id','name')->get();
 
 		return $data;
 	}
@@ -2274,10 +2322,15 @@ class TicketsController extends Controller
 	}
 
 	/*
-	 * Change agent in ticket list
+	 * AJAX agent change in ticket list
+	 * 
+	 * @return Response
 	*/
 	public function changeAgent(Request $request)
   {
+		$result = "error";
+		$message = "";
+	
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
@@ -2287,11 +2340,11 @@ class TicketsController extends Controller
       $new_agent = clone $old_agent;
 
 		if (!$request->input('status_checkbox') != "" and (is_null($new_agent) || $ticket->agent_id == $request->input('agent_id'))){
-			return redirect()->back()->with('warning', trans('panichd::lang.update-agent-same', [
+			$message = trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
-			]));
+			]);
 		}
 
 		$ticket->agent_id =  $new_agent->id;
@@ -2308,51 +2361,113 @@ class TicketsController extends Controller
 		$ticket->save();
 		event(new TicketUpdated($original_ticket, $ticket));
 
-		session()->flash('status', trans('panichd::lang.update-agent-ok', [
-			'name' => '#'.$ticket->id.' '.$ticket->subject,
-			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-			'title' => trans('panichd::lang.ticket-status-link-title'),
-			'old_agent' => $old_agent->name,
-			'new_agent' => $new_agent->name
-		]));
+		if (!$message){
+			$result = "ok";
+			$message = trans('panichd::lang.update-agent-ok', [
+				'new_agent' => $new_agent->name,
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		}
 
-		return redirect()->route(Setting::grab('main_route') . ($ticket->isComplete() ? '-complete' : ($old_status_id == Setting::grab('default_status_id') ? '-newest' : '.index')));
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string($request->ticketList)
+		]);
 	}
 
 	/*
 	 * Change priority in ticket list
 	*/
 	public function changePriority(Request $request){
+		$result = "error";
+		$message = "";
+		
 		$ticket = Ticket::findOrFail($request->input('ticket_id'));
-		$old_priority = $ticket->priority()->first();
-		$new_priority = Models\Priority::find($request->input('priority_id'));
+		$original_ticket = clone $ticket;
 
-		if (is_null($new_priority) || $ticket->priority_id==$request->input('priority_id')){
-			return redirect()->back()->with('warning', trans('panichd::lang.update-priority-same', [
+		if (!$request->filled('priority_id') || is_null($new_priority = Models\Priority::find($request->input('priority_id'))) || $ticket->priority_id==$request->input('priority_id')){
+			$message = trans('panichd::lang.update-priority-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
-			]));
+			]);
+		
+		}else{
+			$ticket->priority_id = $request->input('priority_id');
+
+			if ($ticket->agent_id != $this->member->id){
+				// Ticket will be unread for assigned agent
+				$ticket->read_by_agent = 0;
+			}
+	
+			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
 		}
 
-		$ticket->priority_id = $request->input('priority_id');
-
-		if ($ticket->agent_id != $this->member->id){
-			// Ticket will be unread for assigned agent
-			$ticket->read_by_agent = 0;
+		if (!$message){
+			$result = "ok";
+			$message = trans('panichd::lang.update-priority-ok', [
+				'new' => $new_priority->name,
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
 		}
 
-		$ticket->save();
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string($request->ticketList)
+		]);
+	}
 
-		session()->flash('status', trans('panichd::lang.update-priority-ok', [
-			'name' => '#'.$ticket->id.' '.$ticket->subject,
-			'link' => route(Setting::grab('main_route').'.show', $ticket->id),
-			'title' => trans('panichd::lang.ticket-status-link-title'),
-			'old' => $old_priority->name,
-			'new' => $new_priority->name
-		]));
+	/*
+	 * Change status in ticket list
+	*/
+	public function changeStatus(Request $request){
+		$result = "error";
+		$message = "";
+		
+		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$original_ticket = clone $ticket;
 
-		return redirect()->route(Setting::grab('main_route') . ($ticket->isComplete() ? '-complete' : ($ticket->status_id == Setting::grab('default_status_id') ? '-newest' : '.index')));
+		if (!$request->filled('status_id') || is_null($new_status = Models\Status::find($request->input('status_id'))) || $ticket->status_id == $request->input('status_id')){
+			$message = trans('panichd::lang.update-status-same', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		
+		}else{
+			$ticket->status_id = $request->input('status_id');
+
+			if ($ticket->agent_id != $this->member->id){
+				// Ticket will be unread for assigned agent
+				$ticket->read_by_agent = 0;
+			}
+	
+			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
+		}
+
+		if (!$message){
+			$result = "ok";
+			$message = trans('panichd::lang.update-status-ok', [
+				'new' => $new_status->name,
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		}
+
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string($request->ticketList)
+		]);
 	}
 
 	/**

@@ -1,7 +1,6 @@
 <script>
 $(function(){
-    // Ticket List: Change ticket agent
-	$('#tickets-table').on('draw.dt', function(e){
+    $('#tickets-table').on('draw.dt', function(e){
 
 	    // Plus / less buttons for text fields
         $('.jquery_ticket_text_toggle').click(function(e){
@@ -61,6 +60,7 @@ $(function(){
 		});
 
 		// Agent change: Popover menu submit
+		$(document).off('click','.submit_agent_popover');
 		$(document).on('click','.submit_agent_popover',function(e){
 			e.preventDefault();
 
@@ -76,21 +76,96 @@ $(function(){
 			$('#modalAgentChange').find('form').submit();
 		});
 
-		// Agent change: Popover menu submit
-		$(document).on('click','.submit_priority_popover',function(e){
+		// Make AJAX send from modalAgentChange form submit
+		$(document).off('submit', '#modalAgentChange form');
+		$(document).on('submit', '#modalAgentChange form', function(e){
 			e.preventDefault();
 
-			// Form fields
-			$('#PriorityPopoverForm #priority_ticket_id_field').val($(this).attr('data-ticket-id'));
-			var priority_val = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
-			$('#PriorityPopoverForm #priority_id_field').val(priority_val);
+			var form = $(this);
+			var Form_Data = new FormData(form[0]);
 
-			// Form submit
-			$('#PriorityPopoverForm').find('form').submit();
+			// Append existent last_update value
+			Form_Data.append('ticketList', '{{ $ticketList }}');
+
+			$.ajax({
+				processData: false,
+				contentType: false,
+				type: "POST",
+				url: form.prop('action'),
+				data: Form_Data,
+
+				success: function( response ) {
+					success_popover(response);
+                }
+			});
 
 		});
 
-		// Agent change: Tooltip for 1 agents
+		// Popover submit (Priority or Status)
+		$(document).off('click', '.popover_submit');
+		$(document).on('click', '.popover_submit', function(e){
+			e.preventDefault();
+
+			var priority_URL = "{{ route($setting->grab('main_route').'.ajax.priority') }}";
+			var status_URL = "{{ route($setting->grab('main_route').'.ajax.status') }}";
+
+			var ajax_data = {
+				_token: "{{ csrf_token() }}",
+				ticket_id: $(this).attr('data-ticket-id'),
+				ticketList: '{{ $ticketList }}'
+			};
+
+			if ($(this).attr('data-field') == 'priority'){
+				ajax_data.priority_id = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
+			
+			}else if ($(this).attr('data-field') == 'status'){
+				ajax_data.status_id = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_status]:checked').val();
+			}
+
+			$.ajax({
+				type: "POST",
+				url: $(this).attr('data-field') == 'priority' ? priority_URL : status_URL,
+				data: ajax_data,
+
+				success: function( response ) {
+					success_popover(response);
+                }
+			});
+		});
+
+
+		/*
+		 * Common AJAX success response for ticket changes within datatable
+		*/
+		function success_popover(response)
+		{
+			// Show bottom message
+			$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
+			$('#bottom_toast').addClass('show');
+			
+			if(response.result == 'ok'){
+				// Hide any existent popover
+				$(".jquery_popover").popover('hide');
+			}
+
+			if(response.result == 'ok' || last_update != response.last_update){
+				// Reload datatable
+				datatable.ajax.reload();
+
+				// Apply new last update refference
+				last_update = response.last_update;
+			}
+
+			// Restart check interval
+			init_check_last_update();
+
+			// Hide bottom message
+			setTimeout(function(){
+				$('#bottom_toast').removeClass('show');
+			}, 2000);
+		}
+
+		// Agent: Tooltip when there is only 1 agents
 		$(".tooltip-info").tooltip();
 	});
 

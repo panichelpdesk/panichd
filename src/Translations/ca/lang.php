@@ -60,8 +60,9 @@ return [
   'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
   'table-agent-status-check'         => 'Canviar estat a ":status"',
 
-  // Priority related
+  // Canvis AJAX a la llista
   'table-change-priority'            => 'Canviar la prioritat',
+  'table-change-status'              => 'Canviar l\'estat',
 
   // Datatables
   'table-decimal'                    => '',
@@ -214,14 +215,16 @@ return [
   'ticket-notices-empty'             => 'No hi ha cap avís actiu',
 
 // Newest tickets page reload Modal
-  'page-reload-modal-countdown'      => 'Aquesta pàgina es recarregarà en <kbd class=":num_class"><span id="counter">:num</span></kbd> segons.',
-  'page-reload-modal-reloading'      => 'Aquesta pàgina està recarregant... si us plau, espera',
+  'reload-countdown'                 => 'La llista de tiquets es recarregarà en <kbd class=":num_class"><span id="counter">:num</span></kbd> segons.',
+  'reload-reloading'                 => 'La llista de tiquets està recarregant... si us plau, espera',
 
 // Ticket forms messages
   'update-agent-same'                => 'No has canviat l\'agent! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
-  'update-agent-ok'                  => 'Agent canviat correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old_agent -> :new_agent',
+  'update-agent-ok'                  => 'Agent canviat a ":new_agent" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-same'             => 'No has canviat la prioritat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
-  'update-priority-ok'               => 'Prioritat canviada correctament. Tiquet <a href=":link" title=":title"><u>:name</u></a>: :old -> :new',
+  'update-priority-ok'               => 'Prioritat canviada a ":new" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-same'               => 'No has canviat l\'estat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-ok'                 => 'Estat canviat a ":new" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
 
 // tickets/create
   'create-new-ticket'                => 'Crear Nou Tiquet',
