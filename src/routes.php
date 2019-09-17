@@ -101,12 +101,12 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     ]);
 
 	// Ticket list: Change agent for a ticket
-	Route::POST("$main_route_path-change.agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
-		->name("$main_route-change.agent");
+	Route::POST("$main_route_path/ajax/agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
+		->name("$main_route.ajax.agent");
 
 	// Ticket list: Change priority for a ticket
-	Route::POST("$main_route_path-change.priority", 'PanicHD\PanicHD\Controllers\TicketsController@changePriority')
-		->name("$main_route-change.priority");
+	Route::POST("$main_route_path/ajax/priority", 'PanicHD\PanicHD\Controllers\TicketsController@changePriority')
+		->name("$main_route.ajax.priority");
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 

@@ -108,7 +108,7 @@ $(function(){
 
 			$.ajax({
 				type: "POST",
-				url: "{{ route($setting->grab('main_route').'-change.priority') }}",
+				url: "{{ route($setting->grab('main_route').'.ajax.priority') }}",
 				data: {
 					_token: "{{ csrf_token() }}",
 					ticket_id: $(this).attr('data-ticket-id'),
