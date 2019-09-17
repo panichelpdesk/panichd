@@ -8,7 +8,7 @@
 		</div>
 		<div class="modal-body">
 		{!! CollectiveForm::open([
-			'route' => [$setting->grab('main_route').'-change.agent'],
+			'route' => [$setting->grab('main_route').'.ajax.agent'],
 			'method' => 'POST'
 		]) !!}
 		{!! CollectiveForm::hidden('ticket_id', '',['id'=>'agent_ticket_id_field'] ) !!}
