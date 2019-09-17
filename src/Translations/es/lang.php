@@ -41,6 +41,10 @@ return [
   'table-aria-sort-asc'              => ': activar para ordernar por esta columna ascendentemente',
   'table-aria-sort-desc'             => ': activar para ordernar por esta columna descendentemente',
 
+  // Cambios AJAX en la lista
+  'table-change-priority'            => 'Cambiar la prioridad',
+  'table-change-status'              => 'Cambiar el estado',
+
   'btn-back'                         => 'Regresar',
   'btn-cancel'                       => 'Cancelar', // NEW
   'btn-close'                        => 'Cerrar',
@@ -86,6 +90,15 @@ return [
   'reload-countdown'                 => 'La lista de tiques se recargará en <kbd class=":num_class"><span id="counter">:num</span></kbd> segundos.',
   'reload-reloading'                 => 'La lista de tiques está recargando... por favor, espere',
 
+  // Ticket forms messages
+  'update-agent-same'                => 'No has cambiado el agente! Tique <a href=":link" title=":title"><u>:name</u></a>',
+  'update-agent-ok'                  => 'Agente cambiado a ":new_agent" en el tique <a href=":link" title=":title"><u>:name</u></a>',
+  'update-priority-same'             => 'No has cambiado la prioridad! Tique <a href=":link" title=":title"><u>:name</u></a>',
+  'update-priority-ok'               => 'Prioridad cambiada a ":new" en el tique <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-same'               => 'No has cambiado el estado! Tique <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-ok'                 => 'Estado cambiado a ":new" en el tique <a href=":link" title=":title"><u>:name</u></a>',
+
+  // tickets/create
   'create-new-ticket'                => 'Crear Nuevo Tique',
   'create-ticket-brief-issue'        => 'Un resumen del problema que tienes',
   'create-ticket-describe-issue'     => 'Describe en detalle el problema que tienes',

@@ -101,12 +101,13 @@ $(function(){
 
 		});
 
-		// Popover submit (Priority)
+		// Popover submit (Priority or Status)
 		$(document).off('click', '.popover_submit');
 		$(document).on('click', '.popover_submit', function(e){
 			e.preventDefault();
 
-			var URL = "{{ route($setting->grab('main_route').'.ajax.priority') }}";
+			var priority_URL = "{{ route($setting->grab('main_route').'.ajax.priority') }}";
+			var status_URL = "{{ route($setting->grab('main_route').'.ajax.status') }}";
 
 			var ajax_data = {
 				_token: "{{ csrf_token() }}",
@@ -116,11 +117,14 @@ $(function(){
 
 			if ($(this).attr('data-field') == 'priority'){
 				ajax_data.priority_id = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_priority]:checked').val();
+			
+			}else if ($(this).attr('data-field') == 'status'){
+				ajax_data.status_id = $(this).parent('div').find('input[name='+$(this).attr('data-ticket-id')+'_status]:checked').val();
 			}
 
 			$.ajax({
 				type: "POST",
-				url: URL,
+				url: $(this).attr('data-field') == 'priority' ? priority_URL : status_URL,
 				data: ajax_data,
 
 				success: function( response ) {

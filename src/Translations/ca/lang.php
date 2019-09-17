@@ -60,8 +60,9 @@ return [
   'table-one-agent'                  => 'Només hi ha un tècnic en aquesta categoria',
   'table-agent-status-check'         => 'Canviar estat a ":status"',
 
-  // Priority related
+  // Canvis AJAX a la llista
   'table-change-priority'            => 'Canviar la prioritat',
+  'table-change-status'              => 'Canviar l\'estat',
 
   // Datatables
   'table-decimal'                    => '',
@@ -222,6 +223,8 @@ return [
   'update-agent-ok'                  => 'Agent canviat a ":new_agent" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-same'             => 'No has canviat la prioritat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
   'update-priority-ok'               => 'Prioritat canviada a ":new" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-same'               => 'No has canviat l\'estat! Tiquet <a href=":link" title=":title"><u>:name</u></a>',
+  'update-status-ok'                 => 'Estat canviat a ":new" al tiquet <a href=":link" title=":title"><u>:name</u></a>',
 
 // tickets/create
   'create-new-ticket'                => 'Crear Nou Tiquet',

@@ -48,7 +48,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'hide']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'changeStatus', 'hide']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware', ['only' => ['search_form', 'register_search_fields']]);
 
@@ -486,11 +486,20 @@ class TicketsController extends Controller
 			return $field;
 		});
 
-        $collection->editColumn('status', function ($ticket) {
-            $color = $ticket->color_status;
-            $status = e($ticket->status);
+		$a_statuses = Models\Status::orderBy('name', 'asc')->get();
 
-            return "<div style='color: $color'>$status</div>";
+        $collection->editColumn('status', function ($ticket) use($a_statuses) {
+			$html = "";
+			foreach ($a_statuses as $status){
+				$html.= '<label style="color: '.$status->color.'"><input type="radio" name="'.$ticket->id.'_status" value="'.$status->id.'"> '.$status->name.'</label><br />';
+			}
+
+			$html = '<div>'.$html.'</div><br />'
+				.'<button type="button" class="btn btn-default btn-sm popover_submit" data-field="status" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
+
+            return '<a href="#Status" style="color: '.$ticket->color_status.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
+				.e('<button type="button" class="float-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
+				.trans('panichd::lang.table-change-status').'" data-content="'.e($html).'">'.e($ticket->status).'</a>';
         });
 
 		// Agents for each category
@@ -2402,6 +2411,52 @@ class TicketsController extends Controller
 			$result = "ok";
 			$message = trans('panichd::lang.update-priority-ok', [
 				'new' => $new_priority->name,
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		}
+
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string($request->ticketList)
+		]);
+	}
+
+	/*
+	 * Change status in ticket list
+	*/
+	public function changeStatus(Request $request){
+		$result = "error";
+		$message = "";
+		
+		$ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$original_ticket = clone $ticket;
+
+		if (!$request->filled('status_id') || is_null($new_status = Models\Status::find($request->input('status_id'))) || $ticket->status_id == $request->input('status_id')){
+			$message = trans('panichd::lang.update-status-same', [
+				'name' => '#'.$ticket->id.' '.$ticket->subject,
+				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
+				'title' => trans('panichd::lang.ticket-status-link-title')
+			]);
+		
+		}else{
+			$ticket->status_id = $request->input('status_id');
+
+			if ($ticket->agent_id != $this->member->id){
+				// Ticket will be unread for assigned agent
+				$ticket->read_by_agent = 0;
+			}
+	
+			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
+		}
+
+		if (!$message){
+			$result = "ok";
+			$message = trans('panichd::lang.update-status-ok', [
+				'new' => $new_status->name,
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
