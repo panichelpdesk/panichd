@@ -80,7 +80,7 @@ class TicketsController extends Controller
 			}else{
 				// Filter by all specified fields
 				$search_fields = session()->get('search_fields');
-				
+
 				foreach ($search_fields as $field => $value){
 					if ($field == 'department_id'){
 						$collection->whereHas('owner', function($query)use($search_fields){
@@ -126,17 +126,21 @@ class TicketsController extends Controller
 						}
 					
 					}elseif(in_array($field, $this->a_search_fields_numeric)){
+						$a_values = explode(',', $search_fields[$field]);
+						
 						if (isset($search_fields[$field . '_type']) and in_array($search_fields[$field . '_type'], $this->a_search_fields_numeric_types[$field])){
-							// Numeric fields with special criteria
-							$a_values = explode(',', $search_fields[$field]);
-
 							if ($search_fields[$field . '_type'] == 'any'){
 								// Look for any of selected values
 								$collection->whereIn($field, $a_values);
+
 							}else{
 								// Look without the selected values
 								$collection->whereNotIn($field, $a_values);
 							}
+
+						}elseif(count($a_values) > 1){
+							// Look for any of selected values
+							$collection->whereIn($field, $a_values);
 
 						}else{
 							// Normal numeric field
