@@ -162,7 +162,7 @@ $(function(){
 			// Hide bottom message
 			setTimeout(function(){
 				$('#bottom_toast').removeClass('show');
-			}, 2000);
+			}, 4000);
 		}
 
 		// Agent: Tooltip when there is only 1 agents
