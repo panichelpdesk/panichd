@@ -493,17 +493,21 @@ class TicketsController extends Controller
 		$a_statuses = Models\Status::orderBy('name', 'asc')->get();
 
         $collection->editColumn('status', function ($ticket) use($a_statuses) {
-			$html = "";
-			foreach ($a_statuses as $status){
-				$html.= '<label style="color: '.$status->color.'"><input type="radio" name="'.$ticket->id.'_status" value="'.$status->id.'"> '.$status->name.'</label><br />';
+			if ($this->member->isAgent()){
+				$html = "";
+				foreach ($a_statuses as $status){
+					$html.= '<label style="color: '.$status->color.'"><input type="radio" name="'.$ticket->id.'_status" value="'.$status->id.'"> '.$status->name.'</label><br />';
+				}
+	
+				$html = '<div>'.$html.'</div><br />'
+					.'<button type="button" class="btn btn-default btn-sm popover_submit" data-field="status" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
+	
+				return '<a href="#Status" style="color: '.$ticket->color_status.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
+					.e('<button type="button" class="float-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
+					.trans('panichd::lang.table-change-status').'" data-content="'.e($html).'">'.e($ticket->status).'</a>';
+			}else{
+				return '<span style="color: '.$ticket->color_status.'">'.e($ticket->status).'</span>';
 			}
-
-			$html = '<div>'.$html.'</div><br />'
-				.'<button type="button" class="btn btn-default btn-sm popover_submit" data-field="status" data-ticket-id="'.$ticket->id.'">'.trans('panichd::lang.btn-change').'</button>';
-
-            return '<a href="#Status" style="color: '.$ticket->color_status.'" class="jquery_popover" data-toggle="popover" data-placement="bottom" title="'
-				.e('<button type="button" class="float-right" onclick="$(this).closest(\'.popover\').popover(\'hide\');">&times;</button> ')
-				.trans('panichd::lang.table-change-status').'" data-content="'.e($html).'">'.e($ticket->status).'</a>';
         });
 
 		// Agents for each category
