@@ -2357,10 +2357,8 @@ class TicketsController extends Controller
 
 		$ticket->agent_id =  $new_agent->id;
 
-		if ($new_agent->id != $this->member->id){
-			// Ticket will be unread for assigned agent
-			$ticket->read_by_agent = 0;
-		}
+		// Ticket will be unread for assigned agent
+		$ticket->read_by_agent = 0;
 
 		$old_status_id = $ticket->status_id;
 		if ($request->input('status_checkbox') != "" || !Setting::grab('use_default_status_id')){
