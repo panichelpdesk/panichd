@@ -149,10 +149,8 @@
 		$('#bottom_toast').empty().append('<div class="alert alert-' + (response.result == 'ok' ? 'info' : 'danger') + '">' + response.message + '</div>');
 		$('#bottom_toast').addClass('show');
 		
-		if(response.result == 'ok'){
-			// Hide any existent popover
-			$(".jquery_popover").popover('hide');
-		}
+		// Hide any existent popover
+		$(".jquery_popover").popover('hide');
 
 		if(response.result == 'ok' || last_update != response.last_update){
 			// Reload datatable
