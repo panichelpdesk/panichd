@@ -34,10 +34,11 @@
 		</div>
 	</div>
 	@include('panichd::admin.category.modal-reason')
-	@include('panichd::admin.category.modal-tag')
-@stop
+@append
 
 @section('footer')
 	@include('panichd::admin.category.scripts-create-edit')
-	@include('panichd::admin.category.scripts-edit')
+	@include('panichd::shared.grouped_check_list')
 @append
+
+@include('panichd::shared.tag_create_edit')

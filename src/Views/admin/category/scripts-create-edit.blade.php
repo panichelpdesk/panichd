@@ -1,7 +1,8 @@
 <script type="text/javascript">
 var elem_i="";
 $(function(){	
-	$('.grouped_check_list').sortable();
+	// Make reason list orderable by mouse drag and drop
+	$('#reason_list').sortable();
 	
 	// Category notifications email edition
 	$('#email-edit-modal').on('show.bs.modal', function (e)
@@ -116,5 +117,3 @@ $(function(){
 	});	
 });
 </script>
-
-@include('panichd::shared.grouped_check_list')
