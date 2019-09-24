@@ -15,9 +15,9 @@
         </div>
     </div>
 	@include('panichd::admin.category.modal-reason')
-	@include('panichd::admin.category.modal-tag')	
 @stop
 
 @section('footer')
-	@include('panichd::admin.category.scripts-create-edit')
+    @include('panichd::admin.category.scripts-create-edit')
+    @include('panichd::shared.grouped_check_list')
 @append
