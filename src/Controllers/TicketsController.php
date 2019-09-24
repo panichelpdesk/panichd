@@ -260,7 +260,7 @@ class TicketsController extends Controller
 	*/
 	public function last_update_string($ticketList)
 	{
-		$last_update = $this->getTicketCollectionFrom($ticketList)->orderBy('updated_at', 'desc')->take(1)->first();
+		$last_update = Ticket::orderBy('updated_at', 'desc')->first();
 		
 		return is_null($last_update) ? '' : $last_update->id . ',' . $last_update->updated_at;
 	}
