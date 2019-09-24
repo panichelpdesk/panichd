@@ -3,7 +3,7 @@
         <div class="modal-dialog model-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="tag-modal-Label">{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "<span id="jquery_popup_tag_title"></span>"</h4>
+                    <h4 class="modal-title" id="tag-modal-Label"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
                 </div>
                 <div class="modal-body">
@@ -43,24 +43,38 @@
 @section('footer')
     <script type="text/javascript">
     $(function(){
-
+        $('#btn_tag_create').click(function(e){ e.preventDefault(); });
+        
         $('#tag-modal').on('show.bs.modal', function (e)
         {
             var button=$(e.relatedTarget);
+
+            if (button.prop('id') == 'btn_tag_create'){
+                // Create a new tag
+                $(this).find('.modal-title').text('Create a new tag');
+                $(this).find('#jquery_popup_tag_input').val('Tag name');
+                var a_colors = ['#c9daf8', '#ffffff'];
+                $(this).find('#jquery_popup_tag_submit').text('{{ trans('panichd::lang.btn-add') }}');
+
+            }else{
+                // Text to modal
+                $(this).find('.modal-title').text('{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "' + button.data('tag_name') + '"');
+                $(this).find('#jquery_popup_tag_input').val(button.data('tag_name'));
+                
+                // Element identifier to modal
+                elem_i=button.data('i');
+
+                // Take tag colors from HTML element
+                var a_colors=$('#jquery_tag_color_'+elem_i).val().split("_");
+
+                // Submit text
+                $(this).find('#jquery_popup_tag_submit').text('{{ trans('panichd::lang.btn-change') }}');
+            }
             
-            // Text to modal
-            $(this).find('#jquery_popup_tag_title').text(button.data('tag_name'));
-            $(this).find('#jquery_popup_tag_input').val(button.data('tag_name'));
-            
-            // Element identifier to modal
-            elem_i=button.data('i');
-            
-            // Colors to modal
-            var a_colors=$('#jquery_tag_color_'+elem_i).val().split("_");
+            // Apply tag colors to modal
             $('#tag-modal #pick_bg .colorpicker-element').val(a_colors[0]);
             $('#tag-modal #pick_text .colorpicker-element').val(a_colors[1]);
             $('#tag-modal #jquery_popup_tag_input').css('background',a_colors[0]).css('color',a_colors[1]);
-            
         });
         
         $('#jquery_popup_tag_submit').click(function(e)
@@ -94,11 +108,13 @@
         var tagColorPicker = $('#tag-modal .colorpickerplus-embed .colorpickerplus-container');
         tagColorPicker.colorpickerembed();
         tagColorPicker.on('changeColor', function(e, color){
-        var paintTarget = $(e.target).parent().prop('id') == "pick_bg" ? 'background-color' : 'color';
-        if(color==null)
-        $('#tag-modal #jquery_popup_tag_input').css(paintTarget, '#fff');//tranparent
-        else
-        $('#tag-modal #jquery_popup_tag_input').css(paintTarget, color);
+            var paintTarget = $(e.target).parent().prop('id') == "pick_bg" ? 'background-color' : 'color';
+            if(color == null){
+                $('#tag-modal #jquery_popup_tag_input').css(paintTarget, '#fff');//tranparent
+            }else{
+                $('#tag-modal #jquery_popup_tag_input').css(paintTarget, color);
+            }
+
         });
 
     });		
