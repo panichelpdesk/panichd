@@ -2342,32 +2342,29 @@ class TicketsController extends Controller
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
 		$old_agent = $ticket->agent()->first();
-    if ($request->input('agent_id') != ""){
-      $new_agent = \PanicHDMember::find($request->input('agent_id'));
-    }else
-      $new_agent = clone $old_agent;
+		$new_agent = $request->filled('agent_id') ? \PanicHDMember::find($request->input('agent_id')) : clone $old_agent;
 
-		if (!$request->input('status_checkbox') != "" and (is_null($new_agent) || $ticket->agent_id == $request->input('agent_id'))){
+		if ($old_agent->id == $new_agent->id){
+			// If agent has not been changed, don't update any field and return an error message
 			$message = trans('panichd::lang.update-agent-same', [
 				'name' => '#'.$ticket->id.' '.$ticket->subject,
 				'link' => route(Setting::grab('main_route').'.show', $ticket->id),
 				'title' => trans('panichd::lang.ticket-status-link-title')
 			]);
-		}
+		
+		}else{
 
-		$ticket->agent_id =  $new_agent->id;
+			$ticket->agent_id =  $new_agent->id;
 
-		// Ticket will be unread for assigned agent
-		$ticket->read_by_agent = 0;
+			// Ticket will be unread for assigned agent
+			$ticket->read_by_agent = 0;
 
-		$old_status_id = $ticket->status_id;
-		if ($request->input('status_checkbox') != "" || !Setting::grab('use_default_status_id')){
-			$ticket->status_id = Setting::grab('default_reopen_status_id');
-		}
-		$ticket->save();
-		event(new TicketUpdated($original_ticket, $ticket));
+			if ($request->input('status_checkbox') != "" || !Setting::grab('use_default_status_id')){
+				$ticket->status_id = Setting::grab('default_reopen_status_id');
+			}
+			$ticket->save();
+			event(new TicketUpdated($original_ticket, $ticket));
 
-		if (!$message){
 			$result = "ok";
 			$message = trans('panichd::lang.update-agent-ok', [
 				'new_agent' => $new_agent->name,
