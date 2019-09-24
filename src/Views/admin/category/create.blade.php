@@ -21,3 +21,5 @@
     @include('panichd::admin.category.scripts-create-edit')
     @include('panichd::shared.grouped_check_list')
 @append
+
+@include('panichd::shared.tag_create_edit')

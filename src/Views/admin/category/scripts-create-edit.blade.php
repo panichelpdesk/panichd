@@ -109,11 +109,5 @@ $(function(){
 		
 		$('#reason-edit-modal').modal('hide');
 	});	
-	
-	// NEW Tags select2
-	$('#admin-select2-tags').select2({
-		tags: true,
-		tokenSeparators: [',']
-	});	
 });
 </script>

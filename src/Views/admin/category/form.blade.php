@@ -99,10 +99,11 @@
 		</div>
 	</div>
 
-	<div class="form-group row">
+	<div class="form-group row mb-4">
 		<label class="col-form-label col-sm-2" for="admin-select2-tags">{{ trans('panichd::admin.category-edit-new-tags') . trans('panichd::admin.colon') }}</label>
-		<div class="col-sm-10">
-		<select id="admin-select2-tags" class="select2-multiple" name="new_tags[]" multiple="multiple" style="display: none; width: 100%"></select></div>
+		<div id="tag_list_container" class="col-sm-10">
+			<button role="button" id="btn_tag_create" class="btn btn-default" data-toggle="modal" data-target="#tag-modal" data-tag_name="Create a new tag" data-i="new">{{ trans('panichd::admin.btn-create') }}</button>
+		</div>
 
 	</div>
 	@if (isset($category) and $category->has('tags'))
