@@ -1,7 +1,7 @@
 <script type="text/javascript">
 $(function(){
 
-	$('#tag-edit-modal').on('show.bs.modal', function (e)
+	$('#tag-modal').on('show.bs.modal', function (e)
 	{
 		var button=$(e.relatedTarget);
 		
@@ -14,9 +14,9 @@ $(function(){
 		
 		// Colors to modal
 		var a_colors=$('#jquery_tag_color_'+elem_i).val().split("_");
-		$('#tag-edit-modal #pick_bg .colorpicker-element').val(a_colors[0]);
-		$('#tag-edit-modal #pick_text .colorpicker-element').val(a_colors[1]);
-		$('#tag-edit-modal #jquery_popup_tag_input').css('background',a_colors[0]).css('color',a_colors[1]);
+		$('#tag-modal #pick_bg .colorpicker-element').val(a_colors[0]);
+		$('#tag-modal #pick_text .colorpicker-element').val(a_colors[1]);
+		$('#tag-modal #jquery_popup_tag_input').css('background',a_colors[0]).css('color',a_colors[1]);
 		
 	});
 	
@@ -24,7 +24,7 @@ $(function(){
 	{
 		// Text change
 		var disable=true;
-		var modaltext=$('#tag-edit-modal #jquery_popup_tag_input').val();
+		var modaltext=$('#tag-modal #jquery_popup_tag_input').val();
 		if ($('#tag_text_'+elem_i).data('tag_name') != modaltext){
 			disable=false;
 			$('#jquery_tag_name_'+elem_i).val(modaltext);
@@ -33,8 +33,8 @@ $(function(){
 		$('#jquery_tag_name_'+elem_i).prop('disabled', disable);
 		
 		// Color change
-		var bg_color = $('#tag-edit-modal #pick_bg .colorpicker-element').val();
-		var text_color = $('#tag-edit-modal #pick_text .colorpicker-element').val();
+		var bg_color = $('#tag-modal #pick_bg .colorpicker-element').val();
+		var text_color = $('#tag-modal #pick_text .colorpicker-element').val();
 		$('#tag_text_'+elem_i)
 			.css('background-color', bg_color)
 			.css('color', text_color);
@@ -44,18 +44,18 @@ $(function(){
 		}
 		$('#jquery_tag_color_'+elem_i).val(bg_color+"_"+text_color);
 		
-		$('#tag-edit-modal').modal('hide');
+		$('#tag-modal').modal('hide');
 	});
 	
 	// Tag POPUP color Picker
-	var tagColorPicker = $('#tag-edit-modal .colorpickerplus-embed .colorpickerplus-container');
+	var tagColorPicker = $('#tag-modal .colorpickerplus-embed .colorpickerplus-container');
 	tagColorPicker.colorpickerembed();
 	tagColorPicker.on('changeColor', function(e, color){
 	var paintTarget = $(e.target).parent().prop('id') == "pick_bg" ? 'background-color' : 'color';
 	if(color==null)
-	  $('#tag-edit-modal #jquery_popup_tag_input').css(paintTarget, '#fff');//tranparent
+	  $('#tag-modal #jquery_popup_tag_input').css(paintTarget, '#fff');//tranparent
 	else
-	  $('#tag-edit-modal #jquery_popup_tag_input').css(paintTarget, color);
+	  $('#tag-modal #jquery_popup_tag_input').css(paintTarget, color);
 	});
 
 });		

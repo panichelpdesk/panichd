@@ -1,8 +1,8 @@
-<div class="modal fade" id="tag-edit-modal" tabindex="-1" role="dialog" aria-labelledby="tag-edit-modal-Label">
+<div class="modal fade" id="tag-modal" tabindex="-1" role="dialog" aria-labelledby="tag-modal-Label">
     <div class="modal-dialog model-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="tag-edit-modal-Label">{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "<span id="jquery_popup_tag_title"></span>"</h4>
+                <h4 class="modal-title" id="tag-modal-Label">{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "<span id="jquery_popup_tag_title"></span>"</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{ trans('panichd::lang.flash-x') }}</span></button>
 			</div>
             <div class="modal-body">
