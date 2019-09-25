@@ -134,6 +134,7 @@ return [
   'category-index-email'          => 'Remitent de notificacions',
   'category-index-reasons'        => 'Raons tancament',
   'category-index-tags'           => 'Etiquetes',
+
   'category-create-title'         => 'Crear Nova Categoria',
   'category-create-name'          => 'Nom',
   'category-create-email'         => 'Remitent de notificacions',
@@ -153,15 +154,20 @@ return [
   'category-create-color'         => 'Color',
   'category-create-new-tickets'   => 'Qui pot crear tiquets',
   'category-create-new-tickets-help'   => 'Nivell mínim a la categoria per a crear tiquets',
+
   'category-edit-title'                => 'Editar Categoria: :name',
+
   'category-edit-closing-reasons'      => 'Tancaments de tiquet',
   'category-edit-closing-reasons-help' => 'Opcions que l\'usuari haurà de triar quan tanqui un tiquet',
   'category-edit-reason'          => 'Raó de tancament',
   'category-edit-reason-label'    => 'Raó',
   'category-edit-reason-status'   => 'Estat',
   'category-delete-reason'        => 'Eliminar raó',
+
   'category-edit-new-tags'        => 'Etiq. noves',
   'category-edit-current-tags'    => 'Etiq. actuals',
+  'category-edit-new-tag-title'   => 'Crear etiqueta nova',
+  'category-edit-new-tag-default' => 'Etiqueta nova',
   'category-edit-tag'             => 'Editar etiqueta',
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',

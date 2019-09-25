@@ -55,8 +55,8 @@
 
             if (button.prop('id') == 'btn_tag_create'){
                 // Create a new tag
-                $(this).find('.modal-title').text('Create a new tag');
-                $(this).find('#jquery_popup_tag_input').val('Tag name');
+                $(this).find('.modal-title').text('{{ trans('panichd::admin.category-edit-new-tag-title') }}');
+                $(this).find('#jquery_popup_tag_input').val('{{ trans('panichd::admin.category-edit-new-tag-default') }}');
                 var a_colors = ['#c9daf8', '#ffffff'];
                 $(this).find('#jquery_popup_tag_submit').text('{{ trans('panichd::lang.btn-add') }}');
 
@@ -65,7 +65,7 @@
                 elem_i=button.data('i');
                 
                 // Text to modal
-                $(this).find('.modal-title').text('{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "' + button.data('tag_name') + '"');
+                $(this).find('.modal-title').text('{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "' + $('#jquery_tag_name_' + elem_i).val() + '"');
                 $(this).find('#jquery_popup_tag_input').val($('#jquery_tag_name_' + elem_i).val());
 
                 // Take tag colors from HTML element
@@ -91,7 +91,7 @@
                 // Generate new tag HTML
                 $('#new_tags_container').append('<div class="btn-group check_parent unchecked">'
                         +'<a href="#" role="button" id="jquery_tag_check_' + elem_i + '" class="btn btn-light check_button" data-delete_id="jquery_delete_tag_' + elem_i + '" title="Delete tag" aria-label="Delete tag"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>'
-                        +'<a href="#" role="button" id="tag_text_' + elem_i + '" class="btn btn-light btn-tag check_info" title="New tag" data-toggle="modal" data-target="#tag-modal" data-tag_name="" data-i="' + elem_i + '"><span class="name"></span></a>'
+                        +'<a href="#" role="button" id="tag_text_' + elem_i + '" class="btn btn-light btn-tag check_info" data-toggle="modal" data-target="#tag-modal" data-tag_name="" data-i="' + elem_i + '"><span class="name"></span></a>'
                         +'<input type="hidden" id="jquery_delete_tag_' + elem_i + '" name="jquery_delete_tag_' + elem_i + '" value="" disabled="disabled">'
                         +'<input type="hidden" id="jquery_tag_id_' + elem_i + '" name="jquery_tag_id_' + elem_i + '" value="">'
                         +'<input type="hidden" id="jquery_tag_name_' + elem_i + '" name="jquery_tag_name_' + elem_i + '" value="" disabled="disabled">'

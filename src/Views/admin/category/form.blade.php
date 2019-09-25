@@ -102,7 +102,7 @@
 	<div class="form-group row mb-4">
 		<label class="col-form-label col-sm-2" for="admin-select2-tags">{{ trans('panichd::admin.category-edit-new-tags') . trans('panichd::admin.colon') }}</label>
 		<div class="col-sm-10">
-			<button role="button" id="btn_tag_create" class="btn btn-default" data-toggle="modal" data-target="#tag-modal" title="Create a new tag">{{ trans('panichd::admin.btn-create') }}</button>
+			<button role="button" id="btn_tag_create" class="btn btn-default" data-toggle="modal" data-target="#tag-modal" title="{{ trans('panichd::admin.category-edit-new-tag-title') }}">{{ trans('panichd::admin.btn-create') }}</button>
 			<div id="new_tags_container" class="grouped_check_list deletion_list no-border coloured-list" style="display: inline-block">
 
 			</div>
