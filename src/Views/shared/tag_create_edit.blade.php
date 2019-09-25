@@ -43,8 +43,12 @@
 @section('footer')
     <script type="text/javascript">
     $(function(){
-        $('#btn_tag_create').click(function(e){ e.preventDefault(); });
+        // Click on create tag button
+        $('#btn_tag_create').click(function(e){
+            e.preventDefault();
+        });
         
+        // When showing tag create / edit modal window
         $('#tag-modal').on('show.bs.modal', function (e)
         {
             var button=$(e.relatedTarget);
@@ -57,12 +61,12 @@
                 $(this).find('#jquery_popup_tag_submit').text('{{ trans('panichd::lang.btn-add') }}');
 
             }else{
-                // Text to modal
-                $(this).find('.modal-title').text('{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "' + button.data('tag_name') + '"');
-                $(this).find('#jquery_popup_tag_input').val(button.data('tag_name'));
-                
                 // Element identifier to modal
                 elem_i=button.data('i');
+                
+                // Text to modal
+                $(this).find('.modal-title').text('{{ trans('panichd::admin.category-edit-tag') . trans('panichd::admin.colon') }} "' + button.data('tag_name') + '"');
+                $(this).find('#jquery_popup_tag_input').val($('#jquery_tag_name_' + elem_i).val());
 
                 // Take tag colors from HTML element
                 var a_colors=$('#jquery_tag_color_'+elem_i).val().split("_");
@@ -77,8 +81,26 @@
             $('#tag-modal #jquery_popup_tag_input').css('background',a_colors[0]).css('color',a_colors[1]);
         });
         
+        // Submit tag properties from modal
         $('#jquery_popup_tag_submit').click(function(e)
         {
+            if ($(this).text() == '{{ trans('panichd::lang.btn-add') }}'){
+                // Set new element refference number
+                elem_i = $('.btn-tag').length;
+
+                // Generate new tag HTML
+                $('#new_tags_container').append('<div class="btn-group check_parent unchecked">'
+                        +'<a href="#" role="button" id="jquery_tag_check_' + elem_i + '" class="btn btn-light check_button" data-delete_id="jquery_delete_tag_' + elem_i + '" title="Delete tag" aria-label="Delete tag"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>'
+                        +'<a href="#" role="button" id="tag_text_' + elem_i + '" class="btn btn-light btn-tag check_info" title="New tag" data-toggle="modal" data-target="#tag-modal" data-tag_name="" data-i="' + elem_i + '"><span class="name"></span></a>'
+                        +'<input type="hidden" id="jquery_delete_tag_' + elem_i + '" name="jquery_delete_tag_' + elem_i + '" value="" disabled="disabled">'
+                        +'<input type="hidden" id="jquery_tag_id_' + elem_i + '" name="jquery_tag_id_' + elem_i + '" value="">'
+                        +'<input type="hidden" id="jquery_tag_name_' + elem_i + '" name="jquery_tag_name_' + elem_i + '" value="" disabled="disabled">'
+                        +'<input type="hidden" id="jquery_tag_color_' + elem_i + '" name="jquery_tag_color_' + elem_i + '" value="" disabled="disabled">'
+
+                        +'<input type="hidden" name="new_tags[]" value="' + elem_i + '">'
+                    +'</div>');
+            }
+            
             // Text change
             var disable=true;
             var modaltext=$('#tag-modal #jquery_popup_tag_input').val();
@@ -104,7 +126,7 @@
             $('#tag-modal').modal('hide');
         });
         
-        // Tag POPUP color Picker
+        // Color Picker
         var tagColorPicker = $('#tag-modal .colorpickerplus-embed .colorpickerplus-container');
         tagColorPicker.colorpickerembed();
         tagColorPicker.on('changeColor', function(e, color){

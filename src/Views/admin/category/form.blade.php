@@ -63,16 +63,16 @@
 			@foreach ($category->closingReasons as $i=>$reason)
 				<div style="margin-bottom: 10px">
 					<div class="btn-group check_parent unchecked">
-					<a href="#" role="button" id="reason_{{$i}}" class="btn btn-light btn-default check_info" aria-label="{{ trans('panichd::admin.category-delete-reason') }}" title="{{ trans('panichd::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-text="{{ $reason->text }}" data-reason_status_id="{{ $reason->status_id }}" data-i="{{$i}}"><span class="reason_text">{{ $reason->text }}</span> <span class="fa fa-arrow-right" style="color: #bbb"></span> <span class="reason_status">{{ $reason->status->name }}</span></a>
+					<a href="#" role="button" id="reason_{{ $i }}" class="btn btn-light btn-default check_info" aria-label="{{ trans('panichd::admin.category-delete-reason') }}" title="{{ trans('panichd::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-text="{{ $reason->text }}" data-reason_status_id="{{ $reason->status_id }}" data-i="{{ $i }}"><span class="reason_text">{{ $reason->text }}</span> <span class="fa fa-arrow-right" style="color: #bbb"></span> <span class="reason_status">{{ $reason->status->name }}</span></a>
 
-					<a href="#" role="button" id="jquery_reason_{{$i}}" class="btn btn-light btn-default check_button" data-delete_id="jquery_delete_reason_{{$i}}" title="{{ trans('panichd::admin.category-delete-reason') }}" aria-label="{{ trans('panichd::admin.category-delete-reason') }}"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>
+					<a href="#" role="button" id="jquery_reason_{{ $i }}" class="btn btn-light btn-default check_button" data-delete_id="jquery_delete_reason_{{ $i }}" title="{{ trans('panichd::admin.category-delete-reason') }}" aria-label="{{ trans('panichd::admin.category-delete-reason') }}"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>
 					</div>
 
-					<input type="hidden" id="jquery_delete_reason_{{$i}}" name="jquery_delete_reason_{{$i}}" value="{{$reason->id}}" disabled="disabled">
-					<input type="hidden" id="jquery_reason_ordering_{{$i}}" name="reason_ordering[]" value="{{$i}}">
-					<input type="hidden" id="jquery_reason_id_{{$i}}" name="jquery_reason_id_{{$i}}" value="{{$reason->id}}">
-					<input type="hidden" id="jquery_reason_text_{{$i}}" name="jquery_reason_text_{{$i}}" value="{{$reason->text}}" disabled="disabled">
-					<input type="hidden" id="jquery_reason_status_id_{{$i}}" name="jquery_reason_status_id_{{$i}}" value="{{$reason->status_id}}" disabled="disabled">
+					<input type="hidden" id="jquery_delete_reason_{{ $i }}" name="jquery_delete_reason_{{ $i }}" value="{{$reason->id}}" disabled="disabled">
+					<input type="hidden" id="jquery_reason_ordering_{{ $i }}" name="reason_ordering[]" value="{{ $i }}">
+					<input type="hidden" id="jquery_reason_id_{{ $i }}" name="jquery_reason_id_{{ $i }}" value="{{$reason->id}}">
+					<input type="hidden" id="jquery_reason_text_{{ $i }}" name="jquery_reason_text_{{ $i }}" value="{{$reason->text}}" disabled="disabled">
+					<input type="hidden" id="jquery_reason_status_id_{{ $i }}" name="jquery_reason_status_id_{{ $i }}" value="{{$reason->status_id}}" disabled="disabled">
 				</div>
 			@endforeach
 			@endif
@@ -85,7 +85,7 @@
 					<?php $i=1;?>
 					<a href="#" role="button" id="reason_tempnum" class="btn btn-light btn-default check_info" aria-label="{{ trans('panichd::admin.category-delete-reason') }}" title="{{ trans('panichd::admin.btn-edit') }}" data-toggle="modal" data-target="#reason-edit-modal" data-text="button text" data-i="i"><span class="reason_text">reason text</span> <span class="fa fa-arrow-right" style="color: #bbb"></span> <span class="reason_status">reason status name</span></a>
 
-					<a href="#" role="button" id="jquery_reason_{{$i}}" class="btn btn-light btn-default check_button" data-delete_id="jquery_delete_reason_{{$i}}" title="{{ trans('panichd::admin.category-delete-reason') }}" aria-label="{{ trans('panichd::admin.category-delete-reason') }}"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>
+					<a href="#" role="button" id="jquery_reason_{{ $i }}" class="btn btn-light btn-default check_button" data-delete_id="jquery_delete_reason_{{ $i }}" title="{{ trans('panichd::admin.category-delete-reason') }}" aria-label="{{ trans('panichd::admin.category-delete-reason') }}"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>
 					</div>
 
 					<input type="hidden" id="jquery_delete_reason_tempnum" name="jquery_delete_reason_tempnum" value="tempnum" disabled="disabled">
@@ -101,8 +101,11 @@
 
 	<div class="form-group row mb-4">
 		<label class="col-form-label col-sm-2" for="admin-select2-tags">{{ trans('panichd::admin.category-edit-new-tags') . trans('panichd::admin.colon') }}</label>
-		<div id="tag_list_container" class="col-sm-10">
-			<button role="button" id="btn_tag_create" class="btn btn-default" data-toggle="modal" data-target="#tag-modal" data-tag_name="Create a new tag" data-i="new">{{ trans('panichd::admin.btn-create') }}</button>
+		<div class="col-sm-10">
+			<button role="button" id="btn_tag_create" class="btn btn-default" data-toggle="modal" data-target="#tag-modal" title="Create a new tag">{{ trans('panichd::admin.btn-create') }}</button>
+			<div id="new_tags_container" class="grouped_check_list deletion_list no-border coloured-list" style="display: inline-block">
+
+			</div>
 		</div>
 
 	</div>
@@ -113,14 +116,13 @@
 			<div id="tag-panel" class="grouped_check_list deletion_list no-border coloured-list">
 				@foreach ($category->tags as $i=>$tag)
 					<div class="btn-group check_parent unchecked">
-					<a href="#" role="button" id="jquery_tag_check_{{$i}}" class="btn btn-light check_button" data-delete_id="jquery_delete_tag_{{$i}}" title="Eliminar etiqueta {{$tag->name}}" aria-label="Eliminar etiqueta {{$tag->name}}"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>
-					<a href="#" role="button" id="tag_text_{{$i}}" class="btn btn-light btn-tag check_info" aria-label="Etiqueta {{$tag->name}}" title="Etiqueta '{{$tag->name}}' conté {{$tag->tickets_count}} tiquets relacionats" data-toggle="modal" data-target="#tag-modal" data-tag_name="{{$tag->name}}" data-i="{{$i}}" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
-
+						<a href="#" role="button" id="jquery_tag_check_{{ $i }}" class="btn btn-light check_button" data-delete_id="jquery_delete_tag_{{ $i }}" title="Delete tag" aria-label="Delete tag"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-check" aria-hidden="true" style="display: none"></span></a>
+						<a href="#" role="button" id="tag_text_{{ $i }}" class="btn btn-light btn-tag check_info" aria-label="{{ $tag->name }}" title="'{{$tag->name}}' tag contains {{$tag->tickets_count}} related tickets" data-toggle="modal" data-target="#tag-modal" data-tag_name="{{$tag->name}}" data-i="{{ $i }}" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}"><span class="name">{{$tag->name}}</span> ({{$tag->tickets_count}})</a>
+						<input type="hidden" id="jquery_delete_tag_{{ $i }}" name="jquery_delete_tag_{{ $i }}" value="{{$tag->id}}" disabled="disabled">
+						<input type="hidden" id="jquery_tag_id_{{ $i }}" name="jquery_tag_id_{{ $i }}" value="{{$tag->id}}">
+						<input type="hidden" id="jquery_tag_name_{{ $i }}" name="jquery_tag_name_{{ $i }}" value="{{$tag->name}}" disabled="disabled">
+						<input type="hidden" id="jquery_tag_color_{{ $i }}" name="jquery_tag_color_{{ $i }}" value="{{$tag->bg_color.'_'.$tag->text_color}}" disabled="disabled">
 					</div>
-					<input type="hidden" id="jquery_delete_tag_{{$i}}" name="jquery_delete_tag_{{$i}}" value="{{$tag->id}}" disabled="disabled">
-					<input type="hidden" id="jquery_tag_id_{{$i}}" name="jquery_tag_id_{{$i}}" value="{{$tag->id}}">
-					<input type="hidden" id="jquery_tag_name_{{$i}}" name="jquery_tag_name_{{$i}}" value="{{$tag->name}}" disabled="disabled">
-					<input type="hidden" id="jquery_tag_color_{{$i}}" name="jquery_tag_color_{{$i}}" value="{{$tag->bg_color.'_'.$tag->text_color}}" disabled="disabled">
 				@endforeach
 			</div>
 			<input type="hidden" name="tags_count" value="<?=isset($i)?$i+1:0;?>">
