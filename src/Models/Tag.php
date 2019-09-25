@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     protected $table = 'panichd_tags';
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'text_color', 'bg_color'];
 
     /**
      * Get related categories.

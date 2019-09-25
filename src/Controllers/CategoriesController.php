@@ -231,15 +231,18 @@ class CategoriesController extends Controller
 		// Allow alphanumeric and the following: ? @ / - _
         $tag_rule = "required|regex:/^[A-Za-z0-9?@\/\-_\s]+$/";
 
-        // Add validation for new tags like it were fields
+        // Add validation for new tags
         $a_tags_new = [];
-        if ($request->input('new_tags')) {
-            $i = 0;
-            foreach ($request->input('new_tags') as $tag) {
-                $a_tags_new[] = $tag;
-                $request['tag'.++$i] = $tag;
-                $tag_rules['tag'.$i] = $tag_rule;
-				$tag_messages['tag'.$i.'.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$tag]);
+        if ($request->filled('new_tags')) {
+            foreach ($request->input('new_tags') as $id) {
+                if (!$request->has('jquery_delete_tag_' . $id)){
+                    $tag_rules['jquery_tag_name_' . $id] = $tag_rule;
+                    $tag_messages['jquery_tag_name_' . $id . '.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag' => $request->{'jquery_tag_name_' . $id}]);
+                    $a_tags_new[] = [
+                        'name' => $request->{'jquery_tag_name_' . $id},
+                        'color' => $request->{'jquery_tag_color_'.$id}
+                    ];
+                }
             }
         }
 
@@ -396,12 +399,16 @@ class CategoriesController extends Controller
         }
 
         // Add new tags
-        foreach ($a_tags_new as $tag) {
-            $new = Tag::whereHas('categories', function ($q) use ($category) {
-                $q->where('id', $category->id);
-            })->where('name', $tag)->firstOrCreate(['name'=>$tag]);
+        foreach ($a_tags_new as $a_tag) {
+            $a_colors = explode('_', $a_tag['color']);
 
-            $tags[] = $new->id;
+            $new_tag = Tag::create([
+                'name' => $a_tag['name'],
+                'bg_color' => $a_colors[0],
+                'text_color' => $a_colors[1]
+            ]);
+
+            $tags[] = $new_tag->id;
         }
 
         // Sync all category tags
