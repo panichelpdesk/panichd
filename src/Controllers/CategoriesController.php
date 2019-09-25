@@ -237,7 +237,9 @@ class CategoriesController extends Controller
             foreach ($request->input('new_tags') as $id) {
                 if (!$request->has('jquery_delete_tag_' . $id)){
                     $tag_rules['jquery_tag_name_' . $id] = $tag_rule;
+                    $tag_messages['jquery_tag_name_' . $id . '.required'] = trans('panichd::admin.new-tag-validation-empty');
                     $tag_messages['jquery_tag_name_' . $id . '.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag' => $request->{'jquery_tag_name_' . $id}]);
+                    
                     $a_tags_new[] = [
                         'name' => $request->{'jquery_tag_name_' . $id},
                         'color' => $request->{'jquery_tag_color_'.$id}
@@ -246,17 +248,23 @@ class CategoriesController extends Controller
             }
         }
 
+        $c_tags = Tag::all();
+
         $a_tags_update = [];
         for ($i = 0; $i < $request->input('tags_count'); $i++) {
-            if (!$request->input('jquery_delete_tag_'.$i) != "") {
+            $tag = $c_tags->first(function($q)use($request, $i){
+                return $q->id == $request->{'jquery_tag_id_'.$i};
+            });
+            if (!$request->has('jquery_delete_tag_'.$i) and !is_null($tag)) {
                 // Add validation for renamed tags
                 if ($request->exists('jquery_tag_name_'.$i) and $request->input('jquery_tag_id_'.$i) != "") {
-                    $tag = $request->input('jquery_tag_name_'.$i);
-                    $request->merge(['jquery_tag_name_'.$i=>$tag]);
-                    $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $tag;
-                    $request['jquery_tag_name_'.$i] = $tag;
+                    $name = $request->input('jquery_tag_name_'.$i);
+                    $request->merge(['jquery_tag_name_'.$i=>$name]);
+                    $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $name;
+                    $request['jquery_tag_name_'.$i] = $name;
                     $tag_rules['jquery_tag_name_'.$i] = $tag_rule;
-					$tag_messages['jquery_tag_name_'.$i.'.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$tag]);
+                    $tag_messages['jquery_tag_name_' . $i . '.required'] = trans('panichd::admin.update-tag-validation-empty', ['name' => $tag->name]);
+                    $tag_messages['jquery_tag_name_'.$i.'.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$name]);
                 }
 
                 // Add colors for tag update

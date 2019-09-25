@@ -172,6 +172,9 @@ return [
   'category-edit-tag'             => 'Edit tag',
   'category-edit-tag-background'  => 'Background',
   'category-edit-tag-text'        => 'Text',
+
+  'new-tag-validation-empty'      => 'You cannot register a tag with an empty name',
+  'update-tag-validation-empty'   => 'You cannot leave blank the tag name of the one previously named ":name"',
   
   // Category form validation
   'category-reason-is-empty'      => 'Closing reason :number has no text',

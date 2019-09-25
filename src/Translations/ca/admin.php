@@ -172,6 +172,9 @@ return [
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',
 
+  'new-tag-validation-empty'      => 'No pots registrar una etiqueta amb el nom en blanc',
+  'update-tag-validation-empty'   => 'No pots deixar en blanc el nom de l\'etiqueta abans anomenada ":name"',
+
   // Category form validation
   'category-reason-is-empty'      => 'La raó de tancament :number no té text',
   'category-reason-too-short'     => 'La raó de tancament :number amb el nom ":name" requereix :min caràcters',

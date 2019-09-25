@@ -113,6 +113,9 @@ return [
   'category-edit-tag-background'  => 'Fondo',
   'category-edit-tag-text'        => 'Texto',
 
+  'new-tag-validation-empty'      => 'No puedes registrar una etiqueta con el nombre en blanco',
+  'update-tag-validation-empty'   => 'No puedes dejar en blanco el nombre de la etiqueta con nombre anterior ":name"',
+
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Administración de Prioridades',
   'btn-create-new-priority'       => 'Crear prioridad nueva',
