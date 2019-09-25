@@ -103,7 +103,15 @@ return [
   'category-create-title'         => 'Crear Categoría Nueva',
   'category-create-name'          => 'Nombre',
   'category-create-color'         => 'Color',
-  'category-edit-title'           => 'Editar Categoría: :name',
+  'category-edit-title'           => 'Editar Categoria: :name',
+
+  'category-edit-new-tags'        => 'Etiq. nuevas',
+  'category-edit-current-tags'    => 'Etiq. actuales',
+  'category-edit-new-tag-title'   => 'Crear etiqueta nueva',
+  'category-edit-new-tag-default' => 'Etiqueta nueva',
+  'category-edit-tag'             => 'Editar etiqueta',
+  'category-edit-tag-background'  => 'Fondo',
+  'category-edit-tag-text'        => 'Texto',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Administración de Prioridades',
