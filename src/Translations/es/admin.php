@@ -113,6 +113,7 @@ return [
   'category-edit-tag-background'  => 'Fondo',
   'category-edit-tag-text'        => 'Texto',
 
+  'tag-regex'                     => '/^[A-Za-z\x{00C0}-\x{017F}0-9?@\/\-_\s]+$/u',
   'new-tag-validation-empty'      => 'No puedes registrar una etiqueta con el nombre en blanco',
   'update-tag-validation-empty'   => 'No puedes dejar en blanco el nombre de la etiqueta con nombre anterior ":name"',
   'tag-validation-two'            => 'Has indicado dos etiquetas con el mismo nombre ":name"',

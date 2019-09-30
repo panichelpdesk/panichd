@@ -180,6 +180,8 @@ return [
   'category-reason-is-empty'      => 'Closing reason :number has no text',
   'category-reason-too-short'     => 'Closing reason :number with name ":name" requires :min characters',
   'category-reason-no-status'     => 'Closing reason :number with name ":name" requires a defined status',
+
+  'tag-regex'                     => '/^[A-Za-z0-9?@\/\-_\s]+$/',
   'category-tag-not-valid-format' => 'Tag ":tag" format is not valid',
   'tag-validation-two'            => 'You have introduced two tags with the same name ":name"',
 

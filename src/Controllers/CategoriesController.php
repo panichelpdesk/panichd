@@ -229,7 +229,7 @@ class CategoriesController extends Controller
         $a_kept_tags = $a_key_names = $a_names = $tag_rules = $tag_messages = [];
 
 		// Allow alphanumeric and the following: ? @ / - _
-        $tag_rule = "required|regex:/^[A-Za-z0-9?@\/\-_\s]+$/";
+        $tag_rule = "required|regex:" . trans('panichd::admin.tag-regex');
 
         $c_tags = Tag::all();
 
