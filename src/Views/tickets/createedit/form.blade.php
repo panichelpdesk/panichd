@@ -207,6 +207,15 @@
                     @include('panichd::tickets.partials.tags_menu')
                     </div>
                 </div>
+
+                @if($u->isAdmin())
+                    <div class="form-group row" style="display: none"><!-- NEW Tags container -->
+                        <label class="col-form-label col-lg-3">{{ trans('panichd::admin.category-edit-new-tags') . trans('panichd::lang.colon') }}</label>
+                        <div id="new_tags_container" class="col-lg-9 grouped_check_list deletion_list no-border coloured-list">
+                        
+                        </div>
+                    </div>
+                @endif
             @endif
 
         </div>
