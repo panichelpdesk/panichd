@@ -174,6 +174,7 @@ return [
 
   'new-tag-validation-empty'      => 'No pots registrar una etiqueta amb el nom en blanc',
   'update-tag-validation-empty'   => 'No pots deixar en blanc el nom de l\'etiqueta abans anomenada ":name"',
+  'tag-validation-two'            => 'Has indicat dues etiquetes amb el mateix nom ":name"',
 
   // Category form validation
   'category-reason-is-empty'      => 'La raó de tancament :number no té text',
