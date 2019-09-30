@@ -172,6 +172,7 @@ return [
   'category-edit-tag-background'  => 'Fons',
   'category-edit-tag-text'        => 'Text',
 
+  'tag-regex'                     => '/^[A-Za-z\x{00C0}-\x{017F}·\'0-9?@\/\-_\s]+$/u',
   'new-tag-validation-empty'      => 'No pots registrar una etiqueta amb el nom en blanc',
   'update-tag-validation-empty'   => 'No pots deixar en blanc el nom de l\'etiqueta abans anomenada ":name"',
   'tag-validation-two'            => 'Has indicat dues etiquetes amb el mateix nom ":name"',
