@@ -24,5 +24,4 @@
 
 @section('footer')
     @include('panichd::tickets.show.scripts')
-	@include('panichd::tickets.partials.tags_footer_script')
 @append
