@@ -226,27 +226,10 @@ class CategoriesController extends Controller
      */
     protected function add_tags_to($request)
     {
-        $tag_rules = $tag_messages = [];
+        $a_kept_tags = $a_key_names = $a_names = $tag_rules = $tag_messages = [];
 
 		// Allow alphanumeric and the following: ? @ / - _
         $tag_rule = "required|regex:/^[A-Za-z0-9?@\/\-_\s]+$/";
-
-        // Add validation for new tags
-        $a_tags_new = [];
-        if ($request->filled('new_tags')) {
-            foreach ($request->input('new_tags') as $id) {
-                if (!$request->has('jquery_delete_tag_' . $id)){
-                    $tag_rules['jquery_tag_name_' . $id] = $tag_rule;
-                    $tag_messages['jquery_tag_name_' . $id . '.required'] = trans('panichd::admin.new-tag-validation-empty');
-                    $tag_messages['jquery_tag_name_' . $id . '.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag' => $request->{'jquery_tag_name_' . $id}]);
-                    
-                    $a_tags_new[] = [
-                        'name' => $request->{'jquery_tag_name_' . $id},
-                        'color' => $request->{'jquery_tag_color_'.$id}
-                    ];
-                }
-            }
-        }
 
         $c_tags = Tag::all();
 
@@ -255,21 +238,73 @@ class CategoriesController extends Controller
             $tag = $c_tags->first(function($q)use($request, $i){
                 return $q->id == $request->{'jquery_tag_id_'.$i};
             });
-            if (!$request->has('jquery_delete_tag_'.$i) and !is_null($tag)) {
-                // Add validation for renamed tags
-                if ($request->exists('jquery_tag_name_'.$i) and $request->input('jquery_tag_id_'.$i) != "") {
-                    $name = $request->input('jquery_tag_name_'.$i);
-                    $request->merge(['jquery_tag_name_'.$i=>$name]);
-                    $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $name;
-                    $request['jquery_tag_name_'.$i] = $name;
-                    $tag_rules['jquery_tag_name_'.$i] = $tag_rule;
-                    $tag_messages['jquery_tag_name_' . $i . '.required'] = trans('panichd::admin.update-tag-validation-empty', ['name' => $tag->name]);
-                    $tag_messages['jquery_tag_name_'.$i.'.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$name]);
-                }
 
-                // Add colors for tag update
-                if ($request->input('jquery_tag_color_'.$i) != "") {
-                    $a_tags_update[$request->input('jquery_tag_id_'.$i)]['color'] = $request->input('jquery_tag_color_'.$i);
+            if ($request->has('jquery_tag_id_'.$i) and !$request->has('jquery_delete_tag_'.$i) and !is_null($tag)) {
+                // Tag has been kept in category
+                $a_kept_tags [$i] = $tag;
+
+                if ($request->exists('jquery_tag_name_'.$i)) {
+                    // Add new name for rule preparation
+                    $a_key_names[$i] = $request->{'jquery_tag_name_' . $i};
+                
+                }else{
+                    // Add current name (has not changed) for rule preparation
+                    $a_key_names[$i] = $tag->name;
+                }
+            }
+        }
+
+        // Names for new tags rule preparation
+        $a_names = array_values($a_key_names);
+
+        foreach ($a_kept_tags as $i => $tag){
+            // Add validation for renamed tags
+            if ($request->exists('jquery_tag_name_'.$i)) {
+                // New tag name
+                $new_name = $request->input('jquery_tag_name_'.$i);
+
+                $request->merge(['jquery_tag_name_'.$i=>$new_name]);
+                $a_tags_update[$request->input('jquery_tag_id_'.$i)]['name'] = $new_name;
+                $request['jquery_tag_name_'.$i] = $new_name;
+
+                // Rule for an updated tag
+                $a_this_not_in = $a_key_names;
+                unset($a_this_not_in[$i]);
+                $tag_rules['jquery_tag_name_'.$i] = $tag_rule . ($a_this_not_in ? '|not_in:' . implode(',', array_values($a_this_not_in)) : '');
+
+                // Add specific validation error messages
+                $tag_messages['jquery_tag_name_' . $i . '.required'] = trans('panichd::admin.update-tag-validation-empty', ['name' => $tag->name]);
+                $tag_messages['jquery_tag_name_' . $i . '.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag'=>$new_name]);
+                $tag_messages['jquery_tag_name_' . $i . '.not_in'] = trans('panichd::admin.tag-validation-two', ['name' => $new_name]);
+            
+            }
+
+            // Add colors for tag update
+            if ($request->input('jquery_tag_color_'.$i) != "") {
+                $a_tags_update[$request->input('jquery_tag_id_'.$i)]['color'] = $request->input('jquery_tag_color_'.$i);
+            }
+        }
+
+        // Add validation for new tags
+        $a_tags_new = [];
+        if ($request->filled('new_tags')) {
+            foreach ($request->input('new_tags') as $id) {
+                if (!$request->has('jquery_delete_tag_' . $id)){
+                    // Rule for new tag
+                    $tag_rules['jquery_tag_name_' . $id] = $tag_rule . ($a_names ? '|not_in:' . implode(',', $a_names) : '');
+
+                    // Add tag name to array
+                    $a_names[] = $request->{'jquery_tag_name_' . $id};            
+
+                    // Add specific validation error messages
+                    $tag_messages['jquery_tag_name_' . $id . '.required'] = trans('panichd::admin.new-tag-validation-empty');
+                    $tag_messages['jquery_tag_name_' . $id . '.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag' => $request->{'jquery_tag_name_' . $id}]);
+                    $tag_messages['jquery_tag_name_' . $id . '.not_in'] = trans('panichd::admin.tag-validation-two', ['name' => $request->{'jquery_tag_name_' . $id}]);
+
+                    $a_tags_new[] = [
+                        'name' => $request->{'jquery_tag_name_' . $id},
+                        'color' => $request->{'jquery_tag_color_'.$id}
+                    ];
                 }
             }
         }
@@ -295,7 +330,7 @@ class CategoriesController extends Controller
 				'email_name'   => 'required|string',
 				'email'        => 'required|email',
 			]);
-		}
+        }
 
 		$this->validate($request, $rules, $reason_messages);
 	}

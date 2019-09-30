@@ -115,6 +115,7 @@ return [
 
   'new-tag-validation-empty'      => 'No puedes registrar una etiqueta con el nombre en blanco',
   'update-tag-validation-empty'   => 'No puedes dejar en blanco el nombre de la etiqueta con nombre anterior ":name"',
+  'tag-validation-two'            => 'Has indicado dos etiquetas con el mismo nombre ":name"',
 
 // $admin_route_path/priority/____
   'priority-index-title'          => 'Administración de Prioridades',
