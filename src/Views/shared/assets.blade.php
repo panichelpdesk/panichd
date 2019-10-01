@@ -13,7 +13,7 @@
 
 </style>
 
-<link href="{{ asset('/vendor/panichd/css/panichd.css') }}?v=20190904" rel="stylesheet">
+<link href="{{ asset('/vendor/panichd/css/') }}panichd.css?v=20191001" rel="stylesheet">
 
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-3.4.1.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/panichd/js/jQuery/jquery-ui-1.12.1.min.js')}}"></script>
