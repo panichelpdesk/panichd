@@ -60,9 +60,9 @@
 				{!! $comment->updated_at->diffForHumans() !!}
 			</div></div></div>
 		@else
-		<div class="card mb-3 bg-light @if($u->id == $ticket->agent_id && $comment->read_by_agent == '0') unread_comment @endif">
+		<div class="card mb-3 bg-light @if($u->id == $ticket->agent_id && $comment->read_by_agent != '1') unread_comment @endif">
       <div class="card-header pt-2 pr-3 pb-1 pl-2">
-        <h6 class="card-title mb-0 @if($u->id == $ticket->agent_id && $comment->read_by_agent == '0') text-white @endif">
+        <h6 class="card-title mb-0 @if($u->id == $ticket->agent_id && $comment->read_by_agent != '1') text-white @endif">
           <span class="float-right">
             <span class="tooltip-info" data-toggle="tooltip" data-placement="top" title="{{ trans('panichd::lang.creation-date', [
             'date' => \Carbon\Carbon::parse($comment->created_at)->format(trans('panichd::lang.datetime-format'))

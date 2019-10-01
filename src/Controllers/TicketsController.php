@@ -405,7 +405,7 @@ class TicketsController extends Controller
 
 		// Column edits
         $collection->editColumn('id', function ($ticket) {
-			return '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0") ? ' unread_ticket_text"' : '' ) . '">'
+			return '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent != "1") ? ' unread_ticket_text"' : '' ) . '">'
 				.'<div class="tooltip-info" data-toggle="tooltip" title="'
 				.trans('panichd::lang.creation-date', ['date' => Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))])
 				.'">'.$ticket->id
@@ -1864,14 +1864,14 @@ class TicketsController extends Controller
 		$a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
 		
 		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id){
-			if ($ticket->read_by_agent == '0'){
+			if ($ticket->read_by_agent != '1'){
 				// Mark ticket as read
 				$ticket->read_by_agent = 1;
 				$ticket->save();
 
 				// Mark comments as read
 				foreach ($all_comments->get() as $comment){
-					if ($comment->read_by_agent == '0'){
+					if ($comment->read_by_agent != '1'){
 						$comment->read_by_agent = 1;
 						$comment->save();
 					}
