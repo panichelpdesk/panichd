@@ -1,8 +1,41 @@
 <script type="text/javascript">
+/*
+ * Color select2 tags in ticket edition
+ *
+ * This is used after select2 init + every select2:select event + every select2:unselect event
+*/
+function paint_ticket_tags ()
+{
+	$('.select2-selection__choice').each(function(elem){
+		_colors_elem = $(this).find('.j_tag_colors');
+		
+		// Set tag colors within select2
+		$(this).css('cssText', 'color: ' + _colors_elem.data('text_color') + ' !important;'
+			+ ' background-color: ' + _colors_elem.data('bg_color') + ' !important;'
+			+ ' border-color: ' + _colors_elem.data('bg_color') + ' !important;');
+
+		// Set remove icon style
+		$(this).find('.select2-selection__choice__remove').addClass('mr-2');
+		$(this).find('.select2-selection__choice__remove').css('cssText', 'color: ' + _colors_elem.data('text_color') + ' !important;');
+	});
+}
 $(function(){
 	// Select2 init for tags select 
 	$('.jquery_tag_category').select2({
-		tags: @if($u->isAdmin() && isset($new_tags_allowed)) true @else false @endif,
+		@if($u->isAdmin() && isset($new_tags_allowed))
+			tags: true,
+			templateSelection: function(params){
+				_bg_color = params.element.attributes.getNamedItem('data-bg_color').value;
+				_text_color = params.element.attributes.getNamedItem('data-text_color').value;
+
+				// Specify tag colors as data attributes
+				_option = $('<span class="j_tag_colors" data-bg_color="' + _bg_color + '" data-text_color="' + _text_color + '">' + params.text + '</span>');
+				return _option;
+			},
+
+		@else
+			tags: false,
+		@endif
 		tokenSeparators: [','],
 	});
 
@@ -15,8 +48,6 @@ $(function(){
 			if (_data.id == _data.text){
 				// Prevent from adding it into select2
 				e.preventDefault();
-				
-				
 
 				// Generate new tag HTML
 				var tag_id = embed_new_tag_html();
@@ -34,6 +65,20 @@ $(function(){
 				// Clear select2 search input
 				$('.jquery_tag_category option[value="' + _data.text + '"]').first().closest('select').select2('close');
 			}
+		});
+
+
+		// Paint select2 init tags
+		paint_ticket_tags();
+
+		$('.jquery_tag_category').on('select2:select', function (e) {
+			// Paint select2 tags when selecting within select2
+			paint_ticket_tags();
+		});
+
+		$('.jquery_tag_category').on('select2:unselect', function (e) {
+			// Paint select2 tags when unselecting (click on any times icon) within select2
+			paint_ticket_tags();
 		});
 	@endif
 	
