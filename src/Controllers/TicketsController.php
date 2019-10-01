@@ -2122,6 +2122,16 @@ class TicketsController extends Controller
 			}
 		}
 
+		// List old tags 
+		$old_tags = $ticket->tags()->pluck('id')->toArray();
+		
+		// Check if tag list has changed
+		sort($old_tags);
+		sort($all_ticket_tags);
+		if($old_tags != $all_ticket_tags){
+			$ticket->touch();
+		}
+
         // Sync all ticket tags
         $ticket->tags()->sync($all_ticket_tags);
 
