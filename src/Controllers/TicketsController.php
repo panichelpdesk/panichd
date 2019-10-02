@@ -2414,6 +2414,7 @@ class TicketsController extends Controller
 		return response()->json([
 			'result' => $result,
 			'message' => $message,
+			'read_by_agent' => $ticket->read_by_agent,
 			'last_update' => $this->last_update_string()
 		]);
 	}

@@ -19,6 +19,41 @@
 
 	var category_id=<?=$ticket->category_id;?>;
 	$(document).ready(function() {
+		// Mark ticket as read / unread
+		$(document).on('click', '.unread_toggle', function(e){
+			e.preventDefault();
+
+			$.ajax({
+				type: "POST",
+				url: '{{ route($setting->grab('main_route').'.ajax.read') }}',
+				data: {
+					_token: "{{ csrf_token() }}",
+					ticket_id: $(this).attr('data-ticket_id')
+				},
+
+				success: function( response ) {
+					if (response.result == "ok"){
+						if (response.read_by_agent == "1"){
+							// Mark ticket subject
+							$('#ticket-body h2').removeClass('unread_ticket_text');
+
+							// Change icon
+							$('.unread_toggle i.fas').removeClass().addClass('fas').addClass('fa-user');
+						}else{
+							$('#ticket-body h2').addClass('unread_ticket_text');
+							$('.unread_toggle i.fas').removeClass().addClass('fas').addClass('fa-user-lock');
+						}
+
+						// Update button title
+						$('.unread_toggle').blur().tooltip('dispose');
+						$('.unread_toggle').prop('title', response.read_by_agent == "2" ? '{{ trans('panichd::lang.mark-as-read') }}' : '{{ trans('panichd::lang.mark-as-unread') }}');
+						$('.unread_toggle').tooltip();
+					}
+				}
+			});
+		});
+		
+		// Delete ticket
 		$( ".deleteit" ).click(function( event ) {
 			event.preventDefault();
 			if (confirm("{!! trans('panichd::lang.show-ticket-js-delete') !!}" + $(this).attr("node") + " ?"))
