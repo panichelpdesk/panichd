@@ -1872,18 +1872,16 @@ class TicketsController extends Controller
 
 		$a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
 		
-		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id){
-			if ($ticket->read_by_agent != '1'){
-				// Mark ticket as read
-				$ticket->read_by_agent = 1;
-				$ticket->save();
+		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id and $ticket->read_by_agent == '0'){
+			// Mark ticket as read
+			$ticket->read_by_agent = 1;
+			$ticket->save();
 
-				// Mark comments as read
-				foreach ($all_comments->get() as $comment){
-					if ($comment->read_by_agent != '1'){
-						$comment->read_by_agent = 1;
-						$comment->save();
-					}
+			// Mark comments as read
+			foreach ($all_comments->get() as $comment){
+				if ($comment->read_by_agent != '1'){
+					$comment->read_by_agent = 1;
+					$comment->save();
 				}
 			}
 		}
@@ -2014,7 +2012,7 @@ class TicketsController extends Controller
 			$ticket->agent_id = $request->input('agent_id');
 		}
 
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$ticket->read_by_agent = 0;
 		}
@@ -2246,7 +2244,7 @@ class TicketsController extends Controller
 
 			$ticket->completed_at = Carbon::now();
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2309,7 +2307,7 @@ class TicketsController extends Controller
 		$comment->user_id = $this->member->id;
 		$comment->ticket_id = $ticket->id;
 
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$comment->read_by_agent = 0;
 		}
@@ -2338,7 +2336,7 @@ class TicketsController extends Controller
 			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2492,7 +2490,7 @@ class TicketsController extends Controller
 		}else{
 			$ticket->priority_id = $request->input('priority_id');
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2538,7 +2536,7 @@ class TicketsController extends Controller
 		}else{
 			$ticket->status_id = $request->input('status_id');
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2576,7 +2574,7 @@ class TicketsController extends Controller
 
 		$ticket->hidden = $value=='true' ? 1 : 0;
 
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$ticket->read_by_agent = 0;
 		}
@@ -2609,7 +2607,7 @@ class TicketsController extends Controller
 		$comment->user_id = $this->member->id;
 		$comment->ticket_id = $ticket->id;
 		
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$comment->read_by_agent = 0;
 		}
