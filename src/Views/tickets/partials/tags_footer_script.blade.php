@@ -20,22 +20,18 @@ function paint_ticket_tags ()
 	});
 }
 $(function(){
-	// Select2 init for tags select 
+	// Tags Select2 add color as properties at init
 	$('.jquery_tag_category').select2({
-		@if($u->isAdmin() && isset($new_tags_allowed))
-			tags: true,
-			templateSelection: function(params){
-				_bg_color = params.element.attributes.getNamedItem('data-bg_color').value;
-				_text_color = params.element.attributes.getNamedItem('data-text_color').value;
+		@if(isset($new_tags_allowed)) tags: true, @else tags: false, @endif
+			
+		templateSelection: function(params){
+			_bg_color = params.element.attributes.getNamedItem('data-bg_color').value;
+			_text_color = params.element.attributes.getNamedItem('data-text_color').value;
 
-				// Specify tag colors as data attributes
-				_option = $('<span class="j_tag_colors" data-bg_color="' + _bg_color + '" data-text_color="' + _text_color + '">' + params.text + '</span>');
-				return _option;
-			},
-
-		@else
-			tags: false,
-		@endif
+			// Specify tag colors as data attributes
+			_option = $('<span class="j_tag_colors" data-bg_color="' + _bg_color + '" data-text_color="' + _text_color + '">' + params.text + '</span>');
+			return _option;
+		},
 		tokenSeparators: [','],
 	});
 
@@ -66,21 +62,20 @@ $(function(){
 				$('.jquery_tag_category option[value="' + _data.text + '"]').first().closest('select').select2('close');
 			}
 		});
-
-
-		// Paint select2 init tags
-		paint_ticket_tags();
-
-		$('.jquery_tag_category').on('select2:select', function (e) {
-			// Paint select2 tags when selecting within select2
-			paint_ticket_tags();
-		});
-
-		$('.jquery_tag_category').on('select2:unselect', function (e) {
-			// Paint select2 tags when unselecting (click on any times icon) within select2
-			paint_ticket_tags();
-		});
 	@endif
+
+	// Paint select2 init tags
+	paint_ticket_tags();
+
+	$('.jquery_tag_category').on('select2:select', function (e) {
+		// Paint select2 tags when selecting within select2
+		paint_ticket_tags();
+	});
+
+	$('.jquery_tag_category').on('select2:unselect', function (e) {
+		// Paint select2 tags when unselecting (click on any times icon) within select2
+		paint_ticket_tags();
+	});
 	
 	var category_id = @if(isset($category_id)) '{{ $category_id }}' @else '' @endif;
 
