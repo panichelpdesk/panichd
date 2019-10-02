@@ -20,6 +20,7 @@
 @include('panichd::shared.datetimepicker')
 @include('panichd::shared.jcrop_files')
 @include('panichd::tickets.partials.summernote')
+@include('panichd::shared.colorpicker', ['include_colorpickerplus_script' => true])
 
 @section('footer')
 	@include('panichd::tickets.createedit.scripts')
@@ -28,5 +29,9 @@
 		@include('panichd::tickets.partials.comments.embedded_scripts')
 	@endif
 
-	@include('panichd::tickets.partials.tags_footer_script', ['category_id' => $a_current['cat_id']])
+	@include('panichd::tickets.partials.tags_footer_script', ['new_tags_allowed' => true, 'category_id' => $a_current['cat_id']])
 @append
+
+@if($u->isAdmin())
+	@include('panichd::shared.tag_create_edit')
+@endif

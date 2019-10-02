@@ -135,6 +135,7 @@ return [
   'category-index-email'          => 'Notifications email',
   'category-index-reasons'        => 'Closing reasons',
   'category-index-tags'           => 'Tags',
+
   'category-create-title'         => 'Create New Category',
   'category-create-name'          => 'Name',
   'category-create-email'         => 'Notifications email',
@@ -154,24 +155,35 @@ return [
   'category-create-color'         => 'Color',
   'category-create-new-tickets'   => 'Who may create tickets',
   'category-create-new-tickets-help'   => 'Minimum level to create tickets in category',
+
   'category-edit-title'           => 'Edit Category: :name',
+
   'category-edit-closing-reasons'      => 'Ticket closing reasons',
   'category-edit-closing-reasons-help' => 'Options that user may choose when closing ticket',
   'category-edit-reason'          => 'Closing reason',
   'category-edit-reason-label'    => 'Reason',
   'category-edit-reason-status'   => 'Status',
   'category-delete-reason'        => 'Delete reason',
+
   'category-edit-new-tags'        => 'New tags',
   'category-edit-current-tags'    => 'Current tags',
+  'category-edit-new-tag-title'   => 'Create a new tag',
+  'category-edit-new-tag-default' => 'New tag',
   'category-edit-tag'             => 'Edit tag',
   'category-edit-tag-background'  => 'Background',
   'category-edit-tag-text'        => 'Text',
+
+  'new-tag-validation-empty'      => 'You cannot register a tag with an empty name',
+  'update-tag-validation-empty'   => 'You cannot leave blank the tag name of the one previously named ":name"',
   
   // Category form validation
   'category-reason-is-empty'      => 'Closing reason :number has no text',
   'category-reason-too-short'     => 'Closing reason :number with name ":name" requires :min characters',
   'category-reason-no-status'     => 'Closing reason :number with name ":name" requires a defined status',
+
+  'tag-regex'                     => '/^[A-Za-z0-9?@\/\-_\s]+$/',
   'category-tag-not-valid-format' => 'Tag ":tag" format is not valid',
+  'tag-validation-two'            => 'You have introduced two tags with the same name ":name"',
 
 // $admin_route_path/member/____
   'member-index-title'            => 'Members management',

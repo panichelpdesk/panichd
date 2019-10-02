@@ -1394,7 +1394,18 @@ class TicketsController extends Controller
 			'owner_id'    => 'required|exists:' . $this->member->getTable() . ',id',
 			'category_id' => 'required|in:'.$allowed_categories,
             'content'     => 'required|min:6',
-        ];
+		];
+		
+		// Custom validation messages
+		$custom_messages = [
+			'subject.required'        => trans ('panichd::lang.validate-ticket-subject.required'),
+			'subject.min'             => trans ('panichd::lang.validate-ticket-subject.min'),
+			'content.required'        => trans ('panichd::lang.validate-ticket-content.required'),
+			'content.min'             => trans ('panichd::lang.validate-ticket-content.min'),
+			'start_date_year.in'      => trans ('panichd::lang.validate-ticket-start_date'),
+			'limit_date_year.in'      => trans ('panichd::lang.validate-ticket-limit_date'),
+		];
+
 		$a_result_errors = [];
 
 		if ($permission_level > 1) {
@@ -1460,6 +1471,26 @@ class TicketsController extends Controller
 				}
 			}
 
+			// New tags validation
+			if ($request->has('new_tags') and $request->filled('new_tags')) {
+				// Current category tag names array
+				$a_names = Tag::whereHas('categories', function($query)use($request){ $query->where('id', $request->category_id); })->pluck('name')->toArray();
+
+				foreach ($request->input('new_tags') as $id) {
+					if (!$request->has('jquery_delete_tag_' . $id)){
+						// Rule for new tag
+						$fields['jquery_tag_name_' . $id] = "required|regex:" . trans('panichd::admin.tag-regex') . ($a_names ? '|not_in:' . implode(',', $a_names) : '');
+	
+						// Add tag name to array
+						$a_names[] = $request->{'jquery_tag_name_' . $id};            
+	
+						// Add specific validation error messages
+						$custom_messages['jquery_tag_name_' . $id . '.required'] = trans('panichd::admin.new-tag-validation-empty');
+						$custom_messages['jquery_tag_name_' . $id . '.regex'] = trans('panichd::admin.category-tag-not-valid-format', ['tag' => $request->{'jquery_tag_name_' . $id}]);
+						$custom_messages['jquery_tag_name_' . $id . '.not_in'] = trans('panichd::admin.tag-validation-two', ['name' => $request->{'jquery_tag_name_' . $id}]);
+					}
+				}
+			}
 
 			$a_intervention = $common_data['a_intervention'] = $this->purifyInterventionHtml($request->get('intervention'));
 			$request->merge([
@@ -1471,16 +1502,6 @@ class TicketsController extends Controller
 				$fields['attachments'] = 'array';
 			}
         }
-
-		// Custom validation messages
-		$custom_messages = [
-			'subject.required'        => trans ('panichd::lang.validate-ticket-subject.required'),
-			'subject.min'             => trans ('panichd::lang.validate-ticket-subject.min'),
-			'content.required'        => trans ('panichd::lang.validate-ticket-content.required'),
-			'content.min'             => trans ('panichd::lang.validate-ticket-content.min'),
-			'start_date_year.in'      => trans ('panichd::lang.validate-ticket-start_date'),
-			'limit_date_year.in'      => trans ('panichd::lang.validate-ticket-limit_date'),
-		];
 
 		// Form validation
         $validator = Validator::make($request->all(), $fields, $custom_messages);
@@ -2060,7 +2081,6 @@ class TicketsController extends Controller
      */
     protected function sync_ticket_tags($request, $ticket)
     {
-
         // Get marked current tags
         $input_tags = $request->input('category_'.$request->input('category_id').'_tags');
         if (!$input_tags) {
@@ -2070,16 +2090,50 @@ class TicketsController extends Controller
         // Valid tags has all category tags
         $category_tags = $ticket->category->tags()->get();
         $category_tags = (version_compare(app()->version(), '5.3.0', '>=')) ? $category_tags->pluck('id')->toArray() : $category_tags->lists('id')->toArray();
-        // Valid tags has ticket tags that doesn't have category
+		
+		// Valid tags has ticket tags that doesn't have category
         $ticket_only_tags = Tag::doesntHave('categories')->whereHas('tickets', function ($q2) use ($ticket) {
             $q2->where('id', $ticket->id);
         })->get();
         $ticket_only_tags = (version_compare(app()->version(), '5.3.0', '>=')) ? $ticket_only_tags->pluck('id')->toArray() : $ticket_only_tags->lists('id')->toArray();
 
-        $tags = array_intersect($input_tags, array_merge($category_tags, $ticket_only_tags));
+		// Filter valid assigned tags
+        $all_ticket_tags = array_intersect($input_tags, array_merge($category_tags, $ticket_only_tags));
+
+		// Add new tags
+		if ($request->has('new_tags') and $request->filled('new_tags')) {
+			foreach ($request->input('new_tags') as $id) {
+				$colors = $request->{'jquery_tag_color_'.$id};
+				$a_colors = explode('_', $colors);
+				if (!$request->has('jquery_delete_tag_' . $id)){
+					// Create new tag
+					$tag = Tag::create([
+						'name' => $request->{'jquery_tag_name_' . $id},
+						'bg_color' => $a_colors[0],
+						'text_color' => $a_colors[1]
+					]);
+					
+					// Attach tag to the ticket category
+					$ticket->category()->first()->tags()->attach($tag);
+
+					// Attach tag to ticket
+					$all_ticket_tags[] = $tag->id;
+				}
+			}
+		}
+
+		// List old tags 
+		$old_tags = $ticket->tags()->pluck('id')->toArray();
+		
+		// Check if tag list has changed
+		sort($old_tags);
+		sort($all_ticket_tags);
+		if($old_tags != $all_ticket_tags){
+			$ticket->touch();
+		}
 
         // Sync all ticket tags
-        $ticket->tags()->sync($tags);
+        $ticket->tags()->sync($all_ticket_tags);
 
         // Delete orphan tags (Without any related categories or tickets)
         Tag::doesntHave('categories')->doesntHave('tickets')->delete();

@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-xs {
 	padding  : .4rem;
 	font-size  : .9rem;
-	line-height  : .5;
+	line-height  : .5rem;
 	border-radius : .2rem;
 }
 
@@ -302,6 +302,9 @@ h1, h2, h3, h4, h5, h6 {
 /* Tags */
 .btn.btn-tag {
 	border: transparent;
+}
+.btn-tag.btn-xs {
+	line-height: 0.9rem;
 }
 
 .card-highlight {
