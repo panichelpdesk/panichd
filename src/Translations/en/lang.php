@@ -39,6 +39,8 @@ return [
   'no-tickets-yet'                   => 'No tickets yet', # Pending to move old admin.index-empty-records in other languages
   'list-no-tickets'                  => 'There are no tickets in this list',
   'updated-by-other'                 => 'Updated by other member',
+  'mark-as-read'                     => 'Mark this ticket as read',
+  'mark-as-unread'                   => 'Mark and lock this ticket as unread',
   'table-info-attachments-total'     => ':num attached files',
   'table-info-comments-total'        => ':num Total comments.',
   'table-info-comments-recent'       => ':num recent ones.',
