@@ -145,6 +145,15 @@ h1, h2, h3, h4, h5, h6 {
 	background-color: #f8f9fa;
 }
 
+/* Mark as read / unread button */
+.unread_toggle {
+	background-color: transparent;
+	border-color: transparent;
+}
+.unread_toggle .fa-user {
+	color: #ccc;
+}
+
 /* Unread ticket highlighted text style */
 .unread_ticket_text {
 	font-weight: bold;
@@ -261,6 +270,7 @@ h1, h2, h3, h4, h5, h6 {
 /*
  * Tickets table
 */
+
 #tickets-table .fa.attachment, #tickets-table .fa.comment, #tickets-table .fa.tickethidden {
 	color: #999;
 }
