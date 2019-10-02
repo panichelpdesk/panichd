@@ -39,6 +39,12 @@ return [
   'no-tickets-yet'                   => 'Encara no hi ha tiquets',
   'list-no-tickets'                  => 'En aquesta llista no hi ha tiquets',
   'updated-by-other'                 => 'Actualitzat per un altre membre',
+  'mark-as-read'                     => 'Marcar aquest tiquet com a llegit',
+  'mark-as-unread'                   => 'Marcar i bloquejar aquest tiquet com a no llegit',
+  'read-validation-error'            => 'No s\'ha pogut marcar aquest tiquet com a llegit / no llegit',
+  'read-validation-ok-read'          => 'Tiquet marcat com a llegit',
+  'read-validation-ok-unread'        => 'Tiquet marcat com a no llegit',
+
   'table-info-attachments-total'     => ':num fitxers adjunts',
   'table-info-comments-total'        => ':num comentaris totals.',
   'table-info-comments-recent'       => ':num recents.',

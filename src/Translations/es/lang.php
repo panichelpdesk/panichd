@@ -20,6 +20,10 @@ return [
   'table-category'                   => 'Categoría',
 
   'updated-by-other'                 => 'Actualizado por otro miembro',
+  'mark-as-read'                     => 'Marcar este tique como leído',
+  'mark-as-unread'                   => 'Marcar y bloquear este tique como no leído',
+  'read-validation-ok-read'          => 'Tique marcado como leído',
+  'read-validation-ok-unread'        => 'Tique marcado como no leído',
 
   // Datatables
   'table-decimal'                    => '',

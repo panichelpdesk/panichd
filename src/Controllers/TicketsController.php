@@ -48,7 +48,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'changeStatus', 'hide']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeRead', 'changeAgent', 'changePriority', 'changeStatus', 'hide']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware', ['only' => ['search_form', 'register_search_fields']]);
 
@@ -258,7 +258,7 @@ class TicketsController extends Controller
 	 *
 	 * @return String
 	*/
-	public function last_update_string($ticketList)
+	public function last_update_string($ticketList = null)
 	{
 		$last_update = Ticket::orderBy('updated_at', 'desc')->first();
 		
@@ -405,13 +405,22 @@ class TicketsController extends Controller
 
 		// Column edits
         $collection->editColumn('id', function ($ticket) {
-			return '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0") ? ' unread_ticket_text"' : '' ) . '">'
+			$column = '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent != "1") ? ' unread_ticket_text"' : '' ) . '">'
 				.'<div class="tooltip-info" data-toggle="tooltip" title="'
 				.trans('panichd::lang.creation-date', ['date' => Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))])
 				.'">'.$ticket->id
-				.'</div>'
-				. (($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0") ? '<div class="tooltip-info" data-toggle="tooltip" title="' . trans('panichd::lang.updated-by-other') . '"><i class="fas fa-user-edit"></i></div>' : '')
 				.'</div>';
+
+			if ($this->member->id == $ticket->agent_id){
+				// For assigned agent: Mark ticket as read / unread
+				$column.= '<button class="btn btn-light btn-xs unread_toggle tooltip-info" data-ticket_id="' . $ticket->id . '" data-toggle="tooltip" '
+					. ' title="' . ($ticket->read_by_agent == "2" ? trans('panichd::lang.mark-as-read') : trans('panichd::lang.mark-as-unread')) . '">'
+					. '<i class="fas ' . ($ticket->read_by_agent == "2" ? 'fa-user-lock' : ($ticket->read_by_agent == "1" ? 'fa-user' : 'fa-user-edit')) . '"></i></button>';
+			}
+			
+			$column.= '</div>';
+
+			return $column;
 		});
 
 		$collection->editColumn('subject', function ($ticket) {
@@ -421,7 +430,7 @@ class TicketsController extends Controller
 					$ticket->id
 				);
 
-			if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0"){
+			if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent != "1"){
 				$field = '<span class="unread_ticket_text">' . $field . '</span>';
 			}
 
@@ -1863,18 +1872,16 @@ class TicketsController extends Controller
 
 		$a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
 		
-		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id){
-			if ($ticket->read_by_agent == '0'){
-				// Mark ticket as read
-				$ticket->read_by_agent = 1;
-				$ticket->save();
+		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id and $ticket->read_by_agent == '0'){
+			// Mark ticket as read
+			$ticket->read_by_agent = 1;
+			$ticket->save();
 
-				// Mark comments as read
-				foreach ($all_comments->get() as $comment){
-					if ($comment->read_by_agent == '0'){
-						$comment->read_by_agent = 1;
-						$comment->save();
-					}
+			// Mark comments as read
+			foreach ($all_comments->get() as $comment){
+				if ($comment->read_by_agent != '1'){
+					$comment->read_by_agent = 1;
+					$comment->save();
 				}
 			}
 		}
@@ -2005,7 +2012,7 @@ class TicketsController extends Controller
 			$ticket->agent_id = $request->input('agent_id');
 		}
 
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$ticket->read_by_agent = 0;
 		}
@@ -2237,7 +2244,7 @@ class TicketsController extends Controller
 
 			$ticket->completed_at = Carbon::now();
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2300,7 +2307,7 @@ class TicketsController extends Controller
 		$comment->user_id = $this->member->id;
 		$comment->ticket_id = $ticket->id;
 
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$comment->read_by_agent = 0;
 		}
@@ -2329,7 +2336,7 @@ class TicketsController extends Controller
 			$ticket->intervention = $ticket->intervention . ' ' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 			$ticket->intervention_html = $ticket->intervention_html . '<br />' . $date . ' ' . trans('panichd::lang.reopened-by-user', ['user' => $this->member->name]);
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2381,6 +2388,35 @@ class TicketsController extends Controller
         } else {
             return ['auto' => 'Auto Select'];
         }
+	}
+
+/*
+	 * AJAX Mark ticket as read / unread
+	 * 
+	 * @return Response
+	*/
+	public function changeRead(Request $request)
+  {
+		$result = "error";
+		$message = trans('panichd::lang.read-validation-error');
+	
+		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$ticket = clone $original_ticket;
+		
+		if ($ticket->agent->id == auth()->user()->id){
+			$ticket->read_by_agent = $ticket->read_by_agent == "2" ? "1" : "2";
+			$ticket->save();
+
+			$result = "ok";
+			$message = trans('panichd::lang.read-validation-ok-' . ($ticket->read_by_agent == "1" ? 'read' : 'unread'));
+		}
+
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'read_by_agent' => $ticket->read_by_agent,
+			'last_update' => $this->last_update_string()
+		]);
 	}
 
 	/*
@@ -2455,7 +2491,7 @@ class TicketsController extends Controller
 		}else{
 			$ticket->priority_id = $request->input('priority_id');
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2501,7 +2537,7 @@ class TicketsController extends Controller
 		}else{
 			$ticket->status_id = $request->input('status_id');
 
-			if ($ticket->agent_id != $this->member->id){
+			if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 				// Ticket will be unread for assigned agent
 				$ticket->read_by_agent = 0;
 			}
@@ -2539,7 +2575,7 @@ class TicketsController extends Controller
 
 		$ticket->hidden = $value=='true' ? 1 : 0;
 
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$ticket->read_by_agent = 0;
 		}
@@ -2572,7 +2608,7 @@ class TicketsController extends Controller
 		$comment->user_id = $this->member->id;
 		$comment->ticket_id = $ticket->id;
 		
-		if ($ticket->agent_id != $this->member->id){
+		if ($ticket->agent_id != $this->member->id and $ticket->read_by_agent != "2"){
 			// Ticket will be unread for assigned agent
 			$comment->read_by_agent = 0;
 		}
