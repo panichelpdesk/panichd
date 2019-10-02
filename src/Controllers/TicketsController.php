@@ -48,7 +48,7 @@ class TicketsController extends Controller
     {
         $this->middleware('PanicHD\PanicHD\Middleware\EnvironmentReadyMiddleware', ['only' => ['create']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\UserAccessMiddleware', ['only' => ['show', 'downloadAttachment', 'viewAttachment']]);
-        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeAgent', 'changePriority', 'changeStatus', 'hide']]);
+        $this->middleware('PanicHD\PanicHD\Middleware\AgentAccessMiddleware', ['only' => ['edit', 'update', 'changeRead', 'changeAgent', 'changePriority', 'changeStatus', 'hide']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAdminMiddleware', ['only' => ['destroy']]);
 		$this->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware', ['only' => ['search_form', 'register_search_fields']]);
 
@@ -258,7 +258,7 @@ class TicketsController extends Controller
 	 *
 	 * @return String
 	*/
-	public function last_update_string($ticketList)
+	public function last_update_string($ticketList = null)
 	{
 		$last_update = Ticket::orderBy('updated_at', 'desc')->first();
 		
@@ -413,7 +413,7 @@ class TicketsController extends Controller
 
 			if ($this->member->id == $ticket->agent_id){
 				// For assigned agent: Mark ticket as read / unread
-				$column.= '<button class="btn btn-light btn-xs unread_toggle tooltip-info" data-id="' . $ticket->id . '" data-toggle="tooltip" '
+				$column.= '<button class="btn btn-light btn-xs unread_toggle tooltip-info" data-ticket_id="' . $ticket->id . '" data-toggle="tooltip" '
 					. ' title="' . ($ticket->read_by_agent == "2" ? trans('panichd::lang.mark-as-read') : trans('panichd::lang.mark-as-unread')) . '">'
 					. '<i class="fas ' . ($ticket->read_by_agent == "2" ? 'fa-user-lock' : ($ticket->read_by_agent == "1" ? 'fa-user' : 'fa-user-edit')) . '"></i></button>';
 			}
@@ -2390,6 +2390,34 @@ class TicketsController extends Controller
         } else {
             return ['auto' => 'Auto Select'];
         }
+	}
+
+/*
+	 * AJAX Mark ticket as read / unread
+	 * 
+	 * @return Response
+	*/
+	public function changeRead(Request $request)
+  {
+		$result = "error";
+		$message = "Could not mark ticket as read / unread";
+	
+		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
+		$ticket = clone $original_ticket;
+		
+		if ($ticket->agent->id == auth()->user()->id){
+			$ticket->read_by_agent = $ticket->read_by_agent == "2" ? "1" : "2";
+			$ticket->save();
+
+			$result = "ok";
+			$message = "Ticket marked as " . ($ticket->read_by_agent == "1" ? 'read' : 'unread');
+		}
+
+		return response()->json([
+			'result' => $result,
+			'message' => $message,
+			'last_update' => $this->last_update_string()
+		]);
 	}
 
 	/*

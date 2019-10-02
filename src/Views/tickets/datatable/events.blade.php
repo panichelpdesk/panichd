@@ -1,5 +1,24 @@
 <script>
 	$(function(){
+		// Mark ticket as read / unread
+		$(document).off('click', '.unread_toggle');
+		$(document).on('click', '.unread_toggle', function(e){
+			e.preventDefault();
+
+			$.ajax({
+				type: "POST",
+				url: '{{ route($setting->grab('main_route').'.ajax.read') }}',
+				data: {
+					_token: "{{ csrf_token() }}",
+					ticket_id: $(this).attr('data-ticket_id')
+				},
+
+				success: function( response ) {
+					success_popover(response);
+				}
+			});
+		});
+		
 		// Plus / less buttons for text fields
 		$(document).on('click', '.jquery_ticket_text_toggle', function(e){
 			var remove = $(this).find('span.fa').hasClass("fa-plus") ? 'plus' : 'minus';
