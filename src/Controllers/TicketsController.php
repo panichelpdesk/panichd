@@ -2398,7 +2398,7 @@ class TicketsController extends Controller
 	public function changeRead(Request $request)
   {
 		$result = "error";
-		$message = "Could not mark ticket as read / unread";
+		$message = trans('panichd::lang.read-validation-error');
 	
 		$original_ticket = Ticket::findOrFail($request->input('ticket_id'));
 		$ticket = clone $original_ticket;
@@ -2408,7 +2408,7 @@ class TicketsController extends Controller
 			$ticket->save();
 
 			$result = "ok";
-			$message = "Ticket marked as " . ($ticket->read_by_agent == "1" ? 'read' : 'unread');
+			$message = trans('panichd::lang.read-validation-ok-' . ($ticket->read_by_agent == "1" ? 'read' : 'unread'));
 		}
 
 		return response()->json([
