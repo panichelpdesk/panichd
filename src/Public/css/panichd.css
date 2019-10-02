@@ -146,11 +146,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Mark as read / unread button */
-.unread_toggle {
+#tickets-table .unread_toggle {
 	background-color: transparent;
 	border-color: transparent;
 }
-.unread_toggle .fa-user {
+#tickets-table .unread_toggle .fa-user {
 	color: #ccc;
 }
 
