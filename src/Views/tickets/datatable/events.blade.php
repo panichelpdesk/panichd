@@ -87,9 +87,6 @@
 			var form = $(this);
 			var Form_Data = new FormData(form[0]);
 
-			// Append existent last_update value
-			Form_Data.append('ticketList', '{{ $ticketList }}');
-
 			$.ajax({
 				processData: false,
 				contentType: false,
@@ -113,8 +110,7 @@
 
 			var ajax_data = {
 				_token: "{{ csrf_token() }}",
-				ticket_id: $(this).attr('data-ticket-id'),
-				ticketList: '{{ $ticketList }}'
+				ticket_id: $(this).attr('data-ticket-id')
 			};
 
 			if ($(this).attr('data-field') == 'priority'){

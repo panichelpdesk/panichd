@@ -249,7 +249,7 @@ class TicketsController extends Controller
 	{
 		return response()->json([
 			'result' => 'ok',
-			'message' => $this->last_update_string($ticketList)
+			'message' => $this->last_update_string()
 		]);
 	}
 
@@ -258,7 +258,7 @@ class TicketsController extends Controller
 	 *
 	 * @return String
 	*/
-	public function last_update_string($ticketList = null)
+	public function last_update_string()
 	{
 		$last_update = Ticket::orderBy('updated_at', 'desc')->first();
 		
@@ -2467,7 +2467,7 @@ class TicketsController extends Controller
 		return response()->json([
 			'result' => $result,
 			'message' => $message,
-			'last_update' => $this->last_update_string($request->ticketList)
+			'last_update' => $this->last_update_string()
 		]);
 	}
 
@@ -2513,7 +2513,7 @@ class TicketsController extends Controller
 		return response()->json([
 			'result' => $result,
 			'message' => $message,
-			'last_update' => $this->last_update_string($request->ticketList)
+			'last_update' => $this->last_update_string()
 		]);
 	}
 
@@ -2559,7 +2559,7 @@ class TicketsController extends Controller
 		return response()->json([
 			'result' => $result,
 			'message' => $message,
-			'last_update' => $this->last_update_string($request->ticketList)
+			'last_update' => $this->last_update_string()
 		]);
 	}
 
