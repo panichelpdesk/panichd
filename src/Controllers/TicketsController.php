@@ -405,13 +405,22 @@ class TicketsController extends Controller
 
 		// Column edits
         $collection->editColumn('id', function ($ticket) {
-			return '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent != "1") ? ' unread_ticket_text"' : '' ) . '">'
+			$column = '<div class="tooltip-wrap-15' . (($this->member->id == $ticket->agent_id and $ticket->read_by_agent != "1") ? ' unread_ticket_text"' : '' ) . '">'
 				.'<div class="tooltip-info" data-toggle="tooltip" title="'
 				.trans('panichd::lang.creation-date', ['date' => Carbon::parse($ticket->created_at)->format(trans('panichd::lang.datetime-format'))])
 				.'">'.$ticket->id
-				.'</div>'
-				. (($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0") ? '<div class="tooltip-info" data-toggle="tooltip" title="' . trans('panichd::lang.updated-by-other') . '"><i class="fas fa-user-edit"></i></div>' : '')
 				.'</div>';
+
+			if (($this->member->id == $ticket->agent_id){
+				$column.= '<button class="btn btn-light btn-xs jquery_ticket_unread_toggle' . ($ticket->read_by_agent != "1" ? ' tooltip-info' : '') . '" data-id="' . $ticket->id . '"'
+				
+
+				$column.= '><i class="fas fa-user-edit"></i></button';
+			}
+			if($ticket->read_by_agent != "1") ? 'data-toggle="tooltip" title="' . trans('panichd::lang.updated-by-other') . '"></div>' : '')
+			$column.= '</div>';
+
+			return $column;
 		});
 
 		$collection->editColumn('subject', function ($ticket) {
@@ -421,7 +430,7 @@ class TicketsController extends Controller
 					$ticket->id
 				);
 
-			if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent == "0"){
+			if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent != "1"){
 				$field = '<span class="unread_ticket_text">' . $field . '</span>';
 			}
 
