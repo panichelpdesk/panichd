@@ -1069,7 +1069,7 @@ class TicketsController extends Controller
 		$search_URL = route(Setting::grab('main_route') . '.search');
 
 		// Check all fields
-		$a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
+		$a_fields = array_merge($this->a_search_fields_numeric, ['tags_type'], $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
 		foreach ($a_fields as $field){
 			if($request->filled($field)){
 				// Add field to search
@@ -1102,7 +1102,12 @@ class TicketsController extends Controller
 					}
 
 					$search_URL.= '/' . $field . '_type/' . $search_fields[$field . '_type'];
-				} 
+				}
+
+				// Register tags_type although "tags" itself is not registered
+				if ($field == 'tags_type' and !isset($search_fields['tags']) and in_array($request->{$field}, ['has_not_tags', 'has_any_tag'])){
+					$search_fields[$field] = $request->{$field};
+				}
 
 				// Register date type and add in URL
 				if (in_array($field, $this->a_search_fields_date) and $request->filled($field . '_type')){
