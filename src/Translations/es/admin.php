@@ -147,6 +147,7 @@ return [
   'config-index-no-settings'      => 'No existen configuraciones,',
   'config-index-initial'          => 'Inicial',
   'config-index-tickets'          => 'Tiques',
+  'config-index-features'         => 'Características',
   'config-index-notifications'    => 'Notificaciones',
   'config-index-permissions'      => 'Permisos',
   'config-index-editor'           => 'Editor', //Added: 2016.01.14

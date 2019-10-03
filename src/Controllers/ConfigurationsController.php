@@ -20,9 +20,10 @@ class ConfigurationsController extends Controller
 	public function index()
 	{
 		$configurations = Configuration::all();
-		$configurations_by_sections = ['init' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
+		$configurations_by_sections = ['init' => [], 'features' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
 		$init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'member_model_class', 'routes'];
-		$email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
+        $features_section = ['departments_feature', 'departments_notices_feature', 'ticket_attachments_feature'];
+        $email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
 		'list_owner_notification', 'status_owner_notification',
 		'email.template', 'email.owner.newticket.template', 'email.header', 'email.signoff', 'email.signature', 'email.dashboard',
 		'email.google_plus_link', 'email.facebook_link', 'email.twitter_link', 'email.footer', 'email.footer_link',
@@ -43,14 +44,22 @@ class ConfigurationsController extends Controller
 
             if (in_array($config_item->slug, $init_section)) {
                 $configurations_by_sections['init'][] = $config_item;
+            
+            } elseif (in_array($config_item->slug, $features_section)) {
+                $configurations_by_sections['features'][] = $config_item;
+            
             } elseif (in_array($config_item->slug, $email_section)) {
                 $configurations_by_sections['email'][] = $config_item;
+            
             } elseif (in_array($config_item->slug, $tickets_section)) {
                 $configurations_by_sections['tickets'][] = $config_item;
+            
             } elseif (in_array($config_item->slug, $perms_section)) {
                 $configurations_by_sections['perms'][] = $config_item;
+            
             } elseif (in_array($config_item->slug, $editor_section)) {
                 $configurations_by_sections['editor'][] = $config_item;
+            
             } else {
                 $configurations_by_sections['other'][] = $config_item;
             }
