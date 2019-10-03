@@ -9,7 +9,7 @@
         <th class="text-center">{{ trans('panichd::admin.table-edit') }}</th>
         </thead>
         <tbody>
-        @foreach($configurations_by_sections['editor'] as $configuration)
+        @foreach($section_configurations as $configuration)
             <tr>
                 <td class="text-center">{!! $configuration->id !!}</td>
                 <td>{!! $configuration->slug !!}</td>
