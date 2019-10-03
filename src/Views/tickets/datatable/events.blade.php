@@ -5,6 +5,9 @@
 		$(document).on('click', '.unread_toggle', function(e){
 			e.preventDefault();
 
+			// Force tooltip close
+			$(this).tooltip('dispose');
+
 			$.ajax({
 				type: "POST",
 				url: '{{ route($setting->grab('main_route').'.ajax.read') }}',
