@@ -254,6 +254,7 @@ return [
   'btn-create-new-config'         => 'Add new setting',
   'config-index-no-settings'      => 'There are no settings,',
   'config-index-initial'          => 'Initial',
+  'config-index-features'         => 'Features',
   'config-index-tickets'          => 'Tickets',
   'config-index-notifications'    => 'Notifications',
   'config-index-permissions'      => 'Permissions',
