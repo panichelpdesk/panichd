@@ -6,7 +6,7 @@
         <th>{{ trans('panichd::admin.table-default') }}</th>
         <th>{{ trans('panichd::admin.table-value') }}</th>
         <th class="text-center">{{ trans('panichd::admin.table-lang') }}</th>
-        <th class="text-center">{{ trans('panichd::admin.table-edit') }}</th>
+        <th class="text-center">{{ trans('panichd::admin.table-action') }}</th>
         </thead>
         <tbody>
         @foreach($section_configurations as $configuration)
@@ -19,11 +19,23 @@
                 <td class="text-center">
                     {!! link_to_route(
                         $setting->grab('admin_route').'.configuration.edit', trans('panichd::admin.btn-edit'), [$configuration->id],
-                        ['class' => 'btn btn-info', 'title' => trans('panichd::admin.table-edit').' '.$configuration->slug,  'data-toggle' => 'tooltip'] )
+                        ['class' => 'btn btn-default', 'title' => trans('panichd::admin.table-edit').' '.$configuration->slug,  'data-toggle' => 'tooltip'] )
                     !!}
+                    @if($section_name == 'other')
+                        {!! link_to_route(
+                            , trans('panichd::admin.btn-delete'), $configuration->id,
+                            ['class' => 'btn btn-default'] )
+                        !!}
+                    @endif
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
+    @if($section_name == 'other')
+        <form id="configuration_delete" action="{{ route($setting->grab('admin_route').'.configuration.destroy' }}" method="POST" style="display: none">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        </form>
+    @endif
 </div>
