@@ -27,6 +27,7 @@ return [
   'table-default'                 => 'Valor Predeterminado',
   'table-value'                   => 'Mi Valor',
   'table-lang'                    => 'Idioma',
+  'table-description'             => 'Descripción',
   'table-edit'                    => 'Editar',
 
   'btn-back'                      => 'Atrás',

@@ -34,6 +34,7 @@ return [
   'table-default'                 => 'Valor predeterminat',
   'table-value'                   => 'Valor configurat',
   'table-lang'                    => 'Idioma',
+  'table-description'             => 'Descripció',
   'table-edit'                    => 'Editar',
 
   'btn-add-new'                   => 'Afegir nou',
