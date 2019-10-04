@@ -45,7 +45,7 @@
         <div class="tab-content">
             @foreach($configurations_by_sections as $section => $a_configurations)
                 <div id="{{ $section }}-configs" class="tab-pane fade @if($section == "init") show active @endif">
-                    @include('panichd::admin.configuration.partials.tab_table', ['section_configurations' => $a_configurations])
+                    @include('panichd::admin.configuration.partials.tab_table', ['section_name' => $section, 'section_configurations' => $a_configurations])
                 </div>
             @endforeach
         </div>
@@ -55,3 +55,7 @@
 <!-- // Configuration -->
 
 @endsection
+
+@section('footer')
+    @include('panichd::admin.configuration.partials.index_scripts')
+@append

@@ -82,73 +82,97 @@ class ConfigurationsController extends Controller
         return view('panichd::admin.configuration.create');
     }
 
+    /**
+     * Store a newly created Configuration in storage.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $input = $request->all();
 
-  /**
-   * Store a newly created Configuration in storage.
-   *
-   * @param Request $request
-   *
-   * @return \Illuminate\Http\RedirectResponse
-   */
-  public function store(Request $request)
-  {
-      $input = $request->all();
+        $configuration = new Configuration();
+        $configuration->create($input);
 
-      $configuration = new Configuration();
-      $configuration->create($input);
+        Session::flash('configuration', 'Setting saved successfully.');
+        \Cache::forget('panichd::settings'); // refresh cached settings
+        return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
+    }
 
-      Session::flash('configuration', 'Setting saved successfully.');
-      \Cache::forget('panichd::settings'); // refresh cached settings
-    return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
-  }
+    /**
+     * Show the form for editing the specified Configuration.
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $configuration = Configuration::findOrFail($id);
+        $should_serialize = Setting::is_serialized($configuration->value);
+        $default_serialized = Setting::is_serialized($configuration->default);
 
-  /**
-   * Show the form for editing the specified Configuration.
-   *
-   * @param int $id
-   *
-   * @return Response
-   */
-  public function edit($id)
-  {
-      $configuration = Configuration::findOrFail($id);
-      $should_serialize = Setting::is_serialized($configuration->value);
-      $default_serialized = Setting::is_serialized($configuration->default);
+        return view('panichd::admin.configuration.edit', compact('configuration', 'should_serialize', 'default_serialized'));
+    }
 
-      return view('panichd::admin.configuration.edit', compact('configuration', 'should_serialize', 'default_serialized'));
-  }
+    /**
+     * Update the specified Configuration in storage.
+     *
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $configuration = Configuration::findOrFail($id);
 
-  /**
-   * Update the specified Configuration in storage.
-   *
-   * @param int     $id
-   * @param Request $request
-   *
-   * @return $this|\Illuminate\Http\RedirectResponse
-   */
-  public function update(Request $request, $id)
-  {
-      $configuration = Configuration::findOrFail($id);
+        $value = $request->value;
 
-      $value = $request->value;
+        if ($request->serialize) {
+            //if(!Hash::check($request->password, auth()->user()->password)){
+            if (!Auth::attempt($request->only('password'), false, false)) {
+                return back()->withErrors([trans('panichd::admin.config-edit-auth-failed')]);
+            }
+            if (false === eval('$value = serialize('.$value.');')) {
+                return back()->withErrors([trans('panichd::admin.config-edit-eval-error')]);
+            }
+        }
 
-      if ($request->serialize) {
-          //if(!Hash::check($request->password, auth()->user()->password)){
-          if (!Auth::attempt($request->only('password'), false, false)) {
-              return back()->withErrors([trans('panichd::admin.config-edit-auth-failed')]);
-          }
-          if (false === eval('$value = serialize('.$value.');')) {
-              return back()->withErrors([trans('panichd::admin.config-edit-eval-error')]);
-          }
-      }
+        $configuration->update(['value' => $value, 'lang' => $request->lang]);
 
-      $configuration->update(['value' => $value, 'lang' => $request->lang]);
+        Session::flash('configuration', trans('panichd::admin.config-update-confirm', ['name' => $request->name]));
+        // refresh cached settings
+        \Cache::forget('panichd::settings');
+        \Cache::forget('panichd::settings.'.$configuration->slug);
 
-      Session::flash('configuration', trans('panichd::admin.config-update-confirm', ['name' => $request->name]));
-      // refresh cached settings
-      \Cache::forget('panichd::settings');
-      \Cache::forget('panichd::settings.'.$configuration->slug);
+        return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
+    }
 
-    return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
-  }
+    /**
+     * Update the specified Configuration in storage.
+     *
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request, $id)
+    {
+        $configuration = Configuration::findOrFail($id);
+        $clone = clone $configuration;
+
+        $value = $request->value;
+
+        $configuration->delete();
+
+        Session::flash('status', trans('panichd::admin.config-delete-confirm', ['name' => $clone->slug]));
+        // refresh cached settings
+        \Cache::forget('panichd::settings');
+        \Cache::forget('panichd::settings.'.$clone->slug);
+
+        return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
+    }
 }
