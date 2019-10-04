@@ -280,5 +280,6 @@ return [
   'config-edit-eval-error'        => 'Valor no vàlid',
   'config-edit-tools'             => 'Eines:',
   'config-update-confirm'         => 'El paràmetre :name s\'ha actualitzat',
+  'config-delete-confirm'         => 'El paràmetre :name s\'ha eliminat',
 
 ];

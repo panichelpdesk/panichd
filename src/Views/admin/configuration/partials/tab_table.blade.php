@@ -22,10 +22,9 @@
                         ['class' => 'btn btn-default', 'title' => trans('panichd::admin.table-edit').' '.$configuration->slug,  'data-toggle' => 'tooltip'] )
                     !!}
                     @if($section_name == 'other')
-                        {!! link_to_route(
-                            , trans('panichd::admin.btn-delete'), $configuration->id,
-                            ['class' => 'btn btn-default'] )
-                        !!}
+                        <button class="btn btn-default j_configuration_delete" data-form-action="{{ route($setting->grab('admin_route').'.configuration.destroy', $configuration->id) }}">
+                            {{ trans('panichd::admin.btn-delete') }}
+                        </button>
                     @endif
                 </td>
             </tr>
@@ -33,7 +32,7 @@
         </tbody>
     </table>
     @if($section_name == 'other')
-        <form id="configuration_delete" action="{{ route($setting->grab('admin_route').'.configuration.destroy' }}" method="POST" style="display: none">
+        <form id="configuration_delete_form" action="" method="POST" style="display: none">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
         </form>

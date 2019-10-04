@@ -172,5 +172,6 @@ return [
   'config-edit-auth-failed'       => 'Las claves no son iguales', //Added: 2016-01-16
   'config-edit-eval-error'        => 'Valor inválido', //Added: 2016-01-16
   'config-edit-tools'             => 'Herramientas:',
-
+  'config-update-confirm'         => 'El parámetro :name ha sido actualizado',
+  'config-delete-confirm'         => 'El parámetro :name ha sido eliminado',
 ];
