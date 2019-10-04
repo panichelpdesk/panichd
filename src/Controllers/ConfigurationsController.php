@@ -20,8 +20,9 @@ class ConfigurationsController extends Controller
 	public function index()
 	{
 		$configurations = Configuration::all();
-		$configurations_by_sections = ['init' => [], 'features' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
+		$configurations_by_sections = ['init' => [], 'table' => [], 'features' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
 		$init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'member_model_class', 'routes'];
+        $table_section = ['subject_content_column', 'list_text_max_length', 'check_last_update_seconds', 'length_menu', 'max_agent_buttons', 'calendar_month_filter'];
         $features_section = ['departments_feature', 'departments_notices_feature', 'ticket_attachments_feature'];
         $email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
 		'list_owner_notification', 'status_owner_notification',
@@ -30,8 +31,8 @@ class ConfigurationsController extends Controller
 		'email.color_body_bg', 'email.color_header_bg', 'email.color_content_bg', 'email.color_footer_bg',
 		'email.color_button_bg', 'email.account.name', 'email.account.mailbox', 'custom_recipients' ];
 		$tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
-            'subject_content_column', 'paginate_items', 'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
-            'attachments_path', 'thumbnails_path', 'oldest_year', 'user_route', 'html_replacements', 'list_text_max_length', 'use_default_status_id', 'check_last_update_seconds'];
+            'paginate_items', 'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
+            'attachments_path', 'thumbnails_path', 'oldest_year', 'user_route', 'html_replacements', 'use_default_status_id'];
 		$perms_section = ['agent_restrict', 'close_ticket_perm', 'reopen_ticket_perm'];
 		$editor_section = ['editor_enabled', 'editor_html_highlighter', 'codemirror_theme',
 			'summernote_locale', 'summernote_options_json_file', 'summernote_options_user', 'purifier_config', ];
@@ -44,6 +45,9 @@ class ConfigurationsController extends Controller
 
             if (in_array($config_item->slug, $init_section)) {
                 $configurations_by_sections['init'][] = $config_item;
+            
+            } elseif (in_array($config_item->slug, $table_section)) {
+                $configurations_by_sections['table'][] = $config_item;
             
             } elseif (in_array($config_item->slug, $features_section)) {
                 $configurations_by_sections['features'][] = $config_item;

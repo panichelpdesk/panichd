@@ -256,6 +256,7 @@ return [
   'config-index-initial'          => 'Initial',
   'config-index-features'         => 'Features',
   'config-index-tickets'          => 'Tickets',
+  'config-index-table'            => 'Table',
   'config-index-notifications'    => 'Notifications',
   'config-index-permissions'      => 'Permissions',
   'config-index-editor'           => 'Editor', //Added: 2016.01.14
