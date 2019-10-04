@@ -34,6 +34,7 @@
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" href="#init-configs">{{ trans('panichd::admin.config-index-initial') }}</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#features-configs">{{ trans('panichd::admin.config-index-features') }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#table-configs">{{ trans('panichd::admin.config-index-table') }}</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#tickets-configs">{{ trans('panichd::admin.config-index-tickets') }}</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#email-configs">{{ trans('panichd::admin.config-index-notifications') }}</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" href="#perms-configs">{{ trans('panichd::admin.config-index-permissions') }}</a></li>

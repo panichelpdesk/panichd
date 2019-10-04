@@ -254,6 +254,7 @@ return [
   'config-index-no-settings'      => 'No hi ha configuracions,',
   'config-index-initial'          => 'Inicial',
   'config-index-tickets'          => 'Tiquets',
+  'config-index-table'            => 'Taula',
   'config-index-features'         => 'Característiques',
   'config-index-notifications'    => 'Notificacions',
   'config-index-permissions'      => 'Permisos',

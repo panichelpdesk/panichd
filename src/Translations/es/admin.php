@@ -147,6 +147,7 @@ return [
   'config-index-no-settings'      => 'No existen configuraciones,',
   'config-index-initial'          => 'Inicial',
   'config-index-tickets'          => 'Tiques',
+  'config-index-table'            => 'Tabla',
   'config-index-features'         => 'Características',
   'config-index-notifications'    => 'Notificaciones',
   'config-index-permissions'      => 'Permisos',
