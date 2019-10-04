@@ -6,6 +6,7 @@
         <th>{{ trans('panichd::admin.table-default') }}</th>
         <th>{{ trans('panichd::admin.table-value') }}</th>
         <th class="text-center">{{ trans('panichd::admin.table-lang') }}</th>
+        <th class="text-center">{{ trans('panichd::admin.table-description') }}</th>
         <th class="text-center">{{ trans('panichd::admin.table-action') }}</th>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
                 <td>{!! $configuration->default !!}</td>
                 <td><a href="{!! route($setting->grab('admin_route').'.configuration.edit', [$configuration->id]) !!}" title="{{ trans('panichd::admin.table-edit').' '.$configuration->slug }}" data-toggle="tooltip">{!! $configuration->value !!}</a></td>
                 <td class="text-center">{!! $configuration->lang !!}</td>
+                <td>@if(array_key_exists($configuration->slug, trans('panichd::settings'))){!! trans('panichd::settings.' . $configuration->slug) !!}@endif</td>
                 <td class="text-center">
                     {!! link_to_route(
                         $setting->grab('admin_route').'.configuration.edit', trans('panichd::admin.btn-edit'), [$configuration->id],

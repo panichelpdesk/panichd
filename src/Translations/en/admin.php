@@ -34,6 +34,7 @@ return [
   'table-default'                 => 'Default Value',
   'table-value'                   => 'My Value',
   'table-lang'                    => 'Lang',
+  'table-description'             => 'Description',
   'table-edit'                    => 'Edit',
 
   'btn-add-new'                   => 'Add new one',
