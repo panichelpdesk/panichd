@@ -96,7 +96,7 @@ class ConfigurationsController extends Controller
         $configuration = new Configuration();
         $configuration->create($input);
 
-        Session::flash('configuration', 'Setting saved successfully.');
+        Session::flash('status', 'Setting saved successfully.');
         \Cache::forget('panichd::settings'); // refresh cached settings
         return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
     }
@@ -143,7 +143,7 @@ class ConfigurationsController extends Controller
 
         $configuration->update(['value' => $value, 'lang' => $request->lang]);
 
-        Session::flash('configuration', trans('panichd::admin.config-update-confirm', ['name' => $request->name]));
+        Session::flash('status', trans('panichd::admin.config-update-confirm', ['name' => $configuration->slug]));
         // refresh cached settings
         \Cache::forget('panichd::settings');
         \Cache::forget('panichd::settings.'.$configuration->slug);
