@@ -37,6 +37,8 @@ class ConfigurationsController extends Controller
 		$editor_section = ['editor_enabled', 'editor_html_highlighter', 'codemirror_theme',
 			'summernote_locale', 'summernote_options_json_file', 'summernote_options_user', 'purifier_config', ];
 
+        $last_configuration = session()->has('last_configuration') ? session('last_configuration') : '';
+
         // Split them into configurations sections for tabs
         foreach ($configurations as $config_item) {
             //trim long values (ex serialised arrays)
@@ -44,32 +46,49 @@ class ConfigurationsController extends Controller
             $config_item->default = $config_item->getShortContent(25, 'default');
 
             if (in_array($config_item->slug, $init_section)) {
-                $configurations_by_sections['init'][] = $config_item;
+                $section = 'init';
             
             } elseif (in_array($config_item->slug, $table_section)) {
-                $configurations_by_sections['table'][] = $config_item;
+                $section = 'table';
             
             } elseif (in_array($config_item->slug, $features_section)) {
-                $configurations_by_sections['features'][] = $config_item;
+                $section = 'features';
             
             } elseif (in_array($config_item->slug, $email_section)) {
-                $configurations_by_sections['email'][] = $config_item;
+                $section = 'email';
             
             } elseif (in_array($config_item->slug, $tickets_section)) {
-                $configurations_by_sections['tickets'][] = $config_item;
+                $section = 'tickets';
             
             } elseif (in_array($config_item->slug, $perms_section)) {
-                $configurations_by_sections['perms'][] = $config_item;
+                $section = 'perms';
             
             } elseif (in_array($config_item->slug, $editor_section)) {
-                $configurations_by_sections['editor'][] = $config_item;
+                $section = 'editor';
             
             } else {
-                $configurations_by_sections['other'][] = $config_item;
+                $section = 'other';
+            }
+
+            // Add item to its section array
+            $configurations_by_sections[$section][] = $config_item;
+
+            // If list is loaded after configuration update or delete, open it's related tab
+            if ($config_item->slug == $last_configuration){
+                $last_tab = $section;
             }
         }
 
-        return view('panichd::admin.configuration.index', compact('configurations', 'configurations_by_sections'));
+        
+        if (session()->has('last_configuration') and !isset($last_tab)){
+            // If last configuration is not listed, has to belong to tab "other"
+            $last_tab = "other";
+        }
+
+        // Default tab
+        if (!isset($last_tab)) $last_tab = "init";
+
+        return view('panichd::admin.configuration.index', compact('configurations', 'configurations_by_sections', 'last_tab'));
     }
 
     /**
@@ -148,6 +167,9 @@ class ConfigurationsController extends Controller
         \Cache::forget('panichd::settings');
         \Cache::forget('panichd::settings.'.$configuration->slug);
 
+        // Pass configuration slug to open it's tab
+        Session::flash('last_configuration', $configuration->slug);
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
     }
 
@@ -172,6 +194,9 @@ class ConfigurationsController extends Controller
         // refresh cached settings
         \Cache::forget('panichd::settings');
         \Cache::forget('panichd::settings.'.$clone->slug);
+
+        // Pass configuration slug to open it's tab
+        Session::flash('last_configuration', $clone->slug);
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
     }
