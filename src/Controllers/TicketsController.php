@@ -1215,7 +1215,7 @@ class TicketsController extends Controller
         // Default notification recipients
         $all_c = clone $all_comments;
         $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
-        $a_note = [$ticket->agent->id];
+        $a_note = [];
         foreach($all_c->get() as $comm){
             if ($comm->type == 'reply'){
                 $a_reply = array_merge($a_reply, $comm->notifications->pluck('member_id')->toArray());
