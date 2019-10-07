@@ -4,12 +4,23 @@ $(function(){
     $('#add_comment').click(function(e){
        e.preventDefault();
 
+       // Notification members
+       var a_notifications_note = [{{ implode(',', $a_notifications['note']) }}];
+
        var _cloned = $('#comment_template').clone();
        var _num = $('#comments .comment_block').length + 1;
        _cloned.prop('id', 'comment_' + _num);
        _cloned.find('.input_comment_num').val(_num);
        _cloned.find('.input_response_type').prop('disabled', false).attr('name', 'response_' + _num);
         @if($setting->grab('custom_recipients'))
+            $(a_notifications_note).each(function(i,v){
+                // Add other notes recipients
+                _cloned.find('.note_recipients option[value=' + v + ']').prop('selected', true);
+            });
+            // Add current agent id
+            _cloned.find('.note_recipients option[value=' + $('#agent_id').val() + ']').prop('selected', true);
+
+            // Activate notification recipients selects
             _cloned.find('.note_recipients').prop('disabled', false).attr('name', 'comment_' + _num + '_recipients[]');
             _cloned.find('.reply_recipients').attr('name', 'comment_' + _num + '_recipients[]');
         @endif

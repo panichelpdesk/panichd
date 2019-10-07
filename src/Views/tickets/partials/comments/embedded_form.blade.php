@@ -30,7 +30,7 @@
                 <div class="col-lg-10">
                     <select class="form-control note_recipients" name="comment_x_recipients[]" multiple="multiple" style="display: none; width: 100%" disabled="disabled">
                         @foreach ($c_members->filter(function($q)use($u){ return $q->id != $u->id; }) as $member)
-                            <option value="{{ $member->id }}" {{ in_array($member->id, $a_notifications['note']) ? 'selected="selected"' : '' }}>{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
+                            <option value="{{ $member->id }}">{{ $member->name . ($member->email == "" ? ' ' . trans('panichd::lang.ticket-owner-no-email') : ' - ' . $member->email) }}
                             @if ($setting->grab('departments_notices_feature'))
                                 @if ($member->ticketit_department == '0')
                                     {{ ' - ' . trans('panichd::lang.create-ticket-notices') . ' ' . trans('panichd::lang.all-depts')}}
