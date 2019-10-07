@@ -6,6 +6,7 @@ $(function(){
 
        // Notification members
        var a_notifications_note = [{{ implode(',', $a_notifications['note']) }}];
+       var a_notifications_reply = [{{ implode(',', $a_notifications['reply']) }}];
 
        var _cloned = $('#comment_template').clone();
        var _num = $('#comments .comment_block').length + 1;
@@ -19,6 +20,13 @@ $(function(){
             });
             // Add current agent id
             _cloned.find('.note_recipients option[value=' + $('#agent_id').val() + ']').prop('selected', true);
+            
+            $(a_notifications_reply).each(function(i,v){
+                // Add other reply recipients
+                _cloned.find('.reply_recipients option[value=' + v + ']').prop('selected', true);
+            });
+            // Add current owner
+            _cloned.find('.reply_recipients option[value=' + $('#owner_id').val() + ']').prop('selected', true);
 
             // Activate notification recipients selects
             _cloned.find('.note_recipients').prop('disabled', false).attr('name', 'comment_' + _num + '_recipients[]');
