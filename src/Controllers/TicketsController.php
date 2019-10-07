@@ -1214,12 +1214,13 @@ class TicketsController extends Controller
 
         // Default notification recipients
         $all_c = clone $all_comments;
-        $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
-        $a_note = [];
+        $a_reply = $a_note = [];
+        
         foreach($all_c->get() as $comm){
             if ($comm->type == 'reply'){
                 $a_reply = array_merge($a_reply, $comm->notifications->pluck('member_id')->toArray());
-            }elseif($comm->type == 'note'){
+			
+			}elseif($comm->type == 'note'){
                 $a_note = array_merge($a_note, $comm->notifications->pluck('member_id')->toArray());
             }
         }
