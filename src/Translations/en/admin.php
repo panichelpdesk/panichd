@@ -34,6 +34,7 @@ return [
   'table-default'                 => 'Default Value',
   'table-value'                   => 'My Value',
   'table-lang'                    => 'Lang',
+  'table-description'             => 'Description',
   'table-edit'                    => 'Edit',
 
   'btn-add-new'                   => 'Add new one',
@@ -254,7 +255,9 @@ return [
   'btn-create-new-config'         => 'Add new setting',
   'config-index-no-settings'      => 'There are no settings,',
   'config-index-initial'          => 'Initial',
+  'config-index-features'         => 'Features',
   'config-index-tickets'          => 'Tickets',
+  'config-index-table'            => 'Table',
   'config-index-notifications'    => 'Notifications',
   'config-index-permissions'      => 'Permissions',
   'config-index-editor'           => 'Editor', //Added: 2016.01.14
@@ -279,5 +282,5 @@ return [
   'config-edit-eval-error'        => 'Invalid value', //Added: 2016-01-16
   'config-edit-tools'             => 'Tools:',
   'config-update-confirm'         => 'Configuration :name has been updated',
-
+  'config-delete-confirm'         => 'Configuration :name has been deleted',
 ];

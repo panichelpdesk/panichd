@@ -34,6 +34,7 @@ return [
   'table-default'                 => 'Valor predeterminat',
   'table-value'                   => 'Valor configurat',
   'table-lang'                    => 'Idioma',
+  'table-description'             => 'Descripció',
   'table-edit'                    => 'Editar',
 
   'btn-add-new'                   => 'Afegir nou',
@@ -254,6 +255,8 @@ return [
   'config-index-no-settings'      => 'No hi ha configuracions,',
   'config-index-initial'          => 'Inicial',
   'config-index-tickets'          => 'Tiquets',
+  'config-index-table'            => 'Taula',
+  'config-index-features'         => 'Característiques',
   'config-index-notifications'    => 'Notificacions',
   'config-index-permissions'      => 'Permisos',
   'config-index-editor'           => 'Editor',
@@ -278,5 +281,6 @@ return [
   'config-edit-eval-error'        => 'Valor no vàlid',
   'config-edit-tools'             => 'Eines:',
   'config-update-confirm'         => 'El paràmetre :name s\'ha actualitzat',
+  'config-delete-confirm'         => 'El paràmetre :name s\'ha eliminat',
 
 ];

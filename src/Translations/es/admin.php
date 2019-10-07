@@ -27,6 +27,7 @@ return [
   'table-default'                 => 'Valor Predeterminado',
   'table-value'                   => 'Mi Valor',
   'table-lang'                    => 'Idioma',
+  'table-description'             => 'Descripción',
   'table-edit'                    => 'Editar',
 
   'btn-back'                      => 'Atrás',
@@ -147,6 +148,8 @@ return [
   'config-index-no-settings'      => 'No existen configuraciones,',
   'config-index-initial'          => 'Inicial',
   'config-index-tickets'          => 'Tiques',
+  'config-index-table'            => 'Tabla',
+  'config-index-features'         => 'Características',
   'config-index-notifications'    => 'Notificaciones',
   'config-index-permissions'      => 'Permisos',
   'config-index-editor'           => 'Editor', //Added: 2016.01.14
@@ -170,5 +173,6 @@ return [
   'config-edit-auth-failed'       => 'Las claves no son iguales', //Added: 2016-01-16
   'config-edit-eval-error'        => 'Valor inválido', //Added: 2016-01-16
   'config-edit-tools'             => 'Herramientas:',
-
+  'config-update-confirm'         => 'El parámetro :name ha sido actualizado',
+  'config-delete-confirm'         => 'El parámetro :name ha sido eliminado',
 ];
