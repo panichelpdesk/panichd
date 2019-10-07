@@ -86,35 +86,23 @@ class Member extends User
     }
 
     /**
-     * Check if user is agent.
+     * Check if auth() member is agent.
      *
      * @return bool
      */
-    public static function isAgent($id = null)
+    public function isAgent()
     {
-        if (isset($id)) {
-            $user = \PanicHDMember::find($id);
-            if ($user->panichd_agent) {
-                return true;
-            }
-
-            return false;
-        }
-        if (auth()->check()) {
-            if (auth()->user()->panichd_agent) {
-                return true;
-            }
-        }
+        return $this->panichd_agent;
     }
 
     /**
-     * Check if user is admin.
+     * Check if auth() member is admin.
      *
      * @return bool
      */
-    public static function isAdmin()
+    public function isAdmin()
     {
-        return auth()->check() && auth()->user()->panichd_admin;
+        return $this->panichd_admin;
     }
 
     /**

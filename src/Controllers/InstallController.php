@@ -28,6 +28,19 @@ class InstallController extends Controller
         }
     }
 
+	/*
+	 * Load member instance and Return true if auth() user has admin permissions
+	 *
+	 */
+	public function auth_member_is_admin()
+	{
+		if (auth()->check()){
+			$member = \PanicHDMember::findOrFail(auth()->user()->id);
+			return $member->isAdmin();
+		}else
+			return false;
+	}
+
     /*
      * Initial install form
      */
@@ -78,9 +91,12 @@ class InstallController extends Controller
 				}
 
 				return view('panichd::install.index', compact('inactive_migrations', 'previous_ticketit', 'quickstart'));
+			
 			}elseif(!$this->isUpdated()){
+				
+				
 				// Panic Help Desk requires an upgrade
-				if ( \PanicHDMember::isAdmin()){
+				if ($this->auth_member_is_admin()){
 					return view('panichd::install.upgrade', [
 						'inactive_migrations' => $inactive_migrations,
 						'inactive_settings' => $this->inactiveSettings(),
@@ -104,7 +120,7 @@ class InstallController extends Controller
 	*/
 	public function upgrade_menu()
 	{
-		if (!$this->isInstalled() or !\PanicHDMember::isAdmin()){
+		if (!$this->isInstalled() or !$this->auth_member_is_admin()){
 			return redirect()->route('panichd.install.setup');
 		}
 
@@ -205,7 +221,7 @@ class InstallController extends Controller
      */
 	public function upgrade(Request $request)
 	{
-		if ( \PanicHDMember::isAdmin()){
+		if ($this->auth_member_is_admin()){
 			// Migrations and Settings
 			$this->initialSettings();
 
