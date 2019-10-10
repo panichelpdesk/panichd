@@ -1879,17 +1879,32 @@ class TicketsController extends Controller
 		$a_resend_notifications = $this->get_resend_notifications($ticket, $all_comments);
 		
 		if ($this->member->currentLevel() > 1 and $this->member->id == $ticket->agent_id and $ticket->read_by_agent == '0'){
+			// Disable changing the updated_at field
+			$ticket->timestamps = false;
+			
 			// Mark ticket as read
 			$ticket->read_by_agent = 1;
 			$ticket->save();
 
-			// Mark comments as read
+			
 			foreach ($all_comments->get() as $comment){
 				if ($comment->read_by_agent != '1'){
+					// Disable changing the updated_at field
+					$comment->timestamps = false;
+					// Disable changing related ticket updated_at via $touches array in Comment model
+					$comment->setTouchedRelations([]);
+
+					// Mark comments as read
 					$comment->read_by_agent = 1;
 					$comment->save();
+
+					// Enable created_at and updated_at for view
+					$comment->timestamps = true;
 				}
 			}
+
+			// Enable created_at and updated_at for view
+			$ticket->timestamps = true;
 		}
 
         $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
