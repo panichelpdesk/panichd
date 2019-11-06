@@ -149,21 +149,6 @@
       .mb0 {
         margin-bottom: 0; }
 
-      .preheader {
-        color: transparent;
-        display: none;
-        height: 0;
-        max-height: 0;
-        max-width: 0;
-        opacity: 0;
-        overflow: hidden;
-        mso-hide: all;
-        visibility: hidden;
-        width: 0; }
-
-      .powered-by a {
-        text-decoration: none; }
-
       hr {
         border: 0;
         border-bottom: 1px solid #f6f6f6;
@@ -233,7 +218,6 @@
 		  <div class="content">
 
             <!-- START CENTERED WHITE CONTAINER -->
-            <span class="preheader">{{ $setting->grab('email.header') }}</span>
             <table class="main">
 
               <!-- START MAIN CONTENT AREA -->

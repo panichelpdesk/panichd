@@ -123,22 +123,6 @@ class SettingsTableSeeder extends Seeder
              */
             'email.template' => 'panichd::emails.templates.panichd',
 			'email.owner.newticket.template' => 'panichd::emails.templates.simple',
-            // resources/views/emails/templates/ticketit.blade.php
-            'email.header'           => 'Ticket Update',
-            'email.signoff'          => 'Thank you for your patience!',
-            'email.signature'        => 'Your friends',
-            'email.dashboard'        => 'My Dashboard',
-            'email.google_plus_link' => '#', // Toogle icon link: false or string
-            'email.facebook_link'    => '#', // Toogle icon link: false or string
-            'email.twitter_link'     => '#', // Toogle icon link: false or string
-            'email.footer'           => 'Powered by Ticketit',
-            'email.footer_link'      => 'https://github.com/panichelpdesk/panichd',
-            'email.color_body_bg'    => '#FFFFFF',
-            'email.color_header_bg'  => '#44B7B7',
-            'email.color_content_bg' => '#F46B45',
-            'email.color_footer_bg'  => '#414141',
-            'email.color_button_bg'  => '#AC4D2F',
-
 
 			/**
 			 * Configurable notifications.
