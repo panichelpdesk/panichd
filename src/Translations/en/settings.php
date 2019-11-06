@@ -86,13 +86,5 @@ return [
 
 			<p><a target="_blank" href="http://htmlpurifier.org/docs">Purifier documentation</a></p>
 ENDHTML
-	, 'summernote_options_user' => 'Member without current permissions uses it\'s own summernote options if specified in this setting<br /><code>default</code>: Summernote default options',
-
-    'routes' => <<<'ENDHTML'
-			<p>Set custom routes file</p>
-			<p>
-				Useful if you want to replace any of the Panic Help Desk components
-			</p>
-ENDHTML
-
+	, 'summernote_options_user' => 'Member without current permissions uses it\'s own summernote options if specified in this setting<br /><code>default</code>: Summernote default options'
 ];

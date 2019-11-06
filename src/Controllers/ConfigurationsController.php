@@ -21,7 +21,7 @@ class ConfigurationsController extends Controller
 	{
 		$configurations = Configuration::all();
 		$configurations_by_sections = ['init' => [], 'table' => [], 'features' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
-		$init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'member_model_class', 'routes', 'include_font_awesome', 'user_route', 'admin_button_text'];
+		$init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'member_model_class', 'include_font_awesome', 'user_route', 'admin_button_text'];
         $table_section = ['subject_content_column', 'list_text_max_length', 'check_last_update_seconds', 'length_menu', 'max_agent_buttons', 'calendar_month_filter', 'paginate_items'];
         $features_section = ['departments_feature', 'departments_notices_feature', 'ticket_attachments_feature'];
         $email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
@@ -32,7 +32,7 @@ class ConfigurationsController extends Controller
 		'email.color_button_bg', 'email.account.name', 'email.account.mailbox', 'custom_recipients' ];
 		$tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
             'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
-            'attachments_path', 'thumbnails_path', 'oldest_year', 'html_replacements', 'use_default_status_id', 'delete_modal_type', 'new_ticket_autoassign'];
+            'attachments_path', 'thumbnails_path', 'oldest_year', 'html_replacements', 'use_default_status_id', 'delete_modal_type'];
 		$perms_section = ['agent_restrict', 'close_ticket_perm', 'reopen_ticket_perm'];
 		$editor_section = ['editor_enabled', 'editor_html_highlighter', 'codemirror_theme',
 			'summernote_locale', 'summernote_options_json_file', 'summernote_options_user', 'purifier_config', ];
