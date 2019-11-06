@@ -86,13 +86,5 @@ return [
 
 			<p><a target="_blank" href="http://htmlpurifier.org/docs">Documentació de Purifier</a></p>
 ENDHTML
-	, 'summernote_options_user' => 'Un membre sense permisos actuals utilitzarà les opcions de summernote especificades en aquest paràmetre<br /><code>default</code>: Opcions per defecte de summernote',
-
-	'routes' => <<<'ENDHTML'
-			<p>Set custom routes file</p>
-			<p>
-				Useful if you want to replace any of the Panic Help Desk components
-			</p>
-ENDHTML
-
+	, 'summernote_options_user' => 'Un membre sense permisos actuals utilitzarà les opcions de summernote especificades en aquest paràmetre<br /><code>default</code>: Opcions per defecte de summernote'
 ];

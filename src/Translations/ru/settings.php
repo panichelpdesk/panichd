@@ -162,13 +162,4 @@ HTML
 
 			<p>Документация: <a target="_blank" href="http://htmlpurifier.org/docs">http://htmlpurifier.org/docs</a></p>
 HTML
-    ,
-
-    'routes' => <<<'HTML'
-			<p>Использовать собственный routes-файл вместо поставляемого пакетом</p>
-			<p>
-				Пригодится, если необходимо заменить или исключить некоторые компоненты Panic Help Desk
-			</p>
-HTML
-
 ];
