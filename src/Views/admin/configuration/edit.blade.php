@@ -72,8 +72,9 @@
             </div>
 
             @if(trans("panichd::settings." . $configuration->slug) != ("panichd::settings." . $configuration->slug) && trans("panichd::settings." . $configuration->slug))
-                <div class="card bg-info">
-                    <div class="card-body">{!! trans("panichd::settings." . $configuration->slug) !!}</div>
+                <div class="media border border-info rounded mt-2 mb-2 p-3">
+                    <i class="fas fa-info-circle fa-3x text-info mr-3"></i>
+                    <div class="media-body">{!! trans("panichd::settings." . $configuration->slug) !!}</div>
                 </div>
             @endif
 
