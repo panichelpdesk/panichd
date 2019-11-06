@@ -16,7 +16,6 @@ return [
 	'admin_route' => 'Prefix per als menús de configuració de PanicHD a les rutes de Laravel (p.ex.: route(\'<code>panichd</code>.status.index\')). El panell d\'admin te el seu propi nom de ruta "dashboard"',
 	'admin_route_path' => 'Prefix URL per als menús de configuració i el panell d\'administració de PanicHD (p.ex.: http://url/<code>panichd</code>/priority)',
 	'master_template' => 'La plantilla blade que totes les vistes de PanicHD extendran',
-	'include_font_awesome' => 'Fer que es carregui o no els fitxers de <a href="http://www.fontawesome.com">Font Awesome</a> dins de PanicHD<br /><code>0</code>: deshabilitat<br /><code>1</code>: habilitat',
 	'user_route' => 'Nom de ruta per a pàgines de Membres. Si es configura, qualsevol nom de Membre en una vista contindrà un enllaç a la seva pròpia pàgina',
 	'member_model_class' => 'Namespace <b>complet</b> per el model "Member" de PanicHD. Per defecte és <code>PanicHD\PanicHD\Models\Member</code>',
 	'admin_button_text' => 'Nom del menú nav de configuració de PanicHD',
