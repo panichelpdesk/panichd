@@ -16,7 +16,7 @@ return [
 	'admin_route' => 'PanicHD configuration menues prefix for Laravel route names (ex. route(\'<code>panichd</code>.status.index\')). Dashboard doesn\'t use it because it has it\'ts own route name "dashboard"',
 	'admin_route_path' => 'URL prefix for PanicHD dashboard and configuration menues (ex. http://url/<code>panichd</code>/priority)',
 	'master_template' => 'The blade template that all PanicHD views will extend',
-	'user_route' => 'Route name for Member pages. If configured, any Member name within a view will have a link to it\'s own page',
+	'user_route' => 'Route name for Member pages. If configured, any Member name within a view will have a link to it\'s own page<br />The <b>used parameter</b> for this route is "<b>user</b>"',
 	'member_model_class' => 'PanicHD "Member" model <b>full</b> namespace. Default is <code>PanicHD\PanicHD\Models\Member</code> and it\'s loaded as <code>\PanicHDMember</code>',
 	'admin_button_text' => 'PanicHD cofiguration nav menu name',
 
