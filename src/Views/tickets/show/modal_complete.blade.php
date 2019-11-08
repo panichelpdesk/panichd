@@ -62,7 +62,7 @@
 		</div>
 		<div class="modal-footer">
 		@if ($u->currentLevel() > 1)
-			<a id="edit-with-values" class="btn btn-default mr-auto" href="{{ route($setting->grab('main_route').'.edit', ['id' => $ticket->id]) . '/complete/yes/status_id/' . $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.show-ticket-modal-edit-fields') }}</a>
+			<a id="edit-with-values" class="btn btn-default mr-auto" href="{{ route($setting->grab('main_route').'.edit', ['ticket' => $ticket->id]) . '/complete/yes/status_id/' . $setting->grab('default_close_status_id') }}">{{ trans('panichd::lang.show-ticket-modal-edit-fields') }}</a>
 		@endif
 			<button type="button" id="complete_form_submit" class="btn btn-danger">{{ trans('panichd::lang.btn-mark-complete') }}</button>
 		</div>
