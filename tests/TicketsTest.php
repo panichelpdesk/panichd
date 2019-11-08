@@ -95,11 +95,11 @@ class TicketsTest extends PanicHDTestCase
                 // Visible ticket
                 $ticket = clone $this->member_tickets_builder;
                 $ticket = $ticket->notHidden()->first();
-                $response = $this->actingAs($this->member)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                $response = $this->actingAs($this->member)->get(route($this->main_route . '.show', ['ticket' => $ticket->id]));
                 $this->versionAssertStatus($response, 200);
                 /*
 				// TODO: Ensure to generate a fake user that doesn't have edit permissions on the aimed ticket
-				$response = $this->actingAs($this->member)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+				$response = $this->actingAs($this->member)->get(route($this->main_route . '.edit', ['ticket' => $ticket->id]));
                 $this->versionAssertStatus($response, 302);*/
 
                 // Hidden ticket without $this->member in notifications
@@ -111,9 +111,9 @@ class TicketsTest extends PanicHDTestCase
                     })
                     ->first();
                 if(!is_null($ticket)){
-                    $response = $this->actingAs($this->member)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->member)->get(route($this->main_route . '.show', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 302);
-                    $response = $this->actingAs($this->member)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->member)->get(route($this->main_route . '.edit', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 302);
                 }
             }
@@ -122,9 +122,9 @@ class TicketsTest extends PanicHDTestCase
             if(!is_null($this->agent)){
                 $ticket = $this->agent->agentTickets()->inRandomOrder()->first();
 
-                $response = $this->actingAs($this->agent)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                $response = $this->actingAs($this->agent)->get(route($this->main_route . '.show', ['ticket' => $ticket->id]));
                 $this->versionAssertStatus($response, 200);
-                $response = $this->actingAs($this->agent)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                $response = $this->actingAs($this->agent)->get(route($this->main_route . '.edit', ['ticket' => $ticket->id]));
                 $this->versionAssertStatus($response, 200);
             }
 
@@ -137,9 +137,9 @@ class TicketsTest extends PanicHDTestCase
                 $ticket = $build->newest()->first();
 
                 if (!is_null($ticket)){
-                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 200);
-                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 200);
                 }
 
@@ -148,9 +148,9 @@ class TicketsTest extends PanicHDTestCase
                 $ticket = $build->active()->first();
 
                 if (!is_null($ticket)){
-                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 200);
-                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 200);
                 }
 
@@ -159,9 +159,9 @@ class TicketsTest extends PanicHDTestCase
                 $ticket = $build->complete()->first();
 
                 if (!is_null($ticket)){
-                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.show', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 200);
-                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['id' => $ticket->id]));
+                    $response = $this->actingAs($this->admin)->get(route($this->main_route . '.edit', ['ticket' => $ticket->id]));
                     $this->versionAssertStatus($response, 200);
                 }
             }
