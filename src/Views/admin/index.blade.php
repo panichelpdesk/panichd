@@ -179,7 +179,7 @@
                                          $agent->agentTickets(true)->count()) . '</span>'; ?>
                              <span class="mr-auto">
                               @if ($setting->grab('user_route') != 'disabled')
-              									<a href="{{ route($setting->grab('user_route'), ['id' => $agent->id]) }}">{!! $agent_text !!}</a>
+              									<a href="{{ route($setting->grab('user_route'), ['user' => $agent->id]) }}">{!! $agent_text !!}</a>
               								@else
               									<span>{!! $agent_text !!}</span>
               								@endif
@@ -235,7 +235,7 @@
                                 <?php $user_text = $user->name . ' <span class="badge">' . $user->tickets()->count() . '</span>'; ?>
                               <span class="mr-auto">
                                 @if ($setting->grab('user_route') != 'disabled')
-                									<a href="{{ route($setting->grab('user_route'), ['id' => $user->id]) }}">{!! $user_text !!}</a>
+                									<a href="{{ route($setting->grab('user_route'), ['user' => $user->id]) }}">{!! $user_text !!}</a>
                 								@else
                 									<span>{!! $user_text !!}</span>
                 								@endif

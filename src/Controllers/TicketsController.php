@@ -601,7 +601,7 @@ class TicketsController extends Controller
 
 			if ($ticket->owner_name != ""){
 				if (Setting::grab('user_route') != 'disabled'){
-					$return = '<a href="'.route(Setting::grab('user_route'), ['id' => $ticket->user_id]).'">'.$return.'</a>';
+					$return = '<a href="'.route(Setting::grab('user_route'), ['user' => $ticket->user_id]).'">'.$return.'</a>';
 				}
 			}
 
