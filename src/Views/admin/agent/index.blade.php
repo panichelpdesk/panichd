@@ -12,7 +12,7 @@
     <div class="card bg-light">
         <div class="card-header">
             <h2>{{ trans('panichd::admin.agent-index-title') }}
-                <button class="btn btn-primaryfloat-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
+                <button class="btn btn-primary float-right" data-toggle="modal" data-target="#CreateAgentModal">{{  trans('panichd::admin.agent-index-create-new') }}</button>
             </h2>
         </div>
 
