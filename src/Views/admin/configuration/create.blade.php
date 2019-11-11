@@ -58,7 +58,7 @@
             <!-- Submit Field -->
             <div class="form-group row">
                 <div class="col-sm-10 offset-sm-2">
-                  {!! CollectiveForm::submit(trans('panichd::admin.btn-add'), ['class' => 'btn btn-primary']) !!}
+                  {!! CollectiveForm::submit(trans('panichd::lang.btn-add'), ['class' => 'btn btn-primary']) !!}
                 </div>
             </div>
 
