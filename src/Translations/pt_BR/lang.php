@@ -2,7 +2,6 @@
 
 return [
 
-
     'nav-new-tickets' => 'Novo',
 
     'nav-new-tickets-title' => 'Novos tickets',
@@ -22,24 +21,24 @@ return [
     'nav-completed-tickets-title' => 'Tickets concluídos',
 
     'regex-text-inline' => '/^(?=.*[A-Za-z]+[\'\-¡!¿?\s,;.:]*)[a-zA-Z\'0-9¡!¿?,;.:\-\s]*$/',
-    'table-id' => '#',
-    'table-subject' => 'Assunto',
+    'table-id'          => '#',
+    'table-subject'     => 'Assunto',
 
     'table-department' => 'Departamento',
 
     'table-description' => 'Descrição',
 
     'table-intervention' => 'Intervenção',
-    'table-owner' => 'Proprietário',
-    'table-status' => 'Status',
+    'table-owner'        => 'Proprietário',
+    'table-status'       => 'Status',
     'table-last-updated' => 'Ultima Atualização',
-    'table-priority' => 'Prioridade',
-    'table-agent' => 'Agente',
+    'table-priority'     => 'Prioridade',
+    'table-agent'        => 'Agente',
 
     'table-calendar' => 'Calendário',
 
     'table-completed_at' => 'Concluído em',
-    'table-category' => 'Categoria',
+    'table-category'     => 'Categoria',
 
     'table-tags' => 'Tag',
 
@@ -78,24 +77,24 @@ return [
     'table-one-agent' => 'Existe um agente nesta categoria',
 
     'table-change-priority' => 'Alterar prioridade',
-    'table-decimal' => '',
-    'table-empty' => 'Sem dados nesta tabela',
-    'table-info' => 'Exibindo _START_ ate _END_ do _TOTAL_ de entradas',
-    'table-info-empty' => 'Exibindo 0 de 0 até 0 entradas',
-    'table-info-filtered' => '(filtrando do _MAX_ total entradas)',
-    'table-info-postfix' => '',
-    'table-thousands' => ',',
-    'table-length-menu' => 'Exibindo _MENU_ entradas',
+    'table-decimal'         => '',
+    'table-empty'           => 'Sem dados nesta tabela',
+    'table-info'            => 'Exibindo _START_ ate _END_ do _TOTAL_ de entradas',
+    'table-info-empty'      => 'Exibindo 0 de 0 até 0 entradas',
+    'table-info-filtered'   => '(filtrando do _MAX_ total entradas)',
+    'table-info-postfix'    => '',
+    'table-thousands'       => ',',
+    'table-length-menu'     => 'Exibindo _MENU_ entradas',
     'table-loading-results' => 'Carregando...',
-    'table-processing' => 'Processando...',
-    'table-search' => 'Buscar:',
-    'table-zero-records' => 'Nenhuma registro compátivel foi encontrado',
-    'table-paginate-first' => 'Primeiro',
-    'table-paginate-last' => 'Ultimo',
-    'table-paginate-next' => 'Próximo',
-    'table-paginate-prev' => 'Anterior',
-    'table-aria-sort-asc' => ': Classificando coluna Ascendente',
-    'table-aria-sort-desc' => ': Classificando coluna Descendente',
+    'table-processing'      => 'Processando...',
+    'table-search'          => 'Buscar:',
+    'table-zero-records'    => 'Nenhuma registro compátivel foi encontrado',
+    'table-paginate-first'  => 'Primeiro',
+    'table-paginate-last'   => 'Ultimo',
+    'table-paginate-next'   => 'Próximo',
+    'table-paginate-prev'   => 'Anterior',
+    'table-aria-sort-asc'   => ': Classificando coluna Ascendente',
+    'table-aria-sort-desc'  => ': Classificando coluna Descendente',
 
     'filter-pov' => 'Vista como',
 
@@ -123,22 +122,21 @@ return [
 
     'filter-agent-all' => 'Todos',
 
-
-    'btn-add' => 'Adicionar',
-    'btn-back' => 'Voltar',
+    'btn-add'    => 'Adicionar',
+    'btn-back'   => 'Voltar',
     'btn-cancel' => 'Cancelar',
 
     'btn-change' => 'mudança',
-    'btn-close' => 'Fechar',
+    'btn-close'  => 'Fechar',
     'btn-delete' => 'Excluir',
 
-    'btn-download' => 'Download',
-    'btn-edit' => 'Editar',
+    'btn-download'      => 'Download',
+    'btn-edit'          => 'Editar',
     'btn-mark-complete' => 'Concluido',
-    'btn-submit' => 'Enviar',
+    'btn-submit'        => 'Enviar',
 
     'active-tickets-adjective' => 'Ativo',
-    'agent' => 'Agente',
+    'agent'                    => 'Agente',
 
     'agents' => 'Agentes',
 
@@ -149,18 +147,18 @@ return [
     'attached-files' => 'Arquivos anexados',
 
     'attachments' => 'Anexos',
-    'category' => 'Categoria',
+    'category'    => 'Categoria',
 
     'closing-reason' => 'Razão de fechamento',
 
     'closing-clarifications' => 'Esclarecimentos',
-    'colon' => ': ',
-    'comments' => 'Comentário',
+    'colon'                  => ': ',
+    'comments'               => 'Comentário',
 
     'complete' => 'Completo',
 
     'complete-tickets-adjective' => 'Concluído',
-    'created' => 'Criado',
+    'created'                    => 'Criado',
 
     'crop-image' => 'Colheita de imagens',
 
@@ -168,39 +166,38 @@ return [
 
     'datetime-format' => 'Y-m-d H: i',
 
-	'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
-
+    'datetimepicker-format' => 'YYYY-MM-DD HH: mm',
 
     'department' => 'Departamento',
 
     'department-shortening' => 'Dept.',
 
     'dept-descendant' => 'Sub Departamento',
-    'description' => 'Descrição',
+    'description'     => 'Descrição',
 
     'discard' => 'Descartar',
 
     'email-resend-abbr' => 'FW',
-    'flash-x' => '×',
+    'flash-x'           => '×',
 
     'intervention' => 'Intervenção',
-    'last-update' => 'Última Atualização',
+    'last-update'  => 'Última Atualização',
 
     'limit-date' => 'Data-limite',
 
     'list' => 'Lista',
 
-    'no' => 'Não',
-    'no-replies' => 'Sem Resposta.',
-    'owner' => 'Proprietário',
-    'priority' => 'Prioridade',
+    'no'            => 'Não',
+    'no-replies'    => 'Sem Resposta.',
+    'owner'         => 'Proprietário',
+    'priority'      => 'Prioridade',
     'reopen-ticket' => 'Reabrir Chamado',
-    'reply' => 'Responder',
-    'responsible' => 'Responsável',
+    'reply'         => 'Responder',
+    'responsible'   => 'Responsável',
 
     'start-date' => 'Data de início',
-    'status' => 'Status',
-    'subject' => 'Assunto',
+    'status'     => 'Status',
+    'subject'    => 'Assunto',
 
     'tags' => 'Tag',
 
@@ -246,15 +243,15 @@ return [
 
     'week-abbr' => 'wk.',
 
-    'month-abbr' => 'mo.',
-    'index-title' => 'Manutenção Página Principal',
-    'index-my-tickets' => 'Meus Chamados',
-    'btn-create-new-ticket' => 'Criar novo chamado',
-    'index-complete-none' => 'Nenhum Chamado Finalizado',
-    'index-active-check' => 'Se você não achar seu Chamado. Verifique Chamados Ativos.',
-    'index-active-none' => 'Nenhum Chamado Ativo,',
+    'month-abbr'              => 'mo.',
+    'index-title'             => 'Manutenção Página Principal',
+    'index-my-tickets'        => 'Meus Chamados',
+    'btn-create-new-ticket'   => 'Criar novo chamado',
+    'index-complete-none'     => 'Nenhum Chamado Finalizado',
+    'index-active-check'      => 'Se você não achar seu Chamado. Verifique Chamados Ativos.',
+    'index-active-none'       => 'Nenhum Chamado Ativo,',
     'index-create-new-ticket' => 'Criar novo Chamado',
-    'index-complete-check' => 'Se você não achar seu Chamado. Verifique Chamados Fechados.',
+    'index-complete-check'    => 'Se você não achar seu Chamado. Verifique Chamados Fechados.',
 
     'ticket-notices-title' => 'Avisos',
 
@@ -266,8 +263,8 @@ return [
 
     'update-priority-same' => 'A prioridade não foi alterada! Ticket < a href=": link " title="quot; title" > < u >: name < / u > < / a >',
 
-    'update-priority-ok' => 'A prioridade foi atualizada corretamente. Ticket < a href=": link " title="quot; title" > < u >: name < / u > < / a >:: old - > :Novo',
-    'create-new-ticket' => 'Criar Novo Chamado',
+    'update-priority-ok'        => 'A prioridade foi atualizada corretamente. Ticket < a href=": link " title="quot; title" > < u >: name < / u > < / a >:: old - > :Novo',
+    'create-new-ticket'         => 'Criar Novo Chamado',
     'create-ticket-brief-issue' => 'Descreva brevemente seu Chamado',
 
     'create-ticket-notices' => 'Avisos',
@@ -283,7 +280,7 @@ return [
     'create-ticket-info-start-date' => 'Padrão: agora',
 
     'create-ticket-info-limit-date' => 'Padrão: Sem limite',
-    'create-ticket-describe-issue' => 'Descreva seu problema em Detalhes',
+    'create-ticket-describe-issue'  => 'Descreva seu problema em Detalhes',
 
     'attach-files' => 'Anexar arquivos',
 
@@ -308,11 +305,11 @@ return [
     'attachment-update-not-valid-mime' => 'O arquivo " arquivo " não é de nenhum tipo válido',
 
     'attachment-update-crop-error' => 'A imagem não pode ser cortada em tamanhos especificados',
-    'show-ticket-title' => 'Chamado',
+    'show-ticket-title'            => 'Chamado',
 
-    'show-ticket-creator' => 'Criado por',
-    'show-ticket-js-delete' => 'Tem certeza que deseja excluir: ',
-    'show-ticket-modal-delete-title' => 'Excluir Chamado',
+    'show-ticket-creator'              => 'Criado por',
+    'show-ticket-js-delete'            => 'Tem certeza que deseja excluir: ',
+    'show-ticket-modal-delete-title'   => 'Excluir Chamado',
     'show-ticket-modal-delete-message' => 'Tem certeza que deseja excluir Chamado: :subject?',
 
     'show-ticket-modal-complete-blank-intervention-check' => 'Deixe a intervenção em branco',
@@ -438,29 +435,29 @@ return [
     'administrators-are-added-to-administrators' => 'Administradores: :names são adicionados aos administradores',
 
     'administrators-is-removed-from-team' => 'Nome do administrador removido :name da equipe de administradores',
-    'category-name-has-been-created' => 'A categoria :name foi criada!',
-    'category-name-has-been-modified' => 'A categoria :name foi modificada!',
-    'category-name-has-been-deleted' => 'A categoria :name foi excluida!',
-    'priority-name-has-been-created' => 'A prioridade :name foi criada!',
-    'priority-name-has-been-modified' => 'A prioridade :name foi modificada!',
-    'priority-name-has-been-deleted' => 'A prioridade :name foi excluida!',
-    'priority-all-tickets-here' => 'Todas prioridades dos chamados relacionadas aqui',
-    'status-name-has-been-created' => 'O status :name foi criado!',
-    'status-name-has-been-modified' => 'O status :name foi modificado!',
-    'status-name-has-been-deleted' => 'O status :name foi excluido!',
-    'status-all-tickets-here' => 'O Status de todos Chamados está relacionados aqui',
-    'comment-has-been-added-ok' => 'Comantário adicionado com Sucesso',
+    'category-name-has-been-created'      => 'A categoria :name foi criada!',
+    'category-name-has-been-modified'     => 'A categoria :name foi modificada!',
+    'category-name-has-been-deleted'      => 'A categoria :name foi excluida!',
+    'priority-name-has-been-created'      => 'A prioridade :name foi criada!',
+    'priority-name-has-been-modified'     => 'A prioridade :name foi modificada!',
+    'priority-name-has-been-deleted'      => 'A prioridade :name foi excluida!',
+    'priority-all-tickets-here'           => 'Todas prioridades dos chamados relacionadas aqui',
+    'status-name-has-been-created'        => 'O status :name foi criado!',
+    'status-name-has-been-modified'       => 'O status :name foi modificado!',
+    'status-name-has-been-deleted'        => 'O status :name foi excluido!',
+    'status-all-tickets-here'             => 'O Status de todos Chamados está relacionados aqui',
+    'comment-has-been-added-ok'           => 'Comantário adicionado com Sucesso',
 
     'comment-has-been-updated' => 'O comentário foi atualizado',
 
-    'comment-has-been-deleted' => 'O comentário foi excluído',
-    'the-ticket-has-been-created' => 'O Chamado foi Criado!',
-    'the-ticket-has-been-modified' => 'O Chamado foi Modificado!',
-    'the-ticket-has-been-deleted' => 'O Chamado :name foi Excluido!',
+    'comment-has-been-deleted'      => 'O comentário foi excluído',
+    'the-ticket-has-been-created'   => 'O Chamado foi Criado!',
+    'the-ticket-has-been-modified'  => 'O Chamado foi Modificado!',
+    'the-ticket-has-been-deleted'   => 'O Chamado :name foi Excluido!',
     'the-ticket-has-been-completed' => 'O Chamado :name foi Finalizado!',
-    'the-ticket-has-been-reopened' => 'O Chamado :name foi Re-aberto!',
+    'the-ticket-has-been-reopened'  => 'O Chamado :name foi Re-aberto!',
 
-    'ticket-status-link-title' => 'Ver ticket',
+    'ticket-status-link-title'         => 'Ver ticket',
     'you-are-not-permitted-to-do-this' => 'Você não tem permissão para esta Ação!',
 
     'environment-not-ready' => 'O administrador não concluiu a configuração necessária para que os tickets sejam criados',

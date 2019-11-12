@@ -13,7 +13,7 @@ class PanicHDNotification extends Mailable
     private $template;
     private $data;
     private $email_from;
-	private $email_replyto;
+    private $email_replyto;
     public $subject;
 
     /**
@@ -26,7 +26,7 @@ class PanicHDNotification extends Mailable
         $this->template = $template;
         $this->data = $data;
         $this->email_from = $email_from;
-		$this->email_replyto = $email_replyto;
+        $this->email_replyto = $email_replyto;
         $this->subject = $subject;
     }
 
@@ -39,7 +39,7 @@ class PanicHDNotification extends Mailable
     {
         return $this->subject($this->subject)
             ->from($this->email_from->email, $this->email_from->email_name)
-			->replyTo($this->email_replyto->email, $this->email_replyto->email_name)
+            ->replyTo($this->email_replyto->email, $this->email_replyto->email_name)
             ->view($this->template)
             ->with($this->data);
     }

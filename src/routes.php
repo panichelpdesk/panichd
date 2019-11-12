@@ -3,23 +3,23 @@
 Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddleware()], function () use ($main_route, $main_route_path, $admin_route, $admin_route_path) {
 
     // Notice list
-	Route::get("$main_route_path/notices", function(){
-		return view('panichd::notices.index');
-	})->name("$main_route.notices");
-    
+    Route::get("$main_route_path/notices", function () {
+        return view('panichd::notices.index');
+    })->name("$main_route.notices");
+
     // Get newest tickets list
-	Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
+    Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
     ->name("$main_route-newest")
     ->middleware('PanicHD\PanicHD\Middleware\IsAgentMiddleware');
 
-	// Get complete tickets list
+    // Get complete tickets list
     Route::get("$main_route_path/complete", 'PanicHD\PanicHD\Controllers\TicketsController@indexComplete')
         ->name("$main_route-complete");
 
     // Ticket data loaded by Datatables
-        Route::get("$main_route_path/data/{id?}", 'PanicHD\PanicHD\Controllers\TicketsController@data')
+    Route::get("$main_route_path/data/{id?}", 'PanicHD\PanicHD\Controllers\TicketsController@data')
         ->name("$main_route.data");
-    
+
     // Search page (Blank form or with search parameters in URL)
     Route::get("$main_route_path/search/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@search_form')
     ->where('parameters', '(.*)')
@@ -33,16 +33,16 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     Route::get("$main_route_path/last_update/{ticketList}", 'PanicHD\PanicHD\Controllers\TicketsController@get_last_update')
         ->name("$main_route.last_update");
 
-	// Hide or show ticket to user
-	Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
+    // Hide or show ticket to user
+    Route::get("$main_route_path/hide/{value}/{ticket}", 'PanicHD\PanicHD\Controllers\TicketsController@hide')->name("$main_route.hide");
 
-   // Open Ticket create page with optional parameters set by URL
-   Route::get("$main_route_path/create/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@create')
+    // Open Ticket create page with optional parameters set by URL
+    Route::get("$main_route_path/create/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@create')
       ->where('parameters', '(.*)')
       ->name("$main_route.create");
 
-   // Open Ticket edit page with optional parameters set by URL
-   Route::get("$main_route_path/{ticket}/edit/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@edit')
+    // Open Ticket edit page with optional parameters set by URL
+    Route::get("$main_route_path/{ticket}/edit/{parameters?}", 'PanicHD\PanicHD\Controllers\TicketsController@edit')
        ->where('parameters', '(.*)')
        ->name("$main_route.edit");
 
@@ -54,22 +54,22 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             'store'   => $main_route.'.store',
             'update'  => $main_route.'.update',
             'show'    => $main_route.'.show',
-            'destroy' => $main_route.'.destroy'
+            'destroy' => $main_route.'.destroy',
         ],
         'parameters' => [
             $field_name => 'ticket',
         ],
     ]);
 
-	// Attachment routes
+    // Attachment routes
     Route::get("$main_route_path/download-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@downloadAttachment')
         ->name("$main_route.download-attachment");
 
-	Route::get("$main_route_path/view-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@viewAttachment')
+    Route::get("$main_route_path/view-attachment/{attachment}", 'PanicHD\PanicHD\Controllers\TicketsController@viewAttachment')
         ->name("$main_route.view-attachment");
 
-        //Ticket Comments public route
-        $field_name = last(explode('/', "$main_route_path-comment"));
+    //Ticket Comments public route
+    $field_name = last(explode('/', "$main_route_path-comment"));
 
     Route::resource("$main_route_path-comment", 'PanicHD\PanicHD\Controllers\CommentsController', [
             'names' => [
@@ -94,36 +94,36 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     Route::get("$main_route_path/{id}/reopen", 'PanicHD\PanicHD\Controllers\TicketsController@reopen')
             ->name("$main_route.reopen");
 
-	// Returns permission_level for category_id
+    // Returns permission_level for category_id
     Route::get("$main_route_path/permissionLevel/{category_id?}", [
         'as'   => $main_route.'-permissionLevel',
         'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@permissionLevel',
     ]);
 
-    Route::group(['prefix' => $main_route_path . '/ajax'], function() use ($main_route){
-        
+    Route::group(['prefix' => $main_route_path.'/ajax'], function () use ($main_route) {
+
         // Ticket list: Mark as read / unread
-        Route::POST("read", 'PanicHD\PanicHD\Controllers\TicketsController@changeRead')
-		    ->name("$main_route.ajax.read");
+        Route::POST('read', 'PanicHD\PanicHD\Controllers\TicketsController@changeRead')
+            ->name("$main_route.ajax.read");
 
         // Ticket list: Change a ticket agent
-        Route::POST("agent", 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
-		    ->name("$main_route.ajax.agent");
+        Route::POST('agent', 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
+            ->name("$main_route.ajax.agent");
 
         // Ticket list: Change a ticket priority
-        Route::POST("priority", 'PanicHD\PanicHD\Controllers\TicketsController@changePriority')
+        Route::POST('priority', 'PanicHD\PanicHD\Controllers\TicketsController@changePriority')
             ->name("$main_route.ajax.priority");
-            
+
         // Ticket list: Change a ticket status
-        Route::POST("status", 'PanicHD\PanicHD\Controllers\TicketsController@changeStatus')
+        Route::POST('status', 'PanicHD\PanicHD\Controllers\TicketsController@changeStatus')
             ->name("$main_route.ajax.status");
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 
-		// Send again comment (reply) notification
-		Route::post("$main_route_path-notification.resend", 'PanicHD\PanicHD\Controllers\NotificationsController@notificationResend')
-			->name("$main_route-notification.resend");
+        // Send again comment (reply) notification
+        Route::post("$main_route_path-notification.resend", 'PanicHD\PanicHD\Controllers\NotificationsController@notificationResend')
+            ->name("$main_route-notification.resend");
 
         //API return list of agents in particular category
         Route::get("$main_route_path/agents/list/{category_id?}/{ticket_id?}", [
@@ -131,17 +131,17 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             'uses' => 'PanicHD\PanicHD\Controllers\TicketsController@agentSelectList',
         ]);
 
-		// Remove all filters
-		Route::get("$main_route_path/filter/removeall/{list?}", 'PanicHD\PanicHD\Controllers\FiltersController@removeall')
-			->name("$main_route-filter-removeall");
+        // Remove all filters
+        Route::get("$main_route_path/filter/removeall/{list?}", 'PanicHD\PanicHD\Controllers\FiltersController@removeall')
+            ->name("$main_route-filter-removeall");
 
-		// Alter ticket filter
+        // Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
 
-		// Use single filter in specified list
+        // Use single filter in specified list
         // TODO: Delete this route and controller method. Use filterjust instead
-		Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only')
-			->name("$main_route-filteronly");
+        Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only')
+            ->name("$main_route-filteronly");
 
         // Use just the specified filters (one or many)
         Route::get("$main_route_path/filterjust/{parameters?}", 'PanicHD\PanicHD\Controllers\FiltersController@just')
@@ -156,7 +156,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
                 'uses' => 'PanicHD\PanicHD\Controllers\DashboardController@index',
         ]);
         Route::get("$admin_route_path/dashboard", 'PanicHD\PanicHD\Controllers\DashboardController@index')
-			->name('dashboard');
+            ->name('dashboard');
 
         //Ticket statuses admin routes (ex. http://url/panichd/status)
         Route::resource("$admin_route_path/status", 'PanicHD\PanicHD\Controllers\StatusesController', [
@@ -184,9 +184,8 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-		Route::post("$admin_route_path/priority/reorder", 'PanicHD\PanicHD\Controllers\PrioritiesController@reorder')
-			->name("$admin_route.priority.reorder");
-
+        Route::post("$admin_route_path/priority/reorder", 'PanicHD\PanicHD\Controllers\PrioritiesController@reorder')
+            ->name("$admin_route.priority.reorder");
 
         //Agents management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/agent", 'PanicHD\PanicHD\Controllers\AgentsController', [
@@ -214,7 +213,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-		// Members management routes (ex. http://url/panichd/member)
+        // Members management routes (ex. http://url/panichd/member)
         Route::resource("$admin_route_path/member", 'PanicHD\PanicHD\Controllers\MembersController', [
             'names' => [
                 'index'   => "$admin_route.member.index",
@@ -224,7 +223,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             ],
         ]);
 
-		//Departments management routes (ex. http://url/panichd/agent)
+        //Departments management routes (ex. http://url/panichd/agent)
         Route::resource("$admin_route_path/notice", 'PanicHD\PanicHD\Controllers\NoticesController', [
             'names' => [
                 'index'   => "$admin_route.notice.index",

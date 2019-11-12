@@ -97,71 +97,69 @@ class SettingsTableSeeder extends Seeder
              */
             'master_template' => 'panichd::master',
 
-			/*
-			 * Default Member model for PanicHD
-			 * Default: default (which means using PanicHD\PanicHD\Models\Member)
-			 */
-			'member_model_class' => 'default',
-
-
-			/*
-			 * Admin navbar button text is configurable
-			*/
-			'admin_button_text' => 'PanicHD',
+            /*
+             * Default Member model for PanicHD
+             * Default: default (which means using PanicHD\PanicHD\Models\Member)
+             */
+            'member_model_class' => 'default',
 
             /*
-			 * Tickets email account: The email address for all package notifications.
-			 * Overrides Laravel email and name but uses it's connection parameters
-			 * Default: use Laravel config('mail.from.name') and config('mail.from.address') parameters
-			*/
-			'email.account.name' => 'default',
-			'email.account.mailbox' => 'default',
+             * Admin navbar button text is configurable
+            */
+            'admin_button_text' => 'PanicHD',
 
-			/*
+            /*
+             * Tickets email account: The email address for all package notifications.
+             * Overrides Laravel email and name but uses it's connection parameters
+             * Default: use Laravel config('mail.from.name') and config('mail.from.address') parameters
+            */
+            'email.account.name'    => 'default',
+            'email.account.mailbox' => 'default',
+
+            /*
              * Template adherence: The email blade template to be extended
              * Default: panichd::emails.templates.panichd
              */
-            'email.template' => 'panichd::emails.templates.panichd',
-			'email.owner.newticket.template' => 'panichd::emails.templates.simple',
+            'email.template'                 => 'panichd::emails.templates.panichd',
+            'email.owner.newticket.template' => 'panichd::emails.templates.simple',
 
-			/**
-			 * Configurable notifications.
-			*/
+            /*
+             * Configurable notifications.
+            */
 
-			/*
+            /*
              * Agent notify: To notify assigned agent (either auto or manual assignment) of new assigned or transferred tickets
              * Default: 'yes'
              * not to notify agent: 'no'
              */
             'assigned_notification' => 'yes',
 
-			/*
+            /*
              * Comment notification: Send notification when new comment is posted
              * Default is send notification: 'yes'
              * Do not send notification: 'no'
              */
             'comment_notification' => 'yes',
 
-			/*
+            /*
              * Status notification: Send email notification to ticket owner/Agent when ticket status is changed
              * Default: 'yes'
              */
             'status_notification' => 'yes',
 
-			/*
-			* Notify owner when ticket list changes (between active and complete only)
-			* Default: 'yes'
+            /*
+            * Notify owner when ticket list changes (between active and complete only)
+            * Default: 'yes'
             */
-			'list_owner_notification' => 'yes',
+            'list_owner_notification' => 'yes',
 
-			/*
-			* Notify owner when ticket status changes
-			* Default: 'yes'
+            /*
+            * Notify owner when ticket status changes
+            * Default: 'yes'
             */
-			'status_owner_notification' => 'yes',
+            'status_owner_notification' => 'yes',
 
-
-			/*
+            /*
              * The default priority for new tickets
              * Default: 1
              */
@@ -198,57 +196,56 @@ class SettingsTableSeeder extends Seeder
              */
             'paginate_items' => 10,
 
-			/*
-			 * Ticket list: View combined column for subject and content?
-			 * Default: 'no'
-			*/
-			'subject_content_column' => 'no',
+            /*
+             * Ticket list: View combined column for subject and content?
+             * Default: 'no'
+            */
+            'subject_content_column' => 'no',
 
+            /*
+             * Max total size for attached files (ticket + comments)
+             *
+             * Default: 2 (Size in MegaBytes)
+             */
+            'attachments_ticket_max_size' => '2',
+            /*
+             * Max total file number for a ticket (ticket + comments)
+             *
+            */
+            'attachments_ticket_max_files_num' => '20',
 
-			/*
-			 * Max total size for attached files (ticket + comments)
-			 *
-			 * Default: 2 (Size in MegaBytes)
-			 */
-			'attachments_ticket_max_size' => '2',
-			/*
-			 * Max total file number for a ticket (ticket + comments)
-			 *
-			*/
-			'attachments_ticket_max_files_num' => '20',
+            /*
+             * Attachment allowed mimetypes
+             *
+             * Default: jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf
+            */
+            'attachments_mimes' => 'jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf',
 
-			/**
-			 * Attachment allowed mimetypes
-			 *
-			 * Default: jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf
-			*/
-			'attachments_mimes' => 'jpg,jpeg,png,gif,doc,docx,rtf,xls,xlsx,pdf',
-
-			/*
+            /*
              * Defines relative path under storage_path() where to store attached files
              *
              * Default: <storage_path>/panichd_attachments
              */
             'attachments_path' => 'panichd_attachments',
-			'thumbnails_path' => 'panichd_thumbnails',
+            'thumbnails_path'  => 'panichd_thumbnails',
 
-			/*
-			 * Oldest year for ticket start date or limit date
-			*/
-			'oldest_year' => '2017',
+            /*
+             * Oldest year for ticket start date or limit date
+            */
+            'oldest_year' => '2017',
 
-			/*
-			 * String replacements to execute within Purifiable trait before clean() method
-			*/
-			'html_replacements' => [
-				'<br />' => '',
-				'<br>' => ''
-			],
+            /*
+             * String replacements to execute within Purifiable trait before clean() method
+            */
+            'html_replacements' => [
+                '<br />' => '',
+                '<br>'   => '',
+            ],
 
-			/*
-			 * If set to a number, limit texts in ticket list to specified character length and show plus / minus icons
-			 */
-			'list_text_max_length' => '300',
+            /*
+             * If set to a number, limit texts in ticket list to specified character length and show plus / minus icons
+             */
+            'list_text_max_length' => '300',
 
             /*
              * Time in seconds between checks for last_update on current page. Set to 0 to disable
@@ -256,13 +253,11 @@ class SettingsTableSeeder extends Seeder
              */
             'check_last_update_seconds' => '30',
 
-
             /*
              * Pagination length: For tickets table.
              * Default: 1
              */
             'length_menu' => [[10, 50, 100], [10, 50, 100]],
-
 
             /*
              * Use Queue method when sending emails (Mail::queue instead of Mail::send). Note that Mail::queue needs to be
@@ -347,8 +342,8 @@ class SettingsTableSeeder extends Seeder
              * This setting stores the path to the json config file, relative to project route
              */
             'summernote_options_json_file' => 'default',
-			/* User role specific summernote options json string */
-			'summernote_options_user' => 'no',
+            /* User role specific summernote options json string */
+            'summernote_options_user' => 'no',
 
             /*
              * Set which html tags are allowed
@@ -365,43 +360,43 @@ class SettingsTableSeeder extends Seeder
                 'URI.AllowedSchemes'   => ['data' => true, 'http' => true, 'https' => true, 'mailto' => true, 'ftp' => true],
             ],
 
-			/*
-			 * Panic Help Desk optional features
-			*/
+            /*
+             * Panic Help Desk optional features
+            */
 
-			/*
-			 * View department and sub1 where ticket owner belongs
-			*/
-			'departments_feature' => 'no',
+            /*
+             * View department and sub1 where ticket owner belongs
+            */
+            'departments_feature' => 'no',
 
-			/*
-			 * This feature represents two connected functionalities:
-			 * - Ability of associate certain users to departments.
-			 * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
-			*/
-			'departments_notices_feature' => 'no',
+            /*
+             * This feature represents two connected functionalities:
+             * - Ability of associate certain users to departments.
+             * - On new ticket menu: User department's associated users open tickets will be shown on special panel called "Notices"
+            */
+            'departments_notices_feature' => 'no',
 
-			/**
-			 * Allow file attachments for tickets and comments
-			*/
-			'ticket_attachments_feature' => 'yes',
+            /*
+             * Allow file attachments for tickets and comments
+            */
+            'ticket_attachments_feature' => 'yes',
 
-			/*
-			 * Calendar filter options switch between week and month or 7 and 14 days
-			*/
-			'calendar_month_filter' => 'no',
+            /*
+             * Calendar filter options switch between week and month or 7 and 14 days
+            */
+            'calendar_month_filter' => 'no',
 
-			/*
-			 * Max number of agent specific buttons in filter panel. If agent count is bigger, select2 will be shown
-			*/
-			'max_agent_buttons' => '4',
+            /*
+             * Max number of agent specific buttons in filter panel. If agent count is bigger, select2 will be shown
+            */
+            'max_agent_buttons' => '4',
 
-			/**
-			 * User card route name if it exists in your app. Configuring it makes Owner name link to it's card by passing user id.
-			 *
+            /*
+             * User card route name if it exists in your app. Configuring it makes Owner name link to it's card by passing user id.
+             *
              * Default: 'disabled'
-			*/
-			'user_route' => 'disabled',
+            */
+            'user_route' => 'disabled',
         ];
     }
 }

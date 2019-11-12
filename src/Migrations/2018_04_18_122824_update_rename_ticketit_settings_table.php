@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateRenameTicketitSettingsTable extends Migration
 {
@@ -13,9 +12,9 @@ class UpdateRenameTicketitSettingsTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('ticketit_settings')){
-			Schema::rename('ticketit_settings', 'panichd_settings');
-		}
+        if (Schema::hasTable('ticketit_settings')) {
+            Schema::rename('ticketit_settings', 'panichd_settings');
+        }
     }
 
     /**
@@ -25,8 +24,8 @@ class UpdateRenameTicketitSettingsTable extends Migration
      */
     public function down()
     {
-		if (Schema::hasTable('panichd_settings')){
-			Schema::rename('panichd_settings', 'ticketit_settings');
-		}
+        if (Schema::hasTable('panichd_settings')) {
+            Schema::rename('panichd_settings', 'ticketit_settings');
+        }
     }
 }

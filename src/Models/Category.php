@@ -3,7 +3,6 @@
 namespace PanicHD\PanicHD\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use PanicHD\PanicHD\Models\Tag;
 
 class Category extends Model
 {
@@ -18,29 +17,28 @@ class Category extends Model
      */
     public $timestamps = false;
 
-	/**
-	 * Delete all category relations prior of itself
-	*/
-	public function delete()
-	{
-		$this->tickets()->delete();
-		$this->closingReasons()->delete();
-		$this->agents()->detach();
-		
-		// Tags detach and delete
-		$a_tags = [];
-		foreach ($this->tags()->get() as $tag){
-			$a_tags[] = $tag->id;
-		};
-		if ($a_tags){
-			$this->tags()->detach();
-			Tag::whereIn('id', $a_tags)->delete();
-		}
-		
-		parent::delete();
-	}
-	
-	
+    /**
+     * Delete all category relations prior of itself.
+     */
+    public function delete()
+    {
+        $this->tickets()->delete();
+        $this->closingReasons()->delete();
+        $this->agents()->detach();
+
+        // Tags detach and delete
+        $a_tags = [];
+        foreach ($this->tags()->get() as $tag) {
+            $a_tags[] = $tag->id;
+        }
+        if ($a_tags) {
+            $this->tags()->detach();
+            Tag::whereIn('id', $a_tags)->delete();
+        }
+
+        parent::delete();
+    }
+
     /**
      * Get related tickets.
      *
@@ -70,8 +68,8 @@ class Category extends Model
     {
         return $this->morphToMany('PanicHD\PanicHD\Models\Tag', 'taggable', 'panichd_taggables')->orderBy('name');
     }
-	
-	/**
+
+    /**
      * Get related closing reasons.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -80,10 +78,10 @@ class Category extends Model
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Closingreason', 'category_id')->orderBy('ordering');
     }
-	
-	/**
+
+    /**
      * Get all visible categories for current user.
-	 *
+     *
      * @param $query
      *
      * @return mixed
@@ -92,10 +90,10 @@ class Category extends Model
     {
         if (auth()->user()->panichd_admin) {
             return $query;
-        }else{
-			return $query->whereHas('agents', function($query){
-				$query->where('id', auth()->user()->id);
-			});
-		}
-	}
+        } else {
+            return $query->whereHas('agents', function ($query) {
+                $query->where('id', auth()->user()->id);
+            });
+        }
+    }
 }

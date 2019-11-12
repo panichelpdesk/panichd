@@ -9,25 +9,24 @@ use PanicHD\PanicHD\Models\Ticket;
 
 class DashboardController extends Controller
 {
-	
-	public function index($indicator_period = 2)
+    public function index($indicator_period = 2)
     {
-		if( \PanicHDMember::count() == 0
-			or Category::count() == 0
-			or Models\Priority::count() == 0
-			or Models\Status::count() == 0){
-			
-			// Show pending configurations message
-			return view('panichd::install.configurations_pending');
-		}
-		
-		// Load Dashboard info
-		$tickets_count = Ticket::count();
+        if (\PanicHDMember::count() == 0
+            or Category::count() == 0
+            or Models\Priority::count() == 0
+            or Models\Status::count() == 0) {
+
+            // Show pending configurations message
+            return view('panichd::install.configurations_pending');
+        }
+
+        // Load Dashboard info
+        $tickets_count = Ticket::count();
         $a_tickets_count = [
-			'newest' => Ticket::newest()->count(),
-			'active' => Ticket::active()->count(),
-			'complete' => Ticket::complete()->count()
-		];
+            'newest'   => Ticket::newest()->count(),
+            'active'   => Ticket::active()->count(),
+            'complete' => Ticket::complete()->count(),
+        ];
 
         // Per Category pagination
         $categories = Category::paginate(10, ['*'], 'cat_page');
@@ -59,11 +58,11 @@ class DashboardController extends Controller
         $ticketController = new TicketsController(new Ticket(), new \PanicHDMember());
         $monthly_performance = $ticketController->monthlyPerfomance($indicator_period);
 
-        if (request()->input('cat_page') != "") {
+        if (request()->input('cat_page') != '') {
             $active_tab = 'cat';
-        } elseif (request()->input('agents_page') != "") {
+        } elseif (request()->input('agents_page') != '') {
             $active_tab = 'agents';
-        } elseif (request()->input('users_page') != "") {
+        } elseif (request()->input('users_page') != '') {
             $active_tab = 'users';
         } else {
             $active_tab = 'cat';

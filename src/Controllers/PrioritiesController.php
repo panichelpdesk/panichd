@@ -19,7 +19,7 @@ class PrioritiesController extends Controller
     {
         $priorities = Priority::withCount('tickets')->orderBy('magnitude', 'desc')->get();
 
-		if (LaravelVersion::min('5.3.0')) {
+        if (LaravelVersion::min('5.3.0')) {
             $priorities_list = $priorities->pluck('name', 'id')->toArray();
         } else {
             $priorities_list = $priorities->lists('name', 'id')->toArray();
@@ -52,39 +52,40 @@ class PrioritiesController extends Controller
             'color'     => 'required',
         ]);
 
-		// Update magnitude for all existent priorities
-		$this->update_magnitudes(1);
+        // Update magnitude for all existent priorities
+        $this->update_magnitudes(1);
 
         $priority = new Priority();
 
         $priority->create([
-			'name' => $request->name,
-			'color' => $request->color,
-			'magnitude' => 1
-		]);
+            'name'      => $request->name,
+            'color'     => $request->color,
+            'magnitude' => 1,
+        ]);
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-created', ['name' => $request->name]));
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 
-	/*
-	 * Update all existent priorities magnitude with specified $addition
-	*/
-	public function update_magnitudes($addition = 0)
-	{
-		$a_magnitude = Priority::orderBy('magnitude', 'desc')->get();
+    /*
+     * Update all existent priorities magnitude with specified $addition
+    */
+    public function update_magnitudes($addition = 0)
+    {
+        $a_magnitude = Priority::orderBy('magnitude', 'desc')->get();
 
-		$new_max_magnitude = count($a_magnitude)+$addition;
+        $new_max_magnitude = count($a_magnitude) + $addition;
 
-		$loop = 0;
-		foreach ($a_magnitude as $p){
-			$p->update([
-				'magnitude' => $new_max_magnitude-$loop
-			]);
+        $loop = 0;
+        foreach ($a_magnitude as $p) {
+            $p->update([
+                'magnitude' => $new_max_magnitude - $loop,
+            ]);
 
-			$loop++;
-		}
-	}
+            $loop++;
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -131,32 +132,32 @@ class PrioritiesController extends Controller
         $priority->update(['name' => $request->name, 'color' => $request->color]);
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-modified', ['name' => $request->name]));
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 
-	public function reorder(Request $request)
-	{
-		$result = "error";
-		if ($request->input('priorities') != ""){
+    public function reorder(Request $request)
+    {
+        $result = 'error';
+        if ($request->input('priorities') != '') {
+            $a_priorities = $a_priorities = explode(',', $request->priorities);
+            if (Priority::whereNotIn('id', $a_priorities)->count() == 0
+            and Priority::whereIn('id', $a_priorities)->count() == count($a_priorities)) {
+                $max_magnitude = count($a_priorities);
+                $index = 0;
+                foreach ($a_priorities as $id) {
+                    $priority = Priority::findOrFail($id);
+                    $priority->magnitude = $max_magnitude - $index;
+                    $priority->save();
+                    $index++;
+                }
 
-			$a_priorities = $a_priorities = explode(',', $request->priorities);
-			if (Priority::whereNotIn('id', $a_priorities)->count() == 0
-			and Priority::whereIn('id', $a_priorities)->count() == count($a_priorities)){
-				$max_magnitude = count($a_priorities);
-				$index = 0;
-				foreach ($a_priorities as $id){
-					$priority = Priority::findOrFail($id);
-					$priority->magnitude = $max_magnitude-$index;
-					$priority->save();
-					$index++;
-				}
+                $result = 'ok';
+            }
+        }
 
-				$result = "ok";
-			}
-		}
-
-		return response()->json(['result' => $result]);
-	}
+        return response()->json(['result' => $result]);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -170,23 +171,24 @@ class PrioritiesController extends Controller
         $priority = Priority::findOrFail($id);
         $name = $priority->name;
 
-		if ($request->input('tickets_new_priority_id') != ""){
-			$this->validate($request, [
-				'tickets_new_priority_id' => 'required|exists:panichd_priorities,id',
-			]);
-			$priority->delete($request->tickets_new_priority_id);
-		}else{
-			if ($priority->tickets()->count() > 0){
-				return back()->with('warning', trans('panichd::admin.priority-delete-error-no-priority', ['name' => $name]));
-			}
+        if ($request->input('tickets_new_priority_id') != '') {
+            $this->validate($request, [
+                'tickets_new_priority_id' => 'required|exists:panichd_priorities,id',
+            ]);
+            $priority->delete($request->tickets_new_priority_id);
+        } else {
+            if ($priority->tickets()->count() > 0) {
+                return back()->with('warning', trans('panichd::admin.priority-delete-error-no-priority', ['name' => $name]));
+            }
 
-			$priority->delete();
-		}
+            $priority->delete();
+        }
 
-		// Update magnitude for all existent priorities
-		$this->update_magnitudes();
+        // Update magnitude for all existent priorities
+        $this->update_magnitudes();
 
         Session::flash('status', trans('panichd::lang.priority-name-has-been-deleted', ['name' => $name]));
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\PrioritiesController@index');
     }
 }

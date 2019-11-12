@@ -39,44 +39,45 @@ class WipeOffTickets extends Command
     public function handle()
     {
         $tickets = Models\Ticket::all();
-		
-		if ($tickets->count() == 0){
-			$this->info(trans('panichd::console.wipe-off-no-tickets-message'));
-			return false;
-		}
-		
-		$this->info('');
+
+        if ($tickets->count() == 0) {
+            $this->info(trans('panichd::console.wipe-off-no-tickets-message'));
+
+            return false;
+        }
+
+        $this->info('');
         $this->info('*');
-		$this->info('* '.trans('panichd::console.wipe-off-tickets'));
-		$this->info('*');
-		$this->info('');
-		
-		$this->info(trans('panichd::console.wipe-off-tickets-description'));
-		
-		$options = [
-			trans('panichd::console.continue-question-yes'),
-			trans('panichd::console.continue-question-no')
-		];
-		
-		$answer = $this->choice(trans('panichd::console.continue-question'), $options, 1);
-		
-		if ($answer != trans('panichd::console.continue-question-yes')){
-			$this->info(trans('panichd::console.command-aborted'));
-			return false;
-		}
-		
-		$this->info(trans('panichd::console.wipe-off-tickets-start'));
+        $this->info('* '.trans('panichd::console.wipe-off-tickets'));
+        $this->info('*');
+        $this->info('');
+
+        $this->info(trans('panichd::console.wipe-off-tickets-description'));
+
+        $options = [
+            trans('panichd::console.continue-question-yes'),
+            trans('panichd::console.continue-question-no'),
+        ];
+
+        $answer = $this->choice(trans('panichd::console.continue-question'), $options, 1);
+
+        if ($answer != trans('panichd::console.continue-question-yes')) {
+            $this->info(trans('panichd::console.command-aborted'));
+
+            return false;
+        }
+
+        $this->info(trans('panichd::console.wipe-off-tickets-start'));
 
         foreach ($tickets as $ticket) {
-			$ticket->tags()->detach();
-			$ticket->delete();
-		}
-		
-		Models\Attachment::truncate();
-		Models\Comment::truncate();
-		Models\Ticket::truncate();
-		
+            $ticket->tags()->detach();
+            $ticket->delete();
+        }
 
-		$this->info(trans('panichd::console.done'));
+        Models\Attachment::truncate();
+        Models\Comment::truncate();
+        Models\Ticket::truncate();
+
+        $this->info(trans('panichd::console.done'));
     }
-} ?>
+}

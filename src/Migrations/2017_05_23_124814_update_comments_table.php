@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateCommentsTable extends Migration
 {
@@ -14,7 +14,7 @@ class UpdateCommentsTable extends Migration
     public function up()
     {
         Schema::table('ticketit_comments', function (Blueprint $table) {
-            $table->string('type',10)->after('id')->default('note');
+            $table->string('type', 10)->after('id')->default('note');
         });
     }
 

@@ -17,8 +17,8 @@ class Closingreason extends Model
     {
         return $this->belongsTo('PanicHD\PanicHD\Models\Category', 'category_id');
     }
-	
-	/**
+
+    /**
      * Get related status.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongTo
@@ -27,5 +27,4 @@ class Closingreason extends Model
     {
         return $this->belongsTo('PanicHD\PanicHD\Models\Status', 'status_id');
     }
-
 }

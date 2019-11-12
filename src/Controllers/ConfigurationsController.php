@@ -12,26 +12,26 @@ use PanicHD\PanicHD\Models\Setting;
 
 class ConfigurationsController extends Controller
 {
-	/**
-	* Display a listing of the Setting.
-	*
-	* @return Response
-	*/
-	public function index()
-	{
-		$configurations = Configuration::all();
-		$configurations_by_sections = ['init' => [], 'table' => [], 'features' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
-		$init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'member_model_class', 'user_route', 'admin_button_text'];
+    /**
+     * Display a listing of the Setting.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $configurations = Configuration::all();
+        $configurations_by_sections = ['init' => [], 'table' => [], 'features' => [], 'email' => [], 'tickets' => [], 'perms' => [], 'editor' => [], 'other' => []];
+        $init_section = ['main_route', 'main_route_path', 'admin_route', 'admin_route_path', 'master_template', 'member_model_class', 'user_route', 'admin_button_text'];
         $table_section = ['subject_content_column', 'list_text_max_length', 'check_last_update_seconds', 'length_menu', 'max_agent_buttons', 'calendar_month_filter', 'paginate_items'];
         $features_section = ['departments_feature', 'departments_notices_feature', 'ticket_attachments_feature'];
         $email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
-		'list_owner_notification', 'status_owner_notification', 'email.template', 'email.owner.newticket.template', 'email.account.name', 'email.account.mailbox', 'custom_recipients' ];
-		$tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
+        'list_owner_notification', 'status_owner_notification', 'email.template', 'email.owner.newticket.template', 'email.account.name', 'email.account.mailbox', 'custom_recipients', ];
+        $tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
             'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
-            'attachments_path', 'thumbnails_path', 'oldest_year', 'html_replacements', 'use_default_status_id', 'delete_modal_type'];
-		$perms_section = ['agent_restrict', 'close_ticket_perm', 'reopen_ticket_perm'];
-		$editor_section = ['editor_enabled', 'editor_html_highlighter', 'codemirror_theme',
-			'summernote_locale', 'summernote_options_json_file', 'summernote_options_user', 'purifier_config', ];
+            'attachments_path', 'thumbnails_path', 'oldest_year', 'html_replacements', 'use_default_status_id', 'delete_modal_type', ];
+        $perms_section = ['agent_restrict', 'close_ticket_perm', 'reopen_ticket_perm'];
+        $editor_section = ['editor_enabled', 'editor_html_highlighter', 'codemirror_theme',
+            'summernote_locale', 'summernote_options_json_file', 'summernote_options_user', 'purifier_config', ];
 
         $last_configuration = session()->has('last_configuration') ? session('last_configuration') : '';
 
@@ -43,25 +43,18 @@ class ConfigurationsController extends Controller
 
             if (in_array($config_item->slug, $init_section)) {
                 $section = 'init';
-            
             } elseif (in_array($config_item->slug, $table_section)) {
                 $section = 'table';
-            
             } elseif (in_array($config_item->slug, $features_section)) {
                 $section = 'features';
-            
             } elseif (in_array($config_item->slug, $email_section)) {
                 $section = 'email';
-            
             } elseif (in_array($config_item->slug, $tickets_section)) {
                 $section = 'tickets';
-            
             } elseif (in_array($config_item->slug, $perms_section)) {
                 $section = 'perms';
-            
             } elseif (in_array($config_item->slug, $editor_section)) {
                 $section = 'editor';
-            
             } else {
                 $section = 'other';
             }
@@ -70,19 +63,20 @@ class ConfigurationsController extends Controller
             $configurations_by_sections[$section][] = $config_item;
 
             // If list is loaded after configuration update or delete, open it's related tab
-            if ($config_item->slug == $last_configuration){
+            if ($config_item->slug == $last_configuration) {
                 $last_tab = $section;
             }
         }
 
-        
-        if (session()->has('last_configuration') and !isset($last_tab)){
+        if (session()->has('last_configuration') and !isset($last_tab)) {
             // If last configuration is not listed, has to belong to tab "other"
-            $last_tab = "other";
+            $last_tab = 'other';
         }
 
         // Default tab
-        if (!isset($last_tab)) $last_tab = "init";
+        if (!isset($last_tab)) {
+            $last_tab = 'init';
+        }
 
         return view('panichd::admin.configuration.index', compact('configurations', 'configurations_by_sections', 'last_tab'));
     }

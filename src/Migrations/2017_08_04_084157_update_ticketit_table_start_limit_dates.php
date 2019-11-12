@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateTicketitTableStartLimitDates extends Migration
 {
@@ -15,7 +15,7 @@ class UpdateTicketitTableStartLimitDates extends Migration
     {
         Schema::table('ticketit', function (Blueprint $table) {
             $table->timestamp('start_date')->nullable();
-			$table->timestamp('limit_date')->nullable();
+            $table->timestamp('limit_date')->nullable();
         });
     }
 

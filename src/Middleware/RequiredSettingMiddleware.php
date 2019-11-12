@@ -17,13 +17,13 @@ class RequiredSettingMiddleware
      */
     public function handle($request, Closure $next, $controller)
     {
-        if ($controller == "Notices"){
-			if (Setting::grab('departments_notices_feature')) {
-				return $next($request);
-			}
-		}else{
-			return $next($request);
-		}		
+        if ($controller == 'Notices') {
+            if (Setting::grab('departments_notices_feature')) {
+                return $next($request);
+            }
+        } else {
+            return $next($request);
+        }
 
         return redirect()->action('\PanicHD\PanicHD\Controllers\TicketsController@index')
             ->with('warning', trans('panichd::lang.you-are-not-permitted-to-access'));
