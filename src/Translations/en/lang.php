@@ -36,7 +36,7 @@ return [
   'table-category'                   => 'Category',
   'table-tags'                       => 'Tags',
 
-  'no-tickets-yet'                   => 'No tickets yet', # Pending to move old admin.index-empty-records in other languages
+  'no-tickets-yet'                   => 'No tickets yet', // Pending to move old admin.index-empty-records in other languages
   'list-no-tickets'                  => 'There are no tickets in this list',
   'updated-by-other'                 => 'Updated by other member',
   'mark-as-read'                     => 'Mark this ticket as read',
@@ -51,15 +51,15 @@ return [
   'table-info-notes-total'           => ':num internal notes',
 
         'calendar-active'            => 'Started :description',
-  'calendar-active-today'      => 'Started :description',
-  'calendar-active-future'     => 'Starts :description',
-  'calendar-expired'           => 'Expired :description',
-  'calendar-expired-today'     => 'Expired today at :time',
-  'calendar-expiration'        => 'Expires :description',
-  'calendar-expires-today'     => 'Will expire today at :hour',
-  'calendar-scheduled'         => 'Scheduled on :date from :time1 to :time2H',
-  'calendar-scheduled-today'   => 'Scheduled today from :time1 to :time2H',
-  'calendar-scheduled-period'  => 'Scheduled from :date1 to :date2',
+  'calendar-active-today'            => 'Started :description',
+  'calendar-active-future'           => 'Starts :description',
+  'calendar-expired'                 => 'Expired :description',
+  'calendar-expired-today'           => 'Expired today at :time',
+  'calendar-expiration'              => 'Expires :description',
+  'calendar-expires-today'           => 'Will expire today at :hour',
+  'calendar-scheduled'               => 'Scheduled on :date from :time1 to :time2H',
+  'calendar-scheduled-today'         => 'Scheduled today from :time1 to :time2H',
+  'calendar-scheduled-period'        => 'Scheduled from :date1 to :date2',
 
   // Agent related
   'table-change-agent'               => 'Change agent',
@@ -121,7 +121,6 @@ return [
   'btn-edit'                         => 'Edit',
   'btn-mark-complete'                => 'Complete',
   'btn-submit'                       => 'Submit',
-
 
   // Vocabulary
   'active-tickets-adjective'         => 'Active',
@@ -202,7 +201,6 @@ return [
   'week-abbr'                        => 'wk.',
   'month-abbr'                       => 'mo.',
 
-
  /*
   *  Page specific
   */
@@ -233,7 +231,6 @@ return [
   'update-priority-ok'               => 'Priority updated to ":new" in ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-status-same'               => 'Status was not changed! Ticket <a href=":link" title=":title"><u>:name</u></a>',
   'update-status-ok'                 => 'Status updated to ":new" in ticket <a href=":link" title=":title"><u>:name</u></a>',
-  
 
 // tickets/create
   'create-new-ticket'                => 'Create New Ticket',
@@ -284,23 +281,23 @@ return [
   'complete-by-user'                 => 'Ticket completed by :user.',
   'reopened-by-user'                 => 'Ticket reopened by :user.',
 
-  'ticket-error-not-valid-file'      => 'A no valid file was attached',
-  'ticket-error-not-valid-object'    => 'This file can\'t be processed: :name',
-  'ticket-error-max-size-reached'    => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_MB MB',
+  'ticket-error-not-valid-file'                => 'A no valid file was attached',
+  'ticket-error-not-valid-object'              => 'This file can\'t be processed: :name',
+  'ticket-error-max-size-reached'              => 'The file ":name" and following can\'t be attached as they exceed the max available space for this ticket, which is of :available_MB MB',
   'ticket-error-max-attachments-count-reached' => 'The file ":name" and following can\'t be attached as they exceed the max number of :max_count attached files per ticket',
-  'ticket-error-delete-files'        => 'Some files could not be deleted',
-  'ticket-error-file-not-found'      => 'The file ":name" could not be found',
-  'ticket-error-file-not-deleted'    => 'The file ":name" could not be deleted',
+  'ticket-error-delete-files'                  => 'Some files could not be deleted',
+  'ticket-error-file-not-found'                => 'The file ":name" could not be found',
+  'ticket-error-file-not-deleted'              => 'The file ":name" could not be deleted',
 
    // Tiquet visible / no visible
-  'ticket-visible'             => 'Visible ticket',
-  'ticket-hidden'              => 'Hidden ticket',
-  'ticket-hidden-button-title' => 'Switch user visibility',
-  'ticket-visibility-changed'  => 'Ticket visibility has changed',
+  'ticket-visible'                => 'Visible ticket',
+  'ticket-hidden'                 => 'Hidden ticket',
+  'ticket-hidden-button-title'    => 'Switch user visibility',
+  'ticket-visibility-changed'     => 'Ticket visibility has changed',
   'ticket-hidden-0-comment-title' => 'Changed to visible by <b>:agent</b>',
-  'ticket-hidden-0-comment'    => 'Ticket is now <b>visible</b> for owner',
+  'ticket-hidden-0-comment'       => 'Ticket is now <b>visible</b> for owner',
   'ticket-hidden-1-comment-title' => 'Hided by <b>:agent</b>',
-  'ticket-hidden-1-comment'    => 'Ticket is now <b>hidden</b> for owner',
+  'ticket-hidden-1-comment'       => 'Ticket is now <b>hidden</b> for owner',
 
   // Comments
   'comment'                    => 'Comment',
@@ -362,7 +359,7 @@ return [
 // Ticket search form
    'searchform-nav-text'             => 'Search',
    'searchform-title'                => 'Search tickets',
-  
+
    'searchform-creator'              => 'Creator',
    'searchform-department'           => 'Department',
    'searchform-comments'             => 'Comments text',
@@ -372,12 +369,12 @@ return [
    'searchform-completed_at'         => 'Completion datetime',
    'searchform-updated_at'           => 'Last update',
    'searchform-read_by_agent'        => 'Read by assigned agent',
- 
+
    'searchform-help-creator'         => 'Who created the ticket (Sometimes is an agent in the name of a Member)',
    'searchform-help-owner'           => 'Member that owns the ticket',
    'searchform-help-department'      => 'Owner departments',
    'searchform-help-any_text_field'  => 'Find in any text field in: Subject, Description, Intervention, Comments or attachment fields',
- 
+
    'searchform-creator-none'         => '- none -',
    'searchform-owner-none'           => '- none -',
    'searchform-department-none'      => '- none -',
@@ -393,13 +390,13 @@ return [
 
    'searchform-category-none'        => '- none -',
    'searchform-agent-none'           => '- none -',
-   
-   'searchform-tags-rule-no-filter'  => 'Don\'t filter',
+
+   'searchform-tags-rule-no-filter'   => 'Don\'t filter',
    'searchform-tags-rule-has_not_tags'=> 'Without tags',
-   'searchform-tags-rule-has_any_tag'=> 'With any tag',
-   'searchform-tags-rule-any'        => 'Any of selected',
-   'searchform-tags-rule-all'        => 'All selected',
-   'searchform-tags-rule-none'       => 'None of selected',
+   'searchform-tags-rule-has_any_tag' => 'With any tag',
+   'searchform-tags-rule-any'         => 'Any of selected',
+   'searchform-tags-rule-all'         => 'All selected',
+   'searchform-tags-rule-none'        => 'None of selected',
 
    'searchform-date-type-from'       => 'From specified',
    'searchform-date-type-until'      => 'Until specified',
@@ -410,9 +407,9 @@ return [
    'searchform-read_by_agent-none'   => 'Don\'t filter',
    'searchform-read_by_agent-yes'    => 'Yes',
    'searchform-read_by_agent-no'     => 'No',
- 
+
    'searchform-btn-submit'           => 'Search',
- 
+
    'searchform-validation-no-field'  => 'No field was introduced',
    'searchform-validation-success'   => ':num search fields registered',
 

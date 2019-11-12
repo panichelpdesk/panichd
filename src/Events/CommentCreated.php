@@ -3,19 +3,17 @@
 namespace PanicHD\PanicHD\Events;
 
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use PanicHD\PanicHD\Models\Comment;
 
 class CommentCreated
 {
     use InteractsWithSockets, SerializesModels;
-	public $comment;
-	
+    public $comment;
+
     /**
      * Create a new event instance.
      *
@@ -24,7 +22,7 @@ class CommentCreated
     public function __construct(Comment $comment, Request $request)
     {
         $this->comment = $comment;
-		$this->request = $request;
+        $this->request = $request;
     }
 
     /**

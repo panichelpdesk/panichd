@@ -19,7 +19,7 @@ class StatusesController extends Controller
     {
         $statuses = Status::withCount('tickets')->get();
 
-		if (LaravelVersion::min('5.3.0')) {
+        if (LaravelVersion::min('5.3.0')) {
             $statuses_list = $statuses->pluck('name', 'id')->toArray();
         } else {
             $statuses_list = $statuses->lists('name', 'id')->toArray();
@@ -56,6 +56,7 @@ class StatusesController extends Controller
         $status->create(['name' => $request->name, 'color' => $request->color]);
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-created', ['name' => $request->name]));
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 
@@ -104,6 +105,7 @@ class StatusesController extends Controller
         $status->update(['name' => $request->name, 'color' => $request->color]);
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-modified', ['name' => $request->name]));
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 
@@ -119,20 +121,21 @@ class StatusesController extends Controller
         $status = Status::findOrFail($id);
         $name = $status->name;
 
-		if ($request->input('tickets_new_status_id') != ""){
-			$this->validate($request, [
-				'tickets_new_status_id' => 'required|exists:panichd_statuses,id',
-			]);
-			$status->delete($request->tickets_new_status_id);
-		}else{
-			if ($status->tickets()->count() > 0){
-				return back()->with('warning', trans('panichd::admin.status-delete-error-no-status', ['name' => $name]));
-			}
+        if ($request->input('tickets_new_status_id') != '') {
+            $this->validate($request, [
+                'tickets_new_status_id' => 'required|exists:panichd_statuses,id',
+            ]);
+            $status->delete($request->tickets_new_status_id);
+        } else {
+            if ($status->tickets()->count() > 0) {
+                return back()->with('warning', trans('panichd::admin.status-delete-error-no-status', ['name' => $name]));
+            }
 
-			$status->delete();
-		}
+            $status->delete();
+        }
 
         Session::flash('status', trans('panichd::lang.status-name-has-been-deleted', ['name' => $name]));
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\StatusesController@index');
     }
 }

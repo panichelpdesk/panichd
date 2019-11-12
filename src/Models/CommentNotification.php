@@ -11,10 +11,9 @@ class CommentNotification extends Model
     protected $fillable = ['comment_id', 'name', 'email', 'member_id'];
 
     /**
-     * primaryKey
+     * primaryKey.
      *
-     * @var integer
-     * @access protected
+     * @var int
      */
     protected $primaryKey = null;
 

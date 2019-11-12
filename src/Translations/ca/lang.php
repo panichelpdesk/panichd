@@ -250,7 +250,6 @@ return [
   'create-ticket-switch-to-note'     => 'Canviar a nota interna',
   'create-ticket-switch-to-comment'  => 'Canviar a resposta a usuari',
 
-
   'attach-files'                     => 'Adjuntar fitxers',
   'pending-attachment'               => 'Aquest fitxer s\'afegirà quan s\'actualitzi el tiquet',
   'attachment-new-name'              => 'Nom nou',
@@ -273,7 +272,6 @@ return [
   'show-ticket-modal-delete-message' => 'Esteu segur que voleu esborrar el tiquet?: :subject?',
   'show-ticket-modal-edit-fields'    => 'Editar més camps',
 
-
   'show-ticket-modal-complete-blank-intervention-check' => 'Deixar actuació en blanc',
   'show-ticket-complete-blank-intervention-alert'       => 'Per a tancar el tiquet cal que confirmis que deixes el camp actuació en blanc',
   'show-ticket-modal-complete-blank-reason-alert'       => 'Per a tancar el tiquet cal que indiquis una raó de tancament',
@@ -283,19 +281,19 @@ return [
   'complete-by-user'                 => 'Tiquet tancat per :user.',
   'reopened-by-user'                 => 'Tiquet reobert per :user.',
 
-  'ticket-error-not-valid-file'      => 'S\'ha adjuntat un fitxer no vàlid',
-  'ticket-error-not-valid-object'    => 'Aquest fitxer no es pot processar: :name',
-  'ticket-error-max-size-reached'    => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen l\'espai disponible per aquest tiquet que és de :available_MB MB',
+  'ticket-error-not-valid-file'                => 'S\'ha adjuntat un fitxer no vàlid',
+  'ticket-error-not-valid-object'              => 'Aquest fitxer no es pot processar: :name',
+  'ticket-error-max-size-reached'              => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen l\'espai disponible per aquest tiquet que és de :available_MB MB',
   'ticket-error-max-attachments-count-reached' => 'El fitxer ":name" i els següents no es poden adjuntar ja que sobrepassen el número màxim de :max_count fitxers adjunts que pot contenir cada tiquet',
-  'ticket-error-delete-files'        => 'No s\'ha pogut eliminar alguns fitxers',
-  'ticket-error-file-not-found'      => 'No s\'ha localitzat el fitxer ":name"',
-  'ticket-error-file-not-deleted'    => 'El fitxer ":name" no s\'ha pogut eliminar',
+  'ticket-error-delete-files'                  => 'No s\'ha pogut eliminar alguns fitxers',
+  'ticket-error-file-not-found'                => 'No s\'ha localitzat el fitxer ":name"',
+  'ticket-error-file-not-deleted'              => 'El fitxer ":name" no s\'ha pogut eliminar',
 
   // Tiquet visible / no visible
-  'ticket-visible'             => 'Tiquet visible',
-  'ticket-hidden'              => 'Tiquet ocult',
-  'ticket-hidden-button-title' => 'Canviar visibilitat per a l\'usuari',
-  'ticket-visibility-changed'  => 'S\'ha canviat la visibilitat del tiquet',
+  'ticket-visible'                => 'Tiquet visible',
+  'ticket-hidden'                 => 'Tiquet ocult',
+  'ticket-hidden-button-title'    => 'Canviar visibilitat per a l\'usuari',
+  'ticket-visibility-changed'     => 'S\'ha canviat la visibilitat del tiquet',
   'ticket-hidden-0-comment-title' => 'Canviat a visible per <b>:agent</b>',
   'ticket-hidden-0-comment'       => 'El tiquet s\'ha fet <b>visible</b> per a l\'usuari',
   'ticket-hidden-1-comment-title' => 'Ocultat per <b>:agent</b>',
@@ -358,11 +356,10 @@ return [
   'validate-comment-required'        => 'Cal que escriguis el text del comentari',
   'validate-comment-min'             => 'Cal posar un text més llarg al comentari',
 
-
 // Cercador de tiquets
   'searchform-nav-text'             => 'Cercar',
   'searchform-title'                => 'Cercar tiquets',
-  
+
   'searchform-creator'              => 'Creador',
   'searchform-department'           => 'Departament',
   'searchform-comments'             => 'Text als comentaris',
@@ -394,13 +391,13 @@ return [
   'searchform-category-none'        => '- cap -',
   'searchform-agent-none'           => '- cap -',
 
-  'searchform-tags-rule-no-filter'  => 'No filtrar',
+  'searchform-tags-rule-no-filter'   => 'No filtrar',
   'searchform-tags-rule-has_not_tags'=> 'Sense etiquetes',
-  'searchform-tags-rule-has_any_tag'=> 'Amb qualsevol etiqueta',
-  'searchform-tags-rule-any'        => 'Qualsevol de les triades',
-  'searchform-tags-rule-all'        => 'Totes les triades',
-  'searchform-tags-rule-none'       => 'Cap de les triades',
-  
+  'searchform-tags-rule-has_any_tag' => 'Amb qualsevol etiqueta',
+  'searchform-tags-rule-any'         => 'Qualsevol de les triades',
+  'searchform-tags-rule-all'         => 'Totes les triades',
+  'searchform-tags-rule-none'        => 'Cap de les triades',
+
   'searchform-date-type-from'       => 'En endavant',
   'searchform-date-type-until'      => 'Més antics',
   'searchform-date-type-exact_year' => 'Any exacte',
@@ -420,7 +417,6 @@ return [
   'searchform-btn-edit'             => 'Editar cerca',
   'searchform-btn-web'              => 'Adreça web de cerca',
   'searchform-help-btn-web'         => 'Aquest és un enllaç permanent per a aquesta cerca',
-
 
  /*
   *  Controllers

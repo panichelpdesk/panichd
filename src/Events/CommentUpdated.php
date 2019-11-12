@@ -3,19 +3,17 @@
 namespace PanicHD\PanicHD\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Queue\SerializesModels;
 use PanicHD\PanicHD\Models\Comment;
 
 class CommentUpdated
 {
     use InteractsWithSockets, SerializesModels;
-	public $original;
-	public $modified;
-	
+    public $original;
+    public $modified;
+
     /**
      * Create a new event instance.
      *
@@ -24,7 +22,7 @@ class CommentUpdated
     public function __construct(Comment $original, Comment $modified)
     {
         $this->original = $original;
-		$this->modified = $modified;
+        $this->modified = $modified;
     }
 
     /**

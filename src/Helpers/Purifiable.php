@@ -13,5 +13,4 @@ use PanicHD\PanicHD\Traits\Purifiable as Main;
 class Purifiable
 {
     use Main;
-
 }

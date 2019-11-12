@@ -17,7 +17,7 @@ class IsAdminMiddleware
     public function handle($request, Closure $next)
     {
         $member = \PanicHDMember::findOrFail(auth()->user()->id);
-        
+
         if ($member->isAdmin()) {
             return $next($request);
         }

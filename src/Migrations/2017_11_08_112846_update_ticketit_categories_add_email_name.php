@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UpdateTicketitCategoriesAddEmailName extends Migration
 {
@@ -15,7 +15,7 @@ class UpdateTicketitCategoriesAddEmailName extends Migration
     {
         Schema::table('ticketit_categories', function (Blueprint $table) {
             $table->string('email_name')->nullable()->after('name');
-			$table->boolean('email_replies')->default(0)->after('email');
+            $table->boolean('email_replies')->default(0)->after('email');
         });
     }
 
@@ -28,7 +28,7 @@ class UpdateTicketitCategoriesAddEmailName extends Migration
     {
         Schema::table('ticketit_categories', function (Blueprint $table) {
             $table->dropColumn('email_name');
-			$table->dropColumn('email_replies');
+            $table->dropColumn('email_replies');
         });
     }
 }
