@@ -430,30 +430,6 @@ class Member extends User
         return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id');
     }
 
-    public function allTickets($complete = false) // (To be deprecated)
-    {
-        if ($complete) {
-            return Ticket::whereNotNull('completed_at');
-        } else {
-            return Ticket::whereNull('completed_at');
-        }
-    }
-
-    public function getTickets($complete = false) // (To be deprecated)
-    {
-        $user = self::find(auth()->user()->id);
-
-        if ($user->isAdmin()) {
-            $tickets = $user->allTickets($complete);
-        } elseif ($user->isAgent()) {
-            $tickets = $user->agentTickets($complete);
-        } else {
-            $tickets = $user->userTickets($complete);
-        }
-
-        return $tickets;
-    }
-
     /**
      * Get related agent total tickets.
      */
