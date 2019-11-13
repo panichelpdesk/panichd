@@ -9,7 +9,6 @@ use PanicHD\PanicHD\Helpers\LaravelVersion;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Comment;
 use PanicHD\PanicHD\Models\CommentNotification;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Ticket;
 
@@ -145,7 +144,7 @@ class NotificationsController extends Controller
                 'notification_type'  => $comment->type,
             ];
 
-            $member = Member::find(auth()->user()->id);
+            $member = \PanicHDMember::find(auth()->user()->id);
             $category_level = $member->levelInCategory($ticket->category_id);
             $permission_level = ($member->currentLevel() > 1 and $category_level > 1) ? $category_level : 1;
 
@@ -172,7 +171,7 @@ class NotificationsController extends Controller
 
                     // All previous comments recipients
                     foreach ($comm->notifications as $notification) {
-                        $recipient = Member::find($notification->member_id);
+                        $recipient = \PanicHDMember::find($notification->member_id);
                         if (!is_null($recipient) and ($comment->type == 'reply' or ($comment->type != 'reply' and $recipient->levelInCategory($ticket->category->id) > 1))
                             and $notification_owner->id != $recipient->id and !in_array($recipient->id, $a_recipients)) {
                             $a_recipients[] = $recipient->id;
@@ -201,7 +200,7 @@ class NotificationsController extends Controller
 
             if ($a_recipients and count($a_recipients) > 0) {
                 foreach ($a_recipients as $member_id) {
-                    $recipient = Member::find($member_id);
+                    $recipient = \PanicHDMember::find($member_id);
                     if (!is_null($recipient)) {
                         // Register the notified email
                         $notification = CommentNotification::create([
@@ -246,7 +245,7 @@ class NotificationsController extends Controller
 
             // Send notification to all comment notified users
             foreach ($comment->notifications as $notification) {
-                $recipient = Member::find($notification->member_id);
+                $recipient = \PanicHDMember::find($notification->member_id);
                 if (!is_null($recipient)) {
                     if ($recipient->email != $notification_owner->email) {
                         $a_to[] = [
@@ -284,7 +283,7 @@ class NotificationsController extends Controller
         if ($request->input('recipients') != '') {
             foreach ($request->recipients as $recipient_key) {
                 // Search by member_id or by email address
-                $recipient = Member::where('id', $recipient_key)->orWhere('email', $recipient_key)->first();
+                $recipient = \PanicHDMember::where('id', $recipient_key)->orWhere('email', $recipient_key)->first();
 
                 if (!is_null($recipient)) {
                     $a_to[] = [
