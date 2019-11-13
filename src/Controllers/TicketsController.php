@@ -16,7 +16,6 @@ use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Attachment;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Department;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 use PanicHD\PanicHD\Models\Tag;
 use PanicHD\PanicHD\Models\Ticket;
@@ -1011,7 +1010,7 @@ class TicketsController extends Controller
 
         $a_categories = $this->member->getEditTicketCategories();
 
-        $c_visible_agents = Member::visible()->get();
+        $c_visible_agents = \PanicHDMember::visible()->get();
 
         // Tag lists
         $c_cat_tags = Category::whereHas('tags')

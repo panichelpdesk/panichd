@@ -5,7 +5,6 @@ namespace PanicHD\PanicHD\Tests;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase;
 use PanicHD\PanicHD\Controllers\InstallController;
-use PanicHD\PanicHD\Models\Member;
 use PanicHD\PanicHD\Models\Setting;
 
 abstract class PanicHDTestCase extends TestCase
@@ -72,8 +71,8 @@ abstract class PanicHDTestCase extends TestCase
 
         if (is_null($this->member)) {
             // TODO: Generate fake user
-            if (Member::users()->count() > 0) {
-                $this->member = Member::whereHas('tickets', function ($query) {
+            if (\PanicHDMember::users()->count() > 0) {
+                $this->member = \PanicHDMember::whereHas('tickets', function ($query) {
                     $query->notHidden();
                 })->inRandomOrder()->users()->first();
                 if (!is_null($this->member)) {
@@ -85,15 +84,15 @@ abstract class PanicHDTestCase extends TestCase
 
         if (is_null($this->agent)) {
             // TODO: Generate fake agent
-            if (Member::agents()->count() > 0) {
-                $this->agent = Member::whereHas('agentTickets')->inRandomOrder()->agents()->first();
+            if (\PanicHDMember::agents()->count() > 0) {
+                $this->agent = \PanicHDMember::whereHas('agentTickets')->inRandomOrder()->agents()->first();
             }
         }
 
         if (is_null($this->admin)) {
             // TODO: Generate fake admin
-            if (Member::admins()->count() > 0) {
-                $this->admin = Member::inRandomOrder()->admins()->first();
+            if (\PanicHDMember::admins()->count() > 0) {
+                $this->admin = \PanicHDMember::inRandomOrder()->admins()->first();
             }
         }
 
