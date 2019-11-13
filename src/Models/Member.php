@@ -147,11 +147,12 @@ class Member extends User
      */
     public function maxLevel()
     {
-        $member = \PanicHDMember::find(auth()->user()->id);
-        if ($member->isAdmin()) {
+        if ($this->isAdmin()) {
             return 3;
-        } elseif ($member->isAgent()) {
+        
+        } elseif ($this->isAgent()) {
             return 2;
+        
         } else {
             return 1;
         }
@@ -166,15 +167,16 @@ class Member extends User
      */
     public function currentLevel()
     {
-        $member = \PanicHDMember::find(auth()->user()->id);
-        if ($member->isAdmin()) {
+        if ($this->isAdmin()) {
             return 3;
-        } elseif ($member->isAgent()) {
+        
+        } elseif ($this->isAgent()) {
             if (session()->exists('panichd_filter_currentLevel') and session('panichd_filter_currentLevel') == 1) {
                 return 1;
             } else {
                 return 2;
             }
+        
         } else {
             return 1;
         }
@@ -215,20 +217,18 @@ class Member extends User
      */
     public function canCloseTicket($id)
     {
-        $member = \PanicHDMember::find(auth()->user()->id);
-
         $a_perm = Setting::grab('close_ticket_perm');
 
-        if ($member->isAdmin() && $a_perm['admin'] == 'yes') {
+        if ($this->isAdmin() && $a_perm['admin'] == 'yes') {
             return true;
         }
         if ($ticket = Ticket::find($id)) {
-            if ($member->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $member->categories()->where('id', $ticket->category_id)->count() == 1)) {
+            if ($this->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $this->categories()->where('id', $ticket->category_id)->count() == 1)) {
                 return true;
             }
         }
 
-        if ($member->isTicketOwner($id) && $a_perm['owner'] == 'yes') {
+        if ($this->isTicketOwner($id) && $a_perm['owner'] == 'yes') {
             return true;
         }
 
@@ -262,13 +262,11 @@ class Member extends User
      */
     public function canManageTicket($id)
     {
-        $member = \PanicHDMember::find(auth()->user()->id);
-
-        if ($member->isAdmin()) {
+        if ($this->isAdmin()) {
             return true;
         
         } elseif ($ticket = Ticket::find($id)) {
-            if ($member->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $member->categories()->where('id', $ticket->category_id)->count() == 1)) {
+            if ($this->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $this->categories()->where('id', $ticket->category_id)->count() == 1)) {
                 return true;
             }
         }
@@ -285,13 +283,12 @@ class Member extends User
      */
     public function canViewNewTickets()
     {
-        $member = \PanicHDMember::find(auth()->user()->id);
-
-        if ($member->isAdmin()) {
+        if ($this->isAdmin()) {
             return true;
-        } elseif ($member->isAgent() and $member->currentLevel() == 2) {
+
+        } elseif ($this->isAgent() and $this->currentLevel() == 2) {
             if (Setting::grab('agent_restrict') == 1) {
-                return $member->categories()->wherePivot('autoassign', '1')->count() == 0 ? false : true;
+                return $this->categories()->wherePivot('autoassign', '1')->count() == 0 ? false : true;
             } else {
                 return true;
             }
@@ -485,9 +482,7 @@ class Member extends User
      */
     public function scopeVisibleForAgent($query, $id)
     {
-        $member = \PanicHDMember::findOrFail($id);
-
-        if ($member->currentLevel() == 2) {
+        if ($this->currentLevel() == 2) {
             // Depends on agent_restrict
             if (Setting::grab('agent_restrict') == 0) {
                 return $query->whereHas('categories', function ($q1) use ($id) {
