@@ -244,9 +244,9 @@ class Member extends User
      */
     public function canCommentTicket($ticket)
     {
-        if (\PanicHDMember::canManageTicket($ticket->id)
-            or \PanicHDMember::isTicketOwner($ticket->id)
-            or $ticket->commentNotifications()->where('member_id', auth()->user()->id)->count() > 0) {
+        if ($this->canManageTicket($ticket->id)
+            or $this->isTicketOwner($ticket->id)
+            or $ticket->commentNotifications()->where('member_id', $this->id)->count() > 0) {
             return true;
         }
 
@@ -463,12 +463,16 @@ class Member extends User
     {
         $query = $query->agents();
 
-        if (auth()->user()->panichd_admin) {
+        $member = \PanicHDMember::findOrFail(auth()->user()->id);
+
+        if ($member->panichd_admin) {
             return $query->orderBy('name', 'ASC');
-        } elseif (auth()->user()->panichd_agent) {
-            return $query->VisibleForAgent(auth()->user()->id);
+        
+        } elseif ($member->panichd_agent) {
+            return $query->VisibleForAgent($member->id);
+        
         } else {
-            return $query->where('1', '=', '0');
+            return $query->where('id', '0');
         }
     }
 
@@ -482,7 +486,9 @@ class Member extends User
      */
     public function scopeVisibleForAgent($query, $id)
     {
-        if ($this->currentLevel() == 2) {
+        $member = \PanicHDMember::findOrFail(auth()->user()->id);
+        
+        if ($member->currentLevel() == 2) {
             // Depends on agent_restrict
             if (Setting::grab('agent_restrict') == 0) {
                 return $query->whereHas('categories', function ($q1) use ($id) {
