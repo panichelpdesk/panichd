@@ -111,13 +111,15 @@ class Member extends User
      *
      * @return bool
      */
-    public static function isAssignedAgent($id)
+    public function isAssignedAgent($id)
     {
-        if (auth()->check() && auth()->user()->panichd_agent) {
-            if (auth()->user()->id == Ticket::find($id)->agent->id) {
+        if ($this->panichd_agent) {
+            if ($this->id == Ticket::find($id)->agent->id) {
                 return true;
             }
         }
+
+        return false;
     }
 
     /**
@@ -127,13 +129,13 @@ class Member extends User
      *
      * @return bool
      */
-    public static function isTicketOwner($id)
+    public function isTicketOwner($id)
     {
-        if (auth()->check()) {
-            if (auth()->user()->id == Ticket::find($id)->user_id) {
-                return true;
-            }
+        if ($this->id == Ticket::find($id)->user_id) {
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -143,11 +145,8 @@ class Member extends User
      *
      * @return int
      */
-    public static function maxLevel()
+    public function maxLevel()
     {
-        if (!auth()->check()) {
-            return 0;
-        }
         $member = \PanicHDMember::find(auth()->user()->id);
         if ($member->isAdmin()) {
             return 3;
@@ -165,11 +164,8 @@ class Member extends User
      *
      * @return int
      */
-    public static function currentLevel()
+    public function currentLevel()
     {
-        if (!auth()->check()) {
-            return 0;
-        }
         $member = \PanicHDMember::find(auth()->user()->id);
         if ($member->isAdmin()) {
             return 3;
@@ -217,11 +213,8 @@ class Member extends User
      *
      * @return bool
      */
-    public static function canCloseTicket($id)
+    public function canCloseTicket($id)
     {
-        if (!auth()->check()) {
-            return false;
-        }
         $member = \PanicHDMember::find(auth()->user()->id);
 
         $a_perm = Setting::grab('close_ticket_perm');
@@ -249,12 +242,8 @@ class Member extends User
      *
      * @return bool
      */
-    public static function canCommentTicket($ticket)
+    public function canCommentTicket($ticket)
     {
-        if (!auth()->check()) {
-            return false;
-        }
-
         if (\PanicHDMember::canManageTicket($ticket->id)
             or \PanicHDMember::isTicketOwner($ticket->id)
             or $ticket->commentNotifications()->where('member_id', auth()->user()->id)->count() > 0) {
@@ -271,15 +260,13 @@ class Member extends User
      *
      * @return bool
      */
-    public static function canManageTicket($id)
+    public function canManageTicket($id)
     {
-        if (!auth()->check()) {
-            return false;
-        }
         $member = \PanicHDMember::find(auth()->user()->id);
 
         if ($member->isAdmin()) {
             return true;
+        
         } elseif ($ticket = Ticket::find($id)) {
             if ($member->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $member->categories()->where('id', $ticket->category_id)->count() == 1)) {
                 return true;
@@ -296,11 +283,8 @@ class Member extends User
      *
      * @return bool
      */
-    public static function canViewNewTickets()
+    public function canViewNewTickets()
     {
-        if (!auth()->check()) {
-            return false;
-        }
         $member = \PanicHDMember::find(auth()->user()->id);
 
         if ($member->isAdmin()) {
