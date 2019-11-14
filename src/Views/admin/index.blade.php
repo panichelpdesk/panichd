@@ -175,8 +175,7 @@
                         </li>
                         @foreach($agents as $agent)
                             <li class="list-group-item d-flex">
-                                <?php $agent_text = $agent->name . ' <span class="badge">' . ($agent->agentTickets(false)->count()  +
-                                         $agent->agentTickets(true)->count()) . '</span>'; ?>
+                                <?php $agent_text = $agent->name . ' <span class="badge">' . $agent->ticketsAsAgent()->count() . '</span>'; ?>
                              <span class="mr-auto">
                               @if ($setting->grab('user_route') != 'disabled')
               									<a href="{{ route($setting->grab('user_route'), ['user' => $agent->id]) }}">{!! $agent_text !!}</a>
@@ -187,13 +186,13 @@
                             <span class="small">
 									<?php
 										$a_button = [
-											'newest' => $agent->agentTickets(false)->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
-											'active' => $agent->agentTickets(false)->active()->count() . ' ' . trans('panichd::lang.active-tickets-adjective'),
-											'complete' => $agent->agentTickets(true)->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
+											'newest' => $agent->ticketsAsAgent()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
+											'active' => $agent->ticketsAsAgent()->active()->count() . ' ' . trans('panichd::lang.active-tickets-adjective'),
+											'complete' => $agent->ticketsAsAgent()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
 										];
 									?>
 
-									@if ($agent->agentTickets(false)->newest()->count() == 0)
+									@if ($agent->ticketsAsAgent()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
 										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
@@ -201,7 +200,7 @@
 										</a>
 									@endif
 									 -
-									@if ($agent->agentTickets(false)->active()->count() == 0)
+									@if ($agent->ticketsAsAgent()->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
 										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
@@ -209,7 +208,7 @@
 										</a>
 									@endif
 									 -
-									@if ($agent->agentTickets(true)->count() == 0)
+									@if ($agent->ticketsAsAgent()->complete()->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
 										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'agent', 'value' => $agent->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-agent-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
