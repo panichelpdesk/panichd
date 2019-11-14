@@ -384,43 +384,11 @@ class Member extends User
     }
 
     /**
-     * Get related agent Completed tickets.
-     */
-    public function agentCompleteTickets()
-    {
-        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'agent_id')->whereNotNull('completed_at');
-    }
-
-    /**
-     * Get related agent tickets.
-     */
-    public function agentOpenTickets()
-    {
-        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'agent_id')->whereNull('completed_at');
-    }
-
-    /**
      * Get related owner tickets.
      */
     public function ticketsAsOwner()
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id');
-    }
-
-    /**
-     * Get related user Completed tickets.
-     */
-    public function userCompleteTickets()
-    {
-        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id')->whereNotNull('completed_at');
-    }
-
-    /**
-     * Get related user tickets.
-     */
-    public function userOpenTickets()
-    {
-        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id')->whereNull('completed_at');
     }
 
     /**
