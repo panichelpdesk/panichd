@@ -376,16 +376,6 @@ class Member extends User
     }
 
     /**
-     * Get ALL member tickets.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tickets($complete = false)
-    {
-        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id');
-    }
-
-    /**
      * Get related tickets as agent
      */
     public function ticketsAsAgent()
@@ -410,7 +400,7 @@ class Member extends User
     }
 
     /**
-     * Get related tickets as owner
+     * Get related owner tickets.
      */
     public function ticketsAsOwner()
     {

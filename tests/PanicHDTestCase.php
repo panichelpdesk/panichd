@@ -72,12 +72,12 @@ abstract class PanicHDTestCase extends TestCase
         if (is_null($this->member)) {
             // TODO: Generate fake user
             if (\PanicHDMember::users()->count() > 0) {
-                $this->member = \PanicHDMember::whereHas('tickets', function ($query) {
+                $this->member = \PanicHDMember::whereHas('ticketsAsOwner', function ($query) {
                     $query->notHidden();
                 })->inRandomOrder()->users()->first();
                 if (!is_null($this->member)) {
                     // TODO: Generate fake tickets
-                    $this->member_tickets_builder = $this->member->tickets()->inRandomOrder();
+                    $this->member_tickets_builder = $this->member->ticketsAsOwner()->inRandomOrder();
                 }
             }
         }
