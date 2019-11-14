@@ -120,7 +120,7 @@ class TicketsTest extends PanicHDTestCase
 
             // Agent access to assigned ticket
             if (!is_null($this->agent)) {
-                $ticket = $this->agent->agentTickets()->inRandomOrder()->first();
+                $ticket = $this->agent->ticketsAsAgent()->inRandomOrder()->first();
 
                 $response = $this->actingAs($this->agent)->get(route($this->main_route.'.show', ['ticket' => $ticket->id]));
                 $this->versionAssertStatus($response, 200);
