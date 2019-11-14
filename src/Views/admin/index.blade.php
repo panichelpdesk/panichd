@@ -231,7 +231,7 @@
                         </li>
                         @foreach($users as $user)
                             <li class="list-group-item d-flex">
-                                <?php $user_text = $user->name . ' <span class="badge">' . $user->tickets()->count() . '</span>'; ?>
+                                <?php $user_text = $user->name . ' <span class="badge">' . $user->ticketsAsOwner()->count() . '</span>'; ?>
                               <span class="mr-auto">
                                 @if ($setting->grab('user_route') != 'disabled')
                 									<a href="{{ route($setting->grab('user_route'), ['user' => $user->id]) }}">{!! $user_text !!}</a>
@@ -243,13 +243,13 @@
                                 <span class="small">
                                     <?php
 										$a_button = [
-											'newest' => $user->tickets()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
-											'active' => $user->tickets()->active()->count() . ' ' . trans('panichd::lang.active-tickets-adjective'),
-											'complete' => $user->tickets()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
+											'newest' => $user->ticketsAsOwner()->newest()->count() . ' ' . trans('panichd::lang.newest-tickets-adjective'),
+											'active' => $user->ticketsAsOwner()->active()->count() . ' ' . trans('panichd::lang.active-tickets-adjective'),
+											'complete' => $user->ticketsAsOwner()->complete()->count() . ' ' . trans('panichd::lang.complete-tickets-adjective')
 										];
 									?>
 
-									@if ($user->tickets()->newest()->count() == 0)
+									@if ($user->ticketsAsOwner()->newest()->count() == 0)
 										{{ $a_button['newest'] }}
 									@else
 										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'newest']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.newest-tickets-adjective')]) }}">
@@ -257,7 +257,7 @@
 										</a>
 									@endif
 									 -
-									@if ($user->tickets()->active()->count() == 0)
+									@if ($user->ticketsAsOwner()->active()->count() == 0)
 										{{ $a_button['active'] }}
 									@else
 										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'active']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.active-tickets-adjective')]) }}">
@@ -265,7 +265,7 @@
 										</a>
 									@endif
 									 -
-									@if ($user->tickets()->complete()->count() == 0)
+									@if ($user->ticketsAsOwner()->complete()->count() == 0)
 										{{ $a_button['complete'] }}
 									@else
 										<a href="{{ route($setting->grab('main_route') . '-filteronly', ['filter' => 'owner', 'value' => $user->id, 'list' => 'complete']) }}" class="btn btn-light btn-xs" title="{{ trans('panichd::admin.index-view-user-tickets', ['list' =>trans('panichd::lang.complete-tickets-adjective')]) }}">
