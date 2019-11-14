@@ -502,12 +502,12 @@ class Member extends User
             return [];
         }
 
-        $member_department = $this->department()->get();
+        $member_department = $this->department()->first();
 
-        if ($this->department()->first()->is_main()) {
-            return $member_department->merge($this->department()->first()->descendants()->get());
+        if ($member_department->is_main()) {
+            return $member_department->get()->merge($member_department->descendants()->get());
         } else {
-            return $member_department->merge($this->department()->first()->ancestor()->get());
+            return $member_department->get()->merge($member_department->ancestor()->get());
         }
     }
 }
