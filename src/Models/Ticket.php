@@ -99,7 +99,7 @@ class Ticket extends Model
      */
     public function scopeActive($query)
     {
-        $query = $query->whereNull('completed_at');
+        $query = $query->notComplete();
 
         if (is_null(auth()->user()) or \PanicHDMember::find(auth()->user()->id)->currentLevel() < 2) {
             return $query;
@@ -119,13 +119,23 @@ class Ticket extends Model
     }
 
     /**
+     * List of NOT completed tickets.
+     *
+     * @return Collection
+     */
+    public function scopeNotComplete($query)
+    {
+        return $query->whereNull('completed_at');
+    }
+
+    /**
      * List of new tickets (active with status "new").
      *
      * @return Collection
      */
     public function scopeNewest($query)
     {
-        return $query->whereNull('completed_at')->where('status_id', Setting::grab('default_status_id'));
+        return $query->notComplete()->where('status_id', Setting::grab('default_status_id'));
     }
 
     /**
