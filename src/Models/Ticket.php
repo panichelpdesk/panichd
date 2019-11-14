@@ -574,21 +574,6 @@ class Ticket extends Model
     }
 
     /**
-     * Get all agent tickets.
-     *
-     * @param $query
-     * @param $id
-     *
-     * @return mixed
-     */
-    public function scopeAgentUserTickets($query, $id)
-    {
-        return $query->where(function ($subquery) use ($id) {
-            $subquery->where('agent_id', $id)->orWhere('user_id', $id)->notHidden();
-        });
-    }
-
-    /**
      * Get all visible tickets for current user.
      * Includes: general user permissions and applied filters.
      *
