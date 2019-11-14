@@ -376,20 +376,6 @@ class Member extends User
     }
 
     /**
-     * Get related user tickets (To be deprecated).
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function userTickets($complete = false)
-    {
-        if ($complete) {
-            return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id')->whereNotNull('completed_at');
-        } else {
-            return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id')->whereNull('completed_at');
-        }
-    }
-
-    /**
      * Get ALL member tickets.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -421,6 +407,14 @@ class Member extends User
     public function agentOpenTickets()
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'agent_id')->whereNull('completed_at');
+    }
+
+    /**
+     * Get related tickets as owner
+     */
+    public function ticketsAsOwner()
+    {
+        return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'user_id');
     }
 
     /**

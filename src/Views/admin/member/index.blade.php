@@ -50,12 +50,12 @@
 							<button type="button" disabled="disabled" class="btn btn-light btn-default btn-xs">{{ trans('panichd::lang.user') }}</button>
 						@endif
 						</td>
-						<td>{{ $member->user_tickets_count }}</td>
+						<td>{{ $member->user_tickets_as_owner_count }}</td>
 						<td>{{ $member->agent_total_tickets_count }}</td>
 						<td>
                             <button type="button" class="btn btn-light btn-default btn_member_modal" data-member_id="{{ $member->id }}" data-member_name="{{ $member->name }}" data-member_email="{{ $member->email }}" data-route="update" data-form_action="{{ route($setting->grab('admin_route').'.member.update', ['id' => $member->id ]) }}">{{ trans('panichd::admin.btn-edit') }}</button>
 							@if ($member->panichd_admin != '1')
-								@if ($member->user_tickets_count != 0 || $member->agent_total_tickets_count != 0)
+								@if ($member->user_tickets_as_owner_count != 0 || $member->agent_total_tickets_count != 0)
 									<button type="button" class="btn btn-light btn-default"  disabled="disabled" title="{{ trans('panichd::admin.member-with-tickets-delete') }}"><strike>{{ trans('panichd::admin.btn-delete') }}</strike></button>
 
 								@elseif($member->panichd_agent == '1')
