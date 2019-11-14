@@ -85,7 +85,7 @@ abstract class PanicHDTestCase extends TestCase
         if (is_null($this->agent)) {
             // TODO: Generate fake agent
             if (\PanicHDMember::agents()->count() > 0) {
-                $this->agent = \PanicHDMember::whereHas('agentTickets')->inRandomOrder()->agents()->first();
+                $this->agent = \PanicHDMember::whereHas('ticketsAsAgent')->inRandomOrder()->agents()->first();
             }
         }
 
