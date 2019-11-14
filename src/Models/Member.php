@@ -412,9 +412,9 @@ class Member extends User
     }
 
     /**
-     * Get related agent total tickets.
+     * Get related tickets as agent
      */
-    public function agentTotalTickets()
+    public function ticketsAsAgent()
     {
         return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'agent_id');
     }
