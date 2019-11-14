@@ -561,14 +561,14 @@ class Ticket extends Model
     }
 
     /**
-     * Get all agent tickets.
+     * Get tickets from specified Agent
      *
      * @param $query
      * @param $id
      *
      * @return mixed
      */
-    public function scopeAgentTickets($query, $id)
+    public function scopeFromAgent($query, $id)
     {
         return $query->where('agent_id', $id);
     }
@@ -634,7 +634,7 @@ class Ticket extends Model
                 });
             } else {
                 // Returns all tickets Owned by Agent with $id only
-                return $query->agentTickets($id);
+                return $query->fromAgent($id);
             }
         } else {
             // Agent with currentLevel() == 1
@@ -725,7 +725,7 @@ class Ticket extends Model
 
                 // Agent filter
                 if ((!$filter or $filter == 'agent') and session()->has('panichd_filter_agent')) {
-                    $query = $query->agentTickets(session('panichd_filter_agent'));
+                    $query = $query->fromAgent(session('panichd_filter_agent'));
                 }
 
                 // Owner filter
