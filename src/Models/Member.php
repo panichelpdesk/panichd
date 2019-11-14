@@ -376,18 +376,6 @@ class Member extends User
     }
 
     /**
-     * Get related agent tickets (To be deprecated).
-     */
-    public function agentTickets($complete = false)
-    {
-        if ($complete) {
-            return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'agent_id')->whereNotNull('completed_at');
-        } else {
-            return $this->hasMany('PanicHD\PanicHD\Models\Ticket', 'agent_id')->whereNull('completed_at');
-        }
-    }
-
-    /**
      * Get related user tickets (To be deprecated).
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
