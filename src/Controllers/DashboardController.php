@@ -39,13 +39,13 @@ class DashboardController extends Controller
         }
 
         // Total tickets counter per agent for google pie chart
-        $agents_share_obj = \PanicHDMember::agents()->with(['agentTotalTickets' => function ($query) {
+        $agents_share_obj = \PanicHDMember::agents()->with(['ticketsAsAgent' => function ($query) {
             $query->addSelect(['id', 'agent_id']);
         }])->get();
 
         $agents_share = [];
         foreach ($agents_share_obj as $agent_share) {
-            $agents_share[$agent_share->name] = $agent_share->agentTotalTickets->count();
+            $agents_share[$agent_share->name] = $agent_share->ticketsAsAgent->count();
         }
 
         // Per Agent

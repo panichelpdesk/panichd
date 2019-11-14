@@ -15,7 +15,7 @@ class MembersController extends Controller
      */
     public function index(Request $request)
     {
-        $a_members = \PanicHDMember::withCount(['userTickets', 'agentTotalTickets'])->orderBy('name')->get();
+        $a_members = \PanicHDMember::withCount(['userTickets', 'ticketsAsAgent'])->orderBy('name')->get();
 
         return view('panichd::admin.member.index', compact('a_members'));
     }
@@ -93,7 +93,7 @@ class MembersController extends Controller
             return redirect()->back();
         }
 
-        if ($member->userTickets()->count() > 0 or $member->agentTotalTickets()->count() > 0) {
+        if ($member->userTickets()->count() > 0 or $member->ticketsAsAgent()->count() > 0) {
             \Session::flash('warning', trans('panichd::admin.member-with-tickets-delete'));
 
             return redirect()->back();
