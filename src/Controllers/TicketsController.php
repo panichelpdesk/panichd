@@ -279,73 +279,73 @@ class TicketsController extends Controller
             })
             ->leftJoin('panichd_tags', 'panichd_taggables.tag_id', '=', 'panichd_tags.id');
 
+        if (config('database.default') == 'sqlite') {
+            $int_start_date = 'cast(julianday(panichd_tickets.start_date) as real)';
+            $int_limit_date = 'cast(julianday(panichd_tickets.limit_date) as real)';
+        } else {
+            $int_start_date = "CONVERT(date_format(panichd_tickets.start_date, '%Y%m%d%h%i%s'), SIGNED INTEGER)";
+            $int_limit_date = "CONVERT(date_format(panichd_tickets.limit_date, '%Y%m%d%h%i%s'), SIGNED INTEGER)";
+        }
 
-		if (config('database.default')=='sqlite'){
-			$int_start_date = 'cast(julianday(panichd_tickets.start_date) as real)';
-			$int_limit_date = 'cast(julianday(panichd_tickets.limit_date) as real)';
-		}else{
-			$int_start_date = "CONVERT(date_format(panichd_tickets.start_date, '%Y%m%d%h%i%s'), SIGNED INTEGER)";
-			$int_limit_date = "CONVERT(date_format(panichd_tickets.limit_date, '%Y%m%d%h%i%s'), SIGNED INTEGER)";
-		}
+        $a_select = [
+            'panichd_tickets.id',
+            'panichd_tickets.created_at',
+            'panichd_tickets.subject AS subject',
+            'panichd_tickets.hidden as hidden',
+            'panichd_tickets.content AS content',
+            'panichd_tickets.intervention AS intervention',
+            'panichd_tickets.status_id as status_id',
+            'panichd_statuses.name AS status',
+            'panichd_statuses.color AS color_status',
+            'panichd_priorities.color AS color_priority',
+            'panichd_categories.color AS color_category',
+            'panichd_tickets.start_date as start_date',
+            \DB::raw(' 0-'.$int_start_date.' as inverse_start_date'),
+            \DB::raw('CASE panichd_tickets.limit_date WHEN NULL THEN 0 ELSE 1 END as has_limit'),
+            'panichd_tickets.limit_date as limit_date',
+            \DB::raw(' 0-'.$int_limit_date.' as inverse_limit_date'),
+            'panichd_tickets.limit_date as calendar',
+            'panichd_tickets.updated_at AS updated_at',
+            'panichd_tickets.completed_at AS completed_at',
+            'panichd_tickets.agent_id',
+            'panichd_tickets.read_by_agent',
+            'agent.name as agent_name',
+            'panichd_priorities.name AS priority',
+            'panichd_priorities.magnitude AS priority_magnitude',
+            'members.name AS owner_name',
+            'creator.name as creator_name',
+            'panichd_tickets.user_id',
+            'panichd_tickets.creator_id',
+            'panichd_categories.id as category_id',
+            'panichd_categories.name AS category',
 
-		$a_select = [
-			'panichd_tickets.id',
-			'panichd_tickets.created_at',
-			'panichd_tickets.subject AS subject',
-			'panichd_tickets.hidden as hidden',
-			'panichd_tickets.content AS content',
-			'panichd_tickets.intervention AS intervention',
-			'panichd_tickets.status_id as status_id',
-			'panichd_statuses.name AS status',
-			'panichd_statuses.color AS color_status',
-			'panichd_priorities.color AS color_priority',
-			'panichd_categories.color AS color_category',
-			'panichd_tickets.start_date as start_date',
-			\DB::raw(' 0-'.$int_start_date.' as inverse_start_date'),
-			\DB::raw('CASE panichd_tickets.limit_date WHEN NULL THEN 0 ELSE 1 END as has_limit'),
-			'panichd_tickets.limit_date as limit_date',
-			\DB::raw(' 0-'.$int_limit_date.' as inverse_limit_date'),
-			'panichd_tickets.limit_date as calendar',
-			'panichd_tickets.updated_at AS updated_at',
-			'panichd_tickets.completed_at AS completed_at',
-			'panichd_tickets.agent_id',
-			'agent.name as agent_name',
-			'panichd_priorities.name AS priority',
-			'panichd_priorities.magnitude AS priority_magnitude',
-			'members.name AS owner_name',
-			'creator.name as creator_name',
-			'panichd_tickets.user_id',
-			'panichd_tickets.creator_id',
-			'panichd_categories.id as category_id',
-			'panichd_categories.name AS category',
+            // Tag Columns
+            \DB::raw('group_concat(panichd_tags.id) AS tags_id'),
+            \DB::raw('group_concat(panichd_tags.name) AS tags'),
+            \DB::raw('group_concat(panichd_tags.bg_color) AS tags_bg_color'),
+            \DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
+        ];
 
-			// Tag Columns
-			\DB::raw('group_concat(panichd_tags.id) AS tags_id'),
-			\DB::raw('group_concat(panichd_tags.name) AS tags'),
-			\DB::raw('group_concat(panichd_tags.bg_color) AS tags_bg_color'),
-			\DB::raw('group_concat(panichd_tags.text_color) AS tags_text_color'),
-		];
+        if (Setting::grab('departments_feature')) {
+            $collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'members.department_id')
+                ->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 
-		if (Setting::grab('departments_feature')){
-			$collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'members.department_id')
-				->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
+            // Department columns
+            $a_select[] = \DB::raw('CASE panichd_departments.department_id WHEN NULL THEN "" ELSE dep_ancestor.name END as dep_ancestor_name');
 
-			// Department columns
-			$a_select[] = \DB::raw('CASE panichd_departments.department_id WHEN NULL THEN "" ELSE dep_ancestor.name END as dep_ancestor_name');
+            if (config('database.default') == 'sqlite') {
+                $a_select[] = \DB::raw('dep_ancestor.name + panichd_departments.name as dept_full_name'); //\''.trans('panichd::lang.colon').' +
+            } else {
+                $a_select[] = \DB::raw('concat_ws(\''.trans('panichd::lang.colon').' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
+            }
+        } else {
+            $a_select[] = \DB::raw('"" as dep_ancestor_name');
+        }
 
-			if (config('database.default')=='sqlite'){
-				$a_select[] = \DB::raw('dep_ancestor.name + panichd_departments.name as dept_full_name'); #\''.trans('panichd::lang.colon').' +
-			}else{
-				$a_select[] = \DB::raw('concat_ws(\'' . trans('panichd::lang.colon') . ' \', dep_ancestor.name, panichd_departments.name) as dept_full_name');
-			}
-		}else{
-			$a_select[] = \DB::raw('"" as dep_ancestor_name');
-		}
+        $currentLevel = $this->member->currentLevel();
 
-		$currentLevel = $agent->currentLevel();
-
-		$collection
-			->groupBy('panichd_tickets.id')
+        $collection
+            ->groupBy('panichd_tickets.id')
             ->select($a_select)
             ->with('creator')
             ->with('agent')
