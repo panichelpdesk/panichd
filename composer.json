@@ -4,13 +4,13 @@
     "type": "laravel-package",
     "keywords": ["ticketing-system", "helpdesk-ticketing", "laravel", "laravel-package", "laravel-5-package"],
     "require": {
-        "laravel/framework": "^5.1|^6.0",
+        "laravel/framework": "^5.1|^7.0",
         "laravelcollective/html": "^5.1|^6.0",
-        "illuminate/support": "^5.1|^6.0",
+        "illuminate/support": "^5.1|^6.0|^7.0",
 		"intervention/image": "^2.5",
-        "yajra/laravel-datatables-oracle": "^6.0 || ^7.0 || ^8.0 || ^9.0",
-        "jenssegers/date": "^3.0",
-        "mews/purifier": "^2.0|^3.1",
+        "yajra/laravel-datatables-oracle": "^6.0 || ^7.0 || ^8.0 || ^9.10",
+        "jenssegers/date": "^4.0",
+        "mews/purifier": "^2.0|^3.2",
         "doctrine/dbal": "^2.10"
     },
     "license": "MIT",
