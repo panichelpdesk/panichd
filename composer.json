@@ -1,10 +1,10 @@
 {
     "name": "panichd/panichd",
-    "description": "Ticketing system installable in any Laravel 5.1+ project. It includes a set of common features like file attachments, ticket tags, filtering, scheduling and e-mail notifications.",
+    "description": "Ticketing system for Laravel 5 | 6 | 7. Allows to create new tickets via form only. Includes file attachments, ticket tags, filtering, scheduling and e-mail notifications.",
     "type": "laravel-package",
-    "keywords": ["ticketing-system", "helpdesk-ticketing", "laravel", "laravel-package", "laravel-5-package"],
+    "keywords": ["ticketing", "helpdesk", "laravel", "laravel-package", "laravel-7-package"],
     "require": {
-        "laravel/framework": "^5.1|^7.0",
+        "laravel/framework": "^5.1|^6.0|^7.0",
         "laravelcollective/html": "^5.1|^6.0",
         "illuminate/support": "^5.1|^6.0|^7.0",
 		"intervention/image": "^2.5",
