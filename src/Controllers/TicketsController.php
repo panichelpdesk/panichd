@@ -1840,8 +1840,8 @@ class TicketsController extends Controller
 
         if ($this->member->currentLevel() > 1 && $this->member->canManageTicket($ticket->id)) {
             $all_c = clone $all_comments;
-            $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
-            $a_note = [$ticket->agent->id];
+            $a_reply = [$ticket->user_id];
+            $a_note = [$ticket->agent_id];
             foreach ($all_c->get() as $comm) {
                 if ($comm->type == 'note') {
                     $a_note = array_merge($a_note, $comm->notifications->pluck('member_id')->toArray());

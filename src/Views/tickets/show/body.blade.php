@@ -1,7 +1,7 @@
 <div class="card">
     <div id="ticket-body" class="card-body">
 		<div class="d-lg-flex mb-2">
-			<h2 class="mr-auto @if($ticket->agent->id == $u->id && $ticket->read_by_agent != "1") unread_ticket_text @endif">
+			<h2 class="mr-auto @if($ticket->agent_id == $u->id && $ticket->read_by_agent != "1") unread_ticket_text @endif">
 				@if ($ticket->completed_at)
 					<span class="text-success"><span class="fa fa-check-circle" title="tiquet completat" style="cursor: help"></span> {{ $ticket->subject }}</span>
 				@else
