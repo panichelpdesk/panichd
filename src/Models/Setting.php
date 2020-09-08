@@ -48,21 +48,25 @@ class Setting extends Model
          */
         //       Cache::flush();
 
-        $setting = Cache::remember('panichd::settings.'.$slug, \Carbon\Carbon::now()->addMinutes(60), function () use ($slug) {
+        $setting = Cache::remember('panichd::settings.' . $slug, \Carbon\Carbon::now()->addMinutes(60), function () use ($slug) {
             $settings = Cache::remember('panichd::settings', \Carbon\Carbon::now()->addMinutes(60), function () {
                 return Table::all();
             });
 
             $setting = $settings->where('slug', $slug)->first();
 
-            if ($setting->lang) {
-                return trans($setting->lang);
+            if (isset($setting->lang)) {
+                if ($setting->lang) {
+                    return trans($setting->lang);
+                }
             }
 
-            if (self::is_serialized($setting->value)) {
-                $setting = unserialize($setting->value);
-            } else {
-                $setting = $setting->value;
+            if (isset($setting->value)) {
+                if (self::is_serialized($setting->value)) {
+                    $setting = unserialize($setting->value);
+                } else {
+                    $setting = $setting->value;
+                }
             }
 
             return $setting;
@@ -128,7 +132,7 @@ class Setting extends Model
                 } elseif (false === strpos($data, '"')) {
                     return false;
                 }
-            // or else fall through
+                // or else fall through
             case 'a':
             case 'O':
                 return (bool) preg_match("/^{$token}:[0-9]+:/s", $data);
