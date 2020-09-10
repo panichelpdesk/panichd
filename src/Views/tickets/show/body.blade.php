@@ -86,7 +86,7 @@
     				<br /><strong>{{ trans('panichd::lang.owner') }}</strong>{{ trans('panichd::lang.colon') }}
 
     				@if ($setting->grab('user_route') != 'disabled')
-    					<a href="{{ route($setting->grab('user_route'), ['user'=> $ticket->owner->id]) }}">
+    					<a href="{{ route($setting->grab('user_route'), ['user'=> $ticket->user_id]) }}">
     				@endif
 
     				@if (is_null($ticket->owner))
