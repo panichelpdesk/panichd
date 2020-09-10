@@ -68,7 +68,8 @@ class DashboardController extends Controller
             $active_tab = 'cat';
         }
 
-        return view('panichd::admin.index',
+        return view(
+            'panichd::admin.index',
             compact(
                 'tickets_count',
                 'a_tickets_count',
@@ -79,6 +80,7 @@ class DashboardController extends Controller
                 'categories_share',
                 'agents_share',
                 'active_tab'
-            ));
+            )
+        );
     }
 }

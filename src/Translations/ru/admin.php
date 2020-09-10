@@ -44,7 +44,7 @@ return [
      *  Page specific
      */
 
-// $admin_route_path/dashboard
+    // $admin_route_path/dashboard
     'index-title'                      => 'Рабочая область',
     'index-empty-records'              => 'Ни одного тикета еще не создано',
     'index-total-tickets'              => 'Всего тикетов',
@@ -74,7 +74,7 @@ return [
     'index-categories-chart'           => 'Распределение по категориям',
     'index-agents-chart'               => 'Распределение по агентам',
 
-// $admin_route_path/agent/____
+    // $admin_route_path/agent/____
     'agent-index-title'        => 'Управление агентами',
     'btn-create-new-agent'     => 'Добавить агента',
     'agent-index-no-agents'    => 'Агенты отсутствуют, ',
@@ -84,7 +84,7 @@ return [
     'agent-create-no-users'    => 'В системе нет ни одного пользователя. Необходимо добавить пользователей.',
     'agent-create-select-user' => 'Выберите пользователей, которые должны быть агентами',
 
-// $admin_route_path/administrators/____
+    // $admin_route_path/administrators/____
     'administrator-index-title'               => 'Управление администраторами',  //new
     'btn-create-new-administrator'            => 'Добавить администратора',  //new
     'administrator-index-no-administrators'   => 'Администраторы отсутствуют, ',  //new
@@ -94,7 +94,7 @@ return [
     'administrator-create-no-users'           => 'В системе нет ни одного пользователя. Необходимо добавить пользователей.',  //new
     'administrator-create-select-user'        => 'Выберите пользователей, которые должны быть администраторами',  //new
 
-// $admin_route_path/category/____
+    // $admin_route_path/category/____
     'category-index-title'         => 'Управление категориями',
     'btn-create-new-category'      => 'Добавить категорию',
     'category-index-no-categories' => 'Категории отсутствуют, ',
@@ -105,7 +105,7 @@ return [
     'category-create-color'        => 'Цвет',
     'category-edit-title'          => 'Редактирование категории: :name',
 
-// $admin_route_path/priority/____
+    // $admin_route_path/priority/____
     'priority-index-title'         => 'Управление приоритетами',
     'btn-create-new-priority'      => 'Добавить приоритет',
     'priority-index-no-priorities' => 'Приоритеты отсутствуют, ',
@@ -116,7 +116,7 @@ return [
     'priority-create-color'        => 'Цвет',
     'priority-edit-title'          => 'Редактирование приоритет: :name',
 
-// $admin_route_path/status/____
+    // $admin_route_path/status/____
     'status-index-title'       => 'Управление статусами',
     'btn-create-new-status'    => 'Добавить статус',
     'status-index-no-statuses' => 'Статусы отсутствуют,',
@@ -127,7 +127,7 @@ return [
     'status-create-color'      => 'Цвет',
     'status-edit-title'        => 'Редактирование статуса: :name',
 
-// $admin_route_path/configuration/____
+    // $admin_route_path/configuration/____
     'config-index-title'           => 'Конфигурация',
     'config-index-subtitle'        => 'Настройки',
     'btn-create-new-config'        => 'Добавить настройку',

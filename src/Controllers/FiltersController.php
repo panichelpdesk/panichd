@@ -10,7 +10,8 @@ use PanicHD\PanicHD\Traits\TicketFilters;
 
 class FiltersController extends Controller
 {
-    use CacheVars, TicketFilters;
+    use CacheVars;
+    use TicketFilters;
 
     // $a_filters is in TicketFilters trait
 

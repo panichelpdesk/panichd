@@ -194,16 +194,22 @@ class DemoDataSeeder extends Seeder
                     $ticket->tags()->attach($a_cat_id_tags_id[$category_id][array_rand($a_cat_id_tags_id[$category_id])]);
                 }
 
-                $comments_qty = rand($this->comments_per_ticket_min,
-                                    $this->comments_per_ticket_max);
+                $comments_qty = rand(
+                    $this->comments_per_ticket_min,
+                    $this->comments_per_ticket_max
+                );
 
                 for ($c = 1; $c <= $comments_qty; $c++) {
                     if (is_null($ticket->completed_at)) {
                         $random_comment_date = $faker->dateTimeBetween(
-                        '-'.$random_create.' days', 'now');
+                            '-'.$random_create.' days',
+                            'now'
+                        );
                     } else {
                         $random_comment_date = $faker->dateTimeBetween(
-                        '-'.$random_create.' days', '-'.($random_create - floor($minutes_random_complete / 60 / 24)).' days');
+                            '-'.$random_create.' days',
+                            '-'.($random_create - floor($minutes_random_complete / 60 / 24)).' days'
+                        );
                     }
 
                     $comment = new Models\Comment();

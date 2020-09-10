@@ -68,10 +68,10 @@ return [
      *  Page specific
      */
 
-// ____
+    // ____
     'index-title'                      => 'Helpdesk Hauptseite',
 
-// tickets/____
+    // tickets/____
     'index-my-tickets'                 => 'Meine Tickets',
     'btn-create-new-ticket'            => 'Neues Ticket erstellen',
     'index-complete-none'              => 'Es gibt keine geschlossenen Tickets',
@@ -93,32 +93,32 @@ return [
      *  Controllers
      */
 
-// AgentsController
+    // AgentsController
     'agents-are-added-to-agents'       => 'Agenten :names wurden hinzugefügt',
     'agents-joined-categories-ok'      => 'Erfolgreich den Kategorien zugewiesen',
     'agents-is-removed-from-team'      => 'Agent(en) :name wurden aus dem Agenten Team entfernt',
 
-// CategoriesController
+    // CategoriesController
     'category-name-has-been-created'   => 'Die Kategorie :name wurde erstellt!',
     'category-name-has-been-modified'  => 'Die Kategorie :name wurde bearbeitet!',
     'category-name-has-been-deleted'   => 'Die Kategorie :name wurde gelöscht!',
 
-// PrioritiesController
+    // PrioritiesController
     'priority-name-has-been-created'   => 'Die Priorität :name wurde erstellt!',
     'priority-name-has-been-modified'  => 'Die Priorität :name wurde bearbeitet!',
     'priority-name-has-been-deleted'   => 'Die Priorität :name wurde gelöscht!',
     'priority-all-tickets-here'        => 'Alle Prioritäts Tickets hierher',
 
-// StatusesController
+    // StatusesController
     'status-name-has-been-created'   => 'Der Status :name wurde erstellt!',
     'status-name-has-been-modified'  => 'Der Status :name wurde bearbeitet!',
     'status-name-has-been-deleted'   => 'Der Status :name wurde gelöscht!',
     'status-all-tickets-here'        => 'Alle Status Tickets hierher',
 
-// CommentsController
+    // CommentsController
     'comment-has-been-added-ok'        => 'Kommentar erfolgreich hinzugefügt',
 
-// NotificationsController
+    // NotificationsController
     'notify-new-comment-from'          => 'Neuer Kommentar von ',
     'notify-on'                        => ' bei ',
     'notify-status-to-complete'        => ' Status auf Geschlossen',

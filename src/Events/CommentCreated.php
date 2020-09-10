@@ -11,7 +11,8 @@ use PanicHD\PanicHD\Models\Comment;
 
 class CommentCreated
 {
-    use InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets;
+    use SerializesModels;
     public $comment;
 
     /**

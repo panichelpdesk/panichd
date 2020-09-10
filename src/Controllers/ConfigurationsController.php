@@ -25,7 +25,7 @@ class ConfigurationsController extends Controller
         $table_section = ['subject_content_column', 'list_text_max_length', 'check_last_update_seconds', 'length_menu', 'max_agent_buttons', 'calendar_month_filter', 'paginate_items'];
         $features_section = ['departments_feature', 'departments_notices_feature', 'ticket_attachments_feature'];
         $email_section = ['status_notification', 'comment_notification', 'queue_emails', 'assigned_notification',
-        'list_owner_notification', 'status_owner_notification', 'email.template', 'email.owner.newticket.template', 'email.account.name', 'email.account.mailbox', 'custom_recipients', ];
+            'list_owner_notification', 'status_owner_notification', 'email.template', 'email.owner.newticket.template', 'email.account.name', 'email.account.mailbox', 'custom_recipients', ];
         $tickets_section = ['default_priority_id', 'default_status_id', 'default_close_status_id', 'default_reopen_status_id',
             'attachments_ticket_max_size', 'attachments_ticket_max_files_num', 'attachments_mimes',
             'attachments_path', 'thumbnails_path', 'oldest_year', 'html_replacements', 'use_default_status_id', 'delete_modal_type', ];
@@ -107,6 +107,7 @@ class ConfigurationsController extends Controller
 
         Session::flash('status', 'Setting saved successfully.');
         \Cache::forget('panichd::settings'); // refresh cached settings
+
         return redirect()->action('\PanicHD\PanicHD\Controllers\ConfigurationsController@index');
     }
 

@@ -27,7 +27,10 @@ use Validator;
 
 class TicketsController extends Controller
 {
-    use Attachments, CacheVars, Purifiable, TicketFilters;
+    use Attachments;
+    use CacheVars;
+    use Purifiable;
+    use TicketFilters;
 
     protected $tickets;
     protected $member;
@@ -102,12 +105,12 @@ class TicketsController extends Controller
                         }
                     } elseif (in_array($field, $this->a_search_fields_text)) {
                         if ($field == 'content') {
-                            $collection->where(function ($query) use ($search_fields, $value) {
+                            $collection->where(function ($query) use ($value) {
                                 $query->where('content', 'like', '%'.$value.'%')
                                     ->orWhere('html', 'like', '%'.$value.'%');
                             });
                         } elseif ($field == 'intervention') {
-                            $collection->where(function ($query) use ($search_fields, $value) {
+                            $collection->where(function ($query) use ($value) {
                                 $query->where('intervention', 'like', '%'.$value.'%')
                                     ->orWhere('intervention_html', 'like', '%'.$value.'%');
                             });
@@ -405,10 +408,10 @@ class TicketsController extends Controller
 
         $collection->editColumn('subject', function ($ticket) {
             $field = (string) link_to_route(
-                    Setting::grab('main_route').'.show',
-                    $ticket->subject,
-                    $ticket->id
-                );
+                Setting::grab('main_route').'.show',
+                $ticket->subject,
+                $ticket->id
+            );
 
             if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent != '1') {
                 $field = '<span class="unread_ticket_text">'.$field.'</span>';
@@ -1142,7 +1145,7 @@ class TicketsController extends Controller
             'fields'        => $a_error_fields,
             'search_fields' => $search_fields ?? [],
             'search_URL'    => $search_URL ?? '',
-            ]);
+        ]);
     }
 
     /**
@@ -1821,7 +1824,7 @@ class TicketsController extends Controller
         // Category tags
         $tag_lists = Category::whereHas('tags')
         ->with([
-            'tags'=> function ($q1) use ($id) {
+            'tags'=> function ($q1) {
                 $q1->select('id', 'name');
             },
         ])
@@ -1888,8 +1891,21 @@ class TicketsController extends Controller
             $ticket->timestamps = true;
         }
 
-        $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-            'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
+        $data = compact(
+            'ticket',
+            'a_reasons',
+            'a_tags_selected',
+            'status_lists',
+            'complete_status_list',
+            'agent_lists',
+            'tag_lists',
+            'comments',
+            'a_notifications',
+            'c_members',
+            'a_resend_notifications',
+            'close_perm',
+            'reopen_perm'
+        );
         $data['menu'] = 'show';
 
         return view('panichd::tickets.show', $data);

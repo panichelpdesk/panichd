@@ -204,10 +204,10 @@ class NotificationsController extends Controller
                     if (!is_null($recipient)) {
                         // Register the notified email
                         $notification = CommentNotification::create([
-                           'comment_id' => $comment->id,
-                            'name'      => $recipient->name,
-                            'email'     => $recipient->email,
-                            'member_id' => $member_id,
+                            'comment_id' => $comment->id,
+                            'name'       => $recipient->name,
+                            'email'      => $recipient->email,
+                            'member_id'  => $member_id,
                         ]);
 
                         // Add email to actual mail recipients
@@ -296,10 +296,10 @@ class NotificationsController extends Controller
                     if (is_null($notification)) {
                         // Register the notified email
                         $notification = CommentNotification::create([
-                           'comment_id' => $comment->id,
-                            'name'      => $recipient->name,
-                            'email'     => $recipient->email,
-                            'member_id' => $recipient->id,
+                            'comment_id' => $comment->id,
+                            'name'       => $recipient->name,
+                            'email'      => $recipient->email,
+                            'member_id'  => $recipient->id,
                         ]);
 
                         if ($comment->notifications->count() == 0) {
@@ -307,18 +307,18 @@ class NotificationsController extends Controller
                             if ($ticket->agent->id == $comment->owner->id) {
                                 // Message from agent to owner, so we register the non registered past owner notification
                                 $notification = CommentNotification::create([
-                                   'comment_id' => $comment->id,
-                                    'name'      => $ticket->owner->name,
-                                    'email'     => $ticket->owner->email,
-                                    'member_id' => $ticket->owner->id,
+                                    'comment_id' => $comment->id,
+                                    'name'       => $ticket->owner->name,
+                                    'email'      => $ticket->owner->email,
+                                    'member_id'  => $ticket->owner->id,
                                 ]);
                             } elseif ($ticket->owner->id == $comment->owner->id) {
                                 // Message from owner to agent, so we register the non registered past agent notification
                                 $notification = CommentNotification::create([
-                                   'comment_id' => $comment->id,
-                                    'name'      => $ticket->agent->name,
-                                    'email'     => $ticket->agent->email,
-                                    'member_id' => $ticket->agent->id,
+                                    'comment_id' => $comment->id,
+                                    'name'       => $ticket->agent->name,
+                                    'email'      => $ticket->agent->email,
+                                    'member_id'  => $ticket->agent->id,
                                 ]);
                             }
                         }

@@ -268,7 +268,7 @@ trait Attachments
             $attachment->original_filename = $original_filename;
 
             // Mimes validation rule
-            $file_rules = (preg_match('/:/', Setting::grab('attachments_mimes')) ? '' : 'mimes:') . Setting::grab('attachments_mimes');
+            $file_rules = (preg_match('/:/', Setting::grab('attachments_mimes')) ? '' : 'mimes:').Setting::grab('attachments_mimes');
 
             // Mimetype
             $validator = Validator::make(['file' => $uploadedFile], ['file' => $file_rules]);

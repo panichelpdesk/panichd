@@ -68,10 +68,10 @@ return [
      *  Page specific
      */
 
-// ____
+    // ____
     'index-title'             => 'الصفحة الرئيسية',
 
-// tickets/____
+    // tickets/____
     'index-my-tickets'        => 'تذاكري',
     'btn-create-new-ticket'   => 'تذكرة جديدة',
     'index-complete-none'     => 'لا توجد تذاكر منتهية',
@@ -93,34 +93,34 @@ return [
      *  Controllers
      */
 
-// AgentsController
+    // AgentsController
     'agents-are-added-to-agents'                 => ':names تمت إضافتهم كوكلاء',
     'administrators-are-added-to-administrators' => ':names تمت إضافتهم كمدراء', //New
     'agents-joined-categories-ok'                => 'تم ضم الفئات بنجاح',
     'agents-is-removed-from-team'                => 'حذف الوكيل :name من فريق الوكلاء',
     'administrators-is-removed-from-team'        => 'حذف المدير :name من فريق المدراء', // New
 
-// CategoriesController
+    // CategoriesController
     'category-name-has-been-created'             => 'تم إضافة التصنيف :name!',
     'category-name-has-been-modified'            => 'تم تعديل التصنيف :name!',
     'category-name-has-been-deleted'             => 'تم حذف التصنيف :name!',
 
-// PrioritiesController
+    // PrioritiesController
     'priority-name-has-been-created'             => 'تم إضافة الحالة :name!',
     'priority-name-has-been-modified'            => 'تم تعديل الحالة :name!',
     'priority-name-has-been-deleted'             => 'تم حذف الحالة :name!',
     'priority-all-tickets-here'                  => 'جميع الأولويات المتعلقة بالتذاكر',
 
-// StatusesController
+    // StatusesController
     'status-name-has-been-created'               => 'تم إضافة الحالة :name!',
     'status-name-has-been-modified'              => 'تم تعديل الحالة :name!',
     'status-name-has-been-deleted'               => 'تم حذف الحالة :name!',
     'status-all-tickets-here'                    => 'جميع الحالات المتعلقة بالتذاكر',
 
-// CommentsController
+    // CommentsController
     'comment-has-been-added-ok'                  => 'Comment has been added successfully',
 
-// NotificationsController
+    // NotificationsController
     'notify-new-comment-from'                    => 'تعليق جديد من ',
     'notify-on'                                  => ' في ',
     'notify-status-to-complete'                  => ' الحالة كمنتهي',

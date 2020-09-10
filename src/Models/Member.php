@@ -149,10 +149,8 @@ class Member extends User
     {
         if ($this->isAdmin()) {
             return 3;
-        
         } elseif ($this->isAgent()) {
             return 2;
-        
         } else {
             return 1;
         }
@@ -169,14 +167,12 @@ class Member extends User
     {
         if ($this->isAdmin()) {
             return 3;
-        
         } elseif ($this->isAgent()) {
             if (session()->exists('panichd_filter_currentLevel') and session('panichd_filter_currentLevel') == 1) {
                 return 1;
             } else {
                 return 2;
             }
-        
         } else {
             return 1;
         }
@@ -264,7 +260,6 @@ class Member extends User
     {
         if ($this->isAdmin()) {
             return true;
-        
         } elseif ($ticket = Ticket::find($id)) {
             if ($this->id == $ticket->agent_id or (Setting::grab('agent_restrict') == 0 and $this->categories()->where('id', $ticket->category_id)->count() == 1)) {
                 return true;
@@ -285,7 +280,6 @@ class Member extends User
     {
         if ($this->isAdmin()) {
             return true;
-
         } elseif ($this->isAgent() and $this->currentLevel() == 2) {
             if (Setting::grab('agent_restrict') == 1) {
                 return $this->categories()->wherePivot('autoassign', '1')->count() == 0 ? false : true;
@@ -376,7 +370,7 @@ class Member extends User
     }
 
     /**
-     * Get related tickets as agent
+     * Get related tickets as agent.
      */
     public function ticketsAsAgent()
     {
@@ -407,10 +401,8 @@ class Member extends User
 
         if ($member->panichd_admin) {
             return $query->orderBy('name', 'ASC');
-        
         } elseif ($member->panichd_agent) {
             return $query->VisibleForAgent($member->id);
-        
         } else {
             return $query->where('id', '0');
         }
@@ -427,7 +419,7 @@ class Member extends User
     public function scopeVisibleForAgent($query, $id)
     {
         $member = \PanicHDMember::findOrFail(auth()->user()->id);
-        
+
         if ($member->currentLevel() == 2) {
             // Depends on agent_restrict
             if (Setting::grab('agent_restrict') == 0) {
