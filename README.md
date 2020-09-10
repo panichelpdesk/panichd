@@ -1,5 +1,5 @@
 # Panic Help Desk
-This is a ticketing system for [Laravel 5 | 6 | 7](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). We have kept almost [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and added many additional functionalities, like file attachments, ticket tags, scheduling, filtering and an advanced search form. This package uses an own route, "/PanicHD" which can be customized, so It may be installed in your existent Laravel project.
+This is a ticketing system for [Laravel](https://laravel.com/) PHP framework (from version 5 to 8): It is based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). We have kept almost [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and added many additional functionalities, like file attachments, ticket tags, scheduling, filtering and an advanced search form. This package uses an own route, "/PanicHD" which can be customized, so It may be installed in your existent Laravel project.
 
 ## Table of contents
 
