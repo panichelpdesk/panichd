@@ -28,7 +28,7 @@
 			   ></td>
 				<td><input id="checkbox_agent_{!!$agent->id!!}_cat_{!! $agent_cat->id !!}_auto" name="agent_cats_autoassign[]"
 			   type="checkbox"
-			   value="{{ $agent_cat->id }}" {!! ($agent->categories->whereIn('id',$agent_cat->id)->first()['pivot']['autoassign']==0) ? "" : "checked=\"checked\""  !!} 
+			   value="{{ $agent_cat->id }}" {!! ((!$agent->categories->first(function($q) use($agent_cat) { return $q->id == $agent_cat->id;}) || $agent->categories->whereIn('id',$agent_cat->id)->first()['pivot']['autoassign']==0)) ? "" : "checked=\"checked\""  !!} 
 			   {!! (count($agent->categories->whereIn('id',$agent_cat->id)) == 0) ? "disabled=\"disabled\"" : ""  !!}
 			   
 			   ></td>
