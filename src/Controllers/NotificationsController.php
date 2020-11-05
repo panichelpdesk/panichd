@@ -25,7 +25,7 @@ class NotificationsController extends Controller
 
     public function newTicket(Ticket $ticket)
     {
-        $notification_owner = \PanicHDMember::find(auth()->user()->id);
+        $notification_owner = $ticket->creator;
         $template = 'panichd::emails.new_ticket';
 
         // Affects only agent notification.
@@ -55,7 +55,7 @@ class NotificationsController extends Controller
 
     public function ticketClosed(Ticket $original_ticket, Ticket $ticket)
     {
-        $notification_owner = auth()->user();
+        $notification_owner = $ticket->creator;
         $subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-closed-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
         $template = 'panichd::emails.closed_ticket';
         $data = [
@@ -82,7 +82,7 @@ class NotificationsController extends Controller
 
     public function ticketStatusUpdated(Ticket $original_ticket, Ticket $ticket)
     {
-        $notification_owner = auth()->user();
+        $notification_owner = $ticket->creator;
         $template = 'panichd::emails.updated_ticket';
         $subject = $this->subject.$ticket->id.' ';
         $subject .= trans('panichd::email/globals.notify-status-updated-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
@@ -111,7 +111,7 @@ class NotificationsController extends Controller
 
     public function ticketAgentUpdated(Ticket $original_ticket, Ticket $ticket)
     {
-        $notification_owner = auth()->user();
+        $notification_owner = $ticket->creator;
         $template = 'panichd::emails.updated_ticket';
         $subject = $this->subject.$ticket->id.' '.trans('panichd::email/globals.notify-assigned-to-you-by', ['agent' => $notification_owner->name]).trans('panichd::lang.colon').$ticket->subject;
         $data = [
@@ -231,7 +231,7 @@ class NotificationsController extends Controller
     {
         if ($comment->type == 'note') {
             $ticket = $comment->ticket;
-            $notification_owner = auth()->user();
+            $notification_owner = $ticket->creator;
             $template = 'panichd::emails.updated_comment';
             $subject = $this->subject.$ticket->id.' '
                 .trans('panichd::email/globals.notify-note-updated-by', ['name' => $notification_owner->name])
