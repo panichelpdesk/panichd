@@ -156,7 +156,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
             'uses' => 'PanicHD\PanicHD\Controllers\DashboardController@index',
         ]);
         Route::get("$admin_route_path/dashboard", 'PanicHD\PanicHD\Controllers\DashboardController@index')
-        ->name('dashboard');
+        ->name("$admin_route.dashboard");
 
         //Ticket statuses admin routes (ex. http://url/panichd/status)
         Route::resource("$admin_route_path/status", 'PanicHD\PanicHD\Controllers\StatusesController', [
