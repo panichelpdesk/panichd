@@ -107,6 +107,13 @@ This is a synopsis of the main PanicHD features. For detailed descriptions, exam
   + Valid email configuration (Needed for PanicHD notification emails)
   
  * [Composer](https://getcomposer.org/) (the PHP dependency manager)
+ * MySQL 5.7 or 8.x with disabled "strict mode" or specifying all or required MySQL modes except "ONLY_FULL_GROUP_BY". For either option, open Laravel's config\database.php and go to "connections" -> "mysql", and then:
+   * To disable strict mode: Set "strict" to "false"
+   * To specify MySQL modes:
+     * Keep "strict" to "true"
+     * Add "modes" key if not exists
+     * If "modes" didn't exist, add all [MySQL modes](https://stackoverflow.com/a/44984930), except ONLY_FULL_GROUP_BY.
+     * If "modes" was already configured, just comment or delete "ONLY_FULL_GROUP_BY"
 
 ### 2- If Kordy/Ticketit is installed
 If it's installed in the same Laravel project you want to install Panic Help Desk, Panic Help Desk will replace it, reusing it's database tables and keeping registered tickets. Before installing PanicHD, you will have to uninstall Kordy/Ticketit following these steps:
