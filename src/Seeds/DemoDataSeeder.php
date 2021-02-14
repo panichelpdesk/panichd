@@ -199,35 +199,37 @@ class DemoDataSeeder extends Seeder
                     $this->comments_per_ticket_max
                 );
 
-                for ($c = 1; $c <= $comments_qty; $c++) {
-                    if (is_null($ticket->completed_at)) {
-                        $random_comment_date = $faker->dateTimeBetween(
-                            '-'.$random_create.' days',
-                            'now'
-                        );
-                    } else {
-                        $random_comment_date = $faker->dateTimeBetween(
-                            '-'.$random_create.' days',
-                            '-'.($random_create - floor($minutes_random_complete / 60 / 24)).' days'
-                        );
-                    }
+                if ($comments_qty){
+                    for ($c = 1; $c <= $comments_qty; $c++) {
+                        if (is_null($ticket->completed_at)) {
+                            $random_comment_date = $faker->dateTimeBetween(
+                                '-'.$random_create.' days',
+                                'now'
+                            );
+                        } else {
+                            $random_comment_date = $faker->dateTimeBetween(
+                                '-'.$random_create.' days',
+                                '-'.($random_create - floor($minutes_random_complete / 60 / 24)).' days'
+                            );
+                        }
 
-                    $comment = new Models\Comment();
-                    $comment->ticket_id = $ticket->id;
-                    $comment->content = $faker->paragraphs(3, true);
-                    $comment->html = nl2br($comment->content);
+                        $comment = new Models\Comment();
+                        $comment->ticket_id = $ticket->id;
+                        $comment->content = $faker->paragraphs(3, true);
+                        $comment->html = nl2br($comment->content);
 
-                    if ($c % 2 == 0) {
-                        $comment->user_id = $ticket->user_id;
-                    } else {
-                        $comment->user_id = $ticket->agent_id;
+                        if ($c % 2 == 0) {
+                            $comment->user_id = $ticket->user_id;
+                        } else {
+                            $comment->user_id = $ticket->agent_id;
+                        }
+                        $comment->created_at = $random_comment_date;
+                        $comment->updated_at = $random_comment_date;
+                        $comment->save();
                     }
-                    $comment->created_at = $random_comment_date;
-                    $comment->updated_at = $random_comment_date;
-                    $comment->save();
+                    $last_comment = $ticket->Comments->sortByDesc('created_at')->first();
+                    $ticket->updated_at = $last_comment['created_at'];
                 }
-                $last_comment = $ticket->Comments->sortByDesc('created_at')->first();
-                $ticket->updated_at = $last_comment['created_at'];
                 $ticket->save();
             }
         }
