@@ -194,26 +194,33 @@ class TicketsController extends Controller
                 }
 
                 if (isset($search_fields['any_text_field'])) {
-                    $collection->where(function ($query) use ($search_fields) {
+                    // Coincidence in Ticket / Comment attachments
+                    $attachments_col = Attachment::where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+                        ->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
+                        ->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%')
+                        ->with('ticket', 'comment.ticket')->get();
+                    
+                    $a_ticket_ids = [];
+                    foreach ($attachments_col as $att){
+                        if (!is_null($att->ticket)){
+                            $a_ticket_ids[] = $att->ticket->id;
+                        
+                        }elseif (!is_null($att->comment) and !is_null($att->comment->ticket)){
+                            $a_ticket_ids[] = $att->comment->ticket->id;
+                        }
+                    }
+                    
+                    // Coincidence in any ticket field
+                    $collection->where(function ($query) use ($search_fields, $a_ticket_ids) {
                         $query->where('subject', 'like', '%'.$search_fields['any_text_field'].'%')
                             ->orWhere('content', 'like', '%'.$search_fields['any_text_field'].'%')
-                            ->orWhere('html', 'like', '%'.$search_fields['any_text_field'].'%')
                             ->orWhere('intervention', 'like', '%'.$search_fields['any_text_field'].'%')
-                            ->orWhere('intervention_html', 'like', '%'.$search_fields['any_text_field'].'%')
-                            ->orWhereHas('attachments', function ($q1) use ($search_fields) {
-                                $q1->where('original_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhere('new_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhere('description', 'like', '%'.$search_fields['any_text_field'].'%');
-                            })
                             ->orWhereHas('comments', function ($q2) use ($search_fields) {
-                                $q2->where('content', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhere('html', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhereHas('attachments', function ($q3) use ($search_fields) {
-                                        $q3->where('original_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                        ->orWhere('new_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                        ->orWhere('description', 'like', '%'.$search_fields['any_text_field'].'%');
-                                    });
-                            });
+                                $q2->where('content', 'like', '%'.$search_fields['any_text_field'].'%');
+                            })
+
+                            // Attachment with coincidence with "any_text_field"
+                            ->orWhereIn('panichd_tickets.id', $a_ticket_ids);
                     });
                 }
             }
