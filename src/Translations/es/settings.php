@@ -66,6 +66,8 @@ ENDHTML
 
 			<p>Opciones: <code>modal</code>, <code>integrada</code></p>
 ENDHTML
+	, 'embedded_image_prefix' => 'Las imágenes incrustadas con resolución por encima del límite son transformadas en un fichero adjunto que tiene de nombre este prefijo con una numeración automática',
+
 
     /* ------------------ JS EDITOR ------------------ */, 'editor_enabled' => <<<'ENDHTML'
 			<p>Activar editor summernote en áreas de texto</p>

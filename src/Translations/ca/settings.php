@@ -48,6 +48,7 @@ return [
     'html_replacements'                => 'Reemplaços automàtics per als camps de contingut i actuació',
     'default_priority_id'              => 'La prioritat per defecte dels tiquets nous',
     'use_default_status_id'            => 'Permetre o no d\'assignar l\'estat default_status_id a qualsevol tiquet',
+    'embedded_image_prefix'            => 'Les imatges incrustades amb resolució per damunt del límit són transformades en un fitxer adjunt que té de nom aquest prefix amb una numeració automàtica',
 
     // notificacions
     'email.template'                 => 'La plantilla blade d\'email que totes les notificacions extenen',

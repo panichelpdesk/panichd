@@ -48,6 +48,7 @@ return [
     'html_replacements'                => 'Automatic string replacements for content and intervention HTML fields',
     'default_priority_id'              => 'The default priority for new tickets',
     'use_default_status_id'            => 'Whether to allow or not the default_status_id to be assignable in any ticket',
+    'embedded_image_prefix'            => 'Embedded images with resolution above limit get transformed in an attachment named using this prefix and an automatic numeration',
 
     // notifications
     'email.template'                 => 'The email blade template that all notifications extend',

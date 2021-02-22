@@ -82,7 +82,7 @@ trait Attachments
                     $node->setAttribute('class', 'summernote_embedded_image');
                 } else {
                     // Create filename
-                    $original_filename = 'embedded_image_'.($i + $count).'.png';
+                    $original_filename = Setting::grab('embedded_image_prefix') . '_' . ($i + $count).'.png';
 
                     $file_name = $this->makeFilename($original_filename.date('YmdHis', time()), $ticket->id.'_embedded', '');
 
