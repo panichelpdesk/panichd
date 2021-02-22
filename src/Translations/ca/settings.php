@@ -76,7 +76,7 @@ return [
     'summernote_locale'            => 'Especificar quin idioma ha d\'utilitzar l\'editor summernote. Si el valor és <code>laravel</code>, s\'utilitzarà la configuració de <code>config/app.php</code>.<br /><br />Exemple: <code>ca-ES</code> per a Català. <a target="_blank" href="https://github.com/summernote/summernote/tree/master/lang">Veure codis d\'idioma disponibles</a>',
     'editor_html_highlighter'      => 'Si s\'inclou <a target="_blank" href="http://summernote.org/examples/#codemirror-as-codeview">el ressaltador de sintaxi de codemirror</a> o no<br /><code>0</code>: No incloure<br /><code>1</code>: Incloure',
     'codemirror_theme'             => '<p>Tema per a ressaltador de sintaxi de <b>codemirror</b></p><a target="_blank" href="https://cdnjs.com/libraries/codemirror/$codemirrorVersion">Veure temes disponibles</a>',
-    'summernote_options_json_file' => 'Directori relatiu per al fitxer que conté els valors d\'inici de summernote en format JSON. <a target="_blank" href="http://summernote.org/deep-dive/#initialization-options">Veure opcions disponibles</a><br /><code>default</code>: Utilitzar opcions predeterminades',
+    'summernote_options_json_file' => 'Directori relatiu per al fitxer que conté els valors d\'inici de summernote en format JSON. <a target="_blank" href="http://summernote.org/deep-dive/#initialization-options">Veure opcions disponibles</a><br /><code>default</code>: Carrega paràmetres del fitxer JSON\summernote_init.json',
     'purifier_config'              => <<<'ENDHTML'
 			<p>Configurar quines etiquetes HTML estan permeses</p>
 			<p>

@@ -112,6 +112,7 @@ ENDHTML
 			</p>
 
 			<p>This setting stores the path to the json config file, relative to project route</p>
+			<p><code>default</code> Carga parametros del fichero JSON\summernote_init.json</p>
 ENDHTML
 
     , 'purifier_config' => <<<'ENDHTML'

@@ -76,7 +76,7 @@ return [
     'summernote_locale'            => 'Which language should summernote js texteditor use. If value is <code>laravel</code>, locale set in <code>config/app.php</code> will be used<br /><br />Example: <code>hu-HU</code> for Hungarian. <a target="_blank" href="https://github.com/summernote/summernote/tree/master/lang">See available language codes</a>',
     'editor_html_highlighter'      => 'Whether include <a target="_blank" href="http://summernote.org/examples/#codemirror-as-codeview">codemirror syntax highlighter</a> or not<br /><code>0</code>: Don\'t include<br /><code>1</code>: Include',
     'codemirror_theme'             => '<p>Theme for <b>codemirror</b> syntax highlighter</p><a target="_blank" href="https://cdnjs.com/libraries/codemirror/$codemirrorVersion">View available themes</a>',
-    'summernote_options_json_file' => 'App relative path for file that contains init values for summernote in JSON. <a target="_blank" href="http://summernote.org/deep-dive/#initialization-options">See avaiable options</a><br /><code>default</code>: Use default options',
+    'summernote_options_json_file' => 'App relative path for file that contains init values for summernote in JSON. <a target="_blank" href="http://summernote.org/deep-dive/#initialization-options">See avaiable options</a><br /><code>default</code>: Load parameters from file JSON\summernote_init.json',
     'purifier_config'              => <<<'ENDHTML'
 			<p>Set which HTML tags are allowed</p>
 			<p>
