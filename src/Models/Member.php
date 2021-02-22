@@ -2,7 +2,7 @@
 
 namespace PanicHD\PanicHD\Models;
 
-use App\User;
+use App\Models\User;
 use PanicHD\PanicHD\Helpers\LaravelVersion;
 
 class Member extends User
