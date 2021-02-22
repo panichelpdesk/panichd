@@ -23,7 +23,7 @@
 		@endforeach
 
     @if ($setting->grab('use_default_status_id'))
-     <label><input type="checkbox" name="status_checkbox" value="yes">{{ trans('panichd::lang.table-agent-status-check') }}</label>
+     <label><input type="checkbox" name="status_checkbox" value="yes"> {{ trans('panichd::lang.table-agent-status-check', ['status' => $status_check_name]) }}</label>
      @endif
     </div>
 		<div class="modal-footer">

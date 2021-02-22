@@ -15,6 +15,7 @@ use PanicHD\PanicHD\Controllers\NotificationsController;
 use PanicHD\PanicHD\Controllers\ToolsController;
 use PanicHD\PanicHD\Models\Comment;
 use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Status;
 use PanicHD\PanicHD\Models\Ticket;
 
 class PanicHDServiceProvider extends ServiceProvider
@@ -195,6 +196,12 @@ class PanicHDServiceProvider extends ServiceProvider
                 }
 
                 $view->with(compact('editor_locale', 'editor_options'));
+            });
+
+            // Change agent modal
+            view()->composer('panichd::tickets.partials.modal_agent', function ($view) {
+                $status_check_name = Setting::grab('default_reopen_status_id') == '0' ? Status::first()->name : Status::find(Setting::grab('default_reopen_status_id'))->name;
+                $view->with(compact('status_check_name'));
             });
 
             // Notices widget
