@@ -41,7 +41,7 @@ class TicketsController extends Controller
         'tags'        => ['has_not_tags', 'has_any_tag', 'any', 'all', 'none'],
     ];
     protected $a_search_fields_text = ['subject', 'content', 'intervention'];
-    protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
+    protected $a_search_fields_text_special = ['comments', 'attachment_text', 'any_text_field'];
     protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
     protected $a_search_fields_date_types = ['from', 'until', 'exact_year', 'exact_month', 'exact_day'];
 
@@ -176,8 +176,8 @@ class TicketsController extends Controller
                     });
                 }
 
-                if (isset($search_fields['attachment_name'])){
-                    $collection->whereIn('panichd_tickets.id', $this->listTicketsWhereAttachmentHas($search_fields['attachment_name']));
+                if (isset($search_fields['attachment_text'])){
+                    $collection->whereIn('panichd_tickets.id', $this->listTicketsWhereAttachmentHas($search_fields['attachment_text']));
                 }
 
                 if (isset($search_fields['any_text_field'])) {
