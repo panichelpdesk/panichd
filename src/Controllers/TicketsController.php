@@ -176,42 +176,15 @@ class TicketsController extends Controller
                     });
                 }
 
-                if (isset($search_fields['attachment_name'])) {
-                    $collection->where(function ($query) use ($search_fields) {
-                        $query->whereHas('attachments', function ($q1) use ($search_fields) {
-                            $q1->where('original_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                ->orWhere('new_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                ->orWhere('description', 'like', '%'.$search_fields['attachment_name'].'%');
-                        })
-                            ->orWhereHas('comments', function ($q2) use ($search_fields) {
-                                $q2->whereHas('attachments', function ($q3) use ($search_fields) {
-                                    $q3->where('original_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                        ->orWhere('new_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                        ->orWhere('description', 'like', '%'.$search_fields['attachment_name'].'%');
-                                });
-                            });
-                    });
+                if (isset($search_fields['attachment_name'])){
+                    $collection->whereIn('panichd_tickets.id', $this->listTicketsWhereAttachmentHas($search_fields['attachment_name']));
                 }
 
                 if (isset($search_fields['any_text_field'])) {
-                    // Coincidence in Ticket / Comment attachments
-                    $attachments_col = Attachment::where('original_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
-                        ->orWhere('new_filename', 'like', '%' . $search_fields['any_text_field'] . '%')
-                        ->orWhere('description', 'like', '%' . $search_fields['any_text_field'] . '%')
-                        ->with('ticket', 'comment.ticket')->get();
-                    
-                    $a_ticket_ids = [];
-                    foreach ($attachments_col as $att){
-                        if (!is_null($att->ticket)){
-                            $a_ticket_ids[] = $att->ticket->id;
-                        
-                        }elseif (!is_null($att->comment) and !is_null($att->comment->ticket)){
-                            $a_ticket_ids[] = $att->comment->ticket->id;
-                        }
-                    }
+                    $a_attachment_tickets = $this->listTicketsWhereAttachmentHas($search_fields['any_text_field']);
                     
                     // Coincidence in any ticket field
-                    $collection->where(function ($query) use ($search_fields, $a_ticket_ids) {
+                    $collection->where(function ($query) use ($search_fields, $a_attachment_tickets) {
                         $query->where('subject', 'like', '%'.$search_fields['any_text_field'].'%')
                             ->orWhere('content', 'like', '%'.$search_fields['any_text_field'].'%')
                             ->orWhere('intervention', 'like', '%'.$search_fields['any_text_field'].'%')
@@ -220,7 +193,7 @@ class TicketsController extends Controller
                             })
 
                             // Attachment with coincidence with "any_text_field"
-                            ->orWhereIn('panichd_tickets.id', $a_ticket_ids);
+                            ->orWhereIn('panichd_tickets.id', $a_attachment_tickets);
                     });
                 }
             }

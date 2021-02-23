@@ -609,4 +609,31 @@ trait Attachments
 
         return \File::exists($thumbnail_path.$file_name) ? false : true;
     }
+
+    /*
+     * Search a string in all attachment fields
+     * Return ticket id's that contain the found attachments
+     * 
+     * @return Array
+    */
+    public function listTicketsWhereAttachmentHas($needle)
+    {
+        // Coincidence in Ticket / Comment attachments
+        $attachments_col = Attachment::where('original_filename', 'like', '%' . $needle . '%')
+            ->orWhere('new_filename', 'like', '%' . $needle . '%')
+            ->orWhere('description', 'like', '%' . $needle . '%')
+            ->with('ticket', 'comment.ticket')->get();
+        
+        $a_ticket_ids = [];
+        foreach ($attachments_col as $att){
+            if (!is_null($att->ticket)){
+                $a_ticket_ids[] = $att->ticket->id;
+            
+            }elseif (!is_null($att->comment) and !is_null($att->comment->ticket)){
+                $a_ticket_ids[] = $att->comment->ticket->id;
+            }
+        }
+
+        return $a_ticket_ids;
+    }
 }
