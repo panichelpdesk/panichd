@@ -363,7 +363,7 @@ return [
     'searchform-creator'              => 'Creator',
     'searchform-department'           => 'Department',
     'searchform-comments'             => 'Comments text',
-    'searchform-attachment_filename'  => 'Attachment filename',
+    'searchform-attachment_text'      => 'Attachment text',
     'searchform-any_text_field'       => 'Any text field',
     'searchform-created_at'           => 'Creation datetime',
     'searchform-completed_at'         => 'Completion datetime',

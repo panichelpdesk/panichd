@@ -119,7 +119,7 @@ return [
     'searchform-creator'              => 'Creador',
     'searchform-department'           => 'Departamento',
     'searchform-comments'             => 'Texto en los comentarios',
-    'searchform-attachment_filename'  => 'Nombre de adjunto',
+    'searchform-attachment_text'      => 'Texto en adjunto',
     'searchform-any_text_field'       => 'Cualquier campo de texto',
     'searchform-created_at'           => 'Creación',
     'searchform-completed_at'         => 'Cierre',

@@ -363,7 +363,7 @@ return [
     'searchform-creator'              => 'Creador',
     'searchform-department'           => 'Departament',
     'searchform-comments'             => 'Text als comentaris',
-    'searchform-attachment_filename'  => 'Nom d\'adjunt',
+    'searchform-attachment_text'      => 'Text als adjunts',
     'searchform-any_text_field'       => 'Qualsevol camp de text',
     'searchform-created_at'           => 'Creació',
     'searchform-completed_at'         => 'Tancament',

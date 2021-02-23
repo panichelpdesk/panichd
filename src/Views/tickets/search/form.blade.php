@@ -239,7 +239,7 @@
 
     @if ($setting->grab('ticket_attachments_feature'))
         <div class="form-group row @if(isset($search_fields['attachment_name'])) bg-info @endif"><!-- ATTACHMENT FILENAME -->
-            {!! CollectiveForm::label('attachment_name', trans('panichd::lang.searchform-attachment_filename') . trans('panichd::lang.colon'), [
+            {!! CollectiveForm::label('attachment_name', trans('panichd::lang.searchform-attachment_text') . trans('panichd::lang.colon'), [
                 'class' => 'col-lg-3 col-form-label'
             ]) !!}
             <div class="col-lg-9">
