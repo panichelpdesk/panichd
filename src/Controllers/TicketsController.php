@@ -2278,8 +2278,9 @@ class TicketsController extends Controller
     {
         $latest = Models\Comment::where('ticket_id', $ticket->id)->orderBy('id', 'desc')->first();
 
-        if ($latest and in_array($latest->type, ['complete', 'reopen'])) {
-            // Delete last comment for consecutive complete-reopen
+        if ($latest and $latest->owner->id == $this->member->id and in_array($latest->type, ['complete', 'reopen'])
+            and Carbon::now()->diffInSeconds($latest->created_at) < 60) {
+            // Delete last complete or reopen comment if both changes come from the same user and within 1 minute
             $latest->delete();
 
             return false;
