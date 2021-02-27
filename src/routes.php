@@ -84,7 +84,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
         'parameters' => [
             $field_name => 'ticket_comment',
         ],
-        ]);
+    ]);
 
     //Ticket complete route for permitted user.
     Route::patch("$main_route_path/{id}/complete", 'PanicHD\PanicHD\Controllers\TicketsController@complete')

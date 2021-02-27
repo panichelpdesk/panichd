@@ -300,7 +300,7 @@ class SettingsTableSeeder extends Seeder
             /*
              * Prefix for embedded images: Embedded images in text fields with resolutions above specified limit
              * get transformed in an attachment with an image thumbnail. That attachment name is
-             * formed by this field value and an automatic number 
+             * formed by this field value and an automatic number
              * Default: embedded_image
              */
             'embedded_image_prefix' => 'image',
