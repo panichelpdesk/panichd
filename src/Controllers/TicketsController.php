@@ -176,13 +176,13 @@ class TicketsController extends Controller
                     });
                 }
 
-                if (isset($search_fields['attachment_text'])){
+                if (isset($search_fields['attachment_text'])) {
                     $collection->whereIn('panichd_tickets.id', $this->listTicketsWhereAttachmentHas($search_fields['attachment_text']));
                 }
 
                 if (isset($search_fields['any_text_field'])) {
                     $a_attachment_tickets = $this->listTicketsWhereAttachmentHas($search_fields['any_text_field']);
-                    
+
                     // Coincidence in any ticket field
                     $collection->where(function ($query) use ($search_fields, $a_attachment_tickets) {
                         $query->where('subject', 'like', '%'.$search_fields['any_text_field'].'%')

@@ -189,10 +189,8 @@ class PanicHDServiceProvider extends ServiceProvider
                 // $editor_options = $user_editor != "0" ? $user_editor : file_get_contents(base_path(Setting::grab('summernote_options_json_file')));
                 if ($user_editor != '0') {
                     $editor_options = $user_editor;
-
-                }elseif (Setting::grab('summernote_options_json_file') != 'default' and file_exists(base_path(Setting::grab('summernote_options_json_file')))) {
+                } elseif (Setting::grab('summernote_options_json_file') != 'default' and file_exists(base_path(Setting::grab('summernote_options_json_file')))) {
                     $editor_options = file_get_contents(base_path(Setting::grab('summernote_options_json_file')));
-                    
                 } else {
                     $editor_options = file_get_contents(realpath(__DIR__).'/JSON/summernote_init.json');
                 }

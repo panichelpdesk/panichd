@@ -82,7 +82,7 @@ trait Attachments
                     $node->setAttribute('class', 'summernote_embedded_image');
                 } else {
                     // Create filename
-                    $original_filename = Setting::grab('embedded_image_prefix') . '_' . ($i + $count).'.png';
+                    $original_filename = Setting::grab('embedded_image_prefix').'_'.($i + $count).'.png';
 
                     $file_name = $this->makeFilename($original_filename.date('YmdHis', time()), $ticket->id.'_embedded', '');
 
@@ -613,23 +613,22 @@ trait Attachments
     /*
      * Search a string in all attachment fields
      * Return ticket id's that contain the found attachments
-     * 
+     *
      * @return Array
     */
     public function listTicketsWhereAttachmentHas($needle)
     {
         // Coincidence in Ticket / Comment attachments
-        $attachments_col = Attachment::where('original_filename', 'like', '%' . $needle . '%')
-            ->orWhere('new_filename', 'like', '%' . $needle . '%')
-            ->orWhere('description', 'like', '%' . $needle . '%')
+        $attachments_col = Attachment::where('original_filename', 'like', '%'.$needle.'%')
+            ->orWhere('new_filename', 'like', '%'.$needle.'%')
+            ->orWhere('description', 'like', '%'.$needle.'%')
             ->with('ticket', 'comment.ticket')->get();
-        
+
         $a_ticket_ids = [];
-        foreach ($attachments_col as $att){
-            if (!is_null($att->ticket)){
+        foreach ($attachments_col as $att) {
+            if (!is_null($att->ticket)) {
                 $a_ticket_ids[] = $att->ticket->id;
-            
-            }elseif (!is_null($att->comment) and !is_null($att->comment->ticket)){
+            } elseif (!is_null($att->comment) and !is_null($att->comment->ticket)) {
                 $a_ticket_ids[] = $att->comment->ticket->id;
             }
         }

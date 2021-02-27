@@ -199,7 +199,7 @@ class DemoDataSeeder extends Seeder
                     $this->comments_per_ticket_max
                 );
 
-                if ($comments_qty){
+                if ($comments_qty) {
                     for ($c = 1; $c <= $comments_qty; $c++) {
                         if (is_null($ticket->completed_at)) {
                             $random_comment_date = $faker->dateTimeBetween(
