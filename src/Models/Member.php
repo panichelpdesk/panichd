@@ -2,12 +2,10 @@
 
 namespace PanicHD\PanicHD\Models;
 
-use App\User;
-use PanicHD\PanicHD\Traits\MemberTrait;
-
-class Member extends User
+class Member extends Member_AppUser
 {
-    use MemberTrait;
-
-    protected $table = 'users';
+    /*
+     * This file has been kept only to avoid errors in customized PanicHD installations
+     * Uses Auth provided by laravel/ui
+    */
 }
