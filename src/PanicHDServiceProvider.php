@@ -34,10 +34,21 @@ class PanicHDServiceProvider extends ServiceProvider
 
         // Alias for Member model
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $member_model_class = 'PanicHD\PanicHD\Models\Member';
-        if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1 and Setting::grab('member_model_class') != 'default') {
-            // TODO: Check Class existence before using it. Add in cache to avoid this checks in every load
+        if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1) {
             $member_model_class = Setting::grab('member_model_class');
+        }
+
+        if (!isset($member_model_class) or $member_model_class == 'default'){
+            $member_model_class = Cache::remember('panichd::provider_member_class', 3600, function () {
+                // Check App\Models\User existence first
+                if (class_exists('\App\Models\User')){
+                    return 'PanicHD\PanicHD\Models\Member_AppModelsUser';
+
+                }else{
+                    // Inherit from App\User as default
+                    return 'PanicHD\PanicHD\Models\Member_AppUser';
+                }
+            });
         }
 
         $loader->alias('PanicHDMember', $member_model_class);
