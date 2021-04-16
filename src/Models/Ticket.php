@@ -398,7 +398,7 @@ class Ticket extends Model
             $date_text = trans('panichd::lang.datetime-text', [
                 'date' => $text_to_format,
                 'time' => $this->getTime($date_field),
-                ]);
+            ]);
         }
 
         return $date_text;
@@ -571,7 +571,7 @@ class Ticket extends Model
     }
 
     /**
-     * Get tickets from specified Agent
+     * Get tickets from specified Agent.
      *
      * @param $query
      * @param $id

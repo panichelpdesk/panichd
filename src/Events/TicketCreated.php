@@ -10,7 +10,8 @@ use PanicHD\PanicHD\Models\Ticket;
 
 class TicketCreated
 {
-    use InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets;
+    use SerializesModels;
     public $ticket;
 
     /**

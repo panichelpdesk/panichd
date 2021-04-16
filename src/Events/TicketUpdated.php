@@ -10,7 +10,8 @@ use PanicHD\PanicHD\Models\Ticket;
 
 class TicketUpdated
 {
-    use InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets;
+    use SerializesModels;
     public $original;
     public $modified;
 

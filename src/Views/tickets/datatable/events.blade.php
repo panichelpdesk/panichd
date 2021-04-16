@@ -85,6 +85,9 @@
 		// Make AJAX send from modalAgentChange form submit
 		$(document).off('submit', '#modalAgentChange form');
 		$(document).on('submit', '#modalAgentChange form', function(e){
+			// Disable of modal submit button
+			$('#modalAgentChange button[type=submit]').prop('disabled', true);
+			
 			e.preventDefault();
 
 			var form = $(this);
@@ -98,6 +101,8 @@
 				data: Form_Data,
 
 				success: function( response ) {
+					$('#modalAgentChange button[type=submit]').prop('disabled', false);
+					$('#modalAgentChange').modal('hide');
 					success_popover(response);
 				}
 			});

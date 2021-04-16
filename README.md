@@ -1,5 +1,5 @@
 # Panic Help Desk
-This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP framework based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). We have kept almost [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and includes many other functionalities to bring you closer to any production environment, like file attachments, ticket tags, calendar fields and a filters panel. It may work in any Laravel app from version 5.1 to 5.8. It has it's own routes, so it shouldn't affect other packages.
+This is a ticketing system for [Laravel](https://laravel.com/) PHP framework (from version 5 to 8): It is based on [Kordy/Ticketit](https://github.com/thekordy/ticketit). We have kept almost [all ticketit features](https://github.com/thekordy/ticketit/wiki/v0.2-Features) and added many additional functionalities, like file attachments, ticket tags, scheduling, filtering and an advanced search form. This package uses an own route, "/PanicHD" which can be modified after installation, so it may be installed in your existent Laravel project.
 
 ## Table of contents
 
@@ -10,12 +10,15 @@ This package is a ticketing system for [Laravel 5](https://laravel.com/) PHP fra
   + [Feature synopsis](#features)
   + [Features in detail (link to the Wiki)](https://github.com/panichelpdesk/panichd/wiki/Current-features)
 * [Installing](#installing)
-  + [Requirements](#requirements)
-  + [If Kordy/Ticketit is installed](#if-kordyticketit-is-installed)
-  + [Installation steps](#installation-steps)
-  + [Complete installation](#complete-installation)
-    + [With the web installer](#option-1-web-installer)
-    + [With command line](#option-2-command-line-for-advanced-users)
+  + [1- Requirements](#1--requirements)
+  + [2- If Kordy/Ticketit is installed](#2--if-kordyticketit-is-installed)
+  + [3- Add and enable PanicHD package](#3--add-and-enable-panichd-package)
+  + [4- Configure it](#4--configure-it)
+    + [A: With our web installer](#option-a-with-our-web-installer)
+    + [B: Using command line (advanced users)](#option-b-using-command-line-advanced-users)
+  + [5- App start-up](#5--app-start-up)
+    + [Add demostration data](#add-demostration-data)
+    + [Add our basic parameters seeder](#add-our-basic-parameters-seeder)
 * [Configurations and Laravel integration](#configurations-and-laravel-integration)
 * [Contributing](#contributing)
 * [Built with](#built-with)
@@ -32,9 +35,11 @@ This ticketing system is actually mean to be used in a corporate support environ
 * We have included all required asset files in the package structure because we want it to be usable in our LAN even without working internet connection (think about IT corporate support)
 
 #### Translations
-This package comes with Catalan, English and Brazillian Portuguese language files. For any of them you don't need to do anything: PanicHD will get your Laravel configuration.
+This package has got up to date translations to Brazillian Portuguese, Catalan, English and Spanish. There are more translations included, but they're oldier and some menues may not be translated yet.
 
-You may also you may create your own language files. There are some outdated language files that come from Ticketit and can be a good starting point. We encourage you to make your own language files and create a pull request in PanicHD to share with other speakers.
+PanicHD used language will be the one you have configured within Laravel.
+
+You may also create your own language files. We encourage you to make your own language pack and add a pull request to our **dev** branch, to let other PanicHD members from your country have it.
 
 #### A ticket step by step example
 1. A user registers a new ticket for a specific issue
@@ -95,15 +100,22 @@ This is a synopsis of the main PanicHD features. For detailed descriptions, exam
     `php artisan panichd`
 
 ## Installing
-### Requirements
+### 1- Requirements
 * [Laravel](https://laravel.com/) 5.1 or higher including:
   + [Laravel auth](https://laravel.com/docs/master/authentication#authentication-quickstart) with at least one user registered
   + Model App\User.php that uses users table. It is added with Laravel auth by default and PanicHD requires it to be there. It seems that some admin panels change it to App\Models\User.php or maybe other routes. 
   + Valid email configuration (Needed for PanicHD notification emails)
   
  * [Composer](https://getcomposer.org/) (the PHP dependency manager)
+ * MySQL 5.7 or 8.x with disabled "strict mode" or specifying all or required MySQL modes except "ONLY_FULL_GROUP_BY". For either option, open Laravel's config\database.php and go to "connections" -> "mysql", and then:
+   * To disable strict mode: Set "strict" to "false"
+   * To specify MySQL modes:
+     * Keep "strict" to "true"
+     * Add "modes" key if not exists
+     * If "modes" didn't exist, add all [MySQL modes](https://stackoverflow.com/a/44984930), except ONLY_FULL_GROUP_BY.
+     * If "modes" was already configured, just comment or delete "ONLY_FULL_GROUP_BY"
 
-### If Kordy/Ticketit is installed
+### 2- If Kordy/Ticketit is installed
 If it's installed in the same Laravel project you want to install Panic Help Desk, Panic Help Desk will replace it, reusing it's database tables and keeping registered tickets. Before installing PanicHD, you will have to uninstall Kordy/Ticketit following these steps:
 
  1. Open composer.json file at laravel root folder. Remove the line that reffers to kordy/ticketit in the "require" section
@@ -112,31 +124,31 @@ If it's installed in the same Laravel project you want to install Panic Help Des
      `composer update kordy/ticketit`
  4. Delete all possible remaining refferences and files that you may have in your Laravel project (Published files? Refferences in Laravel files?)
 
-### Installation steps
+### 3- Add and enable PanicHD package
 1. Open a command line in the Laravel folder and type:
     `composer require panichd/panichd`
 2. If you are using Laravel 5.4 or lower, you will have to add the service provider. In this case, Open config/app.php. In the "Providers" section, add:
 
     `PanicHD\PanicHD\PanicHDServiceProvider::class,`
 
-### Complete installation
-At this point, if you think you typed enough commands, the [web installer](#option-1-web-installer) comes to rescue you ;) But if you're a tough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#option-2-command-line-for-advanced-users) section.
+### 4- Configure it
+At this point, if you think you typed enough commands, the [web installer](#option-1-web-installer) comes to rescue you ;) But if you're a tough and experienced Laravel coder, please forget this and jump to [Complete installation with command line](#option-b-using-command-line-advanced-users) section.
 
-#### Option 1: Web installer
+#### **Option A: With our web installer**
 To access the web installer you just have to:
 
 1. Log in the Laravel app via web browser
 2. access URL http://your-laravel-app-URL/panichd
 3. Read and follow the installation steps
 
-#### Option 2: Command line (for advanced users)
-Create the attachments folders:
+#### **Option B: Using command line (advanced users)**
+**B.1-** Create the attachments folders:
 1. Access "storage" folder inside Laravel root and create the subfolder:
 `panichd_attachments`
 2. Access storage\app\public and create the subfolder:
 `panichd_thumbnails`
 
-Execute these commands:
+**B.2-** Execute these commands:
 1. Publish and install migrations
 
    1.1 Publish migrations:
@@ -160,22 +172,24 @@ Execute these commands:
 
    `php artisan vendor:publish --tag=panichd-public`
    
-6. If you didn't have Kordy/Ticketit, you will have to enable your user account (or any other) as an admin in Panic Help Desk. In the "users" table, just find your account and set "panichd_admin" value to 1.
+**B.3-** If your have done a clean PanicHD installation, you must enable at least one administrator for it by setting users table row/s "panichd_admin" field value to 1.
 
-7. Test functionality with generated demo content
-If you want to test the package first, you can install some demo contents from command line in your Laravel app:
-   - To install the demo contents:
+**B.4-** Access http://your-laravel-app-URL/panichd in your browser
+
+### 5- App start-up
+#### **Add demostration data**
+You may use [our demo data seeder](https://github.com/panichelpdesk/panichd/wiki/Command-line-toolbox#demodataseeder) to test the package quickly. The following command creates some fake users, tickets and other stuff which you may browse, edit and do whatever you want:
+
      `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\DemoDataSeeder`
   
-   - To delete the contents addded by the demo, read the [panichd:demo-rollback command dedicated wiki section](https://github.com/panichelpdesk/panichd/wiki/Command-line-toolbox#panichddemo-rollback).
-   
+To [delete all PanicHD demo content](https://github.com/panichelpdesk/panichd/wiki/Command-line-toolbox#panichddemo-rollback) use this command:
 
-8. Configure the package for real environment usage
-   - If you want to add the included default priorities, statuses and category:
+`php artisan panichd:demo-rollback`
+
+#### **Add our basic parameters set**
+Before you can create tickets, you must have added at least one Priority, one Status and one Category. You may use our basic seeder to fill these lists with default elements meant for general usage. All added items will be editable. To use it type the following command:
+
    `php artisan db:seed --class=PanicHD\\PanicHD\\Seeds\\Basic`
-   - If you want to create only  your custom parameters, you can skip to the next installation step
-
-9. Access http://your-laravel-app-URL/panichd in your browser
 
 ## Configurations and Laravel integration
    * Ticket Parameters: All ticket classification fields are customizable, like priorities, statuses... and within their own menues in the Package.
@@ -208,7 +222,7 @@ Please read our [contributing reference](CONTRIBUTING.md).
 * [Photoswipe](http://photoswipe.com/): The best free javascript image gallery we found outside there
 * [Bootstrap Colorpicker Plus](https://github.com/zzzhan/bootstrap-colorpicker-plus): The javascript color picker for every customizable color in PanicHD
 * [Bootstrap Datetimepicker](http://eonasdan.github.io/bootstrap-datetimepicker/): A great javascript calendar selector
-* Used Google fonts:
+* Google fonts used:
   - [Lato Light](https://fonts.google.com/specimen/Lato)
   - [Raleway](https://fonts.google.com/specimen/Raleway)
 * [jCrop](http://deepliquid.com/content/Jcrop.html): An oldie but useful image cropping javascript library

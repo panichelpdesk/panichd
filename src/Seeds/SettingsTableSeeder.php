@@ -189,7 +189,7 @@ class SettingsTableSeeder extends Seeder
              * [Deprecated] User ids who are members of admin role
              * Default: 1
              */
-//            'admin_ids' => [1],
+            //            'admin_ids' => [1],
             /*
              * Pagination length: For standard pagination.
              * Default: 1
@@ -296,6 +296,14 @@ class SettingsTableSeeder extends Seeder
              * Options: builtin, modal
              */
             'delete_modal_type' => 'builtin',
+
+            /*
+             * Prefix for embedded images: Embedded images in text fields with resolutions above specified limit
+             * get transformed in an attachment with an image thumbnail. That attachment name is
+             * formed by this field value and an automatic number
+             * Default: embedded_image
+             */
+            'embedded_image_prefix' => 'image',
 
             /* ------------------ JS EDITOR ------------------ */
 

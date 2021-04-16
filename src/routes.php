@@ -72,19 +72,19 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
     $field_name = last(explode('/', "$main_route_path-comment"));
 
     Route::resource("$main_route_path-comment", 'PanicHD\PanicHD\Controllers\CommentsController', [
-            'names' => [
-                'index'   => "$main_route-comment.index",
-                'store'   => "$main_route-comment.store",
-                'create'  => "$main_route-comment.create",
-                'update'  => "$main_route-comment.update",
-                'show'    => "$main_route-comment.show",
-                'destroy' => "$main_route-comment.destroy",
-                'edit'    => "$main_route-comment.edit",
-            ],
-            'parameters' => [
-                $field_name => 'ticket_comment',
-            ],
-        ]);
+        'names' => [
+            'index'   => "$main_route-comment.index",
+            'store'   => "$main_route-comment.store",
+            'create'  => "$main_route-comment.create",
+            'update'  => "$main_route-comment.update",
+            'show'    => "$main_route-comment.show",
+            'destroy' => "$main_route-comment.destroy",
+            'edit'    => "$main_route-comment.edit",
+        ],
+        'parameters' => [
+            $field_name => 'ticket_comment',
+        ],
+    ]);
 
     //Ticket complete route for permitted user.
     Route::patch("$main_route_path/{id}/complete", 'PanicHD\PanicHD\Controllers\TicketsController@complete')
@@ -92,7 +92,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 
     //Ticket reopen route for permitted user.
     Route::get("$main_route_path/{id}/reopen", 'PanicHD\PanicHD\Controllers\TicketsController@reopen')
-            ->name("$main_route.reopen");
+        ->name("$main_route.reopen");
 
     // Returns permission_level for category_id
     Route::get("$main_route_path/permissionLevel/{category_id?}", [
@@ -104,26 +104,26 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 
         // Ticket list: Mark as read / unread
         Route::POST('read', 'PanicHD\PanicHD\Controllers\TicketsController@changeRead')
-            ->name("$main_route.ajax.read");
+        ->name("$main_route.ajax.read");
 
         // Ticket list: Change a ticket agent
         Route::POST('agent', 'PanicHD\PanicHD\Controllers\TicketsController@changeAgent')
-            ->name("$main_route.ajax.agent");
+        ->name("$main_route.ajax.agent");
 
         // Ticket list: Change a ticket priority
         Route::POST('priority', 'PanicHD\PanicHD\Controllers\TicketsController@changePriority')
-            ->name("$main_route.ajax.priority");
+        ->name("$main_route.ajax.priority");
 
         // Ticket list: Change a ticket status
         Route::POST('status', 'PanicHD\PanicHD\Controllers\TicketsController@changeStatus')
-            ->name("$main_route.ajax.status");
+        ->name("$main_route.ajax.status");
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAgentMiddleware'], function () use ($main_route, $main_route_path) {
 
         // Send again comment (reply) notification
         Route::post("$main_route_path-notification.resend", 'PanicHD\PanicHD\Controllers\NotificationsController@notificationResend')
-            ->name("$main_route-notification.resend");
+        ->name("$main_route-notification.resend");
 
         //API return list of agents in particular category
         Route::get("$main_route_path/agents/list/{category_id?}/{ticket_id?}", [
@@ -133,7 +133,7 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
 
         // Remove all filters
         Route::get("$main_route_path/filter/removeall/{list?}", 'PanicHD\PanicHD\Controllers\FiltersController@removeall')
-            ->name("$main_route-filter-removeall");
+        ->name("$main_route-filter-removeall");
 
         // Alter ticket filter
         Route::get("$main_route_path/filter/{filter}/{value}", 'PanicHD\PanicHD\Controllers\FiltersController@manage');
@@ -141,22 +141,22 @@ Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddl
         // Use single filter in specified list
         // TODO: Delete this route and controller method. Use filterjust instead
         Route::get("$main_route_path/filteronly/{filter}/{value}/{list}", 'PanicHD\PanicHD\Controllers\FiltersController@only')
-            ->name("$main_route-filteronly");
+        ->name("$main_route-filteronly");
 
         // Use just the specified filters (one or many)
         Route::get("$main_route_path/filterjust/{parameters?}", 'PanicHD\PanicHD\Controllers\FiltersController@just')
-            ->where('parameters', '(.*)')
-            ->name("$main_route-filterjust");
+        ->where('parameters', '(.*)')
+        ->name("$main_route-filterjust");
     });
 
     Route::group(['middleware' => 'PanicHD\PanicHD\Middleware\IsAdminMiddleware'], function () use ($admin_route, $admin_route_path) {
         //Ticket admin index route (ex. http://url/panichd/)
         Route::get("$admin_route_path/indicator/{indicator_period?}", [
-                'as'   => $admin_route.'.dashboard.indicator',
-                'uses' => 'PanicHD\PanicHD\Controllers\DashboardController@index',
+            'as'   => $admin_route.'.dashboard.indicator',
+            'uses' => 'PanicHD\PanicHD\Controllers\DashboardController@index',
         ]);
         Route::get("$admin_route_path/dashboard", 'PanicHD\PanicHD\Controllers\DashboardController@index')
-            ->name('dashboard');
+        ->name("$admin_route.dashboard");
 
         //Ticket statuses admin routes (ex. http://url/panichd/status)
         Route::resource("$admin_route_path/status", 'PanicHD\PanicHD\Controllers\StatusesController', [

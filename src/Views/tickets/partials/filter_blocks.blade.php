@@ -25,8 +25,8 @@
 
 <div class="title category">{{ trans('panichd::lang.filter-category') }}</div> 
 @if (count($filters['category'])==1)
-	<?php $cat_color = $filters['category']{0}->color;?>
-	<span class="btn-category" style="color: {{ $cat_color }}">{{$filters['category']{0}->name}}</span>
+	<?php $cat_color = $filters['category']->first()->color;?>
+	<span class="btn-category" style="color: {{ $cat_color }}">{{$filters['category']->first()->name}}</span>
 @else		
 	<?php $text_cat = "";
 	$category_name = "All";
@@ -84,7 +84,7 @@
 @else	
 	<?php $agent_button_size='';?>
 	@if(count($filters['agent'])==1)
-		<button class="btn btn-light btn-sm {{ $agent_button_size }} agent-current">{{$filters['agent']{0}->name}}</button>
+		<button class="btn btn-light btn-sm {{ $agent_button_size }} agent-current">{{$filters['agent']->first()->name}}</button>
 	@else
 		@if (session('panichd_filter_agent')!="")
 			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-light btn-sm agent-link {{ $agent_button_size }}">{{ trans('panichd::lang.filter-agent-all') }}</a>

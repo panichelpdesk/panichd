@@ -17,7 +17,8 @@ use Validator;
 
 class CommentsController extends Controller
 {
-    use Attachments, Purifiable;
+    use Attachments;
+    use Purifiable;
 
     protected $member;
 

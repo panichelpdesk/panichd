@@ -10,7 +10,8 @@ use PanicHD\PanicHD\Models\Comment;
 
 class CommentUpdated
 {
-    use InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets;
+    use SerializesModels;
     public $original;
     public $modified;
 

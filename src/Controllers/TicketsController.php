@@ -27,7 +27,10 @@ use Validator;
 
 class TicketsController extends Controller
 {
-    use Attachments, CacheVars, Purifiable, TicketFilters;
+    use Attachments;
+    use CacheVars;
+    use Purifiable;
+    use TicketFilters;
 
     protected $tickets;
     protected $member;
@@ -38,7 +41,7 @@ class TicketsController extends Controller
         'tags'        => ['has_not_tags', 'has_any_tag', 'any', 'all', 'none'],
     ];
     protected $a_search_fields_text = ['subject', 'content', 'intervention'];
-    protected $a_search_fields_text_special = ['comments', 'attachment_name', 'any_text_field'];
+    protected $a_search_fields_text_special = ['comments', 'attachment_text', 'any_text_field'];
     protected $a_search_fields_date = ['start_date', 'limit_date', 'created_at', 'completed_at', 'updated_at'];
     protected $a_search_fields_date_types = ['from', 'until', 'exact_year', 'exact_month', 'exact_day'];
 
@@ -102,12 +105,12 @@ class TicketsController extends Controller
                         }
                     } elseif (in_array($field, $this->a_search_fields_text)) {
                         if ($field == 'content') {
-                            $collection->where(function ($query) use ($search_fields, $value) {
+                            $collection->where(function ($query) use ($value) {
                                 $query->where('content', 'like', '%'.$value.'%')
                                     ->orWhere('html', 'like', '%'.$value.'%');
                             });
                         } elseif ($field == 'intervention') {
-                            $collection->where(function ($query) use ($search_fields, $value) {
+                            $collection->where(function ($query) use ($value) {
                                 $query->where('intervention', 'like', '%'.$value.'%')
                                     ->orWhere('intervention_html', 'like', '%'.$value.'%');
                             });
@@ -173,44 +176,24 @@ class TicketsController extends Controller
                     });
                 }
 
-                if (isset($search_fields['attachment_name'])) {
-                    $collection->where(function ($query) use ($search_fields) {
-                        $query->whereHas('attachments', function ($q1) use ($search_fields) {
-                            $q1->where('original_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                ->orWhere('new_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                ->orWhere('description', 'like', '%'.$search_fields['attachment_name'].'%');
-                        })
-                            ->orWhereHas('comments', function ($q2) use ($search_fields) {
-                                $q2->whereHas('attachments', function ($q3) use ($search_fields) {
-                                    $q3->where('original_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                        ->orWhere('new_filename', 'like', '%'.$search_fields['attachment_name'].'%')
-                                        ->orWhere('description', 'like', '%'.$search_fields['attachment_name'].'%');
-                                });
-                            });
-                    });
+                if (isset($search_fields['attachment_text'])) {
+                    $collection->whereIn('panichd_tickets.id', $this->listTicketsWhereAttachmentHas($search_fields['attachment_text']));
                 }
 
                 if (isset($search_fields['any_text_field'])) {
-                    $collection->where(function ($query) use ($search_fields) {
+                    $a_attachment_tickets = $this->listTicketsWhereAttachmentHas($search_fields['any_text_field']);
+
+                    // Coincidence in any ticket field
+                    $collection->where(function ($query) use ($search_fields, $a_attachment_tickets) {
                         $query->where('subject', 'like', '%'.$search_fields['any_text_field'].'%')
                             ->orWhere('content', 'like', '%'.$search_fields['any_text_field'].'%')
-                            ->orWhere('html', 'like', '%'.$search_fields['any_text_field'].'%')
                             ->orWhere('intervention', 'like', '%'.$search_fields['any_text_field'].'%')
-                            ->orWhere('intervention_html', 'like', '%'.$search_fields['any_text_field'].'%')
-                            ->orWhereHas('attachments', function ($q1) use ($search_fields) {
-                                $q1->where('original_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhere('new_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhere('description', 'like', '%'.$search_fields['any_text_field'].'%');
-                            })
                             ->orWhereHas('comments', function ($q2) use ($search_fields) {
-                                $q2->where('content', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhere('html', 'like', '%'.$search_fields['any_text_field'].'%')
-                                    ->orWhereHas('attachments', function ($q3) use ($search_fields) {
-                                        $q3->where('original_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                        ->orWhere('new_filename', 'like', '%'.$search_fields['any_text_field'].'%')
-                                        ->orWhere('description', 'like', '%'.$search_fields['any_text_field'].'%');
-                                    });
-                            });
+                                $q2->where('content', 'like', '%'.$search_fields['any_text_field'].'%');
+                            })
+
+                            // Attachment with coincidence with "any_text_field"
+                            ->orWhereIn('panichd_tickets.id', $a_attachment_tickets);
                     });
                 }
             }
@@ -405,10 +388,10 @@ class TicketsController extends Controller
 
         $collection->editColumn('subject', function ($ticket) {
             $field = (string) link_to_route(
-                    Setting::grab('main_route').'.show',
-                    $ticket->subject,
-                    $ticket->id
-                );
+                Setting::grab('main_route').'.show',
+                $ticket->subject,
+                $ticket->id
+            );
 
             if ($this->member->id == $ticket->agent_id and $ticket->read_by_agent != '1') {
                 $field = '<span class="unread_ticket_text">'.$field.'</span>';
@@ -1142,7 +1125,7 @@ class TicketsController extends Controller
             'fields'        => $a_error_fields,
             'search_fields' => $search_fields ?? [],
             'search_URL'    => $search_URL ?? '',
-            ]);
+        ]);
     }
 
     /**
@@ -1821,7 +1804,7 @@ class TicketsController extends Controller
         // Category tags
         $tag_lists = Category::whereHas('tags')
         ->with([
-            'tags'=> function ($q1) use ($id) {
+            'tags'=> function ($q1) {
                 $q1->select('id', 'name');
             },
         ])
@@ -1840,8 +1823,8 @@ class TicketsController extends Controller
 
         if ($this->member->currentLevel() > 1 && $this->member->canManageTicket($ticket->id)) {
             $all_c = clone $all_comments;
-            $a_reply = [(!is_null($ticket->owner) ? $ticket->owner->id : $ticket->user_id)];
-            $a_note = [$ticket->agent->id];
+            $a_reply = [$ticket->user_id];
+            $a_note = [$ticket->agent_id];
             foreach ($all_c->get() as $comm) {
                 if ($comm->type == 'note') {
                     $a_note = array_merge($a_note, $comm->notifications->pluck('member_id')->toArray());
@@ -1888,8 +1871,21 @@ class TicketsController extends Controller
             $ticket->timestamps = true;
         }
 
-        $data = compact('ticket', 'a_reasons', 'a_tags_selected', 'status_lists', 'complete_status_list', 'agent_lists', 'tag_lists',
-            'comments', 'a_notifications', 'c_members', 'a_resend_notifications', 'close_perm', 'reopen_perm');
+        $data = compact(
+            'ticket',
+            'a_reasons',
+            'a_tags_selected',
+            'status_lists',
+            'complete_status_list',
+            'agent_lists',
+            'tag_lists',
+            'comments',
+            'a_notifications',
+            'c_members',
+            'a_resend_notifications',
+            'close_perm',
+            'reopen_perm'
+        );
         $data['menu'] = 'show';
 
         return view('panichd::tickets.show', $data);
@@ -2280,10 +2276,11 @@ class TicketsController extends Controller
      */
     public function complete_change_actions($ticket, $member, $member_reason = false, $a_clarification = false)
     {
-        $latest = Models\Comment::where('ticket_id', $ticket->id)->where('user_id', $this->member->id)->orderBy('id', 'desc')->first();
+        $latest = Models\Comment::where('ticket_id', $ticket->id)->orderBy('id', 'desc')->first();
 
-        if ($latest and in_array($latest->type, ['complete', 'reopen'])) {
-            // Delete last comment for consecutive complete-reopen
+        if ($latest and $latest->owner->id == $this->member->id and in_array($latest->type, ['complete', 'reopen'])
+            and Carbon::now()->diffInSeconds($latest->created_at) < 60) {
+            // Delete last complete or reopen comment if both changes come from the same user and within 1 minute
             $latest->delete();
 
             return false;

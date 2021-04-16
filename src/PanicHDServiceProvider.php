@@ -15,6 +15,7 @@ use PanicHD\PanicHD\Controllers\NotificationsController;
 use PanicHD\PanicHD\Controllers\ToolsController;
 use PanicHD\PanicHD\Models\Comment;
 use PanicHD\PanicHD\Models\Setting;
+use PanicHD\PanicHD\Models\Status;
 use PanicHD\PanicHD\Models\Ticket;
 
 class PanicHDServiceProvider extends ServiceProvider
@@ -33,10 +34,21 @@ class PanicHDServiceProvider extends ServiceProvider
 
         // Alias for Member model
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $member_model_class = 'PanicHD\PanicHD\Models\Member';
-        if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1 and Setting::grab('member_model_class') != 'default') {
-            // TODO: Check Class existence before using it. Add in cache to avoid this checks in every load
+        if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1) {
             $member_model_class = Setting::grab('member_model_class');
+        }
+
+        if (!isset($member_model_class) or $member_model_class == 'default'){
+            $member_model_class = Cache::remember('panichd::provider_member_class', 3600, function () {
+                // Check App\Models\User existence first
+                if (class_exists('\App\Models\User')){
+                    return 'PanicHD\PanicHD\Models\Member_AppModelsUser';
+
+                }else{
+                    // Inherit from App\User as default
+                    return 'PanicHD\PanicHD\Models\Member_AppUser';
+                }
+            });
         }
 
         $loader->alias('PanicHDMember', $member_model_class);
@@ -188,13 +200,19 @@ class PanicHDServiceProvider extends ServiceProvider
                 // $editor_options = $user_editor != "0" ? $user_editor : file_get_contents(base_path(Setting::grab('summernote_options_json_file')));
                 if ($user_editor != '0') {
                     $editor_options = $user_editor;
-                } elseif (Setting::grab('summernote_options_json_file') == 'default') {
-                    $editor_options = file_get_contents(realpath(__DIR__).'/JSON/summernote_init.json');
-                } else {
+                } elseif (Setting::grab('summernote_options_json_file') != 'default' and file_exists(base_path(Setting::grab('summernote_options_json_file')))) {
                     $editor_options = file_get_contents(base_path(Setting::grab('summernote_options_json_file')));
+                } else {
+                    $editor_options = file_get_contents(realpath(__DIR__).'/JSON/summernote_init.json');
                 }
 
                 $view->with(compact('editor_locale', 'editor_options'));
+            });
+
+            // Change agent modal
+            view()->composer('panichd::tickets.partials.modal_agent', function ($view) {
+                $status_check_name = Setting::grab('default_reopen_status_id') == '0' ? Status::first()->name : Status::find(Setting::grab('default_reopen_status_id'))->name;
+                $view->with(compact('status_check_name'));
             });
 
             // Notices widget

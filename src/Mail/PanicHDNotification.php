@@ -8,7 +8,8 @@ use Illuminate\Queue\SerializesModels;
 
 class PanicHDNotification extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     private $template;
     private $data;

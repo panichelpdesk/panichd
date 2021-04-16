@@ -108,7 +108,7 @@ class InstallController extends Controller
                 }
             } else {
                 // Panic Help Desk installed and up to date. Go to stats page
-                return redirect()->route('dashboard');
+                return redirect()->route('panichd.dashboard');
             }
         }
     }
