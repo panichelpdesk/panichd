@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'command-aborted' => 'Commande interrompue.',
   'continue-question' => 'Voulez-vous continuer ?',
   'continue-question-abort' => 'Annuler',

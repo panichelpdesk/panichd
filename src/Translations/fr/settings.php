@@ -9,7 +9,7 @@
 $codemirrorVersion = PanicHD\PanicHD\Helpers\Cdn::CodeMirror;
 $summernoteVersion = PanicHD\PanicHD\Helpers\Cdn::Summernote;
 
-return array (
+return array(
   'status_notification' => '			<p>
 				<b>notification sur le statut</b>: envoyer des notifications par mel aux propriétaires et gestionnaires du ticket quand son statut change
 			</p>
@@ -46,15 +46,13 @@ return array (
   'default_status_id' => 'Le statut par défaut des nouveaux tickets',
   'delete_modal_type' => 'Choisissez le type de message de confirmation à utiliser pour confirmer une suppression<br /><code>builtin</code> : confirmation javascript<br /><code>modal</code> : message modal jquery',
   'departments_feature' => 'Afficher les informations relatives au service des membres. Cette fonctionnalité est en cours de développement <a href="https://github.com/panichelpdesk/panichd/wiki/Under-development">comme décrit dans notre wiki</a><br /><code>0</code> : désactivé<br /><code>1</code> : activé',
-  'departments_notices_feature' => 'Possibilité de lier des membres spécifiques à un département signalé. Si un ticket est créé avec l\'un de ces utilisateurs spéciaux comme propriétaire, tous les membres du département liés verront ce ticket comme un avis. Cette fonctionnalité est en cours de développement <a href="https://github.com/panichelpdesk/panichd/wiki/Under-development">comme décrit dans notre wiki</a><br /><code>0</code> : désactivé<br /><code>1</code> : activé
-
-Traduit avec www.DeepL.com/Translator (version gratuite)',
+  'departments_notices_feature' => 'Possibilité de lier des membres spécifiques à un département signalé. Si un ticket est créé avec l\'un de ces utilisateurs spéciaux comme propriétaire, tous les membres du département liés verront ce ticket comme un avis. Cette fonctionnalité est en cours de développement <a href="https://github.com/panichelpdesk/panichd/wiki/Under-development">comme décrit dans notre wiki</a><br /><code>0</code> : désactivé<br /><code>1</code> : activé',
   'editor_enabled' => 'Activer l\'éditeur summernote sur les zones de texte',
   'editor_html_highlighter' => 'Inclure ou non <a target="_blank" href="http://summernote.org/examples/#codemirror-as-codeview">surligneur de syntaxecodemirror</a><br /><code>0</code> : Ne pas inclure<br /><code>1</code> : Inclure',
-  'email' => 
-  array (
-    'account' => 
-    array (
+  'email' =>
+  array(
+    'account' =>
+    array(
       'mailbox' => 'L\'adresse e-mail pour toutes les notifications PanicHD<br /><code>default</code> : Utiliser les valeurs par défaut de Laravel',
       'name' => 'Le nom de l\'expéditeur de l\'email pour toutes les notifications PanicHD<br /><code>default</code> : Utiliser les valeurs par défaut de Laravel',
     ),
@@ -67,10 +65,10 @@ Traduit avec www.DeepL.com/Translator (version gratuite)',
     'facebook_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/FQQzr98.jpg"/></p>',
     'google_plus_link' => '<p><b>Toogle icon link</b>: empty or string</p><p><img src="http://i.imgur.com/fzyxfSg.jpg"/></p>',
     'header' => '<p><img src="http://i.imgur.com/5aJjuZL.jpg"/></p>',
-    'owner' => 
-    array (
-      'newticket' => 
-      array (
+    'owner' =>
+    array(
+      'newticket' =>
+      array(
         'template' => 'La notification au propriétaire du ticket utilise le modèle de lame d\'email spécifié ici',
       ),
     ),

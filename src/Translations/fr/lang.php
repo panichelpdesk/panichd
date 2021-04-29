@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'nav-active-tickets' => 'Tickets Ouverts',
   'nav-completed-tickets' => 'Tickets Fermés',
   'table-id' => '#',
@@ -98,8 +98,8 @@ return array (
   'the-ticket-has-been-completed' => 'Le ticket :name a été fermé !',
   'the-ticket-has-been-reopened' => 'Le ticket :name a été réouvert !',
   'you-are-not-permitted-to-do-this' => 'vous n\'êtes pas autorisé à faire cette action !',
-  'auth' => 
-  array (
+  'auth' =>
+  array(
     'failed' => 'Echec de l\'authentification !',
   ),
   'you-are-not-permitted-to-access' => 'Vous n\'avez pas de le droit d\'accéder à cette page !',
@@ -368,8 +368,8 @@ return array (
   'user' => 'Utilisateur',
   'validate-comment-min' => 'Vous devez taper un texte plus long pour le commentaire',
   'validate-comment-required' => 'Vous devez taper le texte du commentaire',
-  'validate-ticket-content' => 
-  array (
+  'validate-ticket-content' =>
+  array(
     'min' => 'La description doit être plus longue, même s\'il n\'y a pas d\'image jointe.',
     'required' => 'La description doit être définie. Si vous joignez une image, vous devrez de toute façon ajouter un texte de description.',
   ),
@@ -378,8 +378,8 @@ return array (
   'validate-ticket-limit_date-lower' => 'La date limite ne peut être inférieure à la date de début',
   'validate-ticket-start_date' => 'L\'année de la date de début n\'est pas valide',
   'validate-ticket-start_date-format' => 'Le format de la date de début n\'est pas valide. Le format correct est : ":format"',
-  'validate-ticket-subject' => 
-  array (
+  'validate-ticket-subject' =>
+  array(
     'min' => 'Le sujet doit être plus long',
     'required' => 'Un sujet doit être fixé. S\'il vous plaît, indiquez en quelques mots de quoi il s\'agit',
   ),

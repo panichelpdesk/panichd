@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'assigned' => 'Ticket pris en charge',
   'comment' => 'Nouveau Commentaire',
   'status' => 'Modification du Statut',

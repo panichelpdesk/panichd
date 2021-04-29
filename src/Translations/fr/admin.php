@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'nav-settings' => 'Configuration',
   'nav-agents' => 'Agents',
   'nav-dashboard' => 'Tableau de bord',
