@@ -33,17 +33,19 @@
 				sortDescending: "{{ trans('panichd::lang.table-aria-sort-desc') }}"
 			},
 		},
-			
+
 		columns: [
 			{ data: 'id', name: 'panichd_tickets.id' },
-			
+
 			{ data: 'priority_magnitude', name: 'panichd_priorities.magnitude', visible: false, searchable: false },
 			{ data: 'updated_at', name: 'panichd_tickets.updated_at', visible: false },
 			{ data: 'has_limit', name: 'has_limit', visible: false, searchable: false },
 			{ data: 'inverse_limit_date', name: 'inverse_limit_date', visible: false, searchable: false },
 			{ data: 'inverse_start_date', name: 'inverse_start_date', visible: false, searchable: false },
-			{ data: 'dep_ancestor_name', name: 'dep_ancestor.name', visible: false },
-			
+            @if ($setting->grab('departments_feature'))
+			    { data: 'dep_ancestor_name', name: 'dep_ancestor.name', visible: false },
+            @endif
+
 			{ data: 'subject', name: 'subject' },
 			@if ($setting->grab('subject_content_column') == 'no')
 				{ data: 'content', name: 'content' },
@@ -52,7 +54,7 @@
 			{ data: 'status', name: 'panichd_statuses.name' },
 			@if (session('panichd_filter_agent')=="" && $u->currentLevel() > 1)
 				{ data: 'agent', name: 'agent.name' },
-			@endif				
+			@endif
 			@if( $u->currentLevel() > 1 )
 				{ data: 'priority', name: 'panichd_priorities.name', "orderData": [1, 3, 4, 5], "orderSequence": ['desc', 'asc']},
 				@if (session('panichd_filter_owner')=="")
@@ -73,7 +75,7 @@
 					{ data: 'category', name: 'panichd_categories.name' },
 				@endif
 				{ data: 'tags', name: 'panichd_tags.name' }
-			@endif				
+			@endif
 		],
 		@if($ticketList != 'newest')
 			@if( $u->currentLevel() > 1)
@@ -91,7 +93,7 @@
 				order: [2, 'desc']
 			@endif
 		@endif
-		
+
 	});
 	});
 </script>
