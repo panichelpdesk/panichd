@@ -4,7 +4,6 @@ namespace PanicHD\PanicHD\Traits;
 
 trait Ticketable
 {
-
     /**
      * Returns all tickets for this model.
      */
@@ -12,5 +11,4 @@ trait Ticketable
     {
         return $this->morphMany('PanicHD\PanicHD\Models\Ticket', 'ticketable');
     }
-
 }
