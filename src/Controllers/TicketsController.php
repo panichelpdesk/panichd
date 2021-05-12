@@ -1593,6 +1593,11 @@ class TicketsController extends Controller
             $ticket->read_by_agent = 0;
         }
 
+        if (!empty($request->ticketable_type) && !empty($request->ticketable_id)) {
+            $ticket->ticketable_type = $request->ticketable_type;
+            $ticket->ticketable_id = $request->ticketable_id;
+        }
+
         $ticket->save();
 
         if (Setting::grab('ticket_attachments_feature')) {

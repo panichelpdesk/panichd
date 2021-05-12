@@ -70,6 +70,11 @@
 			<div class="col-xl-2 col-lg-3 col-md-4">
 				<p>
 				<strong>{{ trans('panichd::lang.ticket') }}</strong>{{ trans('panichd::lang.colon') . trans('panichd::lang.table-id') . $ticket->id }}
+				
+				@if (!empty($ticket->ticketable_type) && !empty($ticket->ticketable_id))
+					<br /><a href="{{ $setting->grab(strtolower(str_replace('\\', '.', $ticket->ticketable_type)).'.url').'/'.$ticket->ticketable_id }}">{{ $setting->grab(strtolower(str_replace('\\', '.', $ticket->ticketable_type)).'.text') }}</a>
+				@endif
+				
 				@if ($u->currentLevel() > 1 && $ticket->user_id != $ticket->creator_id)
 					<?php $creator_name = $ticket->creator_name == "" ? trans('panichd::lang.deleted-member') : (is_null($ticket->creator) ? $ticket->creator_name : $ticket->creator->name); ?>
 					<br /><strong>{{ trans('panichd::lang.show-ticket-creator') }}</strong>{{ trans('panichd::lang.colon') }}

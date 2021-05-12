@@ -21,6 +21,10 @@
             'id' => 'ticket_form',
             'enctype' => 'multipart/form-data'
         ]) !!}
+        @if (!empty(app('request')->input('ticketable_type')) && !empty(app('request')->input('ticketable_id')))
+            {!! CollectiveForm::hidden('ticketable_type', app('request')->input('ticketable_type')) !!}
+            {!! CollectiveForm::hidden('ticketable_id', app('request')->input('ticketable_id')) !!}
+        @endif
     @endif
 
         <legend>{!! isset($ticket) ? trans('panichd::lang.edit-ticket') . ' #'.$ticket->id : trans('panichd::lang.create-new-ticket') !!}</legend>
