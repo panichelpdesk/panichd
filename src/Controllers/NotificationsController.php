@@ -41,7 +41,10 @@ class NotificationsController extends Controller
         $a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 
         // Not hidden notices only: Notificate Department email with specific template
-        if (!$ticket->hidden and Setting::grab('departments_notices_feature') and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != '') and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])) {
+        if (!$ticket->hidden and Setting::grab('departments_notices_feature')
+            and ($ticket->owner->ticketit_department == '0' || $ticket->owner->ticketit_department != '')
+            and $ticket->owner->email
+            and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])) {
             $a_to[] = [
                 'recipient' => $ticket->owner,
                 'subject'   => $this->subject.$ticket->id.trans('panichd::lang.colon').$ticket->subject,
@@ -68,7 +71,8 @@ class NotificationsController extends Controller
         $a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 
         // Notificate ticket owner
-        if (Setting::grab('list_owner_notification') and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])) {
+        if (Setting::grab('list_owner_notification') and !$ticket->hidden and $ticket->owner->email
+            and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])) {
             $a_to[] = [
                 'recipient' => $ticket->owner,
                 'subject'   => $subject,
@@ -97,7 +101,8 @@ class NotificationsController extends Controller
         $a_to = $this->defaultRecipients($ticket, $notification_owner, $subject, $template);
 
         // Notificate ticket owner
-        if (Setting::grab('status_owner_notification') and !$ticket->hidden and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])) {
+        if (Setting::grab('status_owner_notification') and !$ticket->hidden and $ticket->owner->email
+            and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])) {
             $a_to[] = [
                 'recipient' => $ticket->owner,
                 'subject'   => $subject,
@@ -151,13 +156,14 @@ class NotificationsController extends Controller
             $a_recipients = [];
 
             if ($permission_level < 2 or !Setting::grab('custom_recipients')) {
-                // Add recipients for each default one (Ticket agent)
+                // Add default recipients
                 foreach ($this->defaultRecipients($ticket, $notification_owner, $subject, $template) as $default) {
                     $a_recipients[] = $default['recipient']->id;
                 }
 
                 // Add ticket owner
-                if (!$ticket->hidden and !is_null($ticket->owner) and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])
+                if (!$ticket->hidden and !is_null($ticket->owner) and $ticket->owner->email
+                    and !in_array($ticket->owner->email, [$notification_owner->email, $ticket->agent->email])
                     and ($comment->type == 'reply' or ($comment->type != 'reply' and $ticket->owner->levelInCategory($ticket->category->id) > 1))) {
                     $a_recipients[] = $ticket->owner->id;
                 }
@@ -165,6 +171,7 @@ class NotificationsController extends Controller
                 foreach ($ticket->comments()->whereIn('type', ['reply', 'note'])->with('owner', 'notifications')->get() as $comm) {
                     // Previous comment authors
                     if ($comm->owner->id != $notification_owner->id and !in_array($comm->owner->id, $a_recipients)
+                        and $comm->owner->email
                         and ($comment->type == 'reply' or ($comment->type != 'reply' and $comm->owner->levelInCategory($ticket->category->id) > 1))) {
                         $a_recipients[] = $comm->owner->id;
                     }
@@ -172,7 +179,8 @@ class NotificationsController extends Controller
                     // All previous comments recipients
                     foreach ($comm->notifications as $notification) {
                         $recipient = \PanicHDMember::find($notification->member_id);
-                        if (!is_null($recipient) and ($comment->type == 'reply' or ($comment->type != 'reply' and $recipient->levelInCategory($ticket->category->id) > 1))
+                        if (!is_null($recipient) and $recipient->email
+                            and ($comment->type == 'reply' or ($comment->type != 'reply' and $recipient->levelInCategory($ticket->category->id) > 1))
                             and $notification_owner->id != $recipient->id and !in_array($recipient->id, $a_recipients)) {
                             $a_recipients[] = $recipient->id;
                         }
@@ -201,7 +209,7 @@ class NotificationsController extends Controller
             if ($a_recipients and count($a_recipients) > 0) {
                 foreach ($a_recipients as $member_id) {
                     $recipient = \PanicHDMember::find($member_id);
-                    if (!is_null($recipient)) {
+                    if (!is_null($recipient) and $recipient->email) {
                         // Register the notified email
                         $notification = CommentNotification::create([
                             'comment_id' => $comment->id,
@@ -246,7 +254,7 @@ class NotificationsController extends Controller
             // Send notification to all comment notified users
             foreach ($comment->notifications as $notification) {
                 $recipient = \PanicHDMember::find($notification->member_id);
-                if (!is_null($recipient)) {
+                if (!is_null($recipient) and $recipient->email) {
                     if ($recipient->email != $notification_owner->email) {
                         $a_to[] = [
                             'recipient' => $recipient,
@@ -283,7 +291,10 @@ class NotificationsController extends Controller
         if ($request->input('recipients') != '') {
             foreach ($request->recipients as $recipient_key) {
                 // Search by member_id or by email address
-                $recipient = \PanicHDMember::where('id', $recipient_key)->orWhere('email', $recipient_key)->first();
+                $recipient = \PanicHDMember::whereNotNull('email')
+                    ->where(function($query) use($recipient_key){
+                        $query->where('id', $recipient_key)->orWhere('email', $recipient_key);
+                    })->first();
 
                 if (!is_null($recipient)) {
                     $a_to[] = [
@@ -306,20 +317,24 @@ class NotificationsController extends Controller
                             // No previous registered notifications
                             if ($ticket->agent->id == $comment->owner->id) {
                                 // Message from agent to owner, so we register the non registered past owner notification
-                                $notification = CommentNotification::create([
-                                    'comment_id' => $comment->id,
-                                    'name'       => $ticket->owner->name,
-                                    'email'      => $ticket->owner->email,
-                                    'member_id'  => $ticket->owner->id,
-                                ]);
+                                if ($ticket->owner->email){
+                                    $notification = CommentNotification::create([
+                                        'comment_id' => $comment->id,
+                                        'name'       => $ticket->owner->name,
+                                        'email'      => $ticket->owner->email,
+                                        'member_id'  => $ticket->owner->id,
+                                    ]);
+                                }
                             } elseif ($ticket->owner->id == $comment->owner->id) {
                                 // Message from owner to agent, so we register the non registered past agent notification
-                                $notification = CommentNotification::create([
-                                    'comment_id' => $comment->id,
-                                    'name'       => $ticket->agent->name,
-                                    'email'      => $ticket->agent->email,
-                                    'member_id'  => $ticket->agent->id,
-                                ]);
+                                if ($ticket->agent->email){
+                                    $notification = CommentNotification::create([
+                                        'comment_id' => $comment->id,
+                                        'name'       => $ticket->agent->name,
+                                        'email'      => $ticket->agent->email,
+                                        'member_id'  => $ticket->agent->id,
+                                    ]);
+                                }
                             }
                         }
                     }
@@ -348,7 +363,7 @@ class NotificationsController extends Controller
         $a_to = [];
 
         // Email to ticket->agent
-        if ($ticket->agent->email != $notification_owner->email) {
+        if ($ticket->agent->email and $ticket->agent->email != $notification_owner->email) {
             $a_to[] = [
                 'recipient' => $ticket->agent,
                 'subject'   => $subject,
