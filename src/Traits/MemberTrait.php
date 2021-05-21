@@ -429,7 +429,7 @@ trait MemberTrait
                 return $query->where('id', $id);
             }
         } else {
-            return false;
+            return $query->where('id', '0');
         }
     }
 
