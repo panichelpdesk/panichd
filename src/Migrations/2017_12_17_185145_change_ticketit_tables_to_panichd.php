@@ -51,6 +51,10 @@ class ChangeTicketitTablesToPanichd extends Migration
     {
         Schema::rename('panichd_tickets', 'ticketit');
         foreach ($this->a_tables as $table) {
+            // Continue if the rename is already done
+            if (!Schema::hasTable('panichd_'.$table) && Schema::hasTable('ticketit_'.$table)) {
+                continue;
+            }
             Schema::rename('panichd_'.$table, 'ticketit_'.$table);
         }
     }
