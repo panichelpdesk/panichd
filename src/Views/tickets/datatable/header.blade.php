@@ -8,7 +8,9 @@
 			<td>{{-- hidden: has limit --}}</td>
 			<td>{{-- hidden: inverse limit date --}}</td>
 			<td>{{-- hidden: inverse start date --}}</td>
-			<td>{{-- hidden: dep_ancestor_name --}}</td>
+			@if ($setting::grab('departments_feature'))
+				<td>{{-- hidden: dep_ancestor_name --}}</td>
+			@endif
 			
             <td>{{ trans('panichd::lang.table-subject') }}</td>
             @if ($setting->grab('subject_content_column') == 'no')
