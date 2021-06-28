@@ -310,7 +310,7 @@ class TicketsController extends Controller
         ];
 
         if (Setting::grab('departments_feature')) {
-            $collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'members.department_id')
+            $collection->leftJoin('panichd_departments', 'panichd_departments.id', '=', 'members.ticketit_department')
                 ->leftJoin('panichd_departments as dep_ancestor', 'panichd_departments.department_id', '=', 'dep_ancestor.id');
 
             // Department columns
