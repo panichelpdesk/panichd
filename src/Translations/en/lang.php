@@ -452,11 +452,11 @@ return [
     // E-mail translations located at email/globals.php
 
     // TicketsController
-    'the-ticket-has-been-created'      => 'The ticket has been created! <a href=":link" title=":title"><u>:name</u></a>',
-    'the-ticket-has-been-modified'     => 'The ticket has been modified!',
-    'the-ticket-has-been-deleted'      => 'The ticket :name has been deleted!',
-    'the-ticket-has-been-completed'    => 'The ticket has been completed! <a href=":link" title=":title"><u>:name</u></a>',
-    'the-ticket-has-been-reopened'     => 'The ticket :name has been reopened! <a href=":link" title=":title"><u>:name</u></a>',
+    'the-ticket-has-been-created'      => 'This ticket has been created right',
+    'the-ticket-has-been-modified'     => 'This ticket has been updated',
+    'the-ticket-has-been-deleted'      => 'The ticket :name has been deleted',
+    'the-ticket-has-been-completed'    => 'This ticket has been completed',
+    'the-ticket-has-been-reopened'     => 'This ticket has been reopened',
     'ticket-status-link-title'         => 'View ticket',
 
     'you-are-not-permitted-to-do-this' => 'You are not permitted to do this action!',

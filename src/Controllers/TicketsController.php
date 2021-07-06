@@ -1639,11 +1639,7 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('panichd::lang.the-ticket-has-been-created', [
-            'name'  => '#'.$ticket->id.' '.$ticket->subject,
-            'link'  => route(Setting::grab('main_route').'.show', $ticket->id),
-            'title' => trans('panichd::lang.ticket-status-link-title'),
-        ]));
+        session()->flash('status', trans('panichd::lang.the-ticket-has-been-created', ['name' => '']));
 
         return response()->json([
             'result' => 'ok',
@@ -2085,7 +2081,7 @@ class TicketsController extends Controller
 
         $this->sync_ticket_tags($request, $ticket);
 
-        session()->flash('status', trans('panichd::lang.the-ticket-has-been-modified', ['name' => '#'.$ticket->id.' "'.$ticket->subject.'"']));
+        session()->flash('status', trans('panichd::lang.the-ticket-has-been-modified', ['name' => '']));
 
         return response()->json([
             'result' => 'ok',
@@ -2268,11 +2264,7 @@ class TicketsController extends Controller
             // Add complete comment
             $this->complete_change_actions($ticket, $this->member, $member_reason, $a_clarification);
 
-            session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', [
-                'name'  => '#'.$id.' '.$ticket->subject,
-                'link'  => route(Setting::grab('main_route').'.show', $id),
-                'title' => trans('panichd::lang.ticket-status-link-title'),
-            ]));
+            session()->flash('status', trans('panichd::lang.the-ticket-has-been-completed', ['name' => '']));
 
             return redirect()->route(Setting::grab('main_route').'.show', ['ticket' => $ticket->id]);
         }
@@ -2360,11 +2352,7 @@ class TicketsController extends Controller
             // Add reopen comment
             $this->complete_change_actions($ticket, $this->member);
 
-            session()->flash('status', trans('panichd::lang.the-ticket-has-been-reopened', [
-                'name'  => '#'.$id.' '.$ticket->subject,
-                'link'  => route(Setting::grab('main_route').'.show', $id),
-                'title' => trans('panichd::lang.ticket-status-link-title'),
-            ]));
+            session()->flash('status', trans('panichd::lang.the-ticket-has-been-reopened', ['name' => '']));
 
             return redirect()->route(Setting::grab('main_route').'.show', ['ticket' => $ticket->id]);
         }

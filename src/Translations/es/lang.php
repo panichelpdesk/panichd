@@ -216,11 +216,11 @@ return [
     'notify-updated'                   => ' actualizado ',
 
     // TicketsController
-    'the-ticket-has-been-created'      => 'El tique fue creado!',
-    'the-ticket-has-been-modified'     => 'El tique fue modificado!',
-    'the-ticket-has-been-deleted'      => 'El tique :name fue borrado!',
-    'the-ticket-has-been-completed'    => 'El tique :name fue completado!',
-    'the-ticket-has-been-reopened'     => 'El tique :name fue reabierto!',
+    'the-ticket-has-been-created'      => 'Este tique se ha creado correctamente',
+    'the-ticket-has-been-modified'     => 'El tique se ha actualizado',
+    'the-ticket-has-been-deleted'      => 'El tique :name fue borrado',
+    'the-ticket-has-been-completed'    => 'Este tique se ha completado',
+    'the-ticket-has-been-reopened'     => 'Este tique se ha reabierto',
     'you-are-not-permitted-to-do-this' => 'No tienes los permisos necesarios para realizar esta acción!',
 
     /*

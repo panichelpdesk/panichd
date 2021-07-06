@@ -452,11 +452,11 @@ return [
     // Les traduccions d'e-mail es troben a email/globals.php
 
     // TicketsController
-    'the-ticket-has-been-created'      => 'S\'ha creat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
-    'the-ticket-has-been-modified'     => 'El tiquet :name s\'ha modificat!', //revisar no tenia :name
-    'the-ticket-has-been-deleted'      => 'El tiquet :name s\'ha esborrat!',
-    'the-ticket-has-been-completed'    => 'S\'ha tancat el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
-    'the-ticket-has-been-reopened'     => 'S\'ha reobert el tiquet <a href=":link" title=":title"><u>:name</u></a>!',
+    'the-ticket-has-been-created'      => 'Aquest tiquet s\'ha creat correctament',
+    'the-ticket-has-been-modified'     => 'Aquest tiquet s\'ha actualitzat',
+    'the-ticket-has-been-deleted'      => 'El tiquet :name s\'ha esborrat',
+    'the-ticket-has-been-completed'    => 'Aquest tiquet s\'ha tancat',
+    'the-ticket-has-been-reopened'     => 'Aquest tiquet s\'ha reobert',
     'ticket-status-link-title'         => 'Veure tiquet',
 
     'you-are-not-permitted-to-do-this' => 'No tens permisos per fer aquesta acció!',
