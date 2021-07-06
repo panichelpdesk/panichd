@@ -20,7 +20,12 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('closingReasons')->with('tags')->get();
+        $categories = Category::
+            with('closingReasons')
+            ->with(['tags' => function($q){
+                $q->withCount('tickets');
+            }])
+            ->get();
 
         return view('panichd::admin.category.index', compact('categories'));
     }

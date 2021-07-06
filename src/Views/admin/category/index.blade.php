@@ -72,7 +72,7 @@
 						<td style="vertical-align: middle">
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
-								<button class="btn btn-light btn-tag btn-xs" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
+								<button class="btn btn-light btn-tag btn-xs mb-1 mr-1" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}} ({{ $tag->tickets_count }})</button>
 							@endforeach
 						@endif
 						</td>
