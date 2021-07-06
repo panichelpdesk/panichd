@@ -1647,7 +1647,7 @@ class TicketsController extends Controller
 
         return response()->json([
             'result' => 'ok',
-            'url'    => action('\PanicHD\PanicHD\Controllers\TicketsController@index'),
+            'url'    => route(Setting::grab('main_route').'.show', $ticket->id),
         ]);
     }
 
@@ -2274,7 +2274,7 @@ class TicketsController extends Controller
                 'title' => trans('panichd::lang.ticket-status-link-title'),
             ]));
 
-            return redirect()->route(Setting::grab('main_route').'.index');
+            return redirect()->route(Setting::grab('main_route').'.show', ['ticket' => $ticket->id]);
         }
 
         return redirect()->route(Setting::grab('main_route').'.index')
@@ -2366,7 +2366,7 @@ class TicketsController extends Controller
                 'title' => trans('panichd::lang.ticket-status-link-title'),
             ]));
 
-            return redirect()->route(Setting::grab('main_route').'.index');
+            return redirect()->route(Setting::grab('main_route').'.show', ['ticket' => $ticket->id]);
         }
 
         return redirect()->route(Setting::grab('main_route').'.index')
