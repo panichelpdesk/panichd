@@ -627,6 +627,16 @@ class TicketsController extends Controller
     }
 
     /**
+     * Notices list
+     *
+     * @return Response
+     */
+    public function noticesIndex(Request $request)
+    {
+        return view('panichd::notices.index');
+    }
+
+    /**
      * Display a listing of active tickets related to user.
      *
      * @return Response

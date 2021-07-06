@@ -3,9 +3,8 @@
 Route::group(['middleware' => \PanicHD\PanicHD\Helpers\LaravelVersion::authMiddleware()], function () use ($main_route, $main_route_path, $admin_route, $admin_route_path) {
 
     // Notice list
-    Route::get("$main_route_path/notices", function () {
-        return view('panichd::notices.index');
-    })->name("$main_route.notices");
+    Route::get("$main_route_path/notices", 'PanicHD\PanicHD\Controllers\TicketsController@noticesIndex')
+    ->name("$main_route.notices");
 
     // Get newest tickets list
     Route::get("$main_route_path/newest", 'PanicHD\PanicHD\Controllers\TicketsController@indexNewest')
