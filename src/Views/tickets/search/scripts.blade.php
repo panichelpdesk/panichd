@@ -82,6 +82,7 @@ $(function(){
     @if(isset($search_fields['category_id']))
         // Show active category tags
         $('#jquery_tag_category_{{ $search_fields['category_id'] }}').next().show();
+        $('#tag_list_container').show();
     @endif
 
     $('input[name=tags_type]').click(function(e){
