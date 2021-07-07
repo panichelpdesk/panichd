@@ -1,4 +1,4 @@
-@if($u->isAgent())
+@if($u->isAdmin() || $u->isAgent())
     @include('panichd::shared.bottom_toast')
     @section('footer')
         <script type="text/javascript">
