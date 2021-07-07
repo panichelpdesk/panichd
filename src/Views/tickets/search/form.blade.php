@@ -206,7 +206,7 @@
                 <label class="ml-2"><input type="radio" name="tags_type" value="has_not_tags" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'has_not_tags') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-has_not_tags') }}</label>
                 <label class="ml-2"><input type="radio" name="tags_type" value="has_any_tag" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'has_any_tag') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-has_any_tag') }}</label>
                 <span id="category_tags_rules" class="ml-2" @if(!isset($search_fields['category_id'])) style="display: none" @endif>
-                    <label><input type="radio" name="tags_type" value="any" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'all') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-any') }}</label>
+                    <label><input type="radio" name="tags_type" value="any" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'any') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-any') }}</label>
                     <label class="ml-2"><input type="radio" name="tags_type" value="all" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'all') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-all') }}</label>
                     <label class="ml-2"><input type="radio" name="tags_type" value="none" @if(isset($search_fields['tags_type']) && $search_fields['tags_type'] == 'none') checked="checked" @endif> {{ trans('panichd::lang.searchform-tags-rule-none') }}</label>
                 </span>
