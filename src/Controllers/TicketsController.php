@@ -1047,7 +1047,7 @@ class TicketsController extends Controller
         $search_URL = route(Setting::grab('main_route').'.search');
 
         // Check all fields
-        $a_fields = array_merge($this->a_search_fields_numeric, ['tags_type'], $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
+        $a_fields = array_merge($this->a_search_fields_numeric, $this->a_search_fields_text, $this->a_search_fields_date, $this->a_search_fields_text_special, ['department_id', 'list']);
         foreach ($a_fields as $field) {
             if ($request->filled($field)) {
                 // Add field to search
