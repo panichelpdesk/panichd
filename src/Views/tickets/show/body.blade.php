@@ -176,7 +176,7 @@
 					<br /><strong>{{ trans('panichd::lang.tags') }}</strong>{{ trans('panichd::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
 					<a href="{{ route($setting->grab('main_route') . '.search') }}/category_id/{{ $ticket->category->id }}/tags_type/all/tags/{{ $tag->id }}" class="btn btn-light btn-tag btn-xs btn-xs mb-1 mr-1" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}">
-						{{$tag->name}}
+						{{$tag->name}} ({{ $tag->tickets_count }})
 					</a>
 					@endforeach
 				@endif

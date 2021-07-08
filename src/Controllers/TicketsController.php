@@ -1770,7 +1770,9 @@ class TicketsController extends Controller
             ->with('creator')
             ->with('agent')
             ->with('category.closingReasons')
-            ->with('tags')
+            ->with(['tags' => function($q){
+                $q->withCount('tickets');
+            }])
             ->leftJoin($members_table, function ($join1) use ($members_table) {
                 $join1->on($members_table.'.id', '=', 'panichd_tickets.user_id');
             })
