@@ -72,7 +72,9 @@
 						<td style="vertical-align: middle">
 						@if ($category->has('tags'))
 							@foreach ($category->tags as $tag)
-								<button class="btn btn-light btn-tag btn-xs mb-1 mr-1" style="pointer-events: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}} ({{ $tag->tickets_count }})</button>
+								<a href="{{ route($setting->grab('main_route') . '.search') }}/category_id/{{ $category->id }}/tags_type/all/tags/{{ $tag->id }}" class="btn btn-light btn-tag btn-xs mb-1 mr-1" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}">
+                                    {{$tag->name}} ({{ $tag->tickets_count }})
+                                </a>
 							@endforeach
 						@endif
 						</td>

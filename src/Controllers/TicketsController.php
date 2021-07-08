@@ -616,7 +616,7 @@ class TicketsController extends Controller
                 $a_bg_color = array_combine($a_ids, explode(',', $ticket->tags_bg_color));
                 $a_text_color = array_combine($a_ids, explode(',', $ticket->tags_text_color));
                 foreach ($a_tags as $id=> $tag) {
-                    $text .= '<button class="btn btn-default btn-tag btn-xs" style="pointer-events: none; background-color: '.$a_bg_color[$id].'; color: '.$a_text_color[$id].'">'.$tag.'</button> ';
+                    $text .= '<a href="' . route(Setting::grab('main_route') . '.search') . '/category_id/' . $ticket->category_id . '/tags_type/all/tags/' . $id . '" class="btn btn-default btn-tag btn-xs mb-1 mr-1" style="background-color: '.$a_bg_color[$id].'; color: '.$a_text_color[$id].'">'.$tag.'</a> ';
                 }
             }
 

@@ -175,7 +175,9 @@
 				@if ($ticket->has('tags') && ($u->currentLevel() > 1 || in_array($ticket->user_id, $u->getMyNoticesUsers())) )
 					<br /><strong>{{ trans('panichd::lang.tags') }}</strong>{{ trans('panichd::lang.colon') }}
 					@foreach ($ticket->tags as $i=>$tag)
-						<button class="btn btn-light btn-xs" style="pointer-events: none; border: none; color: {{$tag->text_color}}; background: {{$tag->bg_color}}">{{$tag->name}}</button>
+					<a href="{{ route($setting->grab('main_route') . '.search') }}/category_id/{{ $ticket->category->id }}/tags_type/all/tags/{{ $tag->id }}" class="btn btn-light btn-tag btn-xs btn-xs mb-1 mr-1" style="color: {{$tag->text_color}}; background: {{$tag->bg_color}}">
+						{{$tag->name}}
+					</a>
 					@endforeach
 				@endif
 				</p>
