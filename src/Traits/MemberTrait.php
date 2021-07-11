@@ -499,5 +499,4 @@ trait MemberTrait
             return $member_department->get()->merge($member_department->ancestor()->get());
         }
     }
-
 }

@@ -22,7 +22,7 @@ class CategoriesController extends Controller
     {
         $categories = Category::
             with('closingReasons')
-            ->with(['tags' => function($q){
+            ->with(['tags' => function ($q) {
                 $q->withCount('tickets');
             }])
             ->get();

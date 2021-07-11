@@ -38,13 +38,12 @@ class PanicHDServiceProvider extends ServiceProvider
             $member_model_class = Setting::grab('member_model_class');
         }
 
-        if (!isset($member_model_class) or $member_model_class == 'default'){
+        if (!isset($member_model_class) or $member_model_class == 'default') {
             $member_model_class = Cache::remember('panichd::provider_member_class', 3600, function () {
                 // Check App\Models\User existence first
-                if (class_exists('\App\Models\User')){
+                if (class_exists('\App\Models\User')) {
                     return 'PanicHD\PanicHD\Models\Member_AppModelsUser';
-
-                }else{
+                } else {
                     // Inherit from App\User as default
                     return 'PanicHD\PanicHD\Models\Member_AppUser';
                 }

@@ -292,7 +292,7 @@ class NotificationsController extends Controller
             foreach ($request->recipients as $recipient_key) {
                 // Search by member_id or by email address
                 $recipient = \PanicHDMember::whereNotNull('email')
-                    ->where(function($query) use($recipient_key){
+                    ->where(function ($query) use ($recipient_key) {
                         $query->where('id', $recipient_key)->orWhere('email', $recipient_key);
                     })->first();
 
@@ -317,7 +317,7 @@ class NotificationsController extends Controller
                             // No previous registered notifications
                             if ($ticket->agent->id == $comment->owner->id) {
                                 // Message from agent to owner, so we register the non registered past owner notification
-                                if ($ticket->owner->email){
+                                if ($ticket->owner->email) {
                                     $notification = CommentNotification::create([
                                         'comment_id' => $comment->id,
                                         'name'       => $ticket->owner->name,
@@ -327,7 +327,7 @@ class NotificationsController extends Controller
                                 }
                             } elseif ($ticket->owner->id == $comment->owner->id) {
                                 // Message from owner to agent, so we register the non registered past agent notification
-                                if ($ticket->agent->email){
+                                if ($ticket->agent->email) {
                                     $notification = CommentNotification::create([
                                         'comment_id' => $comment->id,
                                         'name'       => $ticket->agent->name,
