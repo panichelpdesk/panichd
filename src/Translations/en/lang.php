@@ -25,7 +25,7 @@ return [
     'table-subject'                    => 'Subject',
     'table-department'                 => 'Department',
     'table-description'                => 'Description',
-    'table-intervention'               => 'Intevention',
+    'table-intervention'               => 'Intervention',
     'table-owner'                      => 'Owner',
     'table-status'                     => 'Status',
     'table-last-updated'               => 'Upd.',
