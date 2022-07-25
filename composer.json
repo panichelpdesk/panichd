@@ -1,14 +1,14 @@
 {
     "name": "panichd/panichd",
-    "description": "Ticketing system for Laravel (from 5 to 8). Allows to create new tickets via form only. Includes file attachments, ticket tags, filtering, scheduling and e-mail notifications.",
+    "description": "Ticketing system for Laravel (from 5 to 9). Allows to create new tickets via form only. Includes file attachments, ticket tags, filtering, scheduling and e-mail notifications.",
     "type": "laravel-package",
     "keywords": ["ticketing", "helpdesk", "laravel", "laravel-package", "laravel-7-package"],
     "require": {
-        "laravel/framework": "^5.1|^6.0|^7.0|^8.0",
+        "laravel/framework": "^5.1|^6.0|^7.0|^8.0|^9.0",
         "laravelcollective/html": "^5.1|^6.0",
-        "illuminate/support": "^5.1|^6.0|^7.0|^8.0",
+        "illuminate/support": "^5.1|^6.0|^7.0|^8.0|^9.0",
 		"intervention/image": "^2.5",
-        "yajra/laravel-datatables-oracle": "^6.0 || ^7.0 || ^8.0 || ^9.11",
+        "yajra/laravel-datatables-oracle": "^6.0 || ^7.0 || ^8.0 || ^9.11 || ^10.0",
         "jenssegers/date": "^4.0",
         "mews/purifier": "^2.0|^3.2",
         "doctrine/dbal": "^2.10"
