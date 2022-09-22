@@ -766,6 +766,8 @@ class TicketsController extends Controller
             }
         }
 
+        $filters['category'] = $filters['agent'] = Collect([]);
+
         if ($this->member->isAdmin() or ($this->member->isAgent() and Models\Setting::grab('agent_restrict') == 0)) {
 
             // Visible categories
