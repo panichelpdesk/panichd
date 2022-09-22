@@ -23,31 +23,33 @@
 	@include('panichd::tickets.partials.filter_calendar')
 @endif
 
-<div class="title category">{{ trans('panichd::lang.filter-category') }}</div> 
-@if (count($filters['category'])==1)
-	<?php $cat_color = $filters['category']->first()->color;?>
-	<span class="btn-category" style="color: {{ $cat_color }}">{{$filters['category']->first()->name}}</span>
-@else		
-	<?php $text_cat = "";
-	$category_name = "All";
-	$cat_color = "gray";?>
-	@foreach ($filters['category'] as $cat)			
-		<?php $text_cat.='<a class="dropdown-item" href="'.url($setting->grab('main_route').'/filter/category/'.$cat->id).'">';?>
-		@if ($cat->id==session('panichd_filter_category'))
-			<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span>';
-			$cat_color=$cat->color;?>
+@if(count($filters['category']))
+	<div class="title category">{{ trans('panichd::lang.filter-category') }}</div> 
+	@if (count($filters['category'])==1)
+		<?php $cat_color = $filters['category']->first()->color;?>
+		<span class="btn-category" style="color: {{ $cat_color }}">{{$filters['category']->first()->name}}</span>
+	@else		
+		<?php $text_cat = "";
+		$category_name = "All";
+		$cat_color = "gray";?>
+		@foreach ($filters['category'] as $cat)			
+			<?php $text_cat.='<a class="dropdown-item" href="'.url($setting->grab('main_route').'/filter/category/'.$cat->id).'">';?>
+			@if ($cat->id==session('panichd_filter_category'))
+				<?php $category_name='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span>';
+				$cat_color=$cat->color;?>
+			@endif
+			<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span></a>';?>
+		@endforeach
+		<div class="dropdown" style="display: inline-block;">
+		<button class="btn btn-light btn-sm btn-category dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;">{!! $category_name=="All" ? trans('panichd::lang.filter-category-all') : $category_name !!}
+		<span class="caret" style="color: {{ $cat_color }}"></span></button>
+		<ul class="dropdown-menu">
+		@if ($category_name!="All")
+			<a class="dropdown-item" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/category/remove">{{ trans('panichd::lang.filter-category-all') }}</a>
 		@endif
-		<?php $text_cat.='<span style="color: '.$cat->color.'">'.$cat->name.'</span> <span class="badge" style="background-color: '.$cat->color.'">'.$counts['category'][$cat->id].'</span></a>';?>
-	@endforeach
-	<div class="dropdown" style="display: inline-block;">
-	<button class="btn btn-light btn-sm btn-category dropdown-toggle" type="button" data-toggle="dropdown" style="border: none;">{!! $category_name=="All" ? trans('panichd::lang.filter-category-all') : $category_name !!}
-	<span class="caret" style="color: {{ $cat_color }}"></span></button>
-	<ul class="dropdown-menu">
-	@if ($category_name!="All")
-		<a class="dropdown-item" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/category/remove">{{ trans('panichd::lang.filter-category-all') }}</a>
+		{!! $text_cat !!}</ul>
+		</div>
 	@endif
-	{!! $text_cat !!}</ul>
-	</div>
 @endif
 
 @if (session()->has('panichd_filter_owner'))
@@ -62,45 +64,43 @@
 	<a class="dropdown-item" href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/owner/remove">{{ trans('panichd::lang.filter-owner-all') }}</a>
 	</ul>
 	</div>
-	
-	
 @endif
 
-<div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
-@if (count($filters['agent'])>$setting->grab('max_agent_buttons'))
-	
-	<div id="select_agent_container" class="select2_filter {{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
-		<select id="select_agent" style="width: 200px; display: none;">
-		<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
-		@foreach ($filters['agent'] as $ag)			
-			<option value="/filter/agent/{{$ag->id}}"
-			@if ($ag->id==session('panichd_filter_agent'))
-				selected="selected"
+@if(count($filters['agent']))
+	<div class="title agent">{{ trans('panichd::lang.filter-agent') }}</div> 
+	@if (count($filters['agent'])>$setting->grab('max_agent_buttons'))
+		<div id="select_agent_container" class="select2_filter {{ session('panichd_filter_agent')=="" ? 'all' : 'single'}}">
+			<select id="select_agent" style="width: 200px; display: none;">
+			<option value="/filter/agent/remove">{{ trans('panichd::lang.filter-agent-all') }}</option>
+			@foreach ($filters['agent'] as $ag)			
+				<option value="/filter/agent/{{$ag->id}}"
+				@if ($ag->id==session('panichd_filter_agent'))
+					selected="selected"
+				@endif
+				>{{$ag->name}} ({!! $counts['agent'][$ag->id] !!})</option>
+			@endforeach
+			</select>
+		</div>
+	@else	
+		<?php $agent_button_size='';?>
+		@if(count($filters['agent'])==1)
+			<button class="btn btn-light btn-sm {{ $agent_button_size }} agent-current">{{$filters['agent']->first()->name}}</button>
+		@else
+			@if (session('panichd_filter_agent')!="")
+				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-light btn-sm agent-link {{ $agent_button_size }}">{{ trans('panichd::lang.filter-agent-all') }}</a>
+			@elseif(count($filters['agent'])>1)
+				<button class="btn btn-info btn-sm {{ $agent_button_size }} agent-current">{{ trans('panichd::lang.filter-agent-all') }}</button>
 			@endif
-			>{{$ag->name}} ({!! $counts['agent'][$ag->id] !!})</option>
-		@endforeach
-		</select>
-	</div>
-@else	
-	<?php $agent_button_size='';?>
-	@if(count($filters['agent'])==1)
-		<button class="btn btn-light btn-sm {{ $agent_button_size }} agent-current">{{$filters['agent']->first()->name}}</button>
-	@else
-		@if (session('panichd_filter_agent')!="")
-			<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/remove" class="btn btn-light btn-sm agent-link {{ $agent_button_size }}">{{ trans('panichd::lang.filter-agent-all') }}</a>
-		@elseif(count($filters['agent'])>1)
-			<button class="btn btn-info btn-sm {{ $agent_button_size }} agent-current">{{ trans('panichd::lang.filter-agent-all') }}</button>
+		
+			@foreach ($filters['agent'] as $ag)
+				@if ($ag->id==session('panichd_filter_agent'))
+					<button class="btn btn-light btn-sm {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></button>
+				@else
+					<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-light btn-sm agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></a>
+				@endif			
+			@endforeach	
 		@endif
-	
-		@foreach ($filters['agent'] as $ag)
-			@if ($ag->id==session('panichd_filter_agent'))
-				<button class="btn btn-light btn-sm {{ $agent_button_size }} agent-current"><span>{{$ag->name}}</span> <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></button>
-			@else
-				<a href="{{ action('\PanicHD\PanicHD\Controllers\TicketsController@index') }}/filter/agent/{{$ag->id}}" class="btn btn-light btn-sm agent-link {{ $agent_button_size }}">{{$ag->name}} <span class="badge">{!! $counts['agent'][$ag->id] !!}</span></a>
-			@endif			
-		@endforeach	
 	@endif
-	
 @endif
 
 <script type="text/javascript">
@@ -115,9 +115,11 @@
 		window.location.href="{{ URL::to('/').'/'.$setting->grab('main_route') }}"+$(this).val();				
 	});
 	
-	$('#select_agent_container .select2-selection__rendered').css("color", "{{ $cat_color }}");
-	$('#select_agent_container .select2-selection__arrow b')
-		.css("border-top-color", "{{ $cat_color }}")
-		.css("border-bottom-color", "{{ $cat_color }}");
+	@if(isset($cat_color))
+		$('#select_agent_container .select2-selection__rendered').css("color", "{{ $cat_color }}");
+		$('#select_agent_container .select2-selection__arrow b')
+			.css("border-top-color", "{{ $cat_color }}")
+			.css("border-bottom-color", "{{ $cat_color }}");
+	@endif
 @append
 </script>
