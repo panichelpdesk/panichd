@@ -799,9 +799,9 @@ class TicketsController extends Controller
 
             // Visible Agents
             if (session('panichd_filter_category') == '') {
-                $filters['agent'] = \PanicHDMember::visible()->get();
+                $filters['agent'] = \PanicHDMember::visibleAgents()->get();
             } else {
-                $filters['agent'] = \PanicHDMember::visible()->whereHas('categories', function ($q1) use ($category) {
+                $filters['agent'] = \PanicHDMember::visibleAgents()->whereHas('categories', function ($q1) use ($category) {
                     $q1->where('id', $category);
                 })
                 ->get();
@@ -1005,7 +1005,7 @@ class TicketsController extends Controller
 
         $a_categories = $this->member->getEditTicketCategories();
 
-        $c_visible_agents = \PanicHDMember::visible()->get();
+        $c_visible_agents = \PanicHDMember::visibleAgents()->get();
 
         // Tag lists
         $c_cat_tags = Category::whereHas('tags')

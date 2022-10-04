@@ -390,7 +390,7 @@ trait MemberTrait
      *
      * @return mixed
      */
-    public function scopeVisible($query)
+    public function scopevisibleAgents($query)
     {
         $query = $query->agents();
 
