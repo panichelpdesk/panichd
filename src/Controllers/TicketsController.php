@@ -1005,7 +1005,15 @@ class TicketsController extends Controller
 
         $a_categories = $this->member->getEditTicketCategories();
 
+        // Active ticket agents
         $c_visible_agents = \PanicHDMember::visibleAgents()->get();
+
+        // Agents used in the past
+        foreach(\PanicHDMember::getUsedAgents() as $used_agent){
+            if (!$c_visible_agents->where('id', $used_agent->id)->count()){
+                $c_visible_agents = $c_visible_agents->merge(Collect([$used_agent]));
+            }
+        }
 
         // Tag lists
         $c_cat_tags = Category::whereHas('tags')

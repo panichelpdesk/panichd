@@ -3,11 +3,12 @@
 namespace PanicHD\PanicHD\Traits;
 
 use PanicHD\PanicHD\Helpers\LaravelVersion;
+use PanicHD\PanicHD\Models\Ticket;
 
 trait MemberTrait
 {
     /**
-     * list of all agents and returning collection.
+     * list of all ACTIVE agents and returning collection.
      *
      * @param $query
      * @param bool $paginate
@@ -498,5 +499,21 @@ trait MemberTrait
         } else {
             return $member_department->get()->merge($member_department->ancestor()->get());
         }
+    }
+
+    /*
+     * Get all Members used as agent in any ticket
+     *
+     * @Return collection
+    */
+    public static function getUsedAgents()
+    {
+        $c = Collect([]);
+        foreach(Ticket::groupBy('agent_id')->pluck('agent_id') as $agent_id){
+            if ($used_agent = \PanicHDMember::find($agent_id)){
+                $c = $c->merge(Collect([$used_agent]));
+            }
+        }
+        return $c;
     }
 }
