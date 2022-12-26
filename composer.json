@@ -4,7 +4,7 @@
     "type": "laravel-package",
     "keywords": ["ticketing", "helpdesk", "laravel", "laravel-package", "laravel-7-package"],
     "require": {
-        "laravel/framework": "^5.1|^6.0|^7.0|^8.0",
+        "laravel/framework": "^5.1|^6.0|^7.0|^8.0|^9.0",
         "laravelcollective/html": "^5.1|^6.0",
         "illuminate/support": "^5.1|^6.0|^7.0|^8.0",
 		"intervention/image": "^2.5",
