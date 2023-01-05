@@ -2,7 +2,7 @@
 
 namespace PanicHD\PanicHD\Controllers;
 
-use App\Http\Controllers\Controller;
+use UCSF\DOM\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use PanicHD\PanicHD\Models\Setting;

@@ -2,7 +2,7 @@
 
 namespace PanicHD\PanicHD\Controllers;
 
-use App\Http\Controllers\Controller;
+use UCSF\DOM\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 

@@ -41,7 +41,7 @@ class PanicHDServiceProvider extends ServiceProvider
         if (!isset($member_model_class) or $member_model_class == 'default'){
             $member_model_class = Cache::remember('panichd::provider_member_class', 3600, function () {
                 // Check App\Models\User existence first
-                if (class_exists('\App\Models\User')){
+                if (class_exists('\UCSF\DOM\Models\MySQL\Models\User')){
                     return 'PanicHD\PanicHD\Models\Member_AppModelsUser';
 
                 }else{

@@ -2,7 +2,7 @@
 
 namespace PanicHD\PanicHD\Controllers;
 
-use App\Http\Controllers\Controller;
+use UCSF\DOM\Http\Controllers\Controller;
 use PanicHD\PanicHD\Models;
 use PanicHD\PanicHD\Models\Category;
 use PanicHD\PanicHD\Models\Ticket;
