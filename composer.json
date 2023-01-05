@@ -1,5 +1,5 @@
 {
-    "name": "panichd/panichd",
+    "name": "jschlies/panichd",
     "description": "Ticketing system for Laravel (from 5 to 8). Allows to create new tickets via form only. Includes file attachments, ticket tags, filtering, scheduling and e-mail notifications.",
     "type": "laravel-package",
     "keywords": ["ticketing", "helpdesk", "laravel", "laravel-package", "laravel-7-package"],
@@ -16,12 +16,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "ManelGP",
-            "email": "manelgp-email-here@gmail.com"
+            "name": "Jim Schlies",
+            "email": "jim@schlies.com"
         },
         {
-            "name": "XaviQV",
-            "email": "xaviqv@gmail.com"
+            "name": "James Schlies",
+            "email": "james.schlies@ucsf.edu"
         }
     ],
     "autoload": {
