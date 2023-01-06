@@ -68,14 +68,20 @@ trait MemberTrait
      *
      * @param $query
      *
-     * @return bool
+     * @return bool|mixed
      *
      * @internal param int $cat_id
      */
     public function scopeAgentsLists($query)
     {
         if (version_compare(app()->version(), '5.2.0', '>=')) {
-            return $query->where('panichd_agent', '1')->pluck('name', 'id')->toArray();
+
+            $payload = [];
+            foreach($query->where('panichd_agent', '1')->get() as $useritem)
+            {
+                $payload[$useritem->id] = $useritem->name;
+            }
+            return $payload;
         } else { // if Laravel 5.1
             return $query->where('panichd_agent', '1')->lists('name', 'id')->toArray();
         }
