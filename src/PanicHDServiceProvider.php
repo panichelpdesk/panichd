@@ -30,8 +30,7 @@ class PanicHDServiceProvider extends ServiceProvider
         /**
          * since this calls DB, gotta check if up/down
          */
-        if ($this->app->isDownForMaintenance())
-        {
+        if ($this->app->isDownForMaintenance()) {
             return;
         }
         if (!Schema::hasTable('migrations')) {
