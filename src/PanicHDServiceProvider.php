@@ -28,7 +28,7 @@ class PanicHDServiceProvider extends ServiceProvider
     public function boot()
     {
         /**
-         * since this calls DB, gotta check if up/down
+         * since this calls DB, gotta check if up/down.
          */
         if ($this->app->isDownForMaintenance()) {
             return;
@@ -40,11 +40,11 @@ class PanicHDServiceProvider extends ServiceProvider
 
         // Alias for Member model
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1) {
+        if (Schema::hasTable('panichd_settings') and Setting::where('slug', 'member_model_class')->count() == 1){
             $member_model_class = Setting::grab('member_model_class');
         }
 
-        if (!isset($member_model_class) or $member_model_class == 'default'){
+        if (!isset($member_model_class) or $member_model_class == 'default') {
             $member_model_class = Cache::remember('panichd::provider_member_class', 3600, function () {
                 // Check App\Models\User existence first
                 if (class_exists('\App\Models\User')){
