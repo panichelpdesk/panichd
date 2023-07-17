@@ -27,6 +27,12 @@ class PanicHDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /**
+         * since this calls DB, gotta check if up/down.
+         */
+        if ($this->app->isDownForMaintenance()) {
+            return;
+        }
         if (!Schema::hasTable('migrations')) {
             // Database isn't installed yet.
             return;
