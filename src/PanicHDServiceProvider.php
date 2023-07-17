@@ -66,8 +66,8 @@ class PanicHDServiceProvider extends ServiceProvider
         $authMiddleware = Helpers\LaravelVersion::authMiddleware();
 
         Route::get('panichd', 'PanicHD\PanicHD\Controllers\InstallController@index')
-             ->middleware($authMiddleware)
-             ->name('panichd.install.index');
+            ->middleware($authMiddleware)
+            ->name('panichd.install.index');
 
         if (Request::is('panichd') || Request::is('panichd/*')) {
             Route::post('/panichd/install', [
@@ -239,16 +239,16 @@ class PanicHDServiceProvider extends ServiceProvider
 
                     // Get notices
                     $a_notices = Ticket::active()->notHidden()->whereIn('user_id', $a_notice_users)
-                                       ->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
-                                       ->select('panichd_tickets.*')
-                                       ->with('owner.department')
-                                       ->with('status')->with('tags')
-                                       ->withCount('allAttachments')
-                                       ->orderByRaw('CASE when status_id="'.Setting::grab('default_close_status_id').'" then 2 else 1 end')
-                                       ->orderByRaw('date(start_date)')
-                                       ->orderBy('panichd_priorities.magnitude', 'desc')
-                                       ->orderBy('start_date', 'asc')
-                                       ->get();
+                        ->join('panichd_priorities', 'priority_id', '=', 'panichd_priorities.id')
+                        ->select('panichd_tickets.*')
+                        ->with('owner.department')
+                        ->with('status')->with('tags')
+                        ->withCount('allAttachments')
+                        ->orderByRaw('CASE when status_id="'.Setting::grab('default_close_status_id').'" then 2 else 1 end')
+                        ->orderByRaw('date(start_date)')
+                        ->orderBy('panichd_priorities.magnitude', 'desc')
+                        ->orderBy('start_date', 'asc')
+                        ->get();
                 } else {
                     // Don't show notices
                     $a_notices = [];
@@ -333,10 +333,10 @@ class PanicHDServiceProvider extends ServiceProvider
 
             if ($this->app->runningInConsole()) {
                 $this->commands([
-                                    Console\DemoRollback::class,
-                                    Console\WipeOffLists::class,
-                                    Console\WipeOffTickets::class,
-                                ]);
+                    Console\DemoRollback::class,
+                    Console\WipeOffLists::class,
+                    Console\WipeOffTickets::class,
+                ]);
             }
         } else {
             Route::get('/tickets/{params?}', function () {
