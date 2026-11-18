@@ -162,6 +162,12 @@ class InstallController extends Controller
 
     public function setup(Request $request)
     {
+        // Block self-promotion to admin on an already installed system.
+        // Legitimate first-time setup runs while isInstalled() is still false.
+        if ($this->isInstalled() and !$this->auth_member_is_admin()) {
+            return redirect()->route('panichd.install.index');
+        }
+
         $previous_ticketit = Schema::hasTable('ticketit_settings');
 
         // Install migrations and Settings
